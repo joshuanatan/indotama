@@ -13,6 +13,8 @@ class M_menu extends CI_Model{
     private $menu_last_modified;
     private $id_create_data;
     private $id_last_modified;
+    private $id_fk_brg_jenis;
+    private $id_fk_brg_merk;
 
     public function __construct(){
         parent::__construct();
@@ -65,7 +67,7 @@ class M_menu extends CI_Model{
             MENU_CREATE_DATE DATETIME,
             MENU_LAST_MODIFIED DATETIME,
             ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT
+            ID_LAST_MODIFIED INT,
         );
         DROP TABLE IF EXISTS MSTR_MENU_LOG;
         CREATE TABLE MSTR_MENU_LOG(
@@ -82,9 +84,9 @@ class M_menu extends CI_Model{
             ID_LAST_MODIFIED INT,
             ID_LOG_ALL INT
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT;
+        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_MENU;
         DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT
+        CREATE TRIGGER TRG_AFTER_INSERT_MENU
         AFTER INSERT ON MSTR_MENU
         FOR EACH ROW
         BEGIN
@@ -96,9 +98,9 @@ class M_menu extends CI_Model{
         END$$
         DELIMITER ;
 
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE;
+        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_MENU;
         DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE
+        CREATE TRIGGER TRG_AFTER_UPDATE_MENU
         AFTER UPDATE ON MSTR_MENU
         FOR EACH ROW
         BEGIN
@@ -159,7 +161,9 @@ class M_menu extends CI_Model{
                 "menu_create_date" => $this->menu_create_date,
                 "menu_last_modified" => $this->menu_last_modified,
                 "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified
+                "id_last_modified" => $this->id_last_modified,
+                "id_fk_brg_jenis" => $this->id_fk_brg_jenis,
+                "id_fk_brg_merk" => $this->id_fk_brg_merk
             );
             return insertRow($this->tbl_name,$data);
         }
@@ -183,7 +187,9 @@ class M_menu extends CI_Model{
                     "menu_display" => $this->menu_display,
                     "menu_icon" => $this->menu_icon,
                     "menu_last_modified" => $this->menu_last_modified,
-                    "id_last_modified" => $this->id_last_modified
+                    "id_last_modified" => $this->id_last_modified,
+                    "id_fk_brg_jenis" => $this->id_fk_brg_jenis,
+                    "id_fk_brg_merk" => $this->id_fk_brg_merk
                 );
                 updateRow($this->tbl_name,$data,$where);
                 return true;
@@ -238,6 +244,12 @@ class M_menu extends CI_Model{
         if($this->id_last_modified == ""){
             return false;
         }
+        if($this->id_fk_brg_jenis == ""){
+            return false;
+        }
+        if($this->id_fk_brg_merk == ""){
+            return false;
+        }
         return true;
     }
     public function check_update(){
@@ -259,6 +271,12 @@ class M_menu extends CI_Model{
         if($this->id_last_modified == ""){
             return false;
         }
+        if($this->id_fk_brg_jenis == ""){
+            return false;
+        }
+        if($this->id_fk_brg_merk == ""){
+            return false;
+        }
         return true;
     }
     public function check_delete(){
@@ -274,7 +292,7 @@ class M_menu extends CI_Model{
         }
         return true;
     }
-    public function set_insert($menu_controller,$menu_display,$menu_icon,$status_menu){
+    public function set_insert($menu_controller,$menu_display,$menu_icon,$status_menu,$id_fk_brg_jenis,$id_fk_brg_merk){
         if(!$this->set_menu_controller($menu_controller)){
             return false;
         }
@@ -287,9 +305,15 @@ class M_menu extends CI_Model{
         if(!$this->set_status_menu($status_menu)){
             return false;
         }
+        if(!$this->set_id_fk_brg_jenis($id_fk_brg_jenis)){
+            return false;
+        }
+        if(!$this->set_id_fk_brg_merk($id_fk_brg_merk)){
+            return false;
+        }
         return true;
     }
-    public function set_update($id_pk_menu,$menu_controller,$menu_display,$menu_icon){
+    public function set_update($id_pk_menu,$menu_controller,$menu_display,$menu_icon,$id_fk_brg_jenis,$id_fk_brg_merk){
         if(!$this->set_id_pk_menu($id_pk_menu)){
             return false;
         }
@@ -300,6 +324,12 @@ class M_menu extends CI_Model{
             return false;
         }
         if(!$this->set_menu_icon($menu_icon)){
+            return false;
+        }
+        if(!$this->set_id_fk_brg_jenis($id_fk_brg_jenis)){
+            return false;
+        }
+        if(!$this->set_id_fk_brg_merk($id_fk_brg_merk)){
             return false;
         }
         return true;
@@ -356,6 +386,24 @@ class M_menu extends CI_Model{
             return false;
         }
     }
+    public function set_id_fk_brg_jenis($id_fk_brg_jenis){
+        if($id_fk_brg_jenis != ""){
+            $this->id_fk_brg_jenis = $id_fk_brg_jenis;
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public function set_id_fk_brg_merk($id_fk_brg_merk){
+        if($id_fk_brg_merk != ""){
+            $this->id_fk_brg_merk = $id_fk_brg_merk;
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     public function get_id_pk_menu(){
         return $this->id_pk_menu;
     }
@@ -370,6 +418,12 @@ class M_menu extends CI_Model{
     }
     public function get_status_menu(){
         return $this->status_menu;
+    }
+    public function get_id_fk_brg_jenis(){
+        return $this->id_fk_brg_jenis;
+    }
+    public function get_id_fk_brg_merk(){
+        return $this->id_fk_brg_merk;
     }
 }
 ?>
