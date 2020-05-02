@@ -1,0 +1,2 @@
+<link rel="stylesheet" href="<?php echo base_url();?>assets/global/vendor/chartist/chartist.css">
+<!--<link rel="stylesheet" href="<?php echo base_url();?>assets/assets/examples/css/widgets/chart.css">-->
