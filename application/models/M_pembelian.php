@@ -30,6 +30,7 @@ class M_pembelian extends CI_Model{
     }
     public function install(){
         $sql = "
+        DROP TABLE MSTR_PEMBELIAN;
         CREATE TABLE MSTR_PEMBELIAN(
             ID_PK_PEMBELIAN INT PRIMARY KEY AUTO_INCREMENT,
             PEM_PK_NOMOR VARCHAR(30),
@@ -48,6 +49,7 @@ class M_pembelian extends CI_Model{
             ID_CREATE_DATA INT,
             ID_LAST_MODIFIED INT
         );
+        DROP TABLE MSTR_PEMBELIAN_LOG;
         CREATE TABLE MSTR_PEMBELIAN_LOG(
             ID_PK_PEMBELIAN_LOG INT PRIMARY KEY AUTO_INCREMENT,
             EXECUTED_FUNCTION VARCHAR(30),
@@ -66,7 +68,8 @@ class M_pembelian extends CI_Model{
             PEM_CREATE_DATE DATETIME,
             PEM_LAST_MODIFIED DATETIME,
             ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT
+            ID_LAST_MODIFIED INT,
+            ID_LOG_ALL INT
         );
         DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_PEMBELIAN;
         DELIMITER $$
@@ -79,7 +82,7 @@ class M_pembelian extends CI_Model{
             SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.PEM_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO MSTR_PEMBELIAN_LOG(EXECUTED_FUNCTION,ID_PK_PEMBELIAN,PEM_PK_NOMOR,PEM_TGL,PEM_TGL_BAYAR,PEM_JENIS_BAYAR,PEM_STATUS_BAYAR,PEM_TOTALALL,PEM_SUPP_NAME,PEM_JMLH_ITEM,PEM_STATUS,ID_FK_SUPP,ID_FK_TOKO,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_PEMBELIAN,NEW.PEM_PK_NOMOR,NEW.PEM_TGL,NEW.PEM_TGL_BAYAR,NEW.PEM_JENIS_BAYAR,NEW.PEM_STATUS_BAYAR,NEW.PEM_TOTALALL,NEW.PEM_SUPP_NAME,NEW.PEM_JMLH_ITEM,NEW.PEM_STATUS,NEW.ID_FK_SUPP,NEW.ID_FK_TOKO,@ID_LOG_ALL);
+            INSERT INTO MSTR_PEMBELIAN_LOG(EXECUTED_FUNCTION,ID_PK_PEMBELIAN,PEM_PK_NOMOR,PEM_TGL,PEM_TGL_BAYAR,PEM_JENIS_BAYAR,PEM_STATUS_BAYAR,PEM_TOTALALL,PEM_SUPP_NAME,PEM_JMLH_ITEM,PEM_STATUS,ID_FK_SUPP,ID_FK_TOKO,PEM_CREATE_DATE,PEM_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_PEMBELIAN,NEW.PEM_PK_NOMOR,NEW.PEM_TGL,NEW.PEM_TGL_BAYAR,NEW.PEM_JENIS_BAYAR,NEW.PEM_STATUS_BAYAR,NEW.PEM_TOTALALL,NEW.PEM_SUPP_NAME,NEW.PEM_JMLH_ITEM,NEW.PEM_STATUS,NEW.ID_FK_SUPP,NEW.ID_FK_TOKO,NEW.PEM_CREATE_DATE,NEW.PEM_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;
         
@@ -95,14 +98,14 @@ class M_pembelian extends CI_Model{
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
             
-            INSERT INTO MSTR_PEMBELIAN_LOG(EXECUTED_FUNCTION,ID_PK_PEMBELIAN,PEM_PK_NOMOR,PEM_TGL,PEM_TGL_BAYAR,PEM_JENIS_BAYAR,PEM_STATUS_BAYAR,PEM_TOTALALL,PEM_SUPP_NAME,PEM_JMLH_ITEM,PEM_STATUS,ID_FK_SUPP,ID_FK_TOKO,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_PEMBELIAN,NEW.PEM_PK_NOMOR,NEW.PEM_TGL,NEW.PEM_TGL_BAYAR,NEW.PEM_JENIS_BAYAR,NEW.PEM_STATUS_BAYAR,NEW.PEM_TOTALALL,NEW.PEM_SUPP_NAME,NEW.PEM_JMLH_ITEM,NEW.PEM_STATUS,NEW.ID_FK_SUPP,NEW.ID_FK_TOKO,@ID_LOG_ALL);
+            INSERT INTO MSTR_PEMBELIAN_LOG(EXECUTED_FUNCTION,ID_PK_PEMBELIAN,PEM_PK_NOMOR,PEM_TGL,PEM_TGL_BAYAR,PEM_JENIS_BAYAR,PEM_STATUS_BAYAR,PEM_TOTALALL,PEM_SUPP_NAME,PEM_JMLH_ITEM,PEM_STATUS,ID_FK_SUPP,ID_FK_TOKO,PEM_CREATE_DATE,PEM_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_PEMBELIAN,NEW.PEM_PK_NOMOR,NEW.PEM_TGL,NEW.PEM_TGL_BAYAR,NEW.PEM_JENIS_BAYAR,NEW.PEM_STATUS_BAYAR,NEW.PEM_TOTALALL,NEW.PEM_SUPP_NAME,NEW.PEM_JMLH_ITEM,NEW.PEM_STATUS,NEW.ID_FK_SUPP,NEW.ID_FK_TOKO,NEW.PEM_CREATE_DATE,NEW.PEM_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;
         ";
         executeQuery($sql);
     }
     public function columns(){
-        return $this->columns();
+        return $this->columns;
     }
     public function insert(){
         if($this->check_insert()){
@@ -274,7 +277,7 @@ class M_pembelian extends CI_Model{
         }
         else return true;
     }
-    public function set_insert(){
+    public function set_insert($pem_pk_nomor,$pem_tgl,$pem_tgl_bayar,$pem_jenis_bayar,$pem_status_bayar,$pem_totalall,$pem_supp_name,$pem_jmlh_item,$pem_status,$id_fk_supp,$id_fk_toko){
         if(!$this->set_pem_pk_nomor($pem_pk_nomor)){
             return false;
         }
@@ -310,7 +313,7 @@ class M_pembelian extends CI_Model{
         }
         return true;
     }
-    public function set_update(){
+    public function set_update($id_pk_pembelian,$pem_pk_nomor,$pem_tgl,$pem_tgl_bayar,$pem_jenis_bayar,$pem_status_bayar,$pem_totalall,$pem_supp_name,$pem_jmlh_item,$id_fk_supp,$id_fk_toko){
         if(!$this->set_id_pk_pembelian($id_pk_pembelian)){
             return false;
         }
@@ -346,7 +349,7 @@ class M_pembelian extends CI_Model{
         }
         return true;
     }
-    public function set_delete(){
+    public function set_delete($id_pk_pembelian){
         if(!$this->set_id_pk_pembelian($id_pk_pembelian)){
             return false;
         }

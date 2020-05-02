@@ -77,7 +77,7 @@ class M_jabatan extends CI_Model{
         executeQuery($sql);
     }
     public function columns(){
-        return $this->columns();
+        return $this->columns;
     }
     public function insert(){
         if($this->check_insert()){

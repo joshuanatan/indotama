@@ -181,7 +181,7 @@ class M_barang_merk extends CI_Model{
         }
         return true;
     }
-    public function set_insert(){
+    public function set_insert($brg_merk_nama,$brg_merk_status){
         if(!$this->set_brg_merk_nama($brg_merk_nama)){
             return false;
         }
@@ -190,7 +190,7 @@ class M_barang_merk extends CI_Model{
         }
         return true;
     }
-    public function set_update(){
+    public function set_update($id_pk_brg_merk,$brg_merk_nama){
         if(!$this->set_id_pk_brg_merk($id_pk_brg_merk)){
             return false;
         }
@@ -199,7 +199,7 @@ class M_barang_merk extends CI_Model{
         }
         return true;
     }
-    public function set_delete(){
+    public function set_delete($id_pk_brg_merk){
         if(!$this->set_id_pk_brg_merk($id_pk_brg_merk)){
             return false;
         }
