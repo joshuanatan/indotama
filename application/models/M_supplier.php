@@ -248,7 +248,7 @@ class M_supplier extends CI_Model{
         }
         return true;
     }
-    public function set_insert(){
+    public function set_insert($sup_nama,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan,$sup_status,$id_fk_toko){
         if(!$this->set_sup_nama($sup_nama)){
             return false;
         }
@@ -278,7 +278,7 @@ class M_supplier extends CI_Model{
         }
         return true;
     }
-    public function set_update(){
+    public function set_update($id_pk_sup,$sup_nama,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan,$id_fk_toko){
         if(!$this->set_id_pk_sup($id_pk_sup)){
             return false;
         }
@@ -308,7 +308,7 @@ class M_supplier extends CI_Model{
         }
         return true;
     }
-    public function set_delete(){
+    public function set_delete($id_pk_sup){
         if(!$this->set_id_pk_sup($id_pk_sup)){
             return false;
         }

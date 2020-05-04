@@ -16,6 +16,8 @@ class M_barang extends CI_Model{
     private $brg_last_modified;
     private $id_create_data;
     private $id_last_modified;
+    private $id_fk_brg_jenis;
+    private $id_fk_brg_merk;
 
     public function __construct(){
         parent::__construct();
@@ -107,6 +109,8 @@ class M_barang extends CI_Model{
                 "brg_minimal" => $this->brg_minimal,
                 "brg_status" => $this->brg_status,
                 "brg_harga" => $this->brg_harga,
+                "id_fk_brg_jenis" => $this->id_fk_brg_jenis,
+                "id_fk_brg_merk" => $this->id_fk_brg_merk,
                 "brg_create_date" => $this->brg_create_date,
                 "brg_last_modified" => $this->brg_last_modified,
                 "id_create_data" => $this->id_create_data,
@@ -135,6 +139,8 @@ class M_barang extends CI_Model{
                     "brg_ket" => $this->brg_ket,
                     "brg_minimal" => $this->brg_minimal,
                     "brg_harga" => $this->brg_harga,
+                    "id_fk_brg_jenis" => $this->id_fk_brg_jenis,
+                    "id_fk_brg_merk" => $this->id_fk_brg_merk,
                     "brg_last_modified" => $this->brg_last_modified,
                     "id_last_modified" => $this->id_last_modified
                 );
@@ -179,10 +185,16 @@ class M_barang extends CI_Model{
         if($this->brg_minimal == ""){
             return false;
         }
+        if($this->brg_harga == ""){
+            return false;
+        }
+        if($this->id_fk_brg_jenis == ""){
+            return false;
+        }
         if($this->brg_status == ""){
             return false;
         }
-        if($this->brg_harga == ""){
+        if($this->id_fk_brg_merk == ""){
             return false;
         }
         if($this->brg_create_date == ""){
@@ -221,6 +233,12 @@ class M_barang extends CI_Model{
         if($this->brg_harga == ""){
             return false;
         }
+        if($this->id_fk_brg_jenis == ""){
+            return false;
+        }
+        if($this->id_fk_brg_merk == ""){
+            return false;
+        }
         if($this->brg_last_modified == ""){
             return false;
         }
@@ -241,7 +259,7 @@ class M_barang extends CI_Model{
         }
         return true;
     }
-    public function set_insert($brg_kode,$brg_nama,$brg_stok,$brg_ket,$brg_minimal,$brg_status,$brg_harga){
+    public function set_insert($brg_kode,$brg_nama,$brg_stok,$brg_ket,$brg_minimal,$brg_status,$brg_harga,$id_fk_brg_jenis,$id_fk_brg_merk){
         if(!$this->set_brg_kode($brg_kode)){
             return false;
         }
@@ -263,9 +281,15 @@ class M_barang extends CI_Model{
         if(!$this->set_brg_harga($brg_harga)){
             return false;
         }
+        if(!$this->set_id_fk_brg_jenis($id_fk_brg_jenis)){
+            return false;
+        }
+        if(!$this->set_id_fk_brg_merk($id_fk_brg_merk)){
+            return false;
+        }
         return true;
     }
-    public function set_update($id_pk_brg,$brg_kode,$brg_nama,$brg_stok,$brg_ket,$brg_minimal,$brg_harga){
+    public function set_update($id_pk_brg,$brg_kode,$brg_nama,$brg_stok,$brg_ket,$brg_minimal,$brg_harga,$id_fk_brg_jenis,$id_fk_brg_merk){
         if(!$this->set_id_pk_brg($id_pk_brg)){
             return false;
         }
@@ -285,6 +309,12 @@ class M_barang extends CI_Model{
             return false;
         }
         if(!$this->set_brg_harga($brg_harga)){
+            return false;
+        }
+        if(!$this->set_id_fk_brg_jenis($id_fk_brg_jenis)){
+            return false;
+        }
+        if(!$this->set_id_fk_brg_merk($id_fk_brg_merk)){
             return false;
         }
         return true;
@@ -371,6 +401,20 @@ class M_barang extends CI_Model{
     public function set_brg_harga($brg_harga){
         if($brg_harga != ""){
             $this->brg_harga = $brg_harga;
+            return true;
+        }
+        return false;
+    }
+    public function set_id_fk_brg_jenis($id_fk_brg_jenis){
+        if($id_fk_brg_jenis != ""){
+            $this->id_fk_brg_jenis = $id_fk_brg_jenis;
+            return true;
+        }
+        return false;
+    }
+    public function set_id_fk_brg_merk($id_fk_brg_merk){
+        if($id_fk_brg_merk != ""){
+            $this->id_fk_brg_merk = $id_fk_brg_merk;
             return true;
         }
         return false;
