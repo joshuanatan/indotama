@@ -5,7 +5,7 @@ class Setting extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('master_setting');
+		$this->load->view('V_master_setting');
 	}
 
 }

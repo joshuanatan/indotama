@@ -5,7 +5,7 @@ class Request extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('request_product');
+		$this->load->view('V_request_product');
 	}
 
 }

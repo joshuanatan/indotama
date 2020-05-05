@@ -20,11 +20,11 @@ class HQ extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('log_in');
+		$this->load->view('V_log_in');
 	}
 
 	public function login()
 	{
-		$this->load->view('dashboard');
+		$this->load->view('V_dashboard');
 	}
 }
