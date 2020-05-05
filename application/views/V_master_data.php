@@ -2,7 +2,7 @@
 <html lang="en">
 
     <head>
-        <?php $this->load->view('mm_css.php');?>
+        <?php $this->load->view('req/mm_css.php');?>
     </head>
 
     <body>
@@ -11,7 +11,7 @@
         </div>
         <div class="wrapper theme-1-active pimary-color-pink">
 
-            <?php $this->load->view('mm_menubar.php');?>
+            <?php $this->load->view('req/mm_menubar.php');?>
 
             <div class="page-wrapper">
                 <div class="container-fluid">
@@ -61,17 +61,7 @@
                                                             <input id = "search_box" placeholder = "Search data here..." type = "text" class = "form-control form-control-sm col-lg-3 col-sm-12" onkeyup = "search()">
                                                         </div>
                                                         <table class = "table table-bordered table-hover table-striped">
-                                                            <thead>
-                                                                <tr>
-                                                                    <?php for($a = 0; $a<count($col); $a++):?>
-                                                                    <th id = "col<?php echo $a;?>" style = "cursor:pointer" onclick = "sort(<?php echo $a;?>)" class = "text-center align-middle"><?php echo $col[$a]["col_disp"];?> 
-                                                                    <?php if($a == 0):?>
-                                                                    <span class="badge badge-light align-top" id = "orderDirection">ASC</span>
-                                                                    <?php endif;?>
-                                                                    </th>
-                                                                    <?php endfor;?>
-                                                                    <th class = "text-center align-middle">Action</th>
-                                                                </tr>
+                                                            <thead id = "col_title_container">
                                                             </thead>
                                                             <tbody id = "content_container">
                                                             </tbody>
@@ -89,11 +79,11 @@
                             </div>
                         </div>
                     </div>
-                    <?php $this->load->view('mm_footer.php');?>
+                    <?php $this->load->view('req/mm_footer.php');?>
                 </div>
             </div>
         </div>
-        <?php $this->load->view('mm_js.php');?>
+        <?php $this->load->view('req/mm_js.php');?>
     </body>
 </html>
 <div class = "modal fade" id = "addAttribute">
