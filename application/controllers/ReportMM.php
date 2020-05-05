@@ -5,22 +5,22 @@ class ReportMM extends CI_Controller {
 
 	public function Pembelian()
 	{
-		$this->load->view('report_pembelian');
+		$this->load->view('V_report_pembelian');
 	}
 
 	public function Penjualan()
 	{
-		$this->load->view('report_penjualan');
+		$this->load->view('V_report_penjualan');
 	}
 
 	public function Stock()
 	{
-		$this->load->view('report_stock');
+		$this->load->view('V_report_stock');
 	}
 
 	public function Keuangan()
 	{
-		$this->load->view('report_keuangan');
+		$this->load->view('V_report_keuangan');
 	}
 
 }

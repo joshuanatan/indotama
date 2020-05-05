@@ -5,7 +5,7 @@ class Penjualan extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('master_penjualan');
+		$this->load->view('V_master_penjualan');
 	}
 
 }
