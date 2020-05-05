@@ -52,20 +52,20 @@ class M_user extends CI_Model{
             USER_STATUS VARCHAR(15),
             USER_LAST_MODIFIED DATETIME,
             USER_CREATE_DATE DATETIME,
-            ID_CREATE_DATA INT,
+            ID_CREATE_DATE INT,
             ID_LAST_MODIFIED INT
         );
         DROP TABLE IF EXISTS MSTR_USER_LOG;
         CREATE TABLE MSTR_USER_LOG(
             ID_PK_USER_LOG INT PRIMARY KEY AUTO_INCREMENT,
             EXECUTED_FUNCTION VARCHAR(40),
-            ID_USER INT,
+            ID_PK_USER INT,
             USER_NAME VARCHAR(50),
             USER_PASS VARCHAR(200),
             USER_STATUS VARCHAR(15),
             USER_LAST_MODIFIED DATETIME,
             USER_CREATE_DATE DATETIME,
-            ID_CREATE_DATA INT,
+            ID_CREATE_DATE INT,
             ID_LAST_MODIFIED INT,
             ID_LOG_ALL INT
         );
@@ -77,10 +77,10 @@ class M_user extends CI_Model{
         BEGIN
             SET @ID_USER = NEW.ID_LAST_MODIFIED;
             SET @TGL_ACTION = NEW.USER_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.USER_LAST_MODIFIED);
+            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT',' ', NEW.USER_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO MSTR_USER_LOG(EXECUTED_FUNCTION,ID_PK_USER,USER_NAME,USER_PASS,USER_STATUS,USER_LAST_MODIFIED,USER_CREATE_DATE,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER INSERT',NEW.ID_PK_USER,NEW.USER_NAME,NEW.USER_PASS,NEW.USER_STATUS,NEW.USER_LAST_MODIFIED,NEW.USER_CREATE_DATE,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO MSTR_USER_LOG(EXECUTED_FUNCTION,ID_PK_USER,USER_NAME,USER_PASS,USER_STATUS,USER_LAST_MODIFIED,USER_CREATE_DATE,ID_CREATE_DATE,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER INSERT',NEW.ID_PK_USER,NEW.USER_NAME,NEW.USER_PASS,NEW.USER_STATUS,NEW.USER_LAST_MODIFIED,NEW.USER_CREATE_DATE,NEW.ID_CREATE_DATE,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;
         
@@ -95,7 +95,7 @@ class M_user extends CI_Model{
             SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.USER_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO MSTR_USER_LOG(EXECUTED_FUNCTION,ID_PK_USER,USER_NAME,USER_PASS,USER_STATUS,USER_LAST_MODIFIED,USER_CREATE_DATE,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER UPDATE',NEW.ID_PK_USER,NEW.USER_NAME,NEW.USER_PASS,NEW.USER_STATUS,NEW.USER_LAST_MODIFIED,NEW.USER_CREATE_DATE,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO MSTR_USER_LOG(EXECUTED_FUNCTION,ID_PK_USER,USER_NAME,USER_PASS,USER_STATUS,USER_LAST_MODIFIED,USER_CREATE_DATE,ID_CREATE_DATE,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER UPDATE',NEW.ID_PK_USER,NEW.USER_NAME,NEW.USER_PASS,NEW.USER_STATUS,NEW.USER_LAST_MODIFIED,NEW.USER_CREATE_DATE,NEW.ID_CREATE_DATE,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;
         ";
@@ -152,13 +152,13 @@ class M_user extends CI_Model{
     public function insert(){
         if($this->check_insert()){
             $data = array(
-                "user_name" => $this->user_name,
-                "user_pass" => password_hash($this->user_pass,PASSWORD_DEFAULT),
-                "user_status" => $this->user_status,
-                "user_create_date" => $this->user_create_date,
-                "user_last_modified" => $this->user_last_modified,
-                "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified
+                "USER_NAME" => $this->user_name,
+                "USER_PASS" => password_hash($this->user_pass,PASSWORD_DEFAULT),
+                "USER_STATUS" => $this->user_status,
+                "USER_CREATE_DATE" => $this->user_create_date,
+                "USER_LAST_MODIFIED" => $this->user_last_modified,
+                "ID_CREATE_DATE" => $this->id_create_data,
+                "ID_LAST_MODIFIED" => $this->id_last_modified
             );
             return insertRow($this->tbl_name,$data);
         }
@@ -234,7 +234,7 @@ class M_user extends CI_Model{
                 "user_status" => "AKTIF"
             );
             $field = array(
-                "id_pk_user","user_name","user_pass"
+                "id_pk_user","user_name","user_pass","user_status"
             );
             $result = selectRow($this->tbl_name,$where,$field);
             if($result->num_rows() > 0){
@@ -242,7 +242,8 @@ class M_user extends CI_Model{
                 if (password_verify($this->user_pass, $result[0]["user_pass"])){
                     $data = array(
                         "id" => $result[0]["id_pk_user"],
-                        "name" => $result[0]["user_name"]
+                        "name" => $result[0]["user_name"],
+                        "status" => $result[0]["user_status"],
                     );
                     return $data;
                 }
