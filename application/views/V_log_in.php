@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<?php $this->load->view('mm_css.php');?>
+		<?php $this->load->view('req/mm_css.php');?>
 	</head>
 	<body>
 		<!--Preloader-->
@@ -58,7 +58,7 @@
 		<!-- /#wrapper -->
 
 		<!-- JavaScript -->
-		<?php $this->load->view('mm_js.php');?>
+		<?php $this->load->view('req/mm_js.php');?>
 		
 	</body>
 </html>

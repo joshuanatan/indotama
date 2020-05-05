@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php $this->load->view('mm_css.php');?>
+    <?php $this->load->view('req/mm_css.php');?>
 </head>
 
 <body>
@@ -13,7 +13,7 @@
     <div class="wrapper theme-3-active pimary-color-pink">
 
         <!-- Menu Bar -->
-        <?php $this->load->view('mm_menubar.php');?>
+        <?php $this->load->view('req/mm_menubar.php');?>
         <!-- /Menu Bar -->
 
         <!-- Main Content -->
@@ -692,7 +692,7 @@
     			      </div>
 
           			<!-- Footer -->
-          			<?php $this->load->view('mm_footer.php');?>
+          			<?php $this->load->view('req/mm_footer.php');?>
           			<!-- /Footer -->
 
     		</div>
@@ -703,7 +703,7 @@
 
 	    <!-- JavaScript -->
 
-      <?php $this->load->view('mm_js.php');?>
+      <?php $this->load->view('req/mm_js.php');?>
 
 </body>
 
