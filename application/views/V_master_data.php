@@ -47,31 +47,33 @@
                                                     </a>
                                                 </li>
                                             </ul>
-                                            <div class="tab-content" id="myTabContent_7">
-                                                <div class = "col-lg-12">
-                                                    <button type = "button" class = "btn btn-primary btn-sm" data-toggle = "modal" data-target = "#addAttribute" style = "margin-right:10px">Tambah Attribute</button>
-                                                    <div class = "align-middle text-center">
-                                                        <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
-                                                        <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
-                                                    </div>
-                                                    <br/>
-                                                    <div class = "table-responsive ">
-                                                        <div class = "form-group">
-                                                            <h5>Search Data Here</h5>
-                                                            <input id = "search_box" placeholder = "Search data here..." type = "text" class = "form-control form-control-sm col-lg-3 col-sm-12" onkeyup = "search()">
-                                                        </div>
-                                                        <table class = "table table-bordered table-hover table-striped">
-                                                            <thead id = "col_title_container">
-                                                            </thead>
-                                                            <tbody id = "content_container">
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <nav aria-label="Page navigation example">
-                                                        <ul class="pagination justify-content-center" id = "pagination_container">
-                                                        </ul>
-                                                    </nav>
+                                            <div class = "col-lg-12" style = "margin-top:1%">
+                                                <div class = "d-block">
+                                                    <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#addAttribute" style = "margin-right:10px">Tambah Attribute</button>
                                                 </div>
+                                                <br/>
+                                                <br/>
+                                                <div class = "align-middle text-center d-block">
+                                                    <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
+                                                    <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
+                                                </div>
+                                                <br/>
+                                                <div class = "form-group">
+                                                    <h5>Search Data Here</h5>
+                                                    <input id = "search_box" placeholder = "Search data here..." type = "text" class = "form-control input-sm " onkeyup = "search()" style = "width:25%">
+                                                </div>
+                                                <div class = "table-responsive">
+                                                    <table class = "table table-bordered table-hover table-striped">
+                                                        <thead id = "col_title_container">
+                                                        </thead>
+                                                        <tbody id = "content_container">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <nav aria-label="Page navigation example">
+                                                    <ul class="pagination justify-content-center" id = "pagination_container">
+                                                    </ul>
+                                                </nav>
                                             </div>
                                         </div>
                                     </div>

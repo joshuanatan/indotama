@@ -54,3 +54,6 @@
 <!-- Calendar CSS -->
 <link href="<?php echo base_url(); ?>asset/vendors/bower_components/fullcalendar/dist/fullcalendar.css" rel="stylesheet"
     type="text/css" />
+    
+<link rel="stylesheet" href="<?php echo base_url();?>asset/dist/fonts/material-design/material-design.css">
+        
