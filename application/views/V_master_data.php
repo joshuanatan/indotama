@@ -6,19 +6,15 @@
     </head>
 
     <body>
-        <!--Preloader-->
         <div class="preloader-it">
             <div class="la-anim-1"></div>
         </div>
-        <!--/Preloader-->
         <div class="wrapper theme-1-active pimary-color-pink">
 
             <?php $this->load->view('mm_menubar.php');?>
 
-            <!-- Main Content -->
             <div class="page-wrapper">
                 <div class="container-fluid">
-                    <!-- Row -->
                     <div class="row mt-20">
                         <div class="col-lg-12 col-sm-12">
                             <div class="panel panel-default card-view">
@@ -32,742 +28,59 @@
                                     <div class="panel-body">
                                         <div class="tab-struct custom-tab-1">
                                             <ul role="tablist" class="nav nav-tabs" id="myTabs_7">
-                                                <li <?php if($this->input->get('tab', TRUE)=="tabCab"){echo "class='active'";}
-                                                elseif($this->input->get('tab', TRUE)=="tabSup"){echo "";}
-                                                elseif($this->input->get('tab', TRUE)=="tabCust"){echo "";}
-                                                elseif($this->input->get('tab', TRUE)=="tabEmp"){echo "";}
-                                                elseif($this->input->get('tab', TRUE)=="tabGud"){echo "";}
-                                                elseif($this->input->get('tab', TRUE)=="tabNama"){echo "";}
-                                                elseif($this->input->get('tab', TRUE)=="tabJenis"){echo "";}
-                                                else{echo "class='active'";}?> role="presentation"><a
-                                                        aria-expanded="true" data-toggle="tab" role="tab"
-                                                        id="home_tab_7" href="#home_7"><i
-                                                            class="fa fa-building"></i><span class="right-nav-text"
-                                                            style="margin-left:20px">Cabang</span></a></li>
-                                                <li <?php if($this->input->get('tab', TRUE)=="tabSup"){echo "class='active'";}else{echo "";}?>
-                                                    role="presentation"><a data-toggle="tab" id="profile_tab_9"
-                                                        role="tab" href="#profile_9" aria-expanded="false"><i
-                                                            class="fa fa-truck"></i><span class="right-nav-text"
-                                                            style="margin-left:20px">Supplier</span></a></li>
-                                                <li <?php if($this->input->get('tab', TRUE)=="tabCust"){echo "class='active'";}else{echo "";}?>
-                                                    role="presentation" class=""><a data-toggle="tab"
-                                                        id="profile_tab_10" role="tab" href="#profile_10"
-                                                        aria-expanded="false"><i class="fa fa-users"></i><span
-                                                            class="right-nav-text"
-                                                            style="margin-left:20px">Customer</span></a></li>
-                                                <li <?php if($this->input->get('tab', TRUE)=="tabEmp"){echo "class='active'";}else{echo "";}?>
-                                                    role="presentation"><a data-toggle="tab" id="profile_tab_11"
-                                                        role="tab" href="#master_emp" aria-expanded="false"><i
-                                                            class="fa fa-database"></i><span class="right-nav-text"
-                                                            style="margin-left:20px">Karyawan</span></a></li>
-                                                <li <?php if($this->input->get('tab', TRUE)=="tabGud"){echo "class='active'";}else{echo "";}?>
-                                                    role="presentation"><a data-toggle="tab" id="profile_tab_12"
-                                                        role="tab" href="#profile_12" aria-expanded="false"><i
-                                                            class="fa fa-fax"></i><span class="right-nav-text"
-                                                            style="margin-left:20px">Gudang</span></a></li>
-                                                <li <?php if($this->input->get('tab', TRUE)=="tabNama"){echo "class='active'";}else{echo "";}?>
-                                                    role="presentation"><a data-toggle="tab" id="profile_tab_13"
-                                                        role="tab" href="#profile_13" aria-expanded="false"><i
-                                                            class="fa fa-folder"></i><span class="right-nav-text"
-                                                            style="margin-left:20px">Nama
-                                                            Akun</span></a></li>
-                                                <li <?php if($this->input->get('tab', TRUE)=="tabJenis"){echo "class='active'";}else{echo "";}?>
-                                                    role="presentation"><a data-toggle="tab" id="profile_tab_13"
-                                                        role="tab" href="#profile_14" aria-expanded="false"><i
-                                                            class="fa fa-folder"></i><span class="right-nav-text"
-                                                            style="margin-left:20px">Jenis
-                                                            Product</span></a></li>
+                                                <li role="presentation">
+                                                    <a aria-expanded="true" data-toggle="tab" role="tab" id="home_tab_7" href="#home_7" onclick ="alert('cabang');">
+                                                        <i class="fa fa-building"></i>
+                                                        <span class="right-nav-text" style="margin-left:20px">Cabang</span>
+                                                    </a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a data-toggle="tab" id="profile_tab_9" role="tab" href="#profile_9" aria-expanded="false">
+                                                        <i class="fa fa-truck"></i>
+                                                        <span class="right-nav-text" style="margin-left:20px">Supplier</span>
+                                                    </a>
+                                                </li>
+                                                <li role="presentation" class="">
+                                                    <a data-toggle="tab" id="profile_tab_10" role="tab" href="#profile_10" aria-expanded="false">
+                                                        <i class="fa fa-users"></i>
+                                                        <span class="right-nav-text" style="margin-left:20px">Customer</span>
+                                                    </a>
+                                                </li>
                                             </ul>
                                             <div class="tab-content" id="myTabContent_7">
-                                                <div id="home_7" class="tab-pane fade <?php if($this->input->get('tab', TRUE)=="tabCab"){echo "active in";}
-                                                elseif($this->input->get('tab', TRUE)=="tabSup"){echo "";}
-                                                elseif($this->input->get('tab', TRUE)=="tabSup"){echo "";}
-                                                elseif($this->input->get('tab', TRUE)=="tabCust"){echo "";}
-                                                elseif($this->input->get('tab', TRUE)=="tabEmp"){echo "";}
-                                                elseif($this->input->get('tab', TRUE)=="tabGud"){echo "";}
-                                                elseif($this->input->get('tab', TRUE)=="tabNama"){echo "";}
-                                                elseif($this->input->get('tab', TRUE)=="tabJenis"){echo "";}
-                                                else{echo "active in";}?>" role="tabpanel">
-                                                    <!-- Row -->
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <div class="panel panel-default card-view">
-                                                                <div class="panel-heading">
-                                                                    <div class="row mt-10 ">
-                                                                        <a href="#"><button
-                                                                                class="btn btn-warning btn-anim pull-right"
-                                                                                style="margin-right:30px !important"><i
-                                                                                    class="fa fa-pencil"></i><span
-                                                                                    class="btn-text">Tambah
-                                                                                    Cabang</span></button></a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="panel-wrapper collapse in">
-                                                                    <div class="panel-body">
-                                                                        <div class="table-wrap">
-                                                                            <div class="table-responsive">
-                                                                                <table id="example"
-                                                                                    class="table table-hover display  pb-30">
-                                                                                    <thead>
-                                                                                        <tr>
-                                                                                            <th>Cabang</th>
-                                                                                            <th>Alamat</th>
-                                                                                            <th>Telepon</th>
-                                                                                            <th>Email</th>
-                                                                                            <th>Kepala Cabang</th>
-                                                                                            <th>Aksi</th>
-                                                                                        </tr>
-                                                                                    </thead>
-
-                                                                                    <tbody>
-                                                                                        <tr>
-                                                                                            <td>Jakarta Maju Mandiri
-                                                                                            </td>
-                                                                                            <td>LTC Jakarta</td>
-                                                                                            <td>+6281266252486</td>
-                                                                                            <td>jktmm@msm.co.id</td>
-                                                                                            <td>Andre</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>Jambi Maju Mandiri</td>
-                                                                                            <td>Jambi</td>
-                                                                                            <td>+6281266252486</td>
-                                                                                            <td>jmm@msm.co.id</td>
-                                                                                            <td>Santo</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>Surabaya Maju Mandiri
-                                                                                            </td>
-                                                                                            <td>Surabaya</td>
-                                                                                            <td>+6281266252486</td>
-                                                                                            <td>smm@msm.co.id</td>
-                                                                                            <td>Rudi</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                <div class = "col-lg-12">
+                                                    <button type = "button" class = "btn btn-primary btn-sm" data-toggle = "modal" data-target = "#addAttribute" style = "margin-right:10px">Tambah Attribute</button>
+                                                    <div class = "align-middle text-center">
+                                                        <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
+                                                        <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
                                                     </div>
-                                                    <!-- /Row -->
-                                                </div>
-                                                <div id="profile_9" class="tab-pane fade " role="tabpanel">
-                                                    <!-- Row -->
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <div class="panel panel-default card-view">
-                                                                <div class="panel-heading">
-                                                                    <div class="row mt-10 ">
-                                                                        <a href="#"><button
-                                                                                class="btn btn-warning btn-anim pull-right"
-                                                                                style="margin-right:30px !important"><i
-                                                                                    class="fa fa-pencil"></i><span
-                                                                                    class="btn-text">Tambah
-                                                                                    Supplier</span></button></a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="panel-wrapper collapse in">
-                                                                    <div class="panel-body">
-                                                                        <div class="table-wrap">
-                                                                            <div class="table-responsive">
-                                                                                <table id="example"
-                                                                                    class="table table-hover display  pb-30">
-                                                                                    <thead>
-                                                                                        <tr>
-                                                                                            <th>Nama</th>
-                                                                                            <th>Perusahaan</th>
-                                                                                            <th>Email</th>
-                                                                                            <th>Telepon</th>
-                                                                                            <th>Alamat</th>
-                                                                                            <th>Aksi</th>
-                                                                                        </tr>
-                                                                                    </thead>
-
-                                                                                    <tbody>
-                                                                                        <tr>
-                                                                                            <td>Priyani Ilyas</td>
-                                                                                            <td>PT. Lgrande Global
-                                                                                                Teknologindo</td>
-                                                                                            <td>priyani.ilyas@lgt-indonesia.com
-                                                                                            </td>
-                                                                                            <td>+6281266252486</td>
-                                                                                            <td>Jakarta</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-
-                                                                                    </tbody>
-
-                                                                                </table>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                    <br/>
+                                                    <div class = "table-responsive ">
+                                                        <div class = "form-group">
+                                                            <h5>Search Data Here</h5>
+                                                            <input id = "search_box" placeholder = "Search data here..." type = "text" class = "form-control form-control-sm col-lg-3 col-sm-12" onkeyup = "search()">
                                                         </div>
+                                                        <table class = "table table-bordered table-hover table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <?php for($a = 0; $a<count($col); $a++):?>
+                                                                    <th id = "col<?php echo $a;?>" style = "cursor:pointer" onclick = "sort(<?php echo $a;?>)" class = "text-center align-middle"><?php echo $col[$a]["col_disp"];?> 
+                                                                    <?php if($a == 0):?>
+                                                                    <span class="badge badge-light align-top" id = "orderDirection">ASC</span>
+                                                                    <?php endif;?>
+                                                                    </th>
+                                                                    <?php endfor;?>
+                                                                    <th class = "text-center align-middle">Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id = "content_container">
+                                                            </tbody>
+                                                        </table>
                                                     </div>
-                                                    <!-- /Row -->
-                                                </div>
-                                                <div id="profile_10" class="tab-pane fade" role="tabpanel">
-                                                    <!-- Row -->
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <div class="panel panel-default card-view">
-                                                                <div class="panel-heading">
-                                                                    <div class="row mt-10 ">
-                                                                        <a href="#"><button
-                                                                                class="btn btn-warning btn-anim pull-right"
-                                                                                style="margin-right:30px !important"><i
-                                                                                    class="fa fa-pencil"></i><span
-                                                                                    class="btn-text">Tambah
-                                                                                    Customer</span></button></a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="panel-wrapper collapse in">
-                                                                    <div class="panel-body">
-                                                                        <div class="table-wrap">
-                                                                            <div class="table-responsive">
-                                                                                <table id="example"
-                                                                                    class="table table-hover display  pb-30">
-                                                                                    <thead>
-                                                                                        <tr>
-                                                                                            <th>Nama</th>
-                                                                                            <th>Perusahaan</th>
-                                                                                            <th>Email</th>
-                                                                                            <th>Telepon</th>
-                                                                                            <th>Alamat</th>
-                                                                                            <th>Aksi</th>
-                                                                                        </tr>
-                                                                                    </thead>
-
-                                                                                    <tbody>
-                                                                                        <tr>
-                                                                                            <td>Widi Wijayanto</td>
-                                                                                            <td>PT.Sucofindo</td>
-                                                                                            <td>widiw@sucofindo.co.id
-                                                                                            </td>
-                                                                                            <td>081255675434</td>
-                                                                                            <td>Jakarta</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- /Row -->
-                                                </div>
-                                                <div id="master_emp"
-                                                    class="tab-pane fade <?php if($this->input->get('tab', TRUE)=="tabEmp"){echo "active in";}else{echo "";}?>"
-                                                    role="tabpanel">
-                                                    <?php $this->load->view('master_employee.php');?>
-                                                </div>
-
-                                                <div id="profile_12" class="tab-pane fade" role="tabpanel">
-                                                    <!-- Row -->
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <div class="panel panel-default card-view">
-                                                                <div class="panel-heading">
-                                                                    <div class="row mt-10 ">
-                                                                        <a href="#"><button
-                                                                                class="btn btn-warning btn-anim pull-right"
-                                                                                style="margin-right:30px !important"><i
-                                                                                    class="fa fa-pencil"></i><span
-                                                                                    class="btn-text">Tambah
-                                                                                    Gudang</span></button></a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="panel-wrapper collapse in">
-                                                                    <div class="panel-body">
-                                                                        <div class="table-wrap">
-                                                                            <div class="table-responsive">
-                                                                                <table id="example"
-                                                                                    class="table table-hover display pb-30">
-                                                                                    <thead>
-                                                                                        <tr>
-                                                                                            <th>Kode Gudang</th>
-                                                                                            <th>Gudang</th>
-                                                                                            <th>Alamat</th>
-                                                                                            <th>Kota</th>
-                                                                                            <th>Telepon</th>
-                                                                                            <th>PIC</th>
-                                                                                            <th>Aksi</th>
-                                                                                        </tr>
-                                                                                    </thead>
-
-                                                                                    <tbody>
-                                                                                        <tr>
-                                                                                            <td>Pus01</td>
-                                                                                            <td>LTC Lantai 2</td>
-                                                                                            <td>Hayam Wuruk Sreet No.127
-                                                                                            </td>
-                                                                                            <td>6287889</td>
-                                                                                            <td>Amin Sarimin</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>Pus02</td>
-                                                                                            <td>LTC Lantai 3</td>
-                                                                                            <td>Hayam Wuruk Sreet No.127
-                                                                                            </td>
-                                                                                            <td>6287890</td>
-                                                                                            <td>Sutoto</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>Pus03</td>
-                                                                                            <td>LTC Lantai 3</td>
-                                                                                            <td>Hayam Wuruk Sreet No.127
-                                                                                            </td>
-                                                                                            <td>6287889</td>
-                                                                                            <td>Sulaiman Adi</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>Cab01</td>
-                                                                                            <td>Benhil</td>
-                                                                                            <td>Hayam Wuruk Sreet No.127
-                                                                                            </td>
-                                                                                            <td>6287889</td>
-                                                                                            <td>Sulaiman Adi</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- /Row -->
-                                                </div>
-                                                <div id="profile_13" class="tab-pane fade" role="tabpanel">
-                                                    <!-- Row -->
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <div class="panel panel-default card-view">
-                                                                <div class="panel-heading">
-                                                                    <div class="row mt-10 ">
-                                                                        <a href="#"><button
-                                                                                class="btn btn-warning btn-anim pull-right"
-                                                                                style="margin-right:30px !important"><i
-                                                                                    class="fa fa-pencil"></i><span
-                                                                                    class="btn-text">Tambah Kode
-                                                                                    Akun</span></button></a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="panel-wrapper collapse in">
-                                                                    <div class="panel-body">
-                                                                        <div class="table-wrap">
-                                                                            <div class="table-responsive">
-                                                                                <table id="example"
-                                                                                    class="table table-hover display pb-30">
-                                                                                    <thead>
-                                                                                        <tr>
-                                                                                            <th>Kode Akun</th>
-                                                                                            <th>Kode Akun Induk</th>
-                                                                                            <th>Nama Akun</th>
-                                                                                            <th>Tipe Akun</th>
-                                                                                            <th>Aksi</th>
-                                                                                        </tr>
-                                                                                    </thead>
-
-                                                                                    <tbody>
-                                                                                        <tr>
-                                                                                            <td>-</td>
-                                                                                            <td>1000.00</td>
-                                                                                            <td>Kas & Bank</td>
-                                                                                            <td>Aktiva Lancar</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>1000.01</td>
-                                                                                            <td>1000.00</td>
-                                                                                            <td>Kas Mandiri</td>
-                                                                                            <td>Aktiva Lancar</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>1000.02</td>
-                                                                                            <td>1000.00</td>
-                                                                                            <td>Deposito Mandiri</td>
-                                                                                            <td>Aktiva Lancar</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>-</td>
-                                                                                            <td>1100.00</td>
-                                                                                            <td>Piutang</td>
-                                                                                            <td>Aktiva Lancar</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>1100.01</td>
-                                                                                            <td>1100.00</td>
-                                                                                            <td>Piutang Karyawan</td>
-                                                                                            <td>Aktiva Lancar</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>-</td>
-                                                                                            <td>2100.00</td>
-                                                                                            <td>Hutang</td>
-                                                                                            <td>Kewajiban Lancar</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>2100.01</td>
-                                                                                            <td>2100.00</td>
-                                                                                            <td>Hutang Pembelian
-                                                                                                Supplier</td>
-                                                                                            <td>Kewajiban Lancar</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>-</td>
-                                                                                            <td>3000.00</td>
-                                                                                            <td>Modal</td>
-                                                                                            <td>Ekuitas</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>3000.01</td>
-                                                                                            <td>3000.00</td>
-                                                                                            <td>Deviden</td>
-                                                                                            <td>Ekuitas</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>-</td>
-                                                                                            <td>4000.00</td>
-                                                                                            <td>Pendapatan</td>
-                                                                                            <td>Pendapatan</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>4000.00</td>
-                                                                                            <td>4000.01</td>
-                                                                                            <td>Penjualan</td>
-                                                                                            <td>Pendapatan</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>4000.00</td>
-                                                                                            <td>4000.02</td>
-                                                                                            <td>Retur Penjualan</td>
-                                                                                            <td>Pendapatan</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>-</td>
-                                                                                            <td>5000.00</td>
-                                                                                            <td>COGS</td>
-                                                                                            <td>Harga Pokok Penjualan
-                                                                                            </td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>-</td>
-                                                                                            <td>6000.00</td>
-                                                                                            <td>Beban</td>
-                                                                                            <td>Beban</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>6000.01</td>
-                                                                                            <td>6000.00</td>
-                                                                                            <td>Beban Gaji</td>
-                                                                                            <td>Beban</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>6000.02</td>
-                                                                                            <td>6000.00</td>
-                                                                                            <td>Beban Lembur</td>
-                                                                                            <td>Beban</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- /Row -->
-                                                </div>
-                                                <div id="profile_14" class="tab-pane fade" role="tabpanel">
-                                                    <!-- Row -->
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <div class="panel panel-default card-view">
-                                                                <div class="panel-heading">
-                                                                    <div class="row mt-10 ">
-                                                                        <a href="#"><button
-                                                                                class="btn btn-warning btn-anim pull-right"
-                                                                                style="margin-right:30px !important"><i
-                                                                                    class="fa fa-pencil"></i><span
-                                                                                    class="btn-text">Tambah Jenis
-                                                                                    Produk</span></button></a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="panel-wrapper collapse in">
-                                                                    <div class="panel-body">
-                                                                        <div class="table-wrap">
-                                                                            <div class="table-responsive">
-                                                                                <table id="example"
-                                                                                    class="table table-hover display  pb-30">
-                                                                                    <thead>
-                                                                                        <tr>
-                                                                                            <th>Jenis Produk</th>
-                                                                                            <th>Aksi</th>
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody>
-                                                                                        <tr>
-                                                                                            <td>Coverall</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>Sepatu</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>Rompi</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>Bodyharness</td>
-                                                                                            <td class="text-center">
-                                                                                                <button
-                                                                                                    class="btn btn-primary btn-icon-anim btn-square"><i
-                                                                                                        class="fa fa-pencil"></i></button>
-                                                                                                <button
-                                                                                                    class="btn btn-danger btn-icon-anim btn-square"><i
-                                                                                                        class="icon-trash"></i></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- /Row -->
+                                                    <nav aria-label="Page navigation example">
+                                                        <ul class="pagination justify-content-center" id = "pagination_container">
+                                                        </ul>
+                                                    </nav>
                                                 </div>
                                             </div>
                                         </div>
@@ -776,23 +89,282 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /Row -->
-
-                    <!-- Footer -->
                     <?php $this->load->view('mm_footer.php');?>
-                    <!-- /Footer -->
                 </div>
             </div>
-            <!-- /Main Content -->
-
         </div>
-        <!-- /#wrapper -->
-
-        <!-- JavaScript -->
-
         <?php $this->load->view('mm_js.php');?>
-
-
     </body>
-
 </html>
+<div class = "modal fade" id = "addAttribute">
+    <div class = "modal-dialog">
+        <div class = "modal-content">
+            <div class = "modal-header">
+                <h4 class = "modal-title">Tambah Data Bahan</h4>
+            </div>
+            <div class = "modal-body">
+                <form id = "register_form" method = "POST">
+                    <input type = "hidden" name = "attr_type" value = "BAHAN">
+                    <div class = "form-group">
+                        <h5>Nama Bahan</h5>
+                        <input type = "text" class = "form-control" required name = "attr_name">
+                    </div>
+                    <div class = "form-group">
+                        <h5>Satuan Bahan</h5>
+                        <input type = "text" required name = "attr_unit" class = "form-control">
+                    </div>
+                    <div class = "form-group">
+                        <h5>Harga Satuan</h5>
+                        <input type = "text" required name = "attr_price" class = "form-control">
+                    </div>
+                    <div class = "form-group">
+                        <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
+                        <button type = "button" onclick = "register_attr()" class = "btn btn-sm btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class = "modal fade" id = "editAttribute">
+    <div class = "modal-dialog">
+        <div class = "modal-content">
+            <div class = "modal-header">
+                <h4 class = "modal-title">Ubah Data Bahan</h4>
+            </div>
+            <div class = "modal-body">
+                <form id = "edit_form" method = "POST">
+                    <input type = "hidden" name = "attr_id" id = "attr_id_edit">
+                    <div class = "form-group">
+                        <h5>Nama Bahan</h5>
+                        <input type = "text" class = "form-control" required name = "attr_name" id = "attr_name_edit">
+                    </div>
+                    <div class = "form-group">
+                        <h5>Satuan Bahan</h5>
+                        <input type = "text" required name = "attr_unit" class = "form-control" id = "attr_unit_edit">
+                    </div>
+                    <div class = "form-group">
+                        <h5>Harga Satuan</h5>
+                        <input type = "text" required name = "attr_price" class = "form-control" id = "attr_price_edit">
+                    </div>
+                    <div class = "form-group">
+                        <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
+                        <button type = "button" onclick = "update_attr()" class = "btn btn-sm btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class = "modal fade" id = "deleteAttribute">
+    <div class = "modal-dialog">
+        <div class = "modal-content">
+            <div class = "modal-header">
+                <h4 class = "modal-title">Hapus Bahan</h4>
+            </div>
+            <div class = "modal-body">
+            <input type = "hidden" name = "attr_id" value = "" id = "attr_id_delete">
+                <h4 align = "center">Apakah anda yakin akan menghapus data bahan di bawah ini?</h4>
+                <table class = "table table-bordered table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <td>Nama Bahan</td>
+                            <td id = "attr_name_delete"></td>
+                        </tr>
+                        <tr>
+                            <td>Satuan Bahan</td>
+                            <td id = "attr_unit_delete"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class = "row">
+                    <button type = "button" class = "btn btn-sm btn-primary col-lg-3 col-sm-12 offset-lg-3" data-dismiss = "modal">Cancel</button>
+                    <button type = "button" onclick = "delete_attr()" class = "btn btn-sm btn-danger col-lg-3">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var jenis = "bahan";
+    var orderBy = 0;
+    var orderDirection = "ASC";
+    var searchKey = "";
+    var page = 1;
+    function refresh(req_page = 1) {
+        page = req_page;
+        $.ajax({
+            url: "<?php echo base_url();?>ws/attribute/list?orderBy="+orderBy+"&orderDirection="+orderDirection+"&page="+page+"&searchKey="+searchKey+"&jenis="+jenis,
+            type: "GET",
+            dataType: "JSON",
+            success: function(respond) {
+                var html = "";
+                if(respond["status"] == "SUCCESS"){
+                    for(var a = 0; a<respond["content"].length; a++){
+                        html += "<tr>";
+                        html += "<td class = 'align-middle text-center' id = 'name"+a+"'>"+respond["content"][a]["name"]+"</td>";
+                        html += "<td class = 'align-middle text-center' id = 'satuan"+a+"'>"+respond["content"][a]["satuan"]+"</td>";
+                        html += "<td class = 'align-middle text-center' id = 'harga_satuan"+a+"'>"+respond["content"][a]["harga_satuan"]+"</td>";
+                        html += "<td class = 'align-middle text-center' id = 'status"+a+"'>"+respond["content"][a]["status"]+"</td>";
+                        html += "<td class = 'align-middle text-center' id = 'last_modified"+a+"'>"+respond["content"][a]["last_modified"]+"</td>";
+                        html += "<td class = 'align-middle text-center'><i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#editAttribute' onclick = 'load_content("+respond["content"][a]["id"]+")'></i> | <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-danger md-delete' data-target = '#deleteAttribute' onclick = 'load_delete_content("+respond["content"][a]["id"]+")'></i></td>";
+                        html += "</tr>";
+                    }
+                }
+                else{
+                    html += "<tr>";
+                    html += "<td colspan = 6 class = 'align-middle text-center'>No Records Found</td>";
+                    html += "</tr>";
+                }
+                $("#content_container").html(html);
+                pagination(respond["page"]);
+                
+            },
+            error: function(){
+                var html = "";
+                html += "<tr>";
+                html += "<td colspan = 6 class = 'align-middle text-center'>No Records Found</td>";
+                html += "</tr>";
+                $("#content_container").html(html);
+                
+                html = "";
+                html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed"><</a></li>';
+                html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed">></a></li>';
+                $("#pagination_container").html(html);
+            }
+        });
+        function pagination(page_rules){
+            html = "";
+            if(page_rules["previous"]){
+                html += '<li class="page-item"><a class="page-link" onclick = "refresh('+(page_rules["before"])+')"><</a></li>';
+            }
+            else{
+                html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed"><</a></li>';
+            }
+            if(page_rules["first"]){
+                html += '<li class="page-item"><a class="page-link" onclick = "refresh('+(page_rules["first"])+')">'+(page_rules["first"])+'</a></li>';
+                html += '<li class="page-item"><a class="page-link">...</a></li>';
+            }
+            if(page_rules["before"]){
+                html += '<li class="page-item"><a class="page-link" onclick = "refresh('+(page_rules["before"])+')">'+page_rules["before"]+'</a></li>';
+            }
+            html += '<li class="page-item active"><a class="page-link" onclick = "refresh('+(page_rules["current"])+')">'+page_rules["current"]+'</a></li>';
+            if(page_rules["after"]){
+                html += '<li class="page-item"><a class="page-link" onclick = "refresh('+(page_rules["after"])+')">'+page_rules["after"]+'</a></li>';
+            }
+            if(page_rules["last"]){
+                html += '<li class="page-item"><a class="page-link">...</a></li>';
+                html += '<li class="page-item"><a class="page-link" onclick = "refresh('+(page_rules["last"])+')">'+page_rules["last"]+'</a></li>';
+            }
+            if(page_rules["next"]){
+                html += '<li class="page-item"><a class="page-link" onclick = "refresh('+(page_rules["after"])+')">></a></li>';
+            }
+            else{
+                html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed">></a></li>';
+            }
+            $("#pagination_container").html(html);
+        }
+    }
+    function sort(colNum){
+        if(parseInt(colNum) != orderBy){
+            orderBy = colNum; 
+            orderDirection = "ASC";
+            var orderDirectionHtml = '<span class="badge badge-light align-top" id = "orderDirection">ASC</span>';
+            $("#orderDirection").remove();
+            $("#col"+colNum).append(orderDirectionHtml);
+        }
+        else{
+            var direction = $("#orderDirection").text();
+            if(direction == "ASC"){
+                orderDirection = "DESC";
+            }
+            else{
+                orderDirection = "ASC";
+            }
+            $("#orderDirection").text(orderDirection);
+        }
+        refresh();
+    }
+    function search(){
+        searchKey = $("#search_box").val();
+        refresh();
+    }
+</script>
+<script>
+    window.onload = function(){
+        refresh();
+    }
+</script>
+<script>
+    function register_attr(){
+        var form = $("#register_form")[0];
+        var data = new FormData(form);
+        $.ajax({
+            url:"<?php echo base_url();?>ws/attribute/register",
+            type:"POST",
+            dataType:"JSON",
+            data:data,
+            processData:false,
+            contentType:false,
+            success:function(respond){
+                $("#addAttribute").modal("hide");
+                refresh(page);
+            }
+        });
+    }
+    function update_attr(){
+        var form = $("#edit_form")[0];
+        var data = new FormData(form);
+        $.ajax({
+            url:"<?php echo base_url();?>ws/attribute/update",
+            type:"POST",
+            dataType:"JSON",
+            data:data,
+            processData: false,
+            contentType: false,
+            success:function(respond){
+                $("#editAttribute").modal("hide");
+                refresh(page);
+            }
+        });
+    }
+    function delete_attr(){
+        var attr_id = $("#attr_id_delete").val();
+        $.ajax({
+            url:"<?php echo base_url();?>ws/attribute/delete/"+attr_id,
+            type:"DELETE",
+            dataType:"JSON",
+            success:function(respond){
+                $("#deleteAttribute").modal("hide");
+                refresh(page);
+            }
+        });
+    }
+</script>
+<script>
+    function load_content(id_submit_attr){
+        $.ajax({
+            url:"<?php echo base_url();?>ws/attribute/get_attribute/"+id_submit_attr,
+            dataType:"JSON",
+            type:"GET",
+            success:function(respond){
+                $("#attr_name_edit").val(respond["attr"]["attr_name"]);
+                $("#attr_unit_edit").val(respond["attr"]["attr_unit"]);
+                $("#attr_id_edit").val(respond["attr"]["attr_id"]);
+                $("#attr_price_edit").val(respond["attr"]["attr_price"]);
+            }
+        });
+    }
+    function load_delete_content(id_submit_attr){
+        $.ajax({
+            url:"<?php echo base_url();?>ws/attribute/get_attribute/"+id_submit_attr,
+            dataType:"JSON",
+            type:"GET",
+            success:function(respond){
+                $("#attr_name_delete").html(respond["attr"]["attr_name"]);
+                $("#attr_unit_delete").html(respond["attr"]["attr_unit"]);
+                $("#attr_id_delete").val(respond["attr"]["attr_id"]);
+            }
+        });
+    }
+</script>
