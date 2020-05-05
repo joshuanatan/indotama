@@ -43,14 +43,14 @@ class Login extends CI_Controller {
 			}else{
 				$response["status"] = "ERROR";
 				$response["msg"] = "Login function is error!";
-				redirect("login");
+				redirect(md5("login"));
 			}
 		}else{
 			$response["status"] = "ERROR";
 			$response["msg"] = "Setter function is error";
 			redirect("login");
 		}
-		echo json_encode($response);
+		//echo json_encode($response);
 	}
 
 
@@ -82,5 +82,43 @@ class Login extends CI_Controller {
 			$this->session->set_flashdata("msg",$response['msg']);
 		}
 		echo json_encode($response);
+	}
+
+	public function forget_password(){
+		$this->load->view('V_forget_password');
+	}
+
+	public function forget_password_method(){
+		$response["status"] = "SUCCESS";
+		$this->form_validation->set_rules("Username","user_name","required");
+
+		$user_name = $this->input->post("user_name");
+
+		if($this->form_validation->run()){
+			$where = array(
+				"user_status" => "AKTIF"
+			);
+			if(isExistsInTable("user",$where)){
+				$where = array(
+					"emp_status" => "AKTIF"
+				);
+				if(isExistsInTable("employee",$where)){
+					$data['emp_email'] = get1Value("employee","emp_email",$where);
+
+					//send email
+					//buat view cek email
+					//buat view new password
+					//buat method update password dan ke login lagi
+					$this->load->view("V_forget_pw_sendmail");
+				}
+			}else{
+
+			}
+		}else{
+			$response["status"] = "ERROR";
+			$response["msg"] = validation_errors();
+			$this->session->set_flashdata("msg",$response['msg']);
+			redirect("login/forget_password");
+		}
 	}
 }

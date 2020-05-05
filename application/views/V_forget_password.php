@@ -20,30 +20,20 @@
 							<div class="auth-form  ml-auto mr-auto no-float card-view pt-30 pb-30">
 								<div class="row">
 									<div class="col-sm-12 col-xs-12">
-										<div class="sp-logo-wrap text-center">
-											<a href="index.html">
-												<span class="brand-text">INDOTAMA SYSTEM</span>
-											</a>
-										</div>
+										<h2>Forget Password</h2>
 										<?php if($this->session->msg != ""):?>
 											<div class = "alert alert-danger">
 												<?php echo $this->session->msg;?>
 											</div>
 										<?php endif;?>
 										<div class="form-wrap mt-40">
-											<form action="<?php echo base_url(); ?>login/login_method" method="post">
+											<form action="<?php echo base_url(); ?>login/forget_password_method" method="post">
 												<div class="form-group">
 													<label class="control-label mb-10" for="exampleInputEmail_2">Username</label>
-													<input type="text" name="user_name" class="form-control" id="exampleInputEmail_2" placeholder="MMSafety">
-												</div>
-												<div class="form-group">
-													<label class="pull-left control-label mb-10" for="exampleInputpwd_2">Password</label>
-													<a href="<?php echo base_url() ?>login/forget_password" class="capitalize-font txt-primary block mb-10 pull-right font-12" href="forget.php">forgot password ?</a>
-													<div class="clearfix"></div>
-													<input type="password" class="form-control" id="exampleInputpwd_2" name="user_pass" placeholder="Enter password">
+													<input type="text" name="user_name" class="form-control" id="exampleInputEmail_2" placeholder="Enter your username">
 												</div>
 												<div class="form-group text-center">
-													<button type="submit" class="btn btn-primary  btn-rounded">LOG IN</button>
+													<button type="submit" class="btn btn-primary  btn-rounded">NEXT</button>
 												</div>
 												<p style="color:white; font-weight:bolder"><?php if(isset($message)) echo $message; ?></p>
 											</form>

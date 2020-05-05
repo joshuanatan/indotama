@@ -53,3 +53,5 @@ $route['default_controller'] = 'Login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['intent']['get'] = 'api/intent/get';
+
+$route['d56b699830e77ba53855679cb1d252da'] = 'login/index';
