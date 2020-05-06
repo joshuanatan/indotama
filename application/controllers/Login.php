@@ -47,14 +47,14 @@ class Login extends CI_Controller {
 			}else{
 				$response["status"] = "ERROR";
 				$response["msg"] = "Login function is error!";
-				redirect(md5("login"));
+				//redirect(md5("login"));
 			}
 		}else{
 			$response["status"] = "ERROR";
 			$response["msg"] = "Setter function is error";
-			redirect("login");
+			//redirect("login");
 		}
-		//echo json_encode($response);
+		echo json_encode($response);
 	}
 
 
@@ -69,9 +69,10 @@ class Login extends CI_Controller {
 			$user_name = "wivinadaicy";//$this->input->post("user_name");
 			$user_pass = "qwerty123";//$this->input->post("user_pass");
 			$user_email = "wivinadaicy.wd@gmail.com";//$this->input->post("user_email");
+			$id_fk_role = 1;//$this->input->post("id_fk_role");
 			$user_status = "AKTIF";
 
-			if($this->m_user->set_insert($user_name,$user_pass,$user_email,$user_status)){
+			if($this->m_user->set_insert($user_name,$user_pass,$user_email,$id_fk_role,$user_status)){
 				if($this->m_user->insert()){
 					$response["msg"] = "Data is recorded to database";
 				}else{

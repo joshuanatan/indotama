@@ -21,7 +21,7 @@ class Jabatan extends CI_Controller {
 	public function index()
 	{
         $where = array(
-            "JABATAN_STATUS"=>"AKTIF"
+            "jabatan_status"=>"AKTIF"
         );
         $data['view_jabatan'] = selectRow("mstr_jabatan",$where)->result_array();
 

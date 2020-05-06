@@ -98,7 +98,7 @@ class M_user extends CI_Model{
         BEGIN
             SET @ID_USER = NEW.ID_LAST_MODIFIED;
             SET @TGL_ACTION = NEW.USER_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.USER_LAST_MODIFIED);
+            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT ' , NEW.USER_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
             INSERT INTO MSTR_USER_LOG(EXECUTED_FUNCTION,ID_PK_USER,USER_NAME,USER_PASS,USER_EMAIL,USER_STATUS,ID_FK_ROLE,USER_LAST_MODIFIED,USER_CREATE_DATE,ID_CREATE_DATE,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER UPDATE',NEW.ID_PK_USER,NEW.USER_NAME,NEW.USER_PASS,NEW.USER_EMAIL,NEW.USER_STATUS,NEW.ID_FK_ROLE,NEW.USER_LAST_MODIFIED,NEW.USER_CREATE_DATE,NEW.ID_CREATE_DATE,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
@@ -422,7 +422,7 @@ class M_user extends CI_Model{
             return false;
         }
     }
-    public function set_id_fk_role($user_status){
+    public function set_id_fk_role($id_fk_role){
         if($id_fk_role != ""){
             $this->id_fk_role = $id_fk_role;
             return true;
