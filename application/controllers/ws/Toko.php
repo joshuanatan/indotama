@@ -4,14 +4,64 @@ class Toko extends CI_Controller{
     public function __construct(){
         parent::__construct();
     }
-    public function insert(){
-        $this->form_validation->set_rules("toko_nama","toko_nama","required");
-        $this->form_validation->set_rules("toko_kode","toko_kode","required");
+    public function columns(){
+        $respond["status"] = "SUCCESS";
+        $this->load->model("m_toko");
+        $columns = $this->m_toko->columns();
+        if(count($columns) > 0){
+            for($a = 0; $a<count($columns); $a++){
+                $respond["content"][$a]["col_name"] = $columns[$a]["col_disp"];
+            }
+        }
+        else{
+            $respond["status"] = "ERROR";
+        }
+        echo json_encode($respond);
+    }
+    public function content(){
+        $respond["status"] = "SUCCESS";
+        $respond["content"] = array();
+
+        $order_by = $this->input->get("orderBy");
+        $order_direction = $this->input->get("orderDirection");
+        $page = $this->input->get("page");
+        $search_key = $this->input->get("searchKey");
+        $data_per_page = 20;
+        
+        $this->load->model("m_toko");
+        $result = $this->m_toko->content($page,$order_by,$order_direction,$search_key,$data_per_page);
+
+        if($result["data"]->num_rows() > 0){
+            $result["data"] = $result["data"]->result_array();
+            for($a = 0; $a<count($result["data"]); $a++){
+                $respond["content"][$a]["id"] = $result["data"][$a]["id_pk_toko"];
+                $respond["content"][$a]["nama"] = $result["data"][$a]["toko_nama"];
+                $respond["content"][$a]["kode"] = $result["data"][$a]["toko_kode"];
+                $respond["content"][$a]["status"] = $result["data"][$a]["toko_status"];
+                $respond["content"][$a]["create_date"] = $result["data"][$a]["toko_create_date"];
+                $respond["content"][$a]["last_modified"] = $result["data"][$a]["toko_last_modified"];
+            }
+        }
+        else{
+            $respond["status"] = "ERROR";
+        }
+        $respond["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
+        $respond["key"] = array(
+            "nama",
+            "kode",
+            "status",
+            "last_modified"
+        );
+        echo json_encode($respond);
+    }
+    public function register(){
+        $this->form_validation->set_rules("nama","toko_nama","required");
+        $this->form_validation->set_rules("kode","toko_kode","required");
         if($this->form_validation->run()){
             $this->load->model("m_toko");
             $toko_nama = $this->input->post("nama");
             $toko_kode = $this->input->post("kode");
-            $toko_status = $this->input->post("status");
+            $toko_status = "AKTIF";
             if($this->m_toko->set_insert($toko_nama,$toko_kode,$toko_status)){
                 if($this->m_toko->insert()){
                     $response["msg"] = "Data is recorded to database";
@@ -41,7 +91,6 @@ class Toko extends CI_Controller{
             $id_pk_toko = $this->input->post("id");
             $toko_nama = $this->input->post("nama");
             $toko_kode = $this->input->post("kode");
-            $toko_status = $this->input->post("status");
             if($this->m_toko->set_update($id_pk_toko,$toko_nama,$toko_kode)){
                 if($this->m_toko->update()){
                     $response["msg"] = "Data is updated to database";
@@ -66,8 +115,9 @@ class Toko extends CI_Controller{
         $id_toko = $this->input->get("id");
         if($id_toko != "" && is_numeric($id_toko)){
             $id_pk_toko = $id_toko;
+            $this->load->model("m_toko");
             if($this->m_toko->set_delete($id_pk_toko)){
-                if($this->m_toko->update()){
+                if($this->m_toko->delete()){
                     $response["msg"] = "Data is removed to database";
                 }
                 else{

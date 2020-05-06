@@ -15,6 +15,28 @@ class M_toko extends CI_Model{
     
     public function __construct(){
         parent::__construct();
+        $this->columns = array(
+            array(
+                "col_name" => "toko_nama",
+                "col_disp" => "Nama Toko",
+                "order_by" => true
+            ),
+            array(
+                "col_name" => "toko_kode",
+                "col_disp" => "Kode Toko",
+                "order_by" => false
+            ),
+            array(
+                "col_name" => "toko_status",
+                "col_disp" => "Status Toko",
+                "order_by" => false
+            ),
+            array(
+                "col_name" => "toko_last_modified",
+                "col_disp" => "Last Modified",
+                "order_by" => false
+            ),
+        );
         $this->toko_create_date = date("Y-m-d H:i:s");
         $this->toko_last_modified = date("Y-m-d H:i:s");
         $this->id_create_data = $this->session->id_user;
@@ -80,6 +102,39 @@ class M_toko extends CI_Model{
         DELIMITER ;";
         executeQuery($sql);
     }
+    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+        $order_by = $this->columns[$order_by]["col_name"];
+        $search_query = "";
+        if($search_key != ""){
+            $search_query .= "AND
+            ( 
+                id_pk_toko LIKE '%".$search_key."%' OR
+                toko_nama LIKE '%".$search_key."%' OR
+                toko_kode LIKE '%".$search_key."%' OR
+                toko_status LIKE '%".$search_key."%' OR
+                toko_create_date LIKE '%".$search_key."%' OR
+                toko_last_modified LIKE '%".$search_key."%'
+            )";
+        }
+        $query = "
+        SELECT id_pk_toko,toko_nama,toko_kode,toko_status,toko_create_date,toko_last_modified
+        FROM ".$this->tbl_name." 
+        WHERE toko_status = ? ".$search_query."  
+        ORDER BY ".$order_by." ".$order_direction." 
+        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        $args = array(
+            "AKTIF"
+        );
+        $result["data"] = executeQuery($query,$args);
+        
+        $query = "
+        SELECT id_pk_toko
+        FROM ".$this->tbl_name." 
+        WHERE toko_status = ? ".$search_query."  
+        ORDER BY ".$order_by." ".$order_direction;
+        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        return $result;
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(
@@ -122,6 +177,7 @@ class M_toko extends CI_Model{
                 "id_last_modified" => $this->id_last_modified, 
             );
             updateRow($this->tbl_name,$data,$where);
+            return true;
         }
         return false;
     }
@@ -165,7 +221,7 @@ class M_toko extends CI_Model{
         return true;
     }
     public function check_delete(){
-        if($this->toko_nama == ""){
+        if($this->id_pk_toko == ""){
             return false;
         }
         if($this->toko_last_modified == ""){
