@@ -59,13 +59,13 @@ class Login extends CI_Controller {
 
 	public function register_user(){
 		$response["status"] = "SUCCESS";
-		$this->form_validation->set_rules("Username","user_name","required|min_length[5]|max_length[15]");
-		$this->form_validation->set_rules("Password","user_pass","required|min_length[8]");
+		$this->form_validation->set_rules("user_name","Username","required|min_length[5]|max_length[15]");
+		$this->form_validation->set_rules("user_pass","Password","required|min_length[8]");
 
 		if($this->form_validation->run()){
 			$this->load->model("m_user");
-			$user_name = $this->input->post("user_name");
-			$user_pass = $this->input->post("user_pass");
+			$user_name = "joahuanatan";//$this->input->post("user_name");
+			$user_pass = "12345678";//$this->input->post("user_pass");
 			$user_status = "AKTIF";
 
 			if($this->m_user->set_insert($user_name,$user_pass,$user_status)){
@@ -93,7 +93,7 @@ class Login extends CI_Controller {
 
 	public function forget_password_method(){
 		$response["status"] = "SUCCESS";
-		$this->form_validation->set_rules("Username","user_name","required");
+		$this->form_validation->set_rules("user_name","Username","required");
 
 		$user_name = $this->input->post("user_name");
 

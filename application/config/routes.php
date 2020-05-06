@@ -55,3 +55,5 @@ $route['translate_uri_dashes'] = FALSE;
 $route['intent']['get'] = 'api/intent/get';
 
 $route['d56b699830e77ba53855679cb1d252da'] = 'login/index';
+$route['491616a0cbf6c0a2862c836076a4b0e9'] = 'jabatan/index';
+
