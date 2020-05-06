@@ -259,10 +259,14 @@ if(! function_exists('selectRowBetweenDates')){
 #query = String, Executabe query (execute first in your DBMS to know whether the query is valid or not) [ex: "select col1,col2,col3 from tbl_user where id_user = '123'"]
 
 if(! function_exists('executeQuery')){
-    function executeQuery($query){
-        
+    function executeQuery($query,$args = ""){
         $CI =& get_instance();
-        return $CI->db->query($query);
+        if($args != ""){
+            return $CI->db->query($query,$args);
+        }
+        else{
+            return $CI->db->query($query);
+        }
     }
 }
 
