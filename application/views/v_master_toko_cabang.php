@@ -335,6 +335,7 @@ $breadcrumb = array(
             contentType:false,
             success:function(respond){
                 $("#register_modal").modal("hide");
+                $("#register_form :input").val("");
                 refresh(page);
             }
         });
