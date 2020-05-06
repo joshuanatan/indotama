@@ -15,32 +15,23 @@ class M_toko extends CI_Model{
     
     public function __construct(){
         parent::__construct();
-        $this->columns = array(
-            array(
-                "col_name" => "toko_nama",
-                "col_disp" => "Nama Toko",
-                "order_by" => true
-            ),
-            array(
-                "col_name" => "toko_kode",
-                "col_disp" => "Kode Toko",
-                "order_by" => false
-            ),
-            array(
-                "col_name" => "toko_status",
-                "col_disp" => "Status Toko",
-                "order_by" => false
-            ),
-            array(
-                "col_name" => "toko_last_modified",
-                "col_disp" => "Last Modified",
-                "order_by" => false
-            ),
-        );
+        $this->set_column("toko_nama","Nama Toko",true);
+        $this->set_column("toko_kode","Kode Toko",false);
+        $this->set_column("toko_status","Status Toko",false);
+        $this->set_column("toko_last_modified","Last Modified",false);
+        
         $this->toko_create_date = date("Y-m-d H:i:s");
         $this->toko_last_modified = date("Y-m-d H:i:s");
         $this->id_create_data = $this->session->id_user;
-        $this->id_last_modified = $this->session->id_user;        
+        $this->id_last_modified = $this->session->id_user;  
+    }
+    private function set_column($col_name,$col_disp,$order_by){
+        $array = array(
+            "col_name" => $col_name,
+            "col_disp" => $col_disp,
+            "order_by" => $order_by
+        );
+        $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
     }
     public function columns(){
         return $this->columns;
@@ -134,6 +125,15 @@ class M_toko extends CI_Model{
         ORDER BY ".$order_by." ".$order_direction;
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;
+    }
+    public function detail_by_id(){
+        $where = array(
+            "id_pk_toko" => $this->id_pk_toko
+        );
+        $field = array(
+            "id_pk_toko","toko_nama","toko_kode","toko_status","toko_create_date","toko_last_modified","id_create_data","id_last_modified",
+        );
+        return selectRow($this->tbl_name,$where,$field);
     }
     public function insert(){
         if($this->check_insert()){

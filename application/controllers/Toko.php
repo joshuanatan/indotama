@@ -11,6 +11,11 @@ class Toko extends CI_Controller {
 	}
 	public function cabang($id_toko){
 		$data["id_toko"] = $id_toko;
+		$this->load->model("m_toko");
+		$this->m_toko->set_id_pk_toko($id_toko);
+		$result = $this->m_toko->detail_by_id();
+		$data["toko"] = $result->result_array();
+		
 		$this->load->view('v_master_toko_cabang',$data);
 	}
 
