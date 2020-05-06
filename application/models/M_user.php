@@ -7,6 +7,7 @@ class M_user extends CI_Model{
     private $id_pk_user;
     private $user_name;
     private $user_pass;
+    private $user_email;
     private $user_status;
     private $user_last_modified;
     private $user_create_date;
@@ -49,6 +50,7 @@ class M_user extends CI_Model{
             ID_PK_USER INT PRIMARY KEY AUTO_INCREMENT,
             USER_NAME VARCHAR(50),
             USER_PASS VARCHAR(200),
+            USER_EMAIL VARCHAR(100),
             USER_STATUS VARCHAR(15),
             USER_LAST_MODIFIED DATETIME,
             USER_CREATE_DATE DATETIME,
@@ -62,6 +64,7 @@ class M_user extends CI_Model{
             ID_PK_USER INT,
             USER_NAME VARCHAR(50),
             USER_PASS VARCHAR(200),
+            USER_EMAIL VARCHAR(100),
             USER_STATUS VARCHAR(15),
             USER_LAST_MODIFIED DATETIME,
             USER_CREATE_DATE DATETIME,
@@ -80,7 +83,7 @@ class M_user extends CI_Model{
             SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT',' ', NEW.USER_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO MSTR_USER_LOG(EXECUTED_FUNCTION,ID_PK_USER,USER_NAME,USER_PASS,USER_STATUS,USER_LAST_MODIFIED,USER_CREATE_DATE,ID_CREATE_DATE,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER INSERT',NEW.ID_PK_USER,NEW.USER_NAME,NEW.USER_PASS,NEW.USER_STATUS,NEW.USER_LAST_MODIFIED,NEW.USER_CREATE_DATE,NEW.ID_CREATE_DATE,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO MSTR_USER_LOG(EXECUTED_FUNCTION,ID_PK_USER,USER_NAME,USER_PASS,USER_EMAIL,USER_STATUS,USER_LAST_MODIFIED,USER_CREATE_DATE,ID_CREATE_DATE,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER INSERT',NEW.ID_PK_USER,NEW.USER_NAME,NEW.USER_PASS,NEW.USER_EMAIL,NEW.USER_STATUS,NEW.USER_LAST_MODIFIED,NEW.USER_CREATE_DATE,NEW.ID_CREATE_DATE,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;
         
@@ -95,7 +98,7 @@ class M_user extends CI_Model{
             SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.USER_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO MSTR_USER_LOG(EXECUTED_FUNCTION,ID_PK_USER,USER_NAME,USER_PASS,USER_STATUS,USER_LAST_MODIFIED,USER_CREATE_DATE,ID_CREATE_DATE,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER UPDATE',NEW.ID_PK_USER,NEW.USER_NAME,NEW.USER_PASS,NEW.USER_STATUS,NEW.USER_LAST_MODIFIED,NEW.USER_CREATE_DATE,NEW.ID_CREATE_DATE,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO MSTR_USER_LOG(EXECUTED_FUNCTION,ID_PK_USER,USER_NAME,USER_PASS,USER_EMAIL,USER_STATUS,USER_LAST_MODIFIED,USER_CREATE_DATE,ID_CREATE_DATE,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER UPDATE',NEW.ID_PK_USER,NEW.USER_NAME,NEW.USER_PASS,NEW.USER_EMAIL,NEW.USER_STATUS,NEW.USER_LAST_MODIFIED,NEW.USER_CREATE_DATE,NEW.ID_CREATE_DATE,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;
         ";
@@ -113,6 +116,7 @@ class M_user extends CI_Model{
                 id_pk_user LIKE '%".$search_key."%' OR 
                 user_name LIKE '%".$search_key."%' OR
                 user_pass LIKE '%".$search_key."%' OR
+                user_email LIKE '%".$search_key."%' OR
                 user_status LIKE '%".$search_key."%' OR
                 user_last_modified LIKE '%".$search_key."%' OR
                 user_create_date LIKE '%".$search_key."%' OR
@@ -121,7 +125,7 @@ class M_user extends CI_Model{
             )";
         }
         $query = "
-        SELECT id_pk_user,user_name,user_status,user_last_modified,user_create_date
+        SELECT id_pk_user,user_name,user_email,user_status,user_last_modified,user_create_date
         FROM ".$this->tbl_name." 
         WHERE user_status = ? ".$search_query."  
         ORDER BY ".$order_by." ".$order_direction." 
@@ -144,7 +148,7 @@ class M_user extends CI_Model{
             "user_status" => "ACTIVE"
         );
         $field = array(
-            "id_pk_user","user_name","user_status","user_last_modified","user_create_date"
+            "id_pk_user","user_name","user_email","user_status","user_last_modified","user_create_date"
         );
         $result = selectRow($this->tbl_name,$where,$field);
         return $result;
@@ -152,13 +156,14 @@ class M_user extends CI_Model{
     public function insert(){
         if($this->check_insert()){
             $data = array(
-                "USER_NAME" => $this->user_name,
-                "USER_PASS" => password_hash($this->user_pass,PASSWORD_DEFAULT),
-                "USER_STATUS" => $this->user_status,
-                "USER_CREATE_DATE" => $this->user_create_date,
-                "USER_LAST_MODIFIED" => $this->user_last_modified,
-                "ID_CREATE_DATE" => $this->id_create_data,
-                "ID_LAST_MODIFIED" => $this->id_last_modified
+                "user_name" => $this->user_name,
+                "user_pass" => password_hash($this->user_pass,PASSWORD_DEFAULT),
+                "user_email" => $this->user_email,
+                "user_status" => $this->user_status,
+                "user_create_date" => $this->user_create_date,
+                "user_last_modified" => $this->user_last_modified,
+                "id_create_date" => $this->id_create_data,
+                "id_last_modified" => $this->id_last_modified
             );
             return insertRow($this->tbl_name,$data);
         }
@@ -171,6 +176,7 @@ class M_user extends CI_Model{
             $where = array(
                 "id_pk_user != " => $this->id_pk_user,
                 "user_name" => $this->user_name,
+                "user_email" => $this->user_email,
                 "user_status" => "AKTIF",
             );
             if(!isExistsInTable($this->tbl_name,$where)){
@@ -179,6 +185,7 @@ class M_user extends CI_Model{
                 );
                 $data = array(
                     "user_name" => $this->user_name,
+                    "user_email" => $this->user_email,
                     "id_last_modified" => $this->id_last_modified,
                     "user_last_modified" => $this->user_last_modified
                 );
@@ -234,7 +241,7 @@ class M_user extends CI_Model{
                 "user_status" => "AKTIF"
             );
             $field = array(
-                "id_pk_user","user_name","user_pass","user_status"
+                "id_pk_user","user_name","user_pass","user_email","user_status"
             );
             $result = selectRow($this->tbl_name,$where,$field);
             if($result->num_rows() > 0){
@@ -243,6 +250,7 @@ class M_user extends CI_Model{
                     $data = array(
                         "id" => $result[0]["id_pk_user"],
                         "name" => $result[0]["user_name"],
+                        "email" => $result[0]["user_email"],
                         "status" => $result[0]["user_status"],
                     );
                     return $data;
@@ -259,11 +267,14 @@ class M_user extends CI_Model{
             return false;
         }
     }
-    public function set_insert($user_name,$user_pass,$user_status){
+    public function set_insert($user_name,$user_pass,$user_email,$user_status){
         if(!$this->set_user_name($user_name)){
             return false;
         }
         if(!$this->set_user_pass($user_pass)){
+            return false;
+        }
+        if(!$this->set_user_email($user_email)){
             return false;
         }
         if(!$this->set_user_status($user_status)){
@@ -271,8 +282,11 @@ class M_user extends CI_Model{
         }
         return true;
     }
-    public function set_update($id_pk_user,$user_name){
+    public function set_update($id_pk_user,$user_name,$user_email){
         if(!$this->set_id_pk_user($id_pk_user)){
+            return false;
+        }
+        if(!$this->set_user_email($user_email)){
             return false;
         }
         if(!$this->set_user_name($user_name)){
@@ -280,8 +294,11 @@ class M_user extends CI_Model{
         }
         return true;
     }
-    public function set_update_password($id_pk_user,$user_pass){
+    public function set_update_password($id_pk_user,$user_pass,$user_email){
         if(!$this->set_id_pk_user($id_pk_user)){
+            return false;
+        }
+        if(!$this->set_user_email($user_email)){
             return false;
         }
         if(!$this->set_user_pass($user_pass)){
@@ -307,7 +324,7 @@ class M_user extends CI_Model{
         return true;
     }
     public function check_insert(){
-        if($this->user_name != "" && $this->user_pass != "" && $this->user_status != "" && $this->user_last_modified != "" && $this->user_create_date != "" && $this->id_create_data != "" && $this->id_last_modified != ""){
+        if($this->user_name != "" && $this->user_pass != "" && $this->user_email != "" && $this->user_status != "" && $this->user_last_modified != "" && $this->user_create_date != "" && $this->id_create_data != "" && $this->id_last_modified != ""){
             return true;
         }
         else{
@@ -315,7 +332,7 @@ class M_user extends CI_Model{
         }
     }
     public function check_update(){
-        if($this->id_pk_user != "" && $this->user_name != "" && $this->user_last_modified != "" && $this->id_last_modified != ""){
+        if($this->id_pk_user != "" && $this->user_name != "" && $this->user_email != "" && $this->user_last_modified != "" && $this->id_last_modified != ""){
             return true;
         }
         else{
@@ -373,6 +390,15 @@ class M_user extends CI_Model{
             return false;
         }
     }
+    public function set_user_email($user_email){
+        if($user_email != ""){
+            $this->user_email = $user_email;
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     public function set_user_status($user_status){
         if($user_status != ""){
             $this->user_status = $user_status;
@@ -390,6 +416,9 @@ class M_user extends CI_Model{
     }
     public function get_user_pass(){
         return $this->user_pass;
+    }
+    public function get_user_email(){
+        return $this->user_email;
     }
     public function get_user_status(){
         return $this->user_status;

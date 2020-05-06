@@ -258,13 +258,13 @@
                     <a href="<?php echo base_url();?>toko">TOKO</a>
                 </li>
                 <li>
+                    <a href="<?php echo base_url();?>employee">KARYAWAN</a>
+                </li>
+                <li>
                     <a href="<?php echo base_url();?>ReportMM/Penjualan">SUPPLIER</a>
                 </li>
                 <li>
                     <a href="<?php echo base_url();?>ReportMM/Stock">CUSTOMER</a>
-                </li>
-                <li>
-                    <a href="<?php echo base_url();?>ReportMM/Keuangan">KARYAWAN</a>
                 </li>
                 <li>
                     <a href="<?php echo base_url();?>ReportMM/Keuangan">GUDANG</a>

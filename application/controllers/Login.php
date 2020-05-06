@@ -39,6 +39,7 @@ class Login extends CI_Controller {
 				$user_data = array(
 					"id_user"=>$data['id'],
 					"user_name"=>$data['name'],
+					"user_email"=>$data['email'],
 					"user_status"=>$data['status']
 				);
 				$this->session->set_userdata($user_data);
@@ -59,31 +60,32 @@ class Login extends CI_Controller {
 
 	public function register_user(){
 		$response["status"] = "SUCCESS";
-		$this->form_validation->set_rules("user_name","Username","required|min_length[5]|max_length[15]");
-		$this->form_validation->set_rules("user_pass","Password","required|min_length[8]");
+		//$this->form_validation->set_rules("user_name","Username","required|min_length[5]|max_length[15]");
+		//$this->form_validation->set_rules("user_email","Email","required|valid_email");
+		//$this->form_validation->set_rules("user_pass","Password","required|min_length[8]");
 
-		if($this->form_validation->run()){
+		//if($this->form_validation->run()){
 			$this->load->model("m_user");
-			$user_name = "joahuanatan";//$this->input->post("user_name");
-			$user_pass = "12345678";//$this->input->post("user_pass");
+			$user_name = "wivinadaicy";//$this->input->post("user_name");
+			$user_pass = "qwerty123";//$this->input->post("user_pass");
+			$user_email = "wivinadaicy.wd@gmail.com";//$this->input->post("user_email");
 			$user_status = "AKTIF";
 
-			if($this->m_user->set_insert($user_name,$user_pass,$user_status)){
+			if($this->m_user->set_insert($user_name,$user_pass,$user_email,$user_status)){
 				if($this->m_user->insert()){
 					$response["msg"] = "Data is recorded to database";
 				}else{
 					$response["status"] = "ERROR";
-                    $response["msg"] = "Insert function is error";
+					$response["msg"] = "Insert function is error";
 				}
 			}else{
 				$response["status"] = "ERROR";
-                $response["msg"] = "Setter function is error";
+				$response["msg"] = "Setter function is error";
 			}
-		}else{
+		/*}else{
 			$response["status"] = "ERROR";
-			$response["msg"] = validation_errors();
 			$this->session->set_flashdata("msg",$response['msg']);
-		}
+		}*/
 		echo json_encode($response);
 	}
 

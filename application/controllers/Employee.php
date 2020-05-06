@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Jabatan extends CI_Controller {
+class Employee extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -21,13 +21,13 @@ class Jabatan extends CI_Controller {
 	public function index()
 	{
         $where = array(
-            "JABATAN_STATUS"=>"AKTIF"
+            "emp_status"=>"AKTIF"
         );
-        $data['view_jabatan'] = selectRow("mstr_jabatan",$where)->result_array();
+        $data['view_employee'] = selectRow("mstr_employee",$where)->result_array();
 
         
         //$data['view_jabatan'] = selectRow("mstr_jabatan")->result_array();
-		$this->load->view('V_jabatan',$data);
+		$this->load->view('V_employee',$data);
 	}
 
 	public function register_jabatan(){
