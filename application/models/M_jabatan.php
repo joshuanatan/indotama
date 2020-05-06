@@ -52,7 +52,7 @@ class M_jabatan extends CI_Model{
         BEGIN
             SET @ID_USER = NEW.ID_LAST_MODIFIED;
             SET @TGL_ACTION = NEW.JABATAN_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.JABATAN_LAST_MODIFIED);
+            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT ' , NEW.JABATAN_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
             INSERT INTO MSTR_JABATAN_LOG(EXECUTED_FUNCTION,ID_PK_JABATAN,JABATAN_NAMA,JABATAN_STATUS,JABATAN_CREATE_DATE,JABATAN_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER INSERT',NEW.ID_PK_JABATAN,NEW.JABATAN_NAMA,NEW.JABATAN_STATUS,NEW.JABATAN_CREATE_DATE,NEW.JABATAN_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
@@ -98,18 +98,18 @@ class M_jabatan extends CI_Model{
     public function update(){
         if($this->check_update()){
             $where = array(
-                "id_pk_jabatan !=" => $this->id_pk_jabatan,
-                "jabatan_nama" => $this->jabatan_nama,
-                "jabatan_status" => "AKTIF",
+                "ID_PK_JABATAN !=" => $this->id_pk_jabatan,
+                "JABATAN_NAMA" => $this->jabatan_nama,
+                "JABATAN_STATUS" => "AKTIF",
             );
-            if(isExistsInTable($this->tbl_name,$where)){
+            if(!isExistsInTable($this->tbl_name,$where)){
                 $where = array(
-                    "id_pk_jabatan" => $id_pk_jabatan
+                    "ID_PK_JABATAN" => $this->id_pk_jabatan
                 );
                 $data = array(
-                    "jabatan_nama" => $this->jabatan_nama,
-                    "jabatan_last_modified" => $this->jabatan_last_modified,
-                    "id_last_modified" => $this->id_last_modified,
+                    "JABATAN_NAMA" => $this->jabatan_nama,
+                    "JABATAN_LAST_MODIFIED" => $this->jabatan_last_modified,
+                    "ID_LAST_MODIFIED" => $this->id_last_modified,
                 );
                 updateRow($this->tbl_name,$data,$where);
                 return true;
@@ -117,6 +117,7 @@ class M_jabatan extends CI_Model{
             else{
                 return false;
             }
+            
         }
         else{
             return false;
@@ -149,16 +150,16 @@ class M_jabatan extends CI_Model{
         return true;
     }
     public function check_update(){
-        if($this->id_pk_jabatan != ""){
+        if($this->id_pk_jabatan == ""){
             return false;
         }
-        if($this->jabatan_nama != ""){
+        if($this->jabatan_nama == ""){
             return false;
         }
-        if($this->jabatan_last_modified != ""){
+        if($this->jabatan_last_modified == ""){
             return false;
         }
-        if($this->id_last_modified != ""){
+        if($this->id_last_modified == ""){
             return false;
         }
         return true;

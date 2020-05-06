@@ -252,7 +252,7 @@
                     <a href=""></a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url();?>jabatan">CABANG</a>
+                    <a href="<?php echo base_url();?>jabatan">Jabatan</a>
                 </li>
                 <li>
                     <a href="<?php echo base_url();?>ReportMM/Pembelian">CABANG</a>
