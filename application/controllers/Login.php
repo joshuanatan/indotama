@@ -22,9 +22,12 @@ class Login extends CI_Controller {
 	{
 		$this->load->view('V_log_in');
 	}
-
+	public function set_session_dummy(){
+		$this->session->id_user = 1;
+	}
 	public function login_method()
 	{
+        
 		$response["status"] = "SUCCESS";
 		$user_name = $this->input->post("user_name");
 		$user_pass = $this->input->post("user_pass");

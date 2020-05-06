@@ -1,11 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Master extends CI_Controller {
+class Toko extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('V_master_data');
+		$this->load->view('v_master_toko');
 	}
 
 	public function formAddEmp()
