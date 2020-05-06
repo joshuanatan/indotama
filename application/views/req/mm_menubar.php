@@ -258,6 +258,9 @@
                     <a href="<?php echo base_url();?>toko">TOKO</a>
                 </li>
                 <li>
+                    <a href="<?php echo base_url();?>barang_jenis">JENIS BARANG</a>
+                </li>
+                <li>
                     <a href="<?php echo base_url();?>ReportMM/Penjualan">SUPPLIER</a>
                 </li>
                 <li>
