@@ -26,7 +26,7 @@ $breadcrumb = array(
                             <div class="panel panel-default card-view">
                                 <div class="panel-heading bg-gradient">
                                     <div class="pull-left">
-                                        <h6 class="panel-title txt-light"><?php echo ucwords($page_title);?></h6>
+                                        <h6 class="panel-title txt-light"><?php echo ucwords($page_title);?> <?php echo $toko[0]["toko_nama"];?></h6>
                                     </div>
                                     <div class="clearfix"></div>
                                     <ol class="breadcrumb">
@@ -44,6 +44,7 @@ $breadcrumb = array(
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
                                             <div class = "d-block">
+                                                <a href = "<?php echo base_url();?>toko" style = "margin-right:10px" class = "btn btn-danger btn-sm col-lg-2 col-sm-12">Kembali ke Daftar Toko</a>
                                                 <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#register_modal" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
                                             </div>
                                             <br/>
@@ -90,13 +91,18 @@ $breadcrumb = array(
             </div>
             <div class = "modal-body">
                 <form id = "register_form" method = "POST">
+                    <input type = "hidden" name = "id_toko" value = "<?php echo $toko[0]["id_pk_toko"];?>">
                     <div class = "form-group">
-                        <h5>Nama Toko</h5>
-                        <input type = "text" class = "form-control" required name = "nama">
+                        <h5>Daerah Cabang</h5>
+                        <input type = "text" class = "form-control" required name = "daerah">
                     </div>
                     <div class = "form-group">
-                        <h5>Kode Toko</h5>
-                        <input type = "text" class = "form-control" required name = "kode">
+                        <h5>Alamat Cabang</h5>
+                        <input type = "text" class = "form-control" required name = "alamat">
+                    </div>
+                    <div class = "form-group">
+                        <h5>No Telp Cabang</h5>
+                        <input type = "text" class = "form-control" required name = "notelp">
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
@@ -117,12 +123,16 @@ $breadcrumb = array(
                 <form id = "update_form" method = "POST">
                     <input type = "hidden" name = "id" id = "id_edit">
                     <div class = "form-group">
-                        <h5>Nama Toko</h5>
-                        <input type = "text" class = "form-control" required name = "nama" id = "nama_edit">
+                        <h5>Daerah Cabang</h5>
+                        <input type = "text" class = "form-control" required name = "daerah" id = "daerah_edit">
                     </div>
                     <div class = "form-group">
-                        <h5>Kode Toko</h5>
-                        <input type = "text" class = "form-control" required name = "kode" id = "kode_edit">
+                        <h5>Alamat Cabang</h5>
+                        <input type = "text" class = "form-control" required name = "alamat" id = "alamat_edit">
+                    </div>
+                    <div class = "form-group">
+                        <h5>No Telp Cabang</h5>
+                        <input type = "text" class = "form-control" required name = "notelp" id = "notelp_edit">
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
@@ -145,12 +155,16 @@ $breadcrumb = array(
                 <table class = "table table-bordered table-striped table-hover">
                     <tbody>
                         <tr>
-                            <td>Nama Toko</td>
-                            <td id = "nama_delete"></td>
+                            <td>Daerah Cabang</td>
+                            <td id = "daerah_delete"></td>
                         </tr>
                         <tr>
-                            <td>Kode Toko</td>
-                            <td id = "kode_delete"></td>
+                            <td>Alamat Cabang</td>
+                            <td id = "alamat_delete"></td>
+                        </tr>
+                        <tr>
+                            <td>No Telp Cabang</td>
+                            <td id = "notelp_delete"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -163,16 +177,17 @@ $breadcrumb = array(
     </div>
 </div>
 <script>
-    var ctrl = "toko";
+    var ctrl = "cabang";
     var colCount = 1; //ragu either 1/0
     var orderBy = 0;
     var orderDirection = "ASC";
     var searchKey = "";
     var page = 1;
+    var id_toko = <?php echo $toko[0]["id_pk_toko"];?>;
     function refresh(req_page = 1) {
         page = req_page;
         $.ajax({
-            url: "<?php echo base_url();?>ws/"+ctrl+"/content?orderBy="+orderBy+"&orderDirection="+orderDirection+"&page="+page+"&searchKey="+searchKey,
+            url: "<?php echo base_url();?>ws/"+ctrl+"/content?orderBy="+orderBy+"&orderDirection="+orderDirection+"&page="+page+"&searchKey="+searchKey+"&id_toko="+id_toko,
             type: "GET",
             dataType: "JSON",
             success: function(respond) {
@@ -356,12 +371,15 @@ $breadcrumb = array(
 <script>
     function load_edit_content(id){
         $("#id_edit").val(id);
-        $("#nama_edit").val($("#nama"+id).text());
-        $("#kode_edit").val($("#kode"+id).text());
+        $("#daerah_edit").val($("#daerah"+id).text());
+        $("#alamat_edit").val($("#alamat"+id).text());
+        $("#notelp_edit").val($("#notelp"+id).text());
     }
     function load_delete_content(id){
         $("#id_delete").val(id);
-        $("#nama_delete").text($("#nama"+id).text());
-        $("#kode_delete").text($("#kode"+id).text());
+        
+        $("#daerah_delete").html($("#daerah"+id).text());
+        $("#alamat_delete").html($("#alamat"+id).text());
+        $("#notelp_delete").html($("#notelp"+id).text());
     }
 </script>
