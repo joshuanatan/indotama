@@ -1,7 +1,7 @@
 <?php
-$page_title = "Master Toko";
+$page_title = "Master Cabang";
 $breadcrumb = array(
-    "Master","Toko"
+    "Master","Toko","Cabang"
 );
 ?>
 <!DOCTYPE html>
@@ -51,7 +51,6 @@ $breadcrumb = array(
                                             <div class = "align-middle text-center d-block">
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
-                                                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-success md-store'></i><b> - Cabang</b>
                                             </div>
                                             <br/>
                                             <div class = "form-group">
@@ -184,7 +183,7 @@ $breadcrumb = array(
                         for(var b = 0; b<respond["key"].length; b++){
                             html += "<td class = 'align-middle text-center' id = '"+respond["key"][b]+""+respond["content"][a]["id"]+"'>"+respond["content"][a][respond["key"][b]]+"</td>";
                         }
-                        html += "<td class = 'align-middle text-center'><i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content("+respond["content"][a]["id"]+")'></i> | <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content("+respond["content"][a]["id"]+")'></i> | <a href = '<?php echo base_url();?>toko/cabang/"+respond["content"][a]["id"]+"' style = 'cursor:pointer;font-size:large' class = 'text-success md-store'></a></td>";
+                        html += "<td class = 'align-middle text-center'><i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content("+respond["content"][a]["id"]+")'></i> | <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content("+respond["content"][a]["id"]+")'></i></td>";
                         html += "</tr>";
                     }
                 }
