@@ -20,10 +20,13 @@ class Jabatan extends CI_Controller {
 	 */
 	public function index()
 	{
-        $where = array(
+        /*$where = array(
             "JABATAN_STATUS"=>"AKTIF"
         );
-        $data['view_jabatan'] = selectRow("mstr_jabatan",$where)->result_array();
+        $data['view_jabatan'] = selectRow("mstr_jabatan",$where)->result_array();*/
+
+        
+        $data['view_jabatan'] = selectRow("mstr_jabatan")->result_array();
 		$this->load->view('V_jabatan',$data);
 	}
 
@@ -66,7 +69,7 @@ class Jabatan extends CI_Controller {
 
 			if($this->m_jabatan->set_update($id_pk_jabatan,$jabatan_nama)){
 				if($this->m_jabatan->update()){
-					$response["msg"] = "Data is recorded to database";
+					$response["msg"] = "Data is updated";
 				}else{
 					$response["status"] = "ERROR";
                     $response["msg"] = "Update function is error";
@@ -86,19 +89,18 @@ class Jabatan extends CI_Controller {
 
     public function hapus_jabatan(){
 		$response["status"] = "SUCCESS";
-		$this->form_validation->set_rules("jabatan_nama","Nama Jabatan","required");
+		$this->form_validation->set_rules("id_pk_jabatan","ID Jabatan","required");
 
 		if($this->form_validation->run()){
             $this->load->model("m_jabatan");
             $id_pk_jabatan = $this->input->post("id_pk_jabatan");
-            $jabatan_nama = $this->input->post("jabatan_nama");
 
-			if($this->m_jabatan->set_update($id_pk_jabatan,$jabatan_nama)){
-				if($this->m_jabatan->update()){
-					$response["msg"] = "Data is recorded to database";
+			if($this->m_jabatan->set_delete($id_pk_jabatan)){
+				if($this->m_jabatan->delete()){
+					$response["msg"] = "Data is deleted";
 				}else{
 					$response["status"] = "ERROR";
-                    $response["msg"] = "Update function is error";
+                    $response["msg"] = "Delete function is error";
 				}
 			}else{
 				$response["status"] = "ERROR";
@@ -109,8 +111,8 @@ class Jabatan extends CI_Controller {
 			$response["msg"] = validation_errors();
             $this->session->set_flashdata("msg",$response['msg']);
 		}
-        redirect(md5('Jabatan'));
-        //echo json_encode($response);
+        //redirect(md5('Jabatan'));
+        echo json_encode($response);
     }
     
 }

@@ -125,7 +125,18 @@ class M_jabatan extends CI_Model{
     }
     public function delete(){
         if($this->check_delete()){
-
+            $where = array(
+                "ID_PK_JABATAN" => $this->id_pk_jabatan
+            );
+            $data = array(
+                "JABATAN_STATUS" => "NONAKTIF",
+                "JABATAN_LAST_MODIFIED" => $this->jabatan_last_modified,
+                "ID_LAST_MODIFIED" => $this->id_last_modified
+            );
+            updateRow($this->tbl_name,$data,$where);
+            return true;
+        }else{
+            return false;
         }
     }
     public function check_insert(){
@@ -165,13 +176,13 @@ class M_jabatan extends CI_Model{
         return true;
     }
     public function check_delete(){
-        if($this->id_pk_jabatan != ""){
+        if($this->id_pk_jabatan == ""){
             return false;
         }
-        if($this->jabatan_last_modified != ""){
+        if($this->jabatan_last_modified == ""){
             return false;
         }
-        if($this->id_last_modified != ""){
+        if($this->id_last_modified == ""){
             return false;
         }
         return true;

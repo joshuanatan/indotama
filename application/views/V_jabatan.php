@@ -77,8 +77,10 @@
                                                                     <td><?php echo $view_jabatan[$x]['JABATAN_NAMA'] ?></td>
                                                                     <td><?php echo $view_jabatan[$x]['JABATAN_STATUS'] ?></td>
                                                                     <td class="text-center">
+                                                                        <?php if($view_jabatan[$x]['JABATAN_STATUS']=="AKTIF"){ ?>
                                                                         <button class="btn btn-primary btn-icon-anim btn-square"  data-toggle = "modal" data-target = "#edit_jabatan<?php echo $x+1 ?>"><i class="fa fa-pencil"></i></button>
                                                                         <button class="btn btn-danger btn-icon-anim btn-square" data-toggle = "modal" data-target = "#hapus_jabatan<?php echo $x+1 ?>"><i class="icon-trash"></i></button>
+                                                                        <?php } ?>
                                                                     </td>
                                                                 </tr>
 <div class = "modal fade" id = "edit_jabatan<?php echo $x+1 ?>">
