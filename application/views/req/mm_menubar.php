@@ -264,6 +264,9 @@
                     <a href="<?php echo base_url();?>ReportMM/Penjualan">SUPPLIER</a>
                 </li>
                 <li>
+                    <a href="<?php echo base_url();?>ReportMM/Penjualan">SUPPLIER</a>
+                </li>
+                <li>
                     <a href="<?php echo base_url();?>ReportMM/Stock">CUSTOMER</a>
                 </li>
                 <li>
