@@ -334,9 +334,11 @@ $breadcrumb = array(
             processData:false,
             contentType:false,
             success:function(respond){
-                $("#register_modal").modal("hide");
-                $("#register_form :input").val("");
-                refresh(page);
+                if(respond["status"] == "SUCCESS"){
+                    $("#register_modal").modal("hide");
+                    $("#register_form :input").val("");
+                    refresh(page);
+                }
             }
         });
     }
@@ -351,8 +353,10 @@ $breadcrumb = array(
             processData: false,
             contentType: false,
             success:function(respond){
-                $("#update_modal").modal("hide");
-                refresh(page);
+                if(respond["status"] == "SUCCESS"){
+                    $("#update_modal").modal("hide");
+                    refresh(page);
+                }
             }
         });
     }
@@ -363,8 +367,10 @@ $breadcrumb = array(
             type:"DELETE",
             dataType:"JSON",
             success:function(respond){
-                $("#delete_modal").modal("hide");
-                refresh(page);
+                if(respond["status"] == "SUCCESS"){
+                    $("#delete_modal").modal("hide");
+                    refresh(page);
+                }
             }
         });
     }
