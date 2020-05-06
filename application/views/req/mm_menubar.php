@@ -261,6 +261,9 @@
                     <a href="<?php echo base_url();?>employee">KARYAWAN</a>
                 </li>
                 <li>
+                    <a href="<?php echo base_url();?>barang_merk">MERK BARANG</a>
+                </li>
+                <li>
                     <a href="<?php echo base_url();?>ReportMM/Penjualan">SUPPLIER</a>
                 </li>
                 <li>
