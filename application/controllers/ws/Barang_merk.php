@@ -4,7 +4,55 @@ class Barang_merk extends CI_Controller{
     public function __construct(){
         parent::__construct();
     }
-    public function insert(){
+    public function columns(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_barang_merk");
+        $columns = $this->m_barang_merk->columns();
+        if(count($columns) > 0){
+            for($a = 0; $a<count($columns); $a++){
+                $response["content"][$a]["col_name"] = $columns[$a]["col_disp"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+        }
+        echo json_encode($response);
+    }
+    public function content(){
+        $response["status"] = "SUCCESS";
+        $response["content"] = array();
+
+        $order_by = $this->input->get("orderBy");
+        $order_direction = $this->input->get("orderDirection");
+        $page = $this->input->get("page");
+        $search_key = $this->input->get("searchKey");
+        $data_per_page = 20;
+        
+        $this->load->model("m_barang_merk");
+        $result = $this->m_barang_merk->content($page,$order_by,$order_direction,$search_key,$data_per_page);
+
+        if($result["data"]->num_rows() > 0){
+            $result["data"] = $result["data"]->result_array();
+            for($a = 0; $a<count($result["data"]); $a++){
+                $response["content"][$a]["id"] = $result["data"][$a]["id_pk_brg_merk"];
+                $response["content"][$a]["nama"] = $result["data"][$a]["brg_merk_nama"];
+                $response["content"][$a]["status"] = $result["data"][$a]["brg_merk_status"];
+                $response["content"][$a]["last_modified"] = $result["data"][$a]["brg_merk_last_modified"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+        }
+        $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
+        $response["key"] = array(
+            "nama",
+            "status",
+            "last_modified"
+        );
+        echo json_encode($response);
+    }
+    public function register(){
+        $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("nama","nama","required");
         if($this->form_validation->run()){
             $brg_merk_nama = $this->input->post("nama");
@@ -31,6 +79,7 @@ class Barang_merk extends CI_Controller{
         echo json_encode($response);
     }
     public function update(){
+        $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("id","id","required");
         $this->form_validation->set_rules("nama","nama","required");
         if($this->form_validation->run()){
