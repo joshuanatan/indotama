@@ -255,16 +255,16 @@
                     <a href="<?php echo base_url();?>jabatan">JABATAN</a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url();?>toko">TOKO</a>
-                </li>
-                <li>
                     <a href="<?php echo base_url();?>employee">KARYAWAN</a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url();?>barang_merk">MERK BARANG</a>
+                    <a href="<?php echo base_url();?>toko">TOKO</a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url();?>ReportMM/Penjualan">SUPPLIER</a>
+                    <a href="<?php echo base_url();?>brang_jenis">JENIS BARANG</a>
+                </li>
+                <li>
+                    <a href="<?php echo base_url();?>barang_merk">MERK BARANG</a>
                 </li>
                 <li>
                     <a href="<?php echo base_url();?>ReportMM/Penjualan">SUPPLIER</a>
