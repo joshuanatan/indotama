@@ -22,9 +22,7 @@ class M_employee extends CI_Model{
     private $emp_gender;
     private $emp_suff;
     private $emp_status;
-    private $id_fk_jabatan;
     private $id_fk_toko;
-    private $id_fk_user;
     private $emp_create_date;
     private $emp_last_modified;
     private $id_create_data;
@@ -66,9 +64,7 @@ class M_employee extends CI_Model{
             EMP_GENDER VARCHAR(6),
             EMP_SUFF VARCHAR(10),
             EMP_STATUS VARCHAR(15),
-            ID_FK_JABATAN INT,
             ID_FK_TOKO INT,
-            ID_FK_USER INT,
             EMP_CREATE_DATE DATETIME,
             EMP_LAST_MODIFIED DATETIME,
             ID_CREATE_DATA INT,
@@ -96,9 +92,7 @@ class M_employee extends CI_Model{
             EMP_GENDER VARCHAR(6),
             EMP_SUFF VARCHAR(10),
             EMP_STATUS VARCHAR(15),
-            ID_FK_JABATAN INT,
             ID_FK_TOKO INT,
-            ID_FK_USER INT,
             EMP_CREATE_DATE DATETIME,
             EMP_LAST_MODIFIED DATETIME,
             ID_CREATE_DATA INT,
@@ -116,7 +110,7 @@ class M_employee extends CI_Model{
             SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT ' , NEW.EMP_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO MSTR_EMPLOYEE_LOG(EXECUTED_FUNCTION,ID_PK_EMPLOYEE,EMP_NAMA,EMP_NPWP,EMP_KTP,EMP_HP,EMP_ALAMAT,EMP_KODE_POS,EMP_FOTO_NPWP,EMP_FOTO_KTP,EMP_FOTO_LAIN,EMP_FOTO,EMP_GAJI,EMP_STARTDATE,EMP_ENDDATE,EMP_REK,EMP_GENDER,EMP_SUFF,EMP_STATUS,ID_FK_JABATAN,ID_FK_TOKO,ID_FK_USER,EMP_CREATE_DATE,EMP_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_EMPLOYEE,NEW.EMP_NAMA,NEW.EMP_NPWP,NEW.EMP_KTP,NEW.EMP_HP,NEW.EMP_ALAMAT,NEW.EMP_KODE_POS,NEW.EMP_FOTO_NPWP,NEW.EMP_FOTO_KTP,NEW.EMP_FOTO_LAIN,NEW.EMP_FOTO,NEW.EMP_GAJI,NEW.EMP_STARTDATE,NEW.EMP_ENDDATE,NEW.EMP_REK,NEW.EMP_GENDER,NEW.EMP_SUFF,NEW.EMP_STATUS,NEW.ID_FK_JABATAN,NEW.ID_FK_TOKO,NEW.ID_FK_USER,NEW.EMP_CREATE_DATE,NEW.EMP_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO MSTR_EMPLOYEE_LOG(EXECUTED_FUNCTION,ID_PK_EMPLOYEE,EMP_NAMA,EMP_NPWP,EMP_KTP,EMP_HP,EMP_ALAMAT,EMP_KODE_POS,EMP_FOTO_NPWP,EMP_FOTO_KTP,EMP_FOTO_LAIN,EMP_FOTO,EMP_GAJI,EMP_STARTDATE,EMP_ENDDATE,EMP_REK,EMP_GENDER,EMP_SUFF,EMP_STATUS,ID_FK_TOKO,EMP_CREATE_DATE,EMP_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_EMPLOYEE,NEW.EMP_NAMA,NEW.EMP_NPWP,NEW.EMP_KTP,NEW.EMP_HP,NEW.EMP_ALAMAT,NEW.EMP_KODE_POS,NEW.EMP_FOTO_NPWP,NEW.EMP_FOTO_KTP,NEW.EMP_FOTO_LAIN,NEW.EMP_FOTO,NEW.EMP_GAJI,NEW.EMP_STARTDATE,NEW.EMP_ENDDATE,NEW.EMP_REK,NEW.EMP_GENDER,NEW.EMP_SUFF,NEW.EMP_STATUS,NEW.ID_FK_TOKO,NEW.EMP_CREATE_DATE,NEW.EMP_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;
 
@@ -131,7 +125,7 @@ class M_employee extends CI_Model{
             SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.EMP_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO MSTR_EMPLOYEE_LOG(EXECUTED_FUNCTION,ID_PK_EMPLOYEE,EMP_NAMA,EMP_NPWP,EMP_KTP,EMP_HP,EMP_ALAMAT,EMP_KODE_POS,EMP_FOTO_NPWP,EMP_FOTO_KTP,EMP_FOTO_LAIN,EMP_FOTO,EMP_GAJI,EMP_STARTDATE,EMP_ENDDATE,EMP_REK,EMP_GENDER,EMP_SUFF,EMP_STATUS,ID_FK_JABATAN,ID_FK_TOKO,ID_FK_USER,EMP_CREATE_DATE,EMP_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_EMPLOYEE,NEW.EMP_NAMA,NEW.EMP_NPWP,NEW.EMP_KTP,NEW.EMP_HP,NEW.EMP_ALAMAT,NEW.EMP_KODE_POS,NEW.EMP_FOTO_NPWP,NEW.EMP_FOTO_KTP,NEW.EMP_FOTO_LAIN,NEW.EMP_FOTO,NEW.EMP_GAJI,NEW.EMP_STARTDATE,NEW.EMP_ENDDATE,NEW.EMP_REK,NEW.EMP_GENDER,NEW.EMP_SUFF,NEW.EMP_STATUS,NEW.ID_FK_JABATAN,NEW.ID_FK_TOKO,NEW.ID_FK_USER,NEW.EMP_CREATE_DATE,NEW.EMP_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO MSTR_EMPLOYEE_LOG(EXECUTED_FUNCTION,ID_PK_EMPLOYEE,EMP_NAMA,EMP_NPWP,EMP_KTP,EMP_HP,EMP_ALAMAT,EMP_KODE_POS,EMP_FOTO_NPWP,EMP_FOTO_KTP,EMP_FOTO_LAIN,EMP_FOTO,EMP_GAJI,EMP_STARTDATE,EMP_ENDDATE,EMP_REK,EMP_GENDER,EMP_SUFF,EMP_STATUS,ID_FK_TOKO,EMP_CREATE_DATE,EMP_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_EMPLOYEE,NEW.EMP_NAMA,NEW.EMP_NPWP,NEW.EMP_KTP,NEW.EMP_HP,NEW.EMP_ALAMAT,NEW.EMP_KODE_POS,NEW.EMP_FOTO_NPWP,NEW.EMP_FOTO_KTP,NEW.EMP_FOTO_LAIN,NEW.EMP_FOTO,NEW.EMP_GAJI,NEW.EMP_STARTDATE,NEW.EMP_ENDDATE,NEW.EMP_REK,NEW.EMP_GENDER,NEW.EMP_SUFF,NEW.EMP_STATUS,NEW.ID_FK_TOKO,NEW.EMP_CREATE_DATE,NEW.EMP_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;
         ";
@@ -209,9 +203,7 @@ class M_employee extends CI_Model{
                 "emp_last_modified" => $this->emp_last_modified,
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified,
-                "id_fk_jabatan" => $this->id_fk_jabatan,
                 "id_fk_toko" => $this->id_fk_toko,
-                "id_fk_user" => $this->id_fk_user
             );
             return insertRow($this->tbl_name,$data);
         }
@@ -243,7 +235,6 @@ class M_employee extends CI_Model{
                 "emp_suff" => $this->emp_suff,
                 "emp_last_modified" => $this->emp_last_modified,
                 "id_last_modified" => $this->id_last_modified,
-                "id_fk_jabatan" => $this->id_fk_jabatan
             );
             updateRow($this->tbl_name,$data,$where);
             return true;
@@ -333,13 +324,7 @@ class M_employee extends CI_Model{
         if($this->id_last_modified == ""){
             return false;
         }
-        if($this->id_fk_jabatan == ""){
-            return false;
-        }
         if($this->id_fk_toko == ""){
-            return false;
-        }
-        if($this->id_fk_user == ""){
             return false;
         }
         return true;
@@ -402,9 +387,6 @@ class M_employee extends CI_Model{
         if($this->id_last_modified == ""){
             return false;
         }
-        if($this->id_fk_jabatan == ""){
-            return false;
-        }
         return true;
     }
     public function check_delete(){
@@ -419,7 +401,7 @@ class M_employee extends CI_Model{
         }
         return true;
     }
-    public function set_insert($emp_nama,$emp_npwp,$emp_ktp,$emp_hp,$emp_alamat,$emp_kode_pos,$emp_foto_npwp,$emp_foto_ktp,$emp_foto_lain,$emp_foto,$emp_gaji,$emp_startdate,$emp_enddate,$emp_rek,$emp_gender,$emp_suff,$emp_status,$id_fk_jabatan,$id_fk_toko,$id_fk_user){
+    public function set_insert($emp_nama,$emp_npwp,$emp_ktp,$emp_hp,$emp_alamat,$emp_kode_pos,$emp_foto_npwp,$emp_foto_ktp,$emp_foto_lain,$emp_foto,$emp_gaji,$emp_startdate,$emp_enddate,$emp_rek,$emp_gender,$emp_suff,$emp_status,$id_fk_toko){
         if(!$this->set_emp_nama($emp_nama)){
             return false;
         }
@@ -471,18 +453,12 @@ class M_employee extends CI_Model{
         if(!$this->set_emp_status($emp_status)){
             return false;
         }
-        if(!$this->set_id_fk_jabatan($id_fk_jabatan)){
-            return false;
-        }
         if(!$this->set_id_fk_toko($id_fk_toko)){
-            return false;
-        }
-        if(!$this->set_id_fk_user($id_fk_user)){
             return false;
         }
         return true;
     }
-    public function set_update($id_pk_employee,$emp_nama,$emp_npwp,$emp_ktp,$emp_hp,$emp_alamat,$emp_kode_pos,$emp_foto_npwp,$emp_foto_ktp,$emp_foto_lain,$emp_foto,$emp_gaji,$emp_startdate,$emp_enddate,$emp_rek,$emp_gender,$emp_suff,$id_fk_jabatan){
+    public function set_update($id_pk_employee,$emp_nama,$emp_npwp,$emp_ktp,$emp_hp,$emp_alamat,$emp_kode_pos,$emp_foto_npwp,$emp_foto_ktp,$emp_foto_lain,$emp_foto,$emp_gaji,$emp_startdate,$emp_enddate,$emp_rek,$emp_gender,$emp_suff){
         if(!$this->set_id_pk_employee($id_pk_employee)){
             return false;
         }
@@ -532,9 +508,6 @@ class M_employee extends CI_Model{
             return false;
         }
         if(!$this->set_emp_suff($emp_suff)){
-            return false;
-        }
-        if(!$this->set_id_fk_jabatan($id_fk_jabatan)){
             return false;
         }
         return true;
@@ -708,27 +681,9 @@ class M_employee extends CI_Model{
             return false;
         }
     }
-    public function set_id_fk_jabatan($id_fk_jabatan){
-        if($id_fk_jabatan != ""){
-            $this->id_fk_jabatan = $id_fk_jabatan;
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
     public function set_id_fk_toko($id_fk_toko){
         if($id_fk_toko != ""){
             $this->id_fk_toko = $id_fk_toko;
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    public function set_id_fk_user($id_fk_user){
-        if($id_fk_user != ""){
-            $this->id_fk_user = $id_fk_user;
             return true;
         }
         else{
@@ -789,13 +744,7 @@ class M_employee extends CI_Model{
     public function get_emp_status(){
         return $this->emp_status;
     }
-    public function get_id_fk_jabatan(){
-        return $this->id_fk_jabatan;
-    }
     public function get_id_fk_toko(){
         return $this->id_fk_toko;
-    }
-    public function get_id_fk_user(){
-        return $this->id_fk_user;
     }
 }
