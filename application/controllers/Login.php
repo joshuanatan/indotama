@@ -24,6 +24,7 @@ class Login extends CI_Controller {
 	}
 	public function set_session_dummy(){
 		$this->session->id_user = 1;
+		echo "session is set. id_user session: ".$this->session->id_user;
 	}
 	public function login_method()
 	{
