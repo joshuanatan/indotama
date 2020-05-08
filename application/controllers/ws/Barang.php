@@ -45,6 +45,7 @@ class Barang extends CI_Controller{
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["brg_last_modified"];
                 $response["content"][$a]["merk"] = $result["data"][$a]["brg_merk_nama"];
                 $response["content"][$a]["jenis"] = $result["data"][$a]["brg_jenis_nama"];
+                $response["content"][$a]["ukuran"] = $result["data"][$a]["ukuran"];
             }
         }
         else{
@@ -73,6 +74,7 @@ class Barang extends CI_Controller{
         $this->form_validation->set_rules("satuan","satuan","required");
         $this->form_validation->set_rules("id_brg_jenis","id_brg_jenis","required");
         $this->form_validation->set_rules("id_brg_merk","id_brg_merk","required");
+        $this->form_validation->set_rules("ukuran","ukuran","required");
         
         if($this->form_validation->run()){
             $this->load->model("m_barang");
@@ -131,8 +133,21 @@ class Barang extends CI_Controller{
                 $brg_image = $this->upload->data("file_name");
             }
             if($this->m_barang->set_insert($brg_kode,$brg_nama,$brg_ket,$brg_minimal,$brg_satuan,$brg_image,$brg_status,$id_fk_brg_jenis,$id_fk_brg_merk)){
-                if($this->m_barang->insert()){
+                $id_barang = $this->m_barang->insert();
+                if($id_barang){
                     $response["msg"] = "Data is recorded to database";
+                    $this->load->model("m_barang_ukuran");
+                    $this->m_barang_ukuran->set_id_fk_barang($id_barang);
+                    $array_ukuran = explode(",",$this->input->post("ukuran"));
+                    for($a = 0; $a<count($array_ukuran); $a++){
+                        if($this->m_barang_ukuran->set_insert($id_barang,$array_ukuran[$a],"AKTIF")){
+                            if(!$this->m_barang_ukuran->insert()){
+                                $response["status"] = "ERROR";
+                                $response["msg"] = "Insert Ukuran Fail";
+                            }
+                        }
+                    }
+
                 }
                 else{
                     $response["status"] = "ERROR";
@@ -160,6 +175,7 @@ class Barang extends CI_Controller{
         $this->form_validation->set_rules("satuan","satuan","required");
         $this->form_validation->set_rules("id_brg_jenis","id_brg_jenis","required");
         $this->form_validation->set_rules("id_brg_merk","id_brg_merk","required");
+        $this->form_validation->set_rules("ukuran","ukuran","required");
         
         if($this->form_validation->run()){
             $this->load->model("m_barang");
@@ -220,6 +236,18 @@ class Barang extends CI_Controller{
             if($this->m_barang->set_update($id_pk_barang,$brg_kode,$brg_nama,$brg_ket,$brg_minimal,$brg_satuan,$brg_image,$id_fk_brg_jenis,$id_fk_brg_merk)){
                 if($this->m_barang->update()){
                     $response["msg"] = "Data is updated to database";
+                    $this->load->model("m_barang_ukuran");
+                    $this->m_barang_ukuran->set_id_fk_barang($id_pk_barang);
+                    $this->m_barang_ukuran->remove();
+                    $array_ukuran = explode(",",$this->input->post("ukuran"));
+                    for($a = 0; $a<count($array_ukuran); $a++){
+                        if($this->m_barang_ukuran->set_insert($id_pk_barang,$array_ukuran[$a],"AKTIF")){
+                            if(!$this->m_barang_ukuran->insert()){
+                                $response["status"] = "ERROR";
+                                $response["msg"] = "Insert Ukuran Fail";
+                            }
+                        }
+                    }
                 }
                 else{
                     $response["status"] = "ERROR";

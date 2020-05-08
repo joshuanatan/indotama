@@ -121,6 +121,10 @@ $breadcrumb = array(
                         <input type = "text" class = "form-control" required name = "satuan">
                     </div>
                     <div class = "form-group">
+                        <h5>Ukuran</h5>
+                        <input type = "text" class = "form-control" required name = "ukuran">
+                    </div>
+                    <div class = "form-group">
                         <h5>Gambar</h5>
                         <input type = "file" required name = "gambar">
                     </div>
@@ -169,6 +173,10 @@ $breadcrumb = array(
                     <div class = "form-group">
                         <h5>Satuan</h5>
                         <input type = "text" class = "form-control" required name = "satuan" id = "satuan_edit">
+                    </div>
+                    <div class = "form-group">
+                        <h5>Ukuran</h5>
+                        <input type = "text" class = "form-control" required name = "ukuran" id = "ukuran_edit">
                     </div>
                     <div class = "form-group">
                         <h5>Gambar</h5>
@@ -222,6 +230,10 @@ $breadcrumb = array(
                         <tr>
                             <td>Satuan</td>
                             <td id = "satuan_delete"></td>
+                        </tr>
+                        <tr>
+                            <td>Ukuran</td>
+                            <td id = "ukuran_delete"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -446,6 +458,7 @@ $breadcrumb = array(
         $("#id_brg_merk_edit").val(content[row]["merk"]);
         $("#minimal_edit").val(content[row]["minimal"]);
         $("#satuan_edit").val(content[row]["satuan"]);
+        $("#ukuran_edit").val(content[row]["ukuran"]);
         $("#gambar_edit").val(content[row]["image"]);
     }
     function load_delete_content(row){
@@ -457,6 +470,7 @@ $breadcrumb = array(
         $("#merk_delete").html(content[row]["merk"]);
         $("#minimal_delete").html(content[row]["minimal"]);
         $("#satuan_delete").html(content[row]["satuan"]);
+        $("#ukuran_delete").val(content[row]["ukuran"]);
     }
 </script>
 <script>

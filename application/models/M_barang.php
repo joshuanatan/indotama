@@ -139,17 +139,20 @@ class M_barang extends CI_Model{
             )";
         }
         $query = "
-        SELECT id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_last_modified,brg_merk_nama,brg_jenis_nama
+        SELECT id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_last_modified,brg_merk_nama,brg_jenis_nama,GROUP_CONCAT(tbl_barang_ukuran.UKURAN SEPARATOR ',') as ukuran
         FROM ".$this->tbl_name." 
         INNER JOIN MSTR_BARANG_JENIS ON MSTR_BARANG_JENIS.ID_PK_BRG_JENIS = ".$this->tbl_name.".ID_FK_BRG_JENIS
         INNER JOIN MSTR_BARANG_MERK ON MSTR_BARANG_MERK.ID_PK_BRG_MERK = ".$this->tbl_name.".ID_FK_BRG_MERK
+        LEFT JOIN TBL_BARANG_UKURAN ON TBL_BARANG_UKURAN.ID_FK_BARANG = ".$this->tbl_name.".ID_PK_BRG
         WHERE BRG_STATUS = ? AND BRG_JENIS_STATUS = ? AND BRG_MERK_STATUS = ?".$search_query."  
+        GROUP BY id_pk_brg 
         ORDER BY ".$order_by." ".$order_direction." 
         LIMIT 20 OFFSET ".($page-1)*$data_per_page;
         $args = array(
             "AKTIF","AKTIF","AKTIF"
         );
         $result["data"] = executeQuery($query,$args);
+        //echo $this->db->last_query();
         $query = "
         SELECT id_pk_brg
         FROM ".$this->tbl_name." 
