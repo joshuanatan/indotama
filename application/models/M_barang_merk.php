@@ -120,6 +120,36 @@ class M_barang_merk extends CI_Model{
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;
     }
+    public function list(){
+        $where = array(
+            "brg_merk_status" => "AKTIF"
+        );
+        $field = array(
+            "id_pk_brg_merk",
+            "brg_merk_nama",
+            "brg_merk_status",
+            "brg_merk_create_date",
+            "brg_merk_last_modified",
+            "id_create_data",
+            "id_last_modified"
+        );
+        return selectRow($this->tbl_name,$where,$field);
+    }
+    public function detail_by_name(){
+        $where = array(
+            "id_pk_brg_merk" => $this->brg_merk_nama
+        );
+        $field = array(
+            "id_pk_brg_merk",
+            "brg_merk_nama",
+            "brg_merk_status",
+            "brg_merk_create_date",
+            "brg_merk_last_modified",
+            "id_create_data",
+            "id_last_modified"
+        );
+        return selectRow($this->tbl_name,$where,$field);
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(

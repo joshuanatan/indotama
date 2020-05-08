@@ -51,6 +51,25 @@ class Barang_merk extends CI_Controller{
         );
         echo json_encode($response);
     }
+    public function list(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_barang_merk");
+        $result = $this->m_barang_merk->list();
+        if($result->num_rows()){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_brg_merk"];
+                $response["content"][$a]["nama"] = $result[$a]["brg_merk_nama"];
+                $response["content"][$a]["status"] = $result[$a]["brg_merk_status"];
+                $response["content"][$a]["last_modified"] = $result[$a]["brg_merk_last_modified"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "No data is recorded in database";
+        }
+        echo json_encode($response);
+    }
     public function register(){
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("nama","nama","required");
