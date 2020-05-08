@@ -267,6 +267,9 @@
                     <a href="<?php echo base_url();?>barang_merk">MERK BARANG</a>
                 </li>
                 <li>
+                    <a href="<?php echo base_url();?>barang">BARANG</a>
+                </li>
+                <li>
                     <a href="<?php echo base_url();?>ReportMM/Penjualan">SUPPLIER</a>
                 </li>
                 <li>
