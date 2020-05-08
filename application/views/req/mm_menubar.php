@@ -261,7 +261,7 @@
                     <a href="<?php echo base_url();?>toko">TOKO</a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url();?>brang_jenis">JENIS BARANG</a>
+                    <a href="<?php echo base_url();?>barang_jenis">JENIS BARANG</a>
                 </li>
                 <li>
                     <a href="<?php echo base_url();?>barang_merk">MERK BARANG</a>
@@ -270,7 +270,7 @@
                     <a href="<?php echo base_url();?>barang">BARANG</a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url();?>ReportMM/Penjualan">SUPPLIER</a>
+                    <a href="<?php echo base_url();?>supplier">SUPPLIER</a>
                 </li>
                 <li>
                     <a href="<?php echo base_url();?>ReportMM/Stock">CUSTOMER</a>
