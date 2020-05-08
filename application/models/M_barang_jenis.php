@@ -123,6 +123,36 @@ class M_barang_jenis extends CI_Model{
     public function columns(){
         return $this->columns;
     }
+    public function detail_by_name(){
+        $where = array(
+            "brg_jenis_nama" => $this->brg_jenis_nama
+        );
+        $field = array(
+            "id_pk_brg_jenis",
+            "brg_jenis_nama",
+            "brg_jenis_status",
+            "brg_jenis_create_date",
+            "brg_jenis_last_modified",
+            "id_create_data",
+            "id_last_modified"
+        );
+        return selectRow($this->tbl_name,$where,$field);
+    }
+    public function list(){
+        $where = array(
+            "brg_jenis_status" => "AKTIF"
+        );
+        $field = array(
+            "id_pk_brg_jenis",
+            "brg_jenis_nama",
+            "brg_jenis_status",
+            "brg_jenis_create_date",
+            "brg_jenis_last_modified",
+            "id_create_data",
+            "id_last_modified"
+        );
+        return selectRow($this->tbl_name,$where,$field);
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(
