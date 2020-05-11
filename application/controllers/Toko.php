@@ -7,7 +7,7 @@ class Toko extends CI_Controller {
 		parent::__construct();
 	}
 	public function index(){
-		$this->load->view('v_master_toko');
+		$this->load->view('toko/v_master_toko');
 	}
 	public function cabang($id_toko){
 		$data["id_toko"] = $id_toko;
@@ -16,7 +16,7 @@ class Toko extends CI_Controller {
 		$result = $this->m_toko->detail_by_id();
 		$data["toko"] = $result->result_array();
 		
-		$this->load->view('v_master_toko_cabang',$data);
+		$this->load->view('cabang/v_master_toko_cabang',$data);
 	}
 
 }
