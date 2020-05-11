@@ -5,6 +5,6 @@ class Barang extends CI_Controller{
         parent::__construct();
     }
     public function index(){
-        $this->load->view("v_master_barang");
+        $this->load->view("barang/v_master_barang");
     }
 }

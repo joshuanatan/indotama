@@ -5,6 +5,6 @@ class Barang_jenis extends CI_Controller{
         parent::__construct();
     }
     public function index(){
-        $this->load->view("v_master_barang_jenis");
+        $this->load->view("barang_jenis/v_master_barang_jenis");
     }   
 }
