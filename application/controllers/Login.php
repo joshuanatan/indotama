@@ -41,6 +41,7 @@ class Login extends CI_Controller {
 					"id_user"=>$data['id'],
 					"user_name"=>$data['name'],
 					"user_email"=>$data['email'],
+					"role"=>$data['role'],
 					"user_status"=>$data['status']
 				);
 				$this->session->set_userdata($user_data);
@@ -73,7 +74,7 @@ class Login extends CI_Controller {
 			$id_fk_role = 1;//$this->input->post("id_fk_role");
 			$user_status = "AKTIF";
 
-			if($this->m_user->set_insert($user_name,$user_pass,$user_email,$id_fk_role,$user_status)){
+			if($this->m_user->set_insert($user_name,$user_pass,$user_email,$user_status,$id_fk_role,)){
 				if($this->m_user->insert()){
 					$response["msg"] = "Data is recorded to database";
 				}else{
