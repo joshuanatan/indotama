@@ -261,17 +261,21 @@ class M_user extends CI_Model{
                         "role" => $result[0]["id_fk_role"],
                         "status" => $result[0]["user_status"],
                     );
+                    echo "salah di return data";
                     return $data;
                 }
                 else{
+                    echo "salah di verify";
                     return false;
                 }
             }
             else{
+                echo "salah di user salah";
                 return false;
             }
         }
         else{
+            echo "salah di check";
             return false;
         }
     }

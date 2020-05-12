@@ -54,6 +54,6 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['intent']['get'] = 'api/intent/get';
 
-$route['d56b699830e77ba53855679cb1d252da'] = 'login/index';
+$route['99dea78007133396a7b8ed70578ac6ae'] = 'login/index';
 $route['491616a0cbf6c0a2862c836076a4b0e9'] = 'jabatan/index';
-
+$route['f8c8b903cb2e4f297e4b96d4b9c1e98a'] = 'employee/index';

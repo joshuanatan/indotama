@@ -22,9 +22,9 @@
 									<div class="col-sm-12 col-xs-12">
 										<h2>Forget Password</h2>
 										<?php if($this->session->msg != ""):?>
-											<div class = "alert alert-danger">
-												<?php echo $this->session->msg;?>
-											</div>
+										<div class = "alert alert-danger">
+											<?php echo $this->session->msg;?>
+										</div>
 										<?php endif;?>
 										<div class="form-wrap mt-40">
 											<form action="<?php echo base_url(); ?>login/forget_password_method" method="post">
