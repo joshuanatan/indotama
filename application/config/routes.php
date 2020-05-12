@@ -58,3 +58,5 @@ $route['99dea78007133396a7b8ed70578ac6ae'] = 'login/index';
 $route['491616a0cbf6c0a2862c836076a4b0e9'] = 'jabatan/index';
 $route['f8c8b903cb2e4f297e4b96d4b9c1e98a'] = 'employee/index';
 $route['ce26601dac0dea138b7295f02b7620a7'] = 'customer/index';
+$route['6416e8cb5fc0a208d94fa7f5a300dbc4'] = 'warehouse/index';
+
