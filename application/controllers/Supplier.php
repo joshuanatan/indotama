@@ -5,6 +5,6 @@ class Supplier extends CI_Controller{
         parent::__construct();
     }
     public function index(){
-        $this->load->view("v_supplier");
+        $this->load->view("supplier/v_master_supplier");
     }
 }
