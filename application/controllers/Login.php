@@ -49,14 +49,14 @@ class Login extends CI_Controller {
 			}else{
 				$response["status"] = "ERROR";
 				$response["msg"] = "Login function is error!";
-				//redirect(md5("login"));
 			}
 		}else{
 			$response["status"] = "ERROR";
 			$response["msg"] = "Setter function is error";
-			//redirect("login");
+			
 		}
-		echo json_encode($response);
+		//echo json_encode($response);
+		redirect(md5("Login"));
 	}
 
 

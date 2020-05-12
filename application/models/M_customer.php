@@ -11,7 +11,7 @@ class M_customer extends CI_Model{
     private $cust_telp;
     private $cust_hp;
     private $cust_alamat;
-    private $cust_keteranagan;
+    private $cust_keterangan;
     private $id_fk_toko;
     private $cust_status;
     private $cust_create_date;
@@ -40,7 +40,7 @@ class M_customer extends CI_Model{
             CUST_TELP VARCHAR(30),
             CUST_HP VARCHAR(30),
             CUST_ALAMAT VARCHAR(150),
-            CUST_KETERANAGAN VARCHAR(150),
+            CUST_KETERANGAN VARCHAR(150),
             ID_FK_TOKO INT,
             CUST_STATUS VARCHAR(15),
             CUST_CREATE_DATE DATETIME,
@@ -59,7 +59,7 @@ class M_customer extends CI_Model{
             CUST_TELP VARCHAR(30),
             CUST_HP VARCHAR(30),
             CUST_ALAMAT VARCHAR(150),
-            CUST_KETERANAGAN VARCHAR(150),
+            CUST_KETERANGAN VARCHAR(150),
             ID_FK_TOKO INT,
             CUST_STATUS VARCHAR(15),
             CUST_CREATE_DATE DATETIME,
@@ -76,10 +76,10 @@ class M_customer extends CI_Model{
         BEGIN
             SET @ID_USER = NEW.ID_LAST_MODIFIED;
             SET @TGL_ACTION = NEW.CUST_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.CUST_LAST_MODIFIED);
+            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT ' , NEW.CUST_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO MSTR_CUSTOMER_LOG(EXECUTED_FUNCTION,ID_PK_CUST,CUST_NAME,CUST_PERUSAHAAN,CUST_EMAIL,CUST_TELP,CUST_HP,CUST_ALAMAT,CUST_KETERANAGAN,ID_FK_TOKO,CUST_STATUS,CUST_CREATE_DATE,CUST_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_CUST,NEW.CUST_NAME,NEW.CUST_PERUSAHAAN,NEW.CUST_EMAIL,NEW.CUST_TELP,NEW.CUST_HP,NEW.CUST_ALAMAT,NEW.CUST_KETERANAGAN,NEW.ID_FK_TOKO,NEW.CUST_STATUS,NEW.CUST_CREATE_DATE,NEW.CUST_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO MSTR_CUSTOMER_LOG(EXECUTED_FUNCTION,ID_PK_CUST,CUST_NAME,CUST_PERUSAHAAN,CUST_EMAIL,CUST_TELP,CUST_HP,CUST_ALAMAT,CUST_KETERANGAN,ID_FK_TOKO,CUST_STATUS,CUST_CREATE_DATE,CUST_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_CUST,NEW.CUST_NAME,NEW.CUST_PERUSAHAAN,NEW.CUST_EMAIL,NEW.CUST_TELP,NEW.CUST_HP,NEW.CUST_ALAMAT,NEW.CUST_KETERANGAN,NEW.ID_FK_TOKO,NEW.CUST_STATUS,NEW.CUST_CREATE_DATE,NEW.CUST_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;
         
@@ -91,10 +91,10 @@ class M_customer extends CI_Model{
         BEGIN
             SET @ID_USER = NEW.ID_LAST_MODIFIED;
             SET @TGL_ACTION = NEW.CUST_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.CUST_LAST_MODIFIED);
+            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT ' , NEW.CUST_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO MSTR_CUSTOMER_LOG(EXECUTED_FUNCTION,ID_PK_CUST,CUST_NAME,CUST_PERUSAHAAN,CUST_EMAIL,CUST_TELP,CUST_HP,CUST_ALAMAT,CUST_KETERANAGAN,ID_FK_TOKO,CUST_STATUS,CUST_CREATE_DATE,CUST_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_CUST,NEW.CUST_NAME,NEW.CUST_PERUSAHAAN,NEW.CUST_EMAIL,NEW.CUST_TELP,NEW.CUST_HP,NEW.CUST_ALAMAT,NEW.CUST_KETERANAGAN,NEW.ID_FK_TOKO,NEW.CUST_STATUS,NEW.CUST_CREATE_DATE,NEW.CUST_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO MSTR_CUSTOMER_LOG(EXECUTED_FUNCTION,ID_PK_CUST,CUST_NAME,CUST_PERUSAHAAN,CUST_EMAIL,CUST_TELP,CUST_HP,CUST_ALAMAT,CUST_KETERANGAN,ID_FK_TOKO,CUST_STATUS,CUST_CREATE_DATE,CUST_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_CUST,NEW.CUST_NAME,NEW.CUST_PERUSAHAAN,NEW.CUST_EMAIL,NEW.CUST_TELP,NEW.CUST_HP,NEW.CUST_ALAMAT,NEW.CUST_KETERANGAN,NEW.ID_FK_TOKO,NEW.CUST_STATUS,NEW.CUST_CREATE_DATE,NEW.CUST_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;";
         executeQuery($sql);
@@ -108,7 +108,7 @@ class M_customer extends CI_Model{
                 "cust_telp" => $this->cust_telp,
                 "cust_hp" => $this->cust_hp,
                 "cust_alamat" => $this->cust_alamat,
-                "cust_keteranagan" => $this->cust_keteranagan,
+                "cust_keterangan" => $this->cust_keterangan,
                 "id_fk_toko" => $this->id_fk_toko,
                 "cust_status" => $this->cust_status,
                 "cust_create_date" => $this->cust_create_date,
@@ -132,7 +132,7 @@ class M_customer extends CI_Model{
                 "cust_telp" => $this->cust_telp,
                 "cust_hp" => $this->cust_hp,
                 "cust_alamat" => $this->cust_alamat,
-                "cust_keteranagan" => $this->cust_keteranagan,
+                "cust_keterangan" => $this->cust_keterangan,
                 "id_fk_toko" => $this->id_fk_toko,
                 "cust_last_modified" => $this->cust_last_modified,
                 "id_last_modified" => $this->id_last_modified
@@ -176,7 +176,7 @@ class M_customer extends CI_Model{
         if($this->cust_alamat == ""){
             return false;
         }
-        if($this->cust_keteranagan == ""){
+        if($this->cust_keterangan == ""){
             return false;
         }
         if($this->id_fk_toko == ""){
@@ -221,7 +221,7 @@ class M_customer extends CI_Model{
         if($this->cust_alamat == ""){
             return false;
         }
-        if($this->cust_keteranagan == ""){
+        if($this->cust_keterangan == ""){
             return false;
         }
         if($this->id_fk_toko == ""){
@@ -266,7 +266,7 @@ class M_customer extends CI_Model{
         if(!$this->set_cust_alamat($cust_alamat)){
             return false;
         }
-        if(!$this->set_cust_keteranagan($cust_keteranagan)){
+        if(!$this->set_cust_keterangan($cust_keterangan)){
             return false;
         }
         if(!$this->set_id_fk_toko($id_fk_toko)){
@@ -299,7 +299,7 @@ class M_customer extends CI_Model{
         if(!$this->set_cust_alamat($cust_alamat)){
             return false;
         }
-        if(!$this->set_cust_keteranagan($cust_keteranagan)){
+        if(!$this->set_cust_keterangan($cust_keterangan)){
             return false;
         }
         if(!$this->set_id_fk_toko($id_fk_toko)){
@@ -307,7 +307,7 @@ class M_customer extends CI_Model{
         }
         return true;
     }
-    public function set_delete(){
+    public function set_delete($id_pk_cust){
         if(!$this->set_id_pk_cust($id_pk_cust)){
             return false;
         }
@@ -362,9 +362,9 @@ class M_customer extends CI_Model{
         }
         return false;
     }
-    public function set_cust_keteranagan($cust_keteranagan){
-        if($cust_keteranagan != ""){
-            $this->cust_keteranagan = $cust_keteranagan;
+    public function set_cust_keterangan($cust_keterangan){
+        if($cust_keterangan != ""){
+            $this->cust_keterangan = $cust_keterangan;
             return true;
         }
         return false;
@@ -404,8 +404,8 @@ class M_customer extends CI_Model{
     public function get_cust_alamat(){
         return $this->cust_alamat;
     }
-    public function get_cust_keteranagan(){
-        return $this->cust_keteranagan;
+    public function get_cust_keterangan(){
+        return $this->cust_keterangan;
     }
     public function get_id_fk_toko(){
         return $this->id_fk_toko;
