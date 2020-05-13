@@ -564,4 +564,29 @@ class Pembelian extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function delete(){
+        $response["status"] = "SUCCESS";
+        $id_pk_pembelian = $this->input->get("id");
+        if($id_pk_pembelian != "" && is_numeric($id_pk_pembelian)){
+            $this->load->model("m_pembelian");
+            if($this->m_pembelian->set_delete($id_pk_pembelian)){
+                if($this->m_pembelian->delete()){
+                    $response["msg"] = "Data is deleted from database";
+                }
+                else{
+                    $response["status"] = "ERROR";
+                    $response["msg"] = "Delete function error";
+                }
+            }
+            else{
+                $response["status"] = "ERROR";
+                $response["msg"] = "Setter function error";
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "Invalid ID Supplier";
+        }
+        echo json_encode($response);
+    }
 }
