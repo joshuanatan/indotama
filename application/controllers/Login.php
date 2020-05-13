@@ -49,14 +49,14 @@ class Login extends CI_Controller {
 			}else{
 				$response["status"] = "ERROR";
 				$response["msg"] = "Login function is error!";
-				//redirect(md5("login"));
 			}
 		}else{
 			$response["status"] = "ERROR";
 			$response["msg"] = "Setter function is error";
-			//redirect("login");
+			
 		}
 		echo json_encode($response);
+		//redirect(md5("Login"));
 	}
 
 
@@ -147,8 +147,6 @@ class Login extends CI_Controller {
 					else {
 						echo "<script>alert('Cek email Anda dan ikuti instruksi selanjutnya untuk melakukan reset password!'); window.location.href='../99dea78007133396a7b8ed70578ac6ae';</script>";
 					}
-					//buat view new password
-					//buat method update password dan ke login lagi
 				}else{
 					$response["status"] = "ERROR";
 					$response["msg"] = "Employee tidak ditemukan!";
@@ -174,7 +172,7 @@ class Login extends CI_Controller {
         $passbaru = $this->input->post('passb');
         $passkonfir = $this->input->post('passk');
 
-        if($passbaru != $passkonfir || $passbaru=="" || $passbaru=="" || strlen($passbaru)<9 || strlen($passbaru)<9){
+        if($passbaru != $passkonfir || $passbaru=="" || $passbaru=="" || strlen($passbaru)<8){
             echo "1";
         }else{
             echo "0";
@@ -191,11 +189,12 @@ class Login extends CI_Controller {
         );
         $this->form_validation->set_rules($config);
         if($this->form_validation->run()){
+			
             $data = array(
                 "user_pass"=>password_hash($this->input->post('user_pass'),PASSWORD_DEFAULT),
-				"id_last_modified"=>$this->session->id_user,
+				"id_last_modified"=>$this->input->post('id_pk_user'),
 				"user_last_modified"=>date("Y-m-d H:i:s")
-            );
+			);
             $where = array(
                 "id_pk_user"=>$this->input->post('id_pk_user')
             );

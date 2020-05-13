@@ -267,10 +267,10 @@
                     <a href="<?php echo base_url();?>supplier">SUPPLIER</a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url();?>ReportMM/Stock">CUSTOMER</a>
+                    <a href="<?php echo base_url();?>customer">CUSTOMER</a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url();?>ReportMM/Keuangan">GUDANG</a>
+                    <a href="<?php echo base_url();?>warehouse">Warehouse</a>
                 </li>
                 <li>
                     <a href="<?php echo base_url();?>ReportMM/Keuangan">NAMA AKUN</a>
