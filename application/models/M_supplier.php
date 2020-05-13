@@ -150,6 +150,16 @@ class M_supplier extends CI_Model{
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;
     }
+    public function list(){
+        $sql = "SELECT id_pk_sup,sup_nama,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_last_modified
+        FROM ".$this->tbl_name." 
+        WHERE sup_status = ?  
+        ORDER BY SUP_PERUSAHAAN ASC";
+        $args = array(
+            "AKTIF"
+        );
+        return executeQuery($sql,$args);
+    }
     public function detail_by_perusahaan(){
         $where = array(
             "sup_perusahaan" => $this->sup_perusahaan
