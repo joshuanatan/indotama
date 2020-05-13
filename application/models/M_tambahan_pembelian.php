@@ -90,6 +90,16 @@ class M_tambahan_pembelian extends CI_Model{
         ";
         executeQuery($sql);
     }
+    public function list(){
+        $sql = "
+        SELECT id_pk_tmbhn,tmbhn,tmbhn_jumlah,tmbhn_satuan,tmbhn_harga,tmbhn_notes,tmbhn_status,tmbhn_last_modified
+        FROM ".$this->tbl_name."
+        WHERE TMBHN_STATUS = ? AND ID_FK_PEMBELIAN = ?";
+        $args = array(
+            "AKTIF",$this->id_fk_pembelian
+        );
+        return executeQuery($sql,$args);
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(
@@ -120,7 +130,6 @@ class M_tambahan_pembelian extends CI_Model{
                 "tmbhn_satuan" => $this->tmbhn_satuan, 
                 "tmbhn_harga" => $this->tmbhn_harga, 
                 "tmbhn_notes" => $this->tmbhn_notes, 
-                "id_fk_pembelian" => $this->id_fk_pembelian, 
                 "tmbhn_last_modified" => $this->tmbhn_last_modified, 
                 "id_last_modified" => $this->id_last_modified, 
             );
@@ -131,12 +140,11 @@ class M_tambahan_pembelian extends CI_Model{
     }
     public function delete(){
         if($this->check_delete()){
-
             $where = array(
                 "id_pk_tmbhn" => $this->id_pk_tmbhn
             );
             $data = array(
-                "tmbhn_status" => $this->tmbhn_status, 
+                "tmbhn_status" => "NONAKTIF", 
                 "tmbhn_last_modified" => $this->tmbhn_last_modified, 
                 "id_last_modified" => $this->id_last_modified, 
             );
@@ -198,9 +206,6 @@ class M_tambahan_pembelian extends CI_Model{
             return false;
         }
         if($this->tmbhn_notes == ""){
-            return false;
-        }
-        if($this->id_fk_pembelian == ""){
             return false;
         }
         if($this->tmbhn_last_modified == ""){

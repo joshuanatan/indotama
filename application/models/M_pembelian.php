@@ -16,10 +16,23 @@ class M_pembelian extends CI_Model{
 
     public function __construct(){
         parent::__construct();
+        $this->set_column("pem_pk_nomor","Nomor Pembelian",true);
+        $this->set_column("pem_tgl","Tanggal Pembelian",false);
+        $this->set_column("pem_status","Status",false);
+        $this->set_column("sup_perusahaan","Supplier",false);
+        $this->set_column("pem_last_modified","Last Modified",false);
         $this->pem_create_date = date("Y-m-d H:i:s");
         $this->pem_last_modified = date("Y-m-d H:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
+    }
+    private function set_column($col_name,$col_disp,$order_by){
+        $array = array(
+            "col_name" => $col_name,
+            "col_disp" => $col_disp,
+            "order_by" => $order_by
+        );
+        $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
     }
     public function install(){
         $sql = "
@@ -82,6 +95,43 @@ class M_pembelian extends CI_Model{
         ";
         executeQuery($sql);
     }
+    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+        $order_by = $this->columns[$order_by]["col_name"];
+        $search_query = "";
+        if($search_key != ""){
+            $search_query .= "AND
+            ( 
+                pem_pk_nomor LIKE '%".$search_key."%' OR
+                pem_tgl LIKE '%".$search_key."%' OR
+                pem_status LIKE '%".$search_key."%' OR
+                id_fk_supp LIKE '%".$search_key."%' OR
+                pem_create_date LIKE '%".$search_key."%' OR
+                pem_last_modified LIKE '%".$search_key."%' OR
+                id_create_data LIKE '%".$search_key."%' OR
+                id_last_modified LIKE '%".$search_key."%'
+            )";
+        }
+        $query = "
+        SELECT id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified
+        FROM ".$this->tbl_name." 
+        INNER JOIN MSTR_SUPPLIER ON MSTR_SUPPLIER.ID_PK_SUP = ".$this->tbl_name.".ID_FK_SUPP
+        WHERE pem_status = ? AND sup_status = ? ".$search_query."  
+        ORDER BY ".$order_by." ".$order_direction." 
+        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        $args = array(
+            "AKTIF","AKTIF"
+        );
+        $result["data"] = executeQuery($query,$args);
+        
+        $query = "
+        SELECT id_pk_pembelian
+        FROM ".$this->tbl_name." 
+        INNER JOIN MSTR_SUPPLIER ON MSTR_SUPPLIER.ID_PK_SUP = ".$this->tbl_name.".ID_FK_SUPP
+        WHERE pem_status = ? AND sup_status = ? ".$search_query."
+        ORDER BY ".$order_by." ".$order_direction;
+        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        return $result;
+    }
     public function columns(){
         return $this->columns;
     }
@@ -112,7 +162,7 @@ class M_pembelian extends CI_Model{
                 "pem_pk_nomor" => $this->pem_pk_nomor,
                 "pem_tgl" => $this->pem_tgl,
                 "id_fk_supp" => $this->id_fk_supp,
-                "id_create_data" => $this->id_create_data,
+                "pem_last_modified" => $this->pem_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
             updateRow($this->tbl_name,$data,$where);
@@ -129,7 +179,7 @@ class M_pembelian extends CI_Model{
             );
             $data = array(
                 "pem_status" => "NONAKTIF",
-                "id_create_data" => $this->id_create_data,
+                "pem_last_modified" => $this->pem_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
             updateRow($this->tbl_name,$data,$where);
@@ -176,19 +226,10 @@ class M_pembelian extends CI_Model{
         if($this->pem_tgl == ""){
             return false;
         }
-        if($this->pem_status == ""){
-            return false;
-        }
         if($this->id_fk_supp == ""){
             return false;
         }
-        if($this->pem_create_date == ""){
-            return false;
-        }
         if($this->pem_last_modified == ""){
-            return false;
-        }
-        if($this->id_create_data == ""){
             return false;
         }
         if($this->id_last_modified == ""){
@@ -223,7 +264,7 @@ class M_pembelian extends CI_Model{
         }
         return true;
     }
-    public function set_update($id_pk_pembelian,$pem_pk_nomor,$pem_tgl,$pem_status,$id_fk_supp){
+    public function set_update($id_pk_pembelian,$pem_pk_nomor,$pem_tgl,$id_fk_supp){
         if(!$this->set_id_pk_pembelian($id_pk_pembelian)){
             return false;
         }
@@ -231,9 +272,6 @@ class M_pembelian extends CI_Model{
             return false;
         }
         if(!$this->set_pem_tgl($pem_tgl)){
-            return false;
-        }
-        if(!$this->set_pem_status($pem_status)){
             return false;
         }
         if(!$this->set_id_fk_supp($id_fk_supp)){
