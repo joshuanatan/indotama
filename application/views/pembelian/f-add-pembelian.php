@@ -64,8 +64,6 @@
         </div>
     </div>
 </div>
-<datalist id = 'daftar_barang'></datalist>
-<datalist id = 'daftar_supplier'></datalist>
 <script>
     var brg_beli_row = 0;  
     function add_brg_beli_row(){
@@ -78,38 +76,5 @@
         var html = "<tr><td><input name = 'tambahan[]' checked value = "+tambahan_beli_row+" type = 'hidden'><input name = 'tmbhn"+tambahan_beli_row+"' type = 'text' class = 'form-control'></td><td><input name = 'tmbhn_jumlah"+tambahan_beli_row+"' type = 'text' class = 'form-control'></td><td><input name = 'tmbhn_harga"+tambahan_beli_row+"' type = 'text' class = 'form-control'></td><td><input name = 'tmbhn_notes"+tambahan_beli_row+"' type = 'text' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
         $("#add_tambahan_beli_but_container").before(html);
         tambahan_beli_row++;        
-    }
-    window.onfocus = function(){
-        $.ajax({
-            url:"<?php echo base_url();?>ws/barang/list",
-            type:"GET",
-            dataType:"JSON",
-            success:function(respond){
-                var html = "";
-                if(respond["status"] == "SUCCESS"){
-                    for(var a = 0; a<respond["content"].length; a++){
-                        html+="<option value = '"+respond['content'][a]["nama"]+"'></option>";
-                    }
-                    $("#daftar_barang").html(html);
-                }
-            }
-        });
-        $.ajax({
-            url:"<?php echo base_url();?>ws/supplier/list",
-            type:"GET",
-            dataType:"JSON",
-            success:function(respond){
-                var html = "";
-                if(respond["status"] == "SUCCESS"){
-                    for(var a = 0; a<respond["content"].length; a++){
-                        if(!respond['content'][a]["nama"]){
-                            respond['content'][a]["nama"] = "-";
-                        }
-                        html+="<option value = '"+respond['content'][a]["perusahaan"]+"'>"+respond['content'][a]["nama"]+"</option>";
-                    }
-                    $("#daftar_supplier").html(html);
-                }
-            }
-        })
     }
 </script>

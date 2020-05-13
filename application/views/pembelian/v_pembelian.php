@@ -98,3 +98,41 @@ $data = array(
 <?php $this->load->view("pembelian/f-add-pembelian",$data);?>
 <?php $this->load->view("pembelian/f-update-pembelian",$data);?>
 <?php $this->load->view("pembelian/f-delete-pembelian",$data);?>
+
+<datalist id = 'daftar_barang'></datalist>
+<datalist id = 'daftar_supplier'></datalist>
+<script>
+    window.onfocus = function(){
+        $.ajax({
+            url:"<?php echo base_url();?>ws/barang/list",
+            type:"GET",
+            dataType:"JSON",
+            success:function(respond){
+                var html = "";
+                if(respond["status"] == "SUCCESS"){
+                    for(var a = 0; a<respond["content"].length; a++){
+                        html+="<option value = '"+respond['content'][a]["nama"]+"'></option>";
+                    }
+                    $("#daftar_barang").html(html);
+                }
+            }
+        });
+        $.ajax({
+            url:"<?php echo base_url();?>ws/supplier/list",
+            type:"GET",
+            dataType:"JSON",
+            success:function(respond){
+                var html = "";
+                if(respond["status"] == "SUCCESS"){
+                    for(var a = 0; a<respond["content"].length; a++){
+                        if(!respond['content'][a]["nama"]){
+                            respond['content'][a]["nama"] = "-";
+                        }
+                        html+="<option value = '"+respond['content'][a]["perusahaan"]+"'>"+respond['content'][a]["nama"]+"</option>";
+                    }
+                    $("#daftar_supplier").html(html);
+                }
+            }
+        })
+    }
+</script>
