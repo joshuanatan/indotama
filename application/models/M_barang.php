@@ -163,6 +163,26 @@ class M_barang extends CI_Model{
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;
     }
+    public function detail_by_name(){
+        $where = array(
+            "brg_nama" => $this->brg_nama
+        );
+        $field = array(
+            "id_pk_brg","brg_kode","brg_nama","brg_ket","brg_minimal","brg_status","brg_satuan","brg_image","brg_create_date","brg_last_modified","id_create_data","id_last_modified","id_fk_brg_jenis","id_fk_brg_merk"
+        );
+        return selectRow($this->tbl_name,$where,$field);
+    }
+    public function short_insert(){
+        $data = array(
+            "brg_nama" => $this->brg_nama,
+            "brg_status" => "AKTIF",
+            "brg_create_date" => $this->brg_create_date,
+            "brg_last_modified" => $this->brg_last_modified,
+            "id_create_data" => $this->id_create_data,
+            "id_last_modified" => $this->id_last_modified
+        );
+        return insertRow($this->tbl_name,$data);
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(

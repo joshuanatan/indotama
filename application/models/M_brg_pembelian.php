@@ -7,6 +7,7 @@ class M_brg_pembelian extends CI_Model{
     private $id_pk_brg_pembelian;
     private $brg_pem_qty;
     private $brg_pem_satuan;
+    private $brg_pem_harga;
     private $brg_pem_note;
     private $id_fk_pembelian;
     private $id_fk_barang;
@@ -24,10 +25,12 @@ class M_brg_pembelian extends CI_Model{
     }
     public function install(){
         $sql = "
+        DROP TABLE IF EXISTS TBL_BRG_PEMBELIAN;
         CREATE TABLE TBL_BRG_PEMBELIAN(
             ID_PK_BRG_PEMBELIAN INT PRIMARY KEY AUTO_INCREMENT,
             BRG_PEM_QTY DOUBLE,
             BRG_PEM_SATUAN VARCHAR(20),
+            BRG_PEM_HARGA INT,
             BRG_PEM_NOTE VARCHAR(150),
             ID_FK_PEMBELIAN INT,
             ID_FK_BARANG INT,
@@ -36,12 +39,14 @@ class M_brg_pembelian extends CI_Model{
             ID_CREATE_DATA INT,
             ID_LAST_MODIFIED INT
         );
+        DROP TABLE IF EXISTS TBL_BRG_PEMBELIAN_LOG;
         CREATE TABLE TBL_BRG_PEMBELIAN_LOG(
             ID_PK_BRG_PEMBELIAN_LOG INT PRIMARY KEY AUTO_INCREMENT,
             EXECUTED_FUNCTION VARCHAR(30),
             ID_PK_BRG_PEMBELIAN INT,
             BRG_PEM_QTY DOUBLE,
             BRG_PEM_SATUAN VARCHAR(20),
+            BRG_PEM_HARGA INT,
             BRG_PEM_NOTE VARCHAR(150),
             ID_FK_PEMBELIAN INT,
             ID_FK_BARANG INT,
@@ -62,7 +67,7 @@ class M_brg_pembelian extends CI_Model{
             SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.BRG_PEM_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO TBL_BRG_PEMBELIAN_LOG(EXECUTED_FUNCTION,ID_PK_BRG_PEMBELIAN,BRG_PEM_QTY,BRG_PEM_SATUAN,BRG_PEM_NOTE,ID_FK_PEMBELIAN,ID_FK_BARANG,BRG_PEM_CREATE_DATE,BRG_PEM_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_BRG_PEMBELIAN,NEW.BRG_PEM_QTY,NEW.BRG_PEM_SATUAN,NEW.BRG_PEM_NOTE,NEW.ID_FK_PEMBELIAN,NEW.ID_FK_BARANG,NEW.BRG_PEM_CREATE_DATE,NEW.BRG_PEM_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO TBL_BRG_PEMBELIAN_LOG(EXECUTED_FUNCTION,ID_PK_BRG_PEMBELIAN,BRG_PEM_QTY,BRG_PEM_SATUAN,BRG_PEM_HARGA,BRG_PEM_NOTE,ID_FK_PEMBELIAN,ID_FK_BARANG,BRG_PEM_CREATE_DATE,BRG_PEM_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_BRG_PEMBELIAN,NEW.BRG_PEM_QTY,NEW.BRG_PEM_SATUAN,NEW.BRG_PEM_HARGA,NEW.BRG_PEM_NOTE,NEW.ID_FK_PEMBELIAN,NEW.ID_FK_BARANG,NEW.BRG_PEM_CREATE_DATE,NEW.BRG_PEM_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;
         
@@ -77,7 +82,7 @@ class M_brg_pembelian extends CI_Model{
             SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.BRG_PEM_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO TBL_BRG_PEMBELIAN_LOG(EXECUTED_FUNCTION,ID_PK_BRG_PEMBELIAN,BRG_PEM_QTY,BRG_PEM_SATUAN,BRG_PEM_NOTE,ID_FK_PEMBELIAN,ID_FK_BARANG,BRG_PEM_CREATE_DATE,BRG_PEM_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_BRG_PEMBELIAN,NEW.BRG_PEM_QTY,NEW.BRG_PEM_SATUAN,NEW.BRG_PEM_NOTE,NEW.ID_FK_PEMBELIAN,NEW.ID_FK_BARANG,NEW.BRG_PEM_CREATE_DATE,NEW.BRG_PEM_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO TBL_BRG_PEMBELIAN_LOG(EXECUTED_FUNCTION,ID_PK_BRG_PEMBELIAN,BRG_PEM_QTY,BRG_PEM_SATUAN,BRG_PEM_HARGA,BRG_PEM_NOTE,ID_FK_PEMBELIAN,ID_FK_BARANG,BRG_PEM_CREATE_DATE,BRG_PEM_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_BRG_PEMBELIAN,NEW.BRG_PEM_QTY,NEW.BRG_PEM_SATUAN,NEW.BRG_PEM_HARGA,NEW.BRG_PEM_NOTE,NEW.ID_FK_PEMBELIAN,NEW.ID_FK_BARANG,NEW.BRG_PEM_CREATE_DATE,NEW.BRG_PEM_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;";
         executeQuery($sql);
@@ -86,10 +91,11 @@ class M_brg_pembelian extends CI_Model{
         return $this->columns;
     }
     public function insert(){
-        if($this->insert()){
+        if($this->check_insert()){
             $data = array(
                 "brg_pem_qty" => $this->brg_pem_qty,
                 "brg_pem_satuan" => $this->brg_pem_satuan,
+                "brg_pem_harga" => $this->brg_pem_harga,
                 "brg_pem_note" => $this->brg_pem_note,
                 "id_fk_pembelian" => $this->id_fk_pembelian,
                 "id_fk_barang" => $this->id_fk_barang,
@@ -105,13 +111,14 @@ class M_brg_pembelian extends CI_Model{
         }
     }
     public function update(){
-        if($this->update()){
+        if($this->check_update()){
             $where = array(
                 "id_pk_brg_pembelian" => $this->id_pk_brg_pembelian,
             );
             $data = array(
                 "brg_pem_qty" => $this->brg_pem_qty,
                 "brg_pem_satuan" => $this->brg_pem_satuan,
+                "brg_pem_harga" => $this->brg_pem_harga,
                 "brg_pem_note" => $this->brg_pem_note,
                 "id_fk_pembelian" => $this->id_fk_pembelian,
                 "id_fk_barang" => $this->id_fk_barang,
@@ -126,7 +133,7 @@ class M_brg_pembelian extends CI_Model{
         }
     }
     public function delete(){
-        if($this->delete()){
+        if($this->check_delete()){
             $where = array(
                 "id_pk_brg_pembelian" => $this->id_pk_brg_pembelian,
             );
@@ -144,6 +151,9 @@ class M_brg_pembelian extends CI_Model{
             return false;
         }
         if($this->brg_pem_satuan == ""){
+            return false;
+        }
+        if($this->brg_pem_harga == ""){
             return false;
         }
         if($this->brg_pem_note == ""){
@@ -180,6 +190,9 @@ class M_brg_pembelian extends CI_Model{
         if($this->brg_pem_satuan == ""){
             return false;
         }
+        if($this->brg_pem_harga == ""){
+            return false;
+        }
         if($this->brg_pem_note == ""){
             return false;
         }
@@ -209,11 +222,14 @@ class M_brg_pembelian extends CI_Model{
         }
         return true;
     }
-    public function set_insert($brg_pem_qty,$brg_pem_satuan,$brg_pem_note,$id_fk_pembelian,$id_fk_barang){
+    public function set_insert($brg_pem_qty,$brg_pem_satuan,$brg_pem_harga,$brg_pem_note,$id_fk_pembelian,$id_fk_barang){
         if(!$this->set_brg_pem_qty($brg_pem_qty)){
             return false;
         }
         if(!$this->set_brg_pem_satuan($brg_pem_satuan)){
+            return false;
+        }
+        if(!$this->set_brg_pem_harga($brg_pem_harga)){
             return false;
         }
         if(!$this->set_brg_pem_note($brg_pem_note)){
@@ -227,7 +243,7 @@ class M_brg_pembelian extends CI_Model{
         }
         return true;
     }
-    public function set_update($id_pk_brg_pembelian,$brg_pem_qty,$brg_pem_satuan,$brg_pem_note,$id_fk_pembelian,$id_fk_barang){
+    public function set_update($id_pk_brg_pembelian,$brg_pem_satuan,$brg_pem_harga,$brg_pem_note,$id_fk_pembelian,$id_fk_barang){
         if($this->set_id_pk_brg_pembelian($id_pk_brg_pembelian)){
             return false;
         }
@@ -235,6 +251,9 @@ class M_brg_pembelian extends CI_Model{
             return false;
         }
         if($this->set_brg_pem_satuan($brg_pem_satuan)){
+            return false;
+        }
+        if(!$this->set_brg_pem_harga($brg_pem_harga)){
             return false;
         }
         if($this->set_brg_pem_note($brg_pem_note)){
@@ -275,6 +294,13 @@ class M_brg_pembelian extends CI_Model{
         }
         return false;
     }
+    public function set_brg_pem_harga($brg_pem_harga){
+        if($brg_pem_harga != ""){
+            $this->brg_pem_harga = $brg_pem_harga;
+            return true;
+        }
+        return false;
+    }
     public function set_brg_pem_note($brg_pem_note){
         if($brg_pem_note != ""){
             $this->brg_pem_note = $brg_pem_note;
@@ -304,6 +330,9 @@ class M_brg_pembelian extends CI_Model{
     }
     public function get_brg_pem_satuan(){
         return $this->brg_pem_satuan;
+    }
+    public function get_brg_pem_harga(){
+        return $this->brg_pem_harga;
     }
     public function get_brg_pem_note(){
         return $this->brg_pem_note;
