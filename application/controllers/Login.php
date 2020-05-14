@@ -6,7 +6,7 @@ class Login extends CI_Controller {
 	public function index()
 	{
 		$this->register_user();
-		$this->load->view('V_log_in');
+		$this->load->view('login/V_log_in');
 	}
 	public function set_session_dummy(){
 		$this->session->id_user = 1;
@@ -44,7 +44,7 @@ class Login extends CI_Controller {
 		redirect(md5("Login"));
 	}
 	public function forget_password(){
-		$this->load->view('V_forget_password');
+		$this->load->view('login/V_forget_password');
 	}
 
 	public function forget_password_method(){
@@ -116,7 +116,7 @@ class Login extends CI_Controller {
 
 	public function forget_get_new_pass($id_pk_user){
 		$data['id_pk_user'] = $id_pk_user;
-		$this->load->view('V_reset_password',$data);
+		$this->load->view('login/V_reset_password',$data);
 	}
 
 	function cek_password(){
