@@ -97,6 +97,8 @@
                                                                        
                                                                         <button class="btn btn-primary btn-icon-anim btn-square"  data-toggle = "modal" data-target = "#edit_warehouse<?php echo $x+1 ?>"><i class="fa fa-pencil"></i></button>
                                                                         <button class="btn btn-danger btn-icon-anim btn-square" data-toggle = "modal" data-target = "#hapus_warehouse<?php echo $x+1 ?>"><i class="icon-trash"></i></button>
+                                                                        <a href="<?php echo base_url() ?>warehouse/warehouse_barang/<?php echo $view_warehouse[$x]['ID_PK_WAREHOUSE'] ?>" ><button class="btn btn-success btn-icon-anim btn-square" 
+                                                                        ><i class="icon-eye"></i></button></a>
                                                                         
                                                                     </td>
                                                                 </tr>

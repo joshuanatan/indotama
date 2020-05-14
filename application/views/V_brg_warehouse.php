@@ -32,53 +32,21 @@
                                 <div class="panel-wrapper collapse in">
                                     <div  class="panel-body">
                                         <div class="row mt-10 ">
-                                            <button class="btn btn-warning btn-anim pull-right" style="margin-right:30px !important" data-toggle = "modal" data-target = "#tambah_customer"><i class="fa fa-pencil"></i><span class="btn-text">Tambah Customer</span></button>
+                                            <button class="btn btn-warning btn-anim pull-right" style="margin-right:30px !important" data-toggle = "modal" data-target = "#tambah_daftar_barang"><i class="fa fa-pencil"></i><span class="btn-text">Tambah Daftar Barang</span></button>
                                         </div>
-<div class = "modal fade" id = "tambah_customer">
+<div class = "modal fade" id = "tambah_daftar_barang">
     <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
-                <h4 class = "modal-title">Tambah Customer</h4>
+                <h4 class = "modal-title">Tambah Daftar Barang</h4>
             </div>
             <div class = "modal-body">
-                <form method="POST" action="<?php echo base_url() ?>customer/register_customer">
+                <form method="POST" action="<?php echo base_url() ?>warehouse/register_brg_warehouse">
                     <div class = "form-group">
-                        <h5>Nama Lengkap</h5>
+                        <h5>Notes</h5>
                         <input type="text" class="form-control" name="cust_name" required>
                     </div>
-                    <div class = "form-group">
-                        <h5>Perusahaan</h5>
-                        <input type="text" class="form-control" name="cust_perusahaan" required>
-                    </div>
-                    <div class = "form-group">
-                        <h5>Email</h5>
-                        <input type="email" class="form-control" name="cust_email" required>
-                    </div>
-                    <div class = "form-group">
-                        <h5>No Telp</h5>
-                        <input type="text" class="form-control" name="cust_telp" required>
-                    </div>
-                    <div class = "form-group">
-                        <h5>No HP</h5>
-                        <input type="text" class="form-control" name="cust_hp" required>
-                    </div>
-                    <div class = "form-group">
-                        <h5>Alamat</h5>
-                        <input type="text" class="form-control" name="cust_alamat" required>
-                    </div>
-                    <div class = "form-group">
-                        <h5>Keterangan</h5>
-                        <input type="text" class="form-control" name="cust_keterangan" required>
-                    </div>
-                    <div class = "form-group">
-                        <h5>Toko</h5>
-                        <select class="form-control" name="id_fk_toko">
-                            <option value="0" disabled>Pilih Toko</option>
-                            <?php for($p=0 ; $p<count($toko); $p++){ ?>
-                                <option value="<?php echo $toko[$p]['ID_PK_TOKO'] ?>"><?php echo $toko[$p]['TOKO_NAMA']?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
+                   
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
                         <input type="submit" class = "btn btn-sm btn-primary">
@@ -108,14 +76,14 @@
                                                                 
                                                                 <tbody style="font-size:10px !important">
                                                                 <?php 
-                                                                for($x=0; $x<count($view_customer); $x++){ ?>
+                                                                for($x=0; $x<count($view_barang_wh); $x++){ ?>
                                                                 <tr>
                                                                     <td><?php echo $x+1 ?></td>
                                                                     <td>
-                                                                    <td><?php echo $view_customer[$x]['CUST_NAME'] ?></td>
-                                                                    <td><?php echo $view_customer[$x]['CUST_PERUSAHAAN'] ?></td>
-                                                                    <td><?php echo $view_customer[$x]['CUST_EMAIL'] ?></td>
-                                                                    <td><?php echo $view_customer[$x]['CUST_TELP'] ?></td>
+                                                                    <td><?php echo $view_barang_wh[$x]['CUST_NAME'] ?></td>
+                                                                    <td><?php echo $view_barang_wh[$x]['CUST_PERUSAHAAN'] ?></td>
+                                                                    <td><?php echo $view_barang_wh[$x]['CUST_EMAIL'] ?></td>
+                                                                    <td><?php echo $view_barang_wh[$x]['CUST_TELP'] ?></td>
                                                                     <td class="text-center">
                                                                        
                                                                         <button class="btn btn-primary btn-icon-anim btn-square"  data-toggle = "modal" data-target = "#edit_customer<?php echo $x+1 ?>"><i class="fa fa-pencil"></i></button>
@@ -131,41 +99,41 @@
             </div>
             <div class = "modal-body">
                 <form method="POST" action="<?php echo base_url() ?>customer/edit_customer">
-                    <input type="hidden" name="id_pk_cust" value="<?php echo $view_customer[$x]['ID_PK_CUST'] ?>"> 
+                    <input type="hidden" name="id_pk_cust" value="<?php echo $view_barang_wh[$x]['ID_PK_CUST'] ?>"> 
                     <div class = "form-group">
                         <h5>Nama Lengkap</h5>
-                        <input type="text" class="form-control" value="<?php echo $view_customer[$x]['CUST_NAME'] ?>" name="cust_name" required>
+                        <input type="text" class="form-control" value="<?php echo $view_barang_wh[$x]['CUST_NAME'] ?>" name="cust_name" required>
                     </div>
                     <div class = "form-group">
                         <h5>Perusahaan</h5>
-                        <input type="text" class="form-control" value="<?php echo $view_customer[$x]['CUST_PERUSAHAAN'] ?>" name="cust_perusahaan" required>
+                        <input type="text" class="form-control" value="<?php echo $view_barang_wh[$x]['CUST_PERUSAHAAN'] ?>" name="cust_perusahaan" required>
                     </div>
                     <div class = "form-group">
                         <h5>Email</h5>
-                        <input type="email" class="form-control" value="<?php echo $view_customer[$x]['CUST_EMAIL'] ?>" name="cust_email" required>
+                        <input type="email" class="form-control" value="<?php echo $view_barang_wh[$x]['CUST_EMAIL'] ?>" name="cust_email" required>
                     </div>
                     <div class = "form-group">
                         <h5>No Telp</h5>
-                        <input type="text" class="form-control" value="<?php echo $view_customer[$x]['CUST_TELP'] ?>" name="cust_telp" required>
+                        <input type="text" class="form-control" value="<?php echo $view_barang_wh[$x]['CUST_TELP'] ?>" name="cust_telp" required>
                     </div>
                     <div class = "form-group">
                         <h5>No HP</h5>
-                        <input type="text" class="form-control" value="<?php echo $view_customer[$x]['CUST_HP'] ?>" name="cust_hp" required>
+                        <input type="text" class="form-control" value="<?php echo $view_barang_wh[$x]['CUST_HP'] ?>" name="cust_hp" required>
                     </div>
                     <div class = "form-group">
                         <h5>Alamat</h5>
-                        <input type="text" class="form-control" value="<?php echo $view_customer[$x]['CUST_ALAMAT'] ?>" name="cust_alamat" required>
+                        <input type="text" class="form-control" value="<?php echo $view_barang_wh[$x]['CUST_ALAMAT'] ?>" name="cust_alamat" required>
                     </div>
                     <div class = "form-group">
                         <h5>Keterangan</h5>
-                        <input type="text" class="form-control" value="<?php echo $view_customer[$x]['CUST_KETERANGAN'] ?>" name="cust_keterangan" required>
+                        <input type="text" class="form-control" value="<?php echo $view_barang_wh[$x]['CUST_KETERANGAN'] ?>" name="cust_keterangan" required>
                     </div>
                     <div class = "form-group">
                         <h5>Toko</h5>
                         <select class="form-control" name="id_fk_toko">
                             <option value="0" disabled>Pilih Toko</option>
                             <?php for($p=0 ; $p<count($toko); $p++){ ?>
-                                <option value="<?php echo $toko[$p]['ID_PK_TOKO'] ?>"  <?php  if($view_customer[$x]['ID_FK_TOKO']==$toko[$p]['ID_PK_TOKO']){echo "selected";} ?>><?php echo $toko[$p]['TOKO_NAMA']?></option>
+                                <option value="<?php echo $toko[$p]['ID_PK_TOKO'] ?>"  <?php  if($view_barang_wh[$x]['ID_FK_TOKO']==$toko[$p]['ID_PK_TOKO']){echo "selected";} ?>><?php echo $toko[$p]['TOKO_NAMA']?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -187,9 +155,9 @@
             </div>
             <div class = "modal-body">
                 <form method="POST" action="<?php echo base_url() ?>customer/hapus_customer">
-                    <input type="hidden" name="id_pk_cust" value="<?php echo $view_customer[$x]['ID_PK_CUST'] ?>"> 
+                    <input type="hidden" name="id_pk_cust" value="<?php echo $view_barang_wh[$x]['ID_PK_CUST'] ?>"> 
                     <div class = "form-group">
-                        <h5 style="text-align:center">Apakah anda yakin akan menghapus customer dengan nama: "<b><?php echo $view_customer[$x]['CUST_NAME'] ?></b>"?</h5>
+                        <h5 style="text-align:center">Apakah anda yakin akan menghapus customer dengan nama: "<b><?php echo $view_barang_wh[$x]['CUST_NAME'] ?></b>"?</h5>
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
