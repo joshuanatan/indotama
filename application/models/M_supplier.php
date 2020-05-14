@@ -150,6 +150,25 @@ class M_supplier extends CI_Model{
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;
     }
+    public function list(){
+        $sql = "SELECT id_pk_sup,sup_nama,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_last_modified
+        FROM ".$this->tbl_name." 
+        WHERE sup_status = ?  
+        ORDER BY SUP_PERUSAHAAN ASC";
+        $args = array(
+            "AKTIF"
+        );
+        return executeQuery($sql,$args);
+    }
+    public function detail_by_perusahaan(){
+        $where = array(
+            "sup_perusahaan" => $this->sup_perusahaan
+        );
+        $field = array(
+            "id_pk_sup","sup_nama","sup_perusahaan","sup_email","sup_telp","sup_hp","sup_alamat","sup_keterangan","sup_status","sup_last_modified"
+        );
+        return selectRow($this->tbl_name,$where,$field);
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(
@@ -169,6 +188,17 @@ class M_supplier extends CI_Model{
             return insertRow($this->tbl_name,$data);
         }
         return false;
+    }
+    public function short_insert(){
+        $data = array(
+            "sup_perusahaan" => $this->sup_perusahaan,
+            "sup_status" => "AKTIF",
+            "sup_create_date" => $this->sup_create_date,
+            "sup_last_modified" => $this->sup_last_modified,
+            "id_create_data" => $this->id_create_data,
+            "id_last_modified" => $this->id_last_modified
+        );
+        return insertRow($this->tbl_name,$data);
     }
     public function update(){
         if($this->check_update()){

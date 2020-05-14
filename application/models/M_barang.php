@@ -163,6 +163,40 @@ class M_barang extends CI_Model{
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;
     }
+    public function list(){
+        $sql = "SELECT id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_last_modified,brg_merk_nama,brg_jenis_nama,GROUP_CONCAT(tbl_barang_ukuran.UKURAN SEPARATOR ',') as ukuran
+        FROM ".$this->tbl_name." 
+        INNER JOIN MSTR_BARANG_JENIS ON MSTR_BARANG_JENIS.ID_PK_BRG_JENIS = ".$this->tbl_name.".ID_FK_BRG_JENIS
+        INNER JOIN MSTR_BARANG_MERK ON MSTR_BARANG_MERK.ID_PK_BRG_MERK = ".$this->tbl_name.".ID_FK_BRG_MERK
+        LEFT JOIN TBL_BARANG_UKURAN ON TBL_BARANG_UKURAN.ID_FK_BARANG = ".$this->tbl_name.".ID_PK_BRG
+        WHERE BRG_STATUS = ? AND BRG_JENIS_STATUS = ? AND BRG_MERK_STATUS = ?  
+        GROUP BY ID_PK_BRG 
+        ORDER BY BRG_NAMA ASC"; 
+        $args = array(
+            "AKTIF","AKTIF","AKTIF"
+        );
+        return executeQuery($sql,$args);
+    }
+    public function detail_by_name(){
+        $where = array(
+            "brg_nama" => $this->brg_nama
+        );
+        $field = array(
+            "id_pk_brg","brg_kode","brg_nama","brg_ket","brg_minimal","brg_status","brg_satuan","brg_image","brg_create_date","brg_last_modified","id_create_data","id_last_modified","id_fk_brg_jenis","id_fk_brg_merk"
+        );
+        return selectRow($this->tbl_name,$where,$field);
+    }
+    public function short_insert(){
+        $data = array(
+            "brg_nama" => $this->brg_nama,
+            "brg_status" => "AKTIF",
+            "brg_create_date" => $this->brg_create_date,
+            "brg_last_modified" => $this->brg_last_modified,
+            "id_create_data" => $this->id_create_data,
+            "id_last_modified" => $this->id_last_modified
+        );
+        return insertRow($this->tbl_name,$data);
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(

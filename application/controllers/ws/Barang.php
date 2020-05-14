@@ -65,6 +65,33 @@ class Barang extends CI_Controller{
         );
         echo json_encode($response);
     }
+    public function list(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_barang");
+        $result = $this->m_barang->list();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_brg"];
+                $response["content"][$a]["kode"] = $result[$a]["brg_kode"];
+                $response["content"][$a]["nama"] = $result[$a]["brg_nama"];
+                $response["content"][$a]["ket"] = $result[$a]["brg_ket"];
+                $response["content"][$a]["minimal"] = $result[$a]["brg_minimal"];
+                $response["content"][$a]["status"] = $result[$a]["brg_status"];
+                $response["content"][$a]["satuan"] = $result[$a]["brg_satuan"];
+                $response["content"][$a]["image"] = $result[$a]["brg_image"];
+                $response["content"][$a]["last_modified"] = $result[$a]["brg_last_modified"];
+                $response["content"][$a]["merk_nama"] = $result[$a]["brg_merk_nama"];
+                $response["content"][$a]["jenis_nama"] = $result[$a]["brg_jenis_nama"];
+                $response["content"][$a]["ukuran"] = $result[$a]["ukuran"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "No Barang List";
+        }
+        echo json_encode($response);
+    }
     public function register(){
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("kode","kode","required");

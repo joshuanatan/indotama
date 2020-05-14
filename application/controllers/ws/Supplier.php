@@ -63,6 +63,31 @@ class Supplier extends CI_Controller{
         );
         echo json_encode($response);
     }
+    public function list(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_supplier");
+        $result = $this->m_supplier->list();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_sup"];
+                $response["content"][$a]["nama"] = $result[$a]["sup_nama"];
+                $response["content"][$a]["perusahaan"] = $result[$a]["sup_perusahaan"];
+                $response["content"][$a]["email"] = $result[$a]["sup_email"];
+                $response["content"][$a]["telp"] = $result[$a]["sup_telp"];
+                $response["content"][$a]["hp"] = $result[$a]["sup_hp"];
+                $response["content"][$a]["alamat"] = $result[$a]["sup_alamat"];
+                $response["content"][$a]["keterangan"] = $result[$a]["sup_keterangan"];
+                $response["content"][$a]["status"] = $result[$a]["sup_status"];
+                $response["content"][$a]["last_modified"] = $result[$a]["sup_last_modified"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "No Barang List";
+        }
+        echo json_encode($response);
+    }
     public function register(){
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("nama","nama","required");
@@ -171,5 +196,4 @@ class Supplier extends CI_Controller{
         }
         echo json_encode($response);
     }
-    public function list(){}
 }
