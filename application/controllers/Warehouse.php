@@ -129,7 +129,7 @@ class Warehouse extends CI_Controller {
         );
         $data['warehouse'] = selectRow("mstr_warehouse",$where1)->result_array();
         $data['view_barang_wh'] = selectRow("tbl_brg_warehouse",$where)->result_array();
-        $this->load->view("V_brg_warehouse",$data);
+        $this->load->view("brg_warehouse/V_brg_warehouse",$data);
     }
     
     public function register_brg_warehouse(){

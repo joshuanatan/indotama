@@ -32,30 +32,9 @@
                                 <div class="panel-wrapper collapse in">
                                     <div  class="panel-body">
                                         <div class="row mt-10 ">
-                                            <button class="btn btn-warning btn-anim pull-right" style="margin-right:30px !important" data-toggle = "modal" data-target = "#tambah_daftar_barang"><i class="fa fa-pencil"></i><span class="btn-text">Tambah Daftar Barang</span></button>
+                                            <button class="btn btn-warning btn-anim pull-right" style="margin-right:30px !important" data-toggle = "modal" data-target = "#register_modal"><i class="fa fa-pencil"></i><span class="btn-text">Tambah Daftar Barang</span></button>
                                         </div>
-<div class = "modal fade" id = "tambah_daftar_barang">
-    <div class = "modal-dialog">
-        <div class = "modal-content">
-            <div class = "modal-header">
-                <h4 class = "modal-title">Tambah Daftar Barang</h4>
-            </div>
-            <div class = "modal-body">
-                <form method="POST" action="<?php echo base_url() ?>warehouse/register_brg_warehouse">
-                    <div class = "form-group">
-                        <h5>Notes</h5>
-                        <input type="text" class="form-control" name="cust_name" required>
-                    </div>
-                   
-                    <div class = "form-group">
-                        <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <input type="submit" class = "btn btn-sm btn-primary">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+
                                         <br>
                                         <div  class="pills-struct vertical-pills">
                                             <div class="tab-content" id="myTabContent_10">
@@ -211,3 +190,35 @@
 </body>
 
 </html>
+
+<script>
+    var ctrl = "barang_warehouse";
+    var url_add = "";
+</script>
+<?php
+$data = array(
+    "page_title" => "Barang Warehouse"
+);
+?>
+<?php $this->load->view("_core_script/register_func");?>
+<?php $this->load->view("brg_warehouse/f-add-brg_warehouse",$data);?>
+
+<datalist id = 'daftar_barang'></datalist>
+<script>
+    window.onfocus = function(){
+        $.ajax({
+            url:"<?php echo base_url();?>ws/barang/list",
+            type:"GET",
+            dataType:"JSON",
+            success:function(respond){
+                var html = "";
+                if(respond["status"] == "SUCCESS"){
+                    for(var a = 0; a<respond["content"].length; a++){
+                        html+="<option value = '"+respond['content'][a]["nama"]+"'></option>";
+                    }
+                    $("#daftar_barang").html(html);
+                }
+            }
+        });
+    }
+</script>
