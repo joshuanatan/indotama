@@ -1,25 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+date_default_timezone_set("Asia/Jakarta");
 class Login extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
 	public function index()
 	{
+		$this->register_user();
 		$this->load->view('V_log_in');
 	}
 	public function set_session_dummy(){
@@ -55,43 +41,8 @@ class Login extends CI_Controller {
 			$response["msg"] = "Setter function is error";
 			
 		}
-		echo json_encode($response);
 		//redirect(md5("Login"));
 	}
-
-
-	public function register_user(){
-		$response["status"] = "SUCCESS";
-		//$this->form_validation->set_rules("user_name","Username","required|min_length[5]|max_length[15]");
-		//$this->form_validation->set_rules("user_email","Email","required|valid_email");
-		//$this->form_validation->set_rules("user_pass","Password","required|min_length[8]");
-
-		//if($this->form_validation->run()){
-			$this->load->model("m_user");
-			$user_name = "wivinadaicy";//$this->input->post("user_name");
-			$user_pass = "qwerty123";//$this->input->post("user_pass");
-			$user_email = "wivinadaicy.wd@gmail.com";//$this->input->post("user_email");
-			$id_fk_role = 1;//$this->input->post("id_fk_role");
-			$user_status = "AKTIF";
-
-			if($this->m_user->set_insert($user_name,$user_pass,$user_email,$user_status,$id_fk_role,)){
-				if($this->m_user->insert()){
-					$response["msg"] = "Data is recorded to database";
-				}else{
-					$response["status"] = "ERROR";
-					$response["msg"] = "Insert function is error";
-				}
-			}else{
-				$response["status"] = "ERROR";
-				$response["msg"] = "Setter function is error";
-			}
-		/*}else{
-			$response["status"] = "ERROR";
-			$this->session->set_flashdata("msg",$response['msg']);
-		}*/
-		echo json_encode($response);
-	}
-
 	public function forget_password(){
 		$this->load->view('V_forget_password');
 	}
@@ -220,5 +171,23 @@ class Login extends CI_Controller {
 		);
 		$this->session->unset_userdata($session);
 		redirect(md5("Login"));
+	}
+	private function register_user(){
+		$this->load->model("m_user");
+		$result = $this->m_user->list();
+		if($result->num_rows() == 0){
+			$data = array(
+                "user_name" => "admin",
+                "user_pass" => password_hash("admin",PASSWORD_DEFAULT),
+                "user_email" => "admin",
+                "user_status" => "aktif",
+                "id_fk_role" => 1,
+                "user_create_date" => date("Y-m-d H:i:s"),
+                "user_last_modified" => date("Y-m-d H:i:s"),
+                "id_create_date" => 0,
+                "id_last_modified" => 0
+			);
+			insertRow("mstr_user",$data);
+		}
 	}
 }
