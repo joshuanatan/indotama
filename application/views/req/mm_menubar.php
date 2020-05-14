@@ -270,7 +270,7 @@
                     <a href="<?php echo base_url();?>customer">CUSTOMER</a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url();?>warehouse">Warehouse</a>
+                    <a href="<?php echo base_url();?>warehouse">WAREHOUSE</a>
                 </li>
                 <li>
                     <a href="<?php echo base_url();?>ReportMM/Keuangan">NAMA AKUN</a>
