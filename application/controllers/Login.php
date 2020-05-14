@@ -45,7 +45,7 @@ class Login extends CI_Controller {
 					"user_status"=>$data['status']
 				);
 				$this->session->set_userdata($user_data);
-				$this->load->view('V_dashboard');
+				redirect(md5("Dashboard"));
 			}else{
 				$response["status"] = "ERROR";
 				$response["msg"] = "Login function is error!";
@@ -55,8 +55,8 @@ class Login extends CI_Controller {
 			$response["msg"] = "Setter function is error";
 			
 		}
-		echo json_encode($response);
-		//redirect(md5("Login"));
+		//echo json_encode($response);
+		redirect(md5("Login"));
 	}
 
 

@@ -118,5 +118,18 @@ class Warehouse extends CI_Controller {
         redirect(md5('Warehouse'));
         //echo json_encode($response);
     }
+
+    public function warehouse_barang($id_pk_warehouse){
+        $where= array(
+            "status_warehouse"=>"AKTIF"
+            "id_fk_warehouse"=>$id_pk_warehouse
+        );
+        $where1 = array(
+            "id_pk_warehouse"=?$id_pk_warehouse
+        );
+        $data['warehouse'] = selectRow("mstr_warehouse",$where1);
+        $data['view_barang_wh'] = selectRow("mstr_barang",$where);
+        $this->load->view("V_brg_warehouse");
+    }
     
 }
