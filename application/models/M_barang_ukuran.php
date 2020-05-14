@@ -13,6 +13,19 @@ class M_barang_ukuran extends CI_Model{
     private $id_create_date;
     private $id_last_modified;
 
+    public function install(){
+        $sql = "
+        CREATE TABLE `tbl_barang_ukuran` (
+            `ID_PK_BARANG_UKURAN` INT PRIMARY KEY AUTO INCREMENT,
+            `ID_FK_BARANG` int(11) DEFAULT NULL,
+            `UKURAN` varchar(10) DEFAULT NULL,
+            `BRG_UKURAN_STATUS` varchar(15) DEFAULT NULL,
+            `BRG_UKURAN_CREATE_DATE` datetime DEFAULT NULL,
+            `BRG_UKURAN_LAST_MODIFIED` datetime DEFAULT NULL,
+            `ID_CREATE_DATE` int(11) DEFAULT NULL,
+            `ID_LAST_MODIFIED` int(11) DEFAULT NULL
+        )";
+    }
     public function __construct(){
         parent::__construct();
         $this->brg_ukuran_create_date = date("Y-m-d H:i:s");
