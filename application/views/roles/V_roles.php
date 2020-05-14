@@ -34,27 +34,7 @@
                                         <div class="row mt-10 ">
                                             <button class="btn btn-warning btn-anim pull-right" style="margin-right:30px !important" data-toggle = "modal" data-target = "#tambah_jabatan"><i class="fa fa-pencil"></i><span class="btn-text">Tambah Jabatan</span></button>
                                         </div>
-<div class = "modal fade" id = "tambah_jabatan">
-    <div class = "modal-dialog">
-        <div class = "modal-content">
-            <div class = "modal-header">
-                <h4 class = "modal-title">Tambah Jabatan</h4>
-            </div>
-            <div class = "modal-body">
-                <form method="POST" action="<?php echo base_url() ?>jabatan/register_jabatan">
-                    <div class = "form-group">
-                        <h5>Nama Jabatan</h5>
-                        <input type="text" class="form-control" name="jabatan_nama" required>
-                    </div>
-                    <div class = "form-group">
-                        <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <input type = "submit" class = "btn btn-sm btn-primary" value="Submit">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+
                                         <br>
                                         <div  class="pills-struct vertical-pills">
                                             <div class="tab-content" id="myTabContent_10">
@@ -83,50 +63,9 @@
                                                                         <?php } ?>
                                                                     </td>
                                                                 </tr>
-<div class = "modal fade" id = "edit_jabatan<?php echo $x+1 ?>">
-    <div class = "modal-dialog">
-        <div class = "modal-content">
-            <div class = "modal-header">
-                <h4 class = "modal-title">Edit Jabatan</h4>
-            </div>
-            <div class = "modal-body">
-                <form method="POST" action="<?php echo base_url() ?>jabatan/edit_jabatan">
-                    <input type="hidden" name="id_pk_jabatan" value="<?php echo $view_jabatan[$x]['ID_PK_JABATAN'] ?>"> 
-                    <div class = "form-group">
-                        <h5>Nama Jabatan</h5>
-                        <input type="text" class="form-control" name="jabatan_nama" value="<?php echo $view_jabatan[$x]['JABATAN_NAMA'] ?>" required>
-                    </div>
-                    <div class = "form-group">
-                        <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <input type = "submit" class = "btn btn-sm btn-primary" value="Submit">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class = "modal fade" id = "hapus_jabatan<?php echo $x+1 ?>">
-    <div class = "modal-dialog">
-        <div class = "modal-content">
-            <div class = "modal-header">
-                <b><h4 class = "modal-title">Hapus Jabatan</h4></b>
-            </div>
-            <div class = "modal-body">
-                <form method="POST" action="<?php echo base_url() ?>jabatan/hapus_jabatan">
-                    <input type="hidden" name="id_pk_jabatan" value="<?php echo $view_jabatan[$x]['ID_PK_JABATAN'] ?>"> 
-                    <div class = "form-group">
-                        <h5 style="text-align:center">Apakah anda yakin akan menghapus jabatan dengan nama: "<b><?php echo $view_jabatan[$x]['JABATAN_NAMA'] ?></b>"?</h5>
-                    </div>
-                    <div class = "form-group">
-                        <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <input type = "submit" class = "btn btn-sm btn-primary" value="Yakin">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+
+
                                                                 <?php } ?>
                                                                 </tbody>
                                                                 <tfoot>
@@ -168,3 +107,15 @@
 </body>
 
 </html>
+<?php
+$this->load->view("roles/f-add-roles");
+for($x=0; $x<count($view_jabatan); $x++){
+    $data = array(
+        "x" => $x,
+        "ID_PK_JABATAN" => $view_jabatan[$x]["ID_PK_JABATAN"],
+        "JABATAN_NAMA" => $view_jabatan[$x]["JABATAN_NAMA"],
+    );
+    $this->load->view("roles/f-update-roles",$data);
+    $this->load->view("roles/f-delete-roles",$data);
+}
+?>

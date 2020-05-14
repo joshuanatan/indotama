@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Jabatan extends CI_Controller {
+class Roles extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -27,7 +27,7 @@ class Jabatan extends CI_Controller {
 
         
         //$data['view_jabatan'] = selectRow("mstr_jabatan")->result_array();
-		$this->load->view('V_jabatan',$data);
+		$this->load->view('roles/v_roles',$data);
 	}
 
 	public function register_jabatan(){
@@ -55,7 +55,7 @@ class Jabatan extends CI_Controller {
 			$response["msg"] = validation_errors();
             $this->session->set_flashdata("msg",$response['msg']);
 		}
-		redirect(md5('Jabatan'));
+		redirect(md5('roles'));
     }
 
     public function edit_jabatan(){
@@ -83,7 +83,7 @@ class Jabatan extends CI_Controller {
 			$response["msg"] = validation_errors();
             $this->session->set_flashdata("msg",$response['msg']);
 		}
-        redirect(md5('Jabatan'));
+        redirect(md5('roles'));
         //echo json_encode($response);
     }
 
@@ -111,7 +111,7 @@ class Jabatan extends CI_Controller {
 			$response["msg"] = validation_errors();
             $this->session->set_flashdata("msg",$response['msg']);
 		}
-        redirect(md5('Jabatan'));
+        redirect(md5('roles'));
         //echo json_encode($response);
     }
     
