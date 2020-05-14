@@ -149,7 +149,7 @@ class M_user extends CI_Model{
     }
     public function list(){
         $where = array(
-            "user_status" => "ACTIVE"
+            "user_status" => "AKTIF"
         );
         $field = array(
             "id_pk_user","user_name","user_email","user_status","id_fk_role","user_last_modified","user_create_date"
