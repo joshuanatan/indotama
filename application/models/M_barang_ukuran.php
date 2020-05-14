@@ -16,7 +16,7 @@ class M_barang_ukuran extends CI_Model{
     public function install(){
         $sql = "
         CREATE TABLE `tbl_barang_ukuran` (
-            `ID_PK_BARANG_UKURAN` INT PRIMARY KEY AUTO INCREMENT,
+            `ID_PK_BARANG_UKURAN` INT PRIMARY KEY AUTO_INCREMENT,
             `ID_FK_BARANG` int(11) DEFAULT NULL,
             `UKURAN` varchar(10) DEFAULT NULL,
             `BRG_UKURAN_STATUS` varchar(15) DEFAULT NULL,
