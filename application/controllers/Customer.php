@@ -13,7 +13,7 @@ class Customer extends CI_Controller {
 		);
 		$data['toko'] = selectRow("mstr_toko",$where1)->result_array();
         $data['view_customer'] = selectRow("mstr_customer",$where)->result_array();
-		$this->load->view('V_customer',$data);
+		$this->load->view('customer/V_customer',$data);
 	}
 
 	public function register_customer(){

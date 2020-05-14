@@ -9,7 +9,7 @@ class Warehouse extends CI_Controller {
             "warehouse_status"=>"AKTIF"
         );
         $data['view_warehouse'] = selectRow("mstr_warehouse",$where)->result_array();
-		$this->load->view('V_warehouse',$data);
+		$this->load->view('warehouse/V_warehouse',$data);
 	}
 
 	public function register_warehouse(){
