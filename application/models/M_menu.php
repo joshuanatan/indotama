@@ -77,6 +77,11 @@ class M_menu extends CI_Model{
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
             INSERT INTO MSTR_MENU_LOG(EXECUTED_FUNCTION,ID_PK_MENU,MENU_NAME,MENU_DISPLAY,MENU_ICON,MENU_STATUS,MENU_CREATE_DATE,MENU_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_MENU,NEW.MENU_NAME,NEW.MENU_DISPLAY,NEW.MENU_ICON,NEW.MENU_STATUS,NEW.MENU_CREATE_DATE,NEW.MENU_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            
+            /* INSERT NEW MENU TO ALL HAK AKSES*/
+            SET @ID_MENU = NEW.ID_PK_MENU;
+            INSERT INTO TBL_HAK_AKSES(ID_FK_JABATAN,ID_FK_MENU,HAK_AKSES_STATUS,HAK_AKSES_CREATE_DATE,HAK_AKSES_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED)
+            SELECT ID_PK_JABATAN,@ID_MENU,'NONAKTIF',@TGL_ACTION,@TGL_ACTION,@ID_USER,@ID_USER FROM MSTR_JABATAN;
         END$$
         DELIMITER ;
         
@@ -95,6 +100,15 @@ class M_menu extends CI_Model{
         END$$
         DELIMITER ;";
         executeQuery($sql);
+    }
+    public function list(){
+        $where = array(
+            "menu_status" => "AKTIF"
+        );
+        $field = array(
+            "id_pk_menu","menu_name","menu_display","menu_icon","menu_status","menu_last_modified"
+        );
+        return selectRow($this->tbl_name,$where,$field);
     }
     public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
         $order_by = $this->columns[$order_by]["col_name"];

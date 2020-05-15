@@ -55,6 +55,27 @@ class Menu extends CI_Controller{
         );
         echo json_encode($response);
     }
+    public function list(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_menu");
+        $result = $this->m_menu->list();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_menu"];
+                $response["content"][$a]["controller"] = $result[$a]["menu_name"];
+                $response["content"][$a]["display"] = $result[$a]["menu_display"];
+                $response["content"][$a]["icon"] = $result[$a]["menu_icon"];
+                $response["content"][$a]["status"] = $result[$a]["menu_status"];
+                $response["content"][$a]["last_modified"] = $result[$a]["menu_last_modified"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "No Data";
+        }
+        echo json_encode($response);
+    }
     public function register(){
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("controller","controller","required");
