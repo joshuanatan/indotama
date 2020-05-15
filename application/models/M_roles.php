@@ -122,6 +122,18 @@ class M_roles extends CI_Model{
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;
     }
+    public function list(){
+        $where = array(
+            "jabatan_status" => "AKTIF"
+        );
+        $field = array(
+            "id_pk_jabatan",
+            "jabatan_nama",
+            "jabatan_status",
+            "jabatan_last_modified"
+        );
+        return selectRow($this->tbl_name,$where,$field);
+    }
     public function columns(){
         return $this->columns;
     }
