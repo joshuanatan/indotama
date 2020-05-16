@@ -115,11 +115,11 @@ class M_pembelian extends CI_Model{
         SELECT id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified
         FROM ".$this->tbl_name." 
         INNER JOIN MSTR_SUPPLIER ON MSTR_SUPPLIER.ID_PK_SUP = ".$this->tbl_name.".ID_FK_SUPP
-        WHERE pem_status = ? AND sup_status = ? ".$search_query."  
+        WHERE PEM_STATUS != ? AND sup_status = ? ".$search_query."  
         ORDER BY ".$order_by." ".$order_direction." 
         LIMIT 20 OFFSET ".($page-1)*$data_per_page;
         $args = array(
-            "AKTIF","AKTIF"
+            "NONAKTIF","AKTIF"
         );
         $result["data"] = executeQuery($query,$args);
         
@@ -127,7 +127,7 @@ class M_pembelian extends CI_Model{
         SELECT id_pk_pembelian
         FROM ".$this->tbl_name." 
         INNER JOIN MSTR_SUPPLIER ON MSTR_SUPPLIER.ID_PK_SUP = ".$this->tbl_name.".ID_FK_SUPP
-        WHERE pem_status = ? AND sup_status = ? ".$search_query."
+        WHERE PEM_STATUS != ? AND sup_status = ? ".$search_query."
         ORDER BY ".$order_by." ".$order_direction;
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;
