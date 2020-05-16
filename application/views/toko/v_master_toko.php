@@ -59,7 +59,7 @@ $breadcrumb = array(
                                                 <input id = "search_box" placeholder = "Search data here..." type = "text" class = "form-control input-sm " onkeyup = "search()" style = "width:25%">
                                             </div>
                                             <div class = "table-responsive">
-                                                <table class = "table table-bordered table-hover table-striped">
+                                                <table class = "table table-bordered table-hover table-striped" id = "table_container">
                                                     <thead id = "col_title_container">
                                                     </thead>
                                                     <tbody id = "content_container">
@@ -86,6 +86,13 @@ $breadcrumb = array(
 <script>
     var ctrl = "toko";
     var url_add = "";
+    var additional_button = [
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-success md-store',
+            onclick:'redirect_cabang()'
+        }
+    ];
 </script>
 <?php 
 $data = array(
@@ -99,3 +106,13 @@ $data = array(
 <?php $this->load->view('toko/f-add-toko',$data);?>
 <?php $this->load->view('toko/f-update-toko',$data);?>
 <?php $this->load->view('toko/f-delete-toko',$data);?>
+
+<script>
+    function redirect_cabang(){
+        $('#table_container').find('tr').click( function(){
+            var row = $(this).index();
+            var id_toko = content[row]["id"];
+            window.location.replace("<?php echo base_url();?>toko/cabang/"+id_toko);
+        });
+    }
+</script>
