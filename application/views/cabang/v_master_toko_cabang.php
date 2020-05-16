@@ -1,7 +1,7 @@
 <?php
 $page_title = "Master Cabang";
 $breadcrumb = array(
-    "Master","Toko","Cabang"
+    "Master","Nama Toko: ".$toko[0]["toko_nama"],"Cabang"
 );
 ?>
 <!DOCTYPE html>
@@ -86,6 +86,13 @@ $breadcrumb = array(
 <script>
     var ctrl = "cabang";
     var url_add = "id_toko=<?php echo $toko[0]["id_pk_toko"];?>";
+    var additional_button = [
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-success md-store',
+            onclick:'open_list_barang()'
+        }
+    ];
 </script>
 <?php
 $data = array(
@@ -99,3 +106,13 @@ $data = array(
 <?php $this->load->view("cabang/f-add-cabang",$data);?>
 <?php $this->load->view("cabang/f-update-cabang",$data);?>
 <?php $this->load->view("cabang/f-delete-cabang",$data);?>
+
+<script>
+    function open_list_barang(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_cabang = content[row]["id"];
+            window.open("<?php echo base_url();?>toko/brg_cabang/"+id_cabang);
+        });
+    }
+</script>

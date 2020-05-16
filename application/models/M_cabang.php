@@ -134,6 +134,21 @@ class M_cabang extends CI_Model{
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;
     }
+    public function detail_by_id(){
+        $where = array(
+            "id_pk_cabang" => $this->id_pk_cabang
+        );
+        $field = array(
+            "id_pk_cabang",
+            "cabang_daerah",
+            "cabang_notelp",
+            "cabang_alamat",
+            "cabang_status",
+            "cabang_last_modified",
+            "id_fk_toko"
+        );
+        return selectRow($this->tbl_name,$where,$field);
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(
