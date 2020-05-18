@@ -9,16 +9,25 @@
                 <form id = "update_form" method = "POST">
                     <input type = "hidden" name = "id" id = "id_edit">
                     <div class = "form-group">
-                        <h5>Controller</h5>
-                        <input type = "text" class = "form-control" required name = "controller" id = "controller_edit">
-                    </div>
-                    <div class = "form-group">
                         <h5>Menu Display</h5>
                         <input type = "text" class = "form-control" required name = "display" id = "display_edit">
                     </div>
                     <div class = "form-group">
+                        <h5>Controller</h5>
+                        <input type = "text" class = "form-control" required name = "controller" id = "controller_edit">
+                    </div>
+                    <div class = "form-group">
                         <h5>Icon</h5>
                         <input type = "text" class = "form-control" required name = "icon" id = "icon_edit">
+                    </div>
+                    <div class = "form-group">
+                        <h5>Kategori</h5>
+                        <select class = "form-control" required name = "kategori" id = "kategori_edit">
+                            <option value = "GENERAL">GENERAL</option>
+                            <option value = "TOKO">TOKO</option>
+                            <option value = "CABANG">CABANG</option>
+                            <option value = "GUDANG">GUDANG</option>
+                        </select>
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
@@ -36,5 +45,6 @@
         $("#controller_edit").val(content[id]["controller"]);
         $("#display_edit").val(content[id]["display"]);
         $("#icon_edit").val(content[id]["icon"]);
+        $("#kategori_edit").val(content[id]["kategori"]);
     }
 </script>
