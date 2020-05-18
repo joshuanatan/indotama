@@ -1,11 +1,11 @@
-<div class = "modal fade" id = "tambah_warehouse">
+<div class = "modal fade" id = "register_modal">
     <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
                 <h4 class = "modal-title">Tambah Warehouse</h4>
             </div>
             <div class = "modal-body">
-                <form method="POST" action="<?php echo base_url() ?>warehouse/register_warehouse">
+                <form id = "register_form" method = "POST">
                     <div class = "form-group">
                         <h5>Nama Warehouse</h5>
                         <input type="text" class="form-control" name="warehouse_nama" required>
@@ -24,7 +24,7 @@
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <input type="submit" class = "btn btn-sm btn-primary">
+                        <button type = "button" onclick = "register_func();clear_priv_list()" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
                 </form>
             </div>

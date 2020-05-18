@@ -1,34 +1,43 @@
-<div class = "modal fade" id = "edit_warehouse<?php echo $x+1 ?>">
+<div class = "modal fade" id = "update_modal">
     <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
                 <h4 class = "modal-title">Edit Warehouse</h4>
             </div>
             <div class = "modal-body">
-                <form method="POST" action="<?php echo base_url() ?>warehouse/edit_warehouse">
-                    <input type="hidden" name="id_pk_warehouse" value="<?php echo $ID_PK_WAREHOUSE; ?>"> 
+                <form id = "update_form" method = "POST">
+                    <input type = "hidden" name = "id" id = "id_edit"> 
                     <div class = "form-group">
                         <h5>Nama Warehouse</h5>
-                        <input type="text" class="form-control" value="<?php echo $WAREHOUSE_NAMA; ?>" name="warehouse_nama" required>
+                        <input type="text" class="form-control" name="warehouse_nama" id = "warehouse_nama_edit" required>
                     </div>
                     <div class = "form-group">
                         <h5>Alamat</h5>
-                        <input type="text" class="form-control" value="<?php echo $WAREHOUSE_ALAMAT; ?>" name="warehouse_alamat" required>
+                        <input type="text" class="form-control" name="warehouse_alamat" id = "warehouse_alamat_edit" required>
                     </div>
                     <div class = "form-group">
                         <h5>No Telp</h5>
-                        <input type="text" class="form-control" value="<?php echo $WAREHOUSE_NOTELP; ?>" name="warehouse_notelp" required>
+                        <input type="text" class="form-control" name="warehouse_notelp" id = "warehouse_notelp_edit" required>
                     </div>
                     <div class = "form-group">
                         <h5>Deskripsi</h5>
-                        <input type="text" class="form-control" value="<?php echo $WAREHOUSE_DESC; ?>" name="warehouse_desc" required>
+                        <input type="text" class="form-control" name="warehouse_desc" id = "warehouse_desc_edit" required>
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <input type = "submit" class = "btn btn-sm btn-primary" value="Submit">
+                        <button type = "button" onclick = "update_func();" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script>
+    function load_edit_content(id){
+        $("#id_edit").val(content[id]["id"]);
+        $("#warehouse_nama_edit").val(content[id]["nama"]);
+        $("#warehouse_alamat_edit").val(content[id]["alamat"]);
+        $('#warehouse_notelp_edit').val(content[id]["notelp"]);
+        $('#warehouse_desc_edit').val(content[id]["desc"]);
+    }
+</script>

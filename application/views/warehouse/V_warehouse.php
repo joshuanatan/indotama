@@ -1,131 +1,117 @@
+<?php
+$page_title = "Warehouse";
+$breadcrumb = array(
+    "Warehouse"
+);
+?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<?php $this->load->view('req/mm_css.php');?>
-</head>
 
-<body>
-	<!--Preloader-->
-	<div class="preloader-it">
-		<div class="la-anim-1"></div>
-	</div>
-	<!--/Preloader-->
-    <div class="wrapper theme-1-active pimary-color-pink">
+    <head>
+        <?php $this->load->view('req/mm_css.php');?>
+    </head>
 
-        <!-- Menu Bar -->
-        <?php $this->load->view('req/mm_menubar.php');?>
-        <!-- /Menu Bar -->
+    <body>
+        <div class="preloader-it">
+            <div class="la-anim-1"></div>
+        </div>
+        <div class="wrapper theme-1-active pimary-color-pink">
 
-		<!-- Main Content -->
-		<div class="page-wrapper">
-			<div class="container-fluid">
-				<!-- Row -->
-				<div class="row mt-30">
-					<div class="col-sm-12">
-                        <div class="panel panel-default card-view">
-                            <div class="panel-heading" style="background-color:black !important;">
-                                <div class="pull-left">
-                                <h6 class="panel-title txt-light">Warehouse</h6>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="panel-wrapper collapse in">
-                                <div  class="panel-body">
-                                    <div class="row mt-10 ">
-                                        <button class="btn btn-warning btn-anim pull-right" style="margin-right:30px !important" data-toggle = "modal" data-target = "#tambah_warehouse"><i class="fa fa-pencil"></i><span class="btn-text">Tambah Warehouse</span></button>
+            <?php $this->load->view('req/mm_menubar.php');?>
+
+            <div class="page-wrapper">
+                <div class="container-fluid">
+                    <div class="row mt-20">
+                        <div class="col-lg-12 col-sm-12">
+                            <div class="panel panel-default card-view">
+                                <div class="panel-heading bg-gradient">
+                                    <div class="pull-left">
+                                        <h6 class="panel-title txt-light"><?php echo ucwords($page_title);?></h6>
                                     </div>
-
-                                    <br>
-                                    <div  class="pills-struct vertical-pills">
-                                        <div class="tab-content" id="myTabContent_10">
-                                            <div  id="home_10" class="tab-pane fade active in" role="tabpanel">
-                                                <div class="table-wrap">
-                                                    <div class="table-responsive">
-                                                        <table id="example" class="table table-hover display  pb-30">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>No</th>
-                                                                    <th>Nama Warehouse</th>
-                                                                    <th>Alamat</th>
-                                                                    <th>No Telp</th>
-                                                                    <th>Aksi</th>
-                                                                </tr>
-                                                            </thead>
-                                                            
-                                                            <tbody style="font-size:10px !important">
-                                                            <?php 
-                                                            for($x=0; $x<count($view_warehouse); $x++){ ?>
-                                                            <tr>
-                                                                <td><?php echo $x+1 ?></td>
-                                                                <td>
-                                                                <td><?php echo $view_warehouse[$x]['WAREHOUSE_NAMA'] ?></td>
-                                                                <td><?php echo $view_warehouse[$x]['WAREHOUSE_ALAMAT'] ?></td>
-                                                                <td><?php echo $view_warehouse[$x]['WAREHOUSE_NOTELP'] ?></td>
-                                                                <td class="text-center">
-                                                                    
-                                                                    <button class="btn btn-primary btn-icon-anim btn-square"  data-toggle = "modal" data-target = "#edit_warehouse<?php echo $x+1 ?>"><i class="fa fa-pencil"></i></button>
-                                                                    <button class="btn btn-danger btn-icon-anim btn-square" data-toggle = "modal" data-target = "#hapus_warehouse<?php echo $x+1 ?>"><i class="icon-trash"></i></button>
-                                                                    <a href="<?php echo base_url() ?>warehouse/warehouse_barang/<?php echo $view_warehouse[$x]['ID_PK_WAREHOUSE'] ?>" ><button class="btn btn-success btn-icon-anim btn-square" 
-                                                                    ><i class="icon-eye"></i></button></a>
-                                                                    
-                                                                </td>
-                                                            </tr>
-
-                                                            <?php } ?>
-                                                            </tbody>
-                                                            <tfoot>
-                                                                <tr>
-                                                                    <th>No</th>
-                                                                    <th>Foto</th>
-                                                                    <th>Nama</th>
-                                                                    <th>Toko</th>
-                                                                    <th>HP</th>
-                                                                    <th>Aksi</th>
-                                                                </tr>
-                                                            </tfoot>
-                                                        </table>
-                                                    </div>
-                                                </div>
+                                    <div class="clearfix"></div>
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item">Home</a></li>
+                                        <?php for($a = 0; $a<count($breadcrumb); $a++):?>
+                                        <?php if($a+1 != count($breadcrumb)):?>
+                                        <li class="breadcrumb-item"><?php echo ucwords($breadcrumb[$a]);?></a></li>
+                                        <?php else:?>
+                                        <li class="breadcrumb-item active"><?php echo ucwords($breadcrumb[$a]);?></li>
+                                        <?php endif;?>
+                                        <?php endfor;?>
+                                    </ol>
+                                </div>
+                                <div class="panel-wrapper collapse in">
+                                    <div class="panel-body">
+                                        <div class = "col-lg-12">
+                                            <div class = "d-block">
+                                                <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#register_modal" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
                                             </div>
+                                            <br/>
+                                            <br/>
+                                            <div class = "align-middle text-center d-block">
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
+                                            </div>
+                                            <br/>
+                                            <div class = "form-group">
+                                                <h5>Search Data Here</h5>
+                                                <input id = "search_box" placeholder = "Search data here..." type = "text" class = "form-control input-sm " onkeyup = "search()" style = "width:25%">
+                                            </div>
+                                            <div class = "table-responsive">
+                                                <table class = "table table-bordered table-hover table-striped">
+                                                    <thead id = "col_title_container">
+                                                    </thead>
+                                                    <tbody id = "content_container">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <nav aria-label="Page navigation example">
+                                                <ul class="pagination justify-content-center" id = "pagination_container">
+                                                </ul>
+                                            </nav>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <?php $this->load->view('req/mm_footer.php');?>
                 </div>
-                <!-- /Row -->
             </div>
-
-			<!-- Footer -->
-			<?php $this->load->view('req/mm_footer.php');?>
-			<!-- /Footer -->
-
-		</div>
-		<!-- /Main Content -->
-
-    </div>
-    <!-- /#wrapper -->
-
-	<!-- JavaScript -->
-
-	<?php $this->load->view('req/mm_js.php');?>
-
-</body>
-
+        </div>
+        <?php $this->load->view('req/mm_js.php');?>
+    </body>
 </html>
-<?php
-$this->load->view("warehouse/f-add-warehouse");
-for($x=0; $x<count($view_warehouse); $x++){
-    $data = array(
-        "x" => $x,
-        "ID_PK_WAREHOUSE" => $view_warehouse[$x]["ID_PK_WAREHOUSE"],
-        "WAREHOUSE_NAMA" => $view_warehouse[$x]["WAREHOUSE_NAMA"],
-        "WAREHOUSE_ALAMAT" => $view_warehouse[$x]["WAREHOUSE_ALAMAT"],
-        "WAREHOUSE_NOTELP" => $view_warehouse[$x]["WAREHOUSE_NOTELP"],
-        "WAREHOUSE_DESC" => $view_warehouse[$x]["WAREHOUSE_DESC"],
-    );
-    $this->load->view("warehouse/f-update-warehouse",$data);
-    $this->load->view("warehouse/f-delete-warehouse",$data);
-}
+<script>
+    var ctrl = "warehouse";
+    var url_add = "";
+    var additional_button = [
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-success md-store',
+            onclick:'redirect_brg_warehouse()'
+        }
+    ];
+</script>
+<?php 
+$data = array(
+    "page_title" => "Warehouse"
+);
 ?>
+<?php $this->load->view("_core_script/table_func");?>
+<?php $this->load->view("_core_script/register_func");?>
+<?php $this->load->view("_core_script/update_func");?>
+<?php $this->load->view("_core_script/delete_func");?>
+<?php $this->load->view('warehouse/f-add-warehouse',$data);?>
+<?php $this->load->view('warehouse/f-update-warehouse',$data);?>
+<?php $this->load->view('warehouse/f-delete-warehouse',$data);?>
+
+<script>
+    function redirect_brg_warehouse(){
+        $('table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_warehouse = content[row]["id"];
+            window.location.replace("<?php echo base_url();?>warehouse/warehouse_barang/"+id_warehouse);
+        });
+    }
+</script>
