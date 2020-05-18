@@ -1,7 +1,7 @@
 <?php
-$page_title = "Master Toko";
+$page_title = "User";
 $breadcrumb = array(
-    "Master","Toko"
+    "User"
 );
 ?>
 <!DOCTYPE html>
@@ -51,7 +51,6 @@ $breadcrumb = array(
                                             <div class = "align-middle text-center d-block">
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
-                                                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-success md-store'></i><b> - Cabang</b>
                                             </div>
                                             <br/>
                                             <div class = "form-group">
@@ -59,7 +58,7 @@ $breadcrumb = array(
                                                 <input id = "search_box" placeholder = "Search data here..." type = "text" class = "form-control input-sm " onkeyup = "search()" style = "width:25%">
                                             </div>
                                             <div class = "table-responsive">
-                                                <table class = "table table-bordered table-hover table-striped" id = "table_container">
+                                                <table class = "table table-bordered table-hover table-striped">
                                                     <thead id = "col_title_container">
                                                     </thead>
                                                     <tbody id = "content_container">
@@ -84,35 +83,18 @@ $breadcrumb = array(
     </body>
 </html>
 <script>
-    var ctrl = "toko";
+    var ctrl = "user";
     var url_add = "";
-    var additional_button = [
-        {
-            style:'cursor:pointer;font-size:large',
-            class:'text-success md-store',
-            onclick:'redirect_cabang()'
-        }
-    ];
 </script>
 <?php 
 $data = array(
-    "page_title" => "Master Toko"
+    "page_title" => "Master User"
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
 <?php $this->load->view("_core_script/register_func");?>
 <?php $this->load->view("_core_script/update_func");?>
 <?php $this->load->view("_core_script/delete_func");?>
-<?php $this->load->view('toko/f-add-toko',$data);?>
-<?php $this->load->view('toko/f-update-toko',$data);?>
-<?php $this->load->view('toko/f-delete-toko',$data);?>
-
-<script>
-    function redirect_cabang(){
-        $('#table_container').find('tr').click( function(){
-            var row = $(this).index();
-            var id_toko = content[row]["id"];
-            window.location.replace("<?php echo base_url();?>toko/cabang/"+id_toko);
-        });
-    }
-</script>
+<?php $this->load->view('user/f-add-user',$data);?>
+<?php $this->load->view('user/f-update-user',$data);?>
+<?php $this->load->view('user/f-delete-user',$data);?>

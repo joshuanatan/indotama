@@ -179,8 +179,8 @@ class Login extends CI_Controller {
 			$data = array(
                 "user_name" => "admin",
                 "user_pass" => password_hash("admin",PASSWORD_DEFAULT),
-                "user_email" => "admin",
-                "user_status" => "aktif",
+                "user_email" => "admin@example.com",
+                "user_status" => "AKTIF",
                 "id_fk_role" => 1,
                 "user_create_date" => date("Y-m-d H:i:s"),
                 "user_last_modified" => date("Y-m-d H:i:s"),

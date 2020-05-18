@@ -17,32 +17,24 @@ class M_user extends CI_Model{
     
     public function __construct(){
         parent::__construct();
-        $this->columns = array(
-            array(
-                "col_name" => "user_name",
-                "col_disp" => "User Name",
-                "order_by" => true
-            ),
-            array(
-                "col_name" => "user_status",
-                "col_disp" => "Status",
-                "order_by" => false
-            ),
-            array(
-                "col_name" => "user_last_modified",
-                "col_disp" => "Last Modified",
-                "order_by" => false
-            ),
-            array(
-                "col_name" => "user_create_date",
-                "col_disp" => "Created Date",
-                "order_by" => false
-            ),
-        );
+        $this->set_column("user_name","Username","required");
+        $this->set_column("user_email","Email","required");
+        $this->set_column("jabatan_nama","Role","required");
+        $this->set_column("user_status","Status","required");
+        $this->set_column("user_last_modified","Last Modified","required");
+
         $this->user_last_modified = date("Y-m-d H:i:s");
         $this->user_create_date = date("Y-m-d H:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
+    }
+    private function set_column($col_name,$col_disp,$order_by){
+        $array = array(
+            "col_name" => $col_name,
+            "col_disp" => $col_disp,
+            "order_by" => $order_by
+        );
+        $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
     }
     public function install(){
         $sql = "
@@ -129,8 +121,9 @@ class M_user extends CI_Model{
             )";
         }
         $query = "
-        SELECT id_pk_user,user_name,user_email,user_status,id_fk_role,user_last_modified,user_create_date
+        SELECT id_pk_user,user_name,user_email,user_status,id_fk_role,user_last_modified,user_create_date,jabatan_nama
         FROM ".$this->tbl_name." 
+        INNER JOIN MSTR_JABATAN ON MSTR_JABATAN.ID_PK_JABATAN = ".$this->tbl_name.".ID_FK_ROLE
         WHERE user_status = ? ".$search_query."  
         ORDER BY ".$order_by." ".$order_direction." 
         LIMIT 20 OFFSET ".($page-1)*$data_per_page;
@@ -293,7 +286,7 @@ class M_user extends CI_Model{
         }
         return true;
     }
-    public function set_update($id_pk_user,$user_name,$user_email){
+    public function set_update($id_pk_user,$user_name,$user_email,$id_fk_role){
         if(!$this->set_id_pk_user($id_pk_user)){
             return false;
         }
@@ -362,7 +355,7 @@ class M_user extends CI_Model{
         }
     }
     public function check_delete(){
-        if($this->id_pk_user != "" && $this->user_status != "" && $this->user_last_modified != "" && $this->id_last_modified != ""){
+        if($this->id_pk_user != "" && $this->user_last_modified != "" && $this->id_last_modified != ""){
             return true;
         }
         else{

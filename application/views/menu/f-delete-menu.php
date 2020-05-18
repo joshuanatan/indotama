@@ -11,8 +11,16 @@
                 <table class = "table table-bordered table-striped table-hover">
                     <tbody>
                         <tr>
-                            <td>Roles</td>
-                            <td id = "jabatan_nama_delete"></td>
+                            <td>Controller</td>
+                            <td id = "controller_delete"></td>
+                        </tr>
+                        <tr>
+                            <td>Menu Display</td>
+                            <td id = "display_delete"></td>
+                        </tr>
+                        <tr>
+                            <td>Icon</td>
+                            <td id = "icon_delete"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -27,6 +35,8 @@
 <script>
     function load_delete_content(id){
         $("#id_delete").val(content[id]["id"]);
-        $("#jabatan_nama_delete").html(content[id]["nama"]);
+        $("#controller_delete").html(content[id]["controller"]);
+        $("#display_delete").html(content[id]["display"]);
+        $("#icon_delete").html(content[id]["icon"]);
     }
 </script>

@@ -8,6 +8,7 @@ class M_hak_akses extends CI_Model{
     private $id_pk_hak_akses;
     private $id_fk_jabatan;
     private $id_fk_menu;
+    private $hak_akses_status;
     private $hak_akses_create_date;
     private $hak_akses_last_modified;
     private $id_create_data;
@@ -21,22 +22,25 @@ class M_hak_akses extends CI_Model{
         $this->id_last_modified = $this->session->id_user;
     }
     public function install(){
-        $sql = "
+        $sql = "DROP TABLE IF EXISTS TBL_HAK_AKSES;
         CREATE TABLE TBL_HAK_AKSES(
             ID_PK_HAK_AKSES INT PRIMARY KEY AUTO_INCREMENT,
-            ID_FK_HAK_AKSES INT,
+            ID_FK_JABATAN INT,
             ID_FK_MENU INT,
+            HAK_AKSES_STATUS VARCHAR(15),    
             HAK_AKSES_CREATE_DATE DATETIME,
             HAK_AKSES_LAST_MODIFIED DATETIME,
             ID_CREATE_DATA INT,
             ID_LAST_MODIFIED INT
         );
+        DROP TABLE IF EXISTS TBL_HAK_AKSES_LOG;
         CREATE TABLE TBL_HAK_AKSES_LOG(
             ID_PK_HAK_AKSES_LOG INT PRIMARY KEY AUTO_INCREMENT,
             EXECUTED_FUNCTION VARCHAR(30),
             ID_PK_HAK_AKSES INT,
-            ID_FK_HAK_AKSES INT,
+            ID_FK_JABATAN INT,
             ID_FK_MENU INT,
+            HAK_AKSES_STATUS VARCHAR(15),    
             HAK_AKSES_CREATE_DATE DATETIME,
             HAK_AKSES_LAST_MODIFIED DATETIME,
             ID_CREATE_DATA INT,
@@ -54,7 +58,7 @@ class M_hak_akses extends CI_Model{
             SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.HAK_AKSES_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO TBL_HAK_AKSES_LOG(EXECUTED_FUNCTION,ID_PK_HAK_AKSES,ID_FK_HAK_AKSES,ID_FK_MENU,HAK_AKSES_CREATE_DATE,HAK_AKSES_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER INSERT',NEW.ID_PK_HAK_AKSES,NEW.ID_FK_HAK_AKSES,NEW.ID_FK_MENU,NEW.HAK_AKSES_CREATE_DATE,NEW.HAK_AKSES_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO TBL_HAK_AKSES_LOG(EXECUTED_FUNCTION,ID_PK_HAK_AKSES,ID_FK_JABATAN,ID_FK_MENU,HAK_AKSES_STATUS,HAK_AKSES_CREATE_DATE,HAK_AKSES_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_HAK_AKSES,NEW.ID_FK_JABATAN,NEW.ID_FK_MENU,NEW.HAK_AKSES_STATUS,NEW.HAK_AKSES_CREATE_DATE,NEW.HAK_AKSES_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;
         
@@ -69,7 +73,7 @@ class M_hak_akses extends CI_Model{
             SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.HAK_AKSES_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO TBL_HAK_AKSES_LOG(EXECUTED_FUNCTION,ID_PK_HAK_AKSES,ID_FK_HAK_AKSES,ID_FK_MENU,HAK_AKSES_CREATE_DATE,HAK_AKSES_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER UPDATE',NEW.ID_PK_HAK_AKSES,NEW.ID_FK_HAK_AKSES,NEW.ID_FK_MENU,NEW.HAK_AKSES_CREATE_DATE,NEW.HAK_AKSES_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO TBL_HAK_AKSES_LOG(EXECUTED_FUNCTION,ID_PK_HAK_AKSES,ID_FK_JABATAN,ID_FK_MENU,HAK_AKSES_STATUS,HAK_AKSES_CREATE_DATE,HAK_AKSES_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_HAK_AKSES,NEW.ID_FK_JABATAN,NEW.ID_FK_MENU,NEW.HAK_AKSES_STATUS,NEW.HAK_AKSES_CREATE_DATE,NEW.HAK_AKSES_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;";
     }
@@ -116,8 +120,56 @@ class M_hak_akses extends CI_Model{
             return false;
         }
     }
-    public function delete(){
-        #belom ditentuin fungsi deletenya mau gimana
+    public function remove_hak_akses(){
+        $where = array(
+            "id_fk_jabatan" => $this->id_fk_jabatan,
+            "id_fk_menu" => $this->id_fk_menu
+        );
+        $data = array(
+            "hak_akses_status" => "NONAKTIF"
+        );
+        updateRow("tbl_hak_akses",$data,$where);
+        return true;
+    }
+    public function list_role_hak_akses(){
+        $sql = "
+        SELECT id_pk_hak_akses,id_fk_jabatan,id_fk_menu,hak_akses_create_date,hak_akses_status,hak_akses_last_modified,menu_name,menu_display,menu_icon
+        FROM ".$this->tbl_name."
+        INNER JOIN MSTR_JABATAN ON MSTR_JABATAN.ID_PK_JABATAN = ".$this->tbl_name.".ID_FK_JABATAN
+        INNER JOIN MSTR_MENU ON MSTR_MENU.ID_PK_MENU = ".$this->tbl_name.".ID_FK_MENU
+        WHERE ID_FK_JABATAN = ?
+        ";
+        $args = array(
+            $this->id_fk_jabatan
+        );
+        return executeQuery($sql,$args);
+    }
+    public function reset_hak_akses(){
+        if($this->id_fk_jabatan != ""){
+            $where = array(
+                "id_fk_jabatan" => $this->id_fk_jabatan
+            );
+        }
+        else if($this->id_fk_menu != ""){
+            $where = array(
+                "id_fk_menu" => $this->id_fk_menu
+            );
+        }
+        $data = array(
+            "hak_akses_status" => "NONAKTIF"
+        );
+        updateRow("tbl_hak_akses",$data,$where);
+    }
+    public function activate_hak_akses(){
+        $where = array(
+            "id_fk_jabatan" => $this->id_fk_jabatan,
+            "id_fk_menu" => $this->id_fk_menu
+        );
+        $data = array(
+            "hak_akses_status" => "AKTIF"
+        );
+        updateRow("tbl_hak_akses",$data,$where);
+        return true;
     }
     public function check_insert(){
         if($this->id_fk_jabatan == ""){

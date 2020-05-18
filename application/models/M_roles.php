@@ -1,7 +1,7 @@
 <?php
 defined("BASEPATH") or exit("No direct Script");
 date_default_timezone_set("Asia/Jakarta");
-class M_jabatan extends CI_Model{
+class M_roles extends CI_Model{
     private $tbl_name = "MSTR_JABATAN";
     private $columns = array();
     private $id_pk_jabatan;
@@ -14,7 +14,9 @@ class M_jabatan extends CI_Model{
 
     public function __construct(){
         parent::__construct();
-        $this->columns = array();
+        $this->set_column("jabatan_nama","Nama","required");
+        $this->set_column("jabatan_status","Status","required");
+        $this->set_column("jabatan_last_modified","Last Modified","required");
         $this->jabatan_create_date = date("Y-m-d H:i:s");
         $this->jabatan_last_modified = date("Y-m-d H:i:s");
         $this->id_create_data = $this->session->id_user;
@@ -56,6 +58,11 @@ class M_jabatan extends CI_Model{
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
             INSERT INTO MSTR_JABATAN_LOG(EXECUTED_FUNCTION,ID_PK_JABATAN,JABATAN_NAMA,JABATAN_STATUS,JABATAN_CREATE_DATE,JABATAN_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER INSERT',NEW.ID_PK_JABATAN,NEW.JABATAN_NAMA,NEW.JABATAN_STATUS,NEW.JABATAN_CREATE_DATE,NEW.JABATAN_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+
+            /* INSERT NEW JABATAN TO ALL HAK AKSES*/
+            SET @ID_JABATAN = NEW.ID_PK_JABATAN;
+            INSERT INTO TBL_HAK_AKSES(ID_FK_JABATAN,ID_FK_MENU,HAK_AKSES_STATUS,HAK_AKSES_CREATE_DATE,HAK_AKSES_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED)
+            SELECT @ID_JABATAN,ID_PK_MENU,'NONAKTIF',@TGL_ACTION,@TGL_ACTION,@ID_USER,@ID_USER FROM MSTR_MENU;
         END$$
         DELIMITER ;
         
@@ -75,6 +82,57 @@ class M_jabatan extends CI_Model{
         DELIMITER ;
         ";
         executeQuery($sql);
+    }
+    private function set_column($col_name,$col_disp,$order_by){
+        $array = array(
+            "col_name" => $col_name,
+            "col_disp" => $col_disp,
+            "order_by" => $order_by
+        );
+        $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
+    }
+    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+        $order_by = $this->columns[$order_by]["col_name"];
+        $search_query = "";
+        if($search_key != ""){
+            $search_query .= "AND
+            ( 
+                id_pk_jabatan LIKE '%".$search_key."%' OR
+                jabatan_nama LIKE '%".$search_key."%' OR
+                jabatan_status LIKE '%".$search_key."%' OR
+                jabatan_last_modified LIKE '%".$search_key."%'
+            )";
+        }
+        $query = "
+        SELECT id_pk_jabatan,jabatan_nama,jabatan_status,jabatan_last_modified
+        FROM ".$this->tbl_name." 
+        WHERE jabatan_status = ? ".$search_query."  
+        ORDER BY ".$order_by." ".$order_direction." 
+        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        $args = array(
+            "AKTIF"
+        );
+        $result["data"] = executeQuery($query,$args);
+        
+        $query = "
+        SELECT id_pk_jabatan
+        FROM ".$this->tbl_name." 
+        WHERE jabatan_status = ? ".$search_query."  
+        ORDER BY ".$order_by." ".$order_direction;
+        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        return $result;
+    }
+    public function list(){
+        $where = array(
+            "jabatan_status" => "AKTIF"
+        );
+        $field = array(
+            "id_pk_jabatan",
+            "jabatan_nama",
+            "jabatan_status",
+            "jabatan_last_modified"
+        );
+        return selectRow($this->tbl_name,$where,$field);
     }
     public function columns(){
         return $this->columns;

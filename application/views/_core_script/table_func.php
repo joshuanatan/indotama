@@ -20,7 +20,22 @@
                         for(var b = 0; b<respond["key"].length; b++){
                             html += "<td class = 'align-middle text-center'>"+respond["content"][a][respond["key"][b]]+"</td>";
                         }
-                        html += "<td class = 'align-middle text-center'><i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content("+a+")'></i> | <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content("+a+")'></i></td>";
+                        if(typeof(additional_button) != "undefined"){
+                            var addtnl = ""; 
+                            for(var add = 0; add<additional_button.length; add++){
+                                var props = "";
+                                for (var key in additional_button[add]) {
+                                    if (additional_button[add].hasOwnProperty(key)) {       
+                                        props += " "+key+"='"+additional_button[add][key]+"'";
+                                    }
+                                }
+                                addtnl += " | <i "+props+"></i>";
+                            }
+                            html += "<td class = 'align-middle text-center'><i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content("+a+")'></i> | <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content("+a+")'></i>"+addtnl+"</td>";
+                        }
+                        else{
+                            html += "<td class = 'align-middle text-center'><i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content("+a+")'></i> | <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content("+a+")'></i></td>";
+                        }
                         html += "</tr>";
                     }
                 }

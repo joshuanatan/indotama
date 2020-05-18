@@ -1,4 +1,3 @@
-
 <div class = "modal fade" id = "delete_modal">
     <div class = "modal-dialog">
         <div class = "modal-content">
@@ -11,8 +10,16 @@
                 <table class = "table table-bordered table-striped table-hover">
                     <tbody>
                         <tr>
-                            <td>Roles</td>
-                            <td id = "jabatan_nama_delete"></td>
+                            <td>Nama Barang</td>
+                            <td id = "brg_delete"></td>
+                        </tr>
+                        <tr>
+                            <td>Stok</td>
+                            <td id = "stok_delete"></td>
+                        </tr>
+                        <tr>
+                            <td>Notes</td>
+                            <td id = "notes_delete"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -27,6 +34,8 @@
 <script>
     function load_delete_content(id){
         $("#id_delete").val(content[id]["id"]);
-        $("#jabatan_nama_delete").html(content[id]["nama"]);
+        $("#brg_delete").html(content[id]["nama_brg"]);
+        $("#stok_delete").html(content[id]["qty"]);
+        $("#notes_delete").html(content[id]["notes"]);
     }
 </script>

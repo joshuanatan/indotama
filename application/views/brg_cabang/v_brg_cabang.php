@@ -1,7 +1,7 @@
 <?php
-$page_title = "Master Toko";
+$page_title = "Barang Cabang";
 $breadcrumb = array(
-    "Master","Toko"
+    "Master","Nama Toko: <b>".$this->session->toko_nama."</b>","Daerah: <b>".$cabang[0]["cabang_daerah"]."</b>","Stok"
 );
 ?>
 <!DOCTYPE html>
@@ -26,7 +26,7 @@ $breadcrumb = array(
                             <div class="panel panel-default card-view">
                                 <div class="panel-heading bg-gradient">
                                     <div class="pull-left">
-                                        <h6 class="panel-title txt-light"><?php echo ucwords($page_title);?></h6>
+                                        <h6 class="panel-title txt-light"><?php echo ucwords($page_title);?> <?php echo $cabang[0]["cabang_daerah"];?></h6>
                                     </div>
                                     <div class="clearfix"></div>
                                     <ol class="breadcrumb">
@@ -44,6 +44,7 @@ $breadcrumb = array(
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
                                             <div class = "d-block">
+                                                <a href = "<?php echo base_url();?>toko/cabang/<?php echo $this->session->id_toko;?>" style = "margin-right:10px" class = "btn btn-danger btn-sm col-lg-2 col-sm-12">Kembali ke Daftar Cabang</a>
                                                 <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#register_modal" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
                                             </div>
                                             <br/>
@@ -51,7 +52,6 @@ $breadcrumb = array(
                                             <div class = "align-middle text-center d-block">
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
-                                                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-success md-store'></i><b> - Cabang</b>
                                             </div>
                                             <br/>
                                             <div class = "form-group">
@@ -59,7 +59,7 @@ $breadcrumb = array(
                                                 <input id = "search_box" placeholder = "Search data here..." type = "text" class = "form-control input-sm " onkeyup = "search()" style = "width:25%">
                                             </div>
                                             <div class = "table-responsive">
-                                                <table class = "table table-bordered table-hover table-striped" id = "table_container">
+                                                <table class = "table table-bordered table-hover table-striped">
                                                     <thead id = "col_title_container">
                                                     </thead>
                                                     <tbody id = "content_container">
@@ -84,35 +84,54 @@ $breadcrumb = array(
     </body>
 </html>
 <script>
-    var ctrl = "toko";
-    var url_add = "";
-    var additional_button = [
-        {
-            style:'cursor:pointer;font-size:large',
-            class:'text-success md-store',
-            onclick:'redirect_cabang()'
-        }
-    ];
+    var ctrl = "barang_cabang";
+    var url_add = "id_cabang=<?php echo $cabang[0]["id_pk_cabang"];?>";
 </script>
-<?php 
+<datalist id = 'daftar_barang'></datalist>
+<script>
+    window.onload = function(){
+        $.ajax({
+            url:"<?php echo base_url();?>ws/barang/list",
+            type:"GET",
+            dataType:"JSON",
+            success:function(respond){
+                var html = "";
+                if(respond["status"] == "SUCCESS"){
+                    for(var a = 0; a<respond["content"].length; a++){
+                        html+="<option value = '"+respond['content'][a]["nama"]+"'></option>";
+                    }
+                    $("#daftar_barang").html(html);
+                }
+            }
+        });
+    }
+    window.onfocus = function(){
+        $.ajax({
+            url:"<?php echo base_url();?>ws/barang/list",
+            type:"GET",
+            dataType:"JSON",
+            success:function(respond){
+                var html = "";
+                if(respond["status"] == "SUCCESS"){
+                    for(var a = 0; a<respond["content"].length; a++){
+                        html+="<option value = '"+respond['content'][a]["nama"]+"'></option>";
+                    }
+                    $("#daftar_barang").html(html);
+                }
+            }
+        });
+    }
+</script>
+
+<?php
 $data = array(
-    "page_title" => "Master Toko"
+    "page_title" => "Daftar Barang Cabang"
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
 <?php $this->load->view("_core_script/register_func");?>
 <?php $this->load->view("_core_script/update_func");?>
 <?php $this->load->view("_core_script/delete_func");?>
-<?php $this->load->view('toko/f-add-toko',$data);?>
-<?php $this->load->view('toko/f-update-toko',$data);?>
-<?php $this->load->view('toko/f-delete-toko',$data);?>
-
-<script>
-    function redirect_cabang(){
-        $('#table_container').find('tr').click( function(){
-            var row = $(this).index();
-            var id_toko = content[row]["id"];
-            window.location.replace("<?php echo base_url();?>toko/cabang/"+id_toko);
-        });
-    }
-</script>
+<?php $this->load->view("brg_cabang/f-add-brg_cabang",$data);?>
+<?php $this->load->view("brg_cabang/f-update-brg_cabang",$data);?>
+<?php $this->load->view("brg_cabang/f-delete-brg_cabang",$data);?>
