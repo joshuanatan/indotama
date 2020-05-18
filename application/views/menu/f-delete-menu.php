@@ -22,6 +22,10 @@
                             <td>Icon</td>
                             <td id = "icon_delete"></td>
                         </tr>
+                        <tr>
+                            <td>Kategori</td>
+                            <td id = "kategori_delete"></td>
+                        </tr>
                     </tbody>
                 </table>
                 <div class = "form-group">
@@ -38,5 +42,6 @@
         $("#controller_delete").html(content[id]["controller"]);
         $("#display_delete").html(content[id]["display"]);
         $("#icon_delete").html(content[id]["icon"]);
+        $("#kategori_delete").html(content[id]["kategori"]);
     }
 </script>

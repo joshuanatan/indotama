@@ -8,16 +8,25 @@
             <div class = "modal-body">
                 <form id = "register_form" method = "POST">
                     <div class = "form-group">
-                        <h5>Controller</h5>
-                        <input type = "text" class = "form-control" required name = "controller">
-                    </div>
-                    <div class = "form-group">
                         <h5>Menu Display</h5>
                         <input type = "text" class = "form-control" required name = "display">
                     </div>
                     <div class = "form-group">
+                        <h5>Controller</h5>
+                        <input type = "text" class = "form-control" required name = "controller">
+                    </div>
+                    <div class = "form-group">
                         <h5>Icon</h5>
                         <input type = "text" class = "form-control" required name = "icon">
+                    </div>
+                    <div class = "form-group">
+                        <h5>Kategori</h5>
+                        <select class = "form-control" required name = "kategori">
+                            <option value = "GENERAL">GENERAL</option>
+                            <option value = "TOKO">TOKO</option>
+                            <option value = "CABANG">CABANG</option>
+                            <option value = "GUDANG">GUDANG</option>
+                        </select>
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>

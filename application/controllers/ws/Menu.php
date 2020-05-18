@@ -38,6 +38,7 @@ class Menu extends CI_Controller{
                 $response["content"][$a]["controller"] = $result["data"][$a]["menu_name"];
                 $response["content"][$a]["display"] = $result["data"][$a]["menu_display"];
                 $response["content"][$a]["icon"] = $result["data"][$a]["menu_icon"];
+                $response["content"][$a]["kategori"] = $result["data"][$a]["menu_category"];
                 $response["content"][$a]["status"] = $result["data"][$a]["menu_status"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["menu_last_modified"];
             }
@@ -47,9 +48,10 @@ class Menu extends CI_Controller{
         }
         $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
         $response["key"] = array(
-            "controller",
             "display",
+            "controller",
             "icon",
+            "kategori",
             "status",
             "last_modified"
         );
@@ -66,6 +68,7 @@ class Menu extends CI_Controller{
                 $response["content"][$a]["controller"] = $result[$a]["menu_name"];
                 $response["content"][$a]["display"] = $result[$a]["menu_display"];
                 $response["content"][$a]["icon"] = $result[$a]["menu_icon"];
+                $response["content"][$a]["kategori"] = $result[$a]["menu_category"];
                 $response["content"][$a]["status"] = $result[$a]["menu_status"];
                 $response["content"][$a]["last_modified"] = $result[$a]["menu_last_modified"];
             }
@@ -81,13 +84,15 @@ class Menu extends CI_Controller{
         $this->form_validation->set_rules("controller","controller","required");
         $this->form_validation->set_rules("display","display","required");
         $this->form_validation->set_rules("icon","icon","required");
+        $this->form_validation->set_rules("kategori","kategori","required");
         if($this->form_validation->run()){
             $this->load->model("m_menu");
             $menu_name = $this->input->post("controller");
             $menu_display = $this->input->post("display");
             $menu_icon = $this->input->post("icon");
+            $menu_kategori = $this->input->post("kategori");
             $menu_status = "AKTIF";
-            if($this->m_menu->set_insert($menu_name,$menu_display,$menu_icon,$menu_status)){
+            if($this->m_menu->set_insert($menu_name,$menu_display,$menu_icon,$menu_status,$menu_kategori)){
                 if($this->m_menu->insert()){
                     $response["msg"] = "Data is recorded to database";
                 }
@@ -113,13 +118,15 @@ class Menu extends CI_Controller{
         $this->form_validation->set_rules("controller","controller","required");
         $this->form_validation->set_rules("display","display","required");
         $this->form_validation->set_rules("icon","icon","required");
+        $this->form_validation->set_rules("kategori","kategori","required");
         if($this->form_validation->run()){
             $this->load->model("m_menu");
             $id_pk_menu = $this->input->post("id");
             $menu_name = $this->input->post("controller");
             $menu_display = $this->input->post("display");
             $menu_icon = $this->input->post("icon");
-            if($this->m_menu->set_update($id_pk_menu,$menu_name,$menu_display,$menu_icon)){
+            $menu_kategori = $this->input->post("kategori");
+            if($this->m_menu->set_update($id_pk_menu,$menu_name,$menu_display,$menu_icon,$menu_kategori)){
                 if($this->m_menu->update()){
                     $response["msg"] = "Data is updated to database";
                 }

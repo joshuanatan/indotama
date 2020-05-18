@@ -140,6 +140,20 @@ class M_user extends CI_Model{
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;
     }
+    public function menu(){
+        $sql = "
+        SELECT menu_name,menu_display,menu_icon,menu_category
+        FROM MSTR_USER
+        INNER JOIN MSTR_JABATAN ON MSTR_JABATAN.ID_PK_JABATAN = MSTR_USER.ID_FK_ROLE
+        INNER JOIN TBL_HAK_AKSES ON TBL_HAK_AKSES.ID_FK_JABATAN = MSTR_JABATAN.ID_PK_JABATAN
+        INNER JOIN MSTR_MENU ON MSTR_MENU.ID_PK_MENU = TBL_HAK_AKSES.ID_FK_MENU
+        WHERE MENU_STATUS = 'AKTIF' AND HAK_AKSES_STATUS = 'AKTIF' AND JABATAN_STATUS = 'AKTIF' AND ID_PK_USER = ?
+        ORDER BY MENU_CATEGORY,MENU_DISPLAY";
+        $args = array(
+            $this->session->id_user
+        );
+        return executeQuery($sql,$args);
+    }
     public function list(){
         $where = array(
             "user_status" => "AKTIF"

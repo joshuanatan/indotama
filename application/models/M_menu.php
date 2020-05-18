@@ -8,6 +8,7 @@ class M_menu extends CI_Model{
     private $menu_name;
     private $menu_display;
     private $menu_icon;
+    private $menu_category;
     private $menu_status;
     private $menu_create_date;
     private $menu_last_modified;
@@ -16,9 +17,10 @@ class M_menu extends CI_Model{
 
     public function __construct(){
         parent::__construct();
-        $this->set_column("menu_name","Menu",false);
         $this->set_column("menu_display","Display",false);
+        $this->set_column("menu_name","Controller Function",false);
         $this->set_column("menu_icon","Icon",false);
+        $this->set_column("menu_category","Kategori",false);
         $this->set_column("menu_status","Status",false);
         $this->set_column("menu_last_modified","Last Modified",false);
         $this->menu_create_date = date("Y-m-d H:i:s");
@@ -44,6 +46,7 @@ class M_menu extends CI_Model{
             MENU_NAME VARCHAR(100),
             MENU_DISPLAY VARCHAR(100),
             MENU_ICON VARCHAR(100),
+            MENU_CATEGORY VARCHAR(100),
             MENU_STATUS VARCHAR(15),
             MENU_CREATE_DATE DATETIME,
             MENU_LAST_MODIFIED DATETIME,
@@ -58,6 +61,7 @@ class M_menu extends CI_Model{
             MENU_NAME VARCHAR(100),
             MENU_DISPLAY VARCHAR(100),
             MENU_ICON VARCHAR(100),
+            MENU_CATEGORY VARCHAR(100),
             MENU_STATUS VARCHAR(15),
             MENU_CREATE_DATE DATETIME,
             MENU_LAST_MODIFIED DATETIME,
@@ -76,7 +80,7 @@ class M_menu extends CI_Model{
             SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.MENU_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO MSTR_MENU_LOG(EXECUTED_FUNCTION,ID_PK_MENU,MENU_NAME,MENU_DISPLAY,MENU_ICON,MENU_STATUS,MENU_CREATE_DATE,MENU_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_MENU,NEW.MENU_NAME,NEW.MENU_DISPLAY,NEW.MENU_ICON,NEW.MENU_STATUS,NEW.MENU_CREATE_DATE,NEW.MENU_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO MSTR_MENU_LOG(EXECUTED_FUNCTION,ID_PK_MENU,MENU_NAME,MENU_DISPLAY,MENU_ICON,MENU_CATEGORY,MENU_STATUS,MENU_CREATE_DATE,MENU_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_MENU,NEW.MENU_NAME,NEW.MENU_DISPLAY,NEW.MENU_ICON,NEW.MENU_CATEGORY,NEW.MENU_STATUS,NEW.MENU_CREATE_DATE,NEW.MENU_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
             
             /* INSERT NEW MENU TO ALL HAK AKSES*/
             SET @ID_MENU = NEW.ID_PK_MENU;
@@ -96,7 +100,7 @@ class M_menu extends CI_Model{
             SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.MENU_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO MSTR_MENU_LOG(EXECUTED_FUNCTION,ID_PK_MENU,MENU_NAME,MENU_DISPLAY,MENU_ICON,MENU_STATUS,MENU_CREATE_DATE,MENU_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_MENU,NEW.MENU_NAME,NEW.MENU_DISPLAY,NEW.MENU_ICON,NEW.MENU_STATUS,NEW.MENU_CREATE_DATE,NEW.MENU_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO MSTR_MENU_LOG(EXECUTED_FUNCTION,ID_PK_MENU,MENU_NAME,MENU_DISPLAY,MENU_ICON,MENU_CATEGORY,MENU_STATUS,MENU_CREATE_DATE,MENU_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_MENU,NEW.MENU_NAME,NEW.MENU_DISPLAY,NEW.MENU_ICON,NEW.MENU_CATEGORY,NEW.MENU_STATUS,NEW.MENU_CREATE_DATE,NEW.MENU_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;";
         executeQuery($sql);
@@ -106,7 +110,7 @@ class M_menu extends CI_Model{
             "menu_status" => "AKTIF"
         );
         $field = array(
-            "id_pk_menu","menu_name","menu_display","menu_icon","menu_status","menu_last_modified"
+            "id_pk_menu","menu_name","menu_display","menu_icon","menu_category","menu_status","menu_last_modified"
         );
         return selectRow($this->tbl_name,$where,$field);
     }
@@ -120,11 +124,12 @@ class M_menu extends CI_Model{
                 menu_display LIKE '%".$search_key."%' OR 
                 menu_icon LIKE '%".$search_key."%' OR 
                 menu_status LIKE '%".$search_key."%' OR 
+                menu_category LIKE '%".$search_key."%' OR 
                 menu_last_modified LIKE '%".$search_key."%'
             )";
         }
         $query = "
-        SELECT id_pk_menu,menu_name,menu_display,menu_icon,menu_status,menu_last_modified
+        SELECT id_pk_menu,menu_name,menu_display,menu_icon,menu_category,menu_status,menu_last_modified
         FROM ".$this->tbl_name." 
         WHERE menu_status = ? ".$search_query."  
         ORDER BY ".$order_by." ".$order_direction." 
@@ -148,6 +153,7 @@ class M_menu extends CI_Model{
                 "menu_name" => $this->menu_name,
                 "menu_display" => $this->menu_display,
                 "menu_icon" => $this->menu_icon,
+                "menu_category" => $this->menu_category,
                 "menu_status" => $this->menu_status,
                 "menu_create_date" => $this->menu_create_date,
                 "menu_last_modified" => $this->menu_last_modified,
@@ -167,6 +173,7 @@ class M_menu extends CI_Model{
                 "menu_name" => $this->menu_name, 
                 "menu_display" => $this->menu_display, 
                 "menu_icon" => $this->menu_icon, 
+                "menu_category" => $this->menu_category, 
                 "menu_last_modified" => $this->menu_last_modified, 
                 "id_last_modified" => $this->id_last_modified, 
             );
@@ -204,6 +211,9 @@ class M_menu extends CI_Model{
         if($this->menu_status == ""){
             return false;
         }
+        if($this->menu_category == ""){
+            return false;
+        }
         if($this->menu_create_date == ""){
             return false;
         }
@@ -231,6 +241,9 @@ class M_menu extends CI_Model{
         if($this->menu_icon == ""){
             return false;
         }
+        if($this->menu_category == ""){
+            return false;
+        }
         if($this->menu_last_modified == ""){
             return false;
         }
@@ -251,7 +264,7 @@ class M_menu extends CI_Model{
         }
         return true;
     }
-    public function set_insert($menu_name,$menu_display,$menu_icon,$menu_status){
+    public function set_insert($menu_name,$menu_display,$menu_icon,$menu_status,$menu_category){
         if(!$this->set_menu_name($menu_name)){
             return false;
         }
@@ -264,9 +277,12 @@ class M_menu extends CI_Model{
         if(!$this->set_menu_status($menu_status)){
             return false;
         }
+        if(!$this->set_menu_category($menu_category)){
+            return false;
+        }
         return true;
     }
-    public function set_update($id_pk_menu,$menu_name,$menu_display,$menu_icon){
+    public function set_update($id_pk_menu,$menu_name,$menu_display,$menu_icon,$menu_category){
         if(!$this->set_id_pk_menu($id_pk_menu)){
             return false;
         }
@@ -277,6 +293,9 @@ class M_menu extends CI_Model{
             return false;
         }
         if(!$this->set_menu_name($menu_name)){
+            return false;
+        }
+        if(!$this->set_menu_category($menu_category)){
             return false;
         }
         return true;
@@ -322,6 +341,13 @@ class M_menu extends CI_Model{
         }
         return false;
     }
+    public function set_menu_category($menu_category){
+        if($menu_category != ""){
+            $this->menu_category = $menu_category;
+            return true;
+        }
+        return false;
+    }
     public function get_menu_name(){
         return $this->menu_name;
     }
@@ -333,5 +359,8 @@ class M_menu extends CI_Model{
     }
     public function get_menu_status(){
         return $this->menu_status;
+    }
+    public function get_menu_category(){
+        return $this->menu_category;
     }
 }
