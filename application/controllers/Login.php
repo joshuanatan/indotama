@@ -23,6 +23,23 @@ class Login extends CI_Controller {
 		if($this->m_user->set_login($user_name,$user_pass)){
 			$data = $this->m_user->login();
 			if($data){
+				#cek akses user ke toko
+				#if true -> session cabang = true
+				#cek jumlah cabang yang boleh diakses
+				#if jumlah > 1 -> session mutliple cabang = true, no session cabang
+				#else session cabang = id cabang, multiple cabang = false
+				
+				#cek akses user ke cabang
+				#if true -> session cabang = true
+				#cek jumlah cabang yang boleh diakses
+				#if jumlah > 1 -> session mutliple cabang = true, no session cabang
+				#else session cabang = id cabang, multiple cabang = false
+
+				#cek akses user ke warehouse
+				#if true -> session warehouse = true
+				#cek jumlah warehouse yang boleh diakses
+				#if jumlah > 1 -> session mutliple warehouse = true, no session warehouse
+				#else session warehouse = id warehouse, multiple warehouse = false
 				$user_data = array(
 					"id_user"=>$data['id'],
 					"user_name"=>$data['name'],
@@ -32,11 +49,13 @@ class Login extends CI_Controller {
 				);
 				$this->session->set_userdata($user_data);
 				redirect(md5("Dashboard"));
-			}else{
+			}
+			else{
 				$response["status"] = "ERROR";
 				$response["msg"] = "Login function is error!";
 			}
-		}else{
+		}
+		else{
 			$response["status"] = "ERROR";
 			$response["msg"] = "Setter function is error";
 			
@@ -98,15 +117,18 @@ class Login extends CI_Controller {
 					else {
 						echo "<script>alert('Cek email Anda dan ikuti instruksi selanjutnya untuk melakukan reset password!'); window.location.href='../99dea78007133396a7b8ed70578ac6ae';</script>";
 					}
-				}else{
+				}
+				else{
 					$response["status"] = "ERROR";
 					$response["msg"] = "Employee tidak ditemukan!";
 				}
-			}else{
+			}
+			else{
 				$response["status"] = "ERROR";
 				$response["msg"] = "Employee tidak ditemukan!";
 			}
-		}else{
+		}
+		else{
 			$response["status"] = "ERROR";
 			$response["msg"] = validation_errors();
 			$this->session->set_flashdata("msg",$response['msg']);
@@ -125,7 +147,8 @@ class Login extends CI_Controller {
 
         if($passbaru != $passkonfir || $passbaru=="" || $passbaru=="" || strlen($passbaru)<8){
             echo "1";
-        }else{
+		}
+		else{
             echo "0";
         }
     }
