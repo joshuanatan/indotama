@@ -1,7 +1,7 @@
 <?php
-$page_title = "Master Toko";
+$page_title = "Admin Toko";
 $breadcrumb = array(
-    "Master","Toko"
+    "Master",$this->session->toko_nama,"Admin"
 );
 ?>
 <!DOCTYPE html>
@@ -17,7 +17,7 @@ $breadcrumb = array(
         </div>
         <div class="wrapper theme-1-active pimary-color-pink">
 
-            <?php $this->load->view('req/mm_menubar.php');?>
+            <?php $data["menu"] = $menu; $this->load->view('req/mm_menubar',$data);?>
 
             <div class="page-wrapper">
                 <div class="container-fluid">
@@ -44,6 +44,7 @@ $breadcrumb = array(
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
                                             <div class = "d-block">
+                                                <a href = "<?php echo base_url();?>toko" style = "margin-right:10px" class = "btn btn-danger btn-sm col-lg-2 col-sm-12">Kembali ke Daftar Toko</a>
                                                 <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#register_modal" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
                                             </div>
                                             <br/>
@@ -51,9 +52,7 @@ $breadcrumb = array(
                                             <div class = "align-middle text-center d-block">
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
-                                                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-success md-store'></i><b> - Cabang</b>
-                                                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-warning md-assignment-account'></i><b> - Admin Toko</b>
-                                            </div>
+                                               </div>
                                             <br/>
                                             <div class = "form-group">
                                                 <h5>Search Data Here</h5>
@@ -85,47 +84,54 @@ $breadcrumb = array(
     </body>
 </html>
 <script>
-    var ctrl = "toko";
-    var url_add = "";
-    var additional_button = [
-        {
-            style:'cursor:pointer;font-size:large',
-            class:'text-success md-store',
-            onclick:'redirect_cabang()'
-        },
-        {
-            style:'cursor:pointer;font-size:large',
-            class:'text-warning md-assignment-account',
-            onclick:'redirect_admin_toko()'
-        }
-    ];
+    var ctrl = "toko_admin";
+    var url_add = "id_toko=<?php echo $this->session->id_toko;?>";
 </script>
 <?php 
 $data = array(
-    "page_title" => "Master Toko"
+    "page_title" => "Admin Toko"
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
 <?php $this->load->view("_core_script/register_func");?>
 <?php $this->load->view("_core_script/update_func");?>
 <?php $this->load->view("_core_script/delete_func");?>
-<?php $this->load->view('toko/f-add-toko',$data);?>
-<?php $this->load->view('toko/f-update-toko',$data);?>
-<?php $this->load->view('toko/f-delete-toko',$data);?>
+<?php $this->load->view('toko_admin/f-add-toko_admin',$data);?>
+<?php $this->load->view('toko_admin/f-update-toko_admin',$data);?>
+<?php $this->load->view('toko_admin/f-delete-toko_admin',$data);?>
 
+<datalist id = 'daftar_user'></datalist>
 <script>
-    function redirect_cabang(){
-        $('#table_container').find('tr').click( function(){
-            var row = $(this).index();
-            var id_toko = content[row]["id"];
-            window.location.replace("<?php echo base_url();?>toko/cabang/"+id_toko);
+    window.onload = function(){
+        $.ajax({
+            url:"<?php echo base_url();?>ws/user/list",
+            type:"GET",
+            dataType:"JSON",
+            success:function(respond){
+                var html = "";
+                if(respond["status"] == "SUCCESS"){
+                    for(var a = 0; a<respond["content"].length; a++){
+                        html+="<option value = '"+respond['content'][a]["name"]+"'></option>";
+                    }
+                    $("#daftar_user").html(html);
+                }
+            }
         });
     }
-    function redirect_admin_toko(){
-        $('#table_container').find('tr').click( function(){
-            var row = $(this).index();
-            var id_toko = content[row]["id"];
-            window.location.replace("<?php echo base_url();?>toko/admin/"+id_toko);
+    window.onfocus = function(){
+        $.ajax({
+            url:"<?php echo base_url();?>ws/user/list",
+            type:"GET",
+            dataType:"JSON",
+            success:function(respond){
+                var html = "";
+                if(respond["status"] == "SUCCESS"){
+                    for(var a = 0; a<respond["content"].length; a++){
+                        html+="<option value = '"+respond['content'][a]["name"]+"'></option>";
+                    }
+                    $("#daftar_user").html(html);
+                }
+            }
         });
     }
 </script>

@@ -90,6 +90,11 @@ $breadcrumb = array(
             style:'cursor:pointer;font-size:large',
             class:'text-success md-store',
             onclick:'redirect_brg_warehouse()'
+        },
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-warning md-assignment-account',
+            onclick:'redirect_admin_cabang()'
         }
     ];
 </script>
@@ -112,6 +117,13 @@ $data = array(
             var row = $(this).index();
             var id_warehouse = content[row]["id"];
             window.location.replace("<?php echo base_url();?>warehouse/warehouse_barang/"+id_warehouse);
+        });
+    }
+    function redirect_admin_cabang(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_cabang = content[row]["id"];
+            window.location.replace("<?php echo base_url();?>warehouse/admin/"+id_cabang);
         });
     }
 </script>

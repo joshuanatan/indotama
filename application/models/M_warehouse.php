@@ -135,6 +135,21 @@ class M_warehouse extends CI_Model{
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;
     }
+    public function detail_by_id(){
+        $field = array(
+            "id_pk_warehouse",
+            "warehouse_nama",
+            "warehouse_alamat",
+            "warehouse_notelp",
+            "warehouse_desc",
+            "warehouse_status",
+            "warehouse_last_modified"
+        );
+        $where = array(
+            "id_pk_warehouse" => $this->id_pk_warehouse
+        );
+        return selectRow($this->tbl_name,$where,$field);
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(

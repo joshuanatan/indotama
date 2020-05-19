@@ -91,6 +91,11 @@ $breadcrumb = array(
             style:'cursor:pointer;font-size:large',
             class:'text-success md-store',
             onclick:'open_list_barang()'
+        },
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-warning md-assignment-account',
+            onclick:'redirect_admin_cabang()'
         }
     ];
 </script>
@@ -113,6 +118,13 @@ $data = array(
             var row = $(this).index();
             var id_cabang = content[row]["id"];
             window.open("<?php echo base_url();?>toko/brg_cabang/"+id_cabang);
+        });
+    }
+    function redirect_admin_cabang(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_cabang = content[row]["id"];
+            window.location.replace("<?php echo base_url();?>toko/admin_cabang/"+id_cabang);
         });
     }
 </script>

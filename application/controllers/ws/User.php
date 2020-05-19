@@ -149,4 +149,26 @@ class User extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function list(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_user");
+        $result = $this->m_user->list();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_user"];
+                $response["content"][$a]["name"] = $result[$a]["user_name"];
+                $response["content"][$a]["email"] = $result[$a]["user_email"];
+                $response["content"][$a]["status"] = $result[$a]["user_status"];
+                $response["content"][$a]["id_role"] = $result[$a]["id_fk_role"];
+                $response["content"][$a]["last_modified"] = $result[$a]["user_last_modified"];
+                $response["content"][$a]["create_date"] = $result[$a]["user_create_date"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "No User List";
+        }
+        echo json_encode($response);
+    }
 }

@@ -164,6 +164,15 @@ class M_user extends CI_Model{
         $result = selectRow($this->tbl_name,$where,$field);
         return $result;
     }
+    public function detail_by_name(){
+        $field = array(
+            "id_pk_user","user_name","user_pass","user_email","user_status"
+        );
+        $where = array(
+            "user_name" => $this->user_name
+        );
+        return selectRow($this->tbl_name,$where,$field);
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(
