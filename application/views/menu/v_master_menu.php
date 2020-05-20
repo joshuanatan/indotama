@@ -3,6 +3,10 @@ $page_title = "Menu";
 $breadcrumb = array(
     "Menu"
 );
+
+$notif_data = array(
+    "page_title"=>$page_title
+);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,8 +22,10 @@ $breadcrumb = array(
         <div class="wrapper theme-1-active pimary-color-pink">
 
             <?php $this->load->view('req/mm_menubar.php');?>
-
+            
             <div class="page-wrapper">
+            <?php //$this->load->view('_core_script/register_success',$notif_data); ?>
+            <?php $this->load->view('_core_script/register_error',$notif_data); ?>
                 <div class="container-fluid">
                     <div class="row mt-20">
                         <div class="col-lg-12 col-sm-12">
