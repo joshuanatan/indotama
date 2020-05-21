@@ -5,6 +5,7 @@ class Login extends CI_Controller {
 
 	public function index()
 	{
+		$this->session->sess_destroy();
 		$this->register_user();
 		$this->load->view('login/V_log_in');
 	}
@@ -23,23 +24,7 @@ class Login extends CI_Controller {
 		if($this->m_user->set_login($user_name,$user_pass)){
 			$data = $this->m_user->login();
 			if($data){
-				#cek akses user ke toko
-				#if true -> session cabang = true
-				#cek jumlah cabang yang boleh diakses
-				#if jumlah > 1 -> session mutliple cabang = true, no session cabang
-				#else session cabang = id cabang, multiple cabang = false
 				
-				#cek akses user ke cabang
-				#if true -> session cabang = true
-				#cek jumlah cabang yang boleh diakses
-				#if jumlah > 1 -> session mutliple cabang = true, no session cabang
-				#else session cabang = id cabang, multiple cabang = false
-
-				#cek akses user ke warehouse
-				#if true -> session warehouse = true
-				#cek jumlah warehouse yang boleh diakses
-				#if jumlah > 1 -> session mutliple warehouse = true, no session warehouse
-				#else session warehouse = id warehouse, multiple warehouse = false
 				$user_data = array(
 					"id_user"=>$data['id'],
 					"user_name"=>$data['name'],
@@ -185,14 +170,6 @@ class Login extends CI_Controller {
 	}
 	
 	public function logout(){
-		$session = array(
-			"id_user",
-			"user_name",
-			"user_email",
-			"role",
-			"user_status"
-		);
-		$this->session->unset_userdata($session);
 		redirect(md5("Login"));
 	}
 	private function register_user(){
