@@ -5,10 +5,18 @@
     var searchKey = "";
     var page = 1;
     var content = [];
+
+    /*custom get_content_function*/
+    var contentCtrl = "content";
+    if(typeof(custom_contentCtrl) != "undefined"){
+        contentCtrl = custom_contentCtrl;
+    }
+
+
     function refresh(req_page = 1) {
         page = req_page;
         $.ajax({
-            url: "<?php echo base_url();?>ws/"+ctrl+"/content?orderBy="+orderBy+"&orderDirection="+orderDirection+"&page="+page+"&searchKey="+searchKey+"&"+url_add,
+            url: "<?php echo base_url();?>ws/"+ctrl+"/"+contentCtrl+"?orderBy="+orderBy+"&orderDirection="+orderDirection+"&page="+page+"&searchKey="+searchKey+"&"+url_add,
             type: "GET",
             dataType: "JSON",
             success: function(respond) {
@@ -20,6 +28,15 @@
                         for(var b = 0; b<respond["key"].length; b++){
                             html += "<td class = 'align-middle text-center'>"+respond["content"][a][respond["key"][b]]+"</td>";
                         }
+                        /*
+                            additional button
+                            var add_but_array =[
+                                {
+                                    html_prop1:html_val1,
+                                    html_prop2:html_val2
+                                }
+                            ]
+                        */
                         if(typeof(additional_button) != "undefined"){
                             var addtnl = ""; 
                             for(var add = 0; add<additional_button.length; add++){
@@ -29,12 +46,12 @@
                                         props += " "+key+"='"+additional_button[add][key]+"'";
                                     }
                                 }
-                                addtnl += " | <i "+props+"></i>";
+                                addtnl += "  <i "+props+"></i>";
                             }
-                            html += "<td class = 'align-middle text-center'><i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content("+a+")'></i> | <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content("+a+")'></i>"+addtnl+"</td>";
+                            html += "<td class = 'align-middle text-center'><i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'edit_button text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content("+a+")'></i>  <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'delete_button text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content("+a+")'></i>"+addtnl+"</td>";
                         }
                         else{
-                            html += "<td class = 'align-middle text-center'><i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content("+a+")'></i> | <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content("+a+")'></i></td>";
+                            html += "<td class = 'align-middle text-center'><i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'edit_button text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content("+a+")'></i>  <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'delete_button text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content("+a+")'></i></td>";
                         }
                         html += "</tr>";
                     }
@@ -46,6 +63,16 @@
                 }
                 $("#content_container").html(html);
                 pagination(respond["page"]);
+
+                /*
+                    unload unauthorized button
+                    var unathorized_button = ["classbutton1","classbutton2]
+                */
+                if(typeof(unautorized_button) != "undefined"){
+                    for(var a = 0; a<unautorized_button.length; a++){
+                        $("."+unautorized_button[a]).remove();
+                    }
+                }
                 
             },
             error: function(){
@@ -117,9 +144,13 @@
         searchKey = $("#search_box").val();
         refresh();
     }
+    var tblHeaderCtrl = "columns";
+    if(typeof(custom_tblHeaderCtrl) != "undefined"){
+        tblHeaderCtrl = custom_tblHeaderCtrl;
+    }
     function tblheader(){
         $.ajax({
-            url: "<?php echo base_url();?>ws/"+ctrl+"/columns",
+            url: "<?php echo base_url();?>ws/"+ctrl+"/"+tblHeaderCtrl,
             type: "GET",
             dataType: "JSON",
             async:false,
