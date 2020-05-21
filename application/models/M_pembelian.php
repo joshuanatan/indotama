@@ -9,6 +9,7 @@ class M_pembelian extends CI_Model{
     private $pem_tgl;
     private $pem_status;
     private $id_fk_supp;
+    private $id_fk_cabang;
     private $pem_create_date;
     private $pem_last_modified;
     private $id_create_data;
@@ -43,6 +44,7 @@ class M_pembelian extends CI_Model{
             PEM_TGL DATE,
             PEM_STATUS VARCHAR(15),
             ID_FK_SUPP INT,
+            ID_FK_CABANG INT,
             PEM_CREATE_DATE DATETIME,
             PEM_LAST_MODIFIED DATETIME,
             ID_CREATE_DATA INT,
@@ -57,6 +59,7 @@ class M_pembelian extends CI_Model{
             PEM_TGL DATE,
             PEM_STATUS VARCHAR(15),
             ID_FK_SUPP INT,
+            ID_FK_CABANG INT,
             PEM_CREATE_DATE DATETIME,
             PEM_LAST_MODIFIED DATETIME,
             ID_CREATE_DATA INT,
@@ -74,7 +77,7 @@ class M_pembelian extends CI_Model{
             SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.PEM_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO MSTR_PEMBELIAN_LOG(EXECUTED_FUNCTION,ID_PK_PEMBELIAN,PEM_PK_NOMOR,PEM_TGL,PEM_STATUS,ID_FK_SUPP,PEM_CREATE_DATE,PEM_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_PEMBELIAN,NEW.PEM_PK_NOMOR,NEW.PEM_TGL,NEW.PEM_STATUS,NEW.ID_FK_SUPP,NEW.PEM_CREATE_DATE,NEW.PEM_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO MSTR_PEMBELIAN_LOG(EXECUTED_FUNCTION,ID_PK_PEMBELIAN,PEM_PK_NOMOR,PEM_TGL,PEM_STATUS,ID_FK_SUPP,ID_FK_CABANG,PEM_CREATE_DATE,PEM_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_PEMBELIAN,NEW.PEM_PK_NOMOR,NEW.PEM_TGL,NEW.PEM_STATUS,NEW.ID_FK_SUPP,NEW.ID_FK_CABANG,NEW.PEM_CREATE_DATE,NEW.PEM_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;
         
@@ -89,7 +92,7 @@ class M_pembelian extends CI_Model{
             SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.PEM_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO MSTR_PEMBELIAN_LOG(EXECUTED_FUNCTION,ID_PK_PEMBELIAN,PEM_PK_NOMOR,PEM_TGL,PEM_STATUS,ID_FK_SUPP,PEM_CREATE_DATE,PEM_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_PEMBELIAN,NEW.PEM_PK_NOMOR,NEW.PEM_TGL,NEW.PEM_STATUS,NEW.ID_FK_SUPP,NEW.PEM_CREATE_DATE,NEW.PEM_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO MSTR_PEMBELIAN_LOG(EXECUTED_FUNCTION,ID_PK_PEMBELIAN,PEM_PK_NOMOR,PEM_TGL,PEM_STATUS,ID_FK_SUPP,ID_FK_CABANG,PEM_CREATE_DATE,PEM_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_PEMBELIAN,NEW.PEM_PK_NOMOR,NEW.PEM_TGL,NEW.PEM_STATUS,NEW.ID_FK_SUPP,NEW.ID_FK_CABANG,NEW.PEM_CREATE_DATE,NEW.PEM_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;
         ";
@@ -115,11 +118,11 @@ class M_pembelian extends CI_Model{
         SELECT id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified
         FROM ".$this->tbl_name." 
         INNER JOIN MSTR_SUPPLIER ON MSTR_SUPPLIER.ID_PK_SUP = ".$this->tbl_name.".ID_FK_SUPP
-        WHERE PEM_STATUS != ? AND sup_status = ? ".$search_query."  
+        WHERE PEM_STATUS != ? AND SUP_STATUS = ? AND ID_FK_CABANG = ? ".$search_query."  
         ORDER BY ".$order_by." ".$order_direction." 
         LIMIT 20 OFFSET ".($page-1)*$data_per_page;
         $args = array(
-            "NONAKTIF","AKTIF"
+            "NONAKTIF","AKTIF",$this->id_fk_cabang
         );
         $result["data"] = executeQuery($query,$args);
         
@@ -127,7 +130,7 @@ class M_pembelian extends CI_Model{
         SELECT id_pk_pembelian
         FROM ".$this->tbl_name." 
         INNER JOIN MSTR_SUPPLIER ON MSTR_SUPPLIER.ID_PK_SUP = ".$this->tbl_name.".ID_FK_SUPP
-        WHERE PEM_STATUS != ? AND sup_status = ? ".$search_query."
+        WHERE PEM_STATUS != ? AND SUP_STATUS = ? AND ID_FK_CABANG = ? ".$search_query."
         ORDER BY ".$order_by." ".$order_direction;
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;
@@ -142,6 +145,7 @@ class M_pembelian extends CI_Model{
                 "pem_tgl" => $this->pem_tgl,
                 "pem_status" => $this->pem_status,
                 "id_fk_supp" => $this->id_fk_supp,
+                "id_fk_cabang" => $this->id_fk_cabang,
                 "pem_create_date" => $this->pem_create_date,
                 "pem_last_modified" => $this->pem_last_modified,
                 "id_create_data" => $this->id_create_data,
@@ -202,6 +206,9 @@ class M_pembelian extends CI_Model{
         if($this->id_fk_supp == ""){
             return false;
         }
+        if($this->id_fk_cabang == ""){
+            return false;
+        }
         if($this->pem_create_date == ""){
             return false;
         }
@@ -249,7 +256,7 @@ class M_pembelian extends CI_Model{
         }
         else return true;
     }
-    public function set_insert($pem_pk_nomor,$pem_tgl,$pem_status,$id_fk_supp){
+    public function set_insert($pem_pk_nomor,$pem_tgl,$pem_status,$id_fk_supp,$id_fk_cabang){
         if(!$this->set_pem_pk_nomor($pem_pk_nomor)){
             return false;
         }
@@ -260,6 +267,9 @@ class M_pembelian extends CI_Model{
             return false;
         }
         if(!$this->set_id_fk_supp($id_fk_supp)){
+            return false;
+        }
+        if(!$this->set_id_fk_cabang($id_fk_cabang)){
             return false;
         }
         return true;
@@ -320,9 +330,9 @@ class M_pembelian extends CI_Model{
         }
         return false;
     }
-    public function set_id_fk_toko($id_fk_toko){
-        if($id_fk_toko != ""){
-            $this->id_fk_toko = $id_fk_toko;
+    public function set_id_fk_cabang($id_fk_cabang){
+        if($id_fk_cabang != ""){
+            $this->id_fk_cabang = $id_fk_cabang;
             return true;
         }
         return false;
@@ -342,7 +352,7 @@ class M_pembelian extends CI_Model{
     public function get_id_fk_supp(){
         return $this->id_fk_supp;
     }
-    public function get_id_fk_toko(){
-        return $this->id_fk_toko;
+    public function get_id_fk_cabang(){
+        return $this->id_fk_cabang;
     }
 }
