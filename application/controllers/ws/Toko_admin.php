@@ -70,7 +70,7 @@ class Toko_admin extends CI_Controller{
                     if($result->num_rows() > 0){
                         $result = $result->result_array();
                         $id_fk_user = $result[0]["id_pk_user"];
-                        $id_fk_toko = $this->session->id_toko;
+                        $id_fk_toko = $this->input->post("id_toko");
                         $toko_admin_status = "AKTIF";
             
                         $this->load->model("m_toko_admin");

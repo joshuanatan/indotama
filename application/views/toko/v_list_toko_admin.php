@@ -49,8 +49,7 @@ $breadcrumb = array(
                                             <br/>
                                             <br/>
                                             <div class = "align-middle text-center d-block">
-                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
-                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "md-wrench"></i><b> - Aktivasi Toko Untuk Manajemen </b>   
                                             </div>
                                             <br/>
                                             <div class = "form-group">
@@ -89,6 +88,20 @@ $breadcrumb = array(
     var custom_tblHeaderCtrl = "columns_toko_admin";
     var unautorized_button = ["edit_button","delete_button"];
     var additional_button = [
+        {
+            class:"md-wrench",
+            style:"cursor:pointer",
+            onclick:"activate_toko_manajemen()"
+        }
     ];
 </script>
 <?php $this->load->view("_core_script/table_func");?>
+<script>
+    function activate_toko_manajemen(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_toko = content[row]["id"];
+            window.location.replace("<?php echo base_url();?>toko/activate_toko_manajemen/"+id_toko);
+        });
+    }
+</script>
