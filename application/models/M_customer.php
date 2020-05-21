@@ -12,7 +12,6 @@ class M_customer extends CI_Model{
     private $cust_hp;
     private $cust_alamat;
     private $cust_keterangan;
-    private $id_fk_toko;
     private $cust_status;
     private $cust_create_date;
     private $cust_last_modified;
@@ -21,10 +20,27 @@ class M_customer extends CI_Model{
 
     public function __construct(){
         parent::__construct();
+        $this->set_column("cust_name","Name",true);
+        $this->set_column("cust_perusahaan","Perusahaan",false);
+        $this->set_column("cust_email","Email",false);
+        $this->set_column("cust_telp","Telp",false);
+        $this->set_column("cust_hp","Hp",false);
+        $this->set_column("cust_alamat","Alamat",false);
+        $this->set_column("cust_keterangan","Keterangan",false);
+        $this->set_column("cust_status","Status",false);
+        $this->set_column("cust_last_modified","Last Modified",false);
         $this->cust_create_date = date("Y-m-d H:i:s");
         $this->cust_last_modified = date("Y-m-d H:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
+    }
+    private function set_column($col_name,$col_disp,$order_by){
+        $array = array(
+            "col_name" => $col_name,
+            "col_disp" => $col_disp,
+            "order_by" => $order_by
+        );
+        $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
     }
     public function columns(){
         return $this->columns;
@@ -99,6 +115,43 @@ class M_customer extends CI_Model{
         DELIMITER ;";
         executeQuery($sql);
     }
+    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+        $order_by = $this->columns[$order_by]["col_name"];
+        $search_query = "";
+        if($search_key != ""){
+            $search_query .= "AND
+            ( 
+                id_pk_cust LIKE '%".$search_key."%' OR
+                cust_name LIKE '%".$search_key."%' OR
+                cust_perusahaan LIKE '%".$search_key."%' OR
+                cust_email LIKE '%".$search_key."%' OR
+                cust_telp LIKE '%".$search_key."%' OR
+                cust_hp LIKE '%".$search_key."%' OR
+                cust_alamat LIKE '%".$search_key."%' OR
+                cust_keterangan LIKE '%".$search_key."%' OR
+                cust_status LIKE '%".$search_key."%' OR
+                cust_last_modified LIKE '%".$search_key."%'
+            )";
+        }
+        $query = "
+        SELECT id_pk_cust,cust_name,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,cust_status,cust_last_modified
+        FROM ".$this->tbl_name." 
+        WHERE cust_status = ? ".$search_query."  
+        ORDER BY ".$order_by." ".$order_direction." 
+        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        $args = array(
+            "AKTIF"
+        );
+        $result["data"] = executeQuery($query,$args);
+        
+        $query = "
+        SELECT id_pk_cust
+        FROM ".$this->tbl_name." 
+        WHERE cust_status = ? ".$search_query."  
+        ORDER BY ".$order_by." ".$order_direction;
+        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        return $result;
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(
@@ -109,7 +162,6 @@ class M_customer extends CI_Model{
                 "cust_hp" => $this->cust_hp,
                 "cust_alamat" => $this->cust_alamat,
                 "cust_keterangan" => $this->cust_keterangan,
-                "id_fk_toko" => $this->id_fk_toko,
                 "cust_status" => $this->cust_status,
                 "cust_create_date" => $this->cust_create_date,
                 "cust_last_modified" => $this->cust_last_modified,
@@ -133,7 +185,6 @@ class M_customer extends CI_Model{
                 "cust_hp" => $this->cust_hp,
                 "cust_alamat" => $this->cust_alamat,
                 "cust_keterangan" => $this->cust_keterangan,
-                "id_fk_toko" => $this->id_fk_toko,
                 "cust_last_modified" => $this->cust_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
@@ -179,9 +230,6 @@ class M_customer extends CI_Model{
         if($this->cust_keterangan == ""){
             return false;
         }
-        if($this->id_fk_toko == ""){
-            return false;
-        }
         if($this->cust_status == ""){
             return false;
         }
@@ -224,9 +272,6 @@ class M_customer extends CI_Model{
         if($this->cust_keterangan == ""){
             return false;
         }
-        if($this->id_fk_toko == ""){
-            return false;
-        }
         if($this->cust_last_modified == ""){
             return false;
         }
@@ -247,7 +292,7 @@ class M_customer extends CI_Model{
         }
         return true;
     }
-    public function set_insert(){
+    public function set_insert($cust_name,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_status){
         if(!$this->set_cust_name($cust_name)){
             return false;
         }
@@ -269,15 +314,12 @@ class M_customer extends CI_Model{
         if(!$this->set_cust_keterangan($cust_keterangan)){
             return false;
         }
-        if(!$this->set_id_fk_toko($id_fk_toko)){
-            return false;
-        }
         if(!$this->set_cust_status($cust_status)){
             return false;
         }
         return true;
     }
-    public function set_update(){
+    public function set_update($id_pk_cust,$cust_name,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan){
         if(!$this->set_id_pk_cust($id_pk_cust)){
             return false;
         }
@@ -300,9 +342,6 @@ class M_customer extends CI_Model{
             return false;
         }
         if(!$this->set_cust_keterangan($cust_keterangan)){
-            return false;
-        }
-        if(!$this->set_id_fk_toko($id_fk_toko)){
             return false;
         }
         return true;
