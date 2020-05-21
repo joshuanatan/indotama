@@ -96,7 +96,7 @@ class M_warehouse_admin extends CI_Model{
     public function columns(){
         return $this->columns;
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = 20){
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
@@ -128,6 +128,49 @@ class M_warehouse_admin extends CI_Model{
         INNER JOIN MSTR_USER ON MSTR_USER.ID_PK_USER = ".$this->tbl_name.".ID_FK_USER
         INNER JOIN MSTR_WAREHOUSE ON MSTR_WAREHOUSE.ID_PK_WAREHOUSE = ".$this->tbl_name.".ID_FK_WAREHOUSE
         WHERE WAREHOUSE_ADMIN_STATUS = ? AND ID_FK_WAREHOUSE = ? AND USER_STATUS = ? ".$search_query."  
+        ORDER BY ".$order_by." ".$order_direction;
+        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        return $result;
+    }
+    public function list_gudang_admin($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = 20){
+        $this->columns = array();
+        $this->set_column("warehouse_nama","Nama Warehouse","required");
+        $this->set_column("warehouse_alamat","Alamat","required");
+        $this->set_column("warehouse_notelp","No Telpon","required");
+        $this->set_column("warehouse_desc","Deskripsi","required");
+        $this->set_column("warehouse_status","Status","required");
+        $this->set_column("warehouse_last_modified","Last Modified","required");
+
+        $order_by = $this->columns[$order_by]["col_name"];
+        $search_query = "";
+        if($search_key != ""){
+            $search_query .= "AND
+            ( 
+                warehouse_nama LIKE '%".$search_key."%' OR 
+                warehouse_alamat LIKE '%".$search_key."%' OR 
+                warehouse_notelp LIKE '%".$search_key."%' OR 
+                warehouse_desc LIKE '%".$search_key."%' OR 
+                warehouse_status LIKE '%".$search_key."%' OR 
+                warehouse_last_modified LIKE '%".$search_key."%'
+            )";
+        }
+        $query = "
+        SELECT id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_last_modified
+        FROM ".$this->tbl_name." 
+        INNER JOIN MSTR_WAREHOUSE ON MSTR_WAREHOUSE.ID_PK_WAREHOUSE = ".$this->tbl_name.".ID_FK_WAREHOUSE
+        WHERE WAREHOUSE_STATUS = ? AND ID_FK_USER = ? AND WAREHOUSE_ADMIN_STATUS = ? ".$search_query."  
+        ORDER BY ".$order_by." ".$order_direction." 
+        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        $args = array(
+            "AKTIF", $this->id_fk_user,"AKTIF"
+        );
+        $result["data"] = executeQuery($query,$args);
+        
+        $query = "
+        SELECT id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_last_modified
+        FROM ".$this->tbl_name." 
+        INNER JOIN MSTR_WAREHOUSE ON MSTR_WAREHOUSE.ID_PK_WAREHOUSE = ".$this->tbl_name.".ID_FK_WAREHOUSE
+        WHERE WAREHOUSE_STATUS = ? AND ID_FK_USER = ? AND WAREHOUSE_ADMIN_STATUS = ? ".$search_query."  
         ORDER BY ".$order_by." ".$order_direction;
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;

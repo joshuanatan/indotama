@@ -96,7 +96,7 @@ class M_cabang_admin extends CI_Model{
     public function columns(){
         return $this->columns;
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = 20){
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
@@ -128,6 +128,54 @@ class M_cabang_admin extends CI_Model{
         INNER JOIN MSTR_USER ON MSTR_USER.ID_PK_USER = ".$this->tbl_name.".ID_FK_USER
         INNER JOIN MSTR_CABANG ON MSTR_CABANG.ID_PK_CABANG = ".$this->tbl_name.".ID_FK_CABANG
         WHERE CABANG_ADMIN_STATUS = ? AND ID_FK_CABANG = ? AND USER_STATUS = ? ".$search_query."  
+        ORDER BY ".$order_by." ".$order_direction;
+        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        return $result;
+    }
+    public function set_cabang_admin_columns(){
+        $this->columns = array();
+        $this->set_column("toko_nama","Toko",true);
+        $this->set_column("cabang_daerah","Daerah",false);
+        $this->set_column("cabang_notelp","No Telp",false);
+        $this->set_column("cabang_alamat","Alamat",false);
+        $this->set_column("cabang_status","Status",false);
+        $this->set_column("cabang_last_modified","Last Modified",false);
+    }
+    public function list_cabang_admin($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = 20){
+        $this->set_cabang_admin_columns();
+        $order_by = $this->columns[$order_by]["col_name"];
+        $search_query = "";
+        if($search_key != ""){
+            $search_query .= "AND
+            ( 
+                id_pk_cabang LIKE '%".$search_key."%' OR 
+                cabang_daerah LIKE '%".$search_key."%' OR 
+                cabang_notelp LIKE '%".$search_key."%' OR 
+                cabang_alamat LIKE '%".$search_key."%' OR 
+                cabang_status LIKE '%".$search_key."%' OR 
+                cabang_create_date LIKE '%".$search_key."%' OR 
+                cabang_last_modified LIKE '%".$search_key."%'
+            )";
+        }
+        $query = "
+        SELECT id_pk_cabang,toko_nama,cabang_daerah,cabang_notelp,cabang_alamat,cabang_status,cabang_create_date,cabang_last_modified
+        FROM ".$this->tbl_name." 
+        INNER JOIN MSTR_CABANG ON MSTR_CABANG.ID_PK_CABANG = ".$this->tbl_name.".ID_FK_CABANG
+        INNER JOIN MSTR_TOKO ON MSTR_TOKO.ID_PK_TOKO = MSTR_CABANG.ID_FK_TOKO
+        WHERE CABANG_STATUS = ? AND ID_FK_USER = ? AND CABANG_ADMIN_STATUS = ? AND TOKO_STATUS = ? ".$search_query."  
+        ORDER BY ".$order_by." ".$order_direction." 
+        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        $args = array(
+            "AKTIF",$this->id_fk_user,"AKTIF","AKTIF"
+        );
+        $result["data"] = executeQuery($query,$args);
+        
+        $query = "
+        SELECT id_pk_cabang
+        FROM ".$this->tbl_name." 
+        INNER JOIN MSTR_CABANG ON MSTR_CABANG.ID_PK_CABANG = ".$this->tbl_name.".ID_FK_CABANG
+        INNER JOIN MSTR_TOKO ON MSTR_TOKO.ID_PK_TOKO = MSTR_CABANG.ID_FK_TOKO
+        WHERE CABANG_STATUS = ? AND ID_FK_USER = ? AND CABANG_ADMIN_STATUS = ? AND TOKO_STATUS = ? ".$search_query."  
         ORDER BY ".$order_by." ".$order_direction;
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;

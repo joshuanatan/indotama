@@ -150,4 +150,44 @@ class Warehouse extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function list_gudang_admin(){
+        $response["status"] = "SUCCESS";
+        $response["content"] = array();
+
+        $order_by = $this->input->get("orderBy");
+        $order_direction = $this->input->get("orderDirection");
+        $page = $this->input->get("page");
+        $search_key = $this->input->get("searchKey");
+        $data_per_page = 20;
+        
+        $this->load->model("m_warehouse_admin");
+        $this->m_warehouse_admin->set_id_fk_user($this->session->id_user);
+        $result = $this->m_warehouse_admin->list_gudang_admin($page,$order_by,$order_direction,$search_key,$data_per_page);
+
+        if($result["data"]->num_rows() > 0){
+            $result["data"] = $result["data"]->result_array();
+            for($a = 0; $a<count($result["data"]); $a++){
+                $response["content"][$a]["id"] = $result["data"][$a]["id_pk_warehouse"];
+                $response["content"][$a]["nama"] = $result["data"][$a]["warehouse_nama"];
+                $response["content"][$a]["alamat"] = $result["data"][$a]["warehouse_alamat"];
+                $response["content"][$a]["notelp"] = $result["data"][$a]["warehouse_notelp"];
+                $response["content"][$a]["desc"] = $result["data"][$a]["warehouse_desc"];
+                $response["content"][$a]["status"] = $result["data"][$a]["warehouse_status"];
+                $response["content"][$a]["last_modified"] = $result["data"][$a]["warehouse_last_modified"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+        }
+        $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
+        $response["key"] = array(
+            "nama",
+            "alamat",
+            "notelp",
+            "desc",
+            "status",
+            "last_modified"
+        );
+        echo json_encode($response);
+    }
 }

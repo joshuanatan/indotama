@@ -139,4 +139,56 @@ class Toko extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function list_toko_admin(){
+        $response["status"] = "SUCCESS";
+        $response["content"] = array();
+
+        $order_by = $this->input->get("orderBy");
+        $order_direction = $this->input->get("orderDirection");
+        $page = $this->input->get("page");
+        $search_key = $this->input->get("searchKey");
+        $data_per_page = 20;
+        
+        $this->load->model("m_toko_admin");
+        $this->m_toko_admin->set_id_fk_user($this->session->id_user);
+        $result = $this->m_toko_admin->list_toko_admin($page,$order_by,$order_direction,$search_key,$data_per_page);
+
+        if($result["data"]->num_rows() > 0){
+            $result["data"] = $result["data"]->result_array();
+            for($a = 0; $a<count($result["data"]); $a++){
+                $response["content"][$a]["id"] = $result["data"][$a]["id_pk_toko"];
+                $response["content"][$a]["nama"] = $result["data"][$a]["toko_nama"];
+                $response["content"][$a]["kode"] = $result["data"][$a]["toko_kode"];
+                $response["content"][$a]["status"] = $result["data"][$a]["toko_status"];
+                $response["content"][$a]["create_date"] = $result["data"][$a]["toko_create_date"];
+                $response["content"][$a]["last_modified"] = $result["data"][$a]["toko_last_modified"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+        }
+        $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
+        $response["key"] = array(
+            "nama",
+            "kode",
+            "status",
+            "last_modified"
+        );
+        echo json_encode($response);
+    }
+    public function columns_toko_admin(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_toko_admin");
+        $this->m_toko_admin->set_toko_admin_columns();
+        $columns = $this->m_toko_admin->columns();
+        if(count($columns) > 0){
+            for($a = 0; $a<count($columns); $a++){
+                $response["content"][$a]["col_name"] = $columns[$a]["col_disp"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+        }
+        echo json_encode($response);
+    }
 }

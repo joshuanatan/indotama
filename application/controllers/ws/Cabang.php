@@ -151,4 +151,60 @@ class Cabang extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function list_cabang_admin(){
+        $response["status"] = "SUCCESS";
+        $response["content"] = array();
+
+        $order_by = $this->input->get("orderBy");
+        $order_direction = $this->input->get("orderDirection");
+        $page = $this->input->get("page");
+        $search_key = $this->input->get("searchKey");
+        $data_per_page = 20;
+        
+        $this->load->model("m_cabang_admin");
+        $this->m_cabang_admin->set_id_fk_user($this->session->id_user);
+        $result = $this->m_cabang_admin->list_cabang_admin($page,$order_by,$order_direction,$search_key,$data_per_page);
+
+        if($result["data"]->num_rows() > 0){
+            $result["data"] = $result["data"]->result_array();
+            for($a = 0; $a<count($result["data"]); $a++){
+                $response["content"][$a]["id"] = $result["data"][$a]["id_pk_cabang"];
+                $response["content"][$a]["toko"] = $result["data"][$a]["toko_nama"];
+                $response["content"][$a]["daerah"] = $result["data"][$a]["cabang_daerah"];
+                $response["content"][$a]["notelp"] = $result["data"][$a]["cabang_notelp"];
+                $response["content"][$a]["alamat"] = $result["data"][$a]["cabang_alamat"];
+                $response["content"][$a]["status"] = $result["data"][$a]["cabang_status"];
+                $response["content"][$a]["create_date"] = $result["data"][$a]["cabang_create_date"];
+                $response["content"][$a]["last_modified"] = $result["data"][$a]["cabang_last_modified"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+        }
+        $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
+        $response["key"] = array(
+            "toko",
+            "daerah",
+            "notelp",
+            "alamat",
+            "status",
+            "last_modified"
+        );
+        echo json_encode($response);
+    }
+    public function columns_cabang_admin(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_cabang_admin");
+        $this->m_cabang_admin->set_cabang_admin_columns();
+        $columns = $this->m_cabang_admin->columns();
+        if(count($columns) > 0){
+            for($a = 0; $a<count($columns); $a++){
+                $response["content"][$a]["col_name"] = $columns[$a]["col_disp"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+        }
+        echo json_encode($response);
+    }
 }
