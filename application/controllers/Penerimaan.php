@@ -1,13 +1,13 @@
 <?php
-defined("BASEPATH") or exit("No Direct Script");
-class Barang_merk extends CI_Controller{
+defined("BASEPATH") or exit("No direct script");
+class Penerimaan extends CI_Controller{
     public function __construct(){
         parent::__construct();
     }
     public function index(){
-        $this->load->view("barang_merk/v_master_barang_merk");
-    }   
-    
+        $data["menu"] = $this->get_menu()->result_array();
+        $this->load->view("penerimaan/v_penerimaan",$data);
+    }
 	public function get_menu(){
 		$this->load->model("m_warehouse_admin");
 		$this->m_warehouse_admin->set_id_fk_user($this->session->id_user);
