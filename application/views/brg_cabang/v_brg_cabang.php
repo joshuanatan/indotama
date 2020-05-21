@@ -1,7 +1,7 @@
 <?php
 $page_title = "Barang Cabang";
 $breadcrumb = array(
-    "Master","Nama Toko: <b>".$this->session->toko_nama."</b>","Daerah: <b>".$cabang[0]["cabang_daerah"]."</b>","Stok"
+    "Master","Nama Toko: <b>".$toko[0]["toko_nama"]."</b>","Daerah: <b>".$cabang[0]["cabang_daerah"]."</b>","Stok"
 );
 ?>
 <!DOCTYPE html>
@@ -44,7 +44,7 @@ $breadcrumb = array(
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
                                             <div class = "d-block">
-                                                <a href = "<?php echo base_url();?>toko/cabang/<?php echo $this->session->id_toko;?>" style = "margin-right:10px" class = "btn btn-danger btn-sm col-lg-2 col-sm-12">Kembali ke Daftar Cabang</a>
+                                                <a href = "<?php echo base_url();?>toko/cabang/<?php echo $toko[0]["id_pk_toko"];?>" style = "margin-right:10px" class = "btn btn-danger btn-sm col-lg-2 col-sm-12">Kembali ke Daftar Cabang</a>
                                                 <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#register_modal" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
                                             </div>
                                             <br/>

@@ -101,7 +101,8 @@ $breadcrumb = array(
 </script>
 <?php
 $data = array(
-    "page_title" => "Master Cabang"
+    "page_title" => "Master Cabang",
+    "toko" => $toko
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>

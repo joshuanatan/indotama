@@ -1,7 +1,7 @@
 <?php
 $page_title = "Admin Toko";
 $breadcrumb = array(
-    "Master",$this->session->toko_nama,"Admin"
+    "Master",$toko[0]["toko_nama"],"Admin"
 );
 ?>
 <!DOCTYPE html>
@@ -85,7 +85,7 @@ $breadcrumb = array(
 </html>
 <script>
     var ctrl = "toko_admin";
-    var url_add = "id_toko=<?php echo $this->session->id_toko;?>";
+    var url_add = "id_toko=<?php echo $toko[0]["id_toko"];?>";
 </script>
 <?php 
 $data = array(
