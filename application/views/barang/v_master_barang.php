@@ -3,6 +3,9 @@ $page_title = "Master Barang";
 $breadcrumb = array(
     "Master","Barang"
 );
+$notif_data = array(
+    "page_title"=>$page_title
+);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,6 +23,9 @@ $breadcrumb = array(
             <?php $this->load->view('req/mm_menubar.php');?>
 
             <div class="page-wrapper">
+                <?php $this->load->view('_notification/register_success',$notif_data); ?>
+                <?php $this->load->view('_notification/update_success',$notif_data); ?>
+                <?php $this->load->view('_notification/delete_success',$notif_data); ?>
                 <div class="container-fluid">
                     <div class="row mt-20">
                         <div class="col-lg-12 col-sm-12">
@@ -147,3 +153,5 @@ $data = array(
         });
     }
 </script>
+
+<?php $this->load->view('_notification/notif_general'); ?>
