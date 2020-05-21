@@ -7,6 +7,7 @@
             </div>
             <div class = "modal-body">
                 <form id = "register_form" method = "POST">
+                    <input type = "hidden" name = "id_cabang" value = "<?php echo $this->session->id_cabang;?>">
                     <div class = "form-group">
                         <h5>Nomor Pembelian</h5>
                         <input type = "text" class = "form-control" required name = "nomor">

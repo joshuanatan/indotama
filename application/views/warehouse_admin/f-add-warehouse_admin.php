@@ -7,6 +7,7 @@
             </div>
             <div class = "modal-body">
                 <form id = "register_form" method = "POST">
+                    <input type = "hidden" name = "id_warehouse" value = "<?php echo $warehouse[0]["id_pk_warehouse"];?>">
                     <div class = "form-group">
                         <h5>Item Pembelian</h5>
                         <table class = "table table-striped table-bordered">

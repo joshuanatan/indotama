@@ -1,6 +1,3 @@
-<?php
-#Session required: user,id_warehouse
-?>
 
 <li>
     <hr class="light-grey-hr mb-10" />
@@ -27,7 +24,7 @@
 <li>
     <a href="<?php echo base_url();?>warehouse/daftar_akses_gudang"><?php #redirect ke daftar toko yang dia boleh akses?> 
         <div class="pull-left">
-            <span class="right-nav-text">AKTIF: <?php echo strtoupper($this->session->nama_warehouse);?></span>
+            <span class="right-nav-text">AKTIF: <?php echo strtoupper($this->session->warehouse_nama);?></span>
         </div>
         <div class="clearfix"></div>
     </a>

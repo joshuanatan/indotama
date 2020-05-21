@@ -88,6 +88,11 @@ $breadcrumb = array(
     var custom_contentCtrl = "list_gudang_admin";
     var unautorized_button = ["edit_button","delete_button"];
     var additional_button = [
+        {
+            class:"md-wrench",
+            style:"cursor:pointer",
+            onclick:"activate_warehouse_manajemen()"
+        }
     ];
 </script>
 <?php 
@@ -96,26 +101,12 @@ $data = array(
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
-<?php $this->load->view('warehouse/f-add-warehouse',$data);?>
-<?php $this->load->view('warehouse/f-update-warehouse',$data);?>
-<?php $this->load->view('warehouse/f-delete-warehouse',$data);?>
-
 <script>
-    function redirect_brg_warehouse(){
-        $('table').find('tr').click( function(){
-            var row = $(this).index();
-            var id_warehouse = content[row]["id"];
-            window.location.replace("<?php echo base_url();?>warehouse/warehouse_barang/"+id_warehouse);
-        });
-    }
-    function redirect_admin_cabang(){
+    function activate_warehouse_manajemen(){
         $('body table').find('tr').click( function(){
             var row = $(this).index();
-            var id_cabang = content[row]["id"];
-            window.location.replace("<?php echo base_url();?>warehouse/admin/"+id_cabang);
+            var id_warehouse = content[row]["id"];
+            window.location.replace("<?php echo base_url();?>warehouse/activate_warehouse_manajemen/"+id_warehouse);
         });
     }
 </script>

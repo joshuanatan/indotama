@@ -1,7 +1,7 @@
 <?php
 $page_title = "Admin Gudang";
 $breadcrumb = array(
-    "Master",$this->session->warehouse_nama,"Admin"
+    "Master",$warehouse[0]["warehouse_nama"],"Admin"
 );
 ?>
 <!DOCTYPE html>
@@ -17,7 +17,7 @@ $breadcrumb = array(
         </div>
         <div class="wrapper theme-1-active pimary-color-pink">
 
-            <?php $data["menu"] = $menu; $this->load->view('req/mm_menubar',$data);?>
+            <?php $this->load->view('req/mm_menubar');?>
 
             <div class="page-wrapper">
                 <div class="container-fluid">
@@ -85,11 +85,12 @@ $breadcrumb = array(
 </html>
 <script>
     var ctrl = "warehouse_admin";
-    var url_add = "id_warehouse=<?php echo $this->session->id_warehouse;?>";
+    var url_add = "id_warehouse=<?php echo $warehouse[0]["id_pk_warehouse"];?>";
 </script>
 <?php 
 $data = array(
-    "page_title" => "Admin Gudang"
+    "page_title" => "Admin Gudang",
+    "warehouse" => $warehouse
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>

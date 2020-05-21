@@ -17,7 +17,7 @@ $breadcrumb = array(
         </div>
         <div class="wrapper theme-1-active pimary-color-pink">
 
-            <?php $data["menu"] = $menu; $this->load->view('req/mm_menubar',$data);?>
+            <?php $this->load->view('req/mm_menubar');?>
 
             <div class="page-wrapper">
                 <div class="container-fluid">
@@ -89,7 +89,8 @@ $breadcrumb = array(
 </script>
 <?php 
 $data = array(
-    "page_title" => "Admin Toko"
+    "page_title" => "Admin Toko",
+    "cabang" => $cabang
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
