@@ -14,9 +14,9 @@ class M_barang_jenis extends CI_Model{
 
     public function __construct(){
         parent::__construct();
-        $this->set_column("brg_jenis_nama","Jenis Barang","required");
-        $this->set_column("brg_jenis_status","Status","required");
-        $this->set_column("brg_jenis_last_modified","Last Modified","required");
+        $this->set_column("brg_jenis_nama","Jenis Barang",true);
+        $this->set_column("brg_jenis_status","Status",false);
+        $this->set_column("brg_jenis_last_modified","Last Modified",false);
 
         $this->brg_jenis_create_date = date("Y-m-d H:i:s");
         $this->brg_jenis_last_modified = date("Y-m-d H:i:s");
@@ -30,6 +30,9 @@ class M_barang_jenis extends CI_Model{
             "order_by" => $order_by
         );
         $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
+    }
+    public function columns(){
+        return $this->columns;
     }
     public function install(){
         $sql = "
@@ -119,9 +122,6 @@ class M_barang_jenis extends CI_Model{
         ORDER BY ".$order_by." ".$order_direction;
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;
-    }
-    public function columns(){
-        return $this->columns;
     }
     public function detail_by_name(){
         $where = array(
