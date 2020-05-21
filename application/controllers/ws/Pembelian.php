@@ -27,8 +27,9 @@ class Pembelian extends CI_Controller{
         $page = $this->input->get("page");
         $search_key = $this->input->get("searchKey");
         $data_per_page = 20;
-        
+        $id_cabang = $this->input->get("id_cabang");
         $this->load->model("m_pembelian");
+        $this->m_pembelian->set_id_fk_cabang($id_cabang);
         $result = $this->m_pembelian->content($page,$order_by,$order_direction,$search_key,$data_per_page);
 
         if($result["data"]->num_rows() > 0){
@@ -179,7 +180,8 @@ class Pembelian extends CI_Controller{
                 $this->m_supplier->set_sup_perusahaan($sup_perusahaan);
                 $id_fk_supp = $this->m_supplier->short_insert();
             }
-            if($this->m_pembelian->set_insert($pem_pk_nomor,$pem_tgl,$pem_status,$id_fk_supp)){
+            $id_fk_cabang = $this->input->post("id_cabang");
+            if($this->m_pembelian->set_insert($pem_pk_nomor,$pem_tgl,$pem_status,$id_fk_supp,$id_fk_cabang)){
                 $id_pembelian = $this->m_pembelian->insert();
                 
                 if($id_pembelian){
