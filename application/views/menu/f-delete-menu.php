@@ -6,6 +6,11 @@
                 <h4 class = "modal-title">Hapus Data <?php echo ucwords($page_title);?></h4>
             </div>
             <div class = "modal-body">
+                <?php 
+                $notif_data = array(
+                    "page_title"=>$page_title
+                );
+                $this->load->view('_notification/delete_error',$notif_data); ?>
                 <input type = "hidden" id = "id_delete">
                 <h4 align = "center">Apakah anda yakin akan menghapus data di bawah ini?</h4>
                 <table class = "table table-bordered table-striped table-hover">

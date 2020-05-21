@@ -24,6 +24,8 @@ $notif_data = array(
 
             <div class="page-wrapper">
             <?php $this->load->view('_notification/register_success',$notif_data); ?>
+            <?php $this->load->view('_notification/update_success',$notif_data); ?>
+            <?php $this->load->view('_notification/delete_success',$notif_data); ?>
                 <div class="container-fluid">
                     <div class="row mt-20">
                         <div class="col-lg-12 col-sm-12">
