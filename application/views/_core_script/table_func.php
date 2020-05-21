@@ -26,6 +26,9 @@
                     for(var a = 0; a<respond["content"].length; a++){
                         html += "<tr>";
                         for(var b = 0; b<respond["key"].length; b++){
+                            if(respond["content"][a][respond["key"][b]] == null){
+                                respond["content"][a][respond["key"][b]] = "";
+                            }
                             html += "<td class = 'align-middle text-center'>"+respond["content"][a][respond["key"][b]]+"</td>";
                         }
                         /*
@@ -185,10 +188,36 @@
             }
         });
     }
+    function menubar(){
+        $.ajax({
+            url:"<?php echo base_url();?>ws/menu/menubar",
+            type:"GET",
+            dataType:"JSON",
+            success:function(respond){
+                if(respond["status"] == "SUCCESS"){
+                    var menu_category = "";
+                    var html = "";
+                    for(var a = 0; a<respond["data"].length; a++){
+                        if(menu_category != respond["data"][a]["menu_category"]){
+                            if(html != ""){
+                                $("#"+menu_category.toLowerCase()+"_menu_separator").after(html);
+                            }
+                            html = "";
+                            menu_category = respond["data"][a]["menu_category"];
+                        }
+                        html += "<li><a href='<?php echo base_url();?>"+respond["data"][a]["menu_name"]+"'><div class='pull-left'><i class='md-"+respond["data"][a]["menu_icon"]+"'></i><span class='right-nav-text' style='margin-left:20px'>"+respond["data"][a]["menu_display"]+"</span></div><div class='clearfix'></div></a></li>";
+                    }
+                    /*append kategori terakhir karena keluar loop*/
+                    $("#"+menu_category.toLowerCase()+"_menu_separator").after(html);
+                }
+            }
+        })
+    }
     document.onreadystatechange = function () {
         if (document.readyState === 'complete') {
             tblheader();
             refresh();
+            menubar();
         }
     }
 </script>

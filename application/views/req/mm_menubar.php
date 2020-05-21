@@ -1,19 +1,4 @@
-<?php
-if(isset($menu)){
-    $category = "";
-    for($a = 0; $a<count($menu); $a++){
-        if($category != $menu[$a]["menu_category"]){
-            $counter = 0;
-            $category = $menu[$a]["menu_category"];
-        }
-        $data[strtolower($category)][$counter]["menu_name"] = $menu[$a]["menu_name"];
-        $data[strtolower($category)][$counter]["menu_display"] = $menu[$a]["menu_display"];
-        $data[strtolower($category)][$counter]["menu_icon"] = $menu[$a]["menu_icon"];
-        $data[strtolower($category)][$counter]["menu_category"] = $menu[$a]["menu_category"];
-        $counter++;
-    }
-}
-?>
+
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="mobile-only-brand pull-left">
         <div class="nav-header pull-left">
@@ -112,10 +97,10 @@ if(isset($menu)){
             </div>
         </li>
         <!-- /User Profile -->
-        <?php $this->load->view("req/menu/general",$data);?>
-        <?php $this->load->view("req/menu/warehouse",$data);?>
-        <?php $this->load->view("Req/menu/toko",$data); ?>
-        <?php $this->load->view("Req/menu/cabang",$data); ?>
+        <?php $this->load->view("req/menu/general");?>
+        <?php $this->load->view("req/menu/warehouse");?>
+        <?php $this->load->view("Req/menu/toko"); ?>
+        <?php $this->load->view("Req/menu/cabang"); ?>
     </ul>
 </div>
 <!-- /Left Sidebar Menu -->
