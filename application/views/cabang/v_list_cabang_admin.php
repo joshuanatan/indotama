@@ -89,6 +89,20 @@ $breadcrumb = array(
     var custom_tblHeaderCtrl = "columns_cabang_admin";
     var unautorized_button = ["edit_button","delete_button"];
     var additional_button = [
+        {
+            class:"md-wrench",
+            style:"cursor:pointer",
+            onclick:"activate_cabang_manajemen()"
+        }
     ];
 </script>
 <?php $this->load->view("_core_script/table_func");?>
+<script>
+    function activate_cabang_manajemen(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_cabang = content[row]["id"];
+            window.location.replace("<?php echo base_url();?>toko/activate_cabang_manajemen/"+id_cabang);
+        });
+    }
+</script>

@@ -70,7 +70,7 @@ class Cabang_admin extends CI_Controller{
                     if($result->num_rows() > 0){
                         $result = $result->result_array();
                         $id_fk_user = $result[0]["id_pk_user"];
-                        $id_fk_cabang = $this->session->id_cabang;
+                        $id_fk_cabang = $this->input->post("id_cabang");
                         $cabang_admin_status = "AKTIF";
             
                         $this->load->model("m_cabang_admin");
