@@ -70,7 +70,7 @@ class Warehouse_admin extends CI_Controller{
                     if($result->num_rows() > 0){
                         $result = $result->result_array();
                         $id_fk_user = $result[0]["id_pk_user"];
-                        $id_fk_warehouse = $this->session->id_warehouse;
+                        $id_fk_warehouse = $this->input->post("id_warehouse");
                         $warehouse_admin_status = "AKTIF";
             
                         $this->load->model("m_warehouse_admin");
