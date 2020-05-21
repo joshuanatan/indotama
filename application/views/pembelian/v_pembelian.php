@@ -84,7 +84,7 @@ $breadcrumb = array(
 </html>
 <script>
     var ctrl = "pembelian";
-    var url_add = "";
+    var url_add = "id_cabang=<?php echo $this->session->id_cabang;?>";
 </script>
 <?php
 $data = array(
