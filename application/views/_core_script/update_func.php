@@ -3,7 +3,7 @@
         var form = $("#update_form")[0];
         var data = new FormData(form);
         $.ajax({
-            url:"<?php echo base_url();?>ws/"+form+"/update",
+            url:"<?php echo base_url();?>ws/"+ctrl+"/update",
             type:"POST",
             dataType:"JSON",
             data:data,
