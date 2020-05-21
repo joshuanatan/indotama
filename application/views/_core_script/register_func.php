@@ -14,7 +14,13 @@
                     $("#register_modal").modal("hide");
                     $("#register_form :input").val("");
                     refresh(page);
+                    //notification
+                    $('#notif_register_success').show(1).delay(3000).hide(1);
                 }
+            },
+            error:function(){
+                //notification
+                $('#notif_register_error').show(1).delay(3000).hide(1);
             }
         });
     }
