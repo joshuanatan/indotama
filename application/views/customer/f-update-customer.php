@@ -1,55 +1,60 @@
-<div class = "modal fade" id = "edit_customer<?php echo $x+1 ?>">
+
+<div class = "modal fade" id = "update_modal">
     <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
-                <h4 class = "modal-title">Edit Employee</h4>
+                <h4 class = "modal-title">Ubah Data <?php echo ucwords($page_title);?></h4>
             </div>
             <div class = "modal-body">
-                <form method="POST" action="<?php echo base_url() ?>customer/edit_customer">
-                    <input type="hidden" name="id_pk_cust" value="<?php echo $ID_PK_CUST ?>"> 
+                <form id = "update_form" method = "POST">
+                    <input type="hidden" name="id_pk_cust" id = "id_edit"> 
                     <div class = "form-group">
                         <h5>Nama Lengkap</h5>
-                        <input type="text" class="form-control" value="<?php echo $CUST_NAME ?>" name="cust_name" required>
+                        <input type="text" class="form-control" name="cust_name" id = "name_edit" required>
                     </div>
                     <div class = "form-group">
                         <h5>Perusahaan</h5>
-                        <input type="text" class="form-control" value="<?php echo $CUST_PERUSAHAAN ?>" name="cust_perusahaan" required>
+                        <input type="text" class="form-control" name="cust_perusahaan" id = "perusahaan_edit" required>
                     </div>
                     <div class = "form-group">
                         <h5>Email</h5>
-                        <input type="email" class="form-control" value="<?php echo $CUST_EMAIL ?>" name="cust_email" required>
+                        <input type="email" class="form-control" name="cust_email" id = "email_edit" required>
                     </div>
                     <div class = "form-group">
                         <h5>No Telp</h5>
-                        <input type="text" class="form-control" value="<?php echo $CUST_TELP ?>" name="cust_telp" required>
+                        <input type="text" class="form-control" name="cust_telp" id = "telp_edit" required>
                     </div>
                     <div class = "form-group">
                         <h5>No HP</h5>
-                        <input type="text" class="form-control" value="<?php echo $CUST_HP ?>" name="cust_hp" required>
+                        <input type="text" class="form-control" name="cust_hp" id = "hp_edit" required>
                     </div>
                     <div class = "form-group">
                         <h5>Alamat</h5>
-                        <input type="text" class="form-control" value="<?php echo $CUST_ALAMAT ?>" name="cust_alamat" required>
+                        <input type="text" class="form-control" name="cust_alamat" id = "alamat_edit" required>
                     </div>
                     <div class = "form-group">
                         <h5>Keterangan</h5>
-                        <input type="text" class="form-control" value="<?php echo $CUST_KETERANGAN ?>" name="cust_keterangan" required>
-                    </div>
-                    <div class = "form-group">
-                        <h5>Toko</h5>
-                        <select class="form-control" name="id_fk_toko">
-                            <option value="0" disabled>Pilih Toko</option>
-                            <?php for($p=0 ; $p<count($toko); $p++){ ?>
-                                <option value="<?php echo $toko[$p]['ID_PK_TOKO'] ?>"  <?php  if($ID_FK_TOKO==$toko[$p]['ID_PK_TOKO']){echo "selected";} ?>><?php echo $toko[$p]['TOKO_NAMA']?></option>
-                            <?php } ?>
-                        </select>
+                        <input type="text" class="form-control" name="cust_keterangan" id = "keterangan_edit" required>
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <input type = "submit" class = "btn btn-sm btn-primary" value="Submit">
+                        <button type = "button" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function load_edit_content(id){
+        $("#id_edit").val(content[id]["id"]);
+        $("#name_edit").val(content[id]["name"]);
+        $("#perusahaan_edit").val(content[id]["perusahaan"]);
+        $("#email_edit").val(content[id]["email"]);
+        $("#telp_edit").val(content[id]["telp"]);
+        $("#hp_edit").val(content[id]["hp"]);
+        $("#alamat_edit").val(content[id]["alamat"]);
+        $("#keterangan_edit").val(content[id]["keterangan"]);
+    }
+</script>

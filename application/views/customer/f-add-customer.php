@@ -1,11 +1,12 @@
-<div class = "modal fade" id = "tambah_customer">
+
+<div class = "modal fade" id = "register_modal">
     <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
-                <h4 class = "modal-title">Tambah Customer</h4>
+                <h4 class = "modal-title">Tambah Data <?php echo ucwords($page_title);?></h4>
             </div>
             <div class = "modal-body">
-                <form method="POST" action="<?php echo base_url() ?>customer/register_customer">
+                <form id = "register_form" method = "POST">
                     <div class = "form-group">
                         <h5>Nama Lengkap</h5>
                         <input type="text" class="form-control" name="cust_name" required>
@@ -35,17 +36,8 @@
                         <input type="text" class="form-control" name="cust_keterangan" required>
                     </div>
                     <div class = "form-group">
-                        <h5>Toko</h5>
-                        <select class="form-control" name="id_fk_toko">
-                            <option value="0" disabled>Pilih Toko</option>
-                            <?php for($p=0 ; $p<count($toko); $p++){ ?>
-                                <option value="<?php echo $toko[$p]['ID_PK_TOKO'] ?>"><?php echo $toko[$p]['TOKO_NAMA']?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
-                    <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <input type="submit" class = "btn btn-sm btn-primary">
+                        <button type = "button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
                 </form>
             </div>
