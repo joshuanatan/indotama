@@ -6,6 +6,11 @@
                 <h4 class = "modal-title">Ubah Data <?php echo ucwords($page_title);?></h4>
             </div>
             <div class = "modal-body">
+            <?php 
+            $notif_data = array(
+                "page_title"=>$page_title
+            );
+            $this->load->view('_notification/update_error',$notif_data); ?>
                 <form id = "update_form" method = "POST">
                     <input type="hidden" name="id_pk_cust" id = "id_edit"> 
                     <div class = "form-group">

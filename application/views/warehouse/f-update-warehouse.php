@@ -5,6 +5,11 @@
                 <h4 class = "modal-title">Edit Warehouse</h4>
             </div>
             <div class = "modal-body">
+            <?php 
+            $notif_data = array(
+                "page_title"=>$page_title
+            );
+            $this->load->view('_notification/update_error',$notif_data); ?>
                 <form id = "update_form" method = "POST">
                     <input type = "hidden" name = "id" id = "id_edit"> 
                     <div class = "form-group">
