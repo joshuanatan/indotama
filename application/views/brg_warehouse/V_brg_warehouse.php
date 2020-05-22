@@ -3,6 +3,9 @@ $page_title = "Barang Gudang";
 $breadcrumb = array(
     "Master","Nama Gudang: <b>".$warehouse[0]["warehouse_nama"]."</b>","Stok"
 );
+$notif_data = array(
+    "page_title"=>$page_title
+);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,6 +23,9 @@ $breadcrumb = array(
             <?php $this->load->view('req/mm_menubar.php');?>
 
             <div class="page-wrapper">
+            <?php $this->load->view('_notification/register_success',$notif_data); ?>
+            <?php $this->load->view('_notification/update_success',$notif_data); ?>
+            <?php $this->load->view('_notification/delete_success',$notif_data); ?>
                 <div class="container-fluid">
                     <div class="row mt-20">
                         <div class="col-lg-12 col-sm-12">
@@ -135,3 +141,5 @@ $data = array(
 <?php $this->load->view("brg_warehouse/f-add-brg_warehouse",$data);?>
 <?php $this->load->view("brg_warehouse/f-update-brg_warehouse",$data);?>
 <?php $this->load->view("brg_warehouse/f-delete-brg_warehouse",$data);?>
+
+<?php $this->load->view('_notification/notif_general'); ?>

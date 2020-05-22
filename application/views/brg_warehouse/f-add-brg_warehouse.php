@@ -6,6 +6,11 @@
                 <h4 class = "modal-title">Tambah Data <?php echo ucwords($page_title);?></h4>
             </div>
             <div class = "modal-body">
+            <?php 
+            $notif_data = array(
+                "page_title"=>$page_title
+            );
+            $this->load->view('_notification/register_error',$notif_data); ?>
                 <form id = "register_form" method = "POST">
                     <input type = "hidden" id = "id_warehouse" name = "id_warehouse" value = "<?php echo $warehouse[0]["id_pk_warehouse"];?>">
                     <div class = "form-group">

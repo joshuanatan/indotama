@@ -5,6 +5,11 @@
                 <h4 class = "modal-title">Tambah Warehouse</h4>
             </div>
             <div class = "modal-body">
+            <?php 
+            $notif_data = array(
+                "page_title"=>$page_title
+            );
+            $this->load->view('_notification/register_error',$notif_data); ?>
                 <form id = "register_form" method = "POST">
                     <div class = "form-group">
                         <h5>Nama Warehouse</h5>
