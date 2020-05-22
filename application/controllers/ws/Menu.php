@@ -59,8 +59,8 @@ class Menu extends CI_Controller{
 			else{
 				$result = $result["data"]->result_array();
 				$this->session->id_cabang = $result[0]["id_pk_cabang"];
-				$this->session->daerah_cabang = $result[0]["cabang_daerah"];
-				$this->session->nama_toko_cabang = $result[0]["toko_nama"];
+                $this->session->daerah_cabang = $result[0]["cabang_daerah"];
+                $this->session->nama_toko_cabang = $result[0]["toko_nama"];
 			}
         }
         

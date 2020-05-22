@@ -125,7 +125,8 @@ $breadcrumb = array(
 
 <?php
 $data = array(
-    "page_title" => "Daftar Barang Cabang"
+    "page_title" => "Daftar Barang Cabang",
+    "cabang" => $cabang
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>

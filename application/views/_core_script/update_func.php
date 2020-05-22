@@ -13,7 +13,6 @@
                 if(respond["status"] == "SUCCESS"){
                     $("#update_modal").modal("hide");
                     refresh(page);
-                    //notification
                     $('#notif_update_success').show(1).delay(2000).hide(1);
                 }
             },

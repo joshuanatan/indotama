@@ -7,6 +7,7 @@
             </div>
             <div class = "modal-body">
                 <form id = "register_form" method = "POST">
+                    <input type = "hidden" id = "id_cabang" name = "id_cabang" value = "<?php echo $cabang[0]["id_pk_cabang"];?>">
                     <div class = "form-group">
                         <h5>Item Pembelian</h5>
                         <table class = "table table-striped table-bordered">
@@ -36,6 +37,7 @@
 <script>
     var brg_count = 0;  
     function add_brg_beli_row(){
+        $("#id_cabang").val(<?php echo $cabang[0]["id_pk_cabang"];?>);
         var html = "<tr class = 'add_brg_count'><td id = 'row"+brg_count+"'><input name = 'check[]' value = "+brg_count+" type = 'hidden'><input type = 'text' list = 'daftar_barang' name = 'brg"+brg_count+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_qty"+brg_count+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+brg_count+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
         $("#add_brg_beli_but_container").before(html);
         brg_count++;    
