@@ -29,4 +29,17 @@ class Warehouse extends CI_Controller {
 
 		redirect("warehouse/daftar_akses_gudang");
 	}
+	public function brg_warehouse($id_warehouse = ""){
+		if($id_warehouse == ""){
+			$id_warehouse = $this->session->id_warehouse;
+		}
+		$data["id_warehouse"] = $id_warehouse;
+
+		$this->load->model("m_warehouse");
+		$this->m_warehouse->set_id_pk_warehouse($id_warehouse);
+		$result = $this->m_warehouse->detail_by_id();
+		$data["warehouse"] = $result->result_array();
+		
+		$this->load->view('brg_warehouse/v_brg_warehouse',$data);
+	}
 }

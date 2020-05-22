@@ -68,7 +68,7 @@ class Barang_cabang extends CI_Controller{
         $response["status"] = "SUCCESS";
         $check = $this->input->post("check");
         if($check != ""){
-            $id_fk_cabang = $this->session->id_cabang;
+            $id_fk_cabang = $this->input->post("id_cabang");
             $counter = 0;
             foreach($check as $a){
                 $this->form_validation->set_rules("brg".$a,"brg","required");

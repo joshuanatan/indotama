@@ -16,7 +16,7 @@
 <li>
     <a href="<?php echo base_url();?>toko/daftar_akses_cabang"><?php #redirect ke daftar cabang yang dia boleh akses?>
         <div class="pull-left">
-            <span class="right-nav-text">CABANG</span>
+            <span class="right-nav-text">DAFTAR CABANG</span>
         </div>
         <div class="clearfix"></div>
     </a>

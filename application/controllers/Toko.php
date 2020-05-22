@@ -94,7 +94,7 @@ class Toko extends CI_Controller {
 		$this->m_toko->set_id_pk_toko($result[0]["id_fk_toko"]);
 		$result = $this->m_toko->detail_by_id();
 		$result = $result->result_array();
-		$this->session->nama_toko = $result[0]["toko_nama"];
+		$this->session->nama_toko_cabang = $result[0]["toko_nama"];
 
 		redirect("toko/daftar_akses_cabang");
 	}
