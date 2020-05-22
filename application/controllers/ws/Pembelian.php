@@ -591,4 +591,31 @@ class Pembelian extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function detail($no_pembelian){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_pembelian");
+        $this->m_pembelian->set_pem_pk_nomor($no_pembelian);
+        $result = $this->m_pembelian->detail_by_no();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["data"][$a]["id"] = $result[$a]["id_pk_pembelian"];
+                $response["data"][$a]["nomor"] = $result[$a]["pem_pk_nomor"];
+                $response["data"][$a]["tgl"] = $result[$a]["pem_tgl"];
+                $response["data"][$a]["status"] = $result[$a]["pem_status"];
+                $response["data"][$a]["supplier"] = $result[$a]["sup_perusahaan"];
+                $response["data"][$a]["last_modified"] = $result[$a]["pem_last_modified"];
+                $response["data"][$a]["daerah_cabang"] = $result[$a]["cabang_daerah"];
+                $response["data"][$a]["notelp_cabang"] = $result[$a]["cabang_notelp"];
+                $response["data"][$a]["alamat_cabang"] = $result[$a]["cabang_alamat"];
+                $response["data"][$a]["nama_toko"] = $result[$a]["toko_nama"];
+            }
+        }   
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "Detail data untuk nomor terkait tidak ada"; 
+        }
+        echo json_encode($response);
+
+    }
 }
