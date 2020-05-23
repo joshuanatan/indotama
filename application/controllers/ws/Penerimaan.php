@@ -33,11 +33,9 @@ class Penerimaan extends CI_Controller{
         $flag = true;
         if($type == "WAREHOUSE" && $this->session->id_warehouse){
             $this->m_penerimaan->set_id_fk_warehouse($this->session->id_warehouse);
-            $result = $this->m_penerimaan->content_warehouse($page,$order_by,$order_direction,$search_key,$data_per_page);
         }
         else if($type == "CABANG" && $this->session->id_cabang){
             $this->m_penerimaan->set_id_fk_cabang($this->session->id_cabang);
-            $result = $this->m_penerimaan->content_cabang($page,$order_by,$order_direction,$search_key,$data_per_page);
         }
         else{
             $flag = false;
@@ -46,13 +44,25 @@ class Penerimaan extends CI_Controller{
         }
 
         if($flag){
+            $this->m_penerimaan->set_penerimaan_tempat($type);
+            $result = $this->m_penerimaan->content($page,$order_by,$order_direction,$search_key,$data_per_page);
             if($result["data"]->num_rows() > 0){
                 $result["data"] = $result["data"]->result_array();
                 for($a = 0; $a<count($result["data"]); $a++){
-                    $response["content"][$a]["id"] = $result["data"][$a]["id_pk_brg_jenis"];
-                    $response["content"][$a]["nama"] = $result["data"][$a]["brg_jenis_nama"];
-                    $response["content"][$a]["status"] = $result["data"][$a]["brg_jenis_status"];
-                    $response["content"][$a]["last_modified"] = $result["data"][$a]["brg_jenis_last_modified"];
+                    $response["content"][$a]["id"] = $result["data"][$a]["id_pk_penerimaan"];
+                    $response["content"][$a]["tgl"] = $result["data"][$a]["penerimaan_tgl"];
+                    $response["content"][$a]["status"] = $result["data"][$a]["penerimaan_status"];
+                    $response["content"][$a]["id_pembelian"] = $result["data"][$a]["id_fk_pembelian"];
+                    $response["content"][$a]["tempat"] = $result["data"][$a]["penerimaan_tempat"];
+                    if($response["content"][$a]["tempat"] == "WAREHOUSE"){
+                        $response["content"][$a]["id_tempat_penerimaan"] = $result["data"][$a]["id_fk_warehouse"];
+                    }
+                    else if($response["content"][$a]["tempat"] == "CABANG"){
+                        $response["content"][$a]["id_tempat_penerimaan"] = $result["data"][$a]["id_fk_cabang"];
+
+                    }
+                    $response["content"][$a]["last_modified"] = $result["data"][$a]["penerimaan_last_modified"];
+                    $response["content"][$a]["pem_pk_nomor"] = $result["data"][$a]["pem_pk_nomor"];
                 }
             }
             else{
@@ -60,9 +70,10 @@ class Penerimaan extends CI_Controller{
             }
             $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
             $response["key"] = array(
-                "nama",
+                "tgl",
+                "pem_pk_nomor",
                 "status",
-                "last_modified"
+                "last_modified",
             );
         }
         echo json_encode($response);
@@ -88,14 +99,46 @@ class Penerimaan extends CI_Controller{
     }
     public function register(){
         $response["status"] = "SUCCESS";
-        $this->form_validation->set_rules("nama","nama","required");
+        $this->form_validation->set_rules("id_pembelian","Nomor","required");
+        $this->form_validation->set_rules("tgl_penerimaan","Tanggal Penerimaan","required");
         if($this->form_validation->run()){
-            $brg_jenis_nama = $this->input->post("nama");
-            $brg_jenis_status = "AKTIF";
+            $penerimaan_tgl = $this->input->post("tgl_penerimaan");
+            $penerimaan_status = "AKTIF";
+            $id_fk_pembelian = $this->input->post("id_pembelian");
+            $penerimaan_tempat = $this->input->post("tempat");
+            $id_tempat_penerimaan = $this->input->post("id_tempat_penerimaan"); //id_warehouse or id_cabang
             $this->load->model("m_penerimaan");
-            if($this->m_penerimaan->set_insert($brg_jenis_nama,$brg_jenis_status)){
-                if($this->m_penerimaan->insert()){
+            if($this->m_penerimaan->set_insert($penerimaan_tgl,$penerimaan_status,$id_fk_pembelian,$penerimaan_tempat,$id_tempat_penerimaan)){
+                $id_penerimaan = $this->m_penerimaan->insert();
+                if($id_penerimaan){
                     $response["msg"] = "Data is recorded to database";
+                    $check = $this->input->post("check");
+                    if($check != ""){
+                        $counter = 0;
+                        foreach($check as $a){
+                            $this->load->model("m_brg_penerimaan");
+                            $brg_penerimaan_qty = $this->input->post("qty_terima".$a);
+                            $brg_penerimaan_note = $this->input->post("notes".$a);
+                            $id_fk_penerimaan = $id_penerimaan;
+                            $id_fk_brg_pembelian = $this->input->post("id_brg".$a);
+                            $id_fk_satuan = $this->input->post("id_satuan".$a);
+                            if($this->m_brg_penerimaan->set_insert($brg_penerimaan_qty,$brg_penerimaan_note,$id_fk_penerimaan,$id_fk_brg_pembelian,$id_fk_satuan)){
+                                if($this->m_brg_penerimaan->insert()){
+                                    $response["statusitm"][$counter] = "SUCCESS";
+                                    $response["msgitm"][$counter] = "Item is recorded to database";
+                                }
+                                else{
+                                    
+                                    $response["statusitm"][$counter] = "ERROR";
+                                    $response["msgitm"][$counter] = "Insert Item function error";
+                                }
+                            }
+                            else{
+                                $response["statusitm"][$counter] = "ERROR";
+                                $response["msgitm"][$counter] = "Setter Item function error";
+                            }
+                        }
+                    }
                 }
                 else{
                     $response["status"] = "ERROR";
@@ -116,14 +159,41 @@ class Penerimaan extends CI_Controller{
     public function update(){
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("id","id","required");
-        $this->form_validation->set_rules("nama","nama","required");
+        $this->form_validation->set_rules("tgl_penerimaan","tgl_penerimaan","required");
         if($this->form_validation->run()){
-            $id_pk_brg_jenis = $this->input->post("id");
-            $brg_jenis_nama = $this->input->post("nama");
+            $id_pk_penerimaan = $this->input->post("id");
+            $penerimaan_tgl = $this->input->post("tgl_penerimaan");
             $this->load->model("m_penerimaan");
-            if($this->m_penerimaan->set_update($id_pk_brg_jenis,$brg_jenis_nama)){
+            if($this->m_penerimaan->set_update($id_pk_penerimaan,$penerimaan_tgl)){
                 if($this->m_penerimaan->update()){
-                    $response["msg"] = "Data is recorded to database";
+                    $response["msg"] = "Data is updated to database";
+                    $check = $this->input->post("check");
+                    if($check != ""){
+                        $counter = 0;
+                        foreach($check as $a){
+                            $this->load->model("m_brg_penerimaan");
+                            $id_pk_brg_penerimaan = $this->input->post("id_brg_terima".$a);
+                            $brg_penerimaan_qty = $this->input->post("qty_terima".$a);
+                            $brg_penerimaan_note = $this->input->post("notes".$a);
+                            $id_fk_satuan = $this->input->post("id_satuan".$a);
+                            
+                            if($this->m_brg_penerimaan->set_update($id_pk_brg_penerimaan,$brg_penerimaan_qty,$brg_penerimaan_note,$id_fk_satuan)){
+                                if($this->m_brg_penerimaan->update()){
+                                    $response["statusitm"][$counter] = "SUCCESS";
+                                    $response["msgitm"][$counter] = "Item is updated to database";
+                                }
+                                else{
+                                    
+                                    $response["statusitm"][$counter] = "ERROR";
+                                    $response["msgitm"][$counter] = "Update Item function error";
+                                }
+                            }
+                            else{
+                                $response["statusitm"][$counter] = "ERROR";
+                                $response["msgitm"][$counter] = "Setter Item function error";
+                            }
+                        }
+                    }
                 }
                 else{
                     $response["status"] = "ERROR";
@@ -163,6 +233,36 @@ class Penerimaan extends CI_Controller{
         else{
             $response["status"] = "ERROR";
             $response["msg"] = "Invalid ID Supplier";
+        }
+        echo json_encode($response);
+    }
+    public function brg_penerimaan(){
+        $response["status"] = "SUCCESS";
+        $id_penerimaan = $this->input->get("id");
+        $this->load->model("m_brg_penerimaan");
+        $this->m_brg_penerimaan->set_id_fk_penerimaan($id_penerimaan);
+        $result = $this->m_brg_penerimaan->list();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_brg_penerimaan"];
+                $response["content"][$a]["qty"] = $result[$a]["brg_penerimaan_qty"];
+                $response["content"][$a]["note"] = $result[$a]["brg_penerimaan_note"];
+                $response["content"][$a]["id_penerimaan"] = $result[$a]["id_fk_penerimaan"];
+                $response["content"][$a]["id_brg_pembelian"] = $result[$a]["id_fk_brg_pembelian"];
+                $response["content"][$a]["id_satuan"] = $result[$a]["id_fk_satuan"];
+                $response["content"][$a]["last_modified"] = $result[$a]["brg_penerimaan_last_modified"];
+                $response["content"][$a]["pem_qty"] = $result[$a]["brg_pem_qty"];
+                $response["content"][$a]["pem_satuan"] = $result[$a]["brg_pem_satuan"];
+                $response["content"][$a]["pem_harga"] = $result[$a]["brg_pem_harga"];
+                $response["content"][$a]["pem_note"] = $result[$a]["brg_pem_note"];
+                $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
+                $response["content"][$a]["satuan"] = $result[$a]["satuan_nama"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "TIDAK ADA BARANG PENERIMAAN";
         }
         echo json_encode($response);
     }

@@ -17,10 +17,10 @@ class M_brg_penerimaan extends CI_Model{
     
     public function __construct(){
         parent::__construct();
-        $brg_penerimaan_create_date = date("Y-m-d H:i:s");
-        $brg_penerimaan_last_modified = date("Y-m-d H:i:s");
-        $id_create_data = $this->session->id_user;
-        $id_last_modified = $this->session->id_user;
+        $this->brg_penerimaan_create_date = date("Y-m-d H:i:s");
+        $this->brg_penerimaan_last_modified = date("Y-m-d H:i:s");
+        $this->id_create_data = $this->session->id_user;
+        $this->id_last_modified = $this->session->id_user;
     }
     public function columns(){
         return $this->columns;
@@ -87,22 +87,33 @@ class M_brg_penerimaan extends CI_Model{
         DELIMITER ;
         ";
     }
+    public function list(){
+        $query = "
+        SELECT id_pk_brg_penerimaan,brg_penerimaan_qty,brg_penerimaan_note,id_fk_penerimaan,id_fk_brg_pembelian,id_fk_satuan,brg_penerimaan_create_date,brg_penerimaan_last_modified,brg_pem_qty,brg_pem_satuan,brg_pem_harga,brg_pem_note,brg_nama,satuan_nama
+        FROM ".$this->tbl_name."
+        INNER JOIN TBL_BRG_PEMBELIAN ON TBL_BRG_PEMBELIAN.ID_PK_BRG_PEMBELIAN = ".$this->tbl_name.".ID_FK_BRG_PEMBELIAN
+        INNER JOIN MSTR_BARANG ON MSTR_BARANG.ID_PK_BRG = TBL_BRG_PEMBELIAN.ID_FK_BARANG
+        INNER JOIN MSTR_SATUAN ON MSTR_SATUAN.ID_PK_SATUAN = ".$this->tbl_name.".ID_FK_SATUAN
+        WHERE ID_FK_PENERIMAAN = ? AND BRG_PEM_STATUS = ? AND BRG_STATUS = ?
+        ";
+        $args = array(
+            $this->id_fk_penerimaan,"AKTIF","AKTIF"
+        );
+        return executeQuery($query,$args);
+    }
     public function insert(){
-        if($this->check_insert()){
-            $data = array(
-                "brg_penerimaan_qty" => $this->brg_penerimaan_qty,
-                "brg_penerimaan_note" => $this->brg_penerimaan_note,
-                "id_fk_penerimaan" => $this->id_fk_penerimaan,
-                "id_fk_brg_pembelian" => $this->id_fk_brg_pembelian,
-                "id_fk_satuan" => $this->id_fk_satuan,
-                "brg_penerimaan_create_date" => $this->brg_penerimaan_create_date,
-                "brg_penerimaan_last_modified" => $this->brg_penerimaan_last_modified,
-                "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified
-            );
-            return insertRow($this->tbl_name,$data);
-        }
-        return false;
+        $data = array(
+            "brg_penerimaan_qty" => $this->brg_penerimaan_qty,
+            "brg_penerimaan_note" => $this->brg_penerimaan_note,
+            "id_fk_penerimaan" => $this->id_fk_penerimaan,
+            "id_fk_brg_pembelian" => $this->id_fk_brg_pembelian,
+            "id_fk_satuan" => $this->id_fk_satuan,
+            "brg_penerimaan_create_date" => $this->brg_penerimaan_create_date,
+            "brg_penerimaan_last_modified" => $this->brg_penerimaan_last_modified,
+            "id_create_data" => $this->id_create_data,
+            "id_last_modified" => $this->id_last_modified
+        );
+        return insertRow($this->tbl_name,$data);
     }
     public function update(){
         if($this->check_update()){
@@ -112,8 +123,6 @@ class M_brg_penerimaan extends CI_Model{
             $data = array(
                 "brg_penerimaan_qty" => $this->brg_penerimaan_qty,
                 "brg_penerimaan_note" => $this->brg_penerimaan_note,
-                "id_fk_penerimaan" => $this->id_fk_penerimaan,
-                "id_fk_brg_pembelian" => $this->id_fk_brg_pembelian,
                 "id_fk_satuan" => $this->id_fk_satuan,
                 "brg_penerimaan_last_modified" => $this->brg_penerimaan_last_modified,
                 "id_last_modified" => $this->id_last_modified
@@ -177,12 +186,6 @@ class M_brg_penerimaan extends CI_Model{
         if($this->brg_penerimaan_note == ""){
             return false;
         }
-        if($this->id_fk_penerimaan == ""){
-            return false;
-        }
-        if($this->id_fk_brg_pembelian == ""){
-            return false;
-        }
         if($this->id_fk_satuan == ""){
             return false;
         }
@@ -206,7 +209,7 @@ class M_brg_penerimaan extends CI_Model{
         }
         return true;
     }
-    public function set_insert(){
+    public function set_insert($brg_penerimaan_qty,$brg_penerimaan_note,$id_fk_penerimaan,$id_fk_brg_pembelian,$id_fk_satuan){
         if(!$this->set_brg_penerimaan_qty($brg_penerimaan_qty)){
             return false;
         }
@@ -224,7 +227,7 @@ class M_brg_penerimaan extends CI_Model{
         }
         return true;
     }
-    public function set_update(){
+    public function set_update($id_pk_brg_penerimaan,$brg_penerimaan_qty,$brg_penerimaan_note,$id_fk_satuan){
         if(!$this->set_id_pk_brg_penerimaan($id_pk_brg_penerimaan)){
             return false;
         }
@@ -234,64 +237,40 @@ class M_brg_penerimaan extends CI_Model{
         if(!$this->set_brg_penerimaan_note($brg_penerimaan_note)){
             return false;
         }
-        if(!$this->set_id_fk_penerimaan($id_fk_penerimaan)){
-            return false;
-        }
-        if(!$this->set_id_fk_brg_pembelian($id_fk_brg_pembelian)){
-            return false;
-        }
         if(!$this->set_id_fk_satuan($id_fk_satuan)){
             return false;
         }
         return true;
     }
-    public function set_delete(){
+    public function set_delete($id_pk_brg_penerimaan){
         if(!$this->set_id_pk_brg_penerimaan($id_pk_brg_penerimaan)){
             return false;
         }
         return true;
     }
     public function set_id_pk_brg_penerimaan($id_pk_brg_penerimaan){
-        if($id_pk_brg_penerimaan != ""){
-            $this->id_pk_brg_penerimaan = $id_pk_brg_penerimaan;
-            return true;
-        }
-        return false;
+        $this->id_pk_brg_penerimaan = $id_pk_brg_penerimaan;
+        return true;
     }
     public function set_brg_penerimaan_qty($brg_penerimaan_qty){
-        if($brg_penerimaan_qty != ""){
-            $this->brg_penerimaan_qty = $brg_penerimaan_qty;
-            return true;
-        }
-        return false;
+        $this->brg_penerimaan_qty = $brg_penerimaan_qty;
+        return true;
     }
     public function set_brg_penerimaan_note($brg_penerimaan_note){
-        if($brg_penerimaan_note != ""){
-            $this->brg_penerimaan_note = $brg_penerimaan_note;
-            return true;
-        }
-        return false;
+        $this->brg_penerimaan_note = $brg_penerimaan_note;
+        return true;
     }
     public function set_id_fk_penerimaan($id_fk_penerimaan){
-        if($id_fk_penerimaan != ""){
-            $this->id_fk_penerimaan = $id_fk_penerimaan;
-            return true;
-        }
-        return false;
+        $this->id_fk_penerimaan = $id_fk_penerimaan;
+        return true;
     }
     public function set_id_fk_brg_pembelian($id_fk_brg_pembelian){
-        if($id_fk_brg_pembelian != ""){
-            $this->id_fk_brg_pembelian = $id_fk_brg_pembelian;
-            return true;
-        }
-        return false;
+        $this->id_fk_brg_pembelian = $id_fk_brg_pembelian;
+        return true;
     }
     public function set_id_fk_satuan($id_fk_satuan){
-        if($id_fk_satuan != ""){
-            $this->id_fk_satuan = $id_fk_satuan;
-            return true;
-        }
-        return false;
+        $this->id_fk_satuan = $id_fk_satuan;
+        return true;
     }
     public function get_id_pk_brg_penerimaan(){
         return $this->id_pk_brg_penerimaan;

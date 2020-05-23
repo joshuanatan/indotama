@@ -5,6 +5,7 @@ class Penerimaan extends CI_Controller{
         parent::__construct();
     }
     public function gudang(){
+        $data["id_tempat_penerimaan"] = $this->session->id_warehouse;
         $data["type"] = "WAREHOUSE";
         $this->load->view("penerimaan/v_penerimaan",$data);
     }
@@ -12,7 +13,12 @@ class Penerimaan extends CI_Controller{
         $this->load->model("m_satuan");
         $result = $this->m_satuan->list();
         $data["satuan"] = $result->result_array();
+        $data["id_tempat_penerimaan"] = $this->session->id_cabang;
         $data["type"] = "CABANG";
+
+        $this->load->model("m_pembelian");
+        $this->m_pembelian->set_id_fk_cabang($this->session->id_cabang);
+        $data["pembelian"] = $this->m_pembelian->list()->result_array();
         $this->load->view("penerimaan/v_penerimaan",$data);
     }
 }

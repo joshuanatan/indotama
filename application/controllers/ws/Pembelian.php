@@ -404,7 +404,7 @@ class Pembelian extends CI_Controller{
                         foreach($check as $a){
                             $this->form_validation->reset_validation();
                             $this->form_validation->set_rules("brg".$a,"brg","required");
-                            $this->form_validation->set_rules("brg_qty".$a,"brg_qty","required");
+                            $this->form_validation->set_rules("qty_terima".$a,"qty_terima","required");
                             $this->form_validation->set_rules("brg_price".$a,"brg_price","required");
                             $this->form_validation->set_rules("brg_notes".$a,"brg_notes","required");
                             if($this->form_validation->run()){
