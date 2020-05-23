@@ -107,12 +107,6 @@
 </div>
 <script>
     function load_edit_content(id){
-        $("#id_edit").val(content[id]["id"]);
-        $("#daerah_delete").html(content[id]["daerah"]);
-        $("#alamat_delete").html(content[id]["alamat"]);
-        $("#notelp_delete").html(content[id]["notelp"]);
-
-
         $("#emp_nama_edit").val(content[id]["nama"]);
         $("#emp_npwp_edit").val(content[id]["npwp"]);
         $("#emp_ktp_edit").val(content[id]["ktp"]);
