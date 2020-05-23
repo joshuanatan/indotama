@@ -162,7 +162,7 @@ class M_penerimaan extends CI_Model{
             FROM ".$this->tbl_name." 
             INNER JOIN MSTR_PEMBELIAN ON MSTR_PEMBELIAN.ID_PK_PEMBELIAN = ".$this->tbl_name.".ID_FK_PEMBELIAN
             INNER JOIN MSTR_SUPPLIER ON MSTR_SUPPLIER.ID_PK_SUP = MSTR_PEMBELIAN.ID_FK_SUPP
-            INNER JOIN MSTR_WAREHOUSE ON MSTR_WAREHOUSE.ID_PK_WAREHOUSE = ".$this->id_fk_warehouse.".ID_FK_WAREHOUSE
+            INNER JOIN MSTR_WAREHOUSE ON MSTR_WAREHOUSE.ID_PK_WAREHOUSE = ".$this->tbl_name.".ID_FK_WAREHOUSE
             WHERE PENERIMAAN_STATUS = ? AND SUP_STATUS = ? AND ".$this->tbl_name.".ID_FK_WAREHOUSE = ? ".$search_query." 
             ORDER BY ".$order_by." ".$order_direction;
             $result["total_data"] = executeQuery($query,$args)->num_rows();
