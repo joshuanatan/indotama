@@ -93,23 +93,6 @@ $notif_data = array(
     var ctrl = "employee";
     var url_add = "";
 
-    $('#yes_enddate').click(function() {
-        $("#emp_enddate").show();
-        $("#emp_enddate").prop('required',true);
-    });
-    $('#no_enddate').click(function() {
-        $("#emp_enddate").hide();
-        $("#emp_enddate").prop('required',false);
-    });
-
-    $('#yes_enddate_edit').click(function() {
-        $("#emp_enddate_edit").show();
-        $("#emp_enddate_edit").prop('required',true);
-    });
-    $('#no_enddate_edit').click(function() {
-        $("#emp_enddate_edit").hide();
-        $("#emp_enddate_edit").prop('required',false);
-    });
 </script>
 <?php
 $data = array(

@@ -97,10 +97,21 @@
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <input type="button" onclick = "register_func()"  class = "btn btn-sm btn-primary">
+                        <input type="button" onclick = "register_func()"  class = "btn btn-sm btn-primary" value="Submit">
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    $('#yes_enddate').click(function() {
+        $("#emp_enddate").show();
+        $("#emp_enddate").prop('required',true);
+    });
+    $('#no_enddate').click(function() {
+        $("#emp_enddate").hide();
+        $("#emp_enddate").prop('required',false);
+    });
+</script>

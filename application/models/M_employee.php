@@ -170,7 +170,7 @@ class M_employee extends CI_Model{
             )";
         }
         $query = "
-        SELECT id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,emp_create_date,emp_last_modified,mstr_toko.toko_nama
+        SELECT id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,emp_create_date,emp_last_modified,mstr_toko.toko_nama, mstr_employee.id_fk_toko
         FROM ".$this->tbl_name." join mstr_toko on mstr_toko.id_pk_toko = mstr_employee.id_fk_toko 
         WHERE emp_status = ? ".$search_query."  
         ORDER BY ".$order_by." ".$order_direction." 

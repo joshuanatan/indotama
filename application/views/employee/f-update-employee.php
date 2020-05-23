@@ -34,23 +34,27 @@
                     </div>
                     <div class = "form-group">
                         <h5>Kode Pos</h5>
-                        <input type="number" class="form-control" id="emp_kode_pos_edit" name="emp_kode_pos" required>
+                        <input type="text" class="form-control" id="emp_kode_pos_edit" name="emp_kode_pos" required>
                     </div>
                     <div class = "form-group">
                         <h5>Foto NPWP</h5>
                         <input type="file" class="form-control" id="emp_foto_npwp_edit" name="emp_foto_npwp" required>
+                        <img id="img_emp_foto_npwp_edit" width="100px">
                     </div>
                     <div class = "form-group">
                         <h5>Foto KTP</h5>
                         <input type="file" class="form-control" id="emp_foto_ktp_edit" name="emp_foto_ktp" required>
+                        <img id="img_emp_foto_ktp_edit" width="100px">
                     </div>
                     <div class = "form-group">
                         <h5>Foto Lain</h5>
                         <input type="file" class="form-control" id="emp_foto_lain_edit" name="emp_foto_lain" required>
+                        <img id="img_emp_foto_lain_edit" width="100px">
                     </div>
                     <div class = "form-group">
                         <h5>Foto</h5>
                         <input type="file" class="form-control" id="emp_foto_edit"  name="emp_foto" required>
+                        <img id="img_emp_foto_edit" width="100px">
                     </div>
                     <div class = "form-group">
                         <h5>Gaji Karyawan</h5>
@@ -72,8 +76,8 @@
                     </div>
                     <div class = "form-group">
                         <h5>Jenis Kelamin</h5>
-                        <input type="radio" name="emp_gender" value="PRIA" checked>Pria 
-                        <input type="radio" name="emp_gender" value="WANITA">Wanita
+                        <input type="radio" name="emp_gender" value="PRIA" id="pria">Pria 
+                        <input type="radio" name="emp_gender" value="WANITA" id="wanita">Wanita
                     </div>
                     <div class = "form-group">
                         <h5>Panggilan</h5>
@@ -113,13 +117,50 @@
         $("#emp_hp_edit").val(content[id]["hp"]);
         $("#emp_alamat_edit").val(content[id]["alamat"]);
         $("#emp_kode_pos_edit").val(content[id]["kode_pos"]);
-        $("#emp_foto_npwp_edit").val(content[id]["foto_npwp"]);
-        $("#emp_foto_ktp_edit").val(content[id]["foto_ktp"]);
-        $("#emp_foto_lain_edit").val(content[id]["foto_lain"]);
-        $("#emp_foto_edit").val(content[id]["foto"]);
-        $("#emp_gaji_edit").val(content[id]["gaji"]);
-        $("#emp_startdate_edit").val(content[id]["startdate"]);
-        //$("#radio_enddate_edit").val(content[id]["radio_enddate"]);
+
+        var npwp = "<?php echo base_url() ?>asset/images/employee/npwp/" + content[id]["foto_npwp"];
+        $("#emp_foto_npwp_edit").attr("src", npwp);
+        var ktp = "<?php echo base_url() ?>asset/images/employee/ktp/" + content[id]["foto_ktp"];
+        $("#emp_foto_ktp_edit").attr("src", ktp);
+        var foto = "<?php echo base_url() ?>asset/images/employee/foto/" + content[id]["foto"];
+        $("#emp_foto_edit").attr("src", foto);
+        var lain = "<?php echo base_url() ?>asset/images/employee/lain/" + content[id]["foto_lain"];
+        $("#emp_foto_lain_edit").attr("src", lain);
+
+        if(content[id]["gender"]=="PRIA"){
+            $('#pria').prop('checked', true);
+        }else{
+            $('#wanita').prop('checked', true);
+        }
+
+        if(content[id]["enddate"]==="0000-00-00 00:00:00"){
+            $('#no_enddate_edit').prop('checked', true);
+            $("#emp_enddate_edit").hide();
+            $("#emp_enddate_edit").prop('required',false);
+        }else{
+            $('#yes_enddate_edit').prop('checked', true);
+            $("#emp_enddate_edit").show();
+            $("#emp_enddate_edit").prop('required',true);
+            //jeen masukin content[id]["enddate"] ke #emp_enddate_edit
+        }
+
+        $("#emp_suff_edit").val(content[id]["suff"]);
+        $("#emp_gaji_edit").attr("value",content[id]["gaji"]);
+
+        $("#emp_kode_pos_edit").val(content[id]["kode_pos"]);
+
+        //jeen masukin content[id]["startdate"] ke #emp_startdate_edit
+
         $("#emp_rek_edit").val(content[id]["rek"]);
+        $("#id_fk_toko_edit").val(content[id]["id_toko"]);
     }
+
+    $('#yes_enddate_edit').click(function() {
+        $("#emp_enddate_edit").show();
+        $("#emp_enddate_edit").prop('required',true);
+    });
+    $('#no_enddate_edit').click(function() {
+        $("#emp_enddate_edit").hide();
+        $("#emp_enddate_edit").prop('required',false);
+    });
 </script>

@@ -54,6 +54,7 @@ class Employee extends CI_Controller{
 				$response["content"][$a]["status"] = $result["data"][$a]["emp_status"];
 				$response["content"][$a]["toko"] = $result["data"][$a]["toko_nama"];
 				$response["content"][$a]["last_modified"] = $result["data"][$a]["emp_last_modified"];
+				$response["content"][$a]["id_toko"] = $result["data"][$a]["id_fk_toko"];
             }
         }
         else{
@@ -100,20 +101,20 @@ class Employee extends CI_Controller{
         $response["status"] = "SUCCESS";
 		$this->form_validation->set_rules("emp_npwp","Npwp","required");
 		$this->form_validation->set_rules("emp_nama","Nama","required");
-		$this->form_validation->set_rules("emp_ktp","KTP","required");
-		$this->form_validation->set_rules("emp_hp","No HP","required");
+		$this->form_validation->set_rules("emp_ktp","KTP","required|numeric");
+		$this->form_validation->set_rules("emp_hp","No HP","required|numeric");
 		$this->form_validation->set_rules("emp_alamat","Alamat","required");
 		$this->form_validation->set_rules("emp_kode_pos","Kode Pos","required");
 		//$this->form_validation->set_rules("emp_foto_npwp","Foto Npwp","required");
 		//$this->form_validation->set_rules("emp_foto_ktp","Foto Ktp","required");
 		//$this->form_validation->set_rules("emp_foto_lain","Foto Lain","required");
 		//$this->form_validation->set_rules("emp_foto","Foto","required");
-		$this->form_validation->set_rules("emp_gaji","Gaji","required");
+		$this->form_validation->set_rules("emp_gaji","Gaji","required|numeric");
 		$this->form_validation->set_rules("emp_startdate","Mulai Bekerja","required");
 		if($this->input->post("radio_enddate")=="TIDAK"){
 			$this->form_validation->set_rules("emp_enddate","Akhir Bekerja","required");
 		}
-		$this->form_validation->set_rules("emp_rek","No Rekening","required");
+		$this->form_validation->set_rules("emp_rek","No Rekening","required|numeric");
 		$this->form_validation->set_rules("emp_gender","Jenis Kelamin","required");
 		$this->form_validation->set_rules("emp_suff","suff","required");
 			
@@ -237,23 +238,23 @@ class Employee extends CI_Controller{
         echo json_encode($response);
     }
     public function update(){
-        $response["status"] = "SUCCESS";
+		$response["status"] = "SUCCESS";
 		$this->form_validation->set_rules("emp_npwp","Npwp","required");
 		$this->form_validation->set_rules("emp_nama","Nama","required");
-		$this->form_validation->set_rules("emp_ktp","KTP","required");
-		$this->form_validation->set_rules("emp_hp","No HP","required");
+		$this->form_validation->set_rules("emp_ktp","KTP","required|numeric");
+		$this->form_validation->set_rules("emp_hp","No HP","required|numeric");
 		$this->form_validation->set_rules("emp_alamat","Alamat","required");
 		$this->form_validation->set_rules("emp_kode_pos","Kode Pos","required");
 		//$this->form_validation->set_rules("emp_foto_npwp","Foto Npwp","required");
 		//$this->form_validation->set_rules("emp_foto_ktp","Foto Ktp","required");
 		//$this->form_validation->set_rules("emp_foto_lain","Foto Lain","required");
 		//$this->form_validation->set_rules("emp_foto","Foto","required");
-		$this->form_validation->set_rules("emp_gaji","Gaji","required");
+		$this->form_validation->set_rules("emp_gaji","Gaji","required|numeric");
 		$this->form_validation->set_rules("emp_startdate","Mulai Bekerja","required");
 		if($this->input->post("radio_enddate")=="TIDAK"){
 			$this->form_validation->set_rules("emp_enddate","Akhir Bekerja","required");
 		}
-		$this->form_validation->set_rules("emp_rek","No Rekening","required");
+		$this->form_validation->set_rules("emp_rek","No Rekening","required|numeric");
 		$this->form_validation->set_rules("emp_gender","Jenis Kelamin","required");
 		$this->form_validation->set_rules("emp_suff","suff","required");
 

@@ -95,6 +95,15 @@
     </div>
 </div>
 <script>
+    $('#yes_enddate_edit').click(function() {
+        $("#emp_enddate_edit").show();
+        $("#emp_enddate_edit").prop('required',true);
+    });
+    $('#no_enddate_edit').click(function() {
+        $("#emp_enddate_edit").hide();
+        $("#emp_enddate_edit").prop('required',false);
+    });
+    
     function load_delete_content(id){
         $("#emp_nama_delete").html(content[id]["nama"]);
         $("#emp_npwp_delete").html(content[id]["npwp"]);
