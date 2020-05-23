@@ -30,13 +30,12 @@ class M_employee extends CI_Model{
     
     public function __construct(){
         parent::__construct();
-        $this->columns = array(
-            array(
-                "col_name" => "menu_controller",
-                "col_disp" => "Controller",
-                "order_by" => true
-            ),
-        );
+        $this->set_column("emp_foto","Foto","required");
+        $this->set_column("emp_nama","Nama","required");
+        $this->set_column("toko_nama","Toko","required");
+        $this->set_column("emp_hp","HP","required");
+        $this->set_column("emp_last_modified","Last Modified","required");
+        
         $this->emp_create_date = date("Y-m-d H:i:s");
         $this->emp_last_modified = date("Y-m-d H:i:s");
         $this->id_create_data = $this->session->id_user;
@@ -131,6 +130,14 @@ class M_employee extends CI_Model{
         ";
         executeQuery($sql);
     }
+    private function set_column($col_name,$col_disp,$order_by){
+        $array = array(
+            "col_name" => $col_name,
+            "col_disp" => $col_disp,
+            "order_by" => $order_by
+        );
+        $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
+    }
     public function columns(){
         return $this->columns;
     }
@@ -157,12 +164,14 @@ class M_employee extends CI_Model{
                 emp_rek LIKE '%".$search_key."%' OR 
                 emp_gender LIKE '%".$search_key."%' OR 
                 emp_suff LIKE '%".$search_key."%' OR 
-                emp_status LIKE '%".$search_key."%'    
+                emp_status LIKE '%".$search_key."%' OR
+                toko_nama LIKE '%".$search_key."%'    
+                emp_last_modified LIKE '%".$search_key."%'    
             )";
         }
         $query = "
-        SELECT id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,emp_create_date,emp_last_modified
-        FROM ".$this->tbl_name." 
+        SELECT id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,emp_create_date,emp_last_modified,mstr_toko.toko_nama
+        FROM ".$this->tbl_name." join mstr_toko on mstr_toko.id_pk_toko = mstr_employee.id_fk_toko 
         WHERE emp_status = ? ".$search_query."  
         ORDER BY ".$order_by." ".$order_direction." 
         LIMIT 20 OFFSET ".($page-1)*$data_per_page;

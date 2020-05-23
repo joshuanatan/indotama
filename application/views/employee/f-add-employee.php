@@ -1,12 +1,16 @@
-
-<div class = "modal fade" id = "tambah_employee">
+<div class = "modal fade" id = "register_modal">
     <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
-                <h4 class = "modal-title">Tambah Karyawan</h4>
+                <h4 class = "modal-title">Tambah Data <?php echo ucwords($page_title);?></h4>
             </div>
             <div class = "modal-body">
-                <form method="POST" action="<?php echo base_url() ?>employee/register_employee"  enctype="multipart/form-data">
+            <?php 
+            $notif_data = array(
+                "page_title"=>$page_title
+            );
+            $this->load->view('_notification/register_error',$notif_data); ?>
+                <form id = "register_form" method = "POST" enctype = "multipart/form-data">
                     <div class = "form-group">
                         <h5>Nama Lengkap</h5>
                         <input type="text" class="form-control" name="emp_nama" required>
@@ -93,7 +97,7 @@
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <input type="submit" class = "btn btn-sm btn-primary">
+                        <input type="button" onclick = "register_func()"  class = "btn btn-sm btn-primary">
                     </div>
                 </form>
             </div>
