@@ -138,6 +138,19 @@ class M_pembelian extends CI_Model{
     public function columns(){
         return $this->columns;
     }
+    public function detail_by_no(){
+        $sql = "
+        SELECT id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified,cabang_daerah,cabang_notelp,cabang_alamat,toko_nama
+        FROM ".$this->tbl_name." 
+        INNER JOIN MSTR_SUPPLIER ON MSTR_SUPPLIER.ID_PK_SUP = ".$this->tbl_name.".ID_FK_SUPP
+        INNER JOIN MSTR_CABANG ON MSTR_CABANG.ID_PK_CABANG = ".$this->tbl_name.".ID_FK_CABANG
+        INNER JOIN MSTR_TOKO ON MSTR_TOKO.ID_PK_TOKO = MSTR_CABANG.ID_FK_TOKO
+        WHERE PEM_STATUS = ? AND SUP_STATUS = ? AND CABANG_STATUS = ? AND TOKO_STATUS = ? AND PEM_PK_NOMOR = ?";
+        $args = array(
+            "AKTIF","AKTIF","AKTIF","AKTIF",$this->pem_pk_nomor
+        );
+        return executeQuery($sql,$args);
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(
