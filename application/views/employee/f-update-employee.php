@@ -148,9 +148,13 @@
         $("#emp_gaji_edit").attr("value",content[id]["gaji"]);
 
         $("#emp_kode_pos_edit").val(content[id]["kode_pos"]);
-
+        
         //jeen masukin content[id]["startdate"] ke #emp_startdate_edit
-
+        var split_date = content[id]["startdate"].split(" ");
+        $("#emp_startdate_edit").val(split_date[0]);
+        split_date = content[id]["enddate"].split(" ");
+        $("#emp_enddate_edit").val(split_date[0]);
+        
         $("#emp_rek_edit").val(content[id]["rek"]);
         $("#id_fk_toko_edit").val(content[id]["id_toko"]);
     }
