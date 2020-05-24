@@ -41,7 +41,7 @@
                         </tr>
                         <tr>
                             <td>Foto NPWP</td>
-                            <td id = "emp_foto_npwp_delete"></td>
+                            <td id = "emp_foto_npwp_delete"><img id="img_emp_foto_npwp_delete" width="100px"></td>
                         </tr>
                         <tr>
                             <td>Foto KTP</td>
@@ -49,11 +49,11 @@
                         </tr>
                         <tr>
                             <td>Foto Lain</td>
-                            <td id = "emp_foto_lain_delete"></td>
+                            <td id = "emp_foto_lain_delete"><img id="img_emp_foto_lain_delete" width="100px"></td>
                         </tr>
                         <tr>
                             <td>Foto</td>
-                            <td id = "emp_foto_delete"></td>
+                            <td id = "emp_foto_delete"><img id="img_emp_foto_delete" width="100px"></td>
                         </tr>
                         <tr>
                             <td>Gaji Karyawan</td>
@@ -63,7 +63,7 @@
                             <td>Mulai Bekerja</td>
                             <td id = "emp_startdate_delete"></td>
                         </tr>
-                        <tr>
+                        <tr id="baris_enddate">
                             <td>Tidak bekerja sejak</td>
                             <td id = "emp_enddate_delete"></td>
                         </tr>
@@ -111,12 +111,22 @@
         $("#emp_hp_delete").html(content[id]["hp"]);
         $("#emp_alamat_delete").html(content[id]["alamat"]);
         $("#emp_kode_pos_delete").html(content[id]["kode_pos"]);
-        $("#emp_foto_npwp_delete").html(content[id]["foto_npwp"]);
-        $("#emp_foto_ktp_delete").html(content[id]["foto_ktp"]);
-        $("#emp_foto_lain_delete").html(content[id]["foto_lain"]);
-        $("#emp_foto_delete").html(content[id]["foto"]);
         $("#emp_gaji_delete").html(content[id]["gaji"]);
         $("#emp_startdate_delete").html(content[id]["startdate"]);
+
+
+        var npwp = "<?php echo base_url() ?>asset/images/employee/npwp/" + content[id]["foto_npwp"];
+alert(npwp);
+
+        $("#img_emp_foto_npwp_delete").attr("src", npwp);
+        var ktp = "<img id="img_emp_foto_ktp_delete" width="100px"<?php echo base_url() ?>asset/images/employee/ktp/" + content[id]["foto_ktp"]>;
+        $("#img_emp_foto_ktp_delete").attr("src", ktp);
+        var foto = "<?php echo base_url() ?>asset/images/employee/foto/" + content[id]["foto"];
+        $("#img_emp_foto_delete").attr("src", foto);
+        var lain = "<?php echo base_url() ?>asset/images/employee/lain/" + content[id]["foto_lain"];
+        $("#img_emp_foto_lain_delete").attr("src", lain);
+        
+
         //$("#radio_enddate_delete").html(content[id]["radio_enddate"]);
         $("#emp_rek_delete").html(content[id]["rek"]);
     }
