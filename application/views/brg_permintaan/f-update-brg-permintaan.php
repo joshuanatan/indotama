@@ -11,62 +11,28 @@
             );
             $this->load->view('_notification/update_error',$notif_data); ?>
                 <form id = "update_form" method = "POST">
-                    <input type = "hidden" name = "id" id = "id_edit">
+                    <input type = "hidden" name = "id_edit" id = "id_edit">
+                    <input type = 'hidden' name = 'id_fk_cabang' value="<?php echo $_SESSION['id_cabang'] ?>" id = 'id_fk_cabang_edit'>
                     <div class = "form-group">
-                        <h5>Nomor Pembelian</h5>
-                        <input readonly type = "text" class = "form-control" list = "list_pembelian" required id = "no_pembelian_edit">
+                        <h5>Nama Barang</h5>
+                        <input list="list_brg_nama" name="brg_nama" id="brg_nama_edit" class = "form-control">
+                        <datalist id="list_brg_nama">
+                            <?php for($x=0; $x<count($barang); $x++){ ?>
+                            <option value="<?php echo $barang[$x]['brg_nama'] ?>">
+                            <?php } ?>
+                        </datalist>
                     </div>
                     <div class = "form-group">
-                        <h5>Tanggal Penerimaan</h5>
-                        <input type = "date" class = "form-control" required name = "tgl_penerimaan" id = "tgl_penerimaan_edit">
+                        <h5>Jumlah Barang</h5>
+                        <input type = "number" class = "form-control" name="brg_permintaan_qty" required id = "brg_permintaan_qty_edit">
                     </div>
                     <div class = "form-group">
-                        <h5>Detail Pembelian</h5>
-                        <table class = "table table-striped table-bordered">
-                            <tr>
-                                <th>Cabang</th>
-                                <td id = "detail_cabang_edit"></td>    
-                            </tr>
-                            <tr>
-                                <th>Alamat Cabang</th>
-                                <td id = "detail_alamat_cabang_edit"></td>    
-                            </tr>
-                            <tr>
-                                <th>No Telp Cabang</th>
-                                <td id = "detail_notelp_cabang_edit"></td>    
-                            </tr>
-                            <tr>
-                                <th>Supplier</th>
-                                <td id = "detail_supplier_edit"></td>    
-                            </tr>
-                        </table>
+                        <h5>Notes</h5>
+                        <textarea type = "text" class = "form-control" name="brg_permintaan_notes" required id = "brg_permintaan_notes_edit"></textarea>
                     </div>
                     <div class = "form-group">
-                        <h5>Item Pembelian</h5>
-                        <table class = "table table-striped table-bordered">
-                            <thead>
-                                <th>Barang</th>
-                                <th>Jumlah</th>
-                                <th>Harga</th>
-                                <th>Notes</th>
-                                <th style = "width:30%">Penerimaan</th>
-                            </thead>
-                            <tbody id = "daftar_brg_beli_edit">
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class = "form-group">
-                        <h5>Tambahan Pembelian</h5>
-                        <table class = "table table-striped table-bordered">
-                            <thead>
-                                <th>Tambahan</th>
-                                <th>Jumlah</th>
-                                <th>Harga</th>
-                                <th>Notes</th>
-                            </thead>
-                            <tbody id = "daftar_tambahan_beli_edit">
-                            </tbody>
-                        </table>
+                        <h5>Deadline</h5>
+                        <input type = "date" class = "form-control" name="brg_permintaan_deadline" required id = "brg_permintaan_deadline_edit">
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
@@ -77,3 +43,14 @@
         </div>
     </div>
 </div>
+<script>
+    function load_edit_content(row){
+        $("#id_edit").val(content[row]["id"]);
+        $("#brg_permintaan_qty_edit").val(content[row]["qty"]);
+        $("#brg_permintaan_notes_edit").val(content[row]["notes"]);
+        $("#brg_permintaan_deadline_edit").val(content[row]["deadline"]);
+        $("#brg_permintaan_status_edit").val(content[row]["status"]);
+        $("#brg_nama_edit").val(content[row]["barang"]);
+        $("#cabang_daerah_edit").val(content[row]["nama_cabang"]);
+    }
+</script>

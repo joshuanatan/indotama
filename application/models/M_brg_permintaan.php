@@ -167,19 +167,7 @@ class M_brg_permintaan extends CI_Model{
             )";
         }
         $query = "
-        SELECT id_pk_brg_permintaan,
-        brg_permintaan_qty,
-        mstr_barang.brg_nama,
-        brg_permintaan_notes,
-        brg_permintaan_deadline,
-        brg_permintaan_status,
-        $this->tbl_name.id_fk_brg,
-        $this->tbl_name.id_fk_cabang,
-        brg_permintaan_create_date,
-        brg_permintaan_last_modified,
-        FROM
-        $this->tbl_name
-        JOIN mstr_barang on mstr_barang.id_pk_brg = $this->tbl_name.id_fk_brg JOIN mstr_cabang on mstr_cabang.id_pk_cabang = $this->tbl_name.id_fk_cabang join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = $this->tbl_name.id_pk_brg_permintaan WHERE tbl_brg_pemenuhan.brg_pemenuhan_qty in (select brg_pemenuhan_qty from tbl_brg_pemenuhan where id_fk_brg_permintaan= $this->tbl_name.id_pk_brg_permintaan) AND ".$this->tbl_name.".ID_FK_CABANG = ? ".$search_query." 
+        SELECT id_pk_brg_permintaan, brg_permintaan_qty, brg_nama, brg_permintaan_notes, brg_permintaan_deadline, brg_permintaan_status, tbl_brg_permintaan.id_fk_brg, tbl_brg_permintaan.id_fk_cabang, brg_permintaan_create_date, brg_permintaan_last_modified, sum(tbl_brg_pemenuhan.BRG_PEMENUHAN_QTY) as qty_pemenuhan, cabang_daerah FROM tbl_brg_permintaan JOIN mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg JOIN mstr_cabang on mstr_cabang.id_pk_cabang =tbl_brg_permintaan.id_fk_cabang left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan WHERE tbl_brg_permintaan.ID_FK_CABANG = ? AND tbl_brg_permintaan.brg_permintaan_status!='BATAL' group by id_pk_brg_permintaan  ".$search_query." 
         ORDER BY ".$order_by." ".$order_direction." 
         LIMIT 20 OFFSET ".($page-1)*$data_per_page;
         $args = array(
@@ -189,19 +177,7 @@ class M_brg_permintaan extends CI_Model{
         
         
         $query = "
-        SELECT id_pk_brg_permintaan,
-        brg_permintaan_qty,
-        mstr_barang.brg_nama,
-        brg_permintaan_notes,
-        brg_permintaan_deadline,
-        brg_permintaan_status,
-        $this->tbl_name.id_fk_brg,
-        $this->tbl_name.id_fk_cabang,
-        brg_permintaan_create_date,
-        brg_permintaan_last_modified
-        FROM
-        $this->tbl_name
-        JOIN mstr_barang on mstr_barang.id_pk_brg = $this->tbl_name.id_fk_brg JOIN mstr_cabang on mstr_cabang.id_pk_cabang = $this->tbl_name.id_fk_cabang join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = $this->tbl_name.id_pk_brg_permintaan WHERE tbl_brg_pemenuhan.brg_pemenuhan_qty in (select brg_pemenuhan_qty from tbl_brg_pemenuhan where id_fk_brg_permintaan= $this->tbl_name.id_pk_brg_permintaan) AND ".$this->tbl_name.".ID_FK_CABANG = ? ".$search_query." 
+        SELECT id_pk_brg_permintaan, brg_permintaan_qty, brg_nama, brg_permintaan_notes, brg_permintaan_deadline, brg_permintaan_status, tbl_brg_permintaan.id_fk_brg, tbl_brg_permintaan.id_fk_cabang, brg_permintaan_create_date, brg_permintaan_last_modified, sum(tbl_brg_pemenuhan.BRG_PEMENUHAN_QTY) as qty_pemenuhan, cabang_daerah FROM tbl_brg_permintaan JOIN mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg JOIN mstr_cabang on mstr_cabang.id_pk_cabang =tbl_brg_permintaan.id_fk_cabang left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan WHERE tbl_brg_permintaan.ID_FK_CABANG = ? AND tbl_brg_permintaan.brg_permintaan_status!='BATAL' group by id_pk_brg_permintaan  ".$search_query." 
         ORDER BY ".$order_by." ".$order_direction;
         $args = array(
             $this->session->id_cabang
@@ -238,7 +214,6 @@ class M_brg_permintaan extends CI_Model{
                 "brg_permintaan_qty" => $this->brg_permintaan_qty,
                 "brg_permintaan_notes" => $this->brg_permintaan_notes,
                 "brg_permintaan_deadline" => $this->brg_permintaan_deadline,
-                "brg_permintaan_status" => $this->brg_permintaan_status,
                 "brg_permintaan_last_modified" => $this->brg_permintaan_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
@@ -253,7 +228,7 @@ class M_brg_permintaan extends CI_Model{
                 "id_pk_brg_permintaan" => $this->id_pk_brg_permintaan
             );
             $data = array(
-                "brg_permintaan_status" => "NONAKTIF",
+                "brg_permintaan_status" => "BATAL",
                 "brg_permintaan_last_modified" => $this->brg_permintaan_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
@@ -306,9 +281,6 @@ class M_brg_permintaan extends CI_Model{
         if($this->brg_permintaan_deadline == ""){
             return false;
         }
-        if($this->brg_permintaan_status == ""){
-            return false;
-        }
         if($this->brg_permintaan_last_modified == ""){
             return false;
         }
@@ -350,7 +322,7 @@ class M_brg_permintaan extends CI_Model{
         }
         return true;
     }
-    public function set_update($id_pk_penerimaan,$penerimaan_tgl){
+    public function set_update($brg_permintaan_qty,$brg_permintaan_notes,$brg_permintaan_deadline,$id_pk_brg_permintaan){
         //ceklagi
         if(!$this->set_brg_permintaan_qty($brg_permintaan_qty)){
             return false;
@@ -361,7 +333,7 @@ class M_brg_permintaan extends CI_Model{
         if(!$this->set_brg_permintaan_deadline($brg_permintaan_deadline)){
             return false;
         }
-        if(!$this->set_brg_permintaan_status($brg_permintaan_status)){
+        if(!$this->set_id_pk_brg_permintaan($id_pk_brg_permintaan)){
             return false;
         }
         return true;
@@ -411,6 +383,13 @@ class M_brg_permintaan extends CI_Model{
     public function set_id_fk_cabang($id_fk_cabang){
         if($id_fk_cabang != ""){
             $this->id_fk_cabang = $id_fk_cabang;
+            return true;
+        }
+        return false;
+    }
+    public function set_id_pk_brg_permintaan($id_pk_brg_permintaan){
+        if($id_pk_brg_permintaan != ""){
+            $this->id_pk_brg_permintaan = $id_pk_brg_permintaan;
             return true;
         }
         return false;

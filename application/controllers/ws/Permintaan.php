@@ -41,6 +41,12 @@ class Permintaan extends CI_Controller{
                 $response["content"][$a]["status"] = $result["data"][$a]["brg_permintaan_status"];
                 $response["content"][$a]["id_fk_brg"] = $result["data"][$a]["id_fk_brg"];
                 $response["content"][$a]["barang"] = $result["data"][$a]["brg_nama"];
+                if($result["data"][$a]["qty_pemenuhan"]==null){
+                    $response["content"][$a]["qty_pemenuhan"] = 0;
+                }else{
+                    $response["content"][$a]["qty_pemenuhan"] = $result["data"][$a]["qty_pemenuhan"];
+                }
+                $response["content"][$a]["nama_cabang"] = $result["data"][$a]["cabang_daerah"];
                 $response["content"][$a]["id_fk_cabang"] = $result["data"][$a]["id_fk_cabang"];
                 $response["content"][$a]["create_date"] = $result["data"][$a]["brg_permintaan_create_date"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["brg_permintaan_last_modified"];
@@ -53,7 +59,7 @@ class Permintaan extends CI_Controller{
         $response["key"] = array(
             "create_date",
             "barang",
-            "jumlah",
+            "qty_pemenuhan",
             "qty",
             "status"
         );
@@ -116,42 +122,21 @@ class Permintaan extends CI_Controller{
     }
     public function update(){
         $response["status"] = "SUCCESS";
-        $this->form_validation->set_rules("id","id","required");
-        $this->form_validation->set_rules("tgl_penerimaan","tgl_penerimaan","required");
+        $this->form_validation->set_rules("id_edit","id","required");
+        $this->form_validation->set_rules("brg_permintaan_qty","Qty Permintaan","required");
+        $this->form_validation->set_rules("brg_permintaan_notes","Notes","required");
+        $this->form_validation->set_rules("brg_permintaan_deadline","Deadline","required");
+
         if($this->form_validation->run()){
-            $id_pk_penerimaan = $this->input->post("id");
-            $penerimaan_tgl = $this->input->post("tgl_penerimaan");
+            $id_pk_permintaan = $this->input->post("id_edit");
             $this->load->model("m_brg_permintaan");
-            if($this->m_brg_permintaan->set_update($id_pk_penerimaan,$penerimaan_tgl)){
+
+            $brg_permintaan_qty = $this->input->post("brg_permintaan_qty");
+            $brg_permintaan_notes = $this->input->post("brg_permintaan_notes");
+            $brg_permintaan_deadline = $this->input->post("brg_permintaan_deadline");
+            if($this->m_brg_permintaan->set_update($brg_permintaan_qty,$brg_permintaan_notes,$brg_permintaan_deadline,$id_pk_permintaan)){
                 if($this->m_brg_permintaan->update()){
                     $response["msg"] = "Data is updated to database";
-                    $check = $this->input->post("check");
-                    if($check != ""){
-                        $counter = 0;
-                        foreach($check as $a){
-                            $this->load->model("m_brg_penerimaan");
-                            $id_pk_brg_penerimaan = $this->input->post("id_brg_terima".$a);
-                            $brg_penerimaan_qty = $this->input->post("qty_terima".$a);
-                            $brg_penerimaan_note = $this->input->post("notes".$a);
-                            $id_fk_satuan = $this->input->post("id_satuan".$a);
-                            
-                            if($this->m_brg_penerimaan->set_update($id_pk_brg_penerimaan,$brg_penerimaan_qty,$brg_penerimaan_note,$id_fk_satuan)){
-                                if($this->m_brg_penerimaan->update()){
-                                    $response["statusitm"][$counter] = "SUCCESS";
-                                    $response["msgitm"][$counter] = "Item is updated to database";
-                                }
-                                else{
-                                    
-                                    $response["statusitm"][$counter] = "ERROR";
-                                    $response["msgitm"][$counter] = "Update Item function error";
-                                }
-                            }
-                            else{
-                                $response["statusitm"][$counter] = "ERROR";
-                                $response["msgitm"][$counter] = "Setter Item function error";
-                            }
-                        }
-                    }
                 }
                 else{
                     $response["status"] = "ERROR";
