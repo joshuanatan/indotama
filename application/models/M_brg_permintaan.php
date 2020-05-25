@@ -169,6 +169,29 @@ class M_brg_permintaan extends CI_Model{
         $query = "
         SELECT id_pk_brg_permintaan,
         brg_permintaan_qty,
+        mstr_barang.brg_nama,
+        brg_permintaan_notes,
+        brg_permintaan_deadline,
+        brg_permintaan_status,
+        $this->tbl_name.id_fk_brg,
+        $this->tbl_name.id_fk_cabang,
+        brg_permintaan_create_date,
+        brg_permintaan_last_modified,
+        FROM
+        $this->tbl_name
+        JOIN mstr_barang on mstr_barang.id_pk_brg = $this->tbl_name.id_fk_brg JOIN mstr_cabang on mstr_cabang.id_pk_cabang = $this->tbl_name.id_fk_cabang join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = $this->tbl_name.id_pk_brg_permintaan WHERE tbl_brg_pemenuhan.brg_pemenuhan_qty in (select brg_pemenuhan_qty from tbl_brg_pemenuhan where id_fk_brg_permintaan= $this->tbl_name.id_pk_brg_permintaan) AND ".$this->tbl_name.".ID_FK_CABANG = ? ".$search_query." 
+        ORDER BY ".$order_by." ".$order_direction." 
+        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        $args = array(
+            $this->session->id_cabang
+        );
+        $result["data"] = executeQuery($query,$args);
+        
+        
+        $query = "
+        SELECT id_pk_brg_permintaan,
+        brg_permintaan_qty,
+        mstr_barang.brg_nama,
         brg_permintaan_notes,
         brg_permintaan_deadline,
         brg_permintaan_status,
@@ -178,30 +201,17 @@ class M_brg_permintaan extends CI_Model{
         brg_permintaan_last_modified
         FROM
         $this->tbl_name
-        JOIN mstr_barang on mstr_barang.id_pk_barang = $this->tbl_name.id_fk_brg JOIN mstr_cabang on mstr_cabang.id_pk_cabang = $this->tbl_name.id_fk_cabang ".$this->tbl_name.".ID_FK_CABANG = ? ".$search_query." 
-        ORDER BY ".$order_by." ".$order_direction." 
-        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
-        $args = array(
-            $this->id_fk_cabang
-        );
-        $result["data"] = executeQuery($query,$args);
-        
-        
-        $query = "
-        SELECT id_pk_pembelian
-        FROM ".$this->tbl_name." 
-        INNER JOIN TBL_PEMBELIAN ON TBL_PEMBELIAN.ID_PK_PEMBELIAN = ".$this->tbl_name.".ID_FK_PEMBELIAN
-        INNER JOIN TBL_SUPPLIER ON TBL_SUPPLIER.ID_PK_SUP = TBL_PEMBELIAN.ID_FK_SUPP
-        INNER JOIN TBL_WAREHOUSE ON TBL_WAREHOUSE.ID_PK_WAREHOUSE = ".$this->tbl_name.".ID_FK_WAREHOUSE
-        WHERE PENERIMAAN_STATUS = ? AND SUP_STATUS = ? AND ".$this->tbl_name.".ID_FK_WAREHOUSE = ? ".$search_query." 
+        JOIN mstr_barang on mstr_barang.id_pk_brg = $this->tbl_name.id_fk_brg JOIN mstr_cabang on mstr_cabang.id_pk_cabang = $this->tbl_name.id_fk_cabang join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = $this->tbl_name.id_pk_brg_permintaan WHERE tbl_brg_pemenuhan.brg_pemenuhan_qty in (select brg_pemenuhan_qty from tbl_brg_pemenuhan where id_fk_brg_permintaan= $this->tbl_name.id_pk_brg_permintaan) AND ".$this->tbl_name.".ID_FK_CABANG = ? ".$search_query." 
         ORDER BY ".$order_by." ".$order_direction;
+        $args = array(
+            $this->session->id_cabang
+        );
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         
         return $result;
     }
     public function insert(){
         if($this->check_insert()){
-
             $data = array(
                 "brg_permintaan_qty" => $this->brg_permintaan_qty,
                 "brg_permintaan_notes" => $this->brg_permintaan_notes,
@@ -210,7 +220,7 @@ class M_brg_permintaan extends CI_Model{
                 "id_fk_brg" => $this->id_fk_brg,
                 "id_fk_cabang" => $this->id_fk_cabang,
                 "brg_permintaan_create_date" => $this->brg_permintaan_create_date,
-                "brg_permintaan_last_modified" => $this->brg_permintaan_last_modified
+                "brg_permintaan_last_modified" => $this->brg_permintaan_last_modified,
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
@@ -320,22 +330,22 @@ class M_brg_permintaan extends CI_Model{
         else return true;
     }
     public function set_insert($brg_permintaan_qty,$brg_permintaan_notes,$brg_permintaan_deadline,$brg_permintaan_status,$id_fk_brg,$id_fk_cabang){
-        if(!$this->set_brg_permintaan_qty($brg_permintaan_qty){
+        if(!$this->set_brg_permintaan_qty($brg_permintaan_qty)){
             return false;
         }
-        if(!$this->set_brg_permintaan_notes($brg_permintaan_notes){
+        if(!$this->set_brg_permintaan_notes($brg_permintaan_notes)){
             return false;
         }
-        if(!$this->set_brg_permintaan_deadline($brg_permintaan_deadline){
+        if(!$this->set_brg_permintaan_deadline($brg_permintaan_deadline)){
             return false;
         }
-        if(!$this->set_brg_permintaan_status($brg_permintaan_status){
+        if(!$this->set_brg_permintaan_status($brg_permintaan_status)){
             return false;
         }
-        if(!$this->set_id_fk_brg($id_fk_brg){
+        if(!$this->set_id_fk_brg($id_fk_brg)){
             return false;
         }
-        if(!$this->set_id_fk_cabang($id_fk_cabang){
+        if(!$this->set_id_fk_cabang($id_fk_cabang)){
             return false;
         }
         return true;

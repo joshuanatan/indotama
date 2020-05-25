@@ -44,10 +44,10 @@ class M_brg_pemenuhan extends CI_Model{
         CREATE TABLE TBL_BRG_PEMENUHAN(
             ID_PK_BRG_PEMENUHAN INT PRIMARY KEY AUTO_INCREMENT,
             BRG_PEMENUHAN_QTY INT,
+            BRG_PEMENUHAN_TIPE VARCHAR(9) COMMENT 'WAREHOUSE/CABANG',
             ID_FK_BRG_PERMINTAAN INT,
             ID_FK_CABANG INT,
             ID_FK_WAREHOUSE INT,
-            BRG_PEMENUHAN_TIPE VARCHAR(9) COMMENT 'WAREHOUSE/CABANG',
             BRG_PEMENUHAN_CREATE_DATE DATETIME,
             BRG_PEMENUHAN_LAST_MODIFIED DATETIME,
             ID_CREATE_DATA INT,
@@ -59,10 +59,10 @@ class M_brg_pemenuhan extends CI_Model{
             EXECUTED_FUNCTION VARCHAR(30),
             ID_PK_BRG_PEMENUHAN INT,
             BRG_PEMENUHAN_QTY INT,
+            BRG_PEMENUHAN_TIPE VARCHAR(9) COMMENT 'WAREHOUSE/CABANG',
             ID_FK_BRG_PERMINTAAN INT,
             ID_FK_CABANG INT,
             ID_FK_WAREHOUSE INT,
-            BRG_PEMENUHAN_TIPE VARCHAR(9) COMMENT 'WAREHOUSE/CABANG',
             BRG_PEMENUHAN_CREATE_DATE DATETIME,
             BRG_PEMENUHAN_LAST_MODIFIED DATETIME,
             ID_CREATE_DATA INT,
@@ -83,10 +83,10 @@ class M_brg_pemenuhan extends CI_Model{
             INSERT INTO TBL_BRG_PEMENUHAN_LOG(EXECUTED_FUNCTION,
             ID_PK_BRG_PEMENUHAN,
             BRG_PEMENUHAN_QTY,
+            BRG_PEMENUHAN_TIPE,
             ID_FK_BRG_PERMINTAAN,
             ID_FK_CABANG,
             ID_FK_WAREHOUSE,
-            BRG_PEMENUHAN_TIPE,
             BRG_PEMENUHAN_CREATE_DATE,
             BRG_PEMENUHAN_LAST_MODIFIED,
             ID_CREATE_DATA,
@@ -94,10 +94,10 @@ class M_brg_pemenuhan extends CI_Model{
             ID_LOG_ALL) VALUES ('AFTER INSERT',
             NEW.ID_PK_BRG_PEMENUHAN,
             NEW.BRG_PEMENUHAN_QTY,
+            NEW.BRG_PEMENUHAN_TIPE,
             NEW.ID_FK_BRG_PERMINTAAN,
             NEW.ID_FK_CABANG,
             NEW.ID_FK_WAREHOUSE,
-            NEW.BRG_PEMENUHAN_TIPE,
             NEW.BRG_PEMENUHAN_CREATE_DATE,
             NEW.BRG_PEMENUHAN_LAST_MODIFIED,
             NEW.ID_CREATE_DATA,
@@ -120,10 +120,10 @@ class M_brg_pemenuhan extends CI_Model{
             INSERT INTO TBL_BRG_PEMENUHAN_LOG(EXECUTED_FUNCTION,
             ID_PK_BRG_PEMENUHAN,
             BRG_PEMENUHAN_QTY,
+            BRG_PEMENUHAN_TIPE,
             ID_FK_BRG_PERMINTAAN,
             ID_FK_CABANG,
             ID_FK_WAREHOUSE,
-            BRG_PEMENUHAN_TIPE,
             BRG_PEMENUHAN_CREATE_DATE,
             BRG_PEMENUHAN_LAST_MODIFIED,
             ID_CREATE_DATA,
@@ -131,10 +131,10 @@ class M_brg_pemenuhan extends CI_Model{
             ID_LOG_ALL) VALUES ('AFTER INSERT',
             NEW.ID_PK_BRG_PEMENUHAN,
             NEW.BRG_PEMENUHAN_QTY,
+            NEW.BRG_PEMENUHAN_TIPE,
             NEW.ID_FK_BRG_PERMINTAAN,
             NEW.ID_FK_CABANG,
             NEW.ID_FK_WAREHOUSE,
-            NEW.BRG_PEMENUHAN_TIPE,
             NEW.BRG_PEMENUHAN_CREATE_DATE,
             NEW.BRG_PEMENUHAN_LAST_MODIFIED,
             NEW.ID_CREATE_DATA,
@@ -248,8 +248,8 @@ class M_brg_pemenuhan extends CI_Model{
         }
         return false;
     }
-    public function delete(){
-        //BELOM, bingung ada hapus atau engga, blm ada kolom status soalnya
+    /*public function delete(){
+        //BELOM
         if($this->check_delete()){
             $where = array(
                 "id_pk_brg_pemenuhan" => $this->id_pk_brg_pemenuhan
@@ -263,7 +263,7 @@ class M_brg_pemenuhan extends CI_Model{
             return true;
         }
         return false;
-    }
+    }*/
     public function check_insert(){
 
         if($this->brg_pemenuhan_qty == ""){
