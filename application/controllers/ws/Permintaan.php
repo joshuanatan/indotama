@@ -91,7 +91,6 @@ class Permintaan extends CI_Controller{
         $this->form_validation->set_rules("brg_permintaan_qty","Jumlah barang","required|numeric");
         $this->form_validation->set_rules("brg_permintaan_notes","Notes","required");
         $this->form_validation->set_rules("brg_permintaan_deadline","Deadline","required");
-        $this->form_validation->set_rules("id_fk_cabang","ID Cabang","required");
         if($this->form_validation->run()){
             $id_barang = get1Value("mstr_barang","id_pk_brg",array("brg_nama"=>$this->input->post("brg_nama")));
             if($id_barang){
@@ -101,7 +100,7 @@ class Permintaan extends CI_Controller{
                 $brg_permintaan_deadline = $this->input->post("brg_permintaan_deadline");
                 $brg_permintaan_status = "BELUM";
                 $id_fk_brg = $id_barang;
-                $id_fk_cabang = $this->input->post("id_fk_cabang");
+                $id_fk_cabang = $this->session->id_cabang;
                 if($this->m_brg_permintaan->set_insert($brg_permintaan_qty,$brg_permintaan_notes,$brg_permintaan_deadline,$brg_permintaan_status,$id_fk_brg,$id_fk_cabang)){
                     $id_pk_brg_permintaan = $this->m_brg_permintaan->insert();
                 }

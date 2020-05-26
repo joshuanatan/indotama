@@ -119,7 +119,7 @@ class Employee extends CI_Controller{
 		$this->form_validation->set_rules("emp_suff","suff","required");
 			
 			//npwp
-			$config1['upload_path']          = './asset/images/employee/npwp/';
+			$config1['upload_path']          = './asset/uploads/employee/npwp/';
 			$config1['allowed_types']        = 'jpg|png|jpeg';
 
 			$this->load->library('upload', $config1);
@@ -135,7 +135,7 @@ class Employee extends CI_Controller{
 			}
 
 			//ktp
-			$config2['upload_path']          = './asset/images/employee/ktp/';
+			$config2['upload_path']          = './asset/uploads/employee/ktp/';
 			$config2['allowed_types']        = 'jpg|png|jpeg';
 
 			$this->upload->initialize($config2);
@@ -149,7 +149,7 @@ class Employee extends CI_Controller{
 			}
 
 			//lain
-			$config3['upload_path']          = './asset/images/employee/lain/';
+			$config3['upload_path']          = './asset/uploads/employee/lain/';
 			$config3['allowed_types']        = 'jpg|png|jpeg';
 
 			$this->upload->initialize($config3);
@@ -163,7 +163,7 @@ class Employee extends CI_Controller{
 			}
 
 			//foto
-			$config4['upload_path']          = './asset/images/employee/foto/';
+			$config4['upload_path']          = './asset/uploads/employee/foto/';
 			$config4['allowed_types']        = 'jpg|png|jpeg';
 
 			$this->upload->initialize($config4);
@@ -259,7 +259,7 @@ class Employee extends CI_Controller{
 		$this->form_validation->set_rules("emp_suff","suff","required");
 
 		//npwp
-		$config1['upload_path']          = './asset/images/employee/npwp/';
+		$config1['upload_path']          = './asset/uploads/employee/npwp/';
 		$config1['allowed_types']        = 'jpg|png|jpeg';
 
 		$this->load->library('upload', $config1);
@@ -275,7 +275,7 @@ class Employee extends CI_Controller{
 		}
 
 		//ktp
-		$config2['upload_path']          = './asset/images/employee/ktp/';
+		$config2['upload_path']          = './asset/uploads/employee/ktp/';
 		$config2['allowed_types']        = 'jpg|png|jpeg';
 
 		$this->upload->initialize($config2);
@@ -289,7 +289,7 @@ class Employee extends CI_Controller{
 		}
 
 		//lain
-		$config3['upload_path']          = './asset/images/employee/lain/';
+		$config3['upload_path']          = './asset/uploads/employee/lain/';
 		$config3['allowed_types']        = 'jpg|png|jpeg';
 
 		$this->upload->initialize($config3);
@@ -303,7 +303,7 @@ class Employee extends CI_Controller{
 		}
 
 		//foto
-		$config4['upload_path']          = './asset/images/employee/foto/';
+		$config4['upload_path']          = './asset/uploads/employee/foto/';
 		$config4['allowed_types']        = 'jpg|png|jpeg';
 
 		$this->upload->initialize($config4);

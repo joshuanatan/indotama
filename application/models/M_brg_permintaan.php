@@ -164,6 +164,7 @@ class M_brg_permintaan extends CI_Model{
                 id_fk_cabang LIKE '%".$search_key."%' OR
                 brg_permintaan_create_date LIKE '%".$search_key."%' OR
                 brg_permintaan_last_modified LIKE '%".$search_key."%' OR
+                brg_nama LIKE '%".$search_key."%'
             )";
         }
         $query = "
