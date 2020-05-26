@@ -277,7 +277,8 @@ class M_tambahan_pembelian extends CI_Model{
         if(!$this->set_id_pk_tmbhn($id_pk_tmbhn)){
             return false;
         }
-        return true;}
+        return true;
+    }
     public function set_id_pk_tmbhn($id_pk_tmbhn){
         if($id_pk_tmbhn != ""){
             $this->id_pk_tmbhn = $id_pk_tmbhn;
