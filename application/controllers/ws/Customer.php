@@ -70,18 +70,17 @@ class Customer extends CI_Controller{
         if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
-                $response["content"][$a]["id"] = $result[$a]["id_pk_brg"];
-                $response["content"][$a]["kode"] = $result[$a]["brg_kode"];
-                $response["content"][$a]["nama"] = $result[$a]["brg_nama"];
-                $response["content"][$a]["ket"] = $result[$a]["brg_ket"];
-                $response["content"][$a]["minimal"] = $result[$a]["brg_minimal"];
-                $response["content"][$a]["status"] = $result[$a]["brg_status"];
-                $response["content"][$a]["satuan"] = $result[$a]["brg_satuan"];
-                $response["content"][$a]["image"] = $result[$a]["brg_image"];
-                $response["content"][$a]["last_modified"] = $result[$a]["brg_last_modified"];
-                $response["content"][$a]["merk_nama"] = $result[$a]["brg_merk_nama"];
-                $response["content"][$a]["jenis_nama"] = $result[$a]["brg_jenis_nama"];
-                $response["content"][$a]["ukuran"] = $result[$a]["ukuran"];
+                $response["content"][$a]["id"] = $result[$a]["id_pk_cust"];
+                $response["content"][$a]["name"] = $result[$a]["cust_name"];
+                $response["content"][$a]["perusahaan"] = $result[$a]["cust_perusahaan"];
+                $response["content"][$a]["email"] = $result[$a]["cust_email"];
+                $response["content"][$a]["telp"] = $result[$a]["cust_telp"];
+                $response["content"][$a]["hp"] = $result[$a]["cust_hp"];
+                $response["content"][$a]["alamat"] = $result[$a]["cust_alamat"];
+                $response["content"][$a]["keterangan"] = $result[$a]["cust_keterangan"];
+                $response["content"][$a]["status"] = $result[$a]["cust_status"];
+                $response["content"][$a]["create_date"] = $result[$a]["cust_create_date"];
+                $response["content"][$a]["last_modified"] = $result[$a]["cust_last_modified"];
             }
         }
         else{
