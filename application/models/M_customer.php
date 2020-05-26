@@ -152,6 +152,55 @@ class M_customer extends CI_Model{
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;
     }
+    public function list(){
+        $where = array(
+            "cust_status" => "AKTIF"
+        );
+        $field = array(
+            "id_pk_cust",
+            "cust_name",
+            "cust_perusahaan",
+            "cust_email",
+            "cust_telp",
+            "cust_hp",
+            "cust_alamat",
+            "cust_keterangan",
+            "cust_status",
+            "cust_create_date",
+            "cust_last_modified"   
+        );
+        return selectRow($this->tbl_name,$where,$field);
+    }
+    public function detail_by_perusahaan(){
+        $where = array(
+            "cust_perusahaan" => $this->cust_perusahaan
+        );
+        $field = array(
+            "id_pk_cust",
+            "cust_name",
+            "cust_perusahaan",
+            "cust_email",
+            "cust_telp",
+            "cust_hp",
+            "cust_alamat",
+            "cust_keterangan",
+            "cust_status",
+            "cust_create_date",
+            "cust_last_modified",
+        );
+        return selectRow($this->tbl_name,$where,$field);
+    }
+    public function short_insert(){
+        $data = array(
+            "cust_perusahaan" => $this->cust_perusahaan,
+            "cust_status" => "AKTIF",
+            "cust_create_date" => $this->cust_create_date,
+            "cust_last_modified" => $this->cust_last_modified,
+            "id_create_data" => $this->id_create_data,
+            "id_last_modified" => $this->id_last_modified
+        );
+        return insertRow($this->tbl_name,$data);
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(
