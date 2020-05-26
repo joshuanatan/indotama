@@ -5,16 +5,14 @@ class M_penjualan extends CI_Model{
     private $tbl_name = "MSTR_PENJUALAN";
     private $columns = array();
     private $id_pk_penjualan;
-    private $penj_pk_nomor;
+    private $penj_nomor;
     private $penj_tgl;
-    private $penj_tgl_jatuhtempo;
+    private $penj_dateline_tgl;/*SUPAYA TAU PAS PENGIRIMAN MANA YANG URGENT*/
     private $penj_status;
-    private $penj_totalall;
-    private $penj_ppn;
-    private $penj_progress;
+    private $penj_jenis; /*ONLINE/OFFLINE*/
+    private $penj_tipe_pembayaran; /*FULL/DP/TRIAL/DKK*/
     private $id_fk_customer;
-    private $id_fk_toko;
-    private $id_fk_sj;
+    private $id_fk_cabang;
     private $penj_create_date;
     private $penj_last_modified;
     private $id_create_data;
@@ -22,28 +20,43 @@ class M_penjualan extends CI_Model{
 
     public function __construct(){
         parent::__construct();
+        $this->set_column("penj_nomor","Nomor Penjualan",true);
+        $this->set_column("penj_tgl","Tanggal Penjualan",false);
+        $this->set_column("penj_dateline_tgl","Dateline",false);
+        $this->set_column("penj_jenis","Jenis Penjualan",false);
+        $this->set_column("tipe_pembayaran","Tipe Pembayaran",false);
+        $this->set_column("cust_name","Customer",false);
+        $this->set_column("penj_status","Status",false);
+        $this->set_column("penj_last_modified","Last Modified",false);
         $this->penj_create_date = date("Y-m-d H:i:s");
         $this->penj_last_modified = date("Y-m-d H:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
+    private function set_column($col_name,$col_disp,$order_by){
+        $array = array(
+            "col_name" => $col_name,
+            "col_disp" => $col_disp,
+            "order_by" => $order_by
+        );
+        $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
+    }
     public function columns(){
         return $this->columns;
     }
     public function install(){
-        $sql = "DROP TABLE IF EXISTS MSTR_PENJUALAN;
+        $sql = "
+        DROP TABLE IF EXISTS MSTR_PENJUALAN;
         CREATE TABLE MSTR_PENJUALAN(
             ID_PK_PENJUALAN INT PRIMARY KEY AUTO_INCREMENT,
-            PENJ_PK_NOMOR VARCHAR(100),
+            PENJ_NOMOR VARCHAR(30),
             PENJ_TGL DATETIME,
-            PENJ_TGL_JATUHTEMPO DATETIME,
+            PENJ_DATELINE_TGL DATETIME,
+            PENJ_JENIS VARCHAR(50),
+            PENJ_TIPE_PEMBAYARAN VARCHAR(50),
             PENJ_STATUS VARCHAR(15),
-            PENJ_TOTALALL INT,
-            PENJ_PPN INT,
-            PENJ_PROGRESS VARCHAR(120),
             ID_FK_CUSTOMER INT,
-            ID_FK_TOKO INT,
-            ID_FK_SJ INT,
+            ID_FK_CABANG INT,
             PENJ_CREATE_DATE DATETIME,
             PENJ_LAST_MODIFIED DATETIME,
             ID_CREATE_DATA INT,
@@ -54,16 +67,14 @@ class M_penjualan extends CI_Model{
             ID_PK_PENJUALAN_LOG INT PRIMARY KEY AUTO_INCREMENT,
             EXECUTED_FUNCTION VARCHAR(30),
             ID_PK_PENJUALAN INT,
-            PENJ_PK_NOMOR VARCHAR(100),
+            PENJ_NOMOR VARCHAR(30),
             PENJ_TGL DATETIME,
-            PENJ_TGL_JATUHTEMPO DATETIME,
+            PENJ_DATELINE_TGL DATETIME,
+            PENJ_JENIS VARCHAR(50),
+            PENJ_TIPE_PEMBAYARAN VARCHAR(50),
             PENJ_STATUS VARCHAR(15),
-            PENJ_TOTALALL INT,
-            PENJ_PPN INT,
-            PENJ_PROGRESS VARCHAR(120),
             ID_FK_CUSTOMER INT,
-            ID_FK_TOKO INT,
-            ID_FK_SJ INT,
+            ID_FK_CABANG INT,
             PENJ_CREATE_DATE DATETIME,
             PENJ_LAST_MODIFIED DATETIME,
             ID_CREATE_DATA INT,
@@ -81,7 +92,7 @@ class M_penjualan extends CI_Model{
             SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.PENJ_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO MSTR_PENJUALAN_LOG(EXECUTED_FUNCTION,ID_PK_PENJUALAN,PENJ_PK_NOMOR,PENJ_TGL,PENJ_TGL_JATUHTEMPO,PENJ_STATUS,PENJ_TOTALALL,PENJ_PPN,PENJ_PROGRESS,ID_FK_CUSTOMER,ID_FK_TOKO,ID_FK_SJ,PENJ_CREATE_DATE,PENJ_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_PENJUALAN,NEW.PENJ_PK_NOMOR,NEW.PENJ_TGL,NEW.PENJ_TGL_JATUHTEMPO,NEW.PENJ_STATUS,NEW.PENJ_TOTALALL,NEW.PENJ_PPN,NEW.PENJ_PROGRESS,NEW.ID_FK_CUSTOMER,NEW.ID_FK_TOKO,NEW.ID_FK_SJ,NEW.PENJ_CREATE_DATE,NEW.PENJ_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO MSTR_PENJUALAN_LOG(EXECUTED_FUNCTION,ID_PK_PENJUALAN,PENJ_NOMOR,PENJ_TGL,PENJ_DATELINE_TGL,PENJ_JENIS,PENJ_TIPE_PEMBAYARAN,PENJ_STATUS,ID_FK_CUSTOMER,ID_FK_CABANG,PENJ_CREATE_DATE,PENJ_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_PENJUALAN,NEW.PENJ_NOMOR,NEW.PENJ_TGL,NEW.PENJ_DATELINE_TGL,NEW.PENJ_JENIS,NEW.PENJ_TIPE_PEMBAYARAN,NEW.PENJ_STATUS,NEW.ID_FK_CUSTOMER,NEW.ID_FK_CABANG,NEW.PENJ_CREATE_DATE,NEW.PENJ_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;
         
@@ -96,28 +107,63 @@ class M_penjualan extends CI_Model{
             SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.PENJ_LAST_MODIFIED);
             CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
             
-            INSERT INTO MSTR_PENJUALAN_LOG(EXECUTED_FUNCTION,ID_PK_PENJUALAN,PENJ_PK_NOMOR,PENJ_TGL,PENJ_TGL_JATUHTEMPO,PENJ_STATUS,PENJ_TOTALALL,PENJ_PPN,PENJ_PROGRESS,ID_FK_CUSTOMER,ID_FK_TOKO,ID_FK_SJ,PENJ_CREATE_DATE,PENJ_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_PENJUALAN,NEW.PENJ_PK_NOMOR,NEW.PENJ_TGL,NEW.PENJ_TGL_JATUHTEMPO,NEW.PENJ_STATUS,NEW.PENJ_TOTALALL,NEW.PENJ_PPN,NEW.PENJ_PROGRESS,NEW.ID_FK_CUSTOMER,NEW.ID_FK_TOKO,NEW.ID_FK_SJ,NEW.PENJ_CREATE_DATE,NEW.PENJ_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            INSERT INTO MSTR_PENJUALAN_LOG(EXECUTED_FUNCTION,ID_PK_PENJUALAN,PENJ_NOMOR,PENJ_TGL,PENJ_DATELINE_TGL,PENJ_JENIS,PENJ_TIPE_PEMBAYARAN,PENJ_STATUS,ID_FK_CUSTOMER,ID_FK_CABANG,PENJ_CREATE_DATE,PENJ_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_PENJUALAN,NEW.PENJ_NOMOR,NEW.PENJ_TGL,NEW.PENJ_DATELINE_TGL,NEW.PENJ_JENIS,NEW.PENJ_TIPE_PEMBAYARAN,NEW.PENJ_STATUS,NEW.ID_FK_CUSTOMER,NEW.ID_FK_CABANG,NEW.PENJ_CREATE_DATE,NEW.PENJ_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
         END$$
         DELIMITER ;";
         executeQuery($sql);
     }
+    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+        $order_by = $this->columns[$order_by]["col_name"];
+        $search_query = "";
+        if($search_key != ""){
+            $search_query .= "AND
+            ( 
+                id_pk_penjualan LIKE '%".$search_key."%' OR
+                penj_nomor LIKE '%".$search_key."%' OR
+                penj_tgl LIKE '%".$search_key."%' OR
+                penj_dateline_tgl LIKE '%".$search_key."%' OR
+                penj_status LIKE '%".$search_key."%' OR
+                penj_jenis LIKE '%".$search_key."%' OR
+                penj_tipe_pembayaran LIKE '%".$search_key."%' OR
+                penj_last_modified LIKE '%".$search_key."%'
+            )";
+        }
+        $query = "
+        SELECT id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan
+        FROM ".$this->tbl_name." 
+        INNER JOIN MSTR_CUSTOMER ON MSTR_CUSTOMER.ID_PK_CUST = ".$this->tbl_name.".ID_FK_CUSTOMER
+        WHERE PENJ_STATUS = ? AND CUST_STATUS = ? AND ID_FK_CABANG = ? ".$search_query."  
+        ORDER BY ".$order_by." ".$order_direction." 
+        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        $args = array(
+            "AKTIF","AKTIF",$this->id_fk_cabang
+        );
+        $result["data"] = executeQuery($query,$args);
+        
+        $query = "
+        SELECT id_pk_penjualan
+        FROM ".$this->tbl_name." 
+        INNER JOIN MSTR_CUSTOMER ON MSTR_CUSTOMER.ID_PK_CUST = ".$this->tbl_name.".ID_FK_CUSTOMER
+        WHERE PENJ_STATUS = ? AND CUST_STATUS = ? AND ID_FK_CABANG = ? ".$search_query."  
+        ORDER BY ".$order_by." ".$order_direction;
+        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        return $result;
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(
-                "penj_pk_nomor" => $this->penj_pk_nomor,
+                "penj_nomor" => $this->penj_nomor,
                 "penj_tgl" => $this->penj_tgl,
-                "penj_tgl_jatuhtempo" => $this->penj_tgl_jatuhtempo,
                 "penj_status" => $this->penj_status,
-                "penj_totalall" => $this->penj_totalall,
-                "penj_ppn" => $this->penj_ppn,
-                "penj_progress" => $this->penj_progress,
+                "penj_dateline_tgl" => $this->penj_dateline_tgl,
+                "penj_jenis" => $this->penj_jenis,
+                "penj_tipe_pembayaran" => $this->penj_tipe_pembayaran,
                 "id_fk_customer" => $this->id_fk_customer,
-                "id_fk_toko" => $this->id_fk_toko,
-                "id_fk_sj" => $this->id_fk_sj,
+                "id_fk_cabang" => $this->id_fk_cabang,
                 "penj_create_date" => $this->penj_create_date,
                 "penj_last_modified" => $this->penj_last_modified,
                 "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified,
+                "id_last_modified" => $this->id_last_modified
             );
             return insertRow($this->tbl_name,$data);
         }
@@ -125,21 +171,18 @@ class M_penjualan extends CI_Model{
     }
     public function update(){
         if($this->check_update()){
-            $where = array(
+            $where = array(  
                 "id_pk_penjualan" => $this->id_pk_penjualan
             );
             $data = array(
-                "penj_pk_nomor" => $this->penj_pk_nomor,
-                "penj_tgl" => $this->penj_tgl,
-                "penj_tgl_jatuhtempo" => $this->penj_tgl_jatuhtempo,
-                "penj_totalall" => $this->penj_totalall,
-                "penj_ppn" => $this->penj_ppn,
-                "penj_progress" => $this->penj_progress,
+                "penj_nomor" => $this->penj_nomor,
+                "penj_jenis" => $this->penj_jenis,
+                "penj_dateline_tgl" => $this->penj_dateline_tgl,
+                "penj_jenis" => $this->penj_jenis,
+                "penj_tipe_pembayaran" => $this->penj_tipe_pembayaran,
                 "id_fk_customer" => $this->id_fk_customer,
-                "id_fk_toko" => $this->id_fk_toko,
-                "id_fk_sj" => $this->id_fk_sj,
                 "penj_last_modified" => $this->penj_last_modified,
-                "id_last_modified" => $this->id_last_modified,
+                "id_last_modified" => $this->id_last_modified
             );
             updateRow($this->tbl_name,$data,$where);
             return true;
@@ -148,13 +191,13 @@ class M_penjualan extends CI_Model{
     }
     public function delete(){
         if($this->check_delete()){
-            $where = array(
+            $where = array(  
                 "id_pk_penjualan" => $this->id_pk_penjualan
             );
             $data = array(
                 "penj_status" => "NONAKTIF",
                 "penj_last_modified" => $this->penj_last_modified,
-                "id_last_modified" => $this->id_last_modified,
+                "id_last_modified" => $this->id_last_modified
             );
             updateRow($this->tbl_name,$data,$where);
             return true;
@@ -162,34 +205,28 @@ class M_penjualan extends CI_Model{
         return false;
     }
     public function check_insert(){
-        if($this->penj_pk_nomor == ""){
+        if($this->penj_nomor == ""){
             return false;
         }
         if($this->penj_tgl == ""){
             return false;
         }
-        if($this->penj_tgl_jatuhtempo == ""){
+        if($this->penj_dateline_tgl == ""){
+            return false;
+        }
+        if($this->penj_jenis == ""){
+            return false;
+        }
+        if($this->penj_tipe_pembayaran == ""){
             return false;
         }
         if($this->penj_status == ""){
             return false;
         }
-        if($this->penj_totalall == ""){
-            return false;
-        }
-        if($this->penj_ppn == ""){
-            return false;
-        }
-        if($this->penj_progress == ""){
-            return false;
-        }
         if($this->id_fk_customer == ""){
             return false;
         }
-        if($this->id_fk_toko == ""){
-            return false;
-        }
-        if($this->id_fk_sj == ""){
+        if($this->id_fk_cabang == ""){
             return false;
         }
         if($this->penj_create_date == ""){
@@ -210,31 +247,22 @@ class M_penjualan extends CI_Model{
         if($this->id_pk_penjualan == ""){
             return false;
         }
-        if($this->penj_pk_nomor == ""){
+        if($this->penj_nomor == ""){
+            return false;
+        }
+        if($this->penj_dateline_tgl == ""){
+            return false;
+        }
+        if($this->penj_jenis == ""){
+            return false;
+        }
+        if($this->penj_tipe_pembayaran == ""){
             return false;
         }
         if($this->penj_tgl == ""){
             return false;
         }
-        if($this->penj_tgl_jatuhtempo == ""){
-            return false;
-        }
-        if($this->penj_totalall == ""){
-            return false;
-        }
-        if($this->penj_ppn == ""){
-            return false;
-        }
-        if($this->penj_progress == ""){
-            return false;
-        }
         if($this->id_fk_customer == ""){
-            return false;
-        }
-        if($this->id_fk_toko == ""){
-            return false;
-        }
-        if($this->id_fk_sj == ""){
             return false;
         }
         if($this->penj_last_modified == ""){
@@ -257,68 +285,53 @@ class M_penjualan extends CI_Model{
         }
         return true;
     }
-    public function set_insert($penj_pk_nomor,$penj_tgl,$penj_tgl_jatuhtempo,$penj_status,$penj_totalall,$penj_ppn,$penj_progress,$id_fk_customer,$id_fk_toko,$id_fk_sj){
-        if(!$this->set_penj_pk_nomor($penj_pk_nomor)){
+    public function set_insert($penj_nomor,$penj_tgl,$penj_dateline_tgl,$penj_jenis,$penj_tipe_pembayaran,$id_fk_customer,$id_fk_cabang,$penj_status){
+        if(!$this->set_penj_nomor($penj_nomor)){
+            return false;
+        }
+        if(!$this->set_penj_dateline_tgl($penj_dateline_tgl)){
+            return false;
+        }
+        if(!$this->set_penj_jenis($penj_jenis)){
+            return false;
+        }
+        if(!$this->set_penj_tipe_pembayaran($penj_tipe_pembayaran)){
             return false;
         }
         if(!$this->set_penj_tgl($penj_tgl)){
-            return false;
-        }
-        if(!$this->set_penj_tgl_jatuhtempo($penj_tgl_jatuhtempo)){
             return false;
         }
         if(!$this->set_penj_status($penj_status)){
             return false;
         }
-        if(!$this->set_penj_totalall($penj_totalall)){
-            return false;
-        }
-        if(!$this->set_penj_ppn($penj_ppn)){
-            return false;
-        }
-        if(!$this->set_penj_progress($penj_progress)){
-            return false;
-        }
         if(!$this->set_id_fk_customer($id_fk_customer)){
             return false;
         }
-        if(!$this->set_id_fk_toko($id_fk_toko)){
-            return false;
-        }
-        if(!$this->set_id_fk_sj($id_fk_sj)){
+        if(!$this->set_id_fk_cabang($id_fk_cabang)){
             return false;
         }
         return true;
     }
-    public function set_update($id_pk_penjualan,$penj_pk_nomor,$penj_tgl,$penj_tgl_jatuhtempo,$penj_totalall,$penj_ppn,$penj_progress,$id_fk_customer,$id_fk_toko,$id_fk_sj){
+    public function set_update($id_pk_penjualan,$penj_nomor,$penj_dateline_tgl,$penj_jenis,$penj_tipe_pembayaran,$penj_tgl,$id_fk_customer){
         if(!$this->set_id_pk_penjualan($id_pk_penjualan)){
             return false;
         }
-        if(!$this->set_penj_pk_nomor($penj_pk_nomor)){
+        if(!$this->set_penj_nomor($penj_nomor)){
+            return false;
+        }
+        if(!$this->set_penj_dateline_tgl($penj_dateline_tgl)){
+            return false;
+        }
+        if(!$this->set_penj_jenis($penj_jenis)){
+            return false;
+        }
+        if(!$this->set_penj_tipe_pembayaran($penj_tipe_pembayaran)){
             return false;
         }
         if(!$this->set_penj_tgl($penj_tgl)){
             return false;
         }
-        if(!$this->set_penj_tgl_jatuhtempo($penj_tgl_jatuhtempo)){
-            return false;
-        }
-        if(!$this->set_penj_totalall($penj_totalall)){
-            return false;
-        }
-        if(!$this->set_penj_ppn($penj_ppn)){
-            return false;
-        }
-        if(!$this->set_penj_progress($penj_progress)){
-            return false;
-        }
         if(!$this->set_id_fk_customer($id_fk_customer)){
-            return false;
-        }
-        if(!$this->set_id_fk_toko($id_fk_toko)){
-            return false;
-        }
-        if(!$this->set_id_fk_sj($id_fk_sj)){
             return false;
         }
         return true;
@@ -336,9 +349,30 @@ class M_penjualan extends CI_Model{
         }
         return false;
     }
-    public function set_penj_pk_nomor($penj_pk_nomor){
-        if($penj_pk_nomor != ""){
-            $this->penj_pk_nomor = $penj_pk_nomor;
+    public function set_penj_nomor($penj_nomor){
+        if($penj_nomor != ""){
+            $this->penj_nomor = $penj_nomor;
+            return true;
+        }
+        return false;
+    }
+    public function set_penj_dateline_tgl($penj_dateline_tgl){
+        if($penj_dateline_tgl != ""){
+            $this->penj_dateline_tgl = $penj_dateline_tgl;
+            return true;
+        }
+        return false;
+    }
+    public function set_penj_jenis($penj_jenis){
+        if($penj_jenis != ""){
+            $this->penj_jenis = $penj_jenis;
+            return true;
+        }
+        return false;
+    }
+    public function set_penj_tipe_pembayaran($penj_tipe_pembayaran){
+        if($penj_tipe_pembayaran != ""){
+            $this->penj_tipe_pembayaran = $penj_tipe_pembayaran;
             return true;
         }
         return false;
@@ -350,37 +384,9 @@ class M_penjualan extends CI_Model{
         }
         return false;
     }
-    public function set_penj_tgl_jatuhtempo($penj_tgl_jatuhtempo){
-        if($penj_tgl_jatuhtempo != ""){
-            $this->penj_tgl_jatuhtempo = $penj_tgl_jatuhtempo;
-            return true;
-        }
-        return false;
-    }
     public function set_penj_status($penj_status){
         if($penj_status != ""){
             $this->penj_status = $penj_status;
-            return true;
-        }
-        return false;
-    }
-    public function set_penj_totalall($penj_totalall){
-        if($penj_totalall != ""){
-            $this->penj_totalall = $penj_totalall;
-            return true;
-        }
-        return false;
-    }
-    public function set_penj_ppn($penj_ppn){
-        if($penj_ppn != ""){
-            $this->penj_ppn = $penj_ppn;
-            return true;
-        }
-        return false;
-    }
-    public function set_penj_progress($penj_progress){
-        if($penj_progress != ""){
-            $this->penj_progress = $penj_progress;
             return true;
         }
         return false;
@@ -392,16 +398,9 @@ class M_penjualan extends CI_Model{
         }
         return false;
     }
-    public function set_id_fk_toko($id_fk_toko){
-        if($id_fk_toko != ""){
-            $this->id_fk_toko = $id_fk_toko;
-            return true;
-        }
-        return false;
-    }
-    public function set_id_fk_sj($id_fk_sj){
-        if($id_fk_sj != ""){
-            $this->id_fk_sj = $id_fk_sj;
+    public function set_id_fk_cabang($id_fk_cabang){
+        if($id_fk_cabang != ""){
+            $this->id_fk_cabang = $id_fk_cabang;
             return true;
         }
         return false;
@@ -409,34 +408,28 @@ class M_penjualan extends CI_Model{
     public function get_id_pk_penjualan(){
         return $this->id_pk_penjualan;
     }
-    public function get_penj_pk_nomor(){
-        return $this->penj_pk_nomor;
+    public function get_penj_nomor(){
+        return $this->penj_nomor;
+    }
+    public function get_penj_dateline_tgl(){
+        return $this->penj_dateline_tgl;
+    }
+    public function get_penj_jenis(){
+        return $this->penj_jenis;
+    }
+    public function get_penj_tipe_pembayaran(){
+        return $this->penj_tipe_pembayaran;
     }
     public function get_penj_tgl(){
         return $this->penj_tgl;
     }
-    public function get_penj_tgl_jatuhtempo(){
-        return $this->penj_tgl_jatuhtempo;
-    }
     public function get_penj_status(){
         return $this->penj_status;
-    }
-    public function get_penj_totalall(){
-        return $this->penj_totalall;
-    }
-    public function get_penj_ppn(){
-        return $this->penj_ppn;
-    }
-    public function get_penj_progress(){
-        return $this->penj_progress;
     }
     public function get_id_fk_customer(){
         return $this->id_fk_customer;
     }
-    public function get_id_fk_toko(){
-        return $this->id_fk_toko;
-    }
-    public function get_id_fk_sj(){
-        return $this->id_fk_sj;
+    public function get_id_fk_cabang(){
+        return $this->id_fk_cabang;
     }
 }
