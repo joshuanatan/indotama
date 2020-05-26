@@ -17,11 +17,13 @@ class M_brg_pemenuhan extends CI_Model{
 
     public function __construct(){
         parent::__construct();
-        //BELOM
-        $this->set_column("penerimaan_tgl","Tanggal Penerimaan",true);
-        $this->set_column("pem_pk_nomor","Nomor Pembelian",false);
-        $this->set_column("penerimaan_status","Status",false);
-        $this->set_column("penerimaan_last_modified","Last Modified",false);
+        $this->set_column("brg_permintaan_create_date","Tanggal Permintaan",true);
+        $this->set_column("cabang_nama","Cabang Peminta",false);
+        $this->set_column("brg_image","Gambar Barang",false);
+        $this->set_column("brg_nama","Nama Barang",false);
+        $this->set_column("qty_pemenuhan","Jumlah terpenuhi",false);
+        $this->set_column("brg_permintaan_qty","Jumlah Permintaan",false);
+        $this->set_column("brg_permintaan_status","Status Permintaan",false);
         $this->penerimaan_create_date = date("Y-m-d H:i:s");
         $this->penerimaan_last_modified = date("Y-m-d H:i:s");
         $this->id_create_data = $this->session->id_user;
@@ -45,6 +47,7 @@ class M_brg_pemenuhan extends CI_Model{
             ID_PK_BRG_PEMENUHAN INT PRIMARY KEY AUTO_INCREMENT,
             BRG_PEMENUHAN_QTY INT,
             BRG_PEMENUHAN_TIPE VARCHAR(9) COMMENT 'WAREHOUSE/CABANG',
+            BRG_PEMENUHAN_STATUS VARCHAR(8) COMMENT 'AKTIF/NONAKTIF',
             ID_FK_BRG_PERMINTAAN INT,
             ID_FK_CABANG INT,
             ID_FK_WAREHOUSE INT,
@@ -60,6 +63,7 @@ class M_brg_pemenuhan extends CI_Model{
             ID_PK_BRG_PEMENUHAN INT,
             BRG_PEMENUHAN_QTY INT,
             BRG_PEMENUHAN_TIPE VARCHAR(9) COMMENT 'WAREHOUSE/CABANG',
+            BRG_PEMENUHAN_STATUS VARCHAR(8) COMMENT 'AKTIF/NONAKTIF',
             ID_FK_BRG_PERMINTAAN INT,
             ID_FK_CABANG INT,
             ID_FK_WAREHOUSE INT,
@@ -84,6 +88,7 @@ class M_brg_pemenuhan extends CI_Model{
             ID_PK_BRG_PEMENUHAN,
             BRG_PEMENUHAN_QTY,
             BRG_PEMENUHAN_TIPE,
+            BRG_PEMENUHAN_STATUS,
             ID_FK_BRG_PERMINTAAN,
             ID_FK_CABANG,
             ID_FK_WAREHOUSE,
@@ -95,6 +100,7 @@ class M_brg_pemenuhan extends CI_Model{
             NEW.ID_PK_BRG_PEMENUHAN,
             NEW.BRG_PEMENUHAN_QTY,
             NEW.BRG_PEMENUHAN_TIPE,
+            BRG_PEMENUHAN_STATUS,
             NEW.ID_FK_BRG_PERMINTAAN,
             NEW.ID_FK_CABANG,
             NEW.ID_FK_WAREHOUSE,
@@ -121,6 +127,7 @@ class M_brg_pemenuhan extends CI_Model{
             ID_PK_BRG_PEMENUHAN,
             BRG_PEMENUHAN_QTY,
             BRG_PEMENUHAN_TIPE,
+            BRG_PEMENUHAN_STATUS,
             ID_FK_BRG_PERMINTAAN,
             ID_FK_CABANG,
             ID_FK_WAREHOUSE,
@@ -132,6 +139,7 @@ class M_brg_pemenuhan extends CI_Model{
             NEW.ID_PK_BRG_PEMENUHAN,
             NEW.BRG_PEMENUHAN_QTY,
             NEW.BRG_PEMENUHAN_TIPE,
+            BRG_PEMENUHAN_STATUS,
             NEW.ID_FK_BRG_PERMINTAAN,
             NEW.ID_FK_CABANG,
             NEW.ID_FK_WAREHOUSE,
@@ -141,71 +149,53 @@ class M_brg_pemenuhan extends CI_Model{
             NEW.ID_LAST_MODIFIED
             ,@ID_LOG_ALL);
         END$$
-        DELIMITER ;"
+        DELIMITER ;";
         executeQuery($sql);
     }
     public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
-        //BELOM
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
             $search_query .= "AND
             (
-                id_pk_penerimaan LIKE '%".$search_key."%' OR
-                penerimaan_tgl LIKE '%".$search_key."%' OR
-                penerimaan_status LIKE '%".$search_key."%' OR
-                id_fk_pembelian LIKE '%".$search_key."%' OR
-                penerimaan_tempat LIKE '%".$search_key."%' OR
-                penerimaan_last_modified LIKE '%".$search_key."%'
+                id_pk_brg_permintaan LIKE '%".$search_key."%' OR
+                brg_permintaan_qty LIKE '%".$search_key."%' OR
+                brg_permintaan_notes LIKE '%".$search_key."%' OR
+                brg_permintaan_deadline LIKE '%".$search_key."%' OR
+                brg_permintaan_status LIKE '%".$search_key."%' OR
+                id_fk_brg LIKE '%".$search_key."%' OR
+                id_fk_cabang LIKE '%".$search_key."%' OR
+                brg_permintaan_create_date LIKE '%".$search_key."%' OR
+                brg_permintaan_last_modified LIKE '%".$search_key."%' OR
+                brg_nama LIKE '%".$search_key."%' OR
+                brg_image LIKE '%".$search_key."%'
             )";
         }
-        if($this->penerimaan_tempat == "CABANG"){
+        if($this->brg_pemenuhan_tipe == "CABANG"){
             $query = "
-            SELECT id_pk_penerimaan,penerimaan_tgl,penerimaan_status,id_fk_pembelian,penerimaan_tempat,".$this->tbl_name.".id_fk_warehouse,".$this->tbl_name.".id_fk_cabang,penerimaan_last_modified,pem_pk_nomor
-            FROM ".$this->tbl_name." 
-            INNER JOIN MSTR_PEMBELIAN ON MSTR_PEMBELIAN.ID_PK_PEMBELIAN = ".$this->tbl_name.".ID_FK_PEMBELIAN
-            INNER JOIN MSTR_SUPPLIER ON MSTR_SUPPLIER.ID_PK_SUP = MSTR_PEMBELIAN.ID_FK_SUPP
-            INNER JOIN MSTR_CABANG ON MSTR_CABANG.ID_PK_CABANG = ".$this->tbl_name.".ID_FK_CABANG
-            INNER JOIN MSTR_TOKO ON MSTR_TOKO.ID_PK_TOKO = MSTR_CABANG.ID_FK_TOKO
-            WHERE PENERIMAAN_STATUS = ? AND SUP_STATUS = ? AND CABANG_STATUS = ? AND TOKO_STATUS = ? AND ".$this->tbl_name.".ID_FK_CABANG = ? ".$search_query."  
+            SELECT id_pk_brg_permintaan, brg_permintaan_qty, brg_nama, brg_permintaan_notes, brg_permintaan_deadline, brg_permintaan_status,brg_image, tbl_brg_permintaan.id_fk_brg, tbl_brg_permintaan.id_fk_cabang, brg_permintaan_create_date, brg_permintaan_last_modified, sum(tbl_brg_pemenuhan.BRG_PEMENUHAN_QTY) as qty_pemenuhan, cabang_daerah FROM tbl_brg_permintaan JOIN mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg JOIN mstr_cabang on mstr_cabang.id_pk_cabang =tbl_brg_permintaan.id_fk_cabang left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan WHERE tbl_brg_permintaan.brg_permintaan_status!= ? AND tbl_brg_permintaan.ID_FK_CABANG != ? group by id_pk_brg_permintaan".$search_query."  
             ORDER BY ".$order_by." ".$order_direction." 
             LIMIT 20 OFFSET ".($page-1)*$data_per_page;
             $args = array(
-                "AKTIF","AKTIF","AKTIF","AKTIF",$this->id_fk_cabang
+                "BATAL",$this->session->id_cabang
             );
             $result["data"] = executeQuery($query,$args);
             $query = "
-            SELECT id_pk_penerimaan
-            FROM ".$this->tbl_name." 
-            INNER JOIN MSTR_PEMBELIAN ON MSTR_PEMBELIAN.ID_PK_PEMBELIAN = ".$this->tbl_name.".ID_FK_PEMBELIAN
-            INNER JOIN MSTR_SUPPLIER ON MSTR_SUPPLIER.ID_PK_SUP = MSTR_PEMBELIAN.ID_FK_SUPP
-            INNER JOIN MSTR_CABANG ON MSTR_CABANG.ID_PK_CABANG = ".$this->tbl_name.".ID_FK_CABANG
-            INNER JOIN MSTR_TOKO ON MSTR_TOKO.ID_PK_TOKO = MSTR_CABANG.ID_FK_TOKO
-            WHERE PENERIMAAN_STATUS = ? AND SUP_STATUS = ? AND CABANG_STATUS = ? AND TOKO_STATUS = ? AND ".$this->tbl_name.".ID_FK_CABANG = ? ".$search_query."  
+            SELECT id_pk_brg_permintaan, brg_permintaan_qty, brg_nama, brg_permintaan_notes, brg_permintaan_deadline, brg_permintaan_status, brg_image, tbl_brg_permintaan.id_fk_brg, tbl_brg_permintaan.id_fk_cabang, brg_permintaan_create_date, brg_permintaan_last_modified, sum(tbl_brg_pemenuhan.BRG_PEMENUHAN_QTY) as qty_pemenuhan, cabang_daerah FROM tbl_brg_permintaan JOIN mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg JOIN mstr_cabang on mstr_cabang.id_pk_cabang =tbl_brg_permintaan.id_fk_cabang left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan WHERE tbl_brg_permintaan.brg_permintaan_status!= ? AND tbl_brg_permintaan.ID_FK_CABANG != ? group by id_pk_brg_permintaan ".$search_query."  
             ORDER BY ".$order_by." ".$order_direction;
             $result["total_data"] = executeQuery($query,$args)->num_rows();
         }
         else{
             $query = "
-            SELECT id_pk_penerimaan,penerimaan_tgl,penerimaan_status,id_fk_pembelian,penerimaan_tempat,".$this->tbl_name.".id_fk_warehouse,".$this->tbl_name.".id_fk_cabang,penerimaan_last_modified,pem_pk_nomor
-            FROM ".$this->tbl_name." 
-            INNER JOIN MSTR_PEMBELIAN ON MSTR_PEMBELIAN.ID_PK_PEMBELIAN = ".$this->tbl_name.".ID_FK_PEMBELIAN
-            INNER JOIN MSTR_SUPPLIER ON MSTR_SUPPLIER.ID_PK_SUP = MSTR_PEMBELIAN.ID_FK_SUPP
-            INNER JOIN MSTR_WAREHOUSE ON MSTR_WAREHOUSE.ID_PK_WAREHOUSE = ".$this->tbl_name.".ID_FK_WAREHOUSE
-            WHERE PENERIMAAN_STATUS = ? AND SUP_STATUS = ? AND ".$this->tbl_name.".ID_FK_WAREHOUSE = ? ".$search_query." 
+            SELECT id_pk_brg_permintaan, brg_permintaan_qty, brg_nama, brg_permintaan_notes, brg_permintaan_deadline, brg_permintaan_status,brg_image, tbl_brg_permintaan.id_fk_brg, tbl_brg_permintaan.id_fk_cabang, brg_permintaan_create_date, brg_permintaan_last_modified, sum(tbl_brg_pemenuhan.BRG_PEMENUHAN_QTY) as qty_pemenuhan, cabang_daerah FROM tbl_brg_permintaan JOIN mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg JOIN mstr_cabang on mstr_cabang.id_pk_cabang =tbl_brg_permintaan.id_fk_cabang left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan WHERE tbl_brg_permintaan.brg_permintaan_status!= ? group by id_pk_brg_permintaan ".$search_query." 
             ORDER BY ".$order_by." ".$order_direction." 
             LIMIT 20 OFFSET ".($page-1)*$data_per_page;
             $args = array(
-                "AKTIF","AKTIF",$this->id_fk_warehouse
+                "BATAL"
             );
             $result["data"] = executeQuery($query,$args);
             $query = "
-            SELECT id_pk_pembelian
-            FROM ".$this->tbl_name." 
-            INNER JOIN MSTR_PEMBELIAN ON MSTR_PEMBELIAN.ID_PK_PEMBELIAN = ".$this->tbl_name.".ID_FK_PEMBELIAN
-            INNER JOIN MSTR_SUPPLIER ON MSTR_SUPPLIER.ID_PK_SUP = MSTR_PEMBELIAN.ID_FK_SUPP
-            INNER JOIN MSTR_WAREHOUSE ON MSTR_WAREHOUSE.ID_PK_WAREHOUSE = ".$this->tbl_name.".ID_FK_WAREHOUSE
-            WHERE PENERIMAAN_STATUS = ? AND SUP_STATUS = ? AND ".$this->tbl_name.".ID_FK_WAREHOUSE = ? ".$search_query." 
+            SELECT id_pk_brg_permintaan, brg_permintaan_qty,brg_image, brg_nama, brg_permintaan_notes, brg_permintaan_deadline, brg_permintaan_status, tbl_brg_permintaan.id_fk_brg, tbl_brg_permintaan.id_fk_cabang, brg_permintaan_create_date, brg_permintaan_last_modified, sum(tbl_brg_pemenuhan.BRG_PEMENUHAN_QTY) as qty_pemenuhan, cabang_daerah FROM tbl_brg_permintaan JOIN mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg JOIN mstr_cabang on mstr_cabang.id_pk_cabang =tbl_brg_permintaan.id_fk_cabang left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan WHERE tbl_brg_permintaan.brg_permintaan_status!= ? group by id_pk_brg_permintaan ".$search_query." 
             ORDER BY ".$order_by." ".$order_direction;
             $result["total_data"] = executeQuery($query,$args)->num_rows();
         }
@@ -220,7 +210,7 @@ class M_brg_pemenuhan extends CI_Model{
                 "brg_pemenuhan_tipe" => $this->brg_pemenuhan_tipe,
                 "brg_pemenuhan_create_date" => $this->brg_pemenuhan_create_date,
                 "brg_pemenuhan_last_modified" => $this->brg_pemenuhan_last_modified,
-                "id_create_data" => $this->id_create_data
+                "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
             if(strtoupper($this->brg_pemenuhan_tipe) == "WAREHOUSE"){
@@ -390,6 +380,23 @@ class M_brg_pemenuhan extends CI_Model{
         }
         return false;
     }
+
+    public function set_id_fk_cabang($id_fk_cabang){
+        if($id_fk_cabang != ""){
+            $this->id_fk_cabang = $id_fk_cabang;
+            return true;
+        }
+        return false;
+    }
+
+    public function set_id_fk_warehouse($id_fk_warehouse){
+        if($id_fk_warehouse != ""){
+            $this->id_fk_warehouse = $id_fk_warehouse;
+            return true;
+        }
+        return false;
+    }
+    
     
     public function get_brg_pemenuhan_qty(){
         return $this->brg_pemenuhan_qty;

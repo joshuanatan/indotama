@@ -1,10 +1,7 @@
 <?php
-$page_title = "Permintaan Barang";
+$page_title = "Pemenuhan";
 $breadcrumb = array(
-    "Permintaan Barang"
-);
-$notif_data = array(
-    "page_title"=>$page_title
+    "Pemenuhan"
 );
 ?>
 <!DOCTYPE html>
@@ -23,9 +20,6 @@ $notif_data = array(
             <?php $this->load->view('req/mm_menubar.php');?>
 
             <div class="page-wrapper">
-            <?php $this->load->view('_notification/register_success',$notif_data); ?>
-            <?php $this->load->view('_notification/update_success',$notif_data); ?>
-            <?php $this->load->view('_notification/delete_success',$notif_data); ?>
                 <div class="container-fluid">
                     <div class="row mt-20">
                         <div class="col-lg-12 col-sm-12">
@@ -49,9 +43,9 @@ $notif_data = array(
                                 <div class="panel-wrapper collapse in">
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
-                                            <div class = "d-block">
+                                            <!--<div class = "d-block">
                                                 <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#register_modal" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
-                                            </div>
+                                            </div>-->
                                             <br/>
                                             <br/>
                                             <div class = "align-middle text-center d-block">
@@ -89,21 +83,19 @@ $notif_data = array(
     </body>
 </html>
 <script>
-    var ctrl = "permintaan";
-    var url_add = "";
+    var ctrl = "pemenuhan";
+    var url_add = "type=<?php echo $type;?>";
     var unautorized_button = ["delete_button"];
 </script>
 <?php
 $data = array(
-    "page_title" => "Permintaan"
+    "page_title" => "Pemenuhan"
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
 <?php $this->load->view("_core_script/register_func");?>
 <?php $this->load->view("_core_script/update_func");?>
 <?php $this->load->view("_core_script/delete_func");?>
-<?php $this->load->view("brg_permintaan/f-add-brg-permintaan",$data);?>
-<?php $this->load->view("brg_permintaan/f-update-brg-permintaan",$data);?>
-<?php $this->load->view("brg_permintaan/f-delete-brg-permintaan",$data);?>
-
-<?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("penerimaan/f-add-penerimaan",$data);?>
+<?php $this->load->view("penerimaan/f-update-penerimaan",$data);?>
+<?php $this->load->view("penerimaan/f-delete-penerimaan",$data);?>
