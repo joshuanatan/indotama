@@ -117,7 +117,7 @@ class m_penerimaan extends ci_model{
                 penerimaan_last_modified like '%".$search_key."%'
             )";
         }
-        if($this->penerimaan_tempat == "cabang"){
+        if(strtolower($this->penerimaan_tempat) == "cabang"){
             $query = "
             select id_pk_penerimaan,penerimaan_tgl,penerimaan_status,id_fk_pembelian,penerimaan_tempat,".$this->tbl_name.".id_fk_warehouse,".$this->tbl_name.".id_fk_cabang,penerimaan_last_modified,pem_pk_nomor
             from ".$this->tbl_name." 
@@ -167,7 +167,6 @@ class m_penerimaan extends ci_model{
             order by ".$order_by." ".$order_direction;
             $result["total_data"] = executequery($query,$args)->num_rows();
         }
-        
         return $result;
     }
     public function insert(){
@@ -182,10 +181,10 @@ class m_penerimaan extends ci_model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            if(strtoupper($this->penerimaan_tempat) == "warehouse"){
+            if(strtolower($this->penerimaan_tempat) == "warehouse"){
                 $data["id_fk_warehouse"] = $this->id_fk_warehouse;
             }
-            else if(strtoupper($this->penerimaan_tempat) == "cabang"){
+            else if(strtolower($this->penerimaan_tempat) == "cabang"){
                 $data["id_fk_cabang"] = $this->id_fk_cabang;
             }
             return insertrow($this->tbl_name,$data);
@@ -232,16 +231,16 @@ class m_penerimaan extends ci_model{
         if($this->id_fk_pembelian == ""){
             return false;
         }
-        if($this->penerimaan_tempat == ""){
+        if(strtolower($this->penerimaan_tempat) == ""){
             return false;
         }
         
-        if(strtoupper($this->penerimaan_tempat) == "warehouse"){
+        if(strtolower($this->penerimaan_tempat) == "warehouse"){
             if($this->id_fk_warehouse == ""){
                 return false;
             }
         }
-        else if(strtoupper($this->penerimaan_tempat) == "cabang"){
+        else if(strtolower($this->penerimaan_tempat) == "cabang"){
             if($this->id_fk_cabang == ""){
                 return false;
             }
@@ -300,12 +299,12 @@ class m_penerimaan extends ci_model{
         if(!$this->set_penerimaan_tempat($penerimaan_tempat)){
             return false;
         }
-        if(strtoupper($penerimaan_tempat) == "warehouse"){
+        if(strtolower($penerimaan_tempat) == "warehouse"){
             if(!$this->set_id_fk_warehouse($id_tempat_penerimaan)){
                 return false;
             }
         }
-        else if(strtoupper($penerimaan_tempat) == "cabang"){
+        else if(strtolower($penerimaan_tempat) == "cabang"){
             if(!$this->set_id_fk_cabang($id_tempat_penerimaan)){
                 return false;
             }
