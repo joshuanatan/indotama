@@ -44,8 +44,9 @@
                                 for(var add = 0; add<additional_button.length; add++){
                                     var props = "";
                                     for (var key in additional_button[add]) {
-                                        if (additional_button[add].hasOwnProperty(key)) {       
-                                            props += " "+key+"='"+additional_button[add][key]+"'";
+                                        if (additional_button[add].hasOwnProperty(key)) {   
+                                            key_final = key.replace("_","-");
+                                            props += " "+key_final+"='"+additional_button[add][key]+"'";
                                         }
                                     }
                                     addtnl += "  <i "+props+"></i>";
