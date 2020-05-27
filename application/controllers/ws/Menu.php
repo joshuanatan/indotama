@@ -25,6 +25,7 @@ class Menu extends CI_Controller{
 		$this->m_warehouse_admin->set_id_fk_user($this->session->id_user);
 		$result = $this->m_warehouse_admin->list_gudang_admin();
 		if($result["data"]->num_rows() > 0){
+            $this->session->access_gudang = true;
 			if($result["data"]->num_rows() > 1){
 				$this->session->multiple_warehouse_access = true;
 			}
@@ -39,6 +40,7 @@ class Menu extends CI_Controller{
 		$this->m_toko_admin->set_id_fk_user($this->session->id_user);
 		$result = $this->m_toko_admin->list_toko_admin();
 		if($result["data"]->num_rows() > 0){
+            $this->session->access_toko = true;
 			if($result["data"]->num_rows() > 1){
 				$this->session->multiple_toko_access = true;
 			}
@@ -53,6 +55,7 @@ class Menu extends CI_Controller{
 		$this->m_cabang_admin->set_id_fk_user($this->session->id_user);
 		$result = $this->m_cabang_admin->list_cabang_admin();
 		if($result["data"]->num_rows() > 0){
+            $this->session->access_cabang = true;
 			if($result["data"]->num_rows() > 1){
 				$this->session->multiple_cabang_access = true;
 			}
