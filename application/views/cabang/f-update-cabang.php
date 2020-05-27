@@ -35,9 +35,10 @@
 </div>
 <script>
     function load_edit_content(id){
+        console.log(content[id]["daerah"]);
         $("#id_edit").val(content[id]["id"]);
-        $("#daerah_delete").html(content[id]["daerah"]);
-        $("#alamat_delete").html(content[id]["alamat"]);
-        $("#notelp_delete").html(content[id]["notelp"]);
+        $("#daerah_edit").val(content[id]["daerah"]);
+        $("#alamat_edit").val(content[id]["alamat"]);
+        $("#notelp_edit").val(content[id]["notelp"]);
     }
 </script>
