@@ -2384,12 +2384,12 @@ button.fc-agendaWeek-button, .fc-prev-button, .fc-next-button, .fc-today-button 
     .fixed-sidebar-left .side-nav > li a.active-page {
       background: rgba(33, 33, 33, 0.05); }
     .fixed-sidebar-left .side-nav > li > ul > li a {
-      padding: 7px 15px 7px 51px;
+      padding: 7px 15px 7px 15px;
       display: block;
-      color: #959595; }
+      color: #fbfbfb; }
       .fixed-sidebar-left .side-nav > li > ul > li a:hover, .fixed-sidebar-left .side-nav > li > ul > li a:focus, .fixed-sidebar-left .side-nav > li > ul > li a:active {
         background: rgba(33, 33, 33, 0.05);
-        color: #959595; }
+        color: #e4e4e4; }
     .fixed-sidebar-left .side-nav > li > ul > li > ul > li a {
       padding-left: 62px;
       color: #959595; }
