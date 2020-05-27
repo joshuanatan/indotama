@@ -36,6 +36,7 @@ class Supplier extends CI_Controller{
             for($a = 0; $a<count($result["data"]); $a++){
                 $response["content"][$a]["id"] = $result["data"][$a]["id_pk_sup"];
                 $response["content"][$a]["nama"] = $result["data"][$a]["sup_nama"];
+                $response["content"][$a]["suff"] = $result["data"][$a]["sup_suff"];
                 $response["content"][$a]["perusahaan"] = $result["data"][$a]["sup_perusahaan"];
                 $response["content"][$a]["email"] = $result["data"][$a]["sup_email"];
                 $response["content"][$a]["telp"] = $result["data"][$a]["sup_telp"];
@@ -91,6 +92,7 @@ class Supplier extends CI_Controller{
     public function register(){
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("nama","nama","required");
+        $this->form_validation->set_rules("suff","suff","required");
         $this->form_validation->set_rules("pic","pic","required");
         $this->form_validation->set_rules("email","email","required");
         $this->form_validation->set_rules("notelp","notelp","required");
@@ -100,6 +102,7 @@ class Supplier extends CI_Controller{
 
         if($this->form_validation->run()){
             $sup_perusahaan = $this->input->post("nama");
+            $sup_suff = $this->input->post("suff");
             $sup_nama = $this->input->post("pic");
             $sup_email = $this->input->post("email");
             $sup_telp = $this->input->post("notelp");
@@ -109,7 +112,7 @@ class Supplier extends CI_Controller{
             $sup_status = "AKTIF";
 
             $this->load->model("m_supplier");
-            if($this->m_supplier->set_insert($sup_nama,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan,$sup_status)){
+            if($this->m_supplier->set_insert($sup_nama,$sup_suff,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan,$sup_status)){
                 if($this->m_supplier->insert()){
                     $response["msg"] = "Data is recorded to database";
                 }
@@ -133,6 +136,7 @@ class Supplier extends CI_Controller{
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("id","id","required");
         $this->form_validation->set_rules("nama","nama","required");
+        $this->form_validation->set_rules("suff","suff","required");
         $this->form_validation->set_rules("pic","pic","required");
         $this->form_validation->set_rules("email","email","required");
         $this->form_validation->set_rules("notelp","notelp","required");
@@ -143,6 +147,7 @@ class Supplier extends CI_Controller{
         if($this->form_validation->run()){
             $id_pk_sup = $this->input->post("id");
             $sup_perusahaan = $this->input->post("nama");
+            $sup_suff = $this->input->post("suff");
             $sup_nama = $this->input->post("pic");
             $sup_email = $this->input->post("email");
             $sup_telp = $this->input->post("notelp");
@@ -151,7 +156,7 @@ class Supplier extends CI_Controller{
             $sup_keterangan = $this->input->post("keterangan");
 
             $this->load->model("m_supplier");
-            if($this->m_supplier->set_update($id_pk_sup,$sup_nama,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan)){
+            if($this->m_supplier->set_update($id_pk_sup,$sup_nama,$sup_suff,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan)){
                 if($this->m_supplier->update()){
                     $response["msg"] = "Data is updated to database";
                 }

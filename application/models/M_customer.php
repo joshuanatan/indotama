@@ -6,6 +6,8 @@ class m_customer extends ci_model{
     private $columns = array();
     private $id_pk_cust;
     private $cust_name;
+    private $cust_suff;
+    private $cust_sapaan;
     private $cust_perusahaan;
     private $cust_email;
     private $cust_telp;
@@ -51,6 +53,7 @@ class m_customer extends ci_model{
         create table mstr_customer(
             id_pk_cust int primary key auto_increment,
             cust_name varchar(100),
+            cust_suff varchar(10),
             cust_perusahaan varchar(100),
             cust_email varchar(100),
             cust_telp varchar(30),
@@ -70,6 +73,7 @@ class m_customer extends ci_model{
             executed_function varchar(30),
             id_pk_cust int,
             cust_name varchar(100),
+            cust_suff varchar(10),
             cust_perusahaan varchar(100),
             cust_email varchar(100),
             cust_telp varchar(30),
@@ -95,7 +99,7 @@ class m_customer extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.cust_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_customer_log(executed_function,id_pk_cust,cust_name,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,id_fk_toko,cust_status,cust_create_date,cust_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_cust,new.cust_name,new.cust_perusahaan,new.cust_email,new.cust_telp,new.cust_hp,new.cust_alamat,new.cust_keterangan,new.id_fk_toko,new.cust_status,new.cust_create_date,new.cust_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_customer_log(executed_function,id_pk_cust,cust_name,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,id_fk_toko,cust_status,cust_create_date,cust_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_cust,new.cust_name,new.cust_suff,new.cust_perusahaan,new.cust_email,new.cust_telp,new.cust_hp,new.cust_alamat,new.cust_keterangan,new.id_fk_toko,new.cust_status,new.cust_create_date,new.cust_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         
@@ -110,7 +114,7 @@ class m_customer extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at ' , new.cust_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_customer_log(executed_function,id_pk_cust,cust_name,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,id_fk_toko,cust_status,cust_create_date,cust_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_cust,new.cust_name,new.cust_perusahaan,new.cust_email,new.cust_telp,new.cust_hp,new.cust_alamat,new.cust_keterangan,new.id_fk_toko,new.cust_status,new.cust_create_date,new.cust_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_customer_log(executed_function,id_pk_cust,cust_name,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,id_fk_toko,cust_status,cust_create_date,cust_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_cust,new.cust_name,new.cust_suff,new.cust_perusahaan,new.cust_email,new.cust_telp,new.cust_hp,new.cust_alamat,new.cust_keterangan,new.id_fk_toko,new.cust_status,new.cust_create_date,new.cust_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;";
         executequery($sql);
@@ -134,7 +138,7 @@ class m_customer extends ci_model{
             )";
         }
         $query = "
-        select id_pk_cust,cust_name,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,cust_status,cust_last_modified
+        select id_pk_cust,cust_name,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,cust_status,cust_last_modified
         from ".$this->tbl_name." 
         where cust_status = ? ".$search_query."  
         order by ".$order_by." ".$order_direction." 
@@ -159,6 +163,7 @@ class m_customer extends ci_model{
         $field = array(
             "id_pk_cust",
             "cust_name",
+            "cust_suff",
             "cust_perusahaan",
             "cust_email",
             "cust_telp",
@@ -178,6 +183,7 @@ class m_customer extends ci_model{
         $field = array(
             "id_pk_cust",
             "cust_name",
+            "cust_suff",
             "cust_perusahaan",
             "cust_email",
             "cust_telp",
@@ -205,6 +211,7 @@ class m_customer extends ci_model{
         if($this->check_insert()){
             $data = array(
                 "cust_name" => $this->cust_name,
+                "cust_suff" => $this->cust_suff,
                 "cust_perusahaan" => $this->cust_perusahaan,
                 "cust_email" => $this->cust_email,
                 "cust_telp" => $this->cust_telp,
@@ -228,6 +235,7 @@ class m_customer extends ci_model{
             );
             $data = array(
                 "cust_name" => $this->cust_name,
+                "cust_suff" => $this->cust_suff,
                 "cust_perusahaan" => $this->cust_perusahaan,
                 "cust_email" => $this->cust_email,
                 "cust_telp" => $this->cust_telp,
@@ -259,6 +267,9 @@ class m_customer extends ci_model{
     }
     public function check_insert(){
         if($this->cust_name == ""){
+            return false;
+        }
+        if($this->cust_suff == ""){
             return false;
         }
         if($this->cust_perusahaan == ""){
@@ -303,6 +314,9 @@ class m_customer extends ci_model{
         if($this->cust_name == ""){
             return false;
         }
+        if($this->cust_suff == ""){
+            return false;
+        }
         if($this->cust_perusahaan == ""){
             return false;
         }
@@ -341,8 +355,11 @@ class m_customer extends ci_model{
         }
         return true;
     }
-    public function set_insert($cust_name,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_status){
+    public function set_insert($cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_status){
         if(!$this->set_cust_name($cust_name)){
+            return false;
+        }
+        if(!$this->set_cust_suff($cust_suff)){
             return false;
         }
         if(!$this->set_cust_perusahaan($cust_perusahaan)){
@@ -368,11 +385,14 @@ class m_customer extends ci_model{
         }
         return true;
     }
-    public function set_update($id_pk_cust,$cust_name,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan){
+    public function set_update($id_pk_cust,$cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan){
         if(!$this->set_id_pk_cust($id_pk_cust)){
             return false;
         }
         if(!$this->set_cust_name($cust_name)){
+            return false;
+        }
+        if(!$this->set_cust_suff($cust_suff)){
             return false;
         }
         if(!$this->set_cust_perusahaan($cust_perusahaan)){
@@ -411,6 +431,13 @@ class m_customer extends ci_model{
     public function set_cust_name($cust_name){
         if($cust_name != ""){
             $this->cust_name = $cust_name;
+            return true;
+        }
+        return false;
+    }
+    public function set_cust_suff($cust_suff){
+        if($cust_suff != ""){
+            $this->cust_suff = $cust_suff;
             return true;
         }
         return false;
@@ -476,6 +503,9 @@ class m_customer extends ci_model{
     }
     public function get_cust_name(){
         return $this->cust_name;
+    }
+    public function get_cust_suff(){
+        return $this->cust_suff;
     }
     public function get_cust_perusahaan(){
         return $this->cust_perusahaan;
