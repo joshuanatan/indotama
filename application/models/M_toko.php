@@ -1,8 +1,8 @@
 <?php
-defined("BASEPATH") or exit("No direct script");
-date_default_timezone_set("Asia/Jakarta");
-class M_toko extends CI_Model{
-    private $tbl_name = "MSTR_TOKO";
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_toko extends ci_model{
+    private $tbl_name = "mstr_toko";
     private $columns = array();
     private $id_pk_toko;
     private $toko_nama;
@@ -15,13 +15,13 @@ class M_toko extends CI_Model{
     
     public function __construct(){
         parent::__construct();
-        $this->set_column("toko_nama","Nama Toko",true);
-        $this->set_column("toko_kode","Kode Toko",false);
-        $this->set_column("toko_status","Status Toko",false);
-        $this->set_column("toko_last_modified","Last Modified",false);
+        $this->set_column("toko_nama","nama toko",true);
+        $this->set_column("toko_kode","kode toko",false);
+        $this->set_column("toko_status","status toko",false);
+        $this->set_column("toko_last_modified","last modified",false);
         
-        $this->toko_create_date = date("Y-m-d H:i:s");
-        $this->toko_last_modified = date("Y-m-d H:i:s");
+        $this->toko_create_date = date("y-m-d h:i:s");
+        $this->toko_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;  
     }
@@ -37,93 +37,93 @@ class M_toko extends CI_Model{
         return $this->columns;
     }
     public function install(){
-        $sql = "DROP TABLE IF EXISTS MSTR_TOKO;
-        CREATE TABLE MSTR_TOKO(
-            ID_PK_TOKO INT PRIMARY KEY AUTO_INCREMENT,
-            TOKO_NAMA VARCHAR(100),
-            TOKO_KODE VARCHAR(20),
-            TOKO_STATUS VARCHAR(15),
-            TOKO_CREATE_DATE DATETIME,
-            TOKO_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT
+        $sql = "drop table if exists mstr_toko;
+        create table mstr_toko(
+            id_pk_toko int primary key auto_increment,
+            toko_nama varchar(100),
+            toko_kode varchar(20),
+            toko_status varchar(15),
+            toko_create_date datetime,
+            toko_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
         );
-        DROP TABLE IF EXISTS MSTR_TOKO_LOG;
-        CREATE TABLE MSTR_TOKO_LOG(
-            ID_PK_TOKO_LOG INT PRIMARY KEY AUTO_INCREMENT,
-            EXECUTED_FUNCTION VARCHAR(30),
-            ID_PK_TOKO INT,
-            TOKO_NAMA VARCHAR(100),
-            TOKO_KODE VARCHAR(20),
-            TOKO_STATUS VARCHAR(15),
-            TOKO_CREATE_DATE DATETIME,
-            TOKO_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT,
-            ID_LOG_ALL INT
+        drop table if exists mstr_toko_log;
+        create table mstr_toko_log(
+            id_pk_toko_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_toko int,
+            toko_nama varchar(100),
+            toko_kode varchar(20),
+            toko_status varchar(15),
+            toko_create_date datetime,
+            toko_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_TOKO;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT_TOKO
-        AFTER INSERT ON MSTR_TOKO
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.TOKO_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT ' , NEW.TOKO_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_insert_toko;
+        delimiter $$
+        create trigger trg_after_insert_toko
+        after insert on mstr_toko
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.toko_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.toko_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_TOKO_LOG(EXECUTED_FUNCTION,ID_PK_TOKO,TOKO_NAMA,TOKO_KODE,TOKO_STATUS,TOKO_CREATE_DATE,TOKO_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_TOKO,NEW.TOKO_NAMA,NEW.TOKO_KODE,NEW.TOKO_STATUS,NEW.TOKO_CREATE_DATE,NEW.TOKO_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_toko_log(executed_function,id_pk_toko,toko_nama,toko_kode,toko_status,toko_create_date,toko_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_toko,new.toko_nama,new.toko_kode,new.toko_status,new.toko_create_date,new.toko_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
         
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_TOKO;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE_TOKO
-        AFTER UPDATE ON MSTR_TOKO
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.TOKO_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT ' , NEW.TOKO_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_update_toko;
+        delimiter $$
+        create trigger trg_after_update_toko
+        after update on mstr_toko
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.toko_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.toko_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_TOKO_LOG(EXECUTED_FUNCTION,ID_PK_TOKO,TOKO_NAMA,TOKO_KODE,TOKO_STATUS,TOKO_CREATE_DATE,TOKO_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_TOKO,NEW.TOKO_NAMA,NEW.TOKO_KODE,NEW.TOKO_STATUS,NEW.TOKO_CREATE_DATE,NEW.TOKO_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;";
-        executeQuery($sql);
+            insert into mstr_toko_log(executed_function,id_pk_toko,toko_nama,toko_kode,toko_status,toko_create_date,toko_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_toko,new.toko_nama,new.toko_kode,new.toko_status,new.toko_create_date,new.toko_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;";
+        executequery($sql);
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
-            $search_query .= "AND
+            $search_query .= "and
             ( 
-                id_pk_toko LIKE '%".$search_key."%' OR
-                toko_nama LIKE '%".$search_key."%' OR
-                toko_kode LIKE '%".$search_key."%' OR
-                toko_status LIKE '%".$search_key."%' OR
-                toko_create_date LIKE '%".$search_key."%' OR
-                toko_last_modified LIKE '%".$search_key."%'
+                id_pk_toko like '%".$search_key."%' or
+                toko_nama like '%".$search_key."%' or
+                toko_kode like '%".$search_key."%' or
+                toko_status like '%".$search_key."%' or
+                toko_create_date like '%".$search_key."%' or
+                toko_last_modified like '%".$search_key."%'
             )";
         }
         $query = "
-        SELECT id_pk_toko,toko_nama,toko_kode,toko_status,toko_create_date,toko_last_modified
-        FROM ".$this->tbl_name." 
-        WHERE toko_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction." 
-        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        select id_pk_toko,toko_nama,toko_kode,toko_status,toko_create_date,toko_last_modified
+        from ".$this->tbl_name." 
+        where toko_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction." 
+        limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "AKTIF"
+            "aktif"
         );
-        $result["data"] = executeQuery($query,$args);
+        $result["data"] = executequery($query,$args);
         
         $query = "
-        SELECT id_pk_toko
-        FROM ".$this->tbl_name." 
-        WHERE toko_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction;
-        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        select id_pk_toko
+        from ".$this->tbl_name." 
+        where toko_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction;
+        $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
     public function detail_by_id(){
@@ -133,7 +133,7 @@ class M_toko extends CI_Model{
         $field = array(
             "id_pk_toko","toko_nama","toko_kode","toko_status","toko_create_date","toko_last_modified","id_create_data","id_last_modified",
         );
-        return selectRow($this->tbl_name,$where,$field);
+        return selectrow($this->tbl_name,$where,$field);
     }
     public function insert(){
         if($this->check_insert()){
@@ -146,7 +146,7 @@ class M_toko extends CI_Model{
                 "id_create_data" => $this->id_create_data, 
                 "id_last_modified" => $this->id_last_modified, 
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         return false;
     }
@@ -161,7 +161,7 @@ class M_toko extends CI_Model{
                 "toko_last_modified" => $this->toko_last_modified, 
                 "id_last_modified" => $this->id_last_modified, 
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;
@@ -172,11 +172,11 @@ class M_toko extends CI_Model{
                 "id_pk_toko" => $this->id_pk_toko
             );
             $data = array(
-                "toko_status" => "NONAKTIF", 
+                "toko_status" => "nonaktif", 
                 "toko_last_modified" => $this->toko_last_modified, 
                 "id_last_modified" => $this->id_last_modified, 
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;

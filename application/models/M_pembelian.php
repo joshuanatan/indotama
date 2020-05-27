@@ -1,8 +1,8 @@
 <?php
-defined("BASEPATH") or exit("No Direct Script");
-date_default_timezone_set("Asia/Jakarta");
-class M_pembelian extends CI_Model{
-    private $tbl_name = "MSTR_PEMBELIAN";
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_pembelian extends ci_model{
+    private $tbl_name = "mstr_pembelian";
     private $columns = array();
     private $id_pk_pembelian;
     private $pem_pk_nomor;
@@ -17,13 +17,13 @@ class M_pembelian extends CI_Model{
 
     public function __construct(){
         parent::__construct();
-        $this->set_column("pem_pk_nomor","Nomor Pembelian",true);
-        $this->set_column("pem_tgl","Tanggal Pembelian",false);
-        $this->set_column("pem_status","Status",false);
-        $this->set_column("sup_perusahaan","Supplier",false);
-        $this->set_column("pem_last_modified","Last Modified",false);
-        $this->pem_create_date = date("Y-m-d H:i:s");
-        $this->pem_last_modified = date("Y-m-d H:i:s");
+        $this->set_column("pem_pk_nomor","nomor pembelian",true);
+        $this->set_column("pem_tgl","tanggal pembelian",false);
+        $this->set_column("pem_status","status",false);
+        $this->set_column("sup_perusahaan","supplier",false);
+        $this->set_column("pem_last_modified","last modified",false);
+        $this->pem_create_date = date("y-m-d h:i:s");
+        $this->pem_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
@@ -37,102 +37,102 @@ class M_pembelian extends CI_Model{
     }
     public function install(){
         $sql = "
-        DROP TABLE MSTR_PEMBELIAN;
-        CREATE TABLE MSTR_PEMBELIAN(
-            ID_PK_PEMBELIAN INT PRIMARY KEY AUTO_INCREMENT,
-            PEM_PK_NOMOR VARCHAR(30),
-            PEM_TGL DATE,
-            PEM_STATUS VARCHAR(15),
-            ID_FK_SUPP INT,
-            ID_FK_CABANG INT,
-            PEM_CREATE_DATE DATETIME,
-            PEM_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT
+        drop table mstr_pembelian;
+        create table mstr_pembelian(
+            id_pk_pembelian int primary key auto_increment,
+            pem_pk_nomor varchar(30),
+            pem_tgl date,
+            pem_status varchar(15),
+            id_fk_supp int,
+            id_fk_cabang int,
+            pem_create_date datetime,
+            pem_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
         );
-        DROP TABLE MSTR_PEMBELIAN_LOG;
-        CREATE TABLE MSTR_PEMBELIAN_LOG(
-            ID_PK_PEMBELIAN_LOG INT PRIMARY KEY AUTO_INCREMENT,
-            EXECUTED_FUNCTION VARCHAR(30),
-            ID_PK_PEMBELIAN INT,
-            PEM_PK_NOMOR VARCHAR(30),
-            PEM_TGL DATE,
-            PEM_STATUS VARCHAR(15),
-            ID_FK_SUPP INT,
-            ID_FK_CABANG INT,
-            PEM_CREATE_DATE DATETIME,
-            PEM_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT,
-            ID_LOG_ALL INT
+        drop table mstr_pembelian_log;
+        create table mstr_pembelian_log(
+            id_pk_pembelian_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_pembelian int,
+            pem_pk_nomor varchar(30),
+            pem_tgl date,
+            pem_status varchar(15),
+            id_fk_supp int,
+            id_fk_cabang int,
+            pem_create_date datetime,
+            pem_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_PEMBELIAN;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT_PEMBELIAN
-        AFTER INSERT ON MSTR_PEMBELIAN
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.PEM_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.PEM_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_insert_pembelian;
+        delimiter $$
+        create trigger trg_after_insert_pembelian
+        after insert on mstr_pembelian
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.pem_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.pem_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_PEMBELIAN_LOG(EXECUTED_FUNCTION,ID_PK_PEMBELIAN,PEM_PK_NOMOR,PEM_TGL,PEM_STATUS,ID_FK_SUPP,ID_FK_CABANG,PEM_CREATE_DATE,PEM_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_PEMBELIAN,NEW.PEM_PK_NOMOR,NEW.PEM_TGL,NEW.PEM_STATUS,NEW.ID_FK_SUPP,NEW.ID_FK_CABANG,NEW.PEM_CREATE_DATE,NEW.PEM_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_pembelian_log(executed_function,id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,id_fk_supp,id_fk_cabang,pem_create_date,pem_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_pembelian,new.pem_pk_nomor,new.pem_tgl,new.pem_status,new.id_fk_supp,new.id_fk_cabang,new.pem_create_date,new.pem_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
         
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_PEMBELIAN;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE_PEMBELIAN
-        AFTER UPDATE ON MSTR_PEMBELIAN
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.PEM_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.PEM_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_update_pembelian;
+        delimiter $$
+        create trigger trg_after_update_pembelian
+        after update on mstr_pembelian
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.pem_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.pem_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_PEMBELIAN_LOG(EXECUTED_FUNCTION,ID_PK_PEMBELIAN,PEM_PK_NOMOR,PEM_TGL,PEM_STATUS,ID_FK_SUPP,ID_FK_CABANG,PEM_CREATE_DATE,PEM_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_PEMBELIAN,NEW.PEM_PK_NOMOR,NEW.PEM_TGL,NEW.PEM_STATUS,NEW.ID_FK_SUPP,NEW.ID_FK_CABANG,NEW.PEM_CREATE_DATE,NEW.PEM_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_pembelian_log(executed_function,id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,id_fk_supp,id_fk_cabang,pem_create_date,pem_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_pembelian,new.pem_pk_nomor,new.pem_tgl,new.pem_status,new.id_fk_supp,new.id_fk_cabang,new.pem_create_date,new.pem_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
         ";
-        executeQuery($sql);
+        executequery($sql);
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
-            $search_query .= "AND
+            $search_query .= "and
             ( 
-                pem_pk_nomor LIKE '%".$search_key."%' OR
-                pem_tgl LIKE '%".$search_key."%' OR
-                pem_status LIKE '%".$search_key."%' OR
-                id_fk_supp LIKE '%".$search_key."%' OR
-                pem_create_date LIKE '%".$search_key."%' OR
-                pem_last_modified LIKE '%".$search_key."%' OR
-                id_create_data LIKE '%".$search_key."%' OR
-                id_last_modified LIKE '%".$search_key."%'
+                pem_pk_nomor like '%".$search_key."%' or
+                pem_tgl like '%".$search_key."%' or
+                pem_status like '%".$search_key."%' or
+                id_fk_supp like '%".$search_key."%' or
+                pem_create_date like '%".$search_key."%' or
+                pem_last_modified like '%".$search_key."%' or
+                id_create_data like '%".$search_key."%' or
+                id_last_modified like '%".$search_key."%'
             )";
         }
         $query = "
-        SELECT id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified
-        FROM ".$this->tbl_name." 
-        INNER JOIN MSTR_SUPPLIER ON MSTR_SUPPLIER.ID_PK_SUP = ".$this->tbl_name.".ID_FK_SUPP
-        WHERE PEM_STATUS != ? AND SUP_STATUS = ? AND ID_FK_CABANG = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction." 
-        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        select id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified
+        from ".$this->tbl_name." 
+        inner join mstr_supplier on mstr_supplier.id_pk_sup = ".$this->tbl_name.".id_fk_supp
+        where pem_status != ? and sup_status = ? and id_fk_cabang = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction." 
+        limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "NONAKTIF","AKTIF",$this->id_fk_cabang
+            "nonaktif","aktif",$this->id_fk_cabang
         );
-        $result["data"] = executeQuery($query,$args);
+        $result["data"] = executequery($query,$args);
         
         $query = "
-        SELECT id_pk_pembelian
-        FROM ".$this->tbl_name." 
-        INNER JOIN MSTR_SUPPLIER ON MSTR_SUPPLIER.ID_PK_SUP = ".$this->tbl_name.".ID_FK_SUPP
-        WHERE PEM_STATUS != ? AND SUP_STATUS = ? AND ID_FK_CABANG = ? ".$search_query."
-        ORDER BY ".$order_by." ".$order_direction;
-        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        select id_pk_pembelian
+        from ".$this->tbl_name." 
+        inner join mstr_supplier on mstr_supplier.id_pk_sup = ".$this->tbl_name.".id_fk_supp
+        where pem_status != ? and sup_status = ? and id_fk_cabang = ? ".$search_query."
+        order by ".$order_by." ".$order_direction;
+        $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
     public function columns(){
@@ -140,34 +140,34 @@ class M_pembelian extends CI_Model{
     }
     public function list(){
         $query = "
-        SELECT id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified,toko_nama,cabang_daerah
-        FROM ".$this->tbl_name." 
-        INNER JOIN MSTR_SUPPLIER ON MSTR_SUPPLIER.ID_PK_SUP = ".$this->tbl_name.".ID_FK_SUPP
-        INNER JOIN MSTR_CABANG ON MSTR_CABANG.ID_PK_CABANG = ".$this->tbl_name.".ID_FK_CABANG
-        INNER JOIN MSTR_TOKO ON MSTR_TOKO.ID_PK_TOKO = MSTR_CABANG.ID_FK_TOKO
-        WHERE PEM_STATUS = ? AND SUP_STATUS = ? AND CABANG_STATUS = ? AND TOKO_STATUS = ?";
+        select id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified,toko_nama,cabang_daerah
+        from ".$this->tbl_name." 
+        inner join mstr_supplier on mstr_supplier.id_pk_sup = ".$this->tbl_name.".id_fk_supp
+        inner join mstr_cabang on mstr_cabang.id_pk_cabang = ".$this->tbl_name.".id_fk_cabang
+        inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+        where pem_status = ? and sup_status = ? and cabang_status = ? and toko_status = ?";
         $args = array(
-            "AKTIF","AKTIF","AKTIF","AKTIF"
+            "aktif","aktif","aktif","aktif"
         );
 
         if($this->id_fk_cabang != ""){
-            $query .= " AND ID_FK_CABANG = ?";
+            $query .= " and id_fk_cabang = ?";
             array_push($args,$this->id_fk_cabang);
         }
-        return executeQuery($query,$args);
+        return executequery($query,$args);
     }
     public function detail_by_no(){
         $sql = "
-        SELECT id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified,cabang_daerah,cabang_notelp,cabang_alamat,toko_nama
-        FROM ".$this->tbl_name." 
-        INNER JOIN MSTR_SUPPLIER ON MSTR_SUPPLIER.ID_PK_SUP = ".$this->tbl_name.".ID_FK_SUPP
-        INNER JOIN MSTR_CABANG ON MSTR_CABANG.ID_PK_CABANG = ".$this->tbl_name.".ID_FK_CABANG
-        INNER JOIN MSTR_TOKO ON MSTR_TOKO.ID_PK_TOKO = MSTR_CABANG.ID_FK_TOKO
-        WHERE PEM_STATUS = ? AND SUP_STATUS = ? AND CABANG_STATUS = ? AND TOKO_STATUS = ? AND PEM_PK_NOMOR = ?";
+        select id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified,cabang_daerah,cabang_notelp,cabang_alamat,toko_nama
+        from ".$this->tbl_name." 
+        inner join mstr_supplier on mstr_supplier.id_pk_sup = ".$this->tbl_name.".id_fk_supp
+        inner join mstr_cabang on mstr_cabang.id_pk_cabang = ".$this->tbl_name.".id_fk_cabang
+        inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+        where pem_status = ? and sup_status = ? and cabang_status = ? and toko_status = ? and pem_pk_nomor = ?";
         $args = array(
-            "AKTIF","AKTIF","AKTIF","AKTIF",$this->pem_pk_nomor
+            "aktif","aktif","aktif","aktif",$this->pem_pk_nomor
         );
-        return executeQuery($sql,$args);
+        return executequery($sql,$args);
     }
     public function insert(){
         if($this->check_insert()){
@@ -182,7 +182,7 @@ class M_pembelian extends CI_Model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         else{
             return false;
@@ -200,7 +200,7 @@ class M_pembelian extends CI_Model{
                 "pem_last_modified" => $this->pem_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         else{
@@ -213,11 +213,11 @@ class M_pembelian extends CI_Model{
                 "id_pk_pembelian" => $this->id_pk_pembelian,
             );
             $data = array(
-                "pem_status" => "NONAKTIF",
+                "pem_status" => "nonaktif",
                 "pem_last_modified" => $this->pem_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         else{

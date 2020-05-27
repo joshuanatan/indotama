@@ -1,9 +1,9 @@
 <?php
-defined("BASEPATH") or exit("No Direct Script");
-date_default_timezone_set("Asia/Jakarta");
-class M_employee extends CI_Model{
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_employee extends ci_model{
     private $columns = array();
-    private $tbl_name = "MSTR_EMPLOYEE";
+    private $tbl_name = "mstr_employee";
     private $id_pk_employee;
     private $emp_nama;
     private $emp_npwp;
@@ -30,105 +30,105 @@ class M_employee extends CI_Model{
     
     public function __construct(){
         parent::__construct();
-        $this->set_column("emp_foto","Foto","required");
-        $this->set_column("emp_nama","Nama","required");
-        $this->set_column("toko_nama","Toko","required");
-        $this->set_column("emp_hp","HP","required");
-        $this->set_column("emp_last_modified","Last Modified","required");
+        $this->set_column("emp_foto","foto","required");
+        $this->set_column("emp_nama","nama","required");
+        $this->set_column("toko_nama","toko","required");
+        $this->set_column("emp_hp","hp","required");
+        $this->set_column("emp_last_modified","last modified","required");
         
-        $this->emp_create_date = date("Y-m-d H:i:s");
-        $this->emp_last_modified = date("Y-m-d H:i:s");
+        $this->emp_create_date = date("y-m-d h:i:s");
+        $this->emp_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
     public function install(){
         $sql = "
-        DROP TABLE IF EXISTS MSTR_EMPLOYEE;
-        CREATE TABLE MSTR_EMPLOYEE(
-            ID_PK_EMPLOYEE INT PRIMARY KEY AUTO_INCREMENT,
-            EMP_NAMA VARCHAR(400),
-            EMP_NPWP VARCHAR(25),
-            EMP_KTP VARCHAR(20),
-            EMP_HP VARCHAR(15),
-            EMP_ALAMAT VARCHAR(300),
-            EMP_KODE_POS VARCHAR(10),
-            EMP_FOTO_NPWP VARCHAR(50),
-            EMP_FOTO_KTP VARCHAR(50),
-            EMP_FOTO_LAIN VARCHAR(50),
-            EMP_FOTO VARCHAR(50),
-            EMP_GAJI INT,
-            EMP_STARTDATE DATETIME,
-            EMP_ENDDATE DATETIME,
-            EMP_REK VARCHAR(30),
-            EMP_GENDER VARCHAR(6),
-            EMP_SUFF VARCHAR(10),
-            EMP_STATUS VARCHAR(15),
-            ID_FK_TOKO INT,
-            EMP_CREATE_DATE DATETIME,
-            EMP_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT
+        drop table if exists mstr_employee;
+        create table mstr_employee(
+            id_pk_employee int primary key auto_increment,
+            emp_nama varchar(400),
+            emp_npwp varchar(25),
+            emp_ktp varchar(20),
+            emp_hp varchar(15),
+            emp_alamat varchar(300),
+            emp_kode_pos varchar(10),
+            emp_foto_npwp varchar(50),
+            emp_foto_ktp varchar(50),
+            emp_foto_lain varchar(50),
+            emp_foto varchar(50),
+            emp_gaji int,
+            emp_startdate datetime,
+            emp_enddate datetime,
+            emp_rek varchar(30),
+            emp_gender varchar(6),
+            emp_suff varchar(10),
+            emp_status varchar(15),
+            id_fk_toko int,
+            emp_create_date datetime,
+            emp_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
         );
-        DROP TABLE IF EXISTS MSTR_EMPLOYEE_LOG;
-        CREATE TABLE MSTR_EMPLOYEE_LOG(
-            ID_PK_EMPLOYEE_LOG INT PRIMARY KEY AUTO_INCREMENT,
-            EXECUTED_FUNCTION VARCHAR(40),
-            ID_PK_EMPLOYEE INT,
-            EMP_NAMA VARCHAR(400),
-            EMP_NPWP VARCHAR(25),
-            EMP_KTP VARCHAR(20),
-            EMP_HP VARCHAR(15),
-            EMP_ALAMAT VARCHAR(300),
-            EMP_KODE_POS VARCHAR(10),
-            EMP_FOTO_NPWP VARCHAR(50),
-            EMP_FOTO_KTP VARCHAR(50),
-            EMP_FOTO_LAIN VARCHAR(50),
-            EMP_FOTO VARCHAR(50),
-            EMP_GAJI INT,
-            EMP_STARTDATE DATETIME,
-            EMP_ENDDATE DATETIME,
-            EMP_REK VARCHAR(30),
-            EMP_GENDER VARCHAR(6),
-            EMP_SUFF VARCHAR(10),
-            EMP_STATUS VARCHAR(15),
-            ID_FK_TOKO INT,
-            EMP_CREATE_DATE DATETIME,
-            EMP_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT,
-            ID_LOG_ALL INT
+        drop table if exists mstr_employee_log;
+        create table mstr_employee_log(
+            id_pk_employee_log int primary key auto_increment,
+            executed_function varchar(40),
+            id_pk_employee int,
+            emp_nama varchar(400),
+            emp_npwp varchar(25),
+            emp_ktp varchar(20),
+            emp_hp varchar(15),
+            emp_alamat varchar(300),
+            emp_kode_pos varchar(10),
+            emp_foto_npwp varchar(50),
+            emp_foto_ktp varchar(50),
+            emp_foto_lain varchar(50),
+            emp_foto varchar(50),
+            emp_gaji int,
+            emp_startdate datetime,
+            emp_enddate datetime,
+            emp_rek varchar(30),
+            emp_gender varchar(6),
+            emp_suff varchar(10),
+            emp_status varchar(15),
+            id_fk_toko int,
+            emp_create_date datetime,
+            emp_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_EMPLOYEE;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT_EMPLOYEE
-        AFTER INSERT ON MSTR_EMPLOYEE
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.EMP_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT ' , NEW.EMP_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_insert_employee;
+        delimiter $$
+        create trigger trg_after_insert_employee
+        after insert on mstr_employee
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.emp_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.emp_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_EMPLOYEE_LOG(EXECUTED_FUNCTION,ID_PK_EMPLOYEE,EMP_NAMA,EMP_NPWP,EMP_KTP,EMP_HP,EMP_ALAMAT,EMP_KODE_POS,EMP_FOTO_NPWP,EMP_FOTO_KTP,EMP_FOTO_LAIN,EMP_FOTO,EMP_GAJI,EMP_STARTDATE,EMP_ENDDATE,EMP_REK,EMP_GENDER,EMP_SUFF,EMP_STATUS,ID_FK_TOKO,EMP_CREATE_DATE,EMP_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_EMPLOYEE,NEW.EMP_NAMA,NEW.EMP_NPWP,NEW.EMP_KTP,NEW.EMP_HP,NEW.EMP_ALAMAT,NEW.EMP_KODE_POS,NEW.EMP_FOTO_NPWP,NEW.EMP_FOTO_KTP,NEW.EMP_FOTO_LAIN,NEW.EMP_FOTO,NEW.EMP_GAJI,NEW.EMP_STARTDATE,NEW.EMP_ENDDATE,NEW.EMP_REK,NEW.EMP_GENDER,NEW.EMP_SUFF,NEW.EMP_STATUS,NEW.ID_FK_TOKO,NEW.EMP_CREATE_DATE,NEW.EMP_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_employee_log(executed_function,id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,id_fk_toko,emp_create_date,emp_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_employee,new.emp_nama,new.emp_npwp,new.emp_ktp,new.emp_hp,new.emp_alamat,new.emp_kode_pos,new.emp_foto_npwp,new.emp_foto_ktp,new.emp_foto_lain,new.emp_foto,new.emp_gaji,new.emp_startdate,new.emp_enddate,new.emp_rek,new.emp_gender,new.emp_suff,new.emp_status,new.id_fk_toko,new.emp_create_date,new.emp_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
 
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_EMPLOYEE;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE_EMPLOYEE
-        AFTER UPDATE ON MSTR_EMPLOYEE
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.EMP_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT ' , NEW.EMP_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_update_employee;
+        delimiter $$
+        create trigger trg_after_update_employee
+        after update on mstr_employee
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.emp_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.emp_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_EMPLOYEE_LOG(EXECUTED_FUNCTION,ID_PK_EMPLOYEE,EMP_NAMA,EMP_NPWP,EMP_KTP,EMP_HP,EMP_ALAMAT,EMP_KODE_POS,EMP_FOTO_NPWP,EMP_FOTO_KTP,EMP_FOTO_LAIN,EMP_FOTO,EMP_GAJI,EMP_STARTDATE,EMP_ENDDATE,EMP_REK,EMP_GENDER,EMP_SUFF,EMP_STATUS,ID_FK_TOKO,EMP_CREATE_DATE,EMP_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_EMPLOYEE,NEW.EMP_NAMA,NEW.EMP_NPWP,NEW.EMP_KTP,NEW.EMP_HP,NEW.EMP_ALAMAT,NEW.EMP_KODE_POS,NEW.EMP_FOTO_NPWP,NEW.EMP_FOTO_KTP,NEW.EMP_FOTO_LAIN,NEW.EMP_FOTO,NEW.EMP_GAJI,NEW.EMP_STARTDATE,NEW.EMP_ENDDATE,NEW.EMP_REK,NEW.EMP_GENDER,NEW.EMP_SUFF,NEW.EMP_STATUS,NEW.ID_FK_TOKO,NEW.EMP_CREATE_DATE,NEW.EMP_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_employee_log(executed_function,id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,id_fk_toko,emp_create_date,emp_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_employee,new.emp_nama,new.emp_npwp,new.emp_ktp,new.emp_hp,new.emp_alamat,new.emp_kode_pos,new.emp_foto_npwp,new.emp_foto_ktp,new.emp_foto_lain,new.emp_foto,new.emp_gaji,new.emp_startdate,new.emp_enddate,new.emp_rek,new.emp_gender,new.emp_suff,new.emp_status,new.id_fk_toko,new.emp_create_date,new.emp_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
         ";
-        executeQuery($sql);
+        executequery($sql);
     }
     private function set_column($col_name,$col_disp,$order_by){
         $array = array(
@@ -141,51 +141,51 @@ class M_employee extends CI_Model{
     public function columns(){
         return $this->columns;
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
-            $search_query .= "AND
+            $search_query .= "and
             ( 
-                id_pk_employee LIKE '%".$search_key."%' OR 
-                emp_nama LIKE '%".$search_key."%' OR 
-                emp_npwp LIKE '%".$search_key."%' OR 
-                emp_ktp LIKE '%".$search_key."%' OR 
-                emp_hp LIKE '%".$search_key."%' OR
-                emp_alamat LIKE '%".$search_key."%' OR 
-                emp_kode_pos LIKE '%".$search_key."%' OR 
-                emp_foto_npwp LIKE '%".$search_key."%' OR 
-                emp_foto_ktp LIKE '%".$search_key."%' OR 
-                emp_foto_lain LIKE '%".$search_key."%' OR 
-                emp_foto LIKE '%".$search_key."%' OR 
-                emp_gaji LIKE '%".$search_key."%' OR 
-                emp_startdate LIKE '%".$search_key."%' OR 
-                emp_enddate LIKE '%".$search_key."%' OR 
-                emp_rek LIKE '%".$search_key."%' OR 
-                emp_gender LIKE '%".$search_key."%' OR 
-                emp_suff LIKE '%".$search_key."%' OR 
-                emp_status LIKE '%".$search_key."%' OR
-                toko_nama LIKE '%".$search_key."%'    
-                emp_last_modified LIKE '%".$search_key."%'    
+                id_pk_employee like '%".$search_key."%' or 
+                emp_nama like '%".$search_key."%' or 
+                emp_npwp like '%".$search_key."%' or 
+                emp_ktp like '%".$search_key."%' or 
+                emp_hp like '%".$search_key."%' or
+                emp_alamat like '%".$search_key."%' or 
+                emp_kode_pos like '%".$search_key."%' or 
+                emp_foto_npwp like '%".$search_key."%' or 
+                emp_foto_ktp like '%".$search_key."%' or 
+                emp_foto_lain like '%".$search_key."%' or 
+                emp_foto like '%".$search_key."%' or 
+                emp_gaji like '%".$search_key."%' or 
+                emp_startdate like '%".$search_key."%' or 
+                emp_enddate like '%".$search_key."%' or 
+                emp_rek like '%".$search_key."%' or 
+                emp_gender like '%".$search_key."%' or 
+                emp_suff like '%".$search_key."%' or 
+                emp_status like '%".$search_key."%' or
+                toko_nama like '%".$search_key."%'    
+                emp_last_modified like '%".$search_key."%'    
             )";
         }
         $query = "
-        SELECT id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,emp_create_date,emp_last_modified,mstr_toko.toko_nama, mstr_employee.id_fk_toko
-        FROM ".$this->tbl_name." join mstr_toko on mstr_toko.id_pk_toko = mstr_employee.id_fk_toko 
-        WHERE emp_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction." 
-        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        select id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,emp_create_date,emp_last_modified,mstr_toko.toko_nama, mstr_employee.id_fk_toko
+        from ".$this->tbl_name." join mstr_toko on mstr_toko.id_pk_toko = mstr_employee.id_fk_toko 
+        where emp_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction." 
+        limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "AKTIF"
+            "aktif"
         );
-        $result["data"] = executeQuery($query,$args);
+        $result["data"] = executequery($query,$args);
         
         $query = "
-        SELECT id_pk_employee
-        FROM ".$this->tbl_name." 
-        WHERE emp_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction;
-        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        select id_pk_employee
+        from ".$this->tbl_name." 
+        where emp_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction;
+        $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
     public function insert(){
@@ -214,7 +214,7 @@ class M_employee extends CI_Model{
                 "id_last_modified" => $this->id_last_modified,
                 "id_fk_toko" => $this->id_fk_toko,
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         else{
             return false;
@@ -245,7 +245,7 @@ class M_employee extends CI_Model{
                 "emp_last_modified" => $this->emp_last_modified,
                 "id_last_modified" => $this->id_last_modified,
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         else{
@@ -258,11 +258,11 @@ class M_employee extends CI_Model{
                 "id_pk_employee" => $this->id_pk_employee
             );
             $data = array(
-                "emp_status" => "NONAKTIF",
+                "emp_status" => "nonaktif",
                 "emp_last_modified" => $this->emp_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         else{

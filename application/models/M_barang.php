@@ -1,8 +1,8 @@
 <?php
-defined("BASEPATH") or exit("No direct script");
-date_default_timezone_set("Asia/Jakarta");
-class M_barang extends CI_Model{
-    private $tbl_name = "MSTR_BARANG";
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_barang extends ci_model{
+    private $tbl_name = "mstr_barang";
     private $columns = array();
     private $id_pk_brg;
     private $brg_kode;
@@ -21,18 +21,18 @@ class M_barang extends CI_Model{
 
     public function __construct(){
         parent::__construct();
-        $this->set_column("brg_kode","Kode",true);
-        $this->set_column("brg_jenis_nama","Jenis",false);
-        $this->set_column("brg_nama","Nama",false);
-        $this->set_column("brg_ket","Keterangan",false);
-        $this->set_column("brg_merk_nama","Merk",false);
-        $this->set_column("brg_minimal","Minimal",false);
-        $this->set_column("brg_satuan","Satuan",false);
-        $this->set_column("brg_status","Status",false);
-        $this->set_column("brg_last_modified","Last Modified",false);
+        $this->set_column("brg_kode","kode",true);
+        $this->set_column("brg_jenis_nama","jenis",false);
+        $this->set_column("brg_nama","nama",false);
+        $this->set_column("brg_ket","keterangan",false);
+        $this->set_column("brg_merk_nama","merk",false);
+        $this->set_column("brg_minimal","minimal",false);
+        $this->set_column("brg_satuan","satuan",false);
+        $this->set_column("brg_status","status",false);
+        $this->set_column("brg_last_modified","last modified",false);
 
-        $this->brg_create_date = date("Y-m-d H:i:s");
-        $this->brg_last_modified = date("Y-m-d H:i:s");
+        $this->brg_create_date = date("y-m-d h:i:s");
+        $this->brg_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
@@ -49,133 +49,133 @@ class M_barang extends CI_Model{
     }
     public function install(){
         $sql = "
-        DROP TABLE IF EXISTS MSTR_BARANG;
-        CREATE TABLE MSTR_BARANG(
-            ID_PK_BRG INT PRIMARY KEY AUTO_INCREMENT,
-            BRG_KODE VARCHAR(50),
-            BRG_NAMA VARCHAR(100),
-            BRG_KET VARCHAR(200),
-            BRG_MINIMAL DOUBLE,
-            BRG_SATUAN VARCHAR(30),
-            BRG_IMAGE VARCHAR(100),
-            BRG_STATUS VARCHAR(15),
-            BRG_CREATE_DATE DATETIME,
-            BRG_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT,
-            ID_FK_BRG_JENIS INT,
-            ID_FK_BRG_MERK INT
+        drop table if exists mstr_barang;
+        create table mstr_barang(
+            id_pk_brg int primary key auto_increment,
+            brg_kode varchar(50),
+            brg_nama varchar(100),
+            brg_ket varchar(200),
+            brg_minimal double,
+            brg_satuan varchar(30),
+            brg_image varchar(100),
+            brg_status varchar(15),
+            brg_create_date datetime,
+            brg_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_fk_brg_jenis int,
+            id_fk_brg_merk int
         );
-        DROP TABLE IF EXISTS MSTR_BARANG_LOG;
-        CREATE TABLE MSTR_BARANG_LOG(
-            ID_PK_BRG_LOG INT PRIMARY KEY AUTO_INCREMENT,
-            EXECUTED_FUNCTION VARCHAR(20),
-            ID_PK_BRG INT,
-            BRG_KODE VARCHAR(50),
-            BRG_NAMA VARCHAR(100),
-            BRG_KET VARCHAR(200),
-            BRG_MINIMAL DOUBLE,
-            BRG_SATUAN VARCHAR(30),
-            BRG_IMAGE VARCHAR(100),
-            BRG_STATUS VARCHAR(15),
-            BRG_CREATE_DATE DATETIME,
-            BRG_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT,
-            ID_FK_BRG_JENIS INT,
-            ID_FK_BRG_MERK INT,
-            ID_LOG_ALL INT
+        drop table if exists mstr_barang_log;
+        create table mstr_barang_log(
+            id_pk_brg_log int primary key auto_increment,
+            executed_function varchar(20),
+            id_pk_brg int,
+            brg_kode varchar(50),
+            brg_nama varchar(100),
+            brg_ket varchar(200),
+            brg_minimal double,
+            brg_satuan varchar(30),
+            brg_image varchar(100),
+            brg_status varchar(15),
+            brg_create_date datetime,
+            brg_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_fk_brg_jenis int,
+            id_fk_brg_merk int,
+            id_log_all int
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_BARANG;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT_BARANG
-        AFTER INSERT ON MSTR_BARANG
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.BRG_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.BRG_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_insert_barang;
+        delimiter $$
+        create trigger trg_after_insert_barang
+        after insert on mstr_barang
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.brg_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_BARANG_LOG(EXECUTED_FUNCTION,
-            ID_PK_BRG,BRG_KODE,BRG_NAMA,BRG_KET,BRG_MINIMAL,BRG_SATUAN,BRG_IMAGE,BRG_STATUS,BRG_CREATE_DATE,BRG_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_FK_BRG_JENIS,ID_FK_BRG_MERK,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_BRG,NEW.BRG_KODE,NEW.BRG_NAMA,NEW.BRG_KET,NEW.BRG_MINIMAL,NEW.BRG_SATUAN,NEW.BRG_IMAGE,NEW.BRG_STATUS,NEW.BRG_CREATE_DATE,NEW.BRG_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,NEW.ID_FK_BRG_JENIS,NEW.ID_FK_BRG_MERK,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_barang_log(executed_function,
+            id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_satuan,brg_image,brg_status,brg_create_date,brg_last_modified,id_create_data,id_last_modified,id_fk_brg_jenis,id_fk_brg_merk,id_log_all) values ('after insert',new.id_pk_brg,new.brg_kode,new.brg_nama,new.brg_ket,new.brg_minimal,new.brg_satuan,new.brg_image,new.brg_status,new.brg_create_date,new.brg_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_brg_jenis,new.id_fk_brg_merk,@id_log_all);
+        end$$
+        delimiter ;
         
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_BARANG;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE_BARANG
-        AFTER UPDATE ON MSTR_BARANG
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.BRG_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.BRG_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_update_barang;
+        delimiter $$
+        create trigger trg_after_update_barang
+        after update on mstr_barang
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_BARANG_LOG(EXECUTED_FUNCTION,
-            ID_PK_BRG,BRG_KODE,BRG_NAMA,BRG_KET,BRG_MINIMAL,BRG_SATUAN,BRG_IMAGE,BRG_STATUS,BRG_CREATE_DATE,BRG_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_FK_BRG_JENIS,ID_FK_BRG_MERK,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_BRG,NEW.BRG_KODE,NEW.BRG_NAMA,NEW.BRG_KET,NEW.BRG_MINIMAL,NEW.BRG_SATUAN,NEW.BRG_IMAGE,NEW.BRG_STATUS,NEW.BRG_CREATE_DATE,NEW.BRG_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,NEW.ID_FK_BRG_JENIS,NEW.ID_FK_BRG_MERK,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_barang_log(executed_function,
+            id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_satuan,brg_image,brg_status,brg_create_date,brg_last_modified,id_create_data,id_last_modified,id_fk_brg_jenis,id_fk_brg_merk,id_log_all) values ('after update',new.id_pk_brg,new.brg_kode,new.brg_nama,new.brg_ket,new.brg_minimal,new.brg_satuan,new.brg_image,new.brg_status,new.brg_create_date,new.brg_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_brg_jenis,new.id_fk_brg_merk,@id_log_all);
+        end$$
+        delimiter ;
         ";
-        executeQuery($sql);
+        executequery($sql);
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
-            $search_query .= "AND
+            $search_query .= "and
             ( 
-                BRG_KODE LIKE '%".$search_key."%' OR
-                BRG_NAMA LIKE '%".$search_key."%' OR
-                BRG_KET LIKE '%".$search_key."%' OR
-                BRG_MINIMAL LIKE '%".$search_key."%' OR
-                BRG_STATUS LIKE '%".$search_key."%' OR
-                BRG_SATUAN LIKE '%".$search_key."%' OR
-                BRG_IMAGE LIKE '%".$search_key."%' OR
-                BRG_MERK_NAMA LIKE '%".$search_key."%' OR
-                BRG_JENIS_NAMA LIKE '%".$search_key."%' OR
-                BRG_LAST_MODIFIED LIKE '%".$search_key."%'
+                brg_kode like '%".$search_key."%' or
+                brg_nama like '%".$search_key."%' or
+                brg_ket like '%".$search_key."%' or
+                brg_minimal like '%".$search_key."%' or
+                brg_status like '%".$search_key."%' or
+                brg_satuan like '%".$search_key."%' or
+                brg_image like '%".$search_key."%' or
+                brg_merk_nama like '%".$search_key."%' or
+                brg_jenis_nama like '%".$search_key."%' or
+                brg_last_modified like '%".$search_key."%'
             )";
         }
         $query = "
-        SELECT id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_last_modified,brg_merk_nama,brg_jenis_nama,GROUP_CONCAT(tbl_barang_ukuran.UKURAN SEPARATOR ',') as ukuran
-        FROM ".$this->tbl_name." 
-        INNER JOIN MSTR_BARANG_JENIS ON MSTR_BARANG_JENIS.ID_PK_BRG_JENIS = ".$this->tbl_name.".ID_FK_BRG_JENIS
-        INNER JOIN MSTR_BARANG_MERK ON MSTR_BARANG_MERK.ID_PK_BRG_MERK = ".$this->tbl_name.".ID_FK_BRG_MERK
-        LEFT JOIN TBL_BARANG_UKURAN ON TBL_BARANG_UKURAN.ID_FK_BARANG = ".$this->tbl_name.".ID_PK_BRG
-        WHERE BRG_STATUS = ? AND BRG_JENIS_STATUS = ? AND BRG_MERK_STATUS = ?".$search_query."  
-        GROUP BY id_pk_brg 
-        ORDER BY ".$order_by." ".$order_direction." 
-        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_last_modified,brg_merk_nama,brg_jenis_nama,group_concat(tbl_barang_ukuran.ukuran separator ',') as ukuran
+        from ".$this->tbl_name." 
+        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
+        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
+        left join tbl_barang_ukuran on tbl_barang_ukuran.id_fk_barang = ".$this->tbl_name.".id_pk_brg
+        where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ?".$search_query."  
+        group by id_pk_brg 
+        order by ".$order_by." ".$order_direction." 
+        limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "AKTIF","AKTIF","AKTIF"
+            "aktif","aktif","aktif"
         );
-        $result["data"] = executeQuery($query,$args);
+        $result["data"] = executequery($query,$args);
         //echo $this->db->last_query();
         $query = "
-        SELECT id_pk_brg
-        FROM ".$this->tbl_name." 
-        INNER JOIN MSTR_BARANG_JENIS ON MSTR_BARANG_JENIS.ID_PK_BRG_JENIS = ".$this->tbl_name.".ID_FK_BRG_JENIS
-        INNER JOIN MSTR_BARANG_MERK ON MSTR_BARANG_MERK.ID_PK_BRG_MERK = ".$this->tbl_name.".ID_FK_BRG_MERK
-        WHERE BRG_STATUS = ? AND BRG_JENIS_STATUS = ? AND BRG_MERK_STATUS = ?".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction;
-        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        select id_pk_brg
+        from ".$this->tbl_name." 
+        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
+        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
+        where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ?".$search_query."  
+        order by ".$order_by." ".$order_direction;
+        $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
     public function list(){
-        $sql = "SELECT id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_last_modified,brg_merk_nama,brg_jenis_nama,GROUP_CONCAT(tbl_barang_ukuran.UKURAN SEPARATOR ',') as ukuran
-        FROM ".$this->tbl_name." 
-        INNER JOIN MSTR_BARANG_JENIS ON MSTR_BARANG_JENIS.ID_PK_BRG_JENIS = ".$this->tbl_name.".ID_FK_BRG_JENIS
-        INNER JOIN MSTR_BARANG_MERK ON MSTR_BARANG_MERK.ID_PK_BRG_MERK = ".$this->tbl_name.".ID_FK_BRG_MERK
-        LEFT JOIN TBL_BARANG_UKURAN ON TBL_BARANG_UKURAN.ID_FK_BARANG = ".$this->tbl_name.".ID_PK_BRG
-        WHERE BRG_STATUS = ? AND BRG_JENIS_STATUS = ? AND BRG_MERK_STATUS = ?  
-        GROUP BY ID_PK_BRG 
-        ORDER BY BRG_NAMA ASC"; 
+        $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_last_modified,brg_merk_nama,brg_jenis_nama,group_concat(tbl_barang_ukuran.ukuran separator ',') as ukuran
+        from ".$this->tbl_name." 
+        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
+        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
+        left join tbl_barang_ukuran on tbl_barang_ukuran.id_fk_barang = ".$this->tbl_name.".id_pk_brg
+        where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ?  
+        group by id_pk_brg 
+        order by brg_nama asc"; 
         $args = array(
-            "AKTIF","AKTIF","AKTIF"
+            "aktif","aktif","aktif"
         );
-        return executeQuery($sql,$args);
+        return executequery($sql,$args);
     }
     public function detail_by_name(){
         $where = array(
@@ -184,18 +184,18 @@ class M_barang extends CI_Model{
         $field = array(
             "id_pk_brg","brg_kode","brg_nama","brg_ket","brg_minimal","brg_status","brg_satuan","brg_image","brg_create_date","brg_last_modified","id_create_data","id_last_modified","id_fk_brg_jenis","id_fk_brg_merk"
         );
-        return selectRow($this->tbl_name,$where,$field);
+        return selectrow($this->tbl_name,$where,$field);
     }
     public function short_insert(){
         $data = array(
             "brg_nama" => $this->brg_nama,
-            "brg_status" => "AKTIF",
+            "brg_status" => "aktif",
             "brg_create_date" => $this->brg_create_date,
             "brg_last_modified" => $this->brg_last_modified,
             "id_create_data" => $this->id_create_data,
             "id_last_modified" => $this->id_last_modified
         );
-        return insertRow($this->tbl_name,$data);
+        return insertrow($this->tbl_name,$data);
     }
     public function insert(){
         if($this->check_insert()){
@@ -214,7 +214,7 @@ class M_barang extends CI_Model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         else{
             return false;
@@ -225,9 +225,9 @@ class M_barang extends CI_Model{
             $where = array(
                 "id_pk_brg !=" => $this->id_pk_brg,
                 "brg_kode" => $this->brg_kode,
-                "brg_status" => "AKTIF"
+                "brg_status" => "aktif"
             );
-            if(!isExistsInTable($this->tbl_name,$where)){
+            if(!isexistsintable($this->tbl_name,$where)){
                 $where = array(
                     "id_pk_brg" => $this->id_pk_brg
                 );
@@ -243,7 +243,7 @@ class M_barang extends CI_Model{
                     "brg_last_modified" => $this->brg_last_modified,
                     "id_last_modified" => $this->id_last_modified
                 );
-                updateRow($this->tbl_name,$data,$where);
+                updaterow($this->tbl_name,$data,$where);
                 return true;
             }
             else{
@@ -260,11 +260,11 @@ class M_barang extends CI_Model{
                 "id_pk_brg" => $this->id_pk_brg
             );
             $data = array(
-                "brg_status" => "NONAKTIF",
+                "brg_status" => "nonaktif",
                 "brg_last_modified" => $this->brg_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
     }

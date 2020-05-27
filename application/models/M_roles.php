@@ -1,8 +1,8 @@
 <?php
-defined("BASEPATH") or exit("No direct Script");
-date_default_timezone_set("Asia/Jakarta");
-class M_roles extends CI_Model{
-    private $tbl_name = "MSTR_JABATAN";
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_roles extends ci_model{
+    private $tbl_name = "mstr_jabatan";
     private $columns = array();
     private $id_pk_jabatan;
     private $jabatan_nama;
@@ -14,74 +14,74 @@ class M_roles extends CI_Model{
 
     public function __construct(){
         parent::__construct();
-        $this->set_column("jabatan_nama","Nama","required");
-        $this->set_column("jabatan_status","Status","required");
-        $this->set_column("jabatan_last_modified","Last Modified","required");
-        $this->jabatan_create_date = date("Y-m-d H:i:s");
-        $this->jabatan_last_modified = date("Y-m-d H:i:s");
+        $this->set_column("jabatan_nama","nama","required");
+        $this->set_column("jabatan_status","status","required");
+        $this->set_column("jabatan_last_modified","last modified","required");
+        $this->jabatan_create_date = date("y-m-d h:i:s");
+        $this->jabatan_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
     public function install(){
-        $sql = "DROP TABLE IF EXISTS MSTR_JABATAN;
-        CREATE TABLE MSTR_JABATAN(
-            ID_PK_JABATAN INT PRIMARY KEY AUTO_INCREMENT,
-            JABATAN_NAMA VARCHAR(100),
-            JABATAN_STATUS VARCHAR(15),
-            JABATAN_CREATE_DATE DATETIME,
-            JABATAN_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT
+        $sql = "drop table if exists mstr_jabatan;
+        create table mstr_jabatan(
+            id_pk_jabatan int primary key auto_increment,
+            jabatan_nama varchar(100),
+            jabatan_status varchar(15),
+            jabatan_create_date datetime,
+            jabatan_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
         );
-        DROP TABLE IF EXISTS MSTR_JABATAN_LOG;
-        CREATE TABLE MSTR_JABATAN_LOG(
-            ID_PK_JABATAN_LOG INT PRIMARY KEY AUTO_INCREMENT,
-            EXECUTED_FUNCTION VARCHAR(30),
-            ID_PK_JABATAN INT,
-            JABATAN_NAMA VARCHAR(100),
-            JABATAN_STATUS VARCHAR(15),
-            JABATAN_CREATE_DATE DATETIME,
-            JABATAN_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT,
-            ID_LOG_ALL INT
+        drop table if exists mstr_jabatan_log;
+        create table mstr_jabatan_log(
+            id_pk_jabatan_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_jabatan int,
+            jabatan_nama varchar(100),
+            jabatan_status varchar(15),
+            jabatan_create_date datetime,
+            jabatan_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_JABATAN;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT_JABATAN
-        AFTER INSERT ON MSTR_JABATAN
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.JABATAN_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT ' , NEW.JABATAN_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_insert_jabatan;
+        delimiter $$
+        create trigger trg_after_insert_jabatan
+        after insert on mstr_jabatan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.jabatan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.jabatan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_JABATAN_LOG(EXECUTED_FUNCTION,ID_PK_JABATAN,JABATAN_NAMA,JABATAN_STATUS,JABATAN_CREATE_DATE,JABATAN_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER INSERT',NEW.ID_PK_JABATAN,NEW.JABATAN_NAMA,NEW.JABATAN_STATUS,NEW.JABATAN_CREATE_DATE,NEW.JABATAN_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
+            insert into mstr_jabatan_log(executed_function,id_pk_jabatan,jabatan_nama,jabatan_status,jabatan_create_date,jabatan_last_modified,id_create_data,id_last_modified,id_log_all) values('after insert',new.id_pk_jabatan,new.jabatan_nama,new.jabatan_status,new.jabatan_create_date,new.jabatan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
 
-            /* INSERT NEW JABATAN TO ALL HAK AKSES*/
-            SET @ID_JABATAN = NEW.ID_PK_JABATAN;
-            INSERT INTO TBL_HAK_AKSES(ID_FK_JABATAN,ID_FK_MENU,HAK_AKSES_STATUS,HAK_AKSES_CREATE_DATE,HAK_AKSES_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED)
-            SELECT @ID_JABATAN,ID_PK_MENU,'NONAKTIF',@TGL_ACTION,@TGL_ACTION,@ID_USER,@ID_USER FROM MSTR_MENU;
-        END$$
-        DELIMITER ;
+            /* insert new jabatan to all hak akses*/
+            set @id_jabatan = new.id_pk_jabatan;
+            insert into tbl_hak_akses(id_fk_jabatan,id_fk_menu,hak_akses_status,hak_akses_create_date,hak_akses_last_modified,id_create_data,id_last_modified)
+            select @id_jabatan,id_pk_menu,'nonaktif',@tgl_action,@tgl_action,@id_user,@id_user from mstr_menu;
+        end$$
+        delimiter ;
         
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_JABATAN;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE_JABATAN
-        AFTER UPDATE ON MSTR_JABATAN
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.JABATAN_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT ' , NEW.JABATAN_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_update_jabatan;
+        delimiter $$
+        create trigger trg_after_update_jabatan
+        after update on mstr_jabatan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.jabatan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.jabatan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_JABATAN_LOG(EXECUTED_FUNCTION,ID_PK_JABATAN,JABATAN_NAMA,JABATAN_STATUS,JABATAN_CREATE_DATE,JABATAN_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER UPDATE',NEW.ID_PK_JABATAN,NEW.JABATAN_NAMA,NEW.JABATAN_STATUS,NEW.JABATAN_CREATE_DATE,NEW.JABATAN_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_jabatan_log(executed_function,id_pk_jabatan,jabatan_nama,jabatan_status,jabatan_create_date,jabatan_last_modified,id_create_data,id_last_modified,id_log_all) values('after update',new.id_pk_jabatan,new.jabatan_nama,new.jabatan_status,new.jabatan_create_date,new.jabatan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
         ";
-        executeQuery($sql);
+        executequery($sql);
     }
     private function set_column($col_name,$col_disp,$order_by){
         $array = array(
@@ -91,40 +91,40 @@ class M_roles extends CI_Model{
         );
         $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
-            $search_query .= "AND
+            $search_query .= "and
             ( 
-                id_pk_jabatan LIKE '%".$search_key."%' OR
-                jabatan_nama LIKE '%".$search_key."%' OR
-                jabatan_status LIKE '%".$search_key."%' OR
-                jabatan_last_modified LIKE '%".$search_key."%'
+                id_pk_jabatan like '%".$search_key."%' or
+                jabatan_nama like '%".$search_key."%' or
+                jabatan_status like '%".$search_key."%' or
+                jabatan_last_modified like '%".$search_key."%'
             )";
         }
         $query = "
-        SELECT id_pk_jabatan,jabatan_nama,jabatan_status,jabatan_last_modified
-        FROM ".$this->tbl_name." 
-        WHERE jabatan_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction." 
-        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        select id_pk_jabatan,jabatan_nama,jabatan_status,jabatan_last_modified
+        from ".$this->tbl_name." 
+        where jabatan_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction." 
+        limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "AKTIF"
+            "aktif"
         );
-        $result["data"] = executeQuery($query,$args);
+        $result["data"] = executequery($query,$args);
         
         $query = "
-        SELECT id_pk_jabatan
-        FROM ".$this->tbl_name." 
-        WHERE jabatan_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction;
-        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        select id_pk_jabatan
+        from ".$this->tbl_name." 
+        where jabatan_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction;
+        $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
     public function list(){
         $where = array(
-            "jabatan_status" => "AKTIF"
+            "jabatan_status" => "aktif"
         );
         $field = array(
             "id_pk_jabatan",
@@ -132,7 +132,7 @@ class M_roles extends CI_Model{
             "jabatan_status",
             "jabatan_last_modified"
         );
-        return selectRow($this->tbl_name,$where,$field);
+        return selectrow($this->tbl_name,$where,$field);
     }
     public function columns(){
         return $this->columns;
@@ -147,7 +147,7 @@ class M_roles extends CI_Model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         else{
             return false;
@@ -156,20 +156,20 @@ class M_roles extends CI_Model{
     public function update(){
         if($this->check_update()){
             $where = array(
-                "ID_PK_JABATAN !=" => $this->id_pk_jabatan,
-                "JABATAN_NAMA" => $this->jabatan_nama,
-                "JABATAN_STATUS" => "AKTIF",
+                "id_pk_jabatan !=" => $this->id_pk_jabatan,
+                "jabatan_nama" => $this->jabatan_nama,
+                "jabatan_status" => "aktif",
             );
-            if(!isExistsInTable($this->tbl_name,$where)){
+            if(!isexistsintable($this->tbl_name,$where)){
                 $where = array(
-                    "ID_PK_JABATAN" => $this->id_pk_jabatan
+                    "id_pk_jabatan" => $this->id_pk_jabatan
                 );
                 $data = array(
-                    "JABATAN_NAMA" => $this->jabatan_nama,
-                    "JABATAN_LAST_MODIFIED" => $this->jabatan_last_modified,
-                    "ID_LAST_MODIFIED" => $this->id_last_modified,
+                    "jabatan_nama" => $this->jabatan_nama,
+                    "jabatan_last_modified" => $this->jabatan_last_modified,
+                    "id_last_modified" => $this->id_last_modified,
                 );
-                updateRow($this->tbl_name,$data,$where);
+                updaterow($this->tbl_name,$data,$where);
                 return true;
             }
             else{
@@ -184,14 +184,14 @@ class M_roles extends CI_Model{
     public function delete(){
         if($this->check_delete()){
             $where = array(
-                "ID_PK_JABATAN" => $this->id_pk_jabatan
+                "id_pk_jabatan" => $this->id_pk_jabatan
             );
             $data = array(
-                "JABATAN_STATUS" => "NONAKTIF",
-                "JABATAN_LAST_MODIFIED" => $this->jabatan_last_modified,
-                "ID_LAST_MODIFIED" => $this->id_last_modified
+                "jabatan_status" => "nonaktif",
+                "jabatan_last_modified" => $this->jabatan_last_modified,
+                "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }else{
             return false;

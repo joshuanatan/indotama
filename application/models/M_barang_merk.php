@@ -1,8 +1,8 @@
 <?php
-defined("BASEPATH") or exit("No direct Script");
-date_default_timezone_set("Asia/Jakarta");
-class M_barang_merk extends CI_Model{
-    private $tbl_name = "MSTR_BARANG_MERK";
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_barang_merk extends ci_model{
+    private $tbl_name = "mstr_barang_merk";
     private $columns = array();
     private $id_pk_brg_merk;
     private $brg_merk_nama;
@@ -14,12 +14,12 @@ class M_barang_merk extends CI_Model{
 
     public function __construct(){
         parent::__construct();
-        $this->set_column("brg_merk_nama","Jenis Barang","required");
-        $this->set_column("brg_merk_status","Status","required");
-        $this->set_column("brg_merk_last_modified","Last Modified","required");
+        $this->set_column("brg_merk_nama","jenis barang","required");
+        $this->set_column("brg_merk_status","status","required");
+        $this->set_column("brg_merk_last_modified","last modified","required");
 
-        $this->brg_merk_create_date = date("Y-m-d H:i:s");
-        $this->brg_merk_last_modified = date("Y-m-d H:i:s");
+        $this->brg_merk_create_date = date("y-m-d h:i:s");
+        $this->brg_merk_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
@@ -36,93 +36,93 @@ class M_barang_merk extends CI_Model{
     }
     public function install(){
         $sql = "
-        CREATE TABLE MSTR_BARANG_MERK(
-            ID_PK_BRG_MERK INT PRIMARY KEY AUTO_INCREMENT,
-            BRG_MERK_NAMA VARCHAR(100),
-            BRG_MERK_STATUS VARCHAR(15),
-            BRG_MERK_CREATE_DATE DATETIME,
-            BRG_MERK_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT
+        create table mstr_barang_merk(
+            id_pk_brg_merk int primary key auto_increment,
+            brg_merk_nama varchar(100),
+            brg_merk_status varchar(15),
+            brg_merk_create_date datetime,
+            brg_merk_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
         );
-        CREATE TABLE MSTR_BARANG_MERK_LOG(
-            ID_PK_BRG_MERK_LOG INT PRIMARY KEY AUTO_INCREMENT,
-            EXECUTED_FUNCTION VARCHAR(30),
-            ID_PK_BRG_MERK INT,
-            BRG_MERK_NAMA VARCHAR(100),
-            BRG_MERK_STATUS VARCHAR(15),
-            BRG_MERK_CREATE_DATE DATETIME,
-            BRG_MERK_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT,
-            ID_LOG_ALL INT
+        create table mstr_barang_merk_log(
+            id_pk_brg_merk_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_brg_merk int,
+            brg_merk_nama varchar(100),
+            brg_merk_status varchar(15),
+            brg_merk_create_date datetime,
+            brg_merk_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_BARANG_MERK;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT_BARANG_MERK
-        AFTER INSERT ON MSTR_BARANG_MERK
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.BRG_MERK_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.BRG_MERK_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_insert_barang_merk;
+        delimiter $$
+        create trigger trg_after_insert_barang_merk
+        after insert on mstr_barang_merk
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_merk_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.brg_merk_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_BARANG_MERK_LOG(EXECUTED_FUNCTION,ID_PK_BRG_MERK,BRG_MERK_NAMA,BRG_MERK_STATUS,BRG_MERK_CREATE_DATE,BRG_MERK_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_BRG_MERK,NEW.BRG_MERK_NAMA,NEW.BRG_MERK_STATUS,NEW.BRG_MERK_CREATE_DATE,NEW.BRG_MERK_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_barang_merk_log(executed_function,id_pk_brg_merk,brg_merk_nama,brg_merk_status,brg_merk_create_date,brg_merk_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_merk,new.brg_merk_nama,new.brg_merk_status,new.brg_merk_create_date,new.brg_merk_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
         
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_BARANG_MERK;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE_BARANG_MERK
-        AFTER UPDATE ON MSTR_BARANG_MERK
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.BRG_MERK_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.BRG_MERK_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_update_barang_merk;
+        delimiter $$
+        create trigger trg_after_update_barang_merk
+        after update on mstr_barang_merk
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_merk_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_merk_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_BARANG_MERK_LOG(EXECUTED_FUNCTION,ID_PK_BRG_MERK,BRG_MERK_NAMA,BRG_MERK_STATUS,BRG_MERK_CREATE_DATE,BRG_MERK_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_BRG_MERK,NEW.BRG_MERK_NAMA,NEW.BRG_MERK_STATUS,NEW.BRG_MERK_CREATE_DATE,NEW.BRG_MERK_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;";
-        executeQuery($sql);
+            insert into mstr_barang_merk_log(executed_function,id_pk_brg_merk,brg_merk_nama,brg_merk_status,brg_merk_create_date,brg_merk_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_merk,new.brg_merk_nama,new.brg_merk_status,new.brg_merk_create_date,new.brg_merk_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;";
+        executequery($sql);
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
-            $search_query .= "AND
+            $search_query .= "and
             ( 
-                id_pk_brg_merk LIKE '%".$search_key."%' OR
-                brg_merk_nama LIKE '%".$search_key."%' OR
-                brg_merk_status LIKE '%".$search_key."%' OR
-                brg_merk_last_modified LIKE '%".$search_key."%' OR
-                id_last_modified LIKE '%".$search_key."%'
+                id_pk_brg_merk like '%".$search_key."%' or
+                brg_merk_nama like '%".$search_key."%' or
+                brg_merk_status like '%".$search_key."%' or
+                brg_merk_last_modified like '%".$search_key."%' or
+                id_last_modified like '%".$search_key."%'
             )";
         }
         $query = "
-        SELECT id_pk_brg_merk,brg_merk_nama,brg_merk_status,brg_merk_last_modified,id_last_modified
-        FROM ".$this->tbl_name." 
-        WHERE brg_merk_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction." 
-        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        select id_pk_brg_merk,brg_merk_nama,brg_merk_status,brg_merk_last_modified,id_last_modified
+        from ".$this->tbl_name." 
+        where brg_merk_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction." 
+        limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "AKTIF"
+            "aktif"
         );
-        $result["data"] = executeQuery($query,$args);
+        $result["data"] = executequery($query,$args);
         
         $query = "
-        SELECT id_pk_brg_merk
-        FROM ".$this->tbl_name." 
-        WHERE brg_merk_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction;
-        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        select id_pk_brg_merk
+        from ".$this->tbl_name." 
+        where brg_merk_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction;
+        $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
     public function list(){
         $where = array(
-            "brg_merk_status" => "AKTIF"
+            "brg_merk_status" => "aktif"
         );
         $field = array(
             "id_pk_brg_merk",
@@ -133,7 +133,7 @@ class M_barang_merk extends CI_Model{
             "id_create_data",
             "id_last_modified"
         );
-        return selectRow($this->tbl_name,$where,$field);
+        return selectrow($this->tbl_name,$where,$field);
     }
     public function detail_by_name(){
         $where = array(
@@ -148,7 +148,7 @@ class M_barang_merk extends CI_Model{
             "id_create_data",
             "id_last_modified"
         );
-        return selectRow($this->tbl_name,$where,$field);
+        return selectrow($this->tbl_name,$where,$field);
     }
     public function insert(){
         if($this->check_insert()){
@@ -160,7 +160,7 @@ class M_barang_merk extends CI_Model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         else{
             return false;
@@ -171,9 +171,9 @@ class M_barang_merk extends CI_Model{
             $where = array(
                 "id_pk_brg_merk !=" => $this->id_pk_brg_merk,
                 "brg_merk_nama" => $this->brg_merk_nama,
-                "brg_merk_status" => "AKTIF",
+                "brg_merk_status" => "aktif",
             );
-            if(!isExistsInTable($this->tbl_name,$where)){
+            if(!isexistsintable($this->tbl_name,$where)){
                 $where = array(
                     "id_pk_brg_merk" => $this->id_pk_brg_merk
                 );
@@ -182,7 +182,7 @@ class M_barang_merk extends CI_Model{
                     "brg_merk_last_modified" => $this->brg_merk_last_modified,
                     "id_last_modified" => $this->id_last_modified
                 );
-                updateRow($this->tbl_name,$data,$where);
+                updaterow($this->tbl_name,$data,$where);
                 return true;
             }
             else{
@@ -199,11 +199,11 @@ class M_barang_merk extends CI_Model{
                 "id_pk_brg_merk" => $this->id_pk_brg_merk
             );
             $data = array(
-                "brg_merk_status" => "NONAKTIF",
+                "brg_merk_status" => "nonaktif",
                 "brg_merk_last_modified" => $this->brg_merk_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         else{

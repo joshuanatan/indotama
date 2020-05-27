@@ -1,8 +1,8 @@
 <?php
-defined("BASEPATH") or exit("No Direct Script");
-date_default_timezone_set("Asia/Jakarta");
-class M_brg_cabang extends CI_Model{
-    private $tbl_name = "TBL_BRG_CABANG";
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_brg_cabang extends ci_model{
+    private $tbl_name = "tbl_brg_cabang";
     private $columns = array();
     private $id_pk_brg_cabang;
     private $brg_cabang_qty;
@@ -17,15 +17,15 @@ class M_brg_cabang extends CI_Model{
 
     public function __construct(){
         parent::__construct();
-        $this->set_column("brg_kode","Kode Barang","required");
-        $this->set_column("brg_nama","Nama Barang","required");
-        $this->set_column("brg_ket","Keterangan","required");
-        $this->set_column("brg_cabang_qty","Qty","required");
-        $this->set_column("brg_cabang_notes","Notes","required");
-        $this->set_column("brg_cabang_status","Status","required");
-        $this->set_column("brg_cabang_last_modified","Last Modified","required");
-        $this->brg_cabang_create_date = date("Y-m-d H:i:s");
-        $this->brg_cabang_last_modified = date("Y-m-d H:i:s");
+        $this->set_column("brg_kode","kode barang","required");
+        $this->set_column("brg_nama","nama barang","required");
+        $this->set_column("brg_ket","keterangan","required");
+        $this->set_column("brg_cabang_qty","qty","required");
+        $this->set_column("brg_cabang_notes","notes","required");
+        $this->set_column("brg_cabang_status","status","required");
+        $this->set_column("brg_cabang_last_modified","last modified","required");
+        $this->brg_cabang_create_date = date("y-m-d h:i:s");
+        $this->brg_cabang_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
@@ -42,105 +42,105 @@ class M_brg_cabang extends CI_Model{
     }
     public function install(){
         $sql = "
-        DROP TABLE IF EXISTS TBL_BRG_CABANG;
-        CREATE TABLE TBL_BRG_CABANG(
-            ID_PK_BRG_CABANG INT PRIMARY KEY AUTO_INCREMENT,
-            BRG_CABANG_QTY INT,
-            BRG_CABANG_NOTES VARCHAR(200),
-            BRG_CABANG_STATUS VARCHAR(15),
-            ID_FK_BRG INT,
-            ID_FK_CABANG INT,
-            BRG_CABANG_CREATE_DATE DATETIME,
-            BRG_CABANG_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT
+        drop table if exists tbl_brg_cabang;
+        create table tbl_brg_cabang(
+            id_pk_brg_cabang int primary key auto_increment,
+            brg_cabang_qty int,
+            brg_cabang_notes varchar(200),
+            brg_cabang_status varchar(15),
+            id_fk_brg int,
+            id_fk_cabang int,
+            brg_cabang_create_date datetime,
+            brg_cabang_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
         );
-        DROP TABLE IF EXISTS TBL_BRG_CABANG_LOG;
-        CREATE TABLE TBL_BRG_CABANG_LOG(
-            ID_PK_BRG_CABANG_LOG INT PRIMARY KEY AUTO_INCREMENT,
-            EXECUTED_FUNCTION VARCHAR(30),
-            ID_PK_BRG_CABANG INT,
-            BRG_CABANG_QTY INT,
-            BRG_CABANG_NOTES VARCHAR(200),
-            BRG_CABANG_STATUS VARCHAR(15),
-            ID_FK_BRG INT,
-            ID_FK_CABANG INT,
-            BRG_CABANG_CREATE_DATE DATETIME,
-            BRG_CABANG_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT,
-            ID_LOG_ALL INT
+        drop table if exists tbl_brg_cabang_log;
+        create table tbl_brg_cabang_log(
+            id_pk_brg_cabang_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_brg_cabang int,
+            brg_cabang_qty int,
+            brg_cabang_notes varchar(200),
+            brg_cabang_status varchar(15),
+            id_fk_brg int,
+            id_fk_cabang int,
+            brg_cabang_create_date datetime,
+            brg_cabang_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_BRG_CABANG;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT_BRG_CABANG
-        AFTER INSERT ON TBL_BRG_CABANG
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.BRG_CABANG_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT ' , NEW.BRG_CABANG_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_insert_brg_cabang;
+        delimiter $$
+        create trigger trg_after_insert_brg_cabang
+        after insert on tbl_brg_cabang
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_cabang_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.brg_cabang_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO TBL_BRG_CABANG_LOG(EXECUTED_FUNCTION,ID_PK_BRG_CABANG,BRG_CABANG_QTY,BRG_CABANG_NOTES,BRG_CABANG_STATUS,ID_FK_BRG,ID_FK_CABANG,BRG_CABANG_CREATE_DATE,BRG_CABANG_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_BRG_CABANG,NEW.BRG_CABANG_QTY,NEW.BRG_CABANG_NOTES,NEW.BRG_CABANG_STATUS,NEW.ID_FK_BRG,NEW.ID_FK_CABANG,NEW.BRG_CABANG_CREATE_DATE,NEW.BRG_CABANG_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into tbl_brg_cabang_log(executed_function,id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_status,id_fk_brg,id_fk_cabang,brg_cabang_create_date,brg_cabang_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_cabang,new.brg_cabang_qty,new.brg_cabang_notes,new.brg_cabang_status,new.id_fk_brg,new.id_fk_cabang,new.brg_cabang_create_date,new.brg_cabang_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
 
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_BRG_CABANG;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE_BRG_CABANG
-        AFTER UPDATE ON TBL_BRG_CABANG
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.BRG_CABANG_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT ' , NEW.BRG_CABANG_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_update_brg_cabang;
+        delimiter $$
+        create trigger trg_after_update_brg_cabang
+        after update on tbl_brg_cabang
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_cabang_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.brg_cabang_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO TBL_BRG_CABANG_LOG(EXECUTED_FUNCTION,ID_PK_BRG_CABANG,BRG_CABANG_QTY,BRG_CABANG_NOTES,BRG_CABANG_STATUS,ID_FK_BRG,ID_FK_CABANG,BRG_CABANG_CREATE_DATE,BRG_CABANG_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_BRG_CABANG,NEW.BRG_CABANG_QTY,NEW.BRG_CABANG_NOTES,NEW.BRG_CABANG_STATUS,NEW.ID_FK_BRG,NEW.ID_FK_CABANG,NEW.BRG_CABANG_CREATE_DATE,NEW.BRG_CABANG_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;";
-        executeQuery($sql);
+            insert into tbl_brg_cabang_log(executed_function,id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_status,id_fk_brg,id_fk_cabang,brg_cabang_create_date,brg_cabang_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_cabang,new.brg_cabang_qty,new.brg_cabang_notes,new.brg_cabang_status,new.id_fk_brg,new.id_fk_cabang,new.brg_cabang_create_date,new.brg_cabang_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;";
+        executequery($sql);
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
-            $search_query .= "AND
+            $search_query .= "and
             (
-                id_pk_brg_cabang LIKE '%".$search_key."%' OR 
-                brg_cabang_qty LIKE '%".$search_key."%' OR 
-                brg_cabang_notes LIKE '%".$search_key."%' OR 
-                brg_cabang_status LIKE '%".$search_key."%' OR 
-                id_fk_brg LIKE '%".$search_key."%' OR 
-                brg_cabang_last_modified LIKE '%".$search_key."%' OR 
-                brg_nama LIKE '%".$search_key."%' OR 
-                brg_kode LIKE '%".$search_key."%' OR 
-                brg_ket LIKE '%".$search_key."%' OR 
-                brg_minimal LIKE '%".$search_key."%' OR 
-                brg_satuan LIKE '%".$search_key."%' OR 
-                brg_image LIKE '%".$search_key."%'
+                id_pk_brg_cabang like '%".$search_key."%' or 
+                brg_cabang_qty like '%".$search_key."%' or 
+                brg_cabang_notes like '%".$search_key."%' or 
+                brg_cabang_status like '%".$search_key."%' or 
+                id_fk_brg like '%".$search_key."%' or 
+                brg_cabang_last_modified like '%".$search_key."%' or 
+                brg_nama like '%".$search_key."%' or 
+                brg_kode like '%".$search_key."%' or 
+                brg_ket like '%".$search_key."%' or 
+                brg_minimal like '%".$search_key."%' or 
+                brg_satuan like '%".$search_key."%' or 
+                brg_image like '%".$search_key."%'
             )";
         }
         $query = "
-        SELECT id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image
-        FROM ".$this->tbl_name." 
-        INNER JOIN MSTR_BARANG ON MSTR_BARANG.ID_PK_BRG = ".$this->tbl_name.".ID_FK_BRG
-        WHERE BRG_CABANG_STATUS = ? AND BRG_STATUS = ? AND ID_FK_CABANG = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction." 
-        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image
+        from ".$this->tbl_name." 
+        inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_brg
+        where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction." 
+        limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "AKTIF","AKTIF",$this->id_fk_cabang
+            "aktif","aktif",$this->id_fk_cabang
         );
-        $result["data"] = executeQuery($query,$args);
+        $result["data"] = executequery($query,$args);
         
         $query = "
-        SELECT id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image
-        FROM ".$this->tbl_name." 
-        INNER JOIN MSTR_BARANG ON MSTR_BARANG.ID_PK_BRG = ".$this->tbl_name.".ID_FK_BRG
-        WHERE BRG_CABANG_STATUS = ? AND BRG_STATUS = ? AND ID_FK_CABANG = ?".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction;
-        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image
+        from ".$this->tbl_name." 
+        inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_brg
+        where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ?".$search_query."  
+        order by ".$order_by." ".$order_direction;
+        $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
     public function insert(){
@@ -156,7 +156,7 @@ class M_brg_cabang extends CI_Model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         return false;
     }
@@ -172,7 +172,7 @@ class M_brg_cabang extends CI_Model{
                 "brg_cabang_last_modified" => $this->brg_cabang_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true; 
         }
         return false;
@@ -183,11 +183,11 @@ class M_brg_cabang extends CI_Model{
                 "id_pk_brg_cabang" => $this->id_pk_brg_cabang   
             );
             $data = array(
-                "brg_cabang_status" => "NONAKTIF",
+                "brg_cabang_status" => "nonaktif",
                 "brg_cabang_last_modified" => $this->brg_cabang_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true; 
         }
         return false;

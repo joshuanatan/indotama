@@ -1,8 +1,8 @@
 <?php
-defined("BASEPATH") or exit("No Direct Script");
-date_default_timezone_set("Asia/Jakarta");
-class M_satuan extends CI_Model{
-    private $tbl_name = "MSTR_SATUAN";
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_satuan extends ci_model{
+    private $tbl_name = "mstr_satuan";
     private $columns = array();
     private $id_pk_satuan;
     private $satuan_nama;
@@ -15,13 +15,13 @@ class M_satuan extends CI_Model{
 
     public function __construct(){
         parent::__construct();
-        $this->set_column("satuan_nama","Satuan",true);
-        $this->set_column("satuan_rumus","Rumus",true);
-        $this->set_column("satuan_status","Status",false);
-        $this->set_column("satuan_last_modified","Last Modified",false);
+        $this->set_column("satuan_nama","satuan",true);
+        $this->set_column("satuan_rumus","rumus",true);
+        $this->set_column("satuan_status","status",false);
+        $this->set_column("satuan_last_modified","last modified",false);
 
-        $this->satuan_create_date = date("Y-m-d H:i:s");
-        $this->satuan_last_modified = date("Y-m-d H:i:s");
+        $this->satuan_create_date = date("y-m-d h:i:s");
+        $this->satuan_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
@@ -38,94 +38,94 @@ class M_satuan extends CI_Model{
     }
     public function install(){
         $sql = "
-        DROP TABLE IF EXISTS MSTR_SATUAN;
-        CREATE TABLE MSTR_SATUAN(
-            ID_PK_SATUAN INT PRIMARY KEY AUTO_INCREMENT,
-            SATUAN_NAMA VARCHAR(100),
-            SATUAN_RUMUS VARCHAR(100),
-            SATUAN_STATUS VARCHAR(15),
-            SATUAN_CREATE_DATE DATETIME,
-            SATUAN_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT
+        drop table if exists mstr_satuan;
+        create table mstr_satuan(
+            id_pk_satuan int primary key auto_increment,
+            satuan_nama varchar(100),
+            satuan_rumus varchar(100),
+            satuan_status varchar(15),
+            satuan_create_date datetime,
+            satuan_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
         );
-        DROP TABLE IF EXISTS MSTR_SATUAN_LOG;
-        CREATE TABLE MSTR_SATUAN_LOG(
-            ID_PK_SATUAN_LOG INT PRIMARY KEY AUTO_INCREMENT,
-            EXECUTED_FUNCTION VARCHAR(20),
-            ID_PK_SATUAN INT,
-            SATUAN_NAMA VARCHAR(100),
-            SATUAN_RUMUS VARCHAR(100),
-            SATUAN_STATUS VARCHAR(15),
-            SATUAN_CREATE_DATE DATETIME,
-            SATUAN_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT,
-            ID_LOG_ALL INT
+        drop table if exists mstr_satuan_log;
+        create table mstr_satuan_log(
+            id_pk_satuan_log int primary key auto_increment,
+            executed_function varchar(20),
+            id_pk_satuan int,
+            satuan_nama varchar(100),
+            satuan_rumus varchar(100),
+            satuan_status varchar(15),
+            satuan_create_date datetime,
+            satuan_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_SATUAN;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT_SATUAN
-        AFTER INSERT ON MSTR_SATUAN
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.SATUAN_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.SATUAN_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_insert_satuan;
+        delimiter $$
+        create trigger trg_after_insert_satuan
+        after insert on mstr_satuan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.satuan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.satuan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_SATUAN_LOG(EXECUTED_FUNCTION,ID_PK_SATUAN,SATUAN_NAMA,SATUAN_RUMUS,SATUAN_STATUS,SATUAN_CREATE_DATE,SATUAN_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_SATUAN,NEW.SATUAN_NAMA,NEW.SATUAN_STATUS,NEW.SATUAN_RUMUS,NEW.SATUAN_CREATE_DATE,NEW.SATUAN_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_satuan_log(executed_function,id_pk_satuan,satuan_nama,satuan_rumus,satuan_status,satuan_create_date,satuan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_satuan,new.satuan_nama,new.satuan_status,new.satuan_rumus,new.satuan_create_date,new.satuan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
 
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_SATUAN;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE_SATUAN
-        AFTER UPDATE ON MSTR_SATUAN
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.SATUAN_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.SATUAN_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_update_satuan;
+        delimiter $$
+        create trigger trg_after_update_satuan
+        after update on mstr_satuan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.satuan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.satuan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_SATUAN_LOG(EXECUTED_FUNCTION,ID_PK_SATUAN,SATUAN_NAMA,SATUAN_RUMUS,SATUAN_STATUS,SATUAN_CREATE_DATE,SATUAN_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_SATUAN,NEW.SATUAN_NAMA,NEW.SATUAN_STATUS,NEW.SATUAN_RUMUS,NEW.SATUAN_CREATE_DATE,NEW.SATUAN_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_satuan_log(executed_function,id_pk_satuan,satuan_nama,satuan_rumus,satuan_status,satuan_create_date,satuan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_satuan,new.satuan_nama,new.satuan_status,new.satuan_rumus,new.satuan_create_date,new.satuan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
         ";
-        executeQuery($sql);
+        executequery($sql);
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
-            $search_query .= "AND
+            $search_query .= "and
             ( 
-                id_pk_satuan LIKE '%".$search_key."%' OR
-                satuan_nama LIKE '%".$search_key."%' OR
-                satuan_rumus LIKE '%".$search_key."%' OR
-                satuan_status LIKE '%".$search_key."%' OR
-                satuan_last_modified LIKE '%".$search_key."%' OR
-                id_last_modified LIKE '%".$search_key."%'
+                id_pk_satuan like '%".$search_key."%' or
+                satuan_nama like '%".$search_key."%' or
+                satuan_rumus like '%".$search_key."%' or
+                satuan_status like '%".$search_key."%' or
+                satuan_last_modified like '%".$search_key."%' or
+                id_last_modified like '%".$search_key."%'
             )";
         }
         $query = "
-        SELECT id_pk_satuan,satuan_nama,satuan_rumus,satuan_status,satuan_last_modified,id_last_modified
-        FROM ".$this->tbl_name." 
-        WHERE satuan_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction." 
-        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        select id_pk_satuan,satuan_nama,satuan_rumus,satuan_status,satuan_last_modified,id_last_modified
+        from ".$this->tbl_name." 
+        where satuan_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction." 
+        limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "AKTIF"
+            "aktif"
         );
-        $result["data"] = executeQuery($query,$args);
+        $result["data"] = executequery($query,$args);
         
         $query = "
-        SELECT id_pk_satuan
-        FROM ".$this->tbl_name." 
-        WHERE satuan_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction;
-        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        select id_pk_satuan
+        from ".$this->tbl_name." 
+        where satuan_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction;
+        $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
     public function detail_by_name(){
@@ -142,11 +142,11 @@ class M_satuan extends CI_Model{
             "id_create_data",
             "id_last_modified"
         );
-        return selectRow($this->tbl_name,$where,$field);
+        return selectrow($this->tbl_name,$where,$field);
     }
     public function list(){
         $where = array(
-            "satuan_status" => "AKTIF"
+            "satuan_status" => "aktif"
         );
         $field = array(
             "id_pk_satuan",
@@ -158,7 +158,7 @@ class M_satuan extends CI_Model{
             "id_create_data",
             "id_last_modified"
         );
-        return selectRow($this->tbl_name,$where,$field);
+        return selectrow($this->tbl_name,$where,$field);
     }
     public function insert(){
         if($this->check_insert()){
@@ -171,7 +171,7 @@ class M_satuan extends CI_Model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         else{
             return false;
@@ -182,9 +182,9 @@ class M_satuan extends CI_Model{
             $where = array(
                 "id_pk_satuan !=" => $this->id_pk_satuan,
                 "satuan_nama" => $this->satuan_nama,
-                "satuan_status" => "AKTIF",
+                "satuan_status" => "aktif",
             );
-            if(!isExistsInTable($this->tbl_name,$where)){
+            if(!isexistsintable($this->tbl_name,$where)){
                 $where = array(
                     "id_pk_satuan" => $this->id_pk_satuan
                 );
@@ -194,7 +194,7 @@ class M_satuan extends CI_Model{
                     "satuan_last_modified" => $this->satuan_last_modified,
                     "id_last_modified" => $this->id_last_modified
                 );
-                updateRow($this->tbl_name,$data,$where);
+                updaterow($this->tbl_name,$data,$where);
                 return true;
             }
             else{
@@ -211,11 +211,11 @@ class M_satuan extends CI_Model{
                 "id_pk_satuan" => $this->id_pk_satuan
             );
             $data = array(
-                "satuan_status" => "NONAKTIF",
+                "satuan_status" => "nonaktif",
                 "satuan_last_modified" => $this->satuan_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         else{

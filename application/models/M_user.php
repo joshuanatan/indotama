@@ -1,9 +1,9 @@
 <?php
-defined("BASEPATH") or exit("No Direct Script");
-date_default_timezone_set("Asia/Jakarta");
-class M_user extends CI_Model{
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_user extends ci_model{
     private $columns = array();
-    private $tbl_name = "MSTR_USER";
+    private $tbl_name = "mstr_user";
     private $id_pk_user;
     private $user_name;
     private $user_pass;
@@ -17,14 +17,14 @@ class M_user extends CI_Model{
     
     public function __construct(){
         parent::__construct();
-        $this->set_column("user_name","Username","required");
-        $this->set_column("user_email","Email","required");
-        $this->set_column("jabatan_nama","Role","required");
-        $this->set_column("user_status","Status","required");
-        $this->set_column("user_last_modified","Last Modified","required");
+        $this->set_column("user_name","username","required");
+        $this->set_column("user_email","email","required");
+        $this->set_column("jabatan_nama","role","required");
+        $this->set_column("user_status","status","required");
+        $this->set_column("user_last_modified","last modified","required");
 
-        $this->user_last_modified = date("Y-m-d H:i:s");
-        $this->user_create_date = date("Y-m-d H:i:s");
+        $this->user_last_modified = date("y-m-d h:i:s");
+        $this->user_create_date = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
@@ -38,130 +38,130 @@ class M_user extends CI_Model{
     }
     public function install(){
         $sql = "
-        DROP TABLE IF EXISTS MSTR_USER;
-        CREATE TABLE MSTR_USER(
-            ID_PK_USER INT PRIMARY KEY AUTO_INCREMENT,
-            USER_NAME VARCHAR(50),
-            USER_PASS VARCHAR(200),
-            USER_EMAIL VARCHAR(100),
-            USER_STATUS VARCHAR(15),
-            ID_FK_ROLE INT,
-            USER_LAST_MODIFIED DATETIME,
-            USER_CREATE_DATE DATETIME,
-            ID_CREATE_DATE INT,
-            ID_LAST_MODIFIED INT
+        drop table if exists mstr_user;
+        create table mstr_user(
+            id_pk_user int primary key auto_increment,
+            user_name varchar(50),
+            user_pass varchar(200),
+            user_email varchar(100),
+            user_status varchar(15),
+            id_fk_role int,
+            user_last_modified datetime,
+            user_create_date datetime,
+            id_create_date int,
+            id_last_modified int
         );
-        DROP TABLE IF EXISTS MSTR_USER_LOG;
-        CREATE TABLE MSTR_USER_LOG(
-            ID_PK_USER_LOG INT PRIMARY KEY AUTO_INCREMENT,
-            EXECUTED_FUNCTION VARCHAR(40),
-            ID_PK_USER INT,
-            USER_NAME VARCHAR(50),
-            USER_PASS VARCHAR(200),
-            USER_EMAIL VARCHAR(100),
-            USER_STATUS VARCHAR(15),
-            ID_FK_ROLE INT,
-            USER_LAST_MODIFIED DATETIME,
-            USER_CREATE_DATE DATETIME,
-            ID_CREATE_DATE INT,
-            ID_LAST_MODIFIED INT,
-            ID_LOG_ALL INT
+        drop table if exists mstr_user_log;
+        create table mstr_user_log(
+            id_pk_user_log int primary key auto_increment,
+            executed_function varchar(40),
+            id_pk_user int,
+            user_name varchar(50),
+            user_pass varchar(200),
+            user_email varchar(100),
+            user_status varchar(15),
+            id_fk_role int,
+            user_last_modified datetime,
+            user_create_date datetime,
+            id_create_date int,
+            id_last_modified int,
+            id_log_all int
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_USER;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT_USER
-        AFTER INSERT ON MSTR_USER
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.USER_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT',' ', NEW.USER_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_insert_user;
+        delimiter $$
+        create trigger trg_after_insert_user
+        after insert on mstr_user
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.user_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at',' ', new.user_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_USER_LOG(EXECUTED_FUNCTION,ID_PK_USER,USER_NAME,USER_PASS,USER_EMAIL,USER_STATUS,ID_FK_ROLE,USER_LAST_MODIFIED,USER_CREATE_DATE,ID_CREATE_DATE,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER INSERT',NEW.ID_PK_USER,NEW.USER_NAME,NEW.USER_PASS,NEW.USER_EMAIL,NEW.USER_STATUS,NEW.ID_FK_ROLE,NEW.USER_LAST_MODIFIED,NEW.USER_CREATE_DATE,NEW.ID_CREATE_DATE,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_user_log(executed_function,id_pk_user,user_name,user_pass,user_email,user_status,id_fk_role,user_last_modified,user_create_date,id_create_date,id_last_modified,id_log_all) values('after insert',new.id_pk_user,new.user_name,new.user_pass,new.user_email,new.user_status,new.id_fk_role,new.user_last_modified,new.user_create_date,new.id_create_date,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
         
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_USER;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE_USER
-        AFTER UPDATE ON MSTR_USER
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.USER_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT ' , NEW.USER_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_update_user;
+        delimiter $$
+        create trigger trg_after_update_user
+        after update on mstr_user
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.user_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.user_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_USER_LOG(EXECUTED_FUNCTION,ID_PK_USER,USER_NAME,USER_PASS,USER_EMAIL,USER_STATUS,ID_FK_ROLE,USER_LAST_MODIFIED,USER_CREATE_DATE,ID_CREATE_DATE,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES('AFTER UPDATE',NEW.ID_PK_USER,NEW.USER_NAME,NEW.USER_PASS,NEW.USER_EMAIL,NEW.USER_STATUS,NEW.ID_FK_ROLE,NEW.USER_LAST_MODIFIED,NEW.USER_CREATE_DATE,NEW.ID_CREATE_DATE,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_user_log(executed_function,id_pk_user,user_name,user_pass,user_email,user_status,id_fk_role,user_last_modified,user_create_date,id_create_date,id_last_modified,id_log_all) values('after update',new.id_pk_user,new.user_name,new.user_pass,new.user_email,new.user_status,new.id_fk_role,new.user_last_modified,new.user_create_date,new.id_create_date,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
         ";
-        executeSql($sql);
+        executesql($sql);
     }
     public function columns(){
         return $this->columns;
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
-            $search_query .= "AND
+            $search_query .= "and
             ( 
-                id_pk_user LIKE '%".$search_key."%' OR 
-                user_name LIKE '%".$search_key."%' OR
-                user_pass LIKE '%".$search_key."%' OR
-                user_email LIKE '%".$search_key."%' OR
-                user_status LIKE '%".$search_key."%' OR
-                id_fk_role LIKE '%".$search_key."%' OR
-                user_last_modified LIKE '%".$search_key."%' OR
-                user_create_date LIKE '%".$search_key."%' OR
-                id_create_data LIKE '%".$search_key."%' OR
-                id_last_modified LIKE '%".$search_key."%'
+                id_pk_user like '%".$search_key."%' or 
+                user_name like '%".$search_key."%' or
+                user_pass like '%".$search_key."%' or
+                user_email like '%".$search_key."%' or
+                user_status like '%".$search_key."%' or
+                id_fk_role like '%".$search_key."%' or
+                user_last_modified like '%".$search_key."%' or
+                user_create_date like '%".$search_key."%' or
+                id_create_data like '%".$search_key."%' or
+                id_last_modified like '%".$search_key."%'
             )";
         }
         $query = "
-        SELECT id_pk_user,user_name,user_email,user_status,id_fk_role,user_last_modified,user_create_date,jabatan_nama
-        FROM ".$this->tbl_name." 
-        INNER JOIN MSTR_JABATAN ON MSTR_JABATAN.ID_PK_JABATAN = ".$this->tbl_name.".ID_FK_ROLE
-        WHERE user_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction." 
-        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        select id_pk_user,user_name,user_email,user_status,id_fk_role,user_last_modified,user_create_date,jabatan_nama
+        from ".$this->tbl_name." 
+        inner join mstr_jabatan on mstr_jabatan.id_pk_jabatan = ".$this->tbl_name.".id_fk_role
+        where user_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction." 
+        limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "AKTIF"
+            "aktif"
         );
-        $result["data"] = executeQuery($query,$args);
+        $result["data"] = executequery($query,$args);
         
         $query = "
-        SELECT id_pk_user
-        FROM ".$this->tbl_name." 
-        WHERE user_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction;
-        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        select id_pk_user
+        from ".$this->tbl_name." 
+        where user_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction;
+        $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
     public function menu(){
         $sql = "
-        SELECT menu_name,menu_display,menu_icon,menu_category
-        FROM MSTR_USER
-        INNER JOIN MSTR_JABATAN ON MSTR_JABATAN.ID_PK_JABATAN = MSTR_USER.ID_FK_ROLE
-        INNER JOIN TBL_HAK_AKSES ON TBL_HAK_AKSES.ID_FK_JABATAN = MSTR_JABATAN.ID_PK_JABATAN
-        INNER JOIN MSTR_MENU ON MSTR_MENU.ID_PK_MENU = TBL_HAK_AKSES.ID_FK_MENU
-        WHERE MENU_STATUS = 'AKTIF' AND HAK_AKSES_STATUS = 'AKTIF' AND JABATAN_STATUS = 'AKTIF' AND ID_PK_USER = ?
-        ORDER BY MENU_CATEGORY,MENU_DISPLAY";
+        select menu_name,menu_display,menu_icon,menu_category
+        from mstr_user
+        inner join mstr_jabatan on mstr_jabatan.id_pk_jabatan = mstr_user.id_fk_role
+        inner join tbl_hak_akses on tbl_hak_akses.id_fk_jabatan = mstr_jabatan.id_pk_jabatan
+        inner join mstr_menu on mstr_menu.id_pk_menu = tbl_hak_akses.id_fk_menu
+        where menu_status = 'aktif' and hak_akses_status = 'aktif' and jabatan_status = 'aktif' and id_pk_user = ?
+        order by menu_category,menu_display";
         $args = array(
             $this->session->id_user
         );
-        return executeQuery($sql,$args);
+        return executequery($sql,$args);
     }
     public function list(){
         $where = array(
-            "user_status" => "AKTIF"
+            "user_status" => "aktif"
         );
         $field = array(
             "id_pk_user","user_name","user_email","user_status","id_fk_role","user_last_modified","user_create_date"
         );
-        $result = selectRow($this->tbl_name,$where,$field);
+        $result = selectrow($this->tbl_name,$where,$field);
         return $result;
     }
     public function detail_by_name(){
@@ -171,13 +171,13 @@ class M_user extends CI_Model{
         $where = array(
             "user_name" => $this->user_name
         );
-        return selectRow($this->tbl_name,$where,$field);
+        return selectrow($this->tbl_name,$where,$field);
     }
     public function insert(){
         if($this->check_insert()){
             $data = array(
                 "user_name" => $this->user_name,
-                "user_pass" => password_hash($this->user_pass,PASSWORD_DEFAULT),
+                "user_pass" => password_hash($this->user_pass,password_default),
                 "user_email" => $this->user_email,
                 "user_status" => $this->user_status,
                 "id_fk_role" => $this->id_fk_role,
@@ -186,7 +186,7 @@ class M_user extends CI_Model{
                 "id_create_date" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         else{
             return false;
@@ -199,9 +199,9 @@ class M_user extends CI_Model{
                 "user_name" => $this->user_name,
                 "user_email" => $this->user_email,
                 "id_fk_role" => $this->id_fk_role,
-                "user_status" => "AKTIF",
+                "user_status" => "aktif",
             );
-            if(!isExistsInTable($this->tbl_name,$where)){
+            if(!isexistsintable($this->tbl_name,$where)){
                 $where = array(
                     "id_pk_user" => $this->id_pk_user
                 );
@@ -212,7 +212,7 @@ class M_user extends CI_Model{
                     "id_last_modified" => $this->id_last_modified,
                     "user_last_modified" => $this->user_last_modified
                 );
-                updateRow($this->tbl_name,$data,$where);
+                updaterow($this->tbl_name,$data,$where);
                 return true;
             }
             else{
@@ -229,11 +229,11 @@ class M_user extends CI_Model{
                 "id_pk_user" => $this->id_pk_user
             );
             $data = array(
-                "user_pass" => password_hash($this->user_pass,PASSWORD_DEFAULT),
+                "user_pass" => password_hash($this->user_pass,password_default),
                 "id_last_modified" => $this->id_last_modified,
                 "user_last_modified" => $this->user_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         else{
@@ -246,11 +246,11 @@ class M_user extends CI_Model{
                 "id_pk_user" => $this->id_pk_user
             );
             $data = array(
-                "user_status" => "NONAKTIF",
+                "user_status" => "nonaktif",
                 "id_last_modified" => $this->id_last_modified,
                 "user_last_modified" => $this->user_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         else{
@@ -261,12 +261,12 @@ class M_user extends CI_Model{
         if($this->check_login()){
             $where = array(
                 "user_name" => $this->user_name,
-                "user_status" => "AKTIF"
+                "user_status" => "aktif"
             );
             $field = array(
                 "id_pk_user","user_name","user_pass","user_email","id_fk_role","user_status"
             );
-            $result = selectRow($this->tbl_name,$where,$field);
+            $result = selectrow($this->tbl_name,$where,$field);
             if($result->num_rows() > 0){
                 $result = $result->result_array();
                 if (password_verify($this->user_pass, $result[0]["user_pass"])){

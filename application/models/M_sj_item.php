@@ -1,8 +1,8 @@
 <?php
-defined("BASEPATH") or exit("No direct script");
-date_default_timezone_set("Asia/Jakarta");
-class M_sj_item extends CI_Model{
-    private $tbl_name = "TBL_SJ_ITEM";
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_sj_item extends ci_model{
+    private $tbl_name = "tbl_sj_item";
     private $columns = array();
     private $id_pk_sj_item;
     private $sj_item_qty;
@@ -18,8 +18,8 @@ class M_sj_item extends CI_Model{
 
     public function __construct(){
         parent::__construct();
-        $this->sj_item_create_date = date("Y-m-d H:i:s");
-        $this->sj_item_last_modified = date("Y-m-d H:i:s");
+        $this->sj_item_create_date = date("y-m-d h:i:s");
+        $this->sj_item_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
@@ -27,67 +27,67 @@ class M_sj_item extends CI_Model{
         return $this->columns;
     }
     public function install(){
-        $sql = "DROP TABLE IF EXISTS TBL_SJ_ITEM;
-        CREATE TABLE TBL_SJ_ITEM(
-            ID_PK_SJ_ITEM INT PRIMARY KEY AUTO_INCREMENT,
-            SJ_ITEM_QTY DOUBLE,
-            SJ_ITEM_NOTE VARCHAR(150),
-            SJ_ITEM_STATUS VARCHAR(15),
-            ID_FK_SATUAN INT,
-            ID_FK_SURAT_JALAN INT,
-            ID_FK_BRG_PENJUALAN INT,
-            SJ_ITEM_CREATE_DATE DATETIME,
-            SJ_ITEM_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT
+        $sql = "drop table if exists tbl_sj_item;
+        create table tbl_sj_item(
+            id_pk_sj_item int primary key auto_increment,
+            sj_item_qty double,
+            sj_item_note varchar(150),
+            sj_item_status varchar(15),
+            id_fk_satuan int,
+            id_fk_surat_jalan int,
+            id_fk_brg_penjualan int,
+            sj_item_create_date datetime,
+            sj_item_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
         );
-        DROP TABLE IF EXISTS TBL_SJ_ITEM_LOG;
-        CREATE TABLE TBL_SJ_ITEM_LOG(
-            ID_PK_SJ_ITEM_LOG INT PRIMARY KEY AUTO_INCREMENT,
-            EXECUTED_FUNCTION VARCHAR(30),
-            ID_PK_SJ_ITEM INT,
-            SJ_ITEM_QTY DOUBLE,
-            SJ_ITEM_NOTE VARCHAR(150),
-            SJ_ITEM_STATUS VARCHAR(15),
-            ID_FK_SATUAN INT,
-            ID_FK_SURAT_JALAN INT,
-            ID_FK_BRG_PENJUALAN INT,
-            SJ_ITEM_CREATE_DATE DATETIME,
-            SJ_ITEM_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT,
-            ID_LOG_ALL INT
+        drop table if exists tbl_sj_item_log;
+        create table tbl_sj_item_log(
+            id_pk_sj_item_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_sj_item int,
+            sj_item_qty double,
+            sj_item_note varchar(150),
+            sj_item_status varchar(15),
+            id_fk_satuan int,
+            id_fk_surat_jalan int,
+            id_fk_brg_penjualan int,
+            sj_item_create_date datetime,
+            sj_item_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_SJ_ITEM;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT_SJ_ITEM
-        AFTER INSERT ON TBL_SJ_ITEM
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.SJ_ITEM_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.SJ_ITEM_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_insert_sj_item;
+        delimiter $$
+        create trigger trg_after_insert_sj_item
+        after insert on tbl_sj_item
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.sj_item_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.sj_item_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO TBL_SJ_ITEM_LOG(EXECUTED_FUNCTION,ID_PK_SJ_ITEM,SJ_ITEM_QTY,SJ_ITEM_NOTE,SJ_ITEM_STATUS,ID_FK_SATUAN,ID_FK_SURAT_JALAN,ID_FK_BRG_PENJUALAN,SJ_ITEM_CREATE_DATE,SJ_ITEM_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_SJ_ITEM,NEW.SJ_ITEM_QTY,NEW.SJ_ITEM_NOTE,NEW.SJ_ITEM_STATUS,NEW.ID_FK_SATUAN,NEW.ID_FK_SURAT_JALAN,NEW.ID_FK_BRG_PENJUALAN,NEW.SJ_ITEM_CREATE_DATE,NEW.SJ_ITEM_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into tbl_sj_item_log(executed_function,id_pk_sj_item,sj_item_qty,sj_item_note,sj_item_status,id_fk_satuan,id_fk_surat_jalan,id_fk_brg_penjualan,sj_item_create_date,sj_item_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_sj_item,new.sj_item_qty,new.sj_item_note,new.sj_item_status,new.id_fk_satuan,new.id_fk_surat_jalan,new.id_fk_brg_penjualan,new.sj_item_create_date,new.sj_item_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
         
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_SJ_ITEM;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE_SJ_ITEM
-        AFTER UPDATE ON TBL_SJ_ITEM
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.SJ_ITEM_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.SJ_ITEM_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_update_sj_item;
+        delimiter $$
+        create trigger trg_after_update_sj_item
+        after update on tbl_sj_item
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.sj_item_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.sj_item_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO TBL_SJ_ITEM_LOG(EXECUTED_FUNCTION,ID_PK_SJ_ITEM,SJ_ITEM_QTY,SJ_ITEM_NOTE,SJ_ITEM_STATUS,ID_FK_SATUAN,ID_FK_SURAT_JALAN,ID_FK_BRG_PENJUALAN,SJ_ITEM_CREATE_DATE,SJ_ITEM_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_SJ_ITEM,NEW.SJ_ITEM_QTY,NEW.SJ_ITEM_NOTE,NEW.SJ_ITEM_STATUS,NEW.ID_FK_SATUAN,NEW.ID_FK_SURAT_JALAN,NEW.ID_FK_BRG_PENJUALAN,NEW.SJ_ITEM_CREATE_DATE,NEW.SJ_ITEM_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;";
-        executeQuery($sql);
+            insert into tbl_sj_item_log(executed_function,id_pk_sj_item,sj_item_qty,sj_item_note,sj_item_status,id_fk_satuan,id_fk_surat_jalan,id_fk_brg_penjualan,sj_item_create_date,sj_item_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_sj_item,new.sj_item_qty,new.sj_item_note,new.sj_item_status,new.id_fk_satuan,new.id_fk_surat_jalan,new.id_fk_brg_penjualan,new.sj_item_create_date,new.sj_item_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;";
+        executequery($sql);
     }
     public function insert(){
         if($this->check_insert()){
@@ -103,7 +103,7 @@ class M_sj_item extends CI_Model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         return false;
     }
@@ -121,7 +121,7 @@ class M_sj_item extends CI_Model{
                 "sj_item_last_modified" => $this->sj_item_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;
@@ -132,11 +132,11 @@ class M_sj_item extends CI_Model{
                 "id_pk_sj_item" => $this->id_pk_sj_item
             );
             $data = array(
-                "sj_item_status" => "NONAKTIF",
+                "sj_item_status" => "nonaktif",
                 "sj_item_last_modified" => $this->sj_item_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;

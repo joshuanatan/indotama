@@ -1,8 +1,8 @@
 <?php
-defined("BASEPATH") or exit("No Direct Script");
-date_default_timezone_set("Asia/Jakarta");
-class M_supplier extends CI_Model{
-    private $tbl_name = "MSTR_SUPPLIER";
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_supplier extends ci_model{
+    private $tbl_name = "mstr_supplier";
     private $columns = array();
     private $id_pk_sup;
     private $sup_nama;
@@ -20,17 +20,17 @@ class M_supplier extends CI_Model{
 
     public function __construct(){
         parent::__construct();
-        $this->set_column("sup_nama","PIC",true);
-        $this->set_column("sup_perusahaan","Supplier",false);
-        $this->set_column("sup_email","Email",false);
-        $this->set_column("sup_telp","No Telp",false);
-        $this->set_column("sup_hp","No HP",false);
-        $this->set_column("sup_alamat","Alamat",false);
-        $this->set_column("sup_keterangan","Keterangan",false);
-        $this->set_column("sup_status","Status",false);
-        $this->set_column("sup_last_modified","Last Modified",false);
-        $this->sup_create_date = date("Y-m-d H:i:s"); 
-        $this->sup_last_modified = date("Y-m-d H:i:s"); 
+        $this->set_column("sup_nama","pic",true);
+        $this->set_column("sup_perusahaan","supplier",false);
+        $this->set_column("sup_email","email",false);
+        $this->set_column("sup_telp","no telp",false);
+        $this->set_column("sup_hp","no hp",false);
+        $this->set_column("sup_alamat","alamat",false);
+        $this->set_column("sup_keterangan","keterangan",false);
+        $this->set_column("sup_status","status",false);
+        $this->set_column("sup_last_modified","last modified",false);
+        $this->sup_create_date = date("y-m-d h:i:s"); 
+        $this->sup_last_modified = date("y-m-d h:i:s"); 
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
@@ -47,118 +47,118 @@ class M_supplier extends CI_Model{
     }
     public function install(){
         $sql = "
-        DROP TABLE IF EXISTS MSTR_SUPPLIER;
-        CREATE TABLE MSTR_SUPPLIER(
-            ID_PK_SUP INT PRIMARY KEY AUTO_INCREMENT,
-            SUP_NAMA VARCHAR(100),
-            SUP_PERUSAHAAN VARCHAR(100),
-            SUP_EMAIL VARCHAR(100),
-            SUP_TELP VARCHAR(30),
-            SUP_HP VARCHAR(30),
-            SUP_ALAMAT VARCHAR(150),
-            SUP_KETERANGAN VARCHAR(150),
-            SUP_STATUS VARCHAR(15),
-            SUP_CREATE_DATE DATETIME,
-            SUP_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT
+        drop table if exists mstr_supplier;
+        create table mstr_supplier(
+            id_pk_sup int primary key auto_increment,
+            sup_nama varchar(100),
+            sup_perusahaan varchar(100),
+            sup_email varchar(100),
+            sup_telp varchar(30),
+            sup_hp varchar(30),
+            sup_alamat varchar(150),
+            sup_keterangan varchar(150),
+            sup_status varchar(15),
+            sup_create_date datetime,
+            sup_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
         );
-        DROP TABLE IF EXISTS MSTR_SUPPLIER_LOG;
-        CREATE TABLE MSTR_SUPPLIER_LOG(
-            ID_PK_SUP_LOG INT PRIMARY KEY AUTO_INCREMENT,
-            EXECUTED_FUNCTION VARCHAR(30),
-            ID_PK_SUP INT,
-            SUP_NAMA VARCHAR(100),
-            SUP_PERUSAHAAN VARCHAR(100),
-            SUP_EMAIL VARCHAR(100),
-            SUP_TELP VARCHAR(30),
-            SUP_HP VARCHAR(30),
-            SUP_ALAMAT VARCHAR(150),
-            SUP_KETERANGAN VARCHAR(150),
-            SUP_STATUS VARCHAR(15),
-            SUP_CREATE_DATE DATETIME,
-            SUP_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT,
-            ID_LOG_ALL INT
+        drop table if exists mstr_supplier_log;
+        create table mstr_supplier_log(
+            id_pk_sup_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_sup int,
+            sup_nama varchar(100),
+            sup_perusahaan varchar(100),
+            sup_email varchar(100),
+            sup_telp varchar(30),
+            sup_hp varchar(30),
+            sup_alamat varchar(150),
+            sup_keterangan varchar(150),
+            sup_status varchar(15),
+            sup_create_date datetime,
+            sup_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_SUPPLIER;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT_SUPPLIER
-        AFTER INSERT ON MSTR_SUPPLIER
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.SUP_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.SUP_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_insert_supplier;
+        delimiter $$
+        create trigger trg_after_insert_supplier
+        after insert on mstr_supplier
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.sup_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.sup_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_SUPPLIER_LOG(EXECUTED_FUNCTION,ID_PK_SUP,SUP_NAMA,SUP_PERUSAHAAN,SUP_EMAIL,SUP_TELP,SUP_HP,SUP_ALAMAT,SUP_KETERANGAN,SUP_STATUS,SUP_CREATE_DATE,SUP_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_SUP,NEW.SUP_NAMA,NEW.SUP_PERUSAHAAN,NEW.SUP_EMAIL,NEW.SUP_TELP,NEW.SUP_HP,NEW.SUP_ALAMAT,NEW.SUP_KETERANGAN,NEW.SUP_STATUS,NEW.SUP_CREATE_DATE,NEW.SUP_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_supplier_log(executed_function,id_pk_sup,sup_nama,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_create_date,sup_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_sup,new.sup_nama,new.sup_perusahaan,new.sup_email,new.sup_telp,new.sup_hp,new.sup_alamat,new.sup_keterangan,new.sup_status,new.sup_create_date,new.sup_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
 
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_SUPPLIER;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE_SUPPLIER
-        AFTER UPDATE ON MSTR_SUPPLIER
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.SUP_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.SUP_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_update_supplier;
+        delimiter $$
+        create trigger trg_after_update_supplier
+        after update on mstr_supplier
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.sup_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.sup_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_SUPPLIER_LOG(EXECUTED_FUNCTION,ID_PK_SUP,SUP_NAMA,SUP_PERUSAHAAN,SUP_EMAIL,SUP_TELP,SUP_HP,SUP_ALAMAT,SUP_KETERANGAN,SUP_STATUS,SUP_CREATE_DATE,SUP_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_SUP,NEW.SUP_NAMA,NEW.SUP_PERUSAHAAN,NEW.SUP_EMAIL,NEW.SUP_TELP,NEW.SUP_HP,NEW.SUP_ALAMAT,NEW.SUP_KETERANGAN,NEW.SUP_STATUS,NEW.SUP_CREATE_DATE,NEW.SUP_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_supplier_log(executed_function,id_pk_sup,sup_nama,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_create_date,sup_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_sup,new.sup_nama,new.sup_perusahaan,new.sup_email,new.sup_telp,new.sup_hp,new.sup_alamat,new.sup_keterangan,new.sup_status,new.sup_create_date,new.sup_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
         ";
-        executeQuery($sql);
+        executequery($sql);
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
-            $search_query .= "AND
+            $search_query .= "and
             ( 
-                sup_nama LIKE '%".$search_key."%' OR
-                sup_perusahaan LIKE '%".$search_key."%' OR
-                sup_email LIKE '%".$search_key."%' OR
-                sup_telp LIKE '%".$search_key."%' OR
-                sup_hp LIKE '%".$search_key."%' OR
-                sup_alamat LIKE '%".$search_key."%' OR
-                sup_keterangan LIKE '%".$search_key."%' OR
-                sup_status LIKE '%".$search_key."%' OR
-                sup_last_modified LIKE '%".$search_key."%'
+                sup_nama like '%".$search_key."%' or
+                sup_perusahaan like '%".$search_key."%' or
+                sup_email like '%".$search_key."%' or
+                sup_telp like '%".$search_key."%' or
+                sup_hp like '%".$search_key."%' or
+                sup_alamat like '%".$search_key."%' or
+                sup_keterangan like '%".$search_key."%' or
+                sup_status like '%".$search_key."%' or
+                sup_last_modified like '%".$search_key."%'
             )";
         }
         $query = "
-        SELECT id_pk_sup,sup_nama,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_last_modified
-        FROM ".$this->tbl_name." 
-        WHERE sup_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction." 
-        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        select id_pk_sup,sup_nama,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_last_modified
+        from ".$this->tbl_name." 
+        where sup_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction." 
+        limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "AKTIF"
+            "aktif"
         );
-        $result["data"] = executeQuery($query,$args);
+        $result["data"] = executequery($query,$args);
         
         $query = "
-        SELECT id_pk_sup
-        FROM ".$this->tbl_name." 
-        WHERE sup_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction;
-        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        select id_pk_sup
+        from ".$this->tbl_name." 
+        where sup_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction;
+        $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
     public function list(){
-        $sql = "SELECT id_pk_sup,sup_nama,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_last_modified
-        FROM ".$this->tbl_name." 
-        WHERE sup_status = ?  
-        ORDER BY SUP_PERUSAHAAN ASC";
+        $sql = "select id_pk_sup,sup_nama,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_last_modified
+        from ".$this->tbl_name." 
+        where sup_status = ?  
+        order by sup_perusahaan asc";
         $args = array(
-            "AKTIF"
+            "aktif"
         );
-        return executeQuery($sql,$args);
+        return executequery($sql,$args);
     }
     public function detail_by_perusahaan(){
         $where = array(
@@ -167,7 +167,7 @@ class M_supplier extends CI_Model{
         $field = array(
             "id_pk_sup","sup_nama","sup_perusahaan","sup_email","sup_telp","sup_hp","sup_alamat","sup_keterangan","sup_status","sup_last_modified"
         );
-        return selectRow($this->tbl_name,$where,$field);
+        return selectrow($this->tbl_name,$where,$field);
     }
     public function insert(){
         if($this->check_insert()){
@@ -185,20 +185,20 @@ class M_supplier extends CI_Model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         return false;
     }
     public function short_insert(){
         $data = array(
             "sup_perusahaan" => $this->sup_perusahaan,
-            "sup_status" => "AKTIF",
+            "sup_status" => "aktif",
             "sup_create_date" => $this->sup_create_date,
             "sup_last_modified" => $this->sup_last_modified,
             "id_create_data" => $this->id_create_data,
             "id_last_modified" => $this->id_last_modified
         );
-        return insertRow($this->tbl_name,$data);
+        return insertrow($this->tbl_name,$data);
     }
     public function update(){
         if($this->check_update()){
@@ -216,7 +216,7 @@ class M_supplier extends CI_Model{
                 "sup_last_modified" => $this->sup_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;
@@ -227,11 +227,11 @@ class M_supplier extends CI_Model{
                 "id_pk_sup" => $this->id_pk_sup
             );
             $data = array(
-                "sup_status" => "NONAKTIF",
+                "sup_status" => "nonaktif",
                 "sup_last_modified" => $this->sup_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;

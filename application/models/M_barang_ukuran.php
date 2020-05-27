@@ -1,8 +1,8 @@
 <?php
-defined("BASEPATH") or exit("No direct script");
-date_default_timezone_set("Asia/Jakarta");
-class M_barang_ukuran extends CI_Model{
-    private $tbl_name = "TBL_BARANG_UKURAN";
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_barang_ukuran extends ci_model{
+    private $tbl_name = "tbl_barang_ukuran";
     private $columns = array();
     private $id_pk_barang_ukuran;
     private $id_fk_barang;
@@ -15,21 +15,21 @@ class M_barang_ukuran extends CI_Model{
 
     public function install(){
         $sql = "
-        CREATE TABLE `tbl_barang_ukuran` (
-            `ID_PK_BARANG_UKURAN` INT PRIMARY KEY AUTO_INCREMENT,
-            `ID_FK_BARANG` int(11) DEFAULT NULL,
-            `UKURAN` varchar(10) DEFAULT NULL,
-            `BRG_UKURAN_STATUS` varchar(15) DEFAULT NULL,
-            `BRG_UKURAN_CREATE_DATE` datetime DEFAULT NULL,
-            `BRG_UKURAN_LAST_MODIFIED` datetime DEFAULT NULL,
-            `ID_CREATE_DATE` int(11) DEFAULT NULL,
-            `ID_LAST_MODIFIED` int(11) DEFAULT NULL
+        create table `tbl_barang_ukuran` (
+            `id_pk_barang_ukuran` int primary key auto_increment,
+            `id_fk_barang` int(11) default null,
+            `ukuran` varchar(10) default null,
+            `brg_ukuran_status` varchar(15) default null,
+            `brg_ukuran_create_date` datetime default null,
+            `brg_ukuran_last_modified` datetime default null,
+            `id_create_date` int(11) default null,
+            `id_last_modified` int(11) default null
         )";
     }
     public function __construct(){
         parent::__construct();
-        $this->brg_ukuran_create_date = date("Y-m-d H:i:s");
-        $this->brg_ukuran_last_modified = date("Y-m-d H:i:s");
+        $this->brg_ukuran_create_date = date("y-m-d h:i:s");
+        $this->brg_ukuran_last_modified = date("y-m-d h:i:s");
         $this->id_create_date = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
@@ -44,7 +44,7 @@ class M_barang_ukuran extends CI_Model{
                 "id_create_date" => $this->id_create_date,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         return false;
     }
@@ -52,7 +52,7 @@ class M_barang_ukuran extends CI_Model{
         $where = array(
             "id_fk_barang" => $this->id_fk_barang
         );
-        deleteRow($this->tbl_name,$where);
+        deleterow($this->tbl_name,$where);
         return true;
     }
     public function check_insert(){

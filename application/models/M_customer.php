@@ -1,8 +1,8 @@
 <?php
-defined("BASEPATH") or exit("No direct script");
-date_default_timezone_set("Asia/Jakarta");
-class M_customer extends CI_Model{
-    private $tbl_name = "MSTR_CUSTOMER";
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_customer extends ci_model{
+    private $tbl_name = "mstr_customer";
     private $columns = array();
     private $id_pk_cust;
     private $cust_name;
@@ -20,17 +20,17 @@ class M_customer extends CI_Model{
 
     public function __construct(){
         parent::__construct();
-        $this->set_column("cust_name","Name",true);
-        $this->set_column("cust_perusahaan","Perusahaan",false);
-        $this->set_column("cust_email","Email",false);
-        $this->set_column("cust_telp","Telp",false);
-        $this->set_column("cust_hp","Hp",false);
-        $this->set_column("cust_alamat","Alamat",false);
-        $this->set_column("cust_keterangan","Keterangan",false);
-        $this->set_column("cust_status","Status",false);
-        $this->set_column("cust_last_modified","Last Modified",false);
-        $this->cust_create_date = date("Y-m-d H:i:s");
-        $this->cust_last_modified = date("Y-m-d H:i:s");
+        $this->set_column("cust_name","name",true);
+        $this->set_column("cust_perusahaan","perusahaan",false);
+        $this->set_column("cust_email","email",false);
+        $this->set_column("cust_telp","telp",false);
+        $this->set_column("cust_hp","hp",false);
+        $this->set_column("cust_alamat","alamat",false);
+        $this->set_column("cust_keterangan","keterangan",false);
+        $this->set_column("cust_status","status",false);
+        $this->set_column("cust_last_modified","last modified",false);
+        $this->cust_create_date = date("y-m-d h:i:s");
+        $this->cust_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
@@ -47,114 +47,114 @@ class M_customer extends CI_Model{
     }
     public function install(){
         $sql = "
-        DROP TABLE IF EXISTS MSTR_CUSTOMER;
-        CREATE TABLE MSTR_CUSTOMER(
-            ID_PK_CUST INT PRIMARY KEY AUTO_INCREMENT,
-            CUST_NAME VARCHAR(100),
-            CUST_PERUSAHAAN VARCHAR(100),
-            CUST_EMAIL VARCHAR(100),
-            CUST_TELP VARCHAR(30),
-            CUST_HP VARCHAR(30),
-            CUST_ALAMAT VARCHAR(150),
-            CUST_KETERANGAN VARCHAR(150),
-            ID_FK_TOKO INT,
-            CUST_STATUS VARCHAR(15),
-            CUST_CREATE_DATE DATETIME,
-            CUST_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT
+        drop table if exists mstr_customer;
+        create table mstr_customer(
+            id_pk_cust int primary key auto_increment,
+            cust_name varchar(100),
+            cust_perusahaan varchar(100),
+            cust_email varchar(100),
+            cust_telp varchar(30),
+            cust_hp varchar(30),
+            cust_alamat varchar(150),
+            cust_keterangan varchar(150),
+            id_fk_toko int,
+            cust_status varchar(15),
+            cust_create_date datetime,
+            cust_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
         );
-        DROP TABLE IF EXISTS MSTR_CUSTOMER_LOG;
-        CREATE TABLE MSTR_CUSTOMER_LOG(
-            ID_PK_CUST_LOG INT PRIMARY KEY AUTO_INCREMENT,
-            EXECUTED_FUNCTION VARCHAR(30),
-            ID_PK_CUST INT,
-            CUST_NAME VARCHAR(100),
-            CUST_PERUSAHAAN VARCHAR(100),
-            CUST_EMAIL VARCHAR(100),
-            CUST_TELP VARCHAR(30),
-            CUST_HP VARCHAR(30),
-            CUST_ALAMAT VARCHAR(150),
-            CUST_KETERANGAN VARCHAR(150),
-            ID_FK_TOKO INT,
-            CUST_STATUS VARCHAR(15),
-            CUST_CREATE_DATE DATETIME,
-            CUST_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT,
-            ID_LOG_ALL INT
+        drop table if exists mstr_customer_log;
+        create table mstr_customer_log(
+            id_pk_cust_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_cust int,
+            cust_name varchar(100),
+            cust_perusahaan varchar(100),
+            cust_email varchar(100),
+            cust_telp varchar(30),
+            cust_hp varchar(30),
+            cust_alamat varchar(150),
+            cust_keterangan varchar(150),
+            id_fk_toko int,
+            cust_status varchar(15),
+            cust_create_date datetime,
+            cust_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_CUSTOMER;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT_CUSTOMER
-        AFTER INSERT ON MSTR_CUSTOMER
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.CUST_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT ' , NEW.CUST_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_insert_customer;
+        delimiter $$
+        create trigger trg_after_insert_customer
+        after insert on mstr_customer
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.cust_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.cust_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_CUSTOMER_LOG(EXECUTED_FUNCTION,ID_PK_CUST,CUST_NAME,CUST_PERUSAHAAN,CUST_EMAIL,CUST_TELP,CUST_HP,CUST_ALAMAT,CUST_KETERANGAN,ID_FK_TOKO,CUST_STATUS,CUST_CREATE_DATE,CUST_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_CUST,NEW.CUST_NAME,NEW.CUST_PERUSAHAAN,NEW.CUST_EMAIL,NEW.CUST_TELP,NEW.CUST_HP,NEW.CUST_ALAMAT,NEW.CUST_KETERANGAN,NEW.ID_FK_TOKO,NEW.CUST_STATUS,NEW.CUST_CREATE_DATE,NEW.CUST_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_customer_log(executed_function,id_pk_cust,cust_name,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,id_fk_toko,cust_status,cust_create_date,cust_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_cust,new.cust_name,new.cust_perusahaan,new.cust_email,new.cust_telp,new.cust_hp,new.cust_alamat,new.cust_keterangan,new.id_fk_toko,new.cust_status,new.cust_create_date,new.cust_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
         
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_CUSTOMER;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE_CUSTOMER
-        AFTER UPDATE ON MSTR_CUSTOMER
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.CUST_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT ' , NEW.CUST_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_update_customer;
+        delimiter $$
+        create trigger trg_after_update_customer
+        after update on mstr_customer
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.cust_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.cust_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_CUSTOMER_LOG(EXECUTED_FUNCTION,ID_PK_CUST,CUST_NAME,CUST_PERUSAHAAN,CUST_EMAIL,CUST_TELP,CUST_HP,CUST_ALAMAT,CUST_KETERANGAN,ID_FK_TOKO,CUST_STATUS,CUST_CREATE_DATE,CUST_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_CUST,NEW.CUST_NAME,NEW.CUST_PERUSAHAAN,NEW.CUST_EMAIL,NEW.CUST_TELP,NEW.CUST_HP,NEW.CUST_ALAMAT,NEW.CUST_KETERANGAN,NEW.ID_FK_TOKO,NEW.CUST_STATUS,NEW.CUST_CREATE_DATE,NEW.CUST_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;";
-        executeQuery($sql);
+            insert into mstr_customer_log(executed_function,id_pk_cust,cust_name,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,id_fk_toko,cust_status,cust_create_date,cust_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_cust,new.cust_name,new.cust_perusahaan,new.cust_email,new.cust_telp,new.cust_hp,new.cust_alamat,new.cust_keterangan,new.id_fk_toko,new.cust_status,new.cust_create_date,new.cust_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;";
+        executequery($sql);
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
-            $search_query .= "AND
+            $search_query .= "and
             ( 
-                id_pk_cust LIKE '%".$search_key."%' OR
-                cust_name LIKE '%".$search_key."%' OR
-                cust_perusahaan LIKE '%".$search_key."%' OR
-                cust_email LIKE '%".$search_key."%' OR
-                cust_telp LIKE '%".$search_key."%' OR
-                cust_hp LIKE '%".$search_key."%' OR
-                cust_alamat LIKE '%".$search_key."%' OR
-                cust_keterangan LIKE '%".$search_key."%' OR
-                cust_status LIKE '%".$search_key."%' OR
-                cust_last_modified LIKE '%".$search_key."%'
+                id_pk_cust like '%".$search_key."%' or
+                cust_name like '%".$search_key."%' or
+                cust_perusahaan like '%".$search_key."%' or
+                cust_email like '%".$search_key."%' or
+                cust_telp like '%".$search_key."%' or
+                cust_hp like '%".$search_key."%' or
+                cust_alamat like '%".$search_key."%' or
+                cust_keterangan like '%".$search_key."%' or
+                cust_status like '%".$search_key."%' or
+                cust_last_modified like '%".$search_key."%'
             )";
         }
         $query = "
-        SELECT id_pk_cust,cust_name,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,cust_status,cust_last_modified
-        FROM ".$this->tbl_name." 
-        WHERE cust_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction." 
-        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        select id_pk_cust,cust_name,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,cust_status,cust_last_modified
+        from ".$this->tbl_name." 
+        where cust_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction." 
+        limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "AKTIF"
+            "aktif"
         );
-        $result["data"] = executeQuery($query,$args);
+        $result["data"] = executequery($query,$args);
         
         $query = "
-        SELECT id_pk_cust
-        FROM ".$this->tbl_name." 
-        WHERE cust_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction;
-        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        select id_pk_cust
+        from ".$this->tbl_name." 
+        where cust_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction;
+        $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
     public function list(){
         $where = array(
-            "cust_status" => "AKTIF"
+            "cust_status" => "aktif"
         );
         $field = array(
             "id_pk_cust",
@@ -169,7 +169,7 @@ class M_customer extends CI_Model{
             "cust_create_date",
             "cust_last_modified"   
         );
-        return selectRow($this->tbl_name,$where,$field);
+        return selectrow($this->tbl_name,$where,$field);
     }
     public function detail_by_perusahaan(){
         $where = array(
@@ -188,18 +188,18 @@ class M_customer extends CI_Model{
             "cust_create_date",
             "cust_last_modified",
         );
-        return selectRow($this->tbl_name,$where,$field);
+        return selectrow($this->tbl_name,$where,$field);
     }
     public function short_insert(){
         $data = array(
             "cust_perusahaan" => $this->cust_perusahaan,
-            "cust_status" => "AKTIF",
+            "cust_status" => "aktif",
             "cust_create_date" => $this->cust_create_date,
             "cust_last_modified" => $this->cust_last_modified,
             "id_create_data" => $this->id_create_data,
             "id_last_modified" => $this->id_last_modified
         );
-        return insertRow($this->tbl_name,$data);
+        return insertrow($this->tbl_name,$data);
     }
     public function insert(){
         if($this->check_insert()){
@@ -217,7 +217,7 @@ class M_customer extends CI_Model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         return false;
     }
@@ -237,7 +237,7 @@ class M_customer extends CI_Model{
                 "cust_last_modified" => $this->cust_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;
@@ -248,11 +248,11 @@ class M_customer extends CI_Model{
                 "id_pk_cust" => $this->id_pk_cust
             );
             $data = array(
-                "cust_status" => "NONAKTIF",
+                "cust_status" => "nonaktif",
                 "cust_last_modified" => $this->cust_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;

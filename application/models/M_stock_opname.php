@@ -1,8 +1,8 @@
 <?php
-defined("BASEPATH") or exit("No direct script");
-date_default_timezone_set("Asia/Jakarta");
-class M_stock_opname extends CI_Model{
-    private $tbl_name = "MSTR_STOCK_OPNAME";
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_stock_opname extends ci_model{
+    private $tbl_name = "mstr_stock_opname";
     private $columns = array();
     private $id_pk_sup;
     private $sup_nama;
@@ -21,8 +21,8 @@ class M_stock_opname extends CI_Model{
 
     public function __construct(){
         parent::__construct();
-        $this->sup_create_date = date("Y-m-d H:i:s");
-        $this->sup_last_modified = date("Y-m-d H:i:s");
+        $this->sup_create_date = date("y-m-d h:i:s");
+        $this->sup_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
@@ -31,64 +31,64 @@ class M_stock_opname extends CI_Model{
     }
     public function install(){
         $sql = "
-        DROP TABLE IF EXISTS MSTR_STOCK_OPNAME;
-        CREATE TABLE MSTR_STOCK_OPNAME(
-            ID_PK_STOCK_OPNAME INT PRIMARY KEY AUTO_INCREMENT,
-            SO_TGL DATETIME,
-            SO_NOTES VARCHAR(200),
-            ID_FK_TOKO INT,
-            ID_EMP_DET INT,
-            SO_CREATE_DATE DATETIME,
-            SO_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT
+        drop table if exists mstr_stock_opname;
+        create table mstr_stock_opname(
+            id_pk_stock_opname int primary key auto_increment,
+            so_tgl datetime,
+            so_notes varchar(200),
+            id_fk_toko int,
+            id_emp_det int,
+            so_create_date datetime,
+            so_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
         );
-        DROP TABLE IF EXISTS MSTR_STOCK_OPNAME_LOG;
-        CREATE TABLE MSTR_STOCK_OPNAME_LOG(
-            ID_PK_STOCK_OPNAME_LOG INT PRIMARY KEY AUTO_INCREMENT,
-            EXECUTED_FUNCTION VARCHAR(30),
-            ID_PK_STOCK_OPNAME INT,
-            SO_TGL DATETIME,
-            SO_NOTES VARCHAR(200),
-            ID_FK_TOKO INT,
-            ID_EMP_DET INT,
-            SO_CREATE_DATE DATETIME,
-            SO_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT,
-            ID_LOG_ALL INT
+        drop table if exists mstr_stock_opname_log;
+        create table mstr_stock_opname_log(
+            id_pk_stock_opname_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_stock_opname int,
+            so_tgl datetime,
+            so_notes varchar(200),
+            id_fk_toko int,
+            id_emp_det int,
+            so_create_date datetime,
+            so_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_STOCK_OPNAME;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT_STOCK_OPNAME
-        AFTER INSERT ON MSTR_STOCK_OPNAME
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.SO_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.SO_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_insert_stock_opname;
+        delimiter $$
+        create trigger trg_after_insert_stock_opname
+        after insert on mstr_stock_opname
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.so_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.so_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_STOCK_OPNAME_LOG(EXECUTED_FUNCTION,ID_PK_STOCK_OPNAME,SO_TGL,SO_NOTES,ID_FK_TOKO,ID_EMP_DET,SO_CREATE_DATE,SO_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_STOCK_OPNAME,NEW.SO_TGL,NEW.SO_NOTES,NEW.ID_FK_TOKO,NEW.ID_EMP_DET,NEW.SO_CREATE_DATE,NEW.SO_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_stock_opname_log(executed_function,id_pk_stock_opname,so_tgl,so_notes,id_fk_toko,id_emp_det,so_create_date,so_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_stock_opname,new.so_tgl,new.so_notes,new.id_fk_toko,new.id_emp_det,new.so_create_date,new.so_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
 
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_STOCK_OPNAME;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE_STOCK_OPNAME
-        AFTER UPDATE ON MSTR_STOCK_OPNAME
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.SO_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.SO_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_update_stock_opname;
+        delimiter $$
+        create trigger trg_after_update_stock_opname
+        after update on mstr_stock_opname
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.so_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.so_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_STOCK_OPNAME_LOG(EXECUTED_FUNCTION,ID_PK_STOCK_OPNAME,SO_TGL,SO_NOTES,ID_FK_TOKO,ID_EMP_DET,SO_CREATE_DATE,SO_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_STOCK_OPNAME,NEW.SO_TGL,NEW.SO_NOTES,NEW.ID_FK_TOKO,NEW.ID_EMP_DET,NEW.SO_CREATE_DATE,NEW.SO_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_stock_opname_log(executed_function,id_pk_stock_opname,so_tgl,so_notes,id_fk_toko,id_emp_det,so_create_date,so_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_stock_opname,new.so_tgl,new.so_notes,new.id_fk_toko,new.id_emp_det,new.so_create_date,new.so_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
         ";
-        executeQuery($sql);
+        executequery($sql);
     }
     public function insert(){
         if($this->check_insert()){
@@ -107,7 +107,7 @@ class M_stock_opname extends CI_Model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         return false;
     }
@@ -128,7 +128,7 @@ class M_stock_opname extends CI_Model{
                 "sup_last_modified" => $this->sup_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;
@@ -139,11 +139,11 @@ class M_stock_opname extends CI_Model{
                 "id_pk_sup" => $this->id_pk_sup
             );
             $data = array(
-                "sup_status" => "NONAKTIF",
+                "sup_status" => "nonaktif",
                 "sup_last_modified" => $this->sup_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;

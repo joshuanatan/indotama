@@ -1,16 +1,16 @@
 <?php
-defined("BASEPATH") or exit("No direct script");
-date_default_timezone_set("Asia/Jakarta");
-class M_penjualan extends CI_Model{
-    private $tbl_name = "MSTR_PENJUALAN";
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_penjualan extends ci_model{
+    private $tbl_name = "mstr_penjualan";
     private $columns = array();
     private $id_pk_penjualan;
     private $penj_nomor;
     private $penj_tgl;
-    private $penj_dateline_tgl;/*SUPAYA TAU PAS PENGIRIMAN MANA YANG URGENT*/
+    private $penj_dateline_tgl;/*supaya tau pas pengiriman mana yang urgent*/
     private $penj_status;
-    private $penj_jenis; /*ONLINE/OFFLINE*/
-    private $penj_tipe_pembayaran; /*FULL/DP/TRIAL/DKK*/
+    private $penj_jenis; /*online/offline*/
+    private $penj_tipe_pembayaran; /*full/dp/trial/dkk*/
     private $id_fk_customer;
     private $id_fk_cabang;
     private $penj_create_date;
@@ -20,16 +20,16 @@ class M_penjualan extends CI_Model{
 
     public function __construct(){
         parent::__construct();
-        $this->set_column("penj_nomor","Nomor Penjualan",true);
-        $this->set_column("penj_tgl","Tanggal Penjualan",false);
-        $this->set_column("penj_dateline_tgl","Dateline",false);
-        $this->set_column("penj_jenis","Jenis Penjualan",false);
-        $this->set_column("tipe_pembayaran","Tipe Pembayaran",false);
-        $this->set_column("cust_name","Customer",false);
-        $this->set_column("penj_status","Status",false);
-        $this->set_column("penj_last_modified","Last Modified",false);
-        $this->penj_create_date = date("Y-m-d H:i:s");
-        $this->penj_last_modified = date("Y-m-d H:i:s");
+        $this->set_column("penj_nomor","nomor penjualan",true);
+        $this->set_column("penj_tgl","tanggal penjualan",false);
+        $this->set_column("penj_dateline_tgl","dateline",false);
+        $this->set_column("penj_jenis","jenis penjualan",false);
+        $this->set_column("tipe_pembayaran","tipe pembayaran",false);
+        $this->set_column("cust_name","customer",false);
+        $this->set_column("penj_status","status",false);
+        $this->set_column("penj_last_modified","last modified",false);
+        $this->penj_create_date = date("y-m-d h:i:s");
+        $this->penj_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
@@ -46,107 +46,107 @@ class M_penjualan extends CI_Model{
     }
     public function install(){
         $sql = "
-        DROP TABLE IF EXISTS MSTR_PENJUALAN;
-        CREATE TABLE MSTR_PENJUALAN(
-            ID_PK_PENJUALAN INT PRIMARY KEY AUTO_INCREMENT,
-            PENJ_NOMOR VARCHAR(30),
-            PENJ_TGL DATETIME,
-            PENJ_DATELINE_TGL DATETIME,
-            PENJ_JENIS VARCHAR(50),
-            PENJ_TIPE_PEMBAYARAN VARCHAR(50),
-            PENJ_STATUS VARCHAR(15),
-            ID_FK_CUSTOMER INT,
-            ID_FK_CABANG INT,
-            PENJ_CREATE_DATE DATETIME,
-            PENJ_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT
+        drop table if exists mstr_penjualan;
+        create table mstr_penjualan(
+            id_pk_penjualan int primary key auto_increment,
+            penj_nomor varchar(30),
+            penj_tgl datetime,
+            penj_dateline_tgl datetime,
+            penj_jenis varchar(50),
+            penj_tipe_pembayaran varchar(50),
+            penj_status varchar(15),
+            id_fk_customer int,
+            id_fk_cabang int,
+            penj_create_date datetime,
+            penj_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
         );
-        DROP TABLE IF EXISTS MSTR_PENJUALAN_LOG;
-        CREATE TABLE MSTR_PENJUALAN_LOG(
-            ID_PK_PENJUALAN_LOG INT PRIMARY KEY AUTO_INCREMENT,
-            EXECUTED_FUNCTION VARCHAR(30),
-            ID_PK_PENJUALAN INT,
-            PENJ_NOMOR VARCHAR(30),
-            PENJ_TGL DATETIME,
-            PENJ_DATELINE_TGL DATETIME,
-            PENJ_JENIS VARCHAR(50),
-            PENJ_TIPE_PEMBAYARAN VARCHAR(50),
-            PENJ_STATUS VARCHAR(15),
-            ID_FK_CUSTOMER INT,
-            ID_FK_CABANG INT,
-            PENJ_CREATE_DATE DATETIME,
-            PENJ_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT,
-            ID_LOG_ALL INT
+        drop table if exists mstr_penjualan_log;
+        create table mstr_penjualan_log(
+            id_pk_penjualan_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_penjualan int,
+            penj_nomor varchar(30),
+            penj_tgl datetime,
+            penj_dateline_tgl datetime,
+            penj_jenis varchar(50),
+            penj_tipe_pembayaran varchar(50),
+            penj_status varchar(15),
+            id_fk_customer int,
+            id_fk_cabang int,
+            penj_create_date datetime,
+            penj_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_PENJUALAN;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT_PENJUALAN
-        AFTER INSERT ON MSTR_PENJUALAN
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.PENJ_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.PENJ_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_insert_penjualan;
+        delimiter $$
+        create trigger trg_after_insert_penjualan
+        after insert on mstr_penjualan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.penj_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.penj_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_PENJUALAN_LOG(EXECUTED_FUNCTION,ID_PK_PENJUALAN,PENJ_NOMOR,PENJ_TGL,PENJ_DATELINE_TGL,PENJ_JENIS,PENJ_TIPE_PEMBAYARAN,PENJ_STATUS,ID_FK_CUSTOMER,ID_FK_CABANG,PENJ_CREATE_DATE,PENJ_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_PENJUALAN,NEW.PENJ_NOMOR,NEW.PENJ_TGL,NEW.PENJ_DATELINE_TGL,NEW.PENJ_JENIS,NEW.PENJ_TIPE_PEMBAYARAN,NEW.PENJ_STATUS,NEW.ID_FK_CUSTOMER,NEW.ID_FK_CABANG,NEW.PENJ_CREATE_DATE,NEW.PENJ_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_penjualan_log(executed_function,id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_jenis,penj_tipe_pembayaran,penj_status,id_fk_customer,id_fk_cabang,penj_create_date,penj_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_penjualan,new.penj_nomor,new.penj_tgl,new.penj_dateline_tgl,new.penj_jenis,new.penj_tipe_pembayaran,new.penj_status,new.id_fk_customer,new.id_fk_cabang,new.penj_create_date,new.penj_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
         
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_PENJUALAN;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE_PENJUALAN
-        AFTER UPDATE ON MSTR_PENJUALAN
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.PENJ_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.PENJ_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_update_penjualan;
+        delimiter $$
+        create trigger trg_after_update_penjualan
+        after update on mstr_penjualan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.penj_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.penj_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_PENJUALAN_LOG(EXECUTED_FUNCTION,ID_PK_PENJUALAN,PENJ_NOMOR,PENJ_TGL,PENJ_DATELINE_TGL,PENJ_JENIS,PENJ_TIPE_PEMBAYARAN,PENJ_STATUS,ID_FK_CUSTOMER,ID_FK_CABANG,PENJ_CREATE_DATE,PENJ_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_PENJUALAN,NEW.PENJ_NOMOR,NEW.PENJ_TGL,NEW.PENJ_DATELINE_TGL,NEW.PENJ_JENIS,NEW.PENJ_TIPE_PEMBAYARAN,NEW.PENJ_STATUS,NEW.ID_FK_CUSTOMER,NEW.ID_FK_CABANG,NEW.PENJ_CREATE_DATE,NEW.PENJ_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;";
-        executeQuery($sql);
+            insert into mstr_penjualan_log(executed_function,id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_jenis,penj_tipe_pembayaran,penj_status,id_fk_customer,id_fk_cabang,penj_create_date,penj_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_penjualan,new.penj_nomor,new.penj_tgl,new.penj_dateline_tgl,new.penj_jenis,new.penj_tipe_pembayaran,new.penj_status,new.id_fk_customer,new.id_fk_cabang,new.penj_create_date,new.penj_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;";
+        executequery($sql);
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
-            $search_query .= "AND
+            $search_query .= "and
             ( 
-                id_pk_penjualan LIKE '%".$search_key."%' OR
-                penj_nomor LIKE '%".$search_key."%' OR
-                penj_tgl LIKE '%".$search_key."%' OR
-                penj_dateline_tgl LIKE '%".$search_key."%' OR
-                penj_status LIKE '%".$search_key."%' OR
-                penj_jenis LIKE '%".$search_key."%' OR
-                penj_tipe_pembayaran LIKE '%".$search_key."%' OR
-                penj_last_modified LIKE '%".$search_key."%'
+                id_pk_penjualan like '%".$search_key."%' or
+                penj_nomor like '%".$search_key."%' or
+                penj_tgl like '%".$search_key."%' or
+                penj_dateline_tgl like '%".$search_key."%' or
+                penj_status like '%".$search_key."%' or
+                penj_jenis like '%".$search_key."%' or
+                penj_tipe_pembayaran like '%".$search_key."%' or
+                penj_last_modified like '%".$search_key."%'
             )";
         }
         $query = "
-        SELECT id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan
-        FROM ".$this->tbl_name." 
-        INNER JOIN MSTR_CUSTOMER ON MSTR_CUSTOMER.ID_PK_CUST = ".$this->tbl_name.".ID_FK_CUSTOMER
-        WHERE PENJ_STATUS = ? AND CUST_STATUS = ? AND ID_FK_CABANG = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction." 
-        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan
+        from ".$this->tbl_name." 
+        inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
+        where penj_status = ? and cust_status = ? and id_fk_cabang = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction." 
+        limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "AKTIF","AKTIF",$this->id_fk_cabang
+            "aktif","aktif",$this->id_fk_cabang
         );
-        $result["data"] = executeQuery($query,$args);
+        $result["data"] = executequery($query,$args);
         
         $query = "
-        SELECT id_pk_penjualan
-        FROM ".$this->tbl_name." 
-        INNER JOIN MSTR_CUSTOMER ON MSTR_CUSTOMER.ID_PK_CUST = ".$this->tbl_name.".ID_FK_CUSTOMER
-        WHERE PENJ_STATUS = ? AND CUST_STATUS = ? AND ID_FK_CABANG = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction;
-        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        select id_pk_penjualan
+        from ".$this->tbl_name." 
+        inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
+        where penj_status = ? and cust_status = ? and id_fk_cabang = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction;
+        $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
     public function insert(){
@@ -165,7 +165,7 @@ class M_penjualan extends CI_Model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         return false;
     }
@@ -184,7 +184,7 @@ class M_penjualan extends CI_Model{
                 "penj_last_modified" => $this->penj_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;
@@ -195,11 +195,11 @@ class M_penjualan extends CI_Model{
                 "id_pk_penjualan" => $this->id_pk_penjualan
             );
             $data = array(
-                "penj_status" => "NONAKTIF",
+                "penj_status" => "nonaktif",
                 "penj_last_modified" => $this->penj_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;

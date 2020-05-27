@@ -1,8 +1,8 @@
 <?php
-defined("BASEPATH") or exit("No Direct Script");
-date_default_timezone_set("Asia/Jakarta");
-class M_tambahan_penjualan extends CI_Model{
-    private $tbl_name = "TBL_TAMBAHAN_PENJUALAN";
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_tambahan_penjualan extends ci_model{
+    private $tbl_name = "tbl_tambahan_penjualan";
     private $columns = array();
     private $id_pk_penjualan_add;
     private $tmbhn_attr;
@@ -17,8 +17,8 @@ class M_tambahan_penjualan extends CI_Model{
 
     public function __construct(){
         parent::__construct();
-        $this->tmbhn_create_date = date("Y-m-d H:i:s");
-        $this->tmbhn_last_modified = date("Y-m-d H:i:s");
+        $this->tmbhn_create_date = date("y-m-d h:i:s");
+        $this->tmbhn_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
@@ -27,79 +27,79 @@ class M_tambahan_penjualan extends CI_Model{
     }
     public function install(){
         $sql = "
-        DROP TABLE IF EXISTS TBL_TAMBAHAN_PENJUALAN;
-        CREATE TABLE TBL_TAMBAHAN_PENJUALAN(
-            ID_PK_TMBHN INT PRIMARY KEY AUTO_INCREMENT,
-            TMBHN VARCHAR(100),
-            TMBHN_JUMLAH DOUBLE,
-            TMBHN_SATUAN VARCHAR(20),
-            TMBHN_HARGA INT,
-            TMBHN_NOTES VARCHAR(200),
-            TMBHN_STATUS VARCHAR(15),
-            ID_FK_PENJUALAN INT,
-            TMBHN_CREATE_DATE DATETIME,
-            TMBHN_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT
+        drop table if exists tbl_tambahan_penjualan;
+        create table tbl_tambahan_penjualan(
+            id_pk_tmbhn int primary key auto_increment,
+            tmbhn varchar(100),
+            tmbhn_jumlah double,
+            tmbhn_satuan varchar(20),
+            tmbhn_harga int,
+            tmbhn_notes varchar(200),
+            tmbhn_status varchar(15),
+            id_fk_penjualan int,
+            tmbhn_create_date datetime,
+            tmbhn_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
         );
-        DROP TABLE IF EXISTS TBL_TAMBAHAN_PENJUALAN_LOG;
-        CREATE TABLE TBL_TAMBAHAN_PENJUALAN_LOG(
-            ID_PK_TMBHN_LOG INT PRIMARY KEY AUTO_INCREMENT,
-            EXECUTED_FUNCTION VARCHAR(30),
-            ID_PK_TMBHN INT,
-            TMBHN VARCHAR(100),
-            TMBHN_JUMLAH DOUBLE,
-            TMBHN_SATUAN VARCHAR(20),
-            TMBHN_HARGA INT,
-            TMBHN_NOTES VARCHAR(200),
-            TMBHN_STATUS VARCHAR(15),
-            ID_FK_PENJUALAN INT,
-            TMBHN_CREATE_DATE DATETIME,
-            TMBHN_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT,
-            ID_LOG_ALL INT
+        drop table if exists tbl_tambahan_penjualan_log;
+        create table tbl_tambahan_penjualan_log(
+            id_pk_tmbhn_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_tmbhn int,
+            tmbhn varchar(100),
+            tmbhn_jumlah double,
+            tmbhn_satuan varchar(20),
+            tmbhn_harga int,
+            tmbhn_notes varchar(200),
+            tmbhn_status varchar(15),
+            id_fk_penjualan int,
+            tmbhn_create_date datetime,
+            tmbhn_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_TAMBAHAN_PENJUALAN;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT_TAMBAHAN_PENJUALAN
-        AFTER INSERT ON TBL_TAMBAHAN_PENJUALAN
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.TMBHN_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.TMBHN_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_insert_tambahan_penjualan;
+        delimiter $$
+        create trigger trg_after_insert_tambahan_penjualan
+        after insert on tbl_tambahan_penjualan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.tmbhn_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.tmbhn_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO TBL_TAMBAHAN_PENJUALAN_LOG(EXECUTED_FUNCTION,ID_PK_TMBHN,TMBHN,TMBHN_JUMLAH,TMBHN_SATUAN,TMBHN_HARGA,TMBHN_NOTES,TMBHN_STATUS,ID_FK_PENJUALAN,TMBHN_CREATE_DATE,TMBHN_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_TMBHN,NEW.TMBHN,NEW.TMBHN_JUMLAH,NEW.TMBHN_SATUAN,NEW.TMBHN_HARGA,NEW.TMBHN_NOTES,NEW.TMBHN_STATUS,NEW.ID_FK_PENJUALAN,NEW.TMBHN_CREATE_DATE,NEW.TMBHN_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into tbl_tambahan_penjualan_log(executed_function,id_pk_tmbhn,tmbhn,tmbhn_jumlah,tmbhn_satuan,tmbhn_harga,tmbhn_notes,tmbhn_status,id_fk_penjualan,tmbhn_create_date,tmbhn_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_tmbhn,new.tmbhn,new.tmbhn_jumlah,new.tmbhn_satuan,new.tmbhn_harga,new.tmbhn_notes,new.tmbhn_status,new.id_fk_penjualan,new.tmbhn_create_date,new.tmbhn_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
         
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_TAMBAHAN_PENJUALAN;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE_TAMBAHAN_PENJUALAN
-        AFTER UPDATE ON TBL_TAMBAHAN_PENJUALAN
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.TMBHN_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.TMBHN_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_update_tambahan_penjualan;
+        delimiter $$
+        create trigger trg_after_update_tambahan_penjualan
+        after update on tbl_tambahan_penjualan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.tmbhn_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.tmbhn_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO TBL_TAMBAHAN_PENJUALAN_LOG(EXECUTED_FUNCTION,ID_PK_TMBHN,TMBHN,TMBHN_JUMLAH,TMBHN_SATUAN,TMBHN_HARGA,TMBHN_NOTES,TMBHN_STATUS,ID_FK_PENJUALAN,TMBHN_CREATE_DATE,TMBHN_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_TMBHN,NEW.TMBHN,NEW.TMBHN_JUMLAH,NEW.TMBHN_SATUAN,NEW.TMBHN_HARGA,NEW.TMBHN_NOTES,NEW.TMBHN_STATUS,NEW.ID_FK_PENJUALAN,NEW.TMBHN_CREATE_DATE,NEW.TMBHN_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;";
-        executeQuery($sql);
+            insert into tbl_tambahan_penjualan_log(executed_function,id_pk_tmbhn,tmbhn,tmbhn_jumlah,tmbhn_satuan,tmbhn_harga,tmbhn_notes,tmbhn_status,id_fk_penjualan,tmbhn_create_date,tmbhn_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_tmbhn,new.tmbhn,new.tmbhn_jumlah,new.tmbhn_satuan,new.tmbhn_harga,new.tmbhn_notes,new.tmbhn_status,new.id_fk_penjualan,new.tmbhn_create_date,new.tmbhn_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;";
+        executequery($sql);
     }
     public function list(){
         $sql = "
-        SELECT id_pk_tmbhn,tmbhn,tmbhn_jumlah,tmbhn_satuan,tmbhn_harga,tmbhn_notes,tmbhn_status,tmbhn_last_modified
-        FROM ".$this->tbl_name."
-        WHERE TMBHN_STATUS = ? AND ID_FK_PENJUALAN = ?";
+        select id_pk_tmbhn,tmbhn,tmbhn_jumlah,tmbhn_satuan,tmbhn_harga,tmbhn_notes,tmbhn_status,tmbhn_last_modified
+        from ".$this->tbl_name."
+        where tmbhn_status = ? and id_fk_penjualan = ?";
         $args = array(
-            "AKTIF",$this->id_fk_penjualan
+            "aktif",$this->id_fk_penjualan
         );
-        return executeQuery($sql,$args);
+        return executequery($sql,$args);
     }
     public function insert(){
         if($this->check_insert()){
@@ -116,7 +116,7 @@ class M_tambahan_penjualan extends CI_Model{
                 "id_create_data" => $this->id_create_data, 
                 "id_last_modified" => $this->id_last_modified, 
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         return false;
     }
@@ -134,7 +134,7 @@ class M_tambahan_penjualan extends CI_Model{
                 "tmbhn_last_modified" => $this->tmbhn_last_modified, 
                 "id_last_modified" => $this->id_last_modified, 
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;
@@ -145,11 +145,11 @@ class M_tambahan_penjualan extends CI_Model{
                 "id_pk_tmbhn" => $this->id_pk_tmbhn
             );
             $data = array(
-                "tmbhn_status" => "NONAKTIF", 
+                "tmbhn_status" => "nonaktif", 
                 "tmbhn_last_modified" => $this->tmbhn_last_modified, 
                 "id_last_modified" => $this->id_last_modified, 
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;

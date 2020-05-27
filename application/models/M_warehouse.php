@@ -1,8 +1,8 @@
 <?php
-defined("BASEPATH") or exit("No Direct Script");
-date_default_timezone_set("Asia/Jakarta");
-class M_warehouse extends CI_Model{
-    private $tbl_name = "MSTR_WAREHOUSE";
+defined("BASEPATH") or exit("no direct script");
+date_default_timezone_set("asia/jakarta");
+class m_warehouse extends ci_model{
+    private $tbl_name = "mstr_warehouse";
     private $columns = array();
     private $id_pk_warehouse;
     private $warehouse_nama;
@@ -17,14 +17,14 @@ class M_warehouse extends CI_Model{
     
     public function __construct(){
         parent::__construct();
-        $this->set_column("warehouse_nama","Nama Warehouse","required");
-        $this->set_column("warehouse_alamat","Alamat","required");
-        $this->set_column("warehouse_notelp","No Telpon","required");
-        $this->set_column("warehouse_desc","Deskripsi","required");
-        $this->set_column("warehouse_status","Status","required");
-        $this->set_column("warehouse_last_modified","Last Modified","required");
-        $this->warehouse_create_date = date("Y-m-d H:i:s");
-        $this->warehouse_last_modified = date("Y-m-d H:i:s");
+        $this->set_column("warehouse_nama","nama warehouse","required");
+        $this->set_column("warehouse_alamat","alamat","required");
+        $this->set_column("warehouse_notelp","no telpon","required");
+        $this->set_column("warehouse_desc","deskripsi","required");
+        $this->set_column("warehouse_status","status","required");
+        $this->set_column("warehouse_last_modified","last modified","required");
+        $this->warehouse_create_date = date("y-m-d h:i:s");
+        $this->warehouse_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
@@ -41,98 +41,98 @@ class M_warehouse extends CI_Model{
     }
     public function install(){
         $sql = "
-        DROP TABLE IF EXISTS MSTR_WAREHOUSE;
-        CREATE TABLE MSTR_WAREHOUSE(
-            ID_PK_WAREHOUSE INT PRIMARY KEY AUTO_INCREMENT,
-            WAREHOUSE_NAMA VARCHAR(100),
-            WAREHOUSE_ALAMAT VARCHAR(200),
-            WAREHOUSE_NOTELP VARCHAR(30),
-            WAREHOUSE_DESC VARCHAR(150),
-            WAREHOUSE_STATUS VARCHAR(15),
-            WAREHOUSE_CREATE_DATE DATETIME,
-            WAREHOUSE_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT
+        drop table if exists mstr_warehouse;
+        create table mstr_warehouse(
+            id_pk_warehouse int primary key auto_increment,
+            warehouse_nama varchar(100),
+            warehouse_alamat varchar(200),
+            warehouse_notelp varchar(30),
+            warehouse_desc varchar(150),
+            warehouse_status varchar(15),
+            warehouse_create_date datetime,
+            warehouse_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
         );
-        DROP TABLE IF EXISTS MSTR_WAREHOUSE_LOG;
-        CREATE TABLE MSTR_WAREHOUSE_LOG(
-            ID_PK_WAREHOUSE_LOG INT PRIMARY KEY AUTO_INCREMENT,
-            EXECUTED_FUNCTION VARCHAR(30),
-            ID_PK_WAREHOUSE INT,
-            WAREHOUSE_NAMA VARCHAR(100),
-            WAREHOUSE_ALAMAT VARCHAR(200),
-            WAREHOUSE_NOTELP VARCHAR(30),
-            WAREHOUSE_DESC VARCHAR(150),
-            WAREHOUSE_STATUS VARCHAR(15),
-            WAREHOUSE_CREATE_DATE DATETIME,
-            WAREHOUSE_LAST_MODIFIED DATETIME,
-            ID_CREATE_DATA INT,
-            ID_LAST_MODIFIED INT,
-            ID_LOG_ALL INT
+        drop table if exists mstr_warehouse_log;
+        create table mstr_warehouse_log(
+            id_pk_warehouse_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_warehouse int,
+            warehouse_nama varchar(100),
+            warehouse_alamat varchar(200),
+            warehouse_notelp varchar(30),
+            warehouse_desc varchar(150),
+            warehouse_status varchar(15),
+            warehouse_create_date datetime,
+            warehouse_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
         );
-        DROP TRIGGER IF EXISTS TRG_AFTER_INSERT_WAREHOUSE;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_INSERT_WAREHOUSE
-        AFTER INSERT ON MSTR_WAREHOUSE
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.WAREHOUSE_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','INSERT DATA AT' , NEW.WAREHOUSE_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_insert_warehouse;
+        delimiter $$
+        create trigger trg_after_insert_warehouse
+        after insert on mstr_warehouse
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.warehouse_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.warehouse_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_WAREHOUSE_LOG(EXECUTED_FUNCTION,ID_PK_WAREHOUSE,WAREHOUSE_NAMA,WAREHOUSE_ALAMAT,WAREHOUSE_NOTELP,WAREHOUSE_DESC,WAREHOUSE_STATUS,WAREHOUSE_CREATE_DATE,WAREHOUSE_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER INSERT',NEW.ID_PK_WAREHOUSE,NEW.WAREHOUSE_NAMA,NEW.WAREHOUSE_ALAMAT,NEW.WAREHOUSE_NOTELP,NEW.WAREHOUSE_DESC,NEW.WAREHOUSE_STATUS,NEW.WAREHOUSE_CREATE_DATE,NEW.WAREHOUSE_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_warehouse_log(executed_function,id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_create_date,warehouse_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_warehouse,new.warehouse_nama,new.warehouse_alamat,new.warehouse_notelp,new.warehouse_desc,new.warehouse_status,new.warehouse_create_date,new.warehouse_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
 
-        DROP TRIGGER IF EXISTS TRG_AFTER_UPDATE_WAREHOUSE;
-        DELIMITER $$
-        CREATE TRIGGER TRG_AFTER_UPDATE_WAREHOUSE
-        AFTER UPDATE ON MSTR_WAREHOUSE
-        FOR EACH ROW
-        BEGIN
-            SET @ID_USER = NEW.ID_LAST_MODIFIED;
-            SET @TGL_ACTION = NEW.WAREHOUSE_LAST_MODIFIED;
-            SET @LOG_TEXT = CONCAT(NEW.ID_LAST_MODIFIED,' ','UPDATE DATA AT' , NEW.WAREHOUSE_LAST_MODIFIED);
-            CALL INSERT_LOG_ALL(@ID_USER,@TGL_ACTION,@LOG_TEXT,@ID_LOG_ALL);
+        drop trigger if exists trg_after_update_warehouse;
+        delimiter $$
+        create trigger trg_after_update_warehouse
+        after update on mstr_warehouse
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.warehouse_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.warehouse_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            INSERT INTO MSTR_WAREHOUSE_LOG(EXECUTED_FUNCTION,ID_PK_WAREHOUSE,WAREHOUSE_NAMA,WAREHOUSE_ALAMAT,WAREHOUSE_NOTELP,WAREHOUSE_DESC,WAREHOUSE_STATUS,WAREHOUSE_CREATE_DATE,WAREHOUSE_LAST_MODIFIED,ID_CREATE_DATA,ID_LAST_MODIFIED,ID_LOG_ALL) VALUES ('AFTER UPDATE',NEW.ID_PK_WAREHOUSE,NEW.WAREHOUSE_NAMA,NEW.WAREHOUSE_ALAMAT,NEW.WAREHOUSE_NOTELP,NEW.WAREHOUSE_DESC,NEW.WAREHOUSE_STATUS,NEW.WAREHOUSE_CREATE_DATE,NEW.WAREHOUSE_LAST_MODIFIED,NEW.ID_CREATE_DATA,NEW.ID_LAST_MODIFIED,@ID_LOG_ALL);
-        END$$
-        DELIMITER ;
+            insert into mstr_warehouse_log(executed_function,id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_create_date,warehouse_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_warehouse,new.warehouse_nama,new.warehouse_alamat,new.warehouse_notelp,new.warehouse_desc,new.warehouse_status,new.warehouse_create_date,new.warehouse_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
         ";
-        executeQuery($sql);
+        executequery($sql);
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "ASC", $search_key = "",$data_per_page = ""){
+    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
-            $search_query .= "AND
+            $search_query .= "and
             ( 
-                warehouse_nama LIKE '%".$search_key."%' OR 
-                warehouse_alamat LIKE '%".$search_key."%' OR 
-                warehouse_notelp LIKE '%".$search_key."%' OR 
-                warehouse_desc LIKE '%".$search_key."%' OR 
-                warehouse_status LIKE '%".$search_key."%' OR 
-                warehouse_last_modified LIKE '%".$search_key."%'
+                warehouse_nama like '%".$search_key."%' or 
+                warehouse_alamat like '%".$search_key."%' or 
+                warehouse_notelp like '%".$search_key."%' or 
+                warehouse_desc like '%".$search_key."%' or 
+                warehouse_status like '%".$search_key."%' or 
+                warehouse_last_modified like '%".$search_key."%'
             )";
         }
         $query = "
-        SELECT id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_last_modified
-        FROM ".$this->tbl_name." 
-        WHERE warehouse_status = ? ".$search_query."  
-        ORDER BY ".$order_by." ".$order_direction." 
-        LIMIT 20 OFFSET ".($page-1)*$data_per_page;
+        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_last_modified
+        from ".$this->tbl_name." 
+        where warehouse_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction." 
+        limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "AKTIF"
+            "aktif"
         );
-        $result["data"] = executeQuery($query,$args);
+        $result["data"] = executequery($query,$args);
         
         $query = "
-        SELECT id_pk_warehouse
-        FROM ".$this->tbl_name." 
-        WHERE warehouse_status = ? ".$search_query." 
-        ORDER BY ".$order_by." ".$order_direction;
-        $result["total_data"] = executeQuery($query,$args)->num_rows();
+        select id_pk_warehouse
+        from ".$this->tbl_name." 
+        where warehouse_status = ? ".$search_query." 
+        order by ".$order_by." ".$order_direction;
+        $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
     public function detail_by_id(){
@@ -148,7 +148,7 @@ class M_warehouse extends CI_Model{
         $where = array(
             "id_pk_warehouse" => $this->id_pk_warehouse
         );
-        return selectRow($this->tbl_name,$where,$field);
+        return selectrow($this->tbl_name,$where,$field);
     }
     public function insert(){
         if($this->check_insert()){
@@ -163,7 +163,7 @@ class M_warehouse extends CI_Model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertRow($this->tbl_name,$data);
+            return insertrow($this->tbl_name,$data);
         }
         return false;
     }
@@ -180,7 +180,7 @@ class M_warehouse extends CI_Model{
                 "warehouse_last_modified" => $this->warehouse_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;
@@ -191,11 +191,11 @@ class M_warehouse extends CI_Model{
                 "id_pk_warehouse" => $this->id_pk_warehouse
             );
             $data = array(
-                "warehouse_status" => "NONAKTIF",
+                "warehouse_status" => "nonaktif",
                 "warehouse_last_modified" => $this->warehouse_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updateRow($this->tbl_name,$data,$where);
+            updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;
