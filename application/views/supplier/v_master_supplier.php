@@ -59,22 +59,7 @@ $notif_data = array(
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
                                             </div>
                                             <br/>
-                                            <div class = "form-group">
-                                                <h5>Search Data Here</h5>
-                                                <input id = "search_box" placeholder = "Search data here..." type = "text" class = "form-control input-sm " onkeyup = "search()" style = "width:25%">
-                                            </div>
-                                            <div class = "table-responsive">
-                                                <table class = "table table-bordered table-hover table-striped">
-                                                    <thead id = "col_title_container">
-                                                    </thead>
-                                                    <tbody id = "content_container">
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <nav aria-label="Page navigation example">
-                                                <ul class="pagination justify-content-center" id = "pagination_container">
-                                                </ul>
-                                            </nav>
+                                            <?php $this->load->view("_base_element/table");?>
                                         </div>
                                     </div>
                                 </div>
