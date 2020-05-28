@@ -8,6 +8,7 @@ class m_brg_cabang extends ci_model{
     private $brg_cabang_qty;
     private $brg_cabang_notes;
     private $brg_cabang_status;
+    private $brg_cabang_last_price;
     private $id_fk_cabang;
     private $id_fk_brg;
     private $brg_cabang_create_date;
@@ -21,6 +22,7 @@ class m_brg_cabang extends ci_model{
         $this->set_column("brg_nama","nama barang","required");
         $this->set_column("brg_ket","keterangan","required");
         $this->set_column("brg_cabang_qty","qty","required");
+        $this->set_column("brg_cabang_last_price","biaya terakhir","required");
         $this->set_column("brg_cabang_notes","notes","required");
         $this->set_column("brg_cabang_status","status","required");
         $this->set_column("brg_cabang_last_modified","last modified","required");
@@ -48,6 +50,7 @@ class m_brg_cabang extends ci_model{
             brg_cabang_qty int,
             brg_cabang_notes varchar(200),
             brg_cabang_status varchar(15),
+            brg_cabang_last_price int default 0,
             id_fk_brg int,
             id_fk_cabang int,
             brg_cabang_create_date datetime,
@@ -61,6 +64,7 @@ class m_brg_cabang extends ci_model{
             executed_function varchar(30),
             id_pk_brg_cabang int,
             brg_cabang_qty int,
+            brg_cabang_last_price int default 0,
             brg_cabang_notes varchar(200),
             brg_cabang_status varchar(15),
             id_fk_brg int,
@@ -82,7 +86,7 @@ class m_brg_cabang extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.brg_cabang_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into tbl_brg_cabang_log(executed_function,id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_status,id_fk_brg,id_fk_cabang,brg_cabang_create_date,brg_cabang_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_cabang,new.brg_cabang_qty,new.brg_cabang_notes,new.brg_cabang_status,new.id_fk_brg,new.id_fk_cabang,new.brg_cabang_create_date,new.brg_cabang_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into tbl_brg_cabang_log(executed_function,id_pk_brg_cabang,brg_cabang_qty,brg_cabang_last_price,brg_cabang_notes,brg_cabang_status,id_fk_brg,id_fk_cabang,brg_cabang_create_date,brg_cabang_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_cabang,new.brg_cabang_last_price,new.brg_cabang_qty,new.brg_cabang_notes,new.brg_cabang_status,new.id_fk_brg,new.id_fk_cabang,new.brg_cabang_create_date,new.brg_cabang_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
 
@@ -97,7 +101,7 @@ class m_brg_cabang extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at ' , new.brg_cabang_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into tbl_brg_cabang_log(executed_function,id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_status,id_fk_brg,id_fk_cabang,brg_cabang_create_date,brg_cabang_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_cabang,new.brg_cabang_qty,new.brg_cabang_notes,new.brg_cabang_status,new.id_fk_brg,new.id_fk_cabang,new.brg_cabang_create_date,new.brg_cabang_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into tbl_brg_cabang_log(executed_function,id_pk_brg_cabang,brg_cabang_qty,brg_cabang_last_price,brg_cabang_notes,brg_cabang_status,id_fk_brg,id_fk_cabang,brg_cabang_create_date,brg_cabang_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_cabang,new.brg_cabang_last_price,new.brg_cabang_qty,new.brg_cabang_notes,new.brg_cabang_status,new.id_fk_brg,new.id_fk_cabang,new.brg_cabang_create_date,new.brg_cabang_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;";
         executequery($sql);
@@ -123,7 +127,7 @@ class m_brg_cabang extends ci_model{
             )";
         }
         $query = "
-        select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image
+        select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_last_price,brg_cabang_notes,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image
         from ".$this->tbl_name." 
         inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_brg
         where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ? ".$search_query."  
@@ -135,13 +139,24 @@ class m_brg_cabang extends ci_model{
         $result["data"] = executequery($query,$args);
         
         $query = "
-        select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image
+        select id_pk_brg_cabang
         from ".$this->tbl_name." 
         inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_brg
         where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ?".$search_query."  
         order by ".$order_by." ".$order_direction;
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
+    }
+    public function list(){
+        $sql = "
+        select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_last_price,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image
+        from ".$this->tbl_name." 
+        inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_brg
+        where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ? ";
+        $args = array(
+            "aktif","aktif",$this->id_fk_cabang
+        );
+        return executeQuery($sql,$args);
     }
     public function insert(){
         if($this->check_insert()){

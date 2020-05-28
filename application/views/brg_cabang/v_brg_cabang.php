@@ -78,41 +78,6 @@ $notif_data = array(
     var ctrl = "barang_cabang";
     var url_add = "id_cabang=<?php echo $cabang[0]["id_pk_cabang"];?>";
 </script>
-<datalist id = 'daftar_barang'></datalist>
-<script>
-    window.onload = function(){
-        $.ajax({
-            url:"<?php echo base_url();?>ws/barang/list",
-            type:"GET",
-            dataType:"JSON",
-            success:function(respond){
-                var html = "";
-                if(respond["status"] == "SUCCESS"){
-                    for(var a = 0; a<respond["content"].length; a++){
-                        html+="<option value = '"+respond['content'][a]["nama"]+"'></option>";
-                    }
-                    $("#daftar_barang").html(html);
-                }
-            }
-        });
-    }
-    window.onfocus = function(){
-        $.ajax({
-            url:"<?php echo base_url();?>ws/barang/list",
-            type:"GET",
-            dataType:"JSON",
-            success:function(respond){
-                var html = "";
-                if(respond["status"] == "SUCCESS"){
-                    for(var a = 0; a<respond["content"].length; a++){
-                        html+="<option value = '"+respond['content'][a]["nama"]+"'></option>";
-                    }
-                    $("#daftar_barang").html(html);
-                }
-            }
-        });
-    }
-</script>
 
 <?php
 $data = array(
@@ -128,4 +93,10 @@ $data = array(
 <?php $this->load->view("brg_cabang/f-update-brg_cabang",$data);?>
 <?php $this->load->view("brg_cabang/f-delete-brg_cabang",$data);?>
 
+<?php $this->load->view("_base_element/datalist_barang");?>
+<script>
+    function load_datalist(){
+        load_datalist_barang();
+    }
+</script>
 <?php $this->load->view('_notification/notif_general'); ?>

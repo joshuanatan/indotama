@@ -38,6 +38,7 @@ class Barang_cabang extends CI_Controller{
                 $response["content"][$a]["id"] = $result["data"][$a]["id_pk_brg_cabang"];
                 $response["content"][$a]["qty"] = $result["data"][$a]["brg_cabang_qty"];
                 $response["content"][$a]["notes"] = $result["data"][$a]["brg_cabang_notes"];
+                $response["content"][$a]["last_price"] = $result["data"][$a]["brg_cabang_last_price"];
                 $response["content"][$a]["status"] = $result["data"][$a]["brg_cabang_status"];
                 $response["content"][$a]["id_brg"] = $result["data"][$a]["id_fk_brg"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["brg_cabang_last_modified"];
@@ -58,10 +59,41 @@ class Barang_cabang extends CI_Controller{
             "nama_brg",
             "ket_brg",
             "qty",
+            "last_price",
             "notes",
             "status",
             "last_modified"
         );
+        echo json_encode($response);
+    }
+    public function list(){
+        $response["status"] = "SUCCESS";
+        $id_cabang = $this->input->get("id_cabang");
+        $this->load->model("m_brg_cabang");
+        $this->m_brg_cabang->set_id_fk_cabang($id_cabang);
+        $result = $this->m_brg_cabang->list();
+        if($result->num_rows() > 0 ){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_brg_cabang"];
+                $response["content"][$a]["qty"] = $result[$a]["brg_cabang_qty"];
+                $response["content"][$a]["notes"] = $result[$a]["brg_cabang_notes"];
+                $response["content"][$a]["last_price"] = $result[$a]["brg_cabang_last_price"];
+                $response["content"][$a]["status"] = $result[$a]["brg_cabang_status"];
+                $response["content"][$a]["id_brg"] = $result[$a]["id_fk_brg"];
+                $response["content"][$a]["last_modified"] = $result[$a]["brg_cabang_last_modified"];
+                $response["content"][$a]["nama"] = $result[$a]["brg_nama"];
+                $response["content"][$a]["kode"] = $result[$a]["brg_kode"];
+                $response["content"][$a]["ket"] = $result[$a]["brg_ket"];
+                $response["content"][$a]["minimal"] = $result[$a]["brg_minimal"];
+                $response["content"][$a]["satuan"] = $result[$a]["brg_satuan"];
+                $response["content"][$a]["image"] = $result[$a]["brg_image"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "Tidak ada barang cabang";
+        }
         echo json_encode($response);
     }
     public function register(){
