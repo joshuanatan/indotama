@@ -119,6 +119,28 @@ class Permintaan extends CI_Controller{
         }
         echo json_encode($response);
     }
+
+    public function selesai(){
+        $response["status"] = "SUCCESS";
+        
+        $this->form_validation->set_rules("id_pk_brg_permintaan","ID Permintaan","required");
+        if($this->form_validation->run()){
+            $data = array(
+                "brg_permintaan_status"=>"SELESAI",
+                "brg_permintaan_last_modified"=> date("y-m-d h:i:s"),
+                "id_last_modified"=> $this->session->id_user
+            );
+            $where = array(
+                "id_pk_brg_permintaan"=>$this->input->post("id_pk_brg_permintaan")
+            );
+            updateRow("tbl_brg_permintaan",$data,$where);
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = validation_errors();
+        }
+        echo json_encode($response);
+    }
     public function update(){
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("id_edit","id","required");

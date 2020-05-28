@@ -49,7 +49,7 @@ class Pemenuhan extends CI_Controller{
             if($result["data"]->num_rows() > 0){
                 $result["data"] = $result["data"]->result_array();
                 for($a = 0; $a<count($result["data"]); $a++){
-                    $response["content"][$a]["id"] = $result["data"][$a]["id_pk_brg_permintaan"];
+                    $response["content"][$a]["id_fk_brg_permintaan"] = $result["data"][$a]["id_pk_brg_permintaan"];
                     $response["content"][$a]["stok_permintaan"] = $result["data"][$a]["brg_permintaan_qty"];
                     $response["content"][$a]["notes"] = $result["data"][$a]["brg_permintaan_notes"];
                     $response["content"][$a]["deadline"] = $result["data"][$a]["brg_permintaan_deadline"];
@@ -66,6 +66,8 @@ class Pemenuhan extends CI_Controller{
                     $response["content"][$a]["tgl_permintaan"] = $result["data"][$a]["brg_permintaan_create_date"];
                     $response["content"][$a]["last_modified"] = $result["data"][$a]["brg_permintaan_last_modified"];
                     $response["content"][$a]["gambar_barang"] = "<img width='100px' src='" .$result["data"][$a]["brg_image"] . "'>";
+                    $response["content"][$a]["jml_brg_cbg"] = $result["data"][$a]["brg_cabang_qty"];
+                    
                 }
             }
             else{
@@ -86,56 +88,60 @@ class Pemenuhan extends CI_Controller{
     }
     public function register(){
         $response["status"] = "SUCCESS";
-        $this->form_validation->set_rules("id_pembelian","Nomor","required");
-        $this->form_validation->set_rules("tgl_penerimaan","Tanggal Penerimaan","required");
+        $this->form_validation->set_rules("id_fk_brg_permintaan","ID Permintaan","required");
+        $this->form_validation->set_rules("brg_pemenuhan_tipe","Tipe Permintaan","required");
+        $this->form_validation->set_rules("brg_skrg","Stok Sekarang","required");
+        $this->form_validation->set_rules("brg_pemenuhan_qty","Jumlah Pemenuhan","required");
+
         if($this->form_validation->run()){
-            $penerimaan_tgl = $this->input->post("tgl_penerimaan");
-            $penerimaan_status = "AKTIF";
-            $id_fk_pembelian = $this->input->post("id_pembelian");
-            $penerimaan_tempat = $this->input->post("tempat");
-            $id_tempat_penerimaan = $this->input->post("id_tempat_penerimaan"); //id_warehouse or id_cabang
-            $this->load->model("m_brg_pemenuhan");
-            if($this->m_brg_pemenuhan->set_insert($penerimaan_tgl,$penerimaan_status,$id_fk_pembelian,$penerimaan_tempat,$id_tempat_penerimaan)){
-                $id_penerimaan = $this->m_brg_pemenuhan->insert();
-                if($id_penerimaan){
-                    $response["msg"] = "Data is recorded to database";
-                    $check = $this->input->post("check");
-                    if($check != ""){
-                        $counter = 0;
-                        foreach($check as $a){
-                            $this->load->model("m_brg_penerimaan");
-                            $brg_penerimaan_qty = $this->input->post("qty_terima".$a);
-                            $brg_penerimaan_note = $this->input->post("notes".$a);
-                            $id_fk_penerimaan = $id_penerimaan;
-                            $id_fk_brg_pembelian = $this->input->post("id_brg".$a);
-                            $id_fk_satuan = $this->input->post("id_satuan".$a);
-                            if($this->m_brg_penerimaan->set_insert($brg_penerimaan_qty,$brg_penerimaan_note,$id_fk_penerimaan,$id_fk_brg_pembelian,$id_fk_satuan)){
-                                if($this->m_brg_penerimaan->insert()){
-                                    $response["statusitm"][$counter] = "SUCCESS";
-                                    $response["msgitm"][$counter] = "Item is recorded to database";
-                                }
-                                else{
-                                    
-                                    $response["statusitm"][$counter] = "ERROR";
-                                    $response["msgitm"][$counter] = "Insert Item function error";
-                                }
-                            }
-                            else{
-                                $response["statusitm"][$counter] = "ERROR";
-                                $response["msgitm"][$counter] = "Setter Item function error";
-                            }
-                        }
-                    }
-                }
-                else{
-                    $response["status"] = "ERROR";
-                    $response["msg"] = "Insert function error";
-                }
+            $brg_pemenuhan_qty = $this->input->post("brg_pemenuhan_qty");
+            $brg_pemenuhan_tipe =$this->input->post("brg_pemenuhan_tipe");
+            $brg_pemenuhan_status = "AKTIF";
+            $id_fk_brg_permintaan = $this->input->post("id_fk_brg_permintaan");
+
+            if($brg_pemenuhan_tipe=="CABANG"){
+                $id_fk_cabang = $this->session->id_cabang;
+                $id_fk_warehouse = "0";
+            }else{
+                $id_fk_warehouse = $this->session->id_warehouse;
+                $id_fk_cabang = "0";
             }
-            else{
+            $brg_pemenuhan_create_date =date("y-m-d h:i:s");
+            $brg_pemenuhan_last_modified =date("y-m-d h:i:s");
+            $id_create_data = $this->session->id_user;
+            $id_last_modified =$this->session->id_user;
+
+            //$stok_sisa = $this->input->post("brg_skrg");
+            //$stok_minta = get1Value("tbl_brg_permintaan","brg_permintaan_qty",array("id_pk_brg_permintaan"=>$id_fk_brg_permintaan));
+            
+            $data_permintaan = array(
+                "brg_permintaan_status"=>"SEDANG",
+                "brg_permintaan_last_modified"=>date("y-m-d h:i:s"),
+                "id_last_modified"=>$this->session->id_user,
+            );
+            $where_permintaan = array(
+                "id_pk_brg_permintaan"=>$id_fk_brg_permintaan
+            );
+            updateRow("tbl_brg_permintaan",$data_permintaan,$where_permintaan);
+
+            $data = array(
+                "brg_pemenuhan_qty" => $brg_pemenuhan_qty,
+                "brg_pemenuhan_tipe" => $brg_pemenuhan_tipe,
+                "brg_pemenuhan_status" => $brg_pemenuhan_status,
+                "id_fk_brg_permintaan" => $id_fk_brg_permintaan,
+                "id_fk_cabang" => $id_fk_cabang,
+                "id_fk_warehouse" => $id_fk_warehouse,
+                "brg_pemenuhan_create_date" => $brg_pemenuhan_create_date,
+                "brg_pemenuhan_last_modified" => $brg_pemenuhan_last_modified,
+                "id_create_data" => $id_create_data,
+                "id_last_modified" => $id_last_modified
+            );
+            $insert = insertRow("tbl_brg_pemenuhan",$data);
+            if(!$insert){
                 $response["status"] = "ERROR";
-                $response["msg"] = "Setter function error";
+                $response["msg"] = validation_errors();
             }
+            
         }
         else{
             $response["status"] = "ERROR";

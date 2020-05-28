@@ -3,6 +3,9 @@ $page_title = "Pemenuhan";
 $breadcrumb = array(
     "Pemenuhan"
 );
+$notif_data = array(
+    "page_title"=>$page_title
+);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,6 +23,9 @@ $breadcrumb = array(
             <?php $this->load->view('req/mm_menubar.php');?>
 
             <div class="page-wrapper">
+            <?php $this->load->view('_notification/register_success',$notif_data); ?>
+            <?php $this->load->view('_notification/update_success',$notif_data); ?>
+            <?php $this->load->view('_notification/delete_success',$notif_data); ?>
                 <div class="container-fluid">
                     <div class="row mt-20">
                         <div class="col-lg-12 col-sm-12">
@@ -43,9 +49,9 @@ $breadcrumb = array(
                                 <div class="panel-wrapper collapse in">
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
-                                            <!--<div class = "d-block">
+                                            <div class = "d-block">
                                                 <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#register_modal" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
-                                            </div>-->
+                                            </div>
                                             <br/>
                                             <br/>
                                             <div class = "align-middle text-center d-block">
@@ -85,7 +91,16 @@ $breadcrumb = array(
 <script>
     var ctrl = "pemenuhan";
     var url_add = "type=<?php echo $type;?>";
-    var unautorized_button = ["delete_button"];
+    var unautorized_button = ["delete_button","edit_button"];
+    var additional_button = [
+        {
+            data_toggle:'modal',
+            data_target:'#modal_insert',
+            style:'cursor:pointer;font-size:large',
+            class:'text-success md-plus',
+            onclick: 'load_edit_content()'
+        }
+    ];
 </script>
 <?php
 $data = array(
@@ -96,6 +111,7 @@ $data = array(
 <?php $this->load->view("_core_script/register_func");?>
 <?php $this->load->view("_core_script/update_func");?>
 <?php $this->load->view("_core_script/delete_func");?>
-<?php $this->load->view("penerimaan/f-add-penerimaan",$data);?>
-<?php $this->load->view("penerimaan/f-update-penerimaan",$data);?>
-<?php $this->load->view("penerimaan/f-delete-penerimaan",$data);?>
+<?php $this->load->view("brg_pemenuhan/f-insert-brg-pemenuhan",$data);?>
+<?php $this->load->view("brg_pemenuhan/f-delete-brg-pemenuhan",$data);?>
+
+<?php $this->load->view('_notification/notif_general'); ?>
