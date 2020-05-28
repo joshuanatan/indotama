@@ -89,45 +89,19 @@ $data = array(
 <?php $this->load->view("_core_script/register_func");?>
 <?php $this->load->view("_core_script/update_func");?>
 <?php $this->load->view("_core_script/delete_func");?>
+
 <?php $this->load->view("pembelian/f-add-pembelian",$data);?>
 <?php $this->load->view("pembelian/f-update-pembelian",$data);?>
 <?php $this->load->view("pembelian/f-delete-pembelian",$data);?>
 
-<datalist id = 'daftar_barang'></datalist>
-<datalist id = 'daftar_supplier'></datalist>
+
+<?php $this->load->view("_base_element/datalist_supplier");?>
+<?php $this->load->view("_base_element/datalist_barang_cabang");?>
 <script>
-    window.onfocus = function(){
-        $.ajax({
-            url:"<?php echo base_url();?>ws/barang/list",
-            type:"GET",
-            dataType:"JSON",
-            success:function(respond){
-                var html = "";
-                if(respond["status"] == "SUCCESS"){
-                    for(var a = 0; a<respond["content"].length; a++){
-                        html+="<option value = '"+respond['content'][a]["nama"]+"'></option>";
-                    }
-                    $("#daftar_barang").html(html);
-                }
-            }
-        });
-        $.ajax({
-            url:"<?php echo base_url();?>ws/supplier/list",
-            type:"GET",
-            dataType:"JSON",
-            success:function(respond){
-                var html = "";
-                if(respond["status"] == "SUCCESS"){
-                    for(var a = 0; a<respond["content"].length; a++){
-                        if(!respond['content'][a]["nama"]){
-                            respond['content'][a]["nama"] = "-";
-                        }
-                        html+="<option value = '"+respond['content'][a]["perusahaan"]+"'>"+respond['content'][a]["nama"]+"</option>";
-                    }
-                    $("#daftar_supplier").html(html);
-                }
-            }
-        })
-    }
+function load_datalist(){
+    load_datalist_barang_cabang();
+    load_datalist_supplier();
+}
 </script>
+
 <?php $this->load->view('_notification/notif_general'); ?>
