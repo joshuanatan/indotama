@@ -2,7 +2,7 @@
     <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
             <div class = "modal-header">
-                <h4 class = "modal-title">Ubah Data <?php echo ucwords($page_title);?></h4>
+                <h4 class = "modal-title">Selesaikan <?php echo ucwords($page_title);?></h4>
             </div>
             <div class = "modal-body">
             <?php 
@@ -17,6 +17,7 @@
                     <input type = "hidden" name = "id_pk_brg_permintaan" id = "id_pk_brg_permintaan_selesai">
                     <table class = "table table-striped table-bordered">
                         <tbody>
+                        <p>Apakah anda yakin akan menyelsaikan permintaan barang dibawah ini?</p>
                             <tr>
                                 <th>Nama Barang</th>
                                 <td id = "brg_nama_selesai"></td>    

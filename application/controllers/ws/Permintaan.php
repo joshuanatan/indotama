@@ -178,26 +178,15 @@ class Permintaan extends CI_Controller{
     public function delete(){
         $response["status"] = "SUCCESS";
         $id = $this->input->get("id");
-        if($id != "" && is_numeric($id)){
-            $this->load->model("m_brg_permintaan");
-            if($this->m_brg_permintaan->set_delete($id)){
-                if($this->m_brg_permintaan->delete()){
-                    $response["msg"] = "Data is deleted from database";
-                }
-                else{
-                    $response["status"] = "ERROR";
-                    $response["msg"] = "Delete function error";
-                }
-            }
-            else{
-                $response["status"] = "ERROR";
-                $response["msg"] = "Setter function error";
-            }
-        }
-        else{
-            $response["status"] = "ERROR";
-            $response["msg"] = "Invalid ID Supplier";
-        }
+        $data = array(
+            "brg_permintaan_status"=>"BATAL",
+            "brg_permintaan_last_modified"=> date("y-m-d h:i:s"),
+            "id_last_modified"=> $this->session->id_user
+        );
+        $where = array(
+            "id_pk_brg_permintaan"=>$id
+        );
+        updateRow("tbl_brg_permintaan",$data,$where);
         echo json_encode($response);
     }
     public function brg_penerimaan(){

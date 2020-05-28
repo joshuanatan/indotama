@@ -76,7 +76,7 @@ $notif_data = array(
 <script>
     var ctrl = "permintaan";
     var url_add = "";
-    var unautorized_button = ["delete_button"];
+    //var unautorized_button = ["delete_button"];
     var additional_button = [
         {
             data_toggle:'modal',
