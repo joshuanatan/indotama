@@ -208,8 +208,10 @@
                             }
                             html = "";
                             menu_category = respond["data"][a]["menu_category"];
+                            console.log("."+menu_category.toLowerCase()+"_menu_item");
+                            $("."+menu_category.toLowerCase()+"_menu_item").remove();
                         }
-                        html += "<li><a href='<?php echo base_url();?>"+respond["data"][a]["menu_name"]+"'><div class='pull-left'><i class='md-"+respond["data"][a]["menu_icon"]+"'></i><span class='right-nav-text' style='margin-left:20px'>"+respond["data"][a]["menu_display"]+"</span></div><div class='clearfix'></div></a></li>";
+                        html += "<li class = '"+menu_category.toLowerCase()+"_menu_item'><a href='<?php echo base_url();?>"+respond["data"][a]["menu_name"]+"'><div class='pull-left'><i class='md-"+respond["data"][a]["menu_icon"]+"'></i><span class='right-nav-text' style='margin-left:20px'>"+respond["data"][a]["menu_display"]+"</span></div><div class='clearfix'></div></a></li>";
                     }
                     $("#"+menu_category.toLowerCase()+"_menu_separator").after(html);
                 }
@@ -221,6 +223,15 @@
             tblheader();
             refresh();
             menubar();
+            if(typeof(load_datalist) != "undefined"){
+                load_datalist();
+            }
         }
+    }
+    window.onfocus = function(){
+        if(typeof(load_datalist) != "undefined"){
+            load_datalist();
+        }
+        menubar();
     }
 </script>
