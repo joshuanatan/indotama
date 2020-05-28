@@ -76,7 +76,16 @@ $notif_data = array(
 <script>
     var ctrl = "permintaan";
     var url_add = "";
-    var unautorized_button = ["delete_button"];
+    //var unautorized_button = ["delete_button"];
+    var additional_button = [
+        {
+            data_toggle:'modal',
+            data_target:'#selesai_modal',
+            style:'cursor:pointer;font-size:large',
+            class:'text-success md-check',
+            onclick: 'load_selesai_content()'
+        }
+    ];
 </script>
 <?php
 $data = array(
@@ -90,5 +99,9 @@ $data = array(
 <?php $this->load->view("brg_permintaan/f-add-brg-permintaan",$data);?>
 <?php $this->load->view("brg_permintaan/f-update-brg-permintaan",$data);?>
 <?php $this->load->view("brg_permintaan/f-delete-brg-permintaan",$data);?>
+<?php $this->load->view("brg_permintaan/f-selesai-brg-permintaan",$data);?>
 
 <?php $this->load->view('_notification/notif_general'); ?>
+<script>
+    $("#notif_selesai_error").css("display", "none");
+</script>

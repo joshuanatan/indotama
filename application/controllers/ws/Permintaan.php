@@ -119,6 +119,28 @@ class Permintaan extends CI_Controller{
         }
         echo json_encode($response);
     }
+
+    public function selesai(){
+        $response["status"] = "SUCCESS";
+        
+        $this->form_validation->set_rules("id_pk_brg_permintaan","ID Permintaan","required");
+        if($this->form_validation->run()){
+            $data = array(
+                "brg_permintaan_status"=>"SELESAI",
+                "brg_permintaan_last_modified"=> date("y-m-d h:i:s"),
+                "id_last_modified"=> $this->session->id_user
+            );
+            $where = array(
+                "id_pk_brg_permintaan"=>$this->input->post("id_pk_brg_permintaan")
+            );
+            updateRow("tbl_brg_permintaan",$data,$where);
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = validation_errors();
+        }
+        echo json_encode($response);
+    }
     public function update(){
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("id_edit","id","required");
@@ -156,26 +178,15 @@ class Permintaan extends CI_Controller{
     public function delete(){
         $response["status"] = "SUCCESS";
         $id = $this->input->get("id");
-        if($id != "" && is_numeric($id)){
-            $this->load->model("m_brg_permintaan");
-            if($this->m_brg_permintaan->set_delete($id)){
-                if($this->m_brg_permintaan->delete()){
-                    $response["msg"] = "Data is deleted from database";
-                }
-                else{
-                    $response["status"] = "ERROR";
-                    $response["msg"] = "Delete function error";
-                }
-            }
-            else{
-                $response["status"] = "ERROR";
-                $response["msg"] = "Setter function error";
-            }
-        }
-        else{
-            $response["status"] = "ERROR";
-            $response["msg"] = "Invalid ID Supplier";
-        }
+        $data = array(
+            "brg_permintaan_status"=>"BATAL",
+            "brg_permintaan_last_modified"=> date("y-m-d h:i:s"),
+            "id_last_modified"=> $this->session->id_user
+        );
+        $where = array(
+            "id_pk_brg_permintaan"=>$id
+        );
+        updateRow("tbl_brg_permintaan",$data,$where);
         echo json_encode($response);
     }
     public function brg_penerimaan(){
