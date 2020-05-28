@@ -6,6 +6,7 @@ class m_supplier extends ci_model{
     private $columns = array();
     private $id_pk_sup;
     private $sup_nama;
+    private $sup_suff;
     private $sup_perusahaan;
     private $sup_email;
     private $sup_telp;
@@ -51,6 +52,7 @@ class m_supplier extends ci_model{
         create table mstr_supplier(
             id_pk_sup int primary key auto_increment,
             sup_nama varchar(100),
+            sup_suff varchar(10),
             sup_perusahaan varchar(100),
             sup_email varchar(100),
             sup_telp varchar(30),
@@ -69,6 +71,7 @@ class m_supplier extends ci_model{
             executed_function varchar(30),
             id_pk_sup int,
             sup_nama varchar(100),
+            sup_suff varchar(10),
             sup_perusahaan varchar(100),
             sup_email varchar(100),
             sup_telp varchar(30),
@@ -93,7 +96,7 @@ class m_supplier extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at' , new.sup_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_supplier_log(executed_function,id_pk_sup,sup_nama,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_create_date,sup_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_sup,new.sup_nama,new.sup_perusahaan,new.sup_email,new.sup_telp,new.sup_hp,new.sup_alamat,new.sup_keterangan,new.sup_status,new.sup_create_date,new.sup_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_supplier_log(executed_function,id_pk_sup,sup_nama,sup_suff,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_create_date,sup_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_sup,new.sup_nama,new.sup_suff,new.sup_perusahaan,new.sup_email,new.sup_telp,new.sup_hp,new.sup_alamat,new.sup_keterangan,new.sup_status,new.sup_create_date,new.sup_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
 
@@ -108,7 +111,7 @@ class m_supplier extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at' , new.sup_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_supplier_log(executed_function,id_pk_sup,sup_nama,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_create_date,sup_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_sup,new.sup_nama,new.sup_perusahaan,new.sup_email,new.sup_telp,new.sup_hp,new.sup_alamat,new.sup_keterangan,new.sup_status,new.sup_create_date,new.sup_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_supplier_log(executed_function,id_pk_sup,sup_nama,sup_suff,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_create_date,sup_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_sup,new.sup_nama,new.sup_suff,new.sup_perusahaan,new.sup_email,new.sup_telp,new.sup_hp,new.sup_alamat,new.sup_keterangan,new.sup_status,new.sup_create_date,new.sup_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         ";
@@ -132,7 +135,7 @@ class m_supplier extends ci_model{
             )";
         }
         $query = "
-        select id_pk_sup,sup_nama,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_last_modified
+        select id_pk_sup,sup_nama,sup_suff,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_last_modified
         from ".$this->tbl_name." 
         where sup_status = ? ".$search_query."  
         order by ".$order_by." ".$order_direction." 
@@ -151,7 +154,7 @@ class m_supplier extends ci_model{
         return $result;
     }
     public function list(){
-        $sql = "select id_pk_sup,sup_nama,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_last_modified
+        $sql = "select id_pk_sup,sup_nama,sup_suff,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_last_modified
         from ".$this->tbl_name." 
         where sup_status = ?  
         order by sup_perusahaan asc";
@@ -165,7 +168,7 @@ class m_supplier extends ci_model{
             "sup_perusahaan" => $this->sup_perusahaan
         );
         $field = array(
-            "id_pk_sup","sup_nama","sup_perusahaan","sup_email","sup_telp","sup_hp","sup_alamat","sup_keterangan","sup_status","sup_last_modified"
+            "id_pk_sup","sup_nama","sup_suff","sup_perusahaan","sup_email","sup_telp","sup_hp","sup_alamat","sup_keterangan","sup_status","sup_last_modified"
         );
         return selectrow($this->tbl_name,$where,$field);
     }
@@ -173,6 +176,7 @@ class m_supplier extends ci_model{
         if($this->check_insert()){
             $data = array(
                 "sup_nama" => $this->sup_nama,
+                "sup_suff" => $this->sup_suff,
                 "sup_perusahaan" => $this->sup_perusahaan,
                 "sup_email" => $this->sup_email,
                 "sup_telp" => $this->sup_telp,
@@ -207,6 +211,7 @@ class m_supplier extends ci_model{
             );
             $data = array(
                 "sup_nama" => $this->sup_nama,
+                "sup_suff" => $this->sup_suff,
                 "sup_perusahaan" => $this->sup_perusahaan,
                 "sup_email" => $this->sup_email,
                 "sup_telp" => $this->sup_telp,
@@ -238,6 +243,9 @@ class m_supplier extends ci_model{
     }
     public function check_insert(){
         if($this->sup_nama == ""){
+            return false;
+        }
+        if($this->sup_suff == ""){
             return false;
         }
         if($this->sup_perusahaan == ""){
@@ -282,6 +290,9 @@ class m_supplier extends ci_model{
         if($this->sup_nama == ""){
             return false;
         }
+        if($this->sup_suff == ""){
+            return false;
+        }
         if($this->sup_perusahaan == ""){
             return false;
         }
@@ -320,8 +331,11 @@ class m_supplier extends ci_model{
         }
         return true;
     }
-    public function set_insert($sup_nama,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan,$sup_status){
+    public function set_insert($sup_nama,$sup_suff,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan,$sup_status){
         if(!$this->set_sup_nama($sup_nama)){
+            return false;
+        }
+        if(!$this->set_sup_suff($sup_suff)){
             return false;
         }
         if(!$this->set_sup_perusahaan($sup_perusahaan)){
@@ -347,11 +361,14 @@ class m_supplier extends ci_model{
         }
         return true;
     }
-    public function set_update($id_pk_sup,$sup_nama,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan){
+    public function set_update($id_pk_sup,$sup_nama,$sup_suff,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan){
         if(!$this->set_id_pk_sup($id_pk_sup)){
             return false;
         }
         if(!$this->set_sup_nama($sup_nama)){
+            return false;
+        }
+        if(!$this->set_sup_suff($sup_suff)){
             return false;
         }
         if(!$this->set_sup_perusahaan($sup_perusahaan)){
@@ -390,6 +407,13 @@ class m_supplier extends ci_model{
     public function set_sup_nama($sup_nama){
         if($sup_nama != ""){
             $this->sup_nama = $sup_nama;
+            return true;
+        }
+        return false;
+    }
+    public function set_sup_suff($sup_suff){
+        if($sup_suff != ""){
+            $this->sup_suff = $sup_suff;
             return true;
         }
         return false;

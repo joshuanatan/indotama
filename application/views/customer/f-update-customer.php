@@ -18,6 +18,18 @@
                         <input type="text" class="form-control" name="cust_name" id = "name_edit" required>
                     </div>
                     <div class = "form-group">
+                        <h5>Panggilan</h5>
+                        <select name="cust_suff" class="form-control" id = "suff_edit">
+                            <option value="0" disabled>Pilih Panggilan</option>
+                            <option value="MR">Mr</option>
+                            <option value="MRS">Mrs</option>
+                            <option value="MS">Ms</option>
+                            <option value="BAPAK">Bpk</option>
+                            <option value="IBU">Ibu</option>
+                            <option value="NONA">Nona</option>
+                        </select>
+                    </div>
+                    <div class = "form-group">
                         <h5>Perusahaan</h5>
                         <input type="text" class="form-control" name="cust_perusahaan" id = "perusahaan_edit" required>
                     </div>
@@ -55,6 +67,7 @@
     function load_edit_content(id){
         $("#id_edit").val(content[id]["id"]);
         $("#name_edit").val(content[id]["name"]);
+        $("#suff_edit").val(content[id]["suff"]);
         $("#perusahaan_edit").val(content[id]["perusahaan"]);
         $("#email_edit").val(content[id]["email"]);
         $("#telp_edit").val(content[id]["telp"]);

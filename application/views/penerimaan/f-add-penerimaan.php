@@ -48,7 +48,6 @@
                             <thead>
                                 <th>Barang</th>
                                 <th>Jumlah</th>
-                                <th>Harga</th>
                                 <th>Notes</th>
                                 <th style = "width:30%">Penerimaan</th>
                             </thead>
@@ -62,7 +61,6 @@
                             <thead>
                                 <th>Tambahan</th>
                                 <th>Jumlah</th>
-                                <th>Harga</th>
                                 <th>Notes</th>
                             </thead>
                             <tbody id = "daftar_tambahan_beli">
@@ -119,7 +117,7 @@
                     content_brg_pembelian = respond["content"];
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr class = 'brg_pembelian_row'><input type = 'hidden' name = 'check[]' value = '"+a+"'><input type = 'hidden' value = '"+respond["content"][a]["id"]+"' name = 'id_brg"+a+"'><td>"+respond["content"][a]["nama_brg"]+"<br/>Notes:"+respond["content"][a]["note"]+"</td><td>"+respond["content"][a]["qty"]+" "+respond["content"][a]["satuan"]+"</td><td>"+respond["content"][a]["harga"]+"</td><td><input type = 'text' class = 'form-control' name = 'notes"+a+"'></td><td><div style = 'display:inline-block'><input type = 'text' class = 'form-control' style = 'width:50%; display:inline-block' name = 'qty_terima"+a+"'><select class = 'form-control' style = 'width:50%; display:inline-block' name = 'id_satuan"+a+"'>"+satuan_opt+"</select></div></td></tr>";
+                        html += "<tr class = 'brg_pembelian_row'><input type = 'hidden' name = 'check[]' value = '"+a+"'><input type = 'hidden' value = '"+respond["content"][a]["id"]+"' name = 'id_brg"+a+"'><td>"+respond["content"][a]["nama_brg"]+"<br/>Notes:"+respond["content"][a]["note"]+"</td><td>"+respond["content"][a]["qty"]+" "+respond["content"][a]["satuan"]+"</td><td><input type = 'text' class = 'form-control' name = 'notes"+a+"'></td><td><div style = 'display:inline-block'><input type = 'text' class = 'form-control' style = 'width:50%; display:inline-block' name = 'qty_terima"+a+"'><select class = 'form-control' style = 'width:50%; display:inline-block' name = 'id_satuan"+a+"'>"+satuan_opt+"</select></div></td></tr>";
                     }
                     $("#daftar_brg_beli").html(html);
                 }
@@ -136,7 +134,7 @@
                     content_brg_pembelian = respond["content"];
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr class = 'tmbhn_pembelian_row'><td>"+respond["content"][a]["tmbhn"]+"</td><td>"+respond["content"][a]["jumlah"]+" "+respond["content"][a]["satuan"]+"</td><td>"+respond["content"][a]["harga"]+"</td><td>"+respond["content"][a]["notes"]+"</td></tr>";
+                        html += "<tr class = 'tmbhn_pembelian_row'><td>"+respond["content"][a]["tmbhn"]+"</td><td>"+respond["content"][a]["jumlah"]+" "+respond["content"][a]["satuan"]+"</td><td>"+respond["content"][a]["notes"]+"</td></tr>";
                     }
                     $("#daftar_tambahan_beli").html(html);
                 }

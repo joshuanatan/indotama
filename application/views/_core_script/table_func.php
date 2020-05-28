@@ -120,7 +120,7 @@
                 else{
                     html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed">></a></li>';
                 }
-                $("#pagination_container").html(html);
+                $(".pagination_container").html(html);
             }
         }
     }

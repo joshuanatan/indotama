@@ -36,6 +36,7 @@ class Customer extends CI_Controller{
             for($a = 0; $a<count($result["data"]); $a++){
                 $response["content"][$a]["id"] = $result["data"][$a]["id_pk_cust"];
                 $response["content"][$a]["name"] = $result["data"][$a]["cust_name"];
+                $response["content"][$a]["suff"] = $result["data"][$a]["cust_suff"];
                 $response["content"][$a]["perusahaan"] = $result["data"][$a]["cust_perusahaan"];
                 $response["content"][$a]["email"] = $result["data"][$a]["cust_email"];
                 $response["content"][$a]["telp"] = $result["data"][$a]["cust_telp"];
@@ -72,6 +73,7 @@ class Customer extends CI_Controller{
             for($a = 0; $a<count($result); $a++){
                 $response["content"][$a]["id"] = $result[$a]["id_pk_cust"];
                 $response["content"][$a]["name"] = $result[$a]["cust_name"];
+                $response["content"][$a]["suff"] = $result[$a]["cust_suff"];
                 $response["content"][$a]["perusahaan"] = $result[$a]["cust_perusahaan"];
                 $response["content"][$a]["email"] = $result[$a]["cust_email"];
                 $response["content"][$a]["telp"] = $result[$a]["cust_telp"];
@@ -92,6 +94,7 @@ class Customer extends CI_Controller{
     public function register(){
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("cust_name","Nama","required");
+        $this->form_validation->set_rules("cust_suff","Panggilan","required");
         $this->form_validation->set_rules("cust_perusahaan","Perusahaan","required");
         $this->form_validation->set_rules("cust_email","Email","required|valid_email");
         $this->form_validation->set_rules("cust_telp","Telepon","required");
@@ -103,6 +106,7 @@ class Customer extends CI_Controller{
             $this->load->model("m_customer");
 
             $cust_name = $this->input->post("cust_name");
+            $cust_suff = $this->input->post("cust_suff");
             $cust_perusahaan = $this->input->post("cust_perusahaan");
             $cust_email = $this->input->post("cust_email");
             $cust_telp = $this->input->post("cust_telp");
@@ -111,7 +115,7 @@ class Customer extends CI_Controller{
             $cust_keterangan = $this->input->post("cust_keterangan");
             $cust_status = "AKTIF";
 
-            if($this->m_customer->set_insert($cust_name,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_status)){
+            if($this->m_customer->set_insert($cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_status)){
                 if($this->m_customer->insert()){
                     $response["msg"] = "Data is recorded to database";
                 }
@@ -134,6 +138,7 @@ class Customer extends CI_Controller{
     public function update(){
         $response["status"] = "SUCCESS";
 		$this->form_validation->set_rules("cust_name","Nama","required");
+		$this->form_validation->set_rules("cust_suff","Panggilan","required");
         $this->form_validation->set_rules("cust_perusahaan","Perusahaan","required");
         $this->form_validation->set_rules("cust_email","Email","required|valid_email");
         $this->form_validation->set_rules("cust_telp","Telepon","required");
@@ -144,6 +149,7 @@ class Customer extends CI_Controller{
         if($this->form_validation->run()){
             $id_pk_cust = $this->input->post("id_pk_cust");
             $cust_name = $this->input->post("cust_name");
+            $cust_suff = $this->input->post("cust_suff");
             $cust_perusahaan = $this->input->post("cust_perusahaan");
             $cust_email = $this->input->post("cust_email");
             $cust_telp = $this->input->post("cust_telp");
@@ -152,7 +158,7 @@ class Customer extends CI_Controller{
             $cust_keterangan = $this->input->post("cust_keterangan");
 
             $this->load->model("m_customer");
-            if($this->m_customer->set_update($id_pk_cust,$cust_name,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan)){
+            if($this->m_customer->set_update($id_pk_cust,$cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan)){
                 if($this->m_customer->update()){
                     $response["msg"] = "Data is updated to database";
                 }

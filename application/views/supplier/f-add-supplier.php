@@ -21,6 +21,18 @@
                         <input type = "text" class = "form-control" required name = "pic">
                     </div>
                     <div class = "form-group">
+                        <h5>Panggilan</h5>
+                        <select name="suff" class="form-control">
+                            <option value="0" disabled>Pilih Panggilan</option>
+                            <option value="MR">Mr</option>
+                            <option value="MRS">Mrs</option>
+                            <option value="MS">Ms</option>
+                            <option value="BAPAK">Bpk</option>
+                            <option value="IBU">Ibu</option>
+                            <option value="NONA">Nona</option>
+                        </select>
+                    </div>
+                    <div class = "form-group">
                         <h5>Email</h5>
                         <input type = "text" class = "form-control" required name = "email">
                     </div>
