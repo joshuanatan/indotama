@@ -1,7 +1,7 @@
 <?php
 $page_title = "Penjualan";
 $breadcrumb = array(
-    "Pembelian"
+    "Penjualan"
 );
 $notif_data = array(
     "page_title"=>$page_title
@@ -50,7 +50,7 @@ $notif_data = array(
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
                                             <div class = "d-block">
-                                                <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#register_modal" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
+                                                <a target = "_blank" href = "<?php echo base_url();?>penjualan/tambah" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></a>
                                             </div>
                                             <br/>
                                             <br/>
@@ -83,58 +83,6 @@ $data = array(
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
-<?php $this->load->view("penjualan/f-add-penjualan",$data);?>
-<?php $this->load->view("penjualan/f-update-penjualan",$data);?>
-<?php $this->load->view("penjualan/f-delete-penjualan",$data);?>
 
-<datalist id = 'daftar_barang'></datalist>
-<datalist id = 'daftar_customer'></datalist>
-<script>
-    window.onload = function(){
-        customer_list();
-        barang_list();
-    }
-    window.onfocus = function(){
-        customer_list();
-        barang_list();
-    }
-    function customer_list(){
-        $.ajax({
-            url:"<?php echo base_url();?>ws/customer/list",
-            type:"GET",
-            dataType:"JSON",
-            success:function(respond){
-                var html = "";
-                if(respond["status"] == "SUCCESS"){
-                    for(var a = 0; a<respond["content"].length; a++){
-                        if(!respond['content'][a]["nama"]){
-                            respond['content'][a]["nama"] = "-";
-                        }
-                        html+="<option value = '"+respond['content'][a]["perusahaan"]+"'>"+respond['content'][a]["name"]+"</option>";
-                    }
-                    $("#daftar_customer").html(html);
-                }
-            }
-        })
-    }
-    function barang_list(){
-        $.ajax({
-            url:"<?php echo base_url();?>ws/barang/list",
-            type:"GET",
-            dataType:"JSON",
-            success:function(respond){
-                var html = "";
-                if(respond["status"] == "SUCCESS"){
-                    for(var a = 0; a<respond["content"].length; a++){
-                        html+="<option value = '"+respond['content'][a]["nama"]+"'></option>";
-                    }
-                    $("#daftar_barang").html(html);
-                }
-            }
-        });
-    }
-</script>
+
 <?php $this->load->view('_notification/notif_general'); ?>
