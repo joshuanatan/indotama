@@ -69,15 +69,15 @@ $notif_data = array(
                                             <div id = "online_info_container" class = "col-lg-12" style = "display:none">
                                                 <div class = "form-group">
                                                     <h5>Marketplace</h5>
-                                                    <input type = "text" class = "form-control" required>
+                                                    <input type = "text" class = "form-control" required name = "marketplace">
                                                 </div>
                                                 <div class = "form-group">
                                                     <h5>Kurir</h5>
-                                                    <input type = "text" class = "form-control" required>
+                                                    <input type = "text" class = "form-control" required name = "no_resi">
                                                 </div>
                                                 <div class = "form-group">
                                                     <h5>No Resi</h5>
-                                                    <input type = "text" class = "form-control" required>
+                                                    <input type = "text" class = "form-control" required name = "kurir">
                                                 </div>
                                             </div>
                                             <div class = "form-group col-lg-12">
@@ -123,6 +123,10 @@ $notif_data = array(
                                                 </table>
                                             </div>
                                             <div class = "form-group col-lg-12">
+                                                <h5>Total Price</h5>
+                                                <input style = "width:50%" type = "text" class = "form-control" required readonly>
+                                            </div>
+                                            <div class = "form-group col-lg-12">
                                                 <h5>Jenis Pembayaran</h5>
                                                 <input checked type="radio" name="jenis_pembayaran" value="FULL PAYMENT">&nbsp;FULL PAYMENT
                                                 &nbsp;&nbsp;
@@ -151,6 +155,10 @@ $notif_data = array(
                                                     </tbody>
                                                 </table>
                                             </div>
+                                            <div class = "form-group col-lg-12" style = "width:50%">
+                                                <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
+                                                <button type = "button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -164,29 +172,31 @@ $notif_data = array(
     </body>
 </html>
 <script>
+    var ctrl = "penjualan";
+
     var brg_jual_row = 0;  
     function add_brg_jual_row(){
-        var html = "<tr class = 'add_brg_jual_row'><td id = 'row"+brg_jual_row+"'><input name = 'check[]' value = "+brg_jual_row+" type = 'hidden'><input type = 'text' list = 'daftar_barang' name = 'brg"+brg_jual_row+"' class = 'form-control'></td><td><input name = 'brg_qty"+brg_jual_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' name = 'brg_price"+brg_jual_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_price"+brg_jual_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+brg_jual_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = "<tr class = 'add_brg_jual_row'><td id = 'row"+brg_jual_row+"'><input name = 'check[]' value = "+brg_jual_row+" type = 'hidden'><input type = 'text' list = 'datalist_barang_cabang' name = 'brg"+brg_jual_row+"' class = 'form-control'></td><td><input name = 'brg_qty"+brg_jual_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' name = 'brg_price"+brg_jual_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_price"+brg_jual_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+brg_jual_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
         $("#add_brg_jual_but_container").before(html);
         brg_jual_row++;    
-    }
-    var pembayaran_row = 0;  
-    function add_pembayaran_row(){
-        var html = "<tr class = 'add_pembayaran_row'><td id = 'row"+pembayaran_row+"'><input name = 'check[]' value = "+pembayaran_row+" type = 'hidden'><input type = 'text' list = 'daftar_barang' name = 'brg"+pembayaran_row+"' class = 'form-control'></td><td><input name = 'brg_qty"+pembayaran_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' name = 'brg_price"+pembayaran_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+pembayaran_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+pembayaran_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
-        $("#add_pembayaran_but_container").before(html);
-        pembayaran_row++;    
-    }
-    var custom_produk_row = 0;  
-    function add_custom_produk_row(){
-        var html = "<tr class = 'add_custom_produk_row'><td><input name = 'tambahan[]' value = "+custom_produk_row+" type = 'hidden'><input name = 'tmbhn"+custom_produk_row+"' type = 'text' class = 'form-control'></td><td><input name = 'tmbhn_jumlah"+custom_produk_row+"' type = 'text' class = 'form-control'></td><td><input name = 'tmbhn_harga"+custom_produk_row+"' type = 'text' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
-        $("#add_custom_produk_but_container").before(html);
-        custom_produk_row++;    
     }
     var tambahan_jual_row = 0;
     function add_tambahan_jual_row(){
         var html = "<tr class = 'add_tambahan_jual_row'><td><input name = 'tambahan[]' value = "+tambahan_jual_row+" type = 'hidden'><input name = 'tmbhn"+tambahan_jual_row+"' type = 'text' class = 'form-control'></td><td><input name = 'tmbhn_jumlah"+tambahan_jual_row+"' type = 'text' class = 'form-control'></td><td><input name = 'tmbhn_harga"+tambahan_jual_row+"' type = 'text' class = 'form-control'></td><td><input name = 'tmbhn_notes"+tambahan_jual_row+"' type = 'text' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
         $("#add_tambahan_jual_but_container").before(html);
         tambahan_jual_row++;        
+    }
+    var pembayaran_row = 0;  
+    function add_pembayaran_row(){
+        var html = "<tr class = 'add_pembayaran_row'><td id = 'row"+pembayaran_row+"'><input name = 'pembayaran[]' value = "+pembayaran_row+" type = 'hidden'><input type = 'text' name = 'pmbyrn_nama"+pembayaran_row+"' class = 'form-control'></td><td><input name = 'pmbyrn_persen"+pembayaran_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' name = 'pmbyrn_nominal"+pembayaran_row+"' class = 'form-control'></td><td><input type = 'text' name = 'pmbyrn_notes"+pembayaran_row+"' class = 'form-control'></td><td><input type = 'date' name = 'pmbyrn_dateline"+pembayaran_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        $("#add_pembayaran_but_container").before(html);
+        pembayaran_row++;    
+    }
+    var custom_produk_row = 0;  
+    function add_custom_produk_row(){
+        var html = "<tr class = 'add_custom_produk_row'><td><input name = 'custom[]' value = "+custom_produk_row+" type = 'hidden'><input name = 'custom"+custom_produk_row+"' type = 'text' class = 'form-control'></td><td><input name = 'custom_jumlah"+custom_produk_row+"' type = 'text' class = 'form-control'></td><td><input name = 'custom_harga"+custom_produk_row+"' type = 'text' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        $("#add_custom_produk_but_container").before(html);
+        custom_produk_row++;    
     }
     function empty_table_form(){
         var brg_jual_row = 0;  
@@ -223,9 +233,14 @@ $notif_data = array(
                             <td colspan = 6><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_custom_produk_row()">Tambah Barang Penjualan</button>
                             </td>
                         </tr>
+                        <div class = "form-group col-lg-12" style = "width:50%">
+                            <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
+                            <button type = "button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
+                        </div>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+<?php $this->load->view("_core_script/register_func");?>

@@ -5,10 +5,10 @@ class m_penjualan_online extends ci_model{
     private $tbl_name = "tbl_penjualan_online";
     private $columns = array();
     private $id_pk_penjualan_online;
+    private $penj_on_marketplace;
     private $penj_on_no_resi;
     private $penj_on_kurir;
     private $penj_on_status;
-    private $id_fk_toko;
     private $id_fk_penjualan;
     private $penj_on_create_date;
     private $penj_on_last_modified;
@@ -29,10 +29,10 @@ class m_penjualan_online extends ci_model{
         $sql = "drop table if exists tbl_penjualan_online;
         create table tbl_penjualan_online(
             id_pk_penjualan_online int primary key auto_increment,
+            penj_on_marketplace varchar(40),
             penj_on_no_resi varchar(40),
             penj_on_kurir varchar(40),
             penj_on_status varchar(15),
-            id_fk_toko int,
             id_fk_penjualan int,
             penj_on_create_date datetime,
             penj_on_last_modified datetime,
@@ -44,10 +44,10 @@ class m_penjualan_online extends ci_model{
             id_pk_penjualan_online_log int primary key auto_increment,
             executed_function varchar(30),
             id_pk_penjualan_online int,
+            penj_on_marketplace varchar(40),
             penj_on_no_resi varchar(40),
             penj_on_kurir varchar(40),
             penj_on_status varchar(15),
-            id_fk_toko int,
             id_fk_penjualan int,
             penj_on_create_date datetime,
             penj_on_last_modified datetime,
@@ -66,7 +66,7 @@ class m_penjualan_online extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at' , new.penj_on_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into tbl_penjualan_online_log(executed_function,id_pk_penjualan_online,penj_on_no_resi,penj_on_kurir,penj_on_status,id_fk_toko,id_fk_penjualan,penj_on_create_date,penj_on_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_penjualan_online,new.penj_on_no_resi,new.penj_on_kurir,new.penj_on_status,new.id_fk_toko,new.id_fk_penjualan,new.penj_on_create_date,new.penj_on_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into tbl_penjualan_online_log(executed_function,id_pk_penjualan_online,penj_on_marketplace,penj_on_no_resi,penj_on_kurir,penj_on_status,id_fk_penjualan,penj_on_create_date,penj_on_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_penjualan_online,new.penj_on_marketplace,new.penj_on_no_resi,new.penj_on_kurir,new.penj_on_status,new.id_fk_penjualan,new.penj_on_create_date,new.penj_on_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         
@@ -81,7 +81,7 @@ class m_penjualan_online extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at' , new.penj_on_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into tbl_penjualan_online_log(executed_function,id_pk_penjualan_online,penj_on_no_resi,penj_on_kurir,penj_on_status,id_fk_toko,id_fk_penjualan,penj_on_create_date,penj_on_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_penjualan_online,new.penj_on_no_resi,new.penj_on_kurir,new.penj_on_status,new.id_fk_toko,new.id_fk_penjualan,new.penj_on_create_date,new.penj_on_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into tbl_penjualan_online_log(executed_function,id_pk_penjualan_online,penj_on_marketplace,penj_on_no_resi,penj_on_kurir,penj_on_status,id_fk_penjualan,penj_on_create_date,penj_on_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_penjualan_online,new.penj_on_marketplace,new.penj_on_no_resi,new.penj_on_kurir,new.penj_on_status,new.id_fk_penjualan,new.penj_on_create_date,new.penj_on_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;";
         executequery($sql);
@@ -89,10 +89,10 @@ class m_penjualan_online extends ci_model{
     public function insert(){
         if($this->check_insert()){
             $data = array(
+                "penj_on_marketplace" => $this->penj_on_marketplace,
                 "penj_on_no_resi" => $this->penj_on_no_resi,
                 "penj_on_kurir" => $this->penj_on_kurir,
                 "penj_on_status" => $this->penj_on_status,
-                "id_fk_toko" => $this->id_fk_toko,
                 "id_fk_penjualan" => $this->id_fk_penjualan,
                 "penj_on_create_date" => $this->penj_on_create_date,
                 "penj_on_last_modified" => $this->penj_on_last_modified,
@@ -109,9 +109,9 @@ class m_penjualan_online extends ci_model{
                 "id_pk_penjualan_online" => $this->id_pk_penjualan_online
             );
             $data = array(
+                "penj_on_marketplace" => $this->penj_on_marketplace,
                 "penj_on_no_resi" => $this->penj_on_no_resi,
                 "penj_on_kurir" => $this->penj_on_kurir,
-                "id_fk_toko" => $this->id_fk_toko,
                 "id_fk_penjualan" => $this->id_fk_penjualan,
                 "penj_on_last_modified" => $this->penj_on_last_modified,
                 "id_last_modified" => $this->id_last_modified
@@ -137,6 +137,9 @@ class m_penjualan_online extends ci_model{
         return false;
     }
     public function check_insert(){
+        if($this->penj_on_marketplace == ""){
+            return false;
+        }
         if($this->penj_on_no_resi == ""){
             return false;
         }
@@ -144,9 +147,6 @@ class m_penjualan_online extends ci_model{
             return false;
         }
         if($this->penj_on_status == ""){
-            return false;
-        }
-        if($this->id_fk_toko == ""){
             return false;
         }
         if($this->id_fk_penjualan == ""){
@@ -170,13 +170,13 @@ class m_penjualan_online extends ci_model{
         if($this->id_pk_penjualan_online == ""){
             return false;
         }
+        if($this->penj_on_marketplace == ""){
+            return false;
+        }
         if($this->penj_on_no_resi == ""){
             return false;
         }
         if($this->penj_on_kurir == ""){
-            return false;
-        }
-        if($this->id_fk_toko == ""){
             return false;
         }
         if($this->id_fk_penjualan == ""){
@@ -196,7 +196,10 @@ class m_penjualan_online extends ci_model{
         }
         return true;
     }
-    public function set_insert($penj_on_no_resi,$penj_on_kurir,$penj_on_status,$id_fk_toko,$id_fk_penjualan){
+    public function set_insert($penj_on_marketplace,$penj_on_no_resi,$penj_on_kurir,$penj_on_status,$id_fk_penjualan){
+        if(!$this->set_penj_on_marketplace($penj_on_marketplace)){
+            return false;
+        }
         if(!$this->set_penj_on_no_resi($penj_on_no_resi)){
             return false;
         }
@@ -206,25 +209,22 @@ class m_penjualan_online extends ci_model{
         if(!$this->set_penj_on_status($penj_on_status)){
             return false;
         }
-        if(!$this->set_id_fk_toko($id_fk_toko)){
-            return false;
-        }
         if(!$this->set_id_fk_penjualan($id_fk_penjualan)){
             return false;
         }
         return true;
     }
-    public function set_update($set_id_pk_penjualan_online,$set_penj_on_no_resi,$set_penj_on_kurir,$set_id_fk_toko,$set_id_fk_penjualan){
+    public function set_update($set_id_pk_penjualan_online,$set_penj_on_marketplace,$set_penj_on_no_resi,$set_penj_on_kurir,$set_id_fk_penjualan){
         if(!$this->set_id_pk_penjualan_online($set_id_pk_penjualan_online)){
+            return false;
+        }
+        if(!$this->set_penj_on_marketplace($set_penj_on_marketplace)){
             return false;
         }
         if(!$this->set_penj_on_no_resi($set_penj_on_no_resi)){
             return false;
         }
         if(!$this->set_penj_on_kurir($set_penj_on_kurir)){
-            return false;
-        }
-        if(!$this->set_id_fk_toko($set_id_fk_toko)){
             return false;
         }
         if(!$this->set_id_fk_penjualan($set_id_fk_penjualan)){
@@ -241,14 +241,14 @@ class m_penjualan_online extends ci_model{
     public function get_id_pk_penjualan_online(){
         return $this->id_pk_penjualan_online;
     }
+    public function get_penj_on_marketplace(){
+        return $this->penj_on_marketplace;
+    }
     public function get_penj_on_no_resi(){
         return $this->penj_on_no_resi;
     }
     public function get_penj_on_kurir(){
         return $this->penj_on_kurir;
-    }
-    public function get_id_fk_toko(){
-        return $this->id_fk_toko;
     }
     public function get_id_fk_penjualan(){
         return $this->id_fk_penjualan;
@@ -277,6 +277,15 @@ class m_penjualan_online extends ci_model{
             return false;
         }
     }
+    public function set_penj_on_marketplace($penj_on_marketplace){
+        if($penj_on_marketplace != ""){
+            $this->penj_on_marketplace = $penj_on_marketplace;
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     public function set_penj_on_no_resi($penj_on_no_resi){
         if($penj_on_no_resi != ""){
             $this->penj_on_no_resi = $penj_on_no_resi;
@@ -298,15 +307,6 @@ class m_penjualan_online extends ci_model{
     public function set_penj_on_status($penj_on_status){
         if($penj_on_status != ""){
             $this->penj_on_status = $penj_on_status;
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    public function set_id_fk_toko($id_fk_toko){
-        if($id_fk_toko != ""){
-            $this->id_fk_toko = $id_fk_toko;
             return true;
         }
         else{

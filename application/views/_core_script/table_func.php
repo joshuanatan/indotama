@@ -11,6 +11,11 @@
     if(typeof(custom_contentCtrl) != "undefined"){
         contentCtrl = custom_contentCtrl;
     }
+
+    if(typeof(url_add) == "undefined"){
+        url_add = "";
+    }
+
     function refresh(req_page = 1) {
         if(typeof(ctrl) != "undefined"){
             page = req_page;
