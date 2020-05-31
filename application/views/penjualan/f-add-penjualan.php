@@ -83,6 +83,17 @@ $notif_data = array(
                                             <div class = "form-group col-lg-12">
                                                 <h5>Custom</h5>
                                                 <button type = "button" class = "btn btn-primary btn-sm" data-toggle = "modal" data-target = "#custom_produk_modal">Custom Produk</button>
+                                                
+                                                <h5>Produk Custom</h5>
+                                                <table class = "table table-striped table-bordered" style = "width:50%">
+                                                    <thead>
+                                                        <th>Barang Awal</th>
+                                                        <th>Barang Pindah</th>
+                                                        <th>Jumlah</th>
+                                                    </thead>
+                                                    <tbody id = "daftar_brg_custom_container">
+                                                    </tbody>
+                                                </table>
                                             </div>
                                             
                                             <div class = "form-group col-lg-6">
@@ -194,7 +205,7 @@ $notif_data = array(
     }
     var custom_produk_row = 0;  
     function add_custom_produk_row(){
-        var html = "<tr class = 'add_custom_produk_row'><td><input name = 'custom[]' value = "+custom_produk_row+" type = 'hidden'><input name = 'custom"+custom_produk_row+"' type = 'text' class = 'form-control'></td><td><input name = 'custom_jumlah"+custom_produk_row+"' type = 'text' class = 'form-control'></td><td><input name = 'custom_harga"+custom_produk_row+"' type = 'text' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = "<tr class = 'add_custom_produk_row'><td><input name = 'custom[]' value = "+custom_produk_row+" type = 'hidden'><input name = 'custom_brg_awal"+custom_produk_row+"' list = 'datalist_barang_cabang' type = 'text' class = 'form-control'></td><td><input name = 'custom_brg_akhir"+custom_produk_row+"' list = 'datalist_barang_cabang' type = 'text' class = 'form-control'></td><td><input name = 'custom_brg_qty"+custom_produk_row+"' type = 'text' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
         $("#add_custom_produk_but_container").before(html);
         custom_produk_row++;    
     }
@@ -221,26 +232,56 @@ $notif_data = array(
                 <h4>Custom Produk</h4>
             </div>
             <div class = "modal-body">
-                <table class = "table table-striped table-bordered">
-                    <thead>
-                        <th>Produk Asal</th>
-                        <th>Produk Custom</th>
-                        <th>Qty (Pcs)</th>
-                        <th>Action</th>
-                    </thead>
-                    <tbody id = "daftar_custom_produk_add">
-                        <tr id = "add_custom_produk_but_container">
-                            <td colspan = 6><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_custom_produk_row()">Tambah Barang Penjualan</button>
-                            </td>
-                        </tr>
-                        <div class = "form-group col-lg-12" style = "width:50%">
-                            <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                            <button type = "button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
-                        </div>
-                    </tbody>
-                </table>
+                <form method = "POST" id = "register_brg_pindah_form">
+                    <table class = "table table-striped table-bordered">
+                        <thead>
+                            <th>Produk Asal</th>
+                            <th>Produk Custom</th>
+                            <th>Qty (Pcs)</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody id = "daftar_custom_produk_add">
+                            <tr id = "add_custom_produk_but_container">
+                                <td colspan = 6><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_custom_produk_row()">Tambah Barang Penjualan</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class = "form-group">
+                        <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
+                        <button type = "button" onclick = "register_brg_pindah()" class = "btn btn-sm btn-primary">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
 <?php $this->load->view("_core_script/register_func");?>
+<script>
+    function register_brg_pindah(){
+        var form = $("#register_brg_pindah_form")[0];
+        var data = new FormData(form);
+        $.ajax({
+            url:"<?php echo base_url();?>ws/barang_pindah/register?sumber=penjualan",
+            type:"POST",
+            dataType:"JSON",
+            data:data,
+            processData:false,
+            contentType:false,
+            success:function(respond){
+                html = "";
+                if(respond["content"]){
+                    for(var a = 0; a<respond["content"].length; a++){
+                        html += "<tr><td><input type = 'hidden' name = 'brg_custom[]' value = '"+a+"'><input type = 'hidden' name = 'id_brg_custom"+a+"' value = '"+respond["content"][a]["id_brg_pindah"]+"'>"+respond["content"][a]["nama_brg_awal"]+"</td><td>"+respond["content"][a]["nama_brg_akhir"]+"</td><td>"+respond["content"][a]["qty"]+"</td></tr>";
+                    }
+                }
+                else{
+                    html = "<tr><td colspan = 3 class = 'align-middle text-center'>No Records Found</td></tr>";
+                }
+                $("#daftar_brg_custom_container").html(html);
+            },
+            error:function(){
+            }
+        });
+    }
+</script>

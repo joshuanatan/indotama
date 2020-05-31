@@ -326,6 +326,7 @@ class Penjualan extends CI_Controller{
                                 $response["tmbhnsts"][$counter] = "ERROR";
                                 $response["tmbhnmsg"][$counter] = validation_errors();
                             }
+                            $counter++;
                         }
                     }
                     else{
@@ -376,11 +377,28 @@ class Penjualan extends CI_Controller{
                                 $response["pmbyrnsts"][$counter] = "ERROR";
                                 $response["pmbyrnmsg"][$counter] = validation_errors();
                             }
+                            $counter++;
                         }
                     }
                     else{
                         $response["pmbyrnsts"] = "ERROR";
                         $response["pmbyrnmsg"] = "No Checks on Pembayaran";
+                    }
+
+                    $brg_custom = $this->input->post("brg_custom");
+                    if($brg_custom != ""){
+                        $counter = 0;
+                        foreach($brg_custom as $a){
+                            $id_brg_custom = $this->input->post("id_brg_custom".$a);
+                            $this->load->model("m_brg_pindah");
+                            $this->m_brg_pindah->set_id_pk_brg_pindah($id_brg_custom);
+                            $this->m_brg_pindah->set_id_fk_refrensi_sumber($id_penjualan);
+                            $this->m_brg_pindah->update_id_fk_refrensi_sumber();
+                            
+                            $response["brgcustomsts"][$counter] = "SUCCESS";
+                            $response["brgcustommsg"][$counter] = "Data is recorded to database";
+                            $counter++;
+                        }
                     }
                 }
                 else{
