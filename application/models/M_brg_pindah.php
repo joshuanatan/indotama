@@ -104,10 +104,10 @@ class M_brg_pindah extends CI_Model{
         select id_pk_brg_pindah,brg_pindah_sumber,id_fk_refrensi_sumber,id_brg_awal,id_brg_tujuan,brg_pindah_qty,brg_pindah_status,brg_awal.brg_nama as brg_awal, brg_akhir.brg_nama as brg_akhir from tbl_brg_pindah
         inner join mstr_barang as brg_awal on brg_awal.id_pk_brg = tbl_brg_pindah.id_brg_awal 
         inner join mstr_barang as brg_akhir on brg_akhir.id_pk_brg = tbl_brg_pindah.id_brg_tujuan
-        where brg_awal.brg_status = ? and brg_akhir.brg_status = ? and brg_pindah_status = ?
+        where brg_awal.brg_status = ? and brg_akhir.brg_status = ? and brg_pindah_status = ? and id_fk_refrensi_sumber = ? and brg_pindah_sumber = ?
         ";
         $args = array(
-            "AKTIF","AKTIF","AKTIF"
+            "AKTIF","AKTIF","AKTIF",$this->id_fk_refrensi_sumber,$this->brg_pindah_sumber
         );
         return executeQuery($sql,$args);
     }

@@ -44,6 +44,16 @@ class m_penjualan extends ci_model{
     public function columns(){
         return $this->columns;
     }
+    public function detail(){
+        $sql = "
+        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_perusahaan,cust_name from mstr_penjualan
+        inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        where id_pk_penjualan = ?";
+        $args = array(
+            $this->id_pk_penjualan
+        );
+        return executeQuery($sql,$args);
+    }
     public function install(){
         $sql = "
         drop table if exists mstr_penjualan;
@@ -178,7 +188,7 @@ class m_penjualan extends ci_model{
                 "penj_nomor" => $this->penj_nomor,
                 "penj_jenis" => $this->penj_jenis,
                 "penj_dateline_tgl" => $this->penj_dateline_tgl,
-                "penj_jenis" => $this->penj_jenis,
+                "penj_tgl" => $this->penj_tgl,
                 "penj_tipe_pembayaran" => $this->penj_tipe_pembayaran,
                 "id_fk_customer" => $this->id_fk_customer,
                 "penj_last_modified" => $this->penj_last_modified,

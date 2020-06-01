@@ -86,6 +86,19 @@ class m_penjualan_online extends ci_model{
         delimiter ;";
         executequery($sql);
     }
+    public function detail(){
+        $field = array(
+            "id_pk_penjualan_online",
+            "penj_on_marketplace",
+            "penj_on_no_resi",
+            "penj_on_kurir",
+            "penj_on_status"
+        );
+        $where = array(
+            "id_fk_penjualan" => $this->id_fk_penjualan
+        );
+        return selectRow($this->tbl_name,$where,$field);
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(
@@ -106,13 +119,12 @@ class m_penjualan_online extends ci_model{
     public function update(){
         if($this->check_update()){
             $where = array(
-                "id_pk_penjualan_online" => $this->id_pk_penjualan_online
+                "id_fk_penjualan" => $this->id_fk_penjualan
             );
             $data = array(
                 "penj_on_marketplace" => $this->penj_on_marketplace,
                 "penj_on_no_resi" => $this->penj_on_no_resi,
                 "penj_on_kurir" => $this->penj_on_kurir,
-                "id_fk_penjualan" => $this->id_fk_penjualan,
                 "penj_on_last_modified" => $this->penj_on_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
@@ -167,9 +179,6 @@ class m_penjualan_online extends ci_model{
         return true;
     }
     public function check_update(){
-        if($this->id_pk_penjualan_online == ""){
-            return false;
-        }
         if($this->penj_on_marketplace == ""){
             return false;
         }
@@ -214,20 +223,17 @@ class m_penjualan_online extends ci_model{
         }
         return true;
     }
-    public function set_update($set_id_pk_penjualan_online,$set_penj_on_marketplace,$set_penj_on_no_resi,$set_penj_on_kurir,$set_id_fk_penjualan){
-        if(!$this->set_id_pk_penjualan_online($set_id_pk_penjualan_online)){
+    public function set_update($penj_on_marketplace,$penj_on_no_resi,$penj_on_kurir,$id_fk_penjualan){
+        if(!$this->set_penj_on_marketplace($penj_on_marketplace)){
             return false;
         }
-        if(!$this->set_penj_on_marketplace($set_penj_on_marketplace)){
+        if(!$this->set_penj_on_no_resi($penj_on_no_resi)){
             return false;
         }
-        if(!$this->set_penj_on_no_resi($set_penj_on_no_resi)){
+        if(!$this->set_penj_on_kurir($penj_on_kurir)){
             return false;
         }
-        if(!$this->set_penj_on_kurir($set_penj_on_kurir)){
-            return false;
-        }
-        if(!$this->set_id_fk_penjualan($set_id_fk_penjualan)){
+        if(!$this->set_id_fk_penjualan($id_fk_penjualan)){
             return false;
         }
         return true;

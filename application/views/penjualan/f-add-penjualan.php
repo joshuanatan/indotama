@@ -216,10 +216,10 @@ $notif_data = array(
         $(".add_tambahan_jual_row").remove();
     }
 </script>
-<?php $this->load->view("_core_script/table_func");?>
 <?php $this->load->view("_base_element/datalist_customer");?>
 <?php $this->load->view("_base_element/datalist_barang_cabang");?>
 <script>
+    load_datalist();
     function load_datalist(){
         load_datalist_customer();
         load_datalist_barang_cabang();
@@ -278,7 +278,7 @@ $notif_data = array(
                 else{
                     html = "<tr><td colspan = 3 class = 'align-middle text-center'>No Records Found</td></tr>";
                 }
-                $("#daftar_brg_custom_container").html(html);
+                $("#daftar_brg_custom_container").append(html);
             },
             error:function(){
             }

@@ -76,13 +76,32 @@ $notif_data = array(
 <script>
     var ctrl = "penjualan";
     var url_add = "id_cabang=<?php echo $this->session->id_cabang;?>";
+    var unautorized_button = ["edit_button"];
+    var additional_button = [
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-primary md-edit',
+            onclick:'redirect_edit_penjualan()'
+        }
+    ];
 </script>
 <?php
 $data = array(
     "page_title" => "Penjualan"
 );
 ?>
-<?php $this->load->view("_core_script/table_func");?>
 
+<script>
+    function redirect_edit_penjualan(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_penjualan = content[row]["id"];
+            window.location.replace("<?php echo base_url();?>penjualan/update/"+id_penjualan);
+        });
+    }
+</script>
+<?php $this->load->view("_core_script/table_func");?>
+<?php $this->load->view("_core_script/delete_func");?>
+<?php $this->load->view("penjualan/f-delete-penjualan");?>
 
 <?php $this->load->view('_notification/notif_general'); ?>
