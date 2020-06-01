@@ -17,7 +17,7 @@
                     </div>
                     <div class = "form-group">
                         <h5>Jenis Barang</h5>
-                        <input list = "list_jenis" type = "text"  required name = "id_brg_jenis" class = "form-control">
+                        <input list = "datalist_barang_jenis" type = "text"  required name = "id_brg_jenis" class = "form-control">
                     </div>
                     <div class = "form-group">
                         <h5>Nama Barang</h5>
@@ -29,7 +29,7 @@
                     </div>
                     <div class = "form-group">
                         <h5>Merk Barang</h5>
-                        <input list = "list_merk" type = "text"  required name = "id_brg_merk" class = "form-control">
+                        <input list = "datalist_barang_merk" type = "text"  required name = "id_brg_merk" class = "form-control">
                     </div>
                     <div class = "form-group">
                         <h5>Minimal Stok</h5>
@@ -40,8 +40,8 @@
                         <input type = "text" class = "form-control" required name = "satuan">
                     </div>
                     <div class = "form-group">
-                        <h5>Ukuran</h5>
-                        <input type = "text" class = "form-control" required name = "ukuran">
+                        <h5>Harga Satuan</h5>
+                        <input type = "text" class = "form-control" required name = "harga">
                     </div>
                     <div class = "form-group">
                         <h5>Gambar</h5>
@@ -56,24 +56,3 @@
         </div>
     </div>
 </div>
-<script>
-    function register_func(){
-        var form = $("#register_form")[0];
-        var data = new FormData(form);
-        $.ajax({
-            url:"<?php echo base_url();?>ws/"+ctrl+"/register",
-            type:"POST",
-            dataType:"JSON",
-            data:data,
-            processData:false,
-            contentType:false,
-            success:function(respond){
-                if(respond["status"] == "SUCCESS"){
-                    $("#register_modal").modal("hide");
-                    $("#register_form :input").val("");
-                    refresh(page);
-                }
-            }
-        });
-    }
-</script>
