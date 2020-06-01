@@ -167,7 +167,7 @@ $notif_data = array(
                                                 </table>
                                             </div>
                                             <div class = "form-group col-lg-12" style = "width:50%">
-                                                <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
+                                                <button type = "button" class = "btn btn-sm btn-danger" onclick = "close_window()">Cancel</button>
                                                 <button type = "button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
                                             </div>
                                         </form>
@@ -225,6 +225,13 @@ $notif_data = array(
         load_datalist_barang_cabang();
     }
 </script>
+<script>
+    function close_window() {
+        if (confirm("Close Window?")) {
+            close();
+        }
+    }
+</script>
 <div class = "modal fade" id = "custom_produk_modal">
     <div class = "modal-dialog modal-center">
         <div class = "modal-content">
@@ -250,6 +257,24 @@ $notif_data = array(
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
                         <button type = "button" onclick = "register_brg_pindah()" class = "btn btn-sm btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class = "modal fade" id = "exit_confirmation">
+    <div class = "modal-dialog modal-center">
+        <div class = "modal-content">
+            <div class = "modal-header">
+                <h4>Exit Confirmation</h4>
+            </div>
+            <div class = "modal-body">
+                <form method = "POST" id = "register_brg_pindah_form">
+                    <h5>Apakah ingin menutup halaman ini? segala yang telah diisi tidak dapat dikembalikan</h5>
+                    <div class = "form-group">
+                        <button type = "button" onclick = "close()" class = "btn btn-sm btn-danger">Exit</button>
+                        <button type = "button" data-dismiss = "modal" class = "btn btn-sm btn-primary">Cancel</button>
                     </div>
                 </form>
             </div>

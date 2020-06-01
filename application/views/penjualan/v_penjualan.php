@@ -96,7 +96,7 @@ $data = array(
         $('body table').find('tr').click( function(){
             var row = $(this).index();
             var id_penjualan = content[row]["id"];
-            window.location.replace("<?php echo base_url();?>penjualan/update/"+id_penjualan);
+            window.open("<?php echo base_url();?>penjualan/update/"+id_penjualan,"_blank");
         });
     }
 </script>

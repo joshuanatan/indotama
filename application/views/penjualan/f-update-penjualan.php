@@ -234,7 +234,7 @@ $notif_data = array(
                                                 </table>
                                             </div>
                                             <div class = "form-group col-lg-12" style = "width:50%">
-                                                <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
+                                                <button type = "button" class = "btn btn-sm btn-danger" onclick = "close_window()">Cancel</button>
                                                 <button type = "button" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
                                             </div>
                                         </form>
@@ -324,6 +324,13 @@ $notif_data = array(
         </div>
     </div>
 </div>
+<script>
+    function close_window() {
+        if (confirm("Close Window?")) {
+            close();
+        }
+    }
+</script>
 <?php $this->load->view("_core_script/update_func");?>
 <script>
     function register_brg_pindah(){
