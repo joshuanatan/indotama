@@ -127,10 +127,10 @@ class Penjualan extends CI_Controller{
     }
     public function remove_brg_penjualan(){
         $response["status"] = "SUCCESS";
-        $id_brg_penjualan = $this->input->get("id");
-        if($id_brg_penjualan != "" && is_numeric($id_brg_penjualan)){
+        $id_pk_brg_penjualan = $this->input->get("id");
+        if($id_pk_brg_penjualan != "" && is_numeric($id_pk_brg_penjualan)){
             $this->load->model("m_brg_penjualan");
-            $this->m_brg_penjualan->set_delete($id_brg_penjualan);
+            $this->m_brg_penjualan->set_delete($id_pk_brg_penjualan);
             if($this->m_brg_penjualan->delete()){
                 $response["msg"] = "Data is deleted from database";
             }
@@ -147,11 +147,31 @@ class Penjualan extends CI_Controller{
     }
     public function remove_tmbhn_penjualan(){
         $response["status"] = "SUCCESS";
-        $id_brg_penjualan = $this->input->get("id");
-        if($id_brg_penjualan != "" && is_numeric($id_brg_penjualan)){
+        $id_pk_tmbhn = $this->input->get("id");
+        if($id_pk_tmbhn != "" && is_numeric($id_pk_tmbhn)){
             $this->load->model("m_tambahan_penjualan");
-            $this->m_tambahan_penjualan->set_delete($id_brg_penjualan);
+            $this->m_tambahan_penjualan->set_delete($id_pk_tmbhn);
             if($this->m_tambahan_penjualan->delete()){
+                $response["msg"] = "Data is deleted from database";
+            }
+            else{
+                $response["status"] = "ERROR";
+                $response["msg"] = "Delete function error";
+            }
+        }   
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "ID Invalid";
+        }
+        echo json_encode($response);
+    }
+    public function remove_pembayaran_penjualan(){
+        $response["status"] = "SUCCESS";
+        $id_pk_penjualan_pembayaran = $this->input->get("id");
+        if($id_pk_penjualan_pembayaran != "" && is_numeric($id_pk_penjualan_pembayaran)){
+            $this->load->model("m_penjualan_pembayaran");
+            $this->m_penjualan_pembayaran->set_delete($id_pk_penjualan_pembayaran);
+            if($this->m_penjualan_pembayaran->delete()){
                 $response["msg"] = "Data is deleted from database";
             }
             else{
@@ -419,7 +439,8 @@ class Penjualan extends CI_Controller{
     }
     public function update(){
         $response["status"] = "SUCCESS";
-        $this->form_validation->set_rules("id","id","required");
+        
+        $this->form_validation->set_rules("id_penjualan","id","required");
         $this->form_validation->set_rules("nomor","nomor","required");
         $this->form_validation->set_rules("tgl","tgl","required");
         $this->form_validation->set_rules("dateline","dateline","required");
@@ -427,14 +448,13 @@ class Penjualan extends CI_Controller{
         $this->form_validation->set_rules("jenis_penjualan","jenis_penjualan","required");
         $this->form_validation->set_rules("jenis_pembayaran","jenis_pembayaran","required");
         if($this->form_validation->run()){
-            $id_pk_penjualan = $this->input->post("id");
+            $id_penjualan = $this->input->post("id_penjualan");
             $penj_nomor = $this->input->post("nomor");
             $penj_tgl = $this->input->post("tgl");
             $penj_dateline_tgl = $this->input->post("dateline");
             $penj_jenis = $this->input->post("jenis_penjualan");
             $penj_tipe_pembayaran = $this->input->post("jenis_pembayaran");
             $customer = $this->input->post("customer");
-            $id_fk_cabang = $this->input->post("id_cabang");
 
             $this->input->post("customer");
             $this->load->model("m_customer");
@@ -448,216 +468,9 @@ class Penjualan extends CI_Controller{
                 $id_fk_customer = $this->m_customer->short_insert();
             }
             $this->load->model("m_penjualan");
-            if($this->m_penjualan->set_update($id_pk_penjualan,$penj_nomor,$penj_dateline_tgl,$penj_jenis,$penj_tipe_pembayaran,$penj_tgl,$id_fk_customer)){
-                $id_penjualan = $this->m_penjualan->update();
-                if($id_penjualan){
-                    $data["msg"] = "Data is updated to database";
-                    $brg_edit = $this->input->post("brg_pem_edit");
-                    if($brg_edit != ""){
-                        $counter = 0;
-                        foreach($brg_edit as $a){
-                            $this->form_validation->reset_validation();
-                            $this->form_validation->set_rules("id_brg_pem_edit".$a,"id","required");
-                            $this->form_validation->set_rules("brg_edit".$a,"brg","required");
-                            $this->form_validation->set_rules("brg_qty_edit".$a,"brg_qty","required");
-                            $this->form_validation->set_rules("brg_price_edit".$a,"brg_price","required");
-                            $this->form_validation->set_rules("brg_notes_edit".$a,"brg_notes","required");
-                            if($this->form_validation->run()){
-                                $id_pk_brg_penjualan = $this->input->post("id_brg_pem_edit".$a);
-                                $brg_qty = $this->input->post("brg_qty_edit".$a);
-                                $brg_qty = explode(" ",$brg_qty);
-                                $brg_pem_qty = $brg_qty[0];
-                                $brg_pem_satuan = $brg_qty[1];
-                                $brg_pem_harga = $this->input->post("brg_price_edit".$a);
-                                $brg_pem_note = $this->input->post("brg_notes_edit".$a);
-                                $barang = $this->input->post("brg_edit".$a);
-
-                                $this->load->model("m_barang");
-                                $this->m_barang->set_brg_nama($barang);
-                                $result = $this->m_barang->detail_by_name();
-                                if($result->num_rows() > 0){
-                                    $result = $result->result_array();
-                                    $id_fk_barang = $result[0]["id_pk_brg"];
-                                }
-                                else{
-                                    $this->load->model("m_barang");
-                                    $this->m_barang->set_brg_nama($barang);
-                                    $id_fk_barang = $this->m_barang->short_insert();
-                                }
-                                $this->load->model("m_brg_penjualan");
-                                if($this->m_brg_penjualan->set_update($id_pk_brg_penjualan,$brg_pem_qty,$brg_pem_satuan,$brg_pem_harga,$brg_pem_note,$id_fk_barang)){
-                                    if($this->m_brg_penjualan->update()){
-                                        $response["itmstsupdate"][$counter] = "SUCCESS";
-                                        $response["itmmsgupdate"][$counter] = "Data is updated to database";
-                                    }
-                                    else{
-                                        $response["itmstsupdate"][$counter] = "ERROR";
-                                        $response["itmmsgupdate"][$counter] = "update function error";
-                                    }
-                                }
-                                else{
-                                    $response["itmstsupdate"][$counter] = "ERROR";
-                                    $response["itmmsgupdate"][$counter] = "Setter function error";
-                                }
-                            }
-                            else{
-                                $response["itmstsupdate"][$counter] = "ERROR";
-                                $response["itmmsgupdate"][$counter] = validation_errors();
-                            }
-                            $counter++;
-                        }
-                    }
-                    $check = $this->input->post("check");
-                    if($check != ""){
-                        $counter = 0;
-                        foreach($check as $a){
-                            $this->form_validation->reset_validation();
-                            $this->form_validation->set_rules("brg".$a,"brg","required");
-                            $this->form_validation->set_rules("brg_qty".$a,"brg_qty","required");
-                            $this->form_validation->set_rules("brg_price".$a,"brg_price","required");
-                            $this->form_validation->set_rules("brg_notes".$a,"brg_notes","required");
-                            if($this->form_validation->run()){
-                                $brg_qty = $this->input->post("brg_qty".$a);
-                                $brg_qty = explode(" ",$brg_qty);
-                                $brg_pem_qty = $brg_qty[0];
-                                $brg_pem_satuan = $brg_qty[1];
-                                $brg_pem_harga = $this->input->post("brg_price".$a);
-                                $brg_pem_note = $this->input->post("brg_notes".$a);
-                                $brg_pem_status = "AKTIF";
-                                $id_fk_penjualan = $id_pk_penjualan;
-                                $barang = $this->input->post("brg".$a);
-                                $this->load->model("m_barang");
-                                $this->m_barang->set_brg_nama($barang);
-                                $result = $this->m_barang->detail_by_name();
-                                if($result->num_rows() > 0){
-                                    $result = $result->result_array();
-                                    $id_fk_barang = $result[0]["id_pk_brg"];
-                                }
-                                else{
-                                    $this->load->model("m_barang");
-                                    $this->m_barang->set_brg_nama($barang);
-                                    $id_fk_barang = $this->m_barang->short_insert();
-                                }
-                                $this->load->model("m_brg_penjualan");
-                                if($this->m_brg_penjualan->set_insert($brg_pem_qty,$brg_pem_satuan,$brg_pem_harga,$brg_pem_note,$brg_pem_status,$id_fk_penjualan,$id_fk_barang)){
-                                    if($this->m_brg_penjualan->insert()){
-                                        $response["itmsts"][$counter] = "SUCCESS";
-                                        $response["itmmsg"][$counter] = "Data is recorded to database";
-                                    }
-                                    else{
-                                        $response["itmsts"][$counter] = "ERROR";
-                                        $response["itmmsg"][$counter] = "Insert function error";
-                                    }
-                                }
-                                else{
-                                    $response["itmsts"][$counter] = "ERROR";
-                                    $response["itmmsg"][$counter] = "Setter function error";
-                                }
-                            }
-                            else{
-                                $response["itmsts"][$counter] = "ERROR";
-                                $response["itmmsg"][$counter] = validation_errors();
-                            }
-                            $counter++;
-                        }
-                    }
-                    else{
-                        $response["itmstsall"] = "ERROR";
-                        $response["itmmsgall"] = "No Checks on Item";
-                    }
-                    $tambahan_edit = $this->input->post("tambahan_edit");
-                    if($tambahan_edit != ""){
-                        $counter = 0;
-                        foreach($tambahan_edit as $a){
-                            $this->form_validation->reset_validation();
-                            $this->form_validation->set_rules("id_tmbhn_pem_edit".$a,"id","required");
-                            $this->form_validation->set_rules("tmbhn_edit".$a,"tmbhn_edit","required");
-                            $this->form_validation->set_rules("tmbhn_jumlah_edit".$a,"tmbhn_jumlah_edit","required");
-                            $this->form_validation->set_rules("tmbhn_harga_edit".$a,"tmbhn_harga_edit","required");
-                            $this->form_validation->set_rules("tmbhn_notes_edit".$a,"tmbhn_notes_edit","required");
-                            if($this->form_validation->run()){
-                                $id_pk_tmbhn = $this->input->post("id_tmbhn_pem_edit".$a);
-                                $tmbhn = $this->input->post("tmbhn_edit".$a);
-                                $qty = $this->input->post("tmbhn_jumlah_edit".$a);
-                                $qty = explode(" ",$qty);
-                                $tmbhn_jumlah = $qty[0];
-                                $tmbhn_satuan = $qty[1];
-                                $tmbhn_harga = $this->input->post("tmbhn_harga_edit".$a);
-                                $tmbhn_notes = $this->input->post("tmbhn_notes_edit".$a);
-                                
-                                $this->load->model("m_tambahan_penjualan");
-                                if($this->m_tambahan_penjualan->set_update($id_pk_tmbhn,$tmbhn,$tmbhn_jumlah,$tmbhn_satuan,$tmbhn_harga,$tmbhn_notes)){
-                                    if($this->m_tambahan_penjualan->update()){
-                                        $response["tmbhnstsupdate"][$counter] = "SUCCESS";
-                                        $response["tmbhnmsgupdate"][$counter] = "Data is update to database";
-                                    }
-                                    else{
-                                        $response["tmbhnstsupdate"][$counter] = "ERROR";
-                                        $response["tmbhnmsgupdate"][$counter] = "update function error";
-                                    }
-                                }
-                                else{
-                                    $response["tmbhnstsupdate"][$counter] = "ERROR";
-                                    $response["tmbhnmsgupdate"][$counter] = "Setter function error";
-                                }
-                            }
-                            else{
-                                $response["tmbhnstsupdate"][$counter] = "ERROR";
-                                $response["tmbhnmsgupdate"][$counter] = validation_errors();
-                            }
-                        }
-                    }
-                    else{
-                        $response["tmbhnsts"] = "ERROR";
-                        $response["tmbhnmsg"] = "No Checks on Tambahan";
-                    }
-
-                    $tambahan = $this->input->post("tambahan");
-                    if($tambahan != ""){
-                        $counter = 0;
-                        foreach($tambahan as $a){
-                            $this->form_validation->reset_validation();
-                            $this->form_validation->set_rules("tmbhn".$a,"tmbhn_add","required");
-                            $this->form_validation->set_rules("tmbhn_jumlah".$a,"tmbhn_jumlah_add","required");
-                            $this->form_validation->set_rules("tmbhn_harga".$a,"tmbhn_harga_add","required");
-                            $this->form_validation->set_rules("tmbhn_notes".$a,"tmbhn_notes_add","required");
-                            if($this->form_validation->run()){
-                                $tmbhn = $this->input->post("tmbhn".$a);
-                                $qty = $this->input->post("tmbhn_jumlah".$a);
-                                $qty = explode(" ",$qty);
-                                $tmbhn_jumlah = $qty[0];
-                                $tmbhn_satuan = $qty[1];
-                                $tmbhn_harga = $this->input->post("tmbhn_harga".$a);
-                                $tmbhn_notes = $this->input->post("tmbhn_notes".$a);
-                                $tmbhn_status = "AKTIF";
-                                $id_fk_penjualan = $id_pk_penjualan;
-                                
-                                $this->load->model("m_tambahan_penjualan");
-                                if($this->m_tambahan_penjualan->set_insert($tmbhn,$tmbhn_jumlah,$tmbhn_satuan,$tmbhn_harga,$tmbhn_notes,$tmbhn_status,$id_fk_penjualan)){
-                                    if($this->m_tambahan_penjualan->insert()){
-                                        $response["tmbhnsts"][$counter] = "SUCCESS";
-                                        $response["tmbhnmsg"][$counter] = "Data is recorded to database";
-                                    }
-                                    else{
-                                        $response["tmbhnsts"][$counter] = "ERROR";
-                                        $response["tmbhnmsg"][$counter] = "Insert function error";
-                                    }
-                                }
-                                else{
-                                    $response["tmbhnsts"][$counter] = "ERROR";
-                                    $response["tmbhnmsg"][$counter] = "Setter function error";
-                                }
-                            }
-                            else{
-                                $response["tmbhnsts"][$counter] = "ERROR";
-                                $response["tmbhnmsg"][$counter] = validation_errors();
-                            }
-                        }
-                    }
-                    else{
-                        $response["tmbhnsts"] = "ERROR";
-                        $response["tmbhnmsg"] = "No Checks on Tambahan";
-                    }
+            if($this->m_penjualan->set_update($id_penjualan,$penj_nomor,$penj_dateline_tgl,$penj_jenis,$penj_tipe_pembayaran,$penj_tgl,$id_fk_customer)){
+                if($this->m_penjualan->update()){ 
+                    $response["msg"] = "Data is update to database";  
                 }
                 else{
                     $response["status"] = "ERROR";
@@ -667,6 +480,352 @@ class Penjualan extends CI_Controller{
             else{
                 $response["status"] = "ERROR";
                 $response["msg"] = "Setter function error";
+            }
+            
+            if(strtolower($penj_jenis) == "online"){
+                $penj_on_marketplace = $this->input->post("marketplace");
+                $penj_on_no_resi = $this->input->post("no_resi");
+                $penj_on_kurir = $this->input->post("kurir");
+                $id_fk_penjualan = $id_penjualan;
+
+                $this->load->model("m_penjualan_online");
+                if($this->m_penjualan_online->set_update($penj_on_marketplace,$penj_on_no_resi,$penj_on_kurir,$id_fk_penjualan)){
+                    if($this->m_penjualan_online->update()){
+                        $response["pnjonlinests"] = "SUCCESS";
+                        $response["pnjonlinemsg"] = "Data is updated to database";
+                    }
+                    else{
+                        $response["pnjonlinests"] = "ERROR";
+                        $response["pnjonlinemsg"] = "Update function error";
+                    }
+                }
+                else{
+                    $response["pnjonlinests"] = "ERROR";
+                    $response["pnjonlinemsg"] = "Setter function error";
+                }
+            }
+            
+            $check = $this->input->post("check");
+            if($check != ""){
+                $counter = 0;
+                foreach($check as $a){
+                    $this->form_validation->set_rules("brg".$a,"brg","required");
+                    $this->form_validation->set_rules("brg_qty".$a,"brg_qty","required");
+                    $this->form_validation->set_rules("brg_price".$a,"brg_price","required");
+                    $this->form_validation->set_rules("brg_notes".$a,"brg_notes","required");
+                    if($this->form_validation->run()){
+                        $brg_qty = $this->input->post("brg_qty".$a);
+                        $brg_qty = explode(" ",$brg_qty);
+                        $brg_penjualan_qty = $brg_qty[0];
+                        $brg_penjualan_satuan = $brg_qty[1];
+                        $brg_penjualan_harga = $this->input->post("brg_price".$a);
+                        $brg_penjualan_note = $this->input->post("brg_notes".$a);
+                        $brg_penjualan_status = "AKTIF";
+                        $id_fk_penjualan = $id_penjualan;
+                        $barang = $this->input->post("brg".$a);
+                        $this->load->model("m_barang");
+                        $this->m_barang->set_brg_nama($barang);
+                        $result = $this->m_barang->detail_by_name();
+                        if($result->num_rows() > 0){
+                            $result = $result->result_array();
+                            $id_fk_barang = $result[0]["id_pk_brg"];
+
+                            $this->load->model("m_brg_penjualan");
+                            if($this->m_brg_penjualan->set_insert($brg_penjualan_qty,$brg_penjualan_satuan,$brg_penjualan_harga,$brg_penjualan_note,$brg_penjualan_status,$id_fk_penjualan,$id_fk_barang)){
+                                if($this->m_brg_penjualan->insert()){
+                                    $response["itmsts"][$counter] = "SUCCESS";
+                                    $response["itmmsg"][$counter] = "Data is recorded to database";
+                                }
+                                else{
+                                    $response["itmsts"][$counter] = "ERROR";
+                                    $response["itmmsg"][$counter] = "Insert function error";
+                                }
+                            }
+                            else{
+                                $response["itmsts"][$counter] = "ERROR";
+                                $response["itmmsg"][$counter] = "Setter function error";
+                            }
+                        }
+                        else{
+                            $response["itmsts"][$counter] = "ERROR";
+                            $response["itmmsg"][$counter] = "BARANG TIDAK ";
+                        }
+                        
+                    }
+                    else{
+                        $response["status"] = "ERROR";
+                        $response["itmsts"][$counter] = "ERROR";
+                        $response["itmmsg"][$counter] = validation_errors();
+                    }
+                    $counter++;
+                }
+            }
+            else{
+                $response["itmsts"] = "ERROR";
+                $response["itmmsg"] = "No Checks on Item";
+            }
+            $check = $this->input->post("check_edit");
+            if($check != ""){
+                $counter = 0;
+                foreach($check as $a){
+                    $this->form_validation->set_rules("id_brg_jual_edit".$a,"id","required");
+                    $this->form_validation->set_rules("brg_edit".$a,"brg","required");
+                    $this->form_validation->set_rules("brg_qty_edit".$a,"brg_qty","required");
+                    $this->form_validation->set_rules("brg_price_edit".$a,"brg_price","required");
+                    $this->form_validation->set_rules("brg_notes_edit".$a,"brg_notes","required");
+                    if($this->form_validation->run()){
+                        $id_pk_brg_penjualan = $this->input->post("id_brg_jual_edit".$a);
+                        $brg_qty = $this->input->post("brg_qty_edit".$a);
+                        $brg_qty = explode(" ",$brg_qty);
+                        $brg_penjualan_qty = $brg_qty[0];
+                        $brg_penjualan_satuan = $brg_qty[1];
+                        $brg_penjualan_harga = $this->input->post("brg_price_edit".$a);
+                        $brg_penjualan_note = $this->input->post("brg_notes_edit".$a);
+                        $barang = $this->input->post("brg_edit".$a);
+
+                        $this->load->model("m_barang");
+                        $this->m_barang->set_brg_nama($barang);
+                        $result = $this->m_barang->detail_by_name();
+                        if($result->num_rows() > 0){
+                            $result = $result->result_array();
+                            $id_fk_barang = $result[0]["id_pk_brg"];
+
+                            $this->load->model("m_brg_penjualan");
+                            if($this->m_brg_penjualan->set_update($id_pk_brg_penjualan,$brg_penjualan_qty,$brg_penjualan_satuan,$brg_penjualan_harga,$brg_penjualan_note,$id_fk_barang)){
+                                if($this->m_brg_penjualan->update()){
+                                    $response["itmsts"][$counter] = "SUCCESS";
+                                    $response["itmmsg"][$counter] = "Data is updated to database";
+                                }
+                                else{
+                                    $response["itmsts"][$counter] = "ERROR";
+                                    $response["itmmsg"][$counter] = "Update function error";
+                                }
+                            }
+                            else{
+                                $response["itmsts"][$counter] = "ERROR";
+                                $response["itmmsg"][$counter] = "Setter function error";
+                            }
+                        }
+                        else{
+                            $response["itmsts"][$counter] = "ERROR";
+                            $response["itmmsg"][$counter] = "BARANG TIDAK ";
+                        }
+                        
+                    }
+                    else{
+                        $response["status"] = "ERROR";
+                        $response["itmsts"][$counter] = "ERROR";
+                        $response["itmmsg"][$counter] = validation_errors();
+                    }
+                    $counter++;
+                }
+            }
+            else{
+                $response["itmsts"] = "ERROR";
+                $response["itmmsg"] = "No Checks on Item";
+            }
+            
+            $tambahan = $this->input->post("tambahan");
+            if($tambahan != ""){
+                $counter = 0;
+                foreach($tambahan as $a){
+                    $this->load->library("form_validation");
+                    $this->form_validation->set_rules("tmbhn".$a,"tmbhn","required");
+                    $this->form_validation->set_rules("tmbhn_jumlah".$a,"tmbhn_jumlah","required");
+                    $this->form_validation->set_rules("tmbhn_harga".$a,"tmbhn_harga","required");
+                    $this->form_validation->set_rules("tmbhn_notes".$a,"tmbhn_notes","required");
+                    if($this->form_validation->run()){
+                        $tmbhn = $this->input->post("tmbhn".$a);
+                        $qty = $this->input->post("tmbhn_jumlah".$a);
+                        $qty = explode(" ",$qty);
+                        $tmbhn_jumlah = $qty[0];
+                        $tmbhn_satuan = $qty[1];
+                        $tmbhn_harga = $this->input->post("tmbhn_harga".$a);
+                        $tmbhn_notes = $this->input->post("tmbhn_notes".$a);
+                        $tmbhn_status = "AKTIF";
+                        $id_fk_penjualan = $id_penjualan;
+                        
+                        $this->load->model("m_tambahan_penjualan");
+                        if($this->m_tambahan_penjualan->set_insert($tmbhn,$tmbhn_jumlah,$tmbhn_satuan,$tmbhn_harga,$tmbhn_notes,$tmbhn_status,$id_fk_penjualan)){
+                            if($this->m_tambahan_penjualan->insert()){
+                                $response["tmbhnsts"][$counter] = "SUCCESS";
+                                $response["tmbhnmsg"][$counter] = "Data is recorded to database";
+                            }
+                            else{
+                                $response["status"] = "ERROR";
+                                $response["tmbhnsts"][$counter] = "ERROR";
+                                $response["tmbhnmsg"][$counter] = "Insert function error";
+                            }
+                        }
+                        else{
+                            $response["status"] = "ERROR";
+                            $response["tmbhnsts"][$counter] = "ERROR";
+                            $response["tmbhnmsg"][$counter] = "Setter function error";
+                        }
+                    }
+                    else{
+                        $response["status"] = "ERROR";
+                        $response["tmbhnsts"][$counter] = "ERROR";
+                        $response["tmbhnmsg"][$counter] = validation_errors();
+                    }
+                    $counter++;
+                }
+            }
+            else{
+                $response["tmbhnsts"] = "ERROR";
+                $response["tmbhnmsg"] = "No Checks on Tambahan";
+            }
+            $tambahan = $this->input->post("tambahan_edit");
+            if($tambahan != ""){
+                $counter = 0;
+                foreach($tambahan as $a){
+                    $this->load->library("form_validation");
+                    $this->form_validation->set_rules("id_tmbhn_edit".$a,"id","required");
+                    $this->form_validation->set_rules("tmbhn_edit".$a,"tmbhn","required");
+                    $this->form_validation->set_rules("tmbhn_jumlah_edit".$a,"tmbhn_jumlah","required");
+                    $this->form_validation->set_rules("tmbhn_harga_edit".$a,"tmbhn_harga","required");
+                    $this->form_validation->set_rules("tmbhn_notes_edit".$a,"tmbhn_notes","required");
+                    if($this->form_validation->run()){
+                        $id_pk_tmbhn = $this->input->post("id_tmbhn_edit".$a);
+                        $tmbhn = $this->input->post("tmbhn_edit".$a);
+                        $qty = $this->input->post("tmbhn_jumlah_edit".$a);
+                        $qty = explode(" ",$qty);
+                        $tmbhn_jumlah = $qty[0];
+                        $tmbhn_satuan = $qty[1];
+                        $tmbhn_harga = $this->input->post("tmbhn_harga_edit".$a);
+                        $tmbhn_notes = $this->input->post("tmbhn_notes_edit".$a);
+                        
+                        $this->load->model("m_tambahan_penjualan");
+                        if($this->m_tambahan_penjualan->set_update($id_pk_tmbhn,$tmbhn,$tmbhn_jumlah,$tmbhn_satuan,$tmbhn_harga,$tmbhn_notes)){
+                            if($this->m_tambahan_penjualan->update()){
+                                $response["tmbhnsts"][$counter] = "SUCCESS";
+                                $response["tmbhnmsg"][$counter] = "Data is updated to database";
+                            }
+                            else{
+                                $response["status"] = "ERROR";
+                                $response["tmbhnsts"][$counter] = "ERROR";
+                                $response["tmbhnmsg"][$counter] = "Update function error";
+                            }
+                        }
+                        else{
+                            $response["status"] = "ERROR";
+                            $response["tmbhnsts"][$counter] = "ERROR";
+                            $response["tmbhnmsg"][$counter] = "Setter function error";
+                        }
+                    }
+                    else{
+                        $response["status"] = "ERROR";
+                        $response["tmbhnsts"][$counter] = "ERROR";
+                        $response["tmbhnmsg"][$counter] = validation_errors();
+                    }
+                    $counter++;
+                }
+            }
+            else{
+                $response["tmbhnsts"] = "ERROR";
+                $response["tmbhnmsg"] = "No Checks on Tambahan";
+            }
+            
+            $pembayaran = $this->input->post("pembayaran");
+            if($pembayaran != ""){
+                $counter = 0;
+                foreach($pembayaran as $a){
+                    $this->load->library("form_validation");
+                    $this->form_validation->set_rules("pmbyrn_nama".$a,"pmbyrn_nama","required");
+                    $this->form_validation->set_rules("pmbyrn_persen".$a,"pmbyrn_persen","required");
+                    $this->form_validation->set_rules("pmbyrn_nominal".$a,"pmbyrn_nominal","required");
+                    $this->form_validation->set_rules("pmbyrn_notes".$a,"pmbyrn_notes","required");
+                    $this->form_validation->set_rules("pmbyrn_dateline".$a,"pmbyrn_dateline","required");
+                    
+                    if($this->form_validation->run()){
+                        $id_fk_penjualan = $id_penjualan;
+                        $penjualan_pmbyrn_nama = $this->input->post("pmbyrn_nama".$a); 
+                        $penjualan_pmbyrn_persen = $this->input->post("pmbyrn_persen".$a);
+                        $penjualan_pmbyrn_nominal = $this->input->post("pmbyrn_nominal".$a);
+                        $penjualan_pmbyrn_notes = $this->input->post("pmbyrn_notes".$a);
+                        $penjualan_pmbyrn_dateline = $this->input->post("pmbyrn_dateline".$a);
+                        $penjualan_pmbyrn_status = "AKTIF";
+                        
+                        $this->load->model("m_penjualan_pembayaran");
+                        if($this->m_penjualan_pembayaran->set_insert($id_fk_penjualan,$penjualan_pmbyrn_nama,$penjualan_pmbyrn_persen,$penjualan_pmbyrn_nominal,$penjualan_pmbyrn_notes,$penjualan_pmbyrn_dateline,$penjualan_pmbyrn_status)){
+                            if($this->m_penjualan_pembayaran->insert()){
+                                $response["pmbyrnsts"][$counter] = "SUCCESS";
+                                $response["pmbyrnmsg"][$counter] = "Data is recorded to database";
+                            }
+                            else{
+                                $response["status"] = "ERROR";
+                                $response["pmbyrnsts"][$counter] = "ERROR";
+                                $response["pmbyrnmsg"][$counter] = "Insert function error";
+                            }
+                        }
+                        else{
+                            $response["status"] = "ERROR";
+                            $response["pmbyrnsts"][$counter] = "ERROR";
+                            $response["pmbyrnmsg"][$counter] = "Setter function error";
+                        }
+                    }
+                    else{
+                        $response["status"] = "ERROR";
+                        $response["pmbyrnsts"][$counter] = "ERROR";
+                        $response["pmbyrnmsg"][$counter] = validation_errors();
+                    }
+                    $counter++;
+                }
+            }
+            else{
+                $response["pmbyrnsts"] = "ERROR";
+                $response["pmbyrnmsg"] = "No Checks on Pembayaran";
+            }
+            $pembayaran = $this->input->post("pembayaran_edit");
+            if($pembayaran != ""){
+                $counter = 0;
+                foreach($pembayaran as $a){
+                    $this->load->library("form_validation");
+                    $this->form_validation->set_rules("id_pembayaran_edit".$a,"id pembayaran","required");
+                    $this->form_validation->set_rules("pmbyrn_nama_edit".$a,"pmbyrn_nama","required");
+                    $this->form_validation->set_rules("pmbyrn_persen_edit".$a,"pmbyrn_persen","required");
+                    $this->form_validation->set_rules("pmbyrn_nominal_edit".$a,"pmbyrn_nominal","required");
+                    $this->form_validation->set_rules("pmbyrn_notes_edit".$a,"pmbyrn_notes","required");
+                    $this->form_validation->set_rules("pmbyrn_dateline_edit".$a,"pmbyrn_dateline","required");
+                    
+                    if($this->form_validation->run()){
+                        
+                        $id_pk_penjualan_pembayaran = $this->input->post("id_pembayaran_edit".$a); 
+                        $penjualan_pmbyrn_nama = $this->input->post("pmbyrn_nama_edit".$a); 
+                        $penjualan_pmbyrn_persen = $this->input->post("pmbyrn_persen_edit".$a);
+                        $penjualan_pmbyrn_nominal = $this->input->post("pmbyrn_nominal_edit".$a);
+                        $penjualan_pmbyrn_notes = $this->input->post("pmbyrn_notes_edit".$a);
+                        $penjualan_pmbyrn_dateline = $this->input->post("pmbyrn_dateline_edit".$a);
+                        
+                        $this->load->model("m_penjualan_pembayaran");
+                        if($this->m_penjualan_pembayaran->set_update($id_pk_penjualan_pembayaran,$penjualan_pmbyrn_nama,$penjualan_pmbyrn_persen,$penjualan_pmbyrn_nominal,$penjualan_pmbyrn_notes,$penjualan_pmbyrn_dateline)){
+                            if($this->m_penjualan_pembayaran->update()){
+                                $response["pmbyrnsts"][$counter] = "SUCCESS";
+                                $response["pmbyrnmsg"][$counter] = "Data is updated to database";
+                            }
+                            else{
+                                $response["status"] = "ERROR";
+                                $response["pmbyrnsts"][$counter] = "ERROR";
+                                $response["pmbyrnmsg"][$counter] = "Update function error";
+                            }
+                        }
+                        else{
+                            $response["status"] = "ERROR";
+                            $response["pmbyrnsts"][$counter] = "ERROR";
+                            $response["pmbyrnmsg"][$counter] = "Setter function error";
+                        }
+                    }
+                    else{
+                        $response["status"] = "ERROR";
+                        $response["pmbyrnsts"][$counter] = "ERROR";
+                        $response["pmbyrnmsg"][$counter] = validation_errors();
+                    }
+                    $counter++;
+                }
+            }
+            else{
+                $response["pmbyrnsts"] = "ERROR";
+                $response["pmbyrnmsg"] = "No Checks on Pembayaran";
             }
         }
         else{
