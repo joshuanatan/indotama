@@ -12,7 +12,7 @@ class Penjualan extends CI_Controller{
     public function update($id_penjualan){
         $this->load->model("m_penjualan");
         $this->m_penjualan->set_id_pk_penjualan($id_penjualan);
-        $result = $this->m_penjualan->detail();
+        $result = $this->m_penjualan->detail_by_id_pk_penjualan();
         $data["detail"] = $result->result_array();
         if(strtolower($data["detail"][0]["penj_jenis"]) == "online"){
             $this->load->model("m_penjualan_online");

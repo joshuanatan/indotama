@@ -44,9 +44,31 @@ class m_penjualan extends ci_model{
     public function columns(){
         return $this->columns;
     }
-    public function detail(){
+    public function list(){
         $sql = "
         select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_perusahaan,cust_name from mstr_penjualan
+        inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        where id_fk_cabang = ? and penj_status = ?";
+        $args = array(
+            $this->id_fk_cabang,"AKTIF"
+        );
+        return executeQuery($sql,$args);
+    }
+    public function detail_by_penj_nomor(){
+        $sql = "
+        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_perusahaan,cust_name,cust_suff,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan 
+        from mstr_penjualan
+        inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        where penj_nomor = ?";
+        $args = array(
+            $this->penj_nomor
+        );
+        return executeQuery($sql,$args);
+    }
+    public function detail_by_id_pk_penjualan(){
+        $sql = "
+        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_perusahaan,cust_name,cust_suff,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan 
+        from mstr_penjualan
         inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
         where id_pk_penjualan = ?";
         $args = array(

@@ -859,24 +859,63 @@ class Penjualan extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function list(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_penjualan");
+        $cabang = $this->input->get("id_cabang");
+        if($cabang && is_numeric($cabang)){
+            $this->m_penjualan->set_id_fk_cabang($cabang);
+            $result = $this->m_penjualan->list();
+            if($result->num_rows() > 0){ 
+                $result = $result->result_array();
+                for($a = 0; $a<count($result); $a++){
+                    $response["content"][$a]["id"] = $result[$a]["id_pk_penjualan"];
+                    $response["content"][$a]["nomor"] = $result[$a]["penj_nomor"];
+                    $response["content"][$a]["tgl"] = explode(" ",$result[$a]["penj_tgl"])[0];
+                    $response["content"][$a]["dateline_tgl"] = explode(" ",$result[$a]["penj_dateline_tgl"])[0];
+                    $response["content"][$a]["status"] = $result[$a]["penj_status"];
+                    $response["content"][$a]["jenis"] = $result[$a]["penj_jenis"];
+                    $response["content"][$a]["tipe_pembayaran"] = $result[$a]["penj_tipe_pembayaran"];
+                    $response["content"][$a]["last_modified"] = $result[$a]["penj_last_modified"];
+                    $response["content"][$a]["perusahaan_cust"] = ucwords($result[$a]["cust_perusahaan"]);
+                    $response["content"][$a]["name_cust"] = ucwords($result[$a]["cust_name"]);
+                }
+            }
+            else{
+                $response["status"] = "ERROR";
+                $response["msg"] = "No Data";
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "Invalid ID";
+        }
+        echo json_encode($response);
+    }
     public function detail($no_penjualan){
         $response["status"] = "SUCCESS";
         $this->load->model("m_penjualan");
-        $this->m_penjualan->set_pem_pk_nomor($no_penjualan);
-        $result = $this->m_penjualan->detail_by_no();
+        $this->m_penjualan->set_penj_nomor($no_penjualan);
+        $result = $this->m_penjualan->detail_by_penj_nomor();
         if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
                 $response["data"][$a]["id"] = $result[$a]["id_pk_penjualan"];
-                $response["data"][$a]["nomor"] = $result[$a]["pem_pk_nomor"];
-                $response["data"][$a]["tgl"] = $result[$a]["pem_tgl"];
-                $response["data"][$a]["status"] = $result[$a]["pem_status"];
-                $response["data"][$a]["supplier"] = $result[$a]["sup_perusahaan"];
-                $response["data"][$a]["last_modified"] = $result[$a]["pem_last_modified"];
-                $response["data"][$a]["daerah_cabang"] = $result[$a]["cabang_daerah"];
-                $response["data"][$a]["notelp_cabang"] = $result[$a]["cabang_notelp"];
-                $response["data"][$a]["alamat_cabang"] = $result[$a]["cabang_alamat"];
-                $response["data"][$a]["nama_toko"] = $result[$a]["toko_nama"];
+                $response["data"][$a]["nomor"] = $result[$a]["penj_nomor"];
+                $response["data"][$a]["tgl"] = $result[$a]["penj_tgl"];
+                $response["data"][$a]["dateline_tgl"] = $result[$a]["penj_dateline_tgl"];
+                $response["data"][$a]["status"] = $result[$a]["penj_status"];
+                $response["data"][$a]["jenis"] = $result[$a]["penj_jenis"];
+                $response["data"][$a]["tipe_pembayaran"] = $result[$a]["penj_tipe_pembayaran"];
+                $response["data"][$a]["last_modified"] = $result[$a]["penj_last_modified"];
+                $response["data"][$a]["cust_perusahaan"] = strtoupper($result[$a]["cust_perusahaan"]);
+                $response["data"][$a]["name_cust"] = strtoupper($result[$a]["cust_name"]);
+                $response["data"][$a]["suff_cust"] = strtoupper($result[$a]["cust_suff"]);
+                $response["data"][$a]["email_cust"] = $result[$a]["cust_email"];
+                $response["data"][$a]["telp_cust"] = $result[$a]["cust_telp"];
+                $response["data"][$a]["hp_cust"] = $result[$a]["cust_hp"];
+                $response["data"][$a]["alamat_cust"] = $result[$a]["cust_alamat"];
+                $response["data"][$a]["keterangan_cust"] = $result[$a]["cust_keterangan"];
             }
         }   
         else{
