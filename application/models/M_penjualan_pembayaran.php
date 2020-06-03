@@ -98,6 +98,24 @@ class M_penjualan_pembayaran extends CI_Model{
         delimiter ;
         ";
     }
+    public function list(){
+        $where = array(
+            "id_fk_penjualan" => $this->id_fk_penjualan,
+            "penjualan_pmbyrn_status" => "aktif"
+        );
+        $field = array(
+            "id_pk_penjualan_pembayaran",
+            "penjualan_pmbyrn_nama",
+            "penjualan_pmbyrn_persen",
+            "penjualan_pmbyrn_nominal",
+            "penjualan_pmbyrn_notes",
+            "penjualan_pmbyrn_dateline",
+            "penjualan_pmbyrn_status",
+            "penjualan_pmbyrn_last_modified",
+            "id_last_modified"
+        );
+        return selectRow($this->tbl_name,$where,$field);
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(
@@ -124,7 +142,6 @@ class M_penjualan_pembayaran extends CI_Model{
                 "id_pk_penjualan_pembayaran" => $this->id_pk_penjualan_pembayaran,
             );
             $data = array(
-                "id_fk_penjualan" => $this->id_fk_penjualan,
                 "penjualan_pmbyrn_nama" => $this->penjualan_pmbyrn_nama,
                 "penjualan_pmbyrn_persen" => $this->penjualan_pmbyrn_persen,
                 "penjualan_pmbyrn_nominal" => $this->penjualan_pmbyrn_nominal,
@@ -140,8 +157,11 @@ class M_penjualan_pembayaran extends CI_Model{
     }
     public function delete(){
         if($this->check_delete()){
-            $data = array(
+            $where = array(
                 "id_pk_penjualan_pembayaran" => $this->id_pk_penjualan_pembayaran,
+            );
+            $data = array(
+                "penjualan_pmbyrn_status" => "nonaktif",
                 "penjualan_pmbyrn_last_modified" => $this->penjualan_pmbyrn_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
@@ -187,7 +207,7 @@ class M_penjualan_pembayaran extends CI_Model{
         return true;
     }
     public function check_update(){
-        if($this->id_fk_penjualan == ""){
+        if($this->id_pk_penjualan_pembayaran == ""){
             return false;
         }
         if($this->penjualan_pmbyrn_nama == ""){
@@ -214,7 +234,7 @@ class M_penjualan_pembayaran extends CI_Model{
         return true;
     }
     public function check_delete(){
-        if($this->id_fk_penjualan == ""){
+        if($this->id_pk_penjualan_pembayaran == ""){
             return false;
         }
         if($this->penjualan_pmbyrn_last_modified == ""){
@@ -249,11 +269,8 @@ class M_penjualan_pembayaran extends CI_Model{
         }
         return true;
     }
-    public function set_update($id_pk_penjualan_pembayaran,$id_fk_penjualan,$penjualan_pmbyrn_nama,$penjualan_pmbyrn_persen,$penjualan_pmbyrn_nominal,$penjualan_pmbyrn_notes,$penjualan_pmbyrn_dateline){
+    public function set_update($id_pk_penjualan_pembayaran,$penjualan_pmbyrn_nama,$penjualan_pmbyrn_persen,$penjualan_pmbyrn_nominal,$penjualan_pmbyrn_notes,$penjualan_pmbyrn_dateline){
         if(!$this->set_id_pk_penjualan_pembayaran($id_pk_penjualan_pembayaran)){
-            return false;
-        }
-        if(!$this->set_id_fk_penjualan($id_fk_penjualan)){
             return false;
         }
         if(!$this->set_penjualan_pmbyrn_nama($penjualan_pmbyrn_nama)){

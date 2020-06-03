@@ -23,6 +23,18 @@
                             <td id = "tgl_delete"></td>
                         </tr>
                         <tr>
+                            <td>Dateline</td>
+                            <td id = "dateline_delete"></td>
+                        </tr>
+                        <tr>
+                            <td>Jenis Penjualan</td>
+                            <td id = "jenis_delete"></td>
+                        </tr>
+                        <tr>
+                            <td>Tipe Pembayaran</td>
+                            <td id = "pembayaran_delete"></td>
+                        </tr>
+                        <tr>
                             <td>Customer</td>
                             <td id = "customer_delete"></td>
                         </tr>
@@ -41,6 +53,9 @@
         $("#id_delete").val(content[id]["id"]);
         $("#nomor_delete").html(content[id]["nomor"]);
         $("#tgl_delete").html(content[id]["tgl"]);
-        $("#customer_delete").html(content[id]["cust_display"]);
+        $("#dateline_delete").html(content[id]["dateline_tgl"]);
+        $("#jenis_delete").html(content[id]["jenis"]);
+        $("#pembayaran_delete").html(content[id]["tipe_pembayaran"]);
+        $("#customer_delete").html(content[id]["perusahaan_cust"]+" - "+content[id]["name_cust"]);
     }
 </script>

@@ -92,50 +92,12 @@ $data = array(
 <?php $this->load->view("barang/f-add-barang",$data);?>
 <?php $this->load->view("barang/f-update-barang",$data);?>
 <?php $this->load->view("barang/f-delete-barang",$data);?>
+<?php $this->load->view("_base_element/datalist_barang_jenis");?>
+<?php $this->load->view("_base_element/datalist_barang_merk");?>
 <script>
-    $("button[data-toggle='modal']").click(function(){
-        load_brg_jenis();
-        load_brg_merk();
-    });
-    function load_brg_jenis(){
-        $.ajax({
-            url:"<?php echo base_url();?>ws/barang_jenis/list",
-            type:"GET",
-            async:false,
-            dataType:"JSON",
-            success:function(respond){
-                if(respond["status"] == "SUCCESS"){
-                    var html = "";
-                    for(var a = 0; a<respond["content"].length; a++){
-                        html += "<option value = '"+respond["content"][a]["nama"]+"'>";
-                    }
-                    $("#list_jenis").html(html);
-                }
-            },
-            error:function(){
-
-            }
-        });
-    }
-    function load_brg_merk(){
-        $.ajax({
-            url:"<?php echo base_url();?>ws/barang_merk/list",
-            type:"GET",
-            async:false,
-            dataType:"JSON",
-            success:function(respond){
-                if(respond["status"] == "SUCCESS"){
-                    var html = "";
-                    for(var a = 0; a<respond["content"].length; a++){
-                        html += "<option value = '"+respond["content"][a]["nama"]+"'>";
-                    }
-                    $("#list_merk").html(html);
-                }
-            },
-            error:function(){
-
-            }
-        });
+    function load_datalist(){
+        load_datalist_barang_jenis();
+        load_datalist_barang_merk();
     }
 </script>
 

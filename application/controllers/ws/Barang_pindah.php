@@ -7,11 +7,16 @@ class Barang_pindah extends CI_Controller{
     public function register(){
         $response["content"] = false;
         $check = $this->input->post("custom");
+        if($this->input->get("id_ref")){
+            $id_fk_refrensi_sumber = $this->input->get("id_ref");
+        }
+        else{
+            $id_fk_refrensi_sumber = "0";
+        }
         if($check != ""){
             $counter = 0;
             foreach($check as $a){
                 $brg_pindah_sumber = $this->input->get("sumber");
-                $id_fk_refrensi_sumber = "0";
                 $brg_pindah_qty = $this->input->post("custom_brg_qty".$a);
                 $brg_pindah_status = "AKTIF";
 

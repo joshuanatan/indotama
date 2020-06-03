@@ -42,8 +42,8 @@
                         <input type = "text" class = "form-control" required name = "satuan" id = "satuan_edit">
                     </div>
                     <div class = "form-group">
-                        <h5>Ukuran</h5>
-                        <input type = "text" class = "form-control" required name = "ukuran" id = "ukuran_edit">
+                        <h5>Harga Satuan</h5>
+                        <input type = "text" class = "form-control" required name = "harga" id = "harga_edit">
                     </div>
                     <div class = "form-group">
                         <h5>Gambar</h5>
@@ -69,26 +69,7 @@
         $("#id_brg_merk_edit").val(content[row]["merk"]);
         $("#minimal_edit").val(content[row]["minimal"]);
         $("#satuan_edit").val(content[row]["satuan"]);
-        $("#ukuran_edit").val(content[row]["ukuran"]);
+        $("#harga_edit").val(content[row]["harga"]);
         $("#gambar_edit").val(content[row]["image"]);
-    }
-    function update_func(){
-        var form = $("#update_form")[0];
-        var data = new FormData(form);
-        $.ajax({
-            url:"<?php echo base_url();?>ws/"+ctrl+"/update",
-            type:"POST",
-            dataType:"JSON",
-            data:data,
-            processData: false,
-            contentType: false,
-            success:function(respond){
-                if(respond["status"] == "SUCCESS"){
-                    $("#update_form :input").val("");
-                    $("#update_modal").modal("hide");
-                    refresh(page);
-                }
-            }
-        });
     }
 </script>

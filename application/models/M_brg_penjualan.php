@@ -95,7 +95,7 @@ class m_brg_penjualan extends ci_model{
     }
     public function list(){
         $sql = "
-        select id_pk_brg_penjualan,brg_penjualan_qty,brg_penjualan_satuan,brg_penjualan_harga,brg_penjualan_note,id_fk_penjualan,id_fk_barang,brg_nama,brg_penjualan_create_date,brg_penjualan_last_modified
+        select id_pk_brg_penjualan,brg_penjualan_qty,brg_penjualan_satuan,brg_penjualan_harga,brg_penjualan_note,id_fk_penjualan,id_fk_barang,brg_nama,brg_harga,brg_penjualan_create_date,brg_penjualan_last_modified
         from ".$this->tbl_name."
         inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_barang
         where brg_penjualan_status = ? and id_fk_penjualan = ?
