@@ -50,7 +50,7 @@ $notif_data = array(
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
                                             <div class = "d-block">
-                                                <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#register_modal" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
+                                               <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" id="pemenuhan_saya" style = "margin-right:10px">Lihat Pemenuhan</button>
                                             </div>
                                             <br/>
                                             <br/>
@@ -76,7 +76,7 @@ $notif_data = array(
 <script>
     var ctrl = "pemenuhan";
     var url_add = "type=<?php echo $type;?>";
-    var unautorized_button = ["delete_button","edit_button"];
+    var unautorized_button = ["edit_button"];
     var additional_button = [
         {
             data_toggle:'modal',
