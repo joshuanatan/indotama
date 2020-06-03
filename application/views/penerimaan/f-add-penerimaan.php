@@ -12,7 +12,7 @@
                     <input type = 'hidden' name = 'id_tempat_penerimaan' value = '<?php echo $id_tempat_penerimaan;?>'>
                     <div class = "form-group">
                         <h5>Nomor Pembelian</h5>
-                        <input type = "text" class = "form-control" list = "list_pembelian" required id = "no_pembelian">
+                        <input type = "text" class = "form-control" list = "datalist_pembelian" required id = "no_pembelian">
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-primary btn-sm" style = "width:20%" onclick = "load_detail_pembelian()">Load Data Barang</button>
@@ -76,7 +76,7 @@
         </div>
     </div>
 </div> 
-<datalist id = "list_pembelian">
+<datalist id = "datalist_pembelian">
     <?php for($a = 0; $a<count($pembelian); $a++):?>
     <option value = '<?php echo $pembelian[$a]["pem_pk_nomor"];?>'><?php echo $pembelian[$a]["toko_nama"]." - ".$pembelian[$a]["cabang_daerah"]." / Supplier: ".$pembelian[$a]["sup_perusahaan"];?></option>
     <?php endfor;?>
