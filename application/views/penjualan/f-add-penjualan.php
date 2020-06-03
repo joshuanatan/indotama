@@ -187,7 +187,7 @@ $notif_data = array(
 
     var brg_jual_row = 0;  
     function add_brg_jual_row(){
-        var html = "<tr class = 'add_brg_jual_row'><td id = 'row"+brg_jual_row+"'><input name = 'check[]' value = "+brg_jual_row+" type = 'hidden'><input type = 'text' list = 'datalist_barang_cabang' name = 'brg"+brg_jual_row+"' class = 'form-control'></td><td><input name = 'brg_qty"+brg_jual_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' name = 'brg_price"+brg_jual_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_price"+brg_jual_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+brg_jual_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = "<tr class = 'add_brg_jual_row'><td id = 'row"+brg_jual_row+"'><input name = 'check[]' value = "+brg_jual_row+" type = 'hidden'><input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang("+brg_jual_row+")' id = 'brg"+brg_jual_row+"' name = 'brg"+brg_jual_row+"' class = 'form-control'></td><td><input name = 'brg_qty"+brg_jual_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' readonly id = 'harga_barang_jual"+brg_jual_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_price"+brg_jual_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+brg_jual_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
         $("#add_brg_jual_but_container").before(html);
         brg_jual_row++;    
     }
@@ -209,11 +209,10 @@ $notif_data = array(
         $("#add_custom_produk_but_container").before(html);
         custom_produk_row++;    
     }
-    function empty_table_form(){
-        var brg_jual_row = 0;  
-        var tambahan_jual_row = 0;
-        $(".add_brg_jual_row").remove();
-        $(".add_tambahan_jual_row").remove();
+    function load_harga_barang(row){
+        var nama_barang = $("#brg"+row).val();
+        var hrg_brg_dsr = $("#datalist_barang_cabang option[value='"+nama_barang+"']").attr("data-baseprice");
+        $("#harga_barang_jual"+row).val(hrg_brg_dsr);
     }
 </script>
 <?php $this->load->view("_base_element/datalist_customer");?>

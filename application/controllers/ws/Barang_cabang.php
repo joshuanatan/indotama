@@ -88,6 +88,7 @@ class Barang_cabang extends CI_Controller{
                 $response["content"][$a]["minimal"] = $result[$a]["brg_minimal"];
                 $response["content"][$a]["satuan"] = $result[$a]["brg_satuan"];
                 $response["content"][$a]["image"] = $result[$a]["brg_image"];
+                $response["content"][$a]["harga"] = $result[$a]["brg_harga"];
             }
         }
         else{

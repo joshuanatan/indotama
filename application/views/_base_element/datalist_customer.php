@@ -12,7 +12,19 @@
                         if(!respond['content'][a]["nama"]){
                             respond['content'][a]["nama"] = "-";
                         }
-                        html+="<option value = '"+respond['content'][a]["perusahaan"].toString().toUpperCase()+"'>Contact Person: "+respond['content'][a]["suff"]+" "+respond['content'][a]["name"].toString().toUpperCase()+" / "+respond['content'][a]["email"]+" / "+respond['content'][a]["hp"]+"</option>";
+                        if(!respond['content'][a]["perusahaan"]){
+                            respond['content'][a]["perusahaan"] = "-";
+                        }
+                        if(!respond['content'][a]["suff"]){
+                            respond['content'][a]["suff"] = "-";
+                        }
+                        if(!respond['content'][a]["email"]){
+                            respond['content'][a]["email"] = "-";
+                        }
+                        if(!respond['content'][a]["hp"]){
+                            respond['content'][a]["hp"] = "-";
+                        }
+                        html+="<option value = '"+respond['content'][a]["perusahaan"].toString().toUpperCase()+"'>Contact Person: "+respond['content'][a]["suff"]+" "+respond['content'][a]["nama"].toString().toUpperCase()+" / "+respond['content'][a]["email"]+" / "+respond['content'][a]["hp"]+"</option>";
                     }
                     $("#datalist_customer").html(html);
                 }

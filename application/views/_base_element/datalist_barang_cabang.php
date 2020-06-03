@@ -15,7 +15,7 @@
                     console.log(respond["content"]);
                     datalist_barang_cabang = respond['content'];
                     for(var a = 0; a<respond["content"].length; a++){
-                        html_datalist_barang_cabang+="<option value = '"+respond['content'][a]["nama"]+"' data-lastprice = '"+respond["content"][a]["last_price"]+"'>"+respond["content"][a]["nama"].toString().toUpperCase()+" / Stok: "+respond["content"][a]["qty"]+" "+respond["content"][a]["satuan"].toString().toUpperCase()+"</option>";
+                        html_datalist_barang_cabang+="<option data-baseprice = '"+respond['content'][a]["harga"]+"' value = '"+respond['content'][a]["nama"]+"' data-lastprice = '"+respond["content"][a]["last_price"]+"'>"+respond["content"][a]["nama"].toString().toUpperCase()+" / Stok: "+respond["content"][a]["qty"]+" "+respond["content"][a]["satuan"].toString().toUpperCase()+"</option>";
                     }
                     $("#datalist_barang_cabang").html(html_datalist_barang_cabang);
                 }
