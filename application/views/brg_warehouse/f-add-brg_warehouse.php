@@ -43,7 +43,7 @@
     var brg_count = 0;  
     function add_brg_beli_row(){
         $("#id_warehouse").val(<?php echo $warehouse[0]["id_pk_warehouse"];?>);
-        var html = "<tr class = 'add_brg_count'><td id = 'row"+brg_count+"'><input name = 'check[]' value = "+brg_count+" type = 'hidden'><input type = 'text' list = 'daftar_barang' name = 'brg"+brg_count+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_qty"+brg_count+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+brg_count+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = "<tr class = 'add_brg_count'><td id = 'row"+brg_count+"'><input name = 'check[]' value = "+brg_count+" type = 'hidden'><input type = 'text' list = 'datalist_barang' name = 'brg"+brg_count+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_qty"+brg_count+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+brg_count+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
         $("#add_brg_beli_but_container").before(html);
         brg_count++;    
     }
