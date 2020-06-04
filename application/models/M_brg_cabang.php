@@ -103,6 +103,35 @@ class m_brg_cabang extends ci_model{
             
             insert into tbl_brg_cabang_log(executed_function,id_pk_brg_cabang,brg_cabang_qty,brg_cabang_last_price,brg_cabang_notes,brg_cabang_status,id_fk_brg,id_fk_cabang,brg_cabang_create_date,brg_cabang_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_cabang,new.brg_cabang_last_price,new.brg_cabang_qty,new.brg_cabang_notes,new.brg_cabang_status,new.id_fk_brg,new.id_fk_cabang,new.brg_cabang_create_date,new.brg_cabang_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
+        delimiter ;
+
+        drop procedure if exists update_stok_barang_cabang;
+        delimiter //
+        create procedure update_stok_barang_cabang(
+            in id_barang int,
+            in id_cabang int,
+            in barang_masuk double,
+            in id_satuan_masuk int,
+            in barang_keluar double,
+            in id_satuan_keluar int
+        )
+        begin
+            /*
+            the logic is
+            barang_masuk = n, barang_keluar = 0 [insert new data]
+            barang_masuk = n, barang_keluar = m [update data]
+            barang_masuk = 0, barang_keluar = m [delete data]
+            */
+            if barang_masuk != 0 then
+            call ubah_satuan_barang(id_satuan_masuk, barang_masuk);
+            end if;
+            if barang_keluar != 0 then
+            call ubah_satuan_barang(id_satuan_keluar, barang_keluar);
+            end if;
+            update tbl_brg_cabang 
+            set brg_cabang_qty = brg_cabang_qty+barang_masuk-barang_keluar
+            where id_fk_brg = id_barang and id_fk_cabang = id_cabang;
+        end //
         delimiter ;";
         executequery($sql);
     }

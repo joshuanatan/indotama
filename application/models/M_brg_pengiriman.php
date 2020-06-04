@@ -68,6 +68,18 @@ class M_brg_pengiriman extends ci_model{
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
             insert into tbl_brg_pengiriman_log(executed_function,id_pk_brg_pengiriman,brg_pengiriman_qty,brg_pengiriman_note,id_fk_pengiriman,id_fk_brg_penjualan,id_fk_satuan,brg_pengiriman_create_date,brg_pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_pengiriman,new.brg_pengiriman_qty,new.brg_pengiriman_note,new.id_fk_pengiriman,new.id_fk_brg_penjualan,new.id_fk_satuan,new.brg_pengiriman_create_date,new.brg_pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            
+            set @id_cabang = 0;
+            set @id_barang = 0;
+            set @brg_pengiriman_qty = new.brg_pengiriman_qty;
+            set @id_satuan_kirim = new.id_fk_satuan;
+            
+            select id_fk_cabang, id_fk_barang into @id_cabang, @id_barang 
+            from tbl_brg_pengiriman
+            inner join tbl_brg_penjualan on tbl_brg_penjualan.id_pk_brg_penjualan = tbl_brg_pengiriman.id_fk_brg_penjualan
+            inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = tbl_brg_penjualan.id_fk_penjualan
+            where id_pk_brg_pengiriman = new.id_pk_brg_pengiriman;
+            call update_stok_barang_cabang(@id_barang,@id_cabang,0,0,@brg_pengiriman_qty,@id_satuan_kirim);
         end$$
         delimiter ;
 
@@ -83,6 +95,20 @@ class M_brg_pengiriman extends ci_model{
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
             insert into tbl_brg_pengiriman_log(executed_function,id_pk_brg_pengiriman,brg_pengiriman_qty,brg_pengiriman_note,id_fk_pengiriman,id_fk_brg_penjualan,id_fk_satuan,brg_pengiriman_create_date,brg_pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_pengiriman,new.brg_pengiriman_qty,new.brg_pengiriman_note,new.id_fk_pengiriman,new.id_fk_brg_penjualan,new.id_fk_satuan,new.brg_pengiriman_create_date,new.brg_pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            
+            set @id_cabang = 0;
+            set @id_barang = 0;
+            set @brg_keluar_qty = new.brg_pengiriman_qty;
+            set @id_satuan_keluar = new.id_fk_satuan;
+            set @brg_penerimaan_qty = old.brg_pengiriman_qty;
+            set @id_satuan_terima = old.id_fk_satuan;
+
+            select id_fk_cabang, id_fk_barang into @id_cabang, @id_barang 
+            from tbl_brg_pengiriman
+            inner join tbl_brg_penjualan on tbl_brg_penjualan.id_pk_brg_penjualan = tbl_brg_pengiriman.id_fk_brg_penjualan
+            inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = tbl_brg_penjualan.id_fk_penjualan
+            where id_pk_brg_pengiriman = new.id_pk_brg_pengiriman;
+            call update_stok_barang_cabang(@id_barang,@id_cabang,@brg_penerimaan_qty,@id_satuan_terima,@brg_keluar_qty,@id_satuan_keluar);
         end$$
         delimiter ;
         ";

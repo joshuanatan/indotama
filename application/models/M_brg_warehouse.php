@@ -99,6 +99,35 @@ class m_brg_warehouse extends ci_model{
             
             insert into tbl_brg_warehouse_log(executed_function,id_pk_brg_warehouse,brg_warehouse_qty,brg_warehouse_notes,brg_warehouse_status,id_fk_brg,id_fk_warehouse,brg_warehouse_create_date,brg_warehouse_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_warehouse,new.brg_warehouse_qty,new.brg_warehouse_notes,new.brg_warehouse_status,new.id_fk_brg,new.id_fk_warehouse,new.brg_warehouse_create_date,new.brg_warehouse_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
+        delimiter ;
+        
+        drop procedure if exists update_stok_barang_warehouse;
+        delimiter //
+        create procedure update_stok_barang_warehouse(
+            in id_barang int,
+            in id_warehouse int,
+            in barang_masuk double,
+            in id_satuan_masuk int,
+            in barang_keluar double,
+            in id_satuan_keluar int
+        )
+        begin
+            /*
+            the logic is
+            barang_masuk = n, barang_keluar = 0 [insert new data]
+            barang_masuk = n, barang_keluar = m [update data]
+            barang_masuk = 0, barang_keluar = m [delete data]
+            */
+            if barang_masuk != 0 then
+            call ubah_satuan_barang(id_satuan_masuk, barang_masuk);
+            end if;
+            if barang_keluar != 0 then
+            call ubah_satuan_barang(id_satuan_keluar, barang_keluar);
+            end if;
+            update tbl_brg_warehouse 
+            set brg_warehouse_qty = brg_warehouse_qty+barang_masuk-barang_keluar
+            where id_fk_brg = id_barang and id_fk_warehouse = id_warehouse;
+        end //
         delimiter ;";
         executequery($sql);
     }

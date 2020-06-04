@@ -92,6 +92,24 @@ class m_satuan extends ci_model{
             insert into mstr_satuan_log(executed_function,id_pk_satuan,satuan_nama,satuan_rumus,satuan_status,satuan_create_date,satuan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_satuan,new.satuan_nama,new.satuan_status,new.satuan_rumus,new.satuan_create_date,new.satuan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
+
+        drop procedure if exists ubah_satuan_barang;
+        delimiter //
+        create procedure ubah_satuan_barang(
+            in id_satuan_in int,
+            inout brg_qty double
+        )
+        begin
+            declare conversion_exp varchar(20);
+            select satuan_rumus 
+            into conversion_exp
+            from mstr_satuan
+            where id_pk_satuan = id_satuan_in;
+            
+            set brg_qty = conversion_exp * brg_qty;
+            
+        end //
+        delimiter ;
         ";
         executequery($sql);
     }

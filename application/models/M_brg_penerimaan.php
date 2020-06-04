@@ -68,6 +68,23 @@ class m_brg_penerimaan extends ci_model{
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
             insert into tbl_brg_penerimaan_log(executed_function,id_pk_brg_penerimaan,brg_penerimaan_qty,brg_penerimaan_note,id_fk_penerimaan,id_fk_brg_pembelian,id_fk_satuan,brg_penerimaan_create_date,brg_penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_penerimaan,new.brg_penerimaan_qty,new.brg_penerimaan_note,new.id_fk_penerimaan,new.id_fk_brg_pembelian,new.id_fk_satuan,new.brg_penerimaan_create_date,new.brg_penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+
+            set @id_cabang = 0;
+            set @id_barang = 0;
+            set @id_warehouse = 0;
+            set @brg_penerimaan_qty = new.brg_penerimaan_qty;
+            set @id_satuan_terima = new.id_fk_satuan;
+            select id_fk_cabang, id_fk_barang, id_fk_warehouse into @id_cabang,@id_barang,@id_warehouse from tbl_brg_penerimaan
+            inner join tbl_brg_pembelian on tbl_brg_pembelian.id_pk_brg_pembelian = tbl_brg_penerimaan.ID_FK_BRG_PEMBELIAN
+            inner join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan
+            where id_pk_brg_penerimaan = new.id_pk_brg_penerimaan;
+
+            if @id_warehouse is not null then
+            call update_stok_barang_warehouse(@id_barang,@id_warehouse,@brg_penerimaan_qty,@id_satuan_terima,0,0);
+            elseif @id_cabang is not null then 
+            call update_stok_barang_cabang(@id_barang,@id_cabang,@brg_penerimaan_qty,@id_satuan_terima,0,0);
+            end if;
+
         end$$
         delimiter ;
 
@@ -83,6 +100,26 @@ class m_brg_penerimaan extends ci_model{
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
             insert into tbl_brg_penerimaan_log(executed_function,id_pk_brg_penerimaan,brg_penerimaan_qty,brg_penerimaan_note,id_fk_penerimaan,id_fk_brg_pembelian,id_fk_satuan,brg_penerimaan_create_date,brg_penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_penerimaan,new.brg_penerimaan_qty,new.brg_penerimaan_note,new.id_fk_penerimaan,new.id_fk_brg_pembelian,new.id_fk_satuan,new.brg_penerimaan_create_date,new.brg_penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+
+            set @id_cabang = 0;
+            set @id_barang = 0;
+            set @id_warehouse = 0;
+            set @brg_penerimaan_qty = new.brg_penerimaan_qty;
+            set @id_satuan_terima = new.id_fk_satuan;
+            set @brg_keluar_qty = old.brg_penerimaan_qty;
+            set @id_satuan_keluar = old.id_fk_satuan;
+
+            select id_fk_cabang, id_fk_barang,id_fk_warehouse into @id_cabang, @id_barang,@id_warehouse from tbl_brg_penerimaan
+            inner join tbl_brg_pembelian on tbl_brg_pembelian.id_pk_brg_pembelian = tbl_brg_penerimaan.ID_FK_BRG_PEMBELIAN
+            inner join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan
+            where id_pk_brg_penerimaan = new.id_pk_brg_penerimaan;
+            
+            if @id_warehouse is not null then
+            call update_stok_barang_warehouse(@id_barang,@id_warehouse,@brg_penerimaan_qty,@id_satuan_terima,@brg_keluar_qty,@id_satuan_keluar);
+            elseif @id_cabang is not null then 
+            call update_stok_barang_cabang(@id_barang,@id_cabang,@brg_penerimaan_qty,@id_satuan_terima,@brg_keluar_qty,@id_satuan_keluar);
+            end if;
+
         end$$
         delimiter ;
         ";
