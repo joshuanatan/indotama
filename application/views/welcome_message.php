@@ -29,16 +29,9 @@ $breadcrumb = array(
                                         <h6 class="panel-title txt-light"><?php echo ucwords($page_title);?></h6>
                                     </div>
                                     <div class="clearfix"></div>
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item">Home</a></li>
-                                        <?php for($a = 0; $a<count($breadcrumb); $a++):?>
-                                        <?php if($a+1 != count($breadcrumb)):?>
-                                        <li class="breadcrumb-item"><?php echo ucwords($breadcrumb[$a]);?></a></li>
-                                        <?php else:?>
-                                        <li class="breadcrumb-item active"><?php echo ucwords($breadcrumb[$a]);?></li>
-                                        <?php endif;?>
-                                        <?php endfor;?>
-                                    </ol>
+                                </div>
+                                <div class = "panel-body">
+                                    <?php $this->load->view("home/v_daftar_permintaan");?>
                                 </div>
                             </div>
                         </div>
