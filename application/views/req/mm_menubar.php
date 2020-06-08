@@ -3,7 +3,7 @@
     <div class="mobile-only-brand pull-left">
         <div class="nav-header pull-left">
             <div class="logo-wrap">
-                <a href="dashboard.php">
+                <a href="<?php echo base_url();?>dashboard">
                     <span class="brand-text"
                         style="font-size:20px !important;margin-top:10px !important; color:#625BD6 !important; margin-left:20px !important">INDOTAMA</span>
                 </a>
