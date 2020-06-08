@@ -73,8 +73,6 @@ $notif_data = array(
         <?php $this->load->view('req/mm_js.php');?>
     </body>
 </html>
-<datalist id = "list_merk" ></datalist>
-<datalist id = "list_jenis" ></datalist>
 
 <script>
     var ctrl = "barang";
@@ -94,10 +92,12 @@ $data = array(
 <?php $this->load->view("barang/f-delete-barang",$data);?>
 <?php $this->load->view("_base_element/datalist_barang_jenis");?>
 <?php $this->load->view("_base_element/datalist_barang_merk");?>
+<?php $this->load->view("_base_element/datalist_barang");?>
 <script>
     function load_datalist(){
         load_datalist_barang_jenis();
         load_datalist_barang_merk();
+        load_datalist_barang();
     }
 </script>
 
