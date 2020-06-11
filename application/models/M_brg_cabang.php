@@ -131,9 +131,28 @@ class m_brg_cabang extends ci_model{
             update tbl_brg_cabang 
             set brg_cabang_qty = brg_cabang_qty+barang_masuk-barang_keluar
             where id_fk_brg = id_barang and id_fk_cabang = id_cabang;
+
+            call update_stok_kombinasi_barang_cabang(id_barang,barang_masuk, barang_keluar, id_cabang);
+
         end //
+        delimiter ;
+        
+        drop procedure if exists update_stok_kombinasi_barang_cabang;
+        delimiter //
+        create procedure update_stok_kombinasi_barang_cabang(
+            in id_barang_utama_in int,
+            in qty_brg_masuk_in double,
+            in qty_brg_keluar_in double,
+            in id_cabang_in int
+        )
+        begin
+            update tbl_barang_kombinasi
+            inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_barang_kombinasi.id_barang_kombinasi
+            set brg_cabang_qty = brg_cabang_qty+(barang_kombinasi_qty*qty_brg_masuk_in)-(barang_kombinasi_qty*qty_brg_keluar_in)
+            where id_barang_utama = id_barang_utama_in and id_fk_cabang = id_cabang_in and barang_kombinasi_status = 'aktif';
+        end//
         delimiter ;";
-        executequery($sql);
+        executeQuery($sql);
     }
     public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
         $order_by = $this->columns[$order_by]["col_name"];
@@ -176,6 +195,14 @@ class m_brg_cabang extends ci_model{
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
+    public function is_item_exists(){
+        $where = array(
+            "id_fk_brg" => $this->id_fk_brg,
+            "id_fk_cabang" => $this->id_fk_cabang,
+            "brg_cabang_status" => "aktif"
+        );
+        return isExistsInTable($this->tbl_name,$where);
+    }
     public function list(){
         $sql = "
         select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_last_price,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga
@@ -184,6 +211,20 @@ class m_brg_cabang extends ci_model{
         where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ? ";
         $args = array(
             "aktif","aktif",$this->id_fk_cabang
+        );
+        return executeQuery($sql,$args);
+    }
+    public function list_not_exists_brg_kombinasi(){
+        $sql = "
+        select id_barang_kombinasi 
+        from tbl_brg_cabang
+        right join tbl_barang_kombinasi on tbl_barang_kombinasi.id_barang_utama = tbl_brg_cabang.id_fk_brg
+        where id_fk_cabang = ? and brg_cabang_status = 'aktif'
+        and id_barang_kombinasi not in
+        (select id_fk_brg from tbl_brg_cabang where id_fk_cabang = ? and brg_cabang_status = 'aktif')
+        ";
+        $args = array(
+            $this->id_fk_cabang, $this->id_fk_cabang
         );
         return executeQuery($sql,$args);
     }

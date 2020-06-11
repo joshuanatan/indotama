@@ -19,7 +19,7 @@
                     </div>
                     <div class = "form-group">
                         <h5>Jenis Barang</h5>
-                        <input list = "list_jenis" type = "text"  required name = "id_brg_jenis" class = "form-control" id = "id_brg_jenis_edit">
+                        <input list = "datalist_barang_jenis" type = "text"  required name = "id_brg_jenis" class = "form-control" id = "id_brg_jenis_edit">
                     </div>
                     <div class = "form-group">
                         <h5>Nama Barang</h5>
@@ -31,7 +31,7 @@
                     </div>
                     <div class = "form-group">
                         <h5>Merk Barang</h5>
-                        <input list = "list_merk" type = "text"  required name = "id_brg_merk" class = "form-control" id = "id_brg_merk_edit">
+                        <input list = "datalist_barang_merk" type = "text"  required name = "id_brg_merk" class = "form-control" id = "id_brg_merk_edit">
                     </div>
                     <div class = "form-group">
                         <h5>Minimal Stok</h5>

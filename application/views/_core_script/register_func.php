@@ -12,7 +12,7 @@
             success:function(respond){
                 if(respond["status"] == "SUCCESS"){
                     $("#register_modal").modal("hide");
-                    $("#register_form :input").val("");
+                    //$("#register_form :input").val("");
                     refresh(page);
                     //notification
                     $('#notif_register_success').show(1).delay(2000).hide(1);

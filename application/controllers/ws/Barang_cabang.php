@@ -3,6 +3,7 @@ defined("BASEPATH") or exit("no direct script");
 class Barang_cabang extends CI_Controller{
     public function __construct(){
         parent::__construct();
+        $this->update_list_barang();
     }
     public function columns(){
         $response["status"] = "SUCCESS";
@@ -75,20 +76,20 @@ class Barang_cabang extends CI_Controller{
         if($result->num_rows() > 0 ){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
-                $response["content"][$a]["id"] = $result[$a]["id_pk_brg_cabang"];
-                $response["content"][$a]["qty"] = $result[$a]["brg_cabang_qty"];
-                $response["content"][$a]["notes"] = $result[$a]["brg_cabang_notes"];
-                $response["content"][$a]["last_price"] = $result[$a]["brg_cabang_last_price"];
-                $response["content"][$a]["status"] = $result[$a]["brg_cabang_status"];
-                $response["content"][$a]["id_brg"] = $result[$a]["id_fk_brg"];
-                $response["content"][$a]["last_modified"] = $result[$a]["brg_cabang_last_modified"];
-                $response["content"][$a]["nama"] = $result[$a]["brg_nama"];
-                $response["content"][$a]["kode"] = $result[$a]["brg_kode"];
-                $response["content"][$a]["ket"] = $result[$a]["brg_ket"];
-                $response["content"][$a]["minimal"] = $result[$a]["brg_minimal"];
-                $response["content"][$a]["satuan"] = $result[$a]["brg_satuan"];
-                $response["content"][$a]["image"] = $result[$a]["brg_image"];
-                $response["content"][$a]["harga"] = $result[$a]["brg_harga"];
+                $response["content"][$a]["id"] = $result[$a]["id_pk_brg_cabang"]."";
+                $response["content"][$a]["qty"] = $result[$a]["brg_cabang_qty"]."";
+                $response["content"][$a]["notes"] = $result[$a]["brg_cabang_notes"]."";
+                $response["content"][$a]["last_price"] = $result[$a]["brg_cabang_last_price"]."";
+                $response["content"][$a]["status"] = $result[$a]["brg_cabang_status"]."";
+                $response["content"][$a]["id_brg"] = $result[$a]["id_fk_brg"]."";
+                $response["content"][$a]["last_modified"] = $result[$a]["brg_cabang_last_modified"]."";
+                $response["content"][$a]["nama"] = $result[$a]["brg_nama"]."";
+                $response["content"][$a]["kode"] = $result[$a]["brg_kode"]."";
+                $response["content"][$a]["ket"] = $result[$a]["brg_ket"]."";
+                $response["content"][$a]["minimal"] = $result[$a]["brg_minimal"]."";
+                $response["content"][$a]["satuan"] = $result[$a]["brg_satuan"]."";
+                $response["content"][$a]["image"] = $result[$a]["brg_image"]."";
+                $response["content"][$a]["harga"] = $result[$a]["brg_harga"]."";
             }
         }
         else{
@@ -120,6 +121,15 @@ class Barang_cabang extends CI_Controller{
                     if($result->num_rows() > 0){
                         $result = $result->result_array();
                         $id_fk_brg = $result[0]["id_pk_brg"];
+
+                        $this->load->model("m_brg_cabang");
+                        $this->m_brg_cabang->set_id_fk_brg($id_fk_brg);
+                        $this->m_brg_cabang->set_id_fk_cabang($id_fk_cabang);
+                        if(!$this->m_brg_cabang->is_item_exists()){
+                            $this->m_brg_cabang->set_insert(0,"-","aktif",$id_fk_brg,$id_fk_cabang);
+                            $this->m_brg_cabang->insert();
+                        }
+
                         $this->load->model("m_brg_cabang");
                         if($this->m_brg_cabang->set_insert($brg_cabang_qty,$brg_cabang_notes,$brg_cabang_status,$id_fk_brg,$id_fk_cabang)){
                             if($this->m_brg_cabang->insert()){
@@ -219,5 +229,25 @@ class Barang_cabang extends CI_Controller{
             $response["msg"] = "Invalid ID Supplier";
         }
         echo json_encode($response);
+    }
+    private function update_list_barang(){
+        //select semua yang belom ada   
+        $this->load->model("m_brg_cabang");
+        $this->m_brg_cabang->set_id_fk_cabang($this->session->id_cabang);
+        $result = $this->m_brg_cabang->list_not_exists_brg_kombinasi();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                if($this->m_brg_cabang->set_insert("0","Auto insert from item existance check","aktif",$result[$a]["id_barang_kombinasi"],$this->session->id_cabang)){
+                    if($this->m_brg_cabang->insert()){
+                    }
+                    else{
+                    }
+                }
+                else{
+                }
+            }   
+        }
+        //loop masuk
     }
 }

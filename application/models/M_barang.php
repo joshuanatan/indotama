@@ -146,10 +146,10 @@ class m_barang extends ci_model{
         $query = "
         select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_harga,count(id_pk_barang_kombinasi) as jumlah_barang_kombinasi
         from ".$this->tbl_name." 
-        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
-        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
+        left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
+        left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
         left join tbl_barang_kombinasi on tbl_barang_kombinasi.id_barang_utama = mstr_barang.id_pk_brg
-        where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ?".$search_query."  
+        where brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) ".$search_query."  
         group by id_pk_brg 
         order by ".$order_by." ".$order_direction." 
         limit 20 offset ".($page-1)*$data_per_page;
@@ -161,8 +161,8 @@ class m_barang extends ci_model{
         $query = "
         select id_pk_brg
         from ".$this->tbl_name." 
-        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
-        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
+        left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
+        left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
         where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ?".$search_query."  
         order by ".$order_by." ".$order_direction;
         $result["total_data"] = executequery($query,$args)->num_rows();

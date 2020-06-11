@@ -84,10 +84,10 @@ class M_barang_kombinasi extends CI_Model{
         select id_pk_barang_kombinasi,id_barang_utama,id_barang_kombinasi,barang_kombinasi_qty, brg_kombinasi.brg_nama
         from ".$this->tbl_name."
         inner join mstr_barang as brg_kombinasi on brg_kombinasi.id_pk_brg = tbl_barang_kombinasi.id_barang_kombinasi  
-        where barang_kombinasi_status = ? and id_barang_utama = ?
+        where barang_kombinasi_status = ? and id_barang_utama = ? and brg_status = ?
         ";
         $args = array(
-            "aktif",$this->id_barang_utama
+            "aktif",$this->id_barang_utama,"aktif"
         );
         return executeQuery($sql,$args);
     }
