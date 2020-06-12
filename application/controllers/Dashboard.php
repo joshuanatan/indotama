@@ -32,6 +32,7 @@ class Dashboard extends CI_Controller {
 		$data['laba_tahun_ini'] = $penjualan2[0]['harga_pen'] - $pembelian2[0]['harga_pem'];
 
 		//top produk terjual
+		$data['top_produk_terjual'] = executeQuery("SELECT mstr_barang.brg_nama, sum(tbl_brg_penjualan.BRG_PENJUALAN_QTY) as brg_top FROM `tbl_brg_penjualan` join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_penjualan.ID_FK_BARANG WHERE BRG_PENJUALAN_STATUS='AKTIF' GROUP BY tbl_brg_penjualan.ID_FK_BARANG order by brg_top DESC LIMIT 4")->result_array();
 
 		//penjualan kemarin
 		$data['tanggal_kemarin'] = date('j F Y',strtotime("-1 days"));

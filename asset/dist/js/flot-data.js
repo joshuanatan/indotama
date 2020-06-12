@@ -158,7 +158,7 @@ $(function() {
 
 	
 	/***Pie Chart***/
-	if( $('#flot_pie_chart').length > 0 ){
+	/*if( $('#flot_pie_chart').length > 0 ){
 		var pie_data = [{
 			label: "Series 0",
 			data: 10,
@@ -206,7 +206,7 @@ $(function() {
 			},
 		};
 		$.plot($("#flot_pie_chart"), pie_data, pie_op);
-	}
+	}*/
 
 	/***Filled Line Chart***/
 	if( $('#flot_line_chart_moving').length > 0 ){	

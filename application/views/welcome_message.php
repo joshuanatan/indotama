@@ -162,7 +162,7 @@ $breadcrumb = array(
                                       <div class="panel-wrapper collapse in">
                                         <div class="panel-body">
                                           <div class="flot-container" style="height:250px">
-                                            <div id="flot_pie_chart" class="demo-placeholder"></div>
+                                            <div id="flot_pie_charts" class="demo-placeholder"></div>
                                           </div>
                                         </div>
                                       </div>
@@ -721,4 +721,49 @@ window.onload = function() {
         window.location.reload();
     }
 }
+</script>
+<?php 
+$code="";
+$color[0]="rgba(227, 201, 75,1)";
+$color[1]="rgba(139,195,74,1)";
+$color[2]="rgba(33,150,243,1)";
+$color[3]="rgba(247, 52, 20,1)";
+for($p=0; $p<count($top_produk_terjual); $p++){
+  $code = $code . "{label: '" . $top_produk_terjual[$p]['brg_nama'] . "',data: " . $top_produk_terjual[$p]['brg_top'] .",color: '" . $color[$p] . "'},";
+}
+?>
+<script>
+/***Pie Chart***/
+if( $('#flot_pie_charts').length > 0 ){
+		var pie_data = [<?php echo $code ?>];
+
+		var pie_op = {
+			series: {
+				pie: {
+					innerRadius: 0.5,
+					show: true,
+					stroke: {
+						width: 0,
+					}
+				}
+			},
+			legend : {
+				backgroundColor: 'transparent',
+			},
+			grid: {
+				hoverable: true
+			},
+			color: null,
+			tooltip: true,
+			tooltipOpts: {
+				content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+				shifts: {
+					x: 20,
+					y: 0
+				},
+				defaultTheme: false
+			},
+		};
+		$.plot($("#flot_pie_charts"), pie_data, pie_op);
+	}
 </script>
