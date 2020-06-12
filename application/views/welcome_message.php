@@ -178,7 +178,7 @@ $breadcrumb = array(
                                           </div>
                                           <div  class="panel-wrapper collapse in">
                                             <div  class="panel-body">
-                                                <h5 class="pl-0">5 September 2019</h5>
+                                                <h5 class="pl-0"><?php echo $tanggal_kemarin ?></h5>
                                                 <div class="table-wrap mt-20">
                                                     <div class="table-responsive">
                                                       <table class="table mb-0">
@@ -191,15 +191,15 @@ $breadcrumb = array(
                                                             <tbody>
                                                                 <tr class="active">
                                                                   <th scope="row">Jumlah Transaksi</th>
-                                                                  <td>189 </td>
+                                                                  <td><?php echo number_format($jumlah_transaksi) ?> </td>
                                                                 </tr>
                                                                 <tr class="success">
                                                                   <th scope="row">Nilai Omset</th>
-                                                                  <td>Rp 209.898.999</td>
+                                                                  <td><?php echo number_format($nilai_omset) ?></td>
                                                                 </tr>
                                                                 <tr class="info">
                                                                   <th scope="row">Jumlah Barang</th>
-                                                                  <td>650</td>
+                                                                  <td><?php  echo number_format($jumlah_barang)?></td>
                                                                 </tr>
                                                           </tbody>
                                                       </table>

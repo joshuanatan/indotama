@@ -22,16 +22,35 @@ class Dashboard extends CI_Controller {
 		$data['total_produk'] = selectRow("mstr_barang",array("brg_status"=>"AKTIF"))->num_rows();
 
 		//laba bulan ini
-		$pembelian = executeQuery("SELECT sum(brg_pem_harga) as harga_pem, brg_pem_create_date FROM tbl_brg_pembelian WHERE brg_pem_status='AKTIF' AND MONTH(brg_pem_create_date) = MONTH(CURRENT_DATE()) AND YEAR(brg_pem_create_date) = YEAR(CURRENT_DATE())")->result_array();
-		$penjualan = executeQuery("SELECT sum(brg_penjualan_harga) as harga_pen, brg_penjualan_create_date FROM tbl_brg_penjualan WHERE brg_penjualan_status='AKTIF' AND MONTH(brg_penjualan_create_date) = MONTH(CURRENT_DATE()) AND YEAR(brg_penjualan_create_date) = YEAR(CURRENT_DATE())")->result_array();$data['laba_bulan_ini'] = $penjualan[0]['harga_pen'] - $pembelian[0]['harga_pem'];
+		$pembelian = executeQuery("SELECT sum(brg_pem_harga*brg_pem_qty) as harga_pem, brg_pem_create_date FROM tbl_brg_pembelian WHERE brg_pem_status='AKTIF' AND MONTH(brg_pem_create_date) = MONTH(CURRENT_DATE()) AND YEAR(brg_pem_create_date) = YEAR(CURRENT_DATE())")->result_array();
+		$penjualan = executeQuery("SELECT sum(brg_penjualan_harga*brg_penjualan_qty) as harga_pen, brg_penjualan_create_date FROM tbl_brg_penjualan WHERE brg_penjualan_status='AKTIF' AND MONTH(brg_penjualan_create_date) = MONTH(CURRENT_DATE()) AND YEAR(brg_penjualan_create_date) = YEAR(CURRENT_DATE())")->result_array();
+		$data['laba_bulan_ini'] = $penjualan[0]['harga_pen'] - $pembelian[0]['harga_pem'];
 
 		//laba tahun ini
-		$pembelian2 = executeQuery("SELECT sum(brg_pem_harga) as harga_pem, brg_pem_create_date FROM tbl_brg_pembelian WHERE brg_pem_status='AKTIF' AND YEAR(brg_pem_create_date) = YEAR(CURRENT_DATE())")->result_array();
-		$penjualan2 = executeQuery("SELECT sum(brg_penjualan_harga) as harga_pen, brg_penjualan_create_date FROM tbl_brg_penjualan WHERE brg_penjualan_status='AKTIF' AND YEAR(brg_penjualan_create_date) = YEAR(CURRENT_DATE())")->result_array();$data['laba_bulan_ini'] = $penjualan[0]['harga_pen'] - $pembelian[0]['harga_pem'];
+		$pembelian2 = executeQuery("SELECT sum(brg_pem_harga*brg_pem_qty) as harga_pem, brg_pem_create_date FROM tbl_brg_pembelian WHERE brg_pem_status='AKTIF' AND YEAR(brg_pem_create_date) = YEAR(CURRENT_DATE())")->result_array();
+		$penjualan2 = executeQuery("SELECT sum(brg_penjualan_harga*brg_penjualan_qty) as harga_pen, brg_penjualan_create_date FROM tbl_brg_penjualan WHERE brg_penjualan_status='AKTIF' AND YEAR(brg_penjualan_create_date) = YEAR(CURRENT_DATE())")->result_array();
 		$data['laba_tahun_ini'] = $penjualan2[0]['harga_pen'] - $pembelian2[0]['harga_pem'];
 
 		//top produk terjual
 
+		//penjualan kemarin
+		$data['tanggal_kemarin'] = date('j F Y',strtotime("-1 days"));
+
+		$jml_pen = executeQuery("SELECT count(id_pk_brg_penjualan) as jml_pen FROM tbl_brg_penjualan WHERE brg_penjualan_status='AKTIF' AND brg_penjualan_create_date=DATE(NOW() - INTERVAL 1 DAY)")->result_array();
+		if($jml_pen[0]['jml_pen']==""){
+			$jml_pen[0]['jml_pen'] = 0;
+		}
+		$data['jumlah_transaksi'] = $jml_pen[0]['jml_pen'];
+		
+		$penjualan3 = executeQuery("SELECT sum(brg_penjualan_harga*brg_penjualan_qty) as harga_pen, brg_penjualan_create_date FROM tbl_brg_penjualan WHERE brg_penjualan_status='AKTIF' AND brg_penjualan_create_date=DATE(NOW() - INTERVAL 1 DAY)")->result_array();
+		if($penjualan3[0]['harga_pen']==""){
+			$penjualan3[0]['harga_pen'] = 0;
+		}
+		$data['nilai_omset']=$penjualan3[0]['harga_pen'];
+		
+		$jml_brg = executeQuery("SELECT sum(brg_penjualan_qty) as brg, brg_penjualan_create_date FROM tbl_brg_penjualan WHERE brg_penjualan_status='AKTIF' AND brg_penjualan_create_date=DATE(NOW() - INTERVAL 1 DAY)")->result_array();
+
+		$data['jumlah_barang']=$jml_brg[0]['brg'];
 		$this->load->view('welcome_message',$data);
 	}
     
