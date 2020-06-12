@@ -119,7 +119,7 @@ $breadcrumb = array(
                                                 <div class="container-fluid">
                                                 <div class="row">
                                                     <div class="col-xs-12 text-left pl-0 pr-0 data-wrap-left">
-                                                    <span class="txt-dark block counter">Rp 650.350.000</span>
+                                                    <span class="txt-dark block counter">Rp <?php echo number_format($laba_bulan_ini) ?></span>
                                                     <span class="block"><span class="weight-500 uppercase-font txt-grey font-13" style="color:black !important">Laba Bulan Ini</span><i class="zmdi zmdi-caret-down txt-danger font-21 ml-5 vertical-align-middle"></i></span>
                                                     </div>
                                                 </div>
@@ -137,7 +137,7 @@ $breadcrumb = array(
                                                 <div class="container-fluid">
                                                     <div class="row">
                                                     <div class="col-xs-12 text-left pl-0 pr-0 data-wrap-left">
-                                                        <span class="txt-dark block counter">Rp 2.586.200.000</span>
+                                                        <span class="txt-dark block counter">Rp <?php echo number_format($laba_tahun_ini) ?></span>
                                                         <span class="block"><span class="weight-500 uppercase-font txt-grey font-13" style="color:black !important">Laba Tahun Ini</span><i class="zmdi zmdi-caret-down txt-danger font-21 ml-5 vertical-align-middle"></i></span>
                                                     </div>
                                                     </div>
