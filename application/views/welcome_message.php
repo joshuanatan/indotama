@@ -276,26 +276,21 @@ $breadcrumb = array(
                                                 </div>
                                                 <div class="col-sm-5 pr-50 pt-25">
                                                   <div class="label-chatrs">
+                                                  <?php
+                                                  $warna[0] = " bg-yellow";
+                                                  $warna[1] = " bg-pink";
+                                                  $warna[2] = " bg-blue";
+                                                  $warna[3] = " bg-red";
+                                                  $warna[4] = " bg-green";
+                                                  if($top_5_pelanggan[0]['top']!=0){
+                                                  for($o=0; $o<count($top_5_pelanggan); $o++){
+                                                  ?>
                                                     <div class="mb-5">
-                                                      <span class="clabels inline-block bg-yellow mr-5"></span>
-                                                      <span class="clabels-text font-12 inline-block txt-dark capitalize-font">PT. BNN Nasional</span>
+                                                      <span class="clabels inline-block mr-5 <?php echo $warna[$o] ?>"></span>
+                                                      <span class="clabels-text font-12 inline-block txt-dark capitalize-font"><?php echo $top_5_pelanggan[$o]['cust_name'] ?></span>
                                                     </div>
-                                                    <div class="mb-5">
-                                                      <span class="clabels inline-block bg-pink mr-5"></span>
-                                                      <span class="clabels-text font-12 inline-block txt-dark capitalize-font">PT. KAI Indonesia</span>
-                                                    </div>
-                                                    <div class="mb-5">
-                                                      <span class="clabels inline-block bg-blue mr-5"></span>
-                                                      <span class="clabels-text font-12 inline-block txt-dark capitalize-font">Persija Jakarta</span>
-                                                    </div>
-                                                    <div class="mb-5">
-                                                      <span class="clabels inline-block bg-red mr-5"></span>
-                                                      <span class="clabels-text font-12 inline-block txt-dark capitalize-font">Wooding Hijab</span>
-                                                    </div>
-                                                    <div class="">
-                                                      <span class="clabels inline-block bg-green mr-5"></span>
-                                                      <span class="clabels-text font-12 inline-block txt-dark capitalize-font">PT. Yanjkung</span>
-                                                    </div>
+                                                  <?php } } else{ echo "no data";}?>
+                                                    
                                                   </div>
                                                 </div>
                                           </div>
