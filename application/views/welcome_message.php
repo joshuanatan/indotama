@@ -272,7 +272,7 @@ $breadcrumb = array(
                                         <div  class="panel-wrapper collapse in">
                                           <div class="panel-body mt-80">
                                                 <div class="col-sm-7">
-                                                     <canvas id="chart_7" height="120px"></canvas>
+                                                     <canvas id="chart_7s" height="120px"></canvas>
                                                 </div>
                                                 <div class="col-sm-5 pr-50 pt-25">
                                                   <div class="label-chatrs">
@@ -765,5 +765,68 @@ if( $('#flot_pie_charts').length > 0 ){
 			},
 		};
 		$.plot($("#flot_pie_charts"), pie_data, pie_op);
-	}
+  }
+  <?php 
+  $labels="";
+  $color[0]="#f742aa";
+  $color[1]="#635bd6";
+  $color[2]="rgba(33,150,243,1)";
+  $color[3]="rgba(247, 52, 20,1)";
+  $color[4]="rgba(231, 54, 141,1)";
+  $colors="";
+  $data="";
+
+  for($r=0; $r<count($top_5_pelanggan); $r++){
+    $labels=$labels. "'". $top_5_pelanggan[$r]['cust_name'] ."',";
+    $data = $data . "'". $top_5_pelanggan[$r]['top'] ."',";
+    $colors = $colors. "'". $color[$r] ."',";
+  }
+  if($top_5_pelanggan[0]['top'] !="0"){
+  ?>
+  if ($("#chart_7s").length > 0) {
+		var ctx7 = document.getElementById("chart_7s").getContext("2d");
+		var data7 = {
+			labels: [<?php echo $labels ?>],
+			datasets: [
+				{
+					data: [<?php echo $data ?>],
+					backgroundColor: [
+						<?php echo $colors ?>
+					],
+					hoverBackgroundColor: [
+						<?php echo $colors ?>
+					]
+				}
+			]
+		};
+
+		var doughnutChart = new Chart(ctx7, {
+			type: "doughnut",
+			data: data7,
+			options: {
+				animation: {
+					duration: 3000
+				},
+				elements: {
+					arc: {
+						borderWidth: 0
+					}
+				},
+				responsive: true,
+				maintainAspectRatio: false,
+				percentageInnerCutout: 50,
+				legend: {
+					display: false
+				},
+				tooltips: {
+					backgroundColor: "rgba(33,33,33,1)",
+					cornerRadius: 0,
+					footerFontFamily: "'Montserrat'"
+				},
+				cutoutPercentage: 70,
+				segmentShowStroke: false
+			}
+		});
+  }
+<?php } ?>
 </script>

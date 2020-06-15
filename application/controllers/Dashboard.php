@@ -52,6 +52,16 @@ class Dashboard extends CI_Controller {
 		$jml_brg = executeQuery("SELECT sum(brg_penjualan_qty) as brg, brg_penjualan_create_date FROM tbl_brg_penjualan WHERE brg_penjualan_status='AKTIF' AND brg_penjualan_create_date=DATE(NOW() - INTERVAL 1 DAY)")->result_array();
 
 		$data['jumlah_barang']=$jml_brg[0]['brg'];
+
+		//top 5 pelanggan
+		 $top = executeQuery("select sum(brg_penjualan_harga*brg_penjualan_qty) as top, cust_name FROM tbl_brg_penjualan join mstr_penjualan on mstr_penjualan.ID_PK_PENJUALAN = tbl_brg_penjualan.ID_FK_PENJUALAN join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.ID_FK_CUSTOMER WHERE MONTH(mstr_penjualan.penj_tgl) = MONTH(CURRENT_DATE()) AND YEAR(mstr_penjualan.penj_tgl) = YEAR(CURRENT_DATE()) order by top desc limit 5")->result_array();
+
+		if(count($top)==1){
+			$top[0]['top'] = 0;
+			$top[0]['cust_name'] = 0;
+		}
+
+		$data['top_5_pelanggan'] = $top;
 		$this->load->view('welcome_message',$data);
 	}
     
