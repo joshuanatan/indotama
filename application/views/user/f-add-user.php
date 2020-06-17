@@ -12,15 +12,15 @@
             );
             $this->load->view('_notification/register_error',$notif_data); ?>
                 <form id = "register_form" method = "POST">
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Nama User</h5>
                         <input type = "text" class = "form-control" required name = "name">
                     </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Password</h5>
                         <input type = "text" class = "form-control" required name = "pass">
                     </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-12">
                         <h5>Email</h5>
                         <input type = "text" class = "form-control" required name = "email">
                     </div>

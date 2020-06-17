@@ -12,11 +12,11 @@
             $this->load->view('_notification/update_error',$notif_data); ?>
                 <form id = "update_form" method = "POST">
                     <input type = "hidden" name = "id" id = "id_edit">
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Nama Satuan</h5>
                         <input type = "text" class = "form-control" required name = "nama" id = "nama_edit">
                     </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Rumus Konversi</h5>
                         <input type = "text" class = "form-control" required name = "rumus" id = "rumus_edit">
                     </div>
