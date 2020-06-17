@@ -230,35 +230,50 @@ class m_brg_cabang extends ci_model{
     }
     public function insert(){
         if($this->check_insert()){
-            $data = array(
-                "brg_cabang_qty" => $this->brg_cabang_qty,
-                "brg_cabang_notes" => $this->brg_cabang_notes,
-                "brg_cabang_status" => $this->brg_cabang_status,
-                "id_fk_brg" => $this->id_fk_brg,
+            $where = array(
+                "brg_cabang_status" => "aktif",
+                "id_fk_brg" => $this->id_fk_brg, 
                 "id_fk_cabang" => $this->id_fk_cabang,
-                "brg_cabang_create_date" => $this->brg_cabang_create_date,
-                "brg_cabang_last_modified" => $this->brg_cabang_last_modified,
-                "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified
             );
-            return insertrow($this->tbl_name,$data);
+            if(!isExistsInTable($this->tbl_name,$where)){
+                $data = array(
+                    "brg_cabang_qty" => $this->brg_cabang_qty,
+                    "brg_cabang_notes" => $this->brg_cabang_notes,
+                    "brg_cabang_status" => $this->brg_cabang_status,
+                    "id_fk_brg" => $this->id_fk_brg,
+                    "id_fk_cabang" => $this->id_fk_cabang,
+                    "brg_cabang_create_date" => $this->brg_cabang_create_date,
+                    "brg_cabang_last_modified" => $this->brg_cabang_last_modified,
+                    "id_create_data" => $this->id_create_data,
+                    "id_last_modified" => $this->id_last_modified
+                );
+                return insertrow($this->tbl_name,$data);
+            }
         }
         return false;
     }
     public function update(){
-        if($this->check_update()){
+        if($this->check_update()){ 
             $where = array(
-                "id_pk_brg_cabang" => $this->id_pk_brg_cabang   
+                "id_pk_brg_cabang !=" => $this->id_pk_brg_cabang,   
+                "brg_cabang_status" => "aktif",
+                "id_fk_brg" => $this->id_fk_brg, 
+                "id_fk_cabang" => $this->id_fk_cabang,
             );
-            $data = array(
-                "brg_cabang_qty" => $this->brg_cabang_qty,
-                "brg_cabang_notes" => $this->brg_cabang_notes,
-                "id_fk_brg" => $this->id_fk_brg,
-                "brg_cabang_last_modified" => $this->brg_cabang_last_modified,
-                "id_last_modified" => $this->id_last_modified
-            );
-            updaterow($this->tbl_name,$data,$where);
-            return true; 
+            if(!isExistsInTable($this->tbl_name,$where)){
+                $where = array(
+                    "id_pk_brg_cabang" => $this->id_pk_brg_cabang   
+                );
+                $data = array(
+                    "brg_cabang_qty" => $this->brg_cabang_qty,
+                    "brg_cabang_notes" => $this->brg_cabang_notes,
+                    "id_fk_brg" => $this->id_fk_brg,
+                    "brg_cabang_last_modified" => $this->brg_cabang_last_modified,
+                    "id_last_modified" => $this->id_last_modified
+                );
+                updaterow($this->tbl_name,$data,$where);
+                return true; 
+            }
         }
         return false;
     }

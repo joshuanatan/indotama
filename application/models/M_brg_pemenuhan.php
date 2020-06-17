@@ -173,17 +173,42 @@ class m_brg_pemenuhan extends ci_model{
                 brg_image like '%".$search_key."%'
             )";
         }
-        if($this->brg_pemenuhan_tipe == "CABANG"){
+        if(strtoupper($this->brg_pemenuhan_tipe) == "CABANG"){
             $query = "
-            select tbl_brg_cabang.brg_cabang_qty, id_pk_brg_permintaan, brg_permintaan_qty, brg_nama, brg_permintaan_notes, brg_permintaan_deadline, brg_permintaan_status,brg_image, tbl_brg_permintaan.id_fk_brg, tbl_brg_permintaan.id_fk_cabang, brg_permintaan_create_date, brg_permintaan_last_modified, sum(tbl_brg_pemenuhan.brg_pemenuhan_qty) as qty_pemenuhan, cabang_daerah from tbl_brg_permintaan join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg join tbl_brg_cabang on tbl_brg_cabang.ID_FK_BRG = tbl_brg_permintaan.ID_FK_BRG join mstr_cabang on mstr_cabang.id_pk_cabang =tbl_brg_permintaan.id_fk_cabang left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan where tbl_brg_permintaan.brg_permintaan_status!= ? and tbl_brg_permintaan.id_fk_cabang != ? and tbl_brg_cabang.brg_cabang_qty > ? group by id_pk_brg_permintaan AND tbl_brg_permintaan.brg_permintaan_deadline >= ". $this->today . " " .$search_query."  
+            select id_pk_brg_permintaan, brg_permintaan_deadline, brg_permintaan_qty, brg_permintaan_status,brg_cabang_qty,tbl_brg_permintaan.id_fk_brg as id_mstr_barang_cabang_peminta, tbl_brg_permintaan.id_fk_cabang as id_cabang_peminta, brg_cabang_status,tbl_brg_cabang.id_fk_brg as id_mstr_barang_cabang_penyedia, tbl_brg_cabang.id_fk_cabang as id_cabang_penyedia,brg_nama, ifnull(sum(tbl_brg_pemenuhan.brg_pemenuhan_qty),0) as qty_pemenuhan,cabang_daerah
+            from tbl_brg_permintaan
+            inner join mstr_cabang on mstr_cabang.id_pk_cabang = tbl_brg_permintaan.id_fk_cabang
+            inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.ID_FK_BRG
+            inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = mstr_barang.id_pk_brg
+            left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan 
+            where tbl_brg_cabang.id_fk_cabang = ?
+            and tbl_brg_permintaan.id_fk_cabang != ?
+            and tbl_brg_cabang.brg_cabang_status = ?
+            and mstr_barang.brg_status = ?
+            and tbl_brg_permintaan.brg_permintaan_status != ?
+            and tbl_brg_permintaan.brg_permintaan_deadline > current_date() ".$search_query."
+            group by id_pk_brg_permintaan
             order by ".$order_by." ".$order_direction." 
             limit 20 offset ".($page-1)*$data_per_page;
             $args = array(
-                "BATAL",$this->session->id_cabang,1
+                $this->session->id_cabang,$this->session->id_cabang,'aktif','aktif','batal'
             );
             $result["data"] = executequery($query,$args);
             $query = "
-            select tbl_brg_cabang.brg_cabang_qty, id_pk_brg_permintaan, brg_permintaan_qty, brg_nama, brg_permintaan_notes, brg_permintaan_deadline, brg_permintaan_status,brg_image, tbl_brg_permintaan.id_fk_brg, tbl_brg_permintaan.id_fk_cabang, brg_permintaan_create_date, brg_permintaan_last_modified, sum(tbl_brg_pemenuhan.brg_pemenuhan_qty) as qty_pemenuhan, cabang_daerah from tbl_brg_permintaan join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg join tbl_brg_cabang on tbl_brg_cabang.ID_FK_BRG = tbl_brg_permintaan.ID_FK_BRG join mstr_cabang on mstr_cabang.id_pk_cabang =tbl_brg_permintaan.id_fk_cabang left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan where tbl_brg_permintaan.brg_permintaan_status!= ? and tbl_brg_permintaan.id_fk_cabang != ? and tbl_brg_cabang.brg_cabang_qty > ? group by id_pk_brg_permintaan order by ".$order_by." ".$order_direction;
+            select id_pk_brg_permintaan, brg_permintaan_deadline, brg_permintaan_qty, brg_permintaan_status,brg_cabang_qty,tbl_brg_permintaan.id_fk_brg as id_mstr_barang_cabang_peminta, tbl_brg_permintaan.id_fk_cabang as id_cabang_peminta, brg_cabang_status,tbl_brg_cabang.id_fk_brg as id_mstr_barang_cabang_penyedia, tbl_brg_cabang.id_fk_cabang as id_cabang_penyedia,brg_nama, ifnull(sum(tbl_brg_pemenuhan.brg_pemenuhan_qty),0) as qty_pemenuhan,cabang_daerah
+            from tbl_brg_permintaan
+            inner join mstr_cabang on mstr_cabang.id_pk_cabang = tbl_brg_permintaan.id_fk_cabang
+            inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.ID_FK_BRG
+            inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = mstr_barang.id_pk_brg
+            left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan 
+            where tbl_brg_cabang.id_fk_cabang = ?
+            and tbl_brg_permintaan.id_fk_cabang != ?
+            and tbl_brg_cabang.brg_cabang_status = ?
+            and mstr_barang.brg_status = ?
+            and tbl_brg_permintaan.brg_permintaan_status != ?
+            and tbl_brg_permintaan.brg_permintaan_deadline > current_date() ".$search_query."
+            group by id_pk_brg_permintaan
+            order by ".$order_by." ".$order_direction;
             $result["total_data"] = executequery($query,$args)->num_rows();
         }
         else{
