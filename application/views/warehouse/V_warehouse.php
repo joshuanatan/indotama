@@ -107,7 +107,7 @@ $data = array(
         $('table').find('tr').click( function(){
             var row = $(this).index();
             var id_warehouse = content[row]["id"];
-            window.location.replace("<?php echo base_url();?>warehouse/warehouse_barang/"+id_warehouse);
+            window.location.replace("<?php echo base_url();?>warehouse/brg_warehouse/"+id_warehouse);
         });
     }
     function redirect_admin_cabang(){

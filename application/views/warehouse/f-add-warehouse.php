@@ -11,19 +11,23 @@
             );
             $this->load->view('_notification/register_error',$notif_data); ?>
                 <form id = "register_form" method = "POST">
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-6">
                         <h5>Nama Warehouse</h5>
                         <input type="text" class="form-control" name="warehouse_nama" required>
                     </div>
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-6">
                         <h5>Alamat</h5>
                         <input type="text" class="form-control" name="warehouse_alamat" required>
                     </div>
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-6">
                         <h5>No Telp</h5>
                         <input type="text" class="form-control" name="warehouse_notelp" required>
                     </div>
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-6">
                         <h5>Deskripsi</h5>
                         <input type="text" class="form-control" name="warehouse_desc" required>
                     </div>

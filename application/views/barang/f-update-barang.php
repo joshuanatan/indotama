@@ -13,39 +13,48 @@
                 $this->load->view('_notification/update_error',$notif_data); ?>
                 <form id = "update_form" method = "POST" enctype = "multipart/form-data">
                     <input type = "hidden" name = "id" id = "id_edit">
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-6">
                         <h5>Kode Barang</h5>
                         <input type = "text" class = "form-control" required name = "kode" id = "kode_edit">
                     </div>
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-6">
                         <h5>Jenis Barang</h5>
                         <input list = "datalist_barang_jenis" type = "text"  required name = "id_brg_jenis" class = "form-control" id = "id_brg_jenis_edit">
                     </div>
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-6">
                         <h5>Nama Barang</h5>
                         <input type = "text" class = "form-control" required name = "nama" id = "nama_edit">
                     </div>
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-6">
                         <h5>Keterangan</h5>
                         <input type = "text" class = "form-control" required name = "keterangan" id = "keterangan_edit">
                     </div>
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-6">
                         <h5>Merk Barang</h5>
                         <input list = "datalist_barang_merk" type = "text"  required name = "id_brg_merk" class = "form-control" id = "id_brg_merk_edit">
                     </div>
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-6">
                         <h5>Minimal Stok</h5>
                         <input type = "text" class = "form-control" required name = "minimal" id = "minimal_edit">
                     </div>
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-6">
                         <h5>Satuan</h5>
                         <input type = "text" class = "form-control" required name = "satuan" id = "satuan_edit">
                     </div>
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-6">
                         <h5>Harga Satuan</h5>
                         <input type = "text" class = "form-control" required name = "harga" id = "harga_edit">
                     </div>
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-12">
                         <h5>Gambar</h5>
                         <input type = "hidden" id = "gambar_edit" name = "gambar_current">
                         <input type = "file" class = "form-control" required name = "gambar">
@@ -57,7 +66,7 @@
                         <input type="radio" class = "kombinasi_barang_edit" name = "kombinasi_barang" value="KOMBINASI" onclick = "$('#barang_kombinasi_container_edit').show()">&nbsp;KOMBINASI
                     </div>
                     
-                    <table class = "table table-striped table-bordered col-lg-12" id = "barang_kombinasi_container_edit">
+                    <table class = "table table-striped table-bordered" id = "barang_kombinasi_container_edit">
                         <thead>
                             <th>Nama Barang</th>
                             <th>Qty (Pcs)</th>

@@ -1,5 +1,5 @@
 <div class = "modal fade" id = "update_modal">
-    <div class = "modal-dialog modal-lg">
+    <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
                 <h4 class = "modal-title">Ubah Data <?php echo ucwords($page_title);?></h4>

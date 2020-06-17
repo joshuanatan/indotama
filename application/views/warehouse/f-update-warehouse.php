@@ -12,19 +12,23 @@
             $this->load->view('_notification/update_error',$notif_data); ?>
                 <form id = "update_form" method = "POST">
                     <input type = "hidden" name = "id" id = "id_edit"> 
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-6">
                         <h5>Nama Warehouse</h5>
                         <input type="text" class="form-control" name="warehouse_nama" id = "warehouse_nama_edit" required>
                     </div>
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-6">
                         <h5>Alamat</h5>
                         <input type="text" class="form-control" name="warehouse_alamat" id = "warehouse_alamat_edit" required>
                     </div>
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-6">
                         <h5>No Telp</h5>
                         <input type="text" class="form-control" name="warehouse_notelp" id = "warehouse_notelp_edit" required>
                     </div>
-                    <div class = "form-group">
+                    
+                    <div class = "form-group col-lg-6">
                         <h5>Deskripsi</h5>
                         <input type="text" class="form-control" name="warehouse_desc" id = "warehouse_desc_edit" required>
                     </div>
