@@ -13,15 +13,15 @@
             $this->load->view('_notification/update_error',$notif_data); ?>
                 <form id = "update_form" method = "POST">
                     <input type = "hidden" name = "id" id = "id_edit">
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Nama User</h5>
                         <input type = "text" class = "form-control" required name = "name" id = "name_edit">
                     </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Email</h5>
                         <input type = "text" class = "form-control" required name = "email" id = "email_edit">
                     </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-12">
                         <h5>Role</h5> 
                         <select class = "form-control" required name = "id_role" id = "role_list_edit" onchange = "load_hak_akses_edit()">
                             <option>Pilih Role</option>
