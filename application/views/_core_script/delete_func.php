@@ -12,9 +12,17 @@
                     //notification
                     $('#notif_delete_success').show(1).delay(2000).hide(1);
                 }
+                if(respond["status"] == "ERROR"){
+                    $('#delete_error_msg').empty();
+                    $('#delete_error_msg').append(respond["msg"]);
+                    $('#notif_delete_error').show(1).delay(2000).hide(1);
+                }
+                
             },
             error:function(){
                 //notification
+                $('#delete_error_msg').empty();
+                $('#delete_error_msg').append(respond["msg"]);
                 $('#notif_delete_error').show(1).delay(2000).hide(1);
             }
         })

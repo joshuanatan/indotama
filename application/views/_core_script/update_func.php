@@ -15,9 +15,17 @@
                     refresh(page);
                     $('#notif_update_success').show(1).delay(2000).hide(1);
                 }
+
+                if(respond["status"] == "ERROR"){
+                    $('#update_error_msg').empty();
+                    $('#update_error_msg').append(respond["msg"]);
+                    $('#notif_update_error').show(1).delay(2000).hide(1);
+                }
             },
             error:function(){
                 //notification
+                $('#update_error_msg').empty();
+                $('#update_error_msg').append(respond["msg"]);
                 $('#notif_update_error').show(1).delay(2000).hide(1);
             }
         });
