@@ -156,11 +156,14 @@ class Barang extends CI_Controller{
 
             $config['upload_path'] = './asset/uploads/barang/';
             $config['allowed_types'] = 'gif|jpg|png';
+            $config['overwrite'] = TRUE;
+            $config['file_name'] = "barang_" . $brg_kode;
 
             $this->load->library('upload', $config);
             $brg_image = "-";
             if($this->upload->do_upload('gambar')){
-                $brg_image = $this->upload->data("file_name");
+                $p1 = array("upload_data"=> $this->upload->data());
+                $brg_image = $p1['upload_data']['file_name'];
             }
             if($this->m_barang->set_insert($brg_kode,$brg_nama,$brg_ket,$brg_minimal,$brg_satuan,$brg_image,$brg_status,$id_fk_brg_jenis,$id_fk_brg_merk,$brg_harga)){
                 $id_barang = $this->m_barang->insert();

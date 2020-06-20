@@ -76,6 +76,7 @@ $notif_data = array(
 <script>
     var ctrl = "satuan";
     var url_add = "";
+    var unautorized_button = ["detail_button"];
 </script>
 <?php
 $data = array(

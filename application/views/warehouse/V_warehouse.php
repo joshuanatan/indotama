@@ -100,6 +100,7 @@ $data = array(
 <?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view('warehouse/f-add-warehouse',$data);?>
 <?php $this->load->view('warehouse/f-update-warehouse',$data);?>
+<?php $this->load->view('warehouse/f-detail-warehouse',$data);?>
 <?php $this->load->view('warehouse/f-delete-warehouse',$data);?>
 
 <script>

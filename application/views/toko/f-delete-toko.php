@@ -35,9 +35,9 @@
 </div>
 <script>
     function load_delete_content(id){
-        $("#id_delete").val(content[id]["id"]);
-        $("#nama_delete").val(content[id]["nama"]);
-        $("#kode_delete").val(content[id]["kode"]);
+        $("#id_delete").html(content[id]["id"]);
+        $("#nama_delete").html(content[id]["nama"]);
+        $("#kode_delete").html(content[id]["kode"]);
     }
     function delete_func(){
         var id = $("#id_delete").val();

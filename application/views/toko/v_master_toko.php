@@ -78,6 +78,7 @@ $notif_data = array(
 <script>
     var ctrl = "toko";
     var url_add = "";
+    var unautorized_button = ["detail_button"];
     var additional_button = [
         {
             style:'cursor:pointer;font-size:large',

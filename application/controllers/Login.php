@@ -56,7 +56,6 @@ class Login extends CI_Controller {
 		$this->form_validation->set_rules("user_name","Username","required");
 
 		$user_name = $this->input->post("user_name");
-		echo $user_name;
 		if($this->form_validation->run()){
 			$where = array(
 				"user_status" => "AKTIF"

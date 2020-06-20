@@ -11,7 +11,7 @@
                 "page_title"=>$page_title
             );
             $this->load->view('_notification/delete_error',$notif_data); ?>
-                <input type = "hidden" id = "id_delete">
+                <input type = "hidden" id = "id_delete" name="id_pk_employee">
                 <h4 align = "center">Apakah anda yakin akan menghapus data di bawah ini?</h4>
                 <table class = "table table-bordered table-striped table-hover">
                     <tbody>
@@ -45,7 +45,7 @@
                         </tr>
                         <tr>
                             <td>Foto KTP</td>
-                            <td id = "emp_foto_ktp_delete"></td>
+                            <td id = "emp_foto_ktp_delete"><img id="img_emp_foto_ktp_delete" width="100px"></td>
                         </tr>
                         <tr>
                             <td>Foto Lain</td>
@@ -112,19 +112,35 @@
         $("#emp_alamat_delete").html(content[id]["alamat"]);
         $("#emp_kode_pos_delete").html(content[id]["kode_pos"]);
         $("#emp_gaji_delete").html(content[id]["gaji"]);
-        $("#emp_startdate_delete").html(content[id]["startdate"]);
+        $("#id_delete").val(content[id]["id"]);
+        
+        var str = content[id]["startdate"].split(" ");
+        $("#emp_startdate_delete").html(str[0]);
+
+        if(content[id]["enddate"]=="0000-00-00 00:00:00"){
+            $("#emp_enddate_delete").html("MASIH BEKERJA");
+        }else{
+            var str2 = content[id]["enddate"].split(" ");
+            $("#emp_enddate_delete").html(str2[0]);
+        }
+        
+
+        $("#emp_gender_delete").html(content[id]["gender"]);
+
+        $("#emp_suff_delete").html(content[id]["suff"]);
+        $("#id_fk_toko_delete").html(content[id]["toko"]);
 
 
-        var npwp = "<?php echo base_url() ?>asset/images/employee/npwp/" + content[id]["foto_npwp"];
-alert(npwp);
+        var npwp = "<?php echo base_url() ?>asset/uploads/employee/npwp/" + content[id]["foto_npwp"];
 
         $("#img_emp_foto_npwp_delete").attr("src", npwp);
-        var ktp = "<img id="img_emp_foto_ktp_delete" width="100px"<?php echo base_url() ?>asset/images/employee/ktp/" + content[id]["foto_ktp"]>;
+        var ktp = "<?php echo base_url() ?>asset/uploads/employee/ktp/" + content[id]["foto_ktp"];
         $("#img_emp_foto_ktp_delete").attr("src", ktp);
-        var foto = "<?php echo base_url() ?>asset/images/employee/foto/" + content[id]["foto"];
+        var foto = "<?php echo base_url() ?>asset/uploads/employee/foto/" + content[id]["foto"];
         $("#img_emp_foto_delete").attr("src", foto);
-        var lain = "<?php echo base_url() ?>asset/images/employee/lain/" + content[id]["foto_lain"];
+        var lain = "<?php echo base_url() ?>asset/uploads/employee/lain/" + content[id]["foto_lain"];
         $("#img_emp_foto_lain_delete").attr("src", lain);
+        
         
 
         //$("#radio_enddate_delete").html(content[id]["radio_enddate"]);
