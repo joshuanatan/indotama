@@ -66,7 +66,7 @@ class User extends CI_Controller{
         if($this->form_validation->run()){
             $this->load->model("m_user");
             $user_name = $this->input->post("name");
-            $user_pass = $this->input->post("pass");
+            $user_pass = md5($this->input->post("pass"));
             $user_email = $this->input->post("email");
             $user_status = "AKTIF";
             $id_fk_role = $this->input->post("id_role");
