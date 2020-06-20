@@ -120,6 +120,14 @@ class Login extends CI_Controller {
 		}
 	}
 
+	public function change_password(){
+		$this->load->view("login/V_change_password");
+	}
+
+	public function change_password_method(){
+		$this->load->view("login/V_change_password");
+	}
+
 	public function forget_get_new_pass($id_pk_user){
 		$data['id_pk_user'] = $id_pk_user;
 		$this->load->view('login/V_reset_password',$data);
