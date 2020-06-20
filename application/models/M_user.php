@@ -177,7 +177,7 @@ class m_user extends ci_model{
         if($this->check_insert()){
             $data = array(
                 "user_name" => $this->user_name,
-                "user_pass" => password_hash($this->user_pass,password_default),
+                "user_pass" => $this->user_pass,
                 "user_email" => $this->user_email,
                 "user_status" => $this->user_status,
                 "id_fk_role" => $this->id_fk_role,
@@ -261,27 +261,23 @@ class m_user extends ci_model{
         if($this->check_login()){
             $where = array(
                 "user_name" => $this->user_name,
-                "user_status" => "aktif"
+                "user_status" => "aktif",
+                "user_pass" => $this->user_pass
             );
             $field = array(
-                "id_pk_user","user_name","user_pass","user_email","id_fk_role","user_status"
+                "id_pk_user","user_name","user_email","id_fk_role","user_status"
             );
             $result = selectrow($this->tbl_name,$where,$field);
             if($result->num_rows() > 0){
                 $result = $result->result_array();
-                if (password_verify($this->user_pass, $result[0]["user_pass"])){
-                    $data = array(
-                        "id" => $result[0]["id_pk_user"],
-                        "name" => $result[0]["user_name"],
-                        "email" => $result[0]["user_email"],
-                        "role" => $result[0]["id_fk_role"],
-                        "status" => $result[0]["user_status"],
-                    );
-                    return $data;
-                }
-                else{
-                    return false;
-                }
+                $data = array(
+                    "id" => $result[0]["id_pk_user"],
+                    "name" => $result[0]["user_name"],
+                    "email" => $result[0]["user_email"],
+                    "role" => $result[0]["id_fk_role"],
+                    "status" => $result[0]["user_status"],
+                );
+                return $data;
             }
             else{
                 return false;

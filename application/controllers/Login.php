@@ -18,7 +18,7 @@ class Login extends CI_Controller {
         
 		$response["status"] = "SUCCESS";
 		$user_name = $this->input->post("user_name");
-		$user_pass = $this->input->post("user_pass");
+		$user_pass = md5($this->input->post("user_pass"));
 
 		$this->load->model("m_user");
 		if($this->m_user->set_login($user_name,$user_pass)){
@@ -150,7 +150,7 @@ class Login extends CI_Controller {
         if($this->form_validation->run()){
 			
             $data = array(
-                "user_pass"=>password_hash($this->input->post('user_pass'),PASSWORD_DEFAULT),
+                "user_pass"=>md5($this->input->post('user_pass')),
 				"id_last_modified"=>$this->input->post('id_pk_user'),
 				"user_last_modified"=>date("Y-m-d H:i:s")
 			);
@@ -178,7 +178,7 @@ class Login extends CI_Controller {
 		if($result->num_rows() == 0){
 			$data = array(
                 "user_name" => "admin",
-                "user_pass" => password_hash("admin",PASSWORD_DEFAULT),
+                "user_pass" => md5("admin"),
                 "user_email" => "admin@example.com",
                 "user_status" => "AKTIF",
                 "id_fk_role" => 1,
