@@ -148,7 +148,7 @@ class m_barang extends ci_model{
         from ".$this->tbl_name." 
         left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
         left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
-        left join tbl_barang_kombinasi on tbl_barang_kombinasi.id_barang_utama = mstr_barang.id_pk_brg
+        left join tbl_barang_kombinasi as a on a.id_barang_utama = mstr_barang.id_pk_brg and a.barang_kombinasi_status = 'aktif'
         where brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) ".$search_query."  
         group by id_pk_brg 
         order by ".$order_by." ".$order_direction." 
@@ -163,7 +163,9 @@ class m_barang extends ci_model{
         from ".$this->tbl_name." 
         left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
         left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
-        where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ?".$search_query."  
+        left join tbl_barang_kombinasi as a on a.id_barang_utama = mstr_barang.id_pk_brg and a.barang_kombinasi_status = 'aktif'
+        where brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) ".$search_query."   
+        group by id_pk_brg 
         order by ".$order_by." ".$order_direction;
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;

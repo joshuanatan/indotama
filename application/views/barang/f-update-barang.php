@@ -105,13 +105,13 @@
 
         if(content[row]["jumlah_barang_kombinasi"] == "0"){
             $("#barang_kombinasi_container_edit").hide();
-            $(".kombinasi_barang_edit[type='radio'][value='TIDAK KOMBINASI']").attr("checked",true);
-            $(".kombinasi_barang_edit[type='radio'][value='KOMBINASI']").attr("checked",false);
+            $(".kombinasi_barang_edit[type='radio'][value='TIDAK KOMBINASI']").prop("checked",true);
+            $(".kombinasi_barang_edit[type='radio'][value='KOMBINASI']").prop("checked",false);
         }
         else{
             $("#barang_kombinasi_container_edit").show();
-            $(".kombinasi_barang_edit[type='radio'][value='KOMBINASI']").attr("checked",true);
-            $(".kombinasi_barang_edit[type='radio'][value='TIDAK KOMBINASI']").attr("checked",false);
+            $(".kombinasi_barang_edit[type='radio'][value='KOMBINASI']").prop("checked",true);
+            $(".kombinasi_barang_edit[type='radio'][value='TIDAK KOMBINASI']").prop("checked",false);
             
             $.ajax({
                 url:"<?php echo base_url();?>ws/barang/barang_kombinasi?id_barang="+content[row]["id"],
