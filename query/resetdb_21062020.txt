@@ -1,0 +1,2594 @@
+drop table if exists mstr_barang;
+        create table mstr_barang(
+            id_pk_brg int primary key auto_increment,
+            brg_kode varchar(50),
+            brg_nama varchar(100),
+            brg_ket varchar(200),
+            brg_minimal double,
+            brg_satuan varchar(30),
+            brg_image varchar(100),
+            brg_harga int,
+            brg_status varchar(15),
+            brg_create_date datetime,
+            brg_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_fk_brg_jenis int,
+            id_fk_brg_merk int
+        );
+        drop table if exists mstr_barang_log;
+        create table mstr_barang_log(
+            id_pk_brg_log int primary key auto_increment,
+            executed_function varchar(20),
+            id_pk_brg int,
+            brg_kode varchar(50),
+            brg_nama varchar(100),
+            brg_ket varchar(200),
+            brg_minimal double,
+            brg_satuan varchar(30),
+            brg_image varchar(100),
+            brg_harga int,
+            brg_status varchar(15),
+            brg_create_date datetime,
+            brg_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_fk_brg_jenis int,
+            id_fk_brg_merk int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_barang;
+        delimiter $$
+        create trigger trg_after_insert_barang
+        after insert on mstr_barang
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.brg_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_barang_log(executed_function,
+            id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_status,brg_create_date,brg_last_modified,id_create_data,id_last_modified,id_fk_brg_jenis,id_fk_brg_merk,id_log_all) values ('after insert',new.id_pk_brg,new.brg_kode,new.brg_nama,new.brg_ket,new.brg_minimal,new.brg_satuan,new.brg_image,new.brg_harga,new.brg_status,new.brg_create_date,new.brg_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_brg_jenis,new.id_fk_brg_merk,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_barang;
+        delimiter $$
+        create trigger trg_after_update_barang
+        after update on mstr_barang
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_barang_log(executed_function,
+            id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_status,brg_create_date,brg_last_modified,id_create_data,id_last_modified,id_fk_brg_jenis,id_fk_brg_merk,id_log_all) values ('after update',new.id_pk_brg,new.brg_kode,new.brg_nama,new.brg_ket,new.brg_minimal,new.brg_satuan,new.brg_image,new.brg_harga,new.brg_status,new.brg_create_date,new.brg_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_brg_jenis,new.id_fk_brg_merk,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists mstr_barang_jenis;
+        create table mstr_barang_jenis(
+            id_pk_brg_jenis int primary key auto_increment,
+            brg_jenis_nama varchar(100),
+            brg_jenis_status varchar(15),
+            brg_jenis_create_date datetime,
+            brg_jenis_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists mstr_barang_jenis_log;
+        create table mstr_barang_jenis_log(
+            id_pk_brg_jenis_log int primary key auto_increment,
+            executed_function varchar(20),
+            id_pk_brg_jenis int,
+            brg_jenis_nama varchar(100),
+            brg_jenis_status varchar(15),
+            brg_jenis_create_date datetime,
+            brg_jenis_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_barang_jenis;
+        delimiter $$
+        create trigger trg_after_insert_barang_jenis
+        after insert on mstr_barang_jenis
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_jenis_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.brg_jenis_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_barang_jenis_log(executed_function,id_pk_brg_jenis,brg_jenis_nama,brg_jenis_status,brg_jenis_create_date,brg_jenis_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_jenis,new.brg_jenis_nama,new.brg_jenis_status,new.brg_jenis_create_date,new.brg_jenis_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+
+        drop trigger if exists trg_after_update_barang_jenis;
+        delimiter $$
+        create trigger trg_after_update_barang_jenis
+        after update on mstr_barang_jenis
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_jenis_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_jenis_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_barang_jenis_log(executed_function,id_pk_brg_jenis,brg_jenis_nama,brg_jenis_status,brg_jenis_create_date,brg_jenis_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_jenis,new.brg_jenis_nama,new.brg_jenis_status,new.brg_jenis_create_date,new.brg_jenis_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_barang_kombinasi;
+        create table tbl_barang_kombinasi(
+            id_pk_barang_kombinasi int primary key auto_increment,
+            id_barang_utama int,
+            id_barang_kombinasi int,
+            barang_kombinasi_qty double,
+            barang_kombinasi_status varchar(15),
+            barang_kombinasi_create_date datetime,
+            barang_kombinasi_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_barang_kombinasi_log;
+        create table tbl_barang_kombinasi_log(
+            id_pk_barang_kombinasi_log int primary key auto_increment,
+            executed_function varchar(20),
+            id_pk_barang_kombinasi int,
+            id_barang_utama int,
+            id_barang_kombinasi int,
+            barang_kombinasi_qty double,
+            barang_kombinasi_status varchar(15),
+            barang_kombinasi_create_date datetime,
+            barang_kombinasi_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_barang_kombinasi;
+        delimiter $$
+        create trigger trg_after_insert_barang_kombinasi
+        after insert on tbl_barang_kombinasi
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.barang_kombinasi_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.barang_kombinasi_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_barang_kombinasi_log(executed_function,id_pk_barang_kombinasi,id_barang_utama,id_barang_kombinasi,barang_kombinasi_qty,barang_kombinasi_status,barang_kombinasi_create_date,barang_kombinasi_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_barang_kombinasi,new.id_barang_utama,new.id_barang_kombinasi,new.barang_kombinasi_qty,new.barang_kombinasi_status,new.barang_kombinasi_create_date,new.barang_kombinasi_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_barang_kombinasi;
+        delimiter $$
+        create trigger trg_after_update_barang_kombinasi
+        after update on tbl_barang_kombinasi
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.barang_kombinasi_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.barang_kombinasi_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_barang_kombinasi_log(executed_function,id_pk_barang_kombinasi,id_barang_utama,id_barang_kombinasi,barang_kombinasi_qty,barang_kombinasi_status,barang_kombinasi_create_date,barang_kombinasi_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_barang_kombinasi,new.id_barang_utama,new.id_barang_kombinasi,new.barang_kombinasi_qty,new.barang_kombinasi_status,new.barang_kombinasi_create_date,new.barang_kombinasi_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists mstr_barang_merk;
+        create table mstr_barang_merk(
+            id_pk_brg_merk int primary key auto_increment,
+            brg_merk_nama varchar(100),
+            brg_merk_status varchar(15),
+            brg_merk_create_date datetime,
+            brg_merk_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists mstr_barang_merk_log;
+        create table mstr_barang_merk_log(
+            id_pk_brg_merk_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_brg_merk int,
+            brg_merk_nama varchar(100),
+            brg_merk_status varchar(15),
+            brg_merk_create_date datetime,
+            brg_merk_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_barang_merk;
+        delimiter $$
+        create trigger trg_after_insert_barang_merk
+        after insert on mstr_barang_merk
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_merk_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.brg_merk_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_barang_merk_log(executed_function,id_pk_brg_merk,brg_merk_nama,brg_merk_status,brg_merk_create_date,brg_merk_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_merk,new.brg_merk_nama,new.brg_merk_status,new.brg_merk_create_date,new.brg_merk_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_barang_merk;
+        delimiter $$
+        create trigger trg_after_update_barang_merk
+        after update on mstr_barang_merk
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_merk_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_merk_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_barang_merk_log(executed_function,id_pk_brg_merk,brg_merk_nama,brg_merk_status,brg_merk_create_date,brg_merk_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_merk,new.brg_merk_nama,new.brg_merk_status,new.brg_merk_create_date,new.brg_merk_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_brg_cabang;
+        create table tbl_brg_cabang(
+            id_pk_brg_cabang int primary key auto_increment,
+            brg_cabang_qty int,
+            brg_cabang_notes varchar(200),
+            brg_cabang_status varchar(15),
+            brg_cabang_last_price int default 0,
+            id_fk_brg int,
+            id_fk_cabang int,
+            brg_cabang_create_date datetime,
+            brg_cabang_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_brg_cabang_log;
+        create table tbl_brg_cabang_log(
+            id_pk_brg_cabang_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_brg_cabang int,
+            brg_cabang_qty int,
+            brg_cabang_last_price int default 0,
+            brg_cabang_notes varchar(200),
+            brg_cabang_status varchar(15),
+            id_fk_brg int,
+            id_fk_cabang int,
+            brg_cabang_create_date datetime,
+            brg_cabang_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_brg_cabang;
+        delimiter $$
+        create trigger trg_after_insert_brg_cabang
+        after insert on tbl_brg_cabang
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_cabang_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.brg_cabang_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_cabang_log(executed_function,id_pk_brg_cabang,brg_cabang_qty,brg_cabang_last_price,brg_cabang_notes,brg_cabang_status,id_fk_brg,id_fk_cabang,brg_cabang_create_date,brg_cabang_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_cabang,new.brg_cabang_last_price,new.brg_cabang_qty,new.brg_cabang_notes,new.brg_cabang_status,new.id_fk_brg,new.id_fk_cabang,new.brg_cabang_create_date,new.brg_cabang_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+
+        drop trigger if exists trg_after_update_brg_cabang;
+        delimiter $$
+        create trigger trg_after_update_brg_cabang
+        after update on tbl_brg_cabang
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_cabang_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.brg_cabang_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_cabang_log(executed_function,id_pk_brg_cabang,brg_cabang_qty,brg_cabang_last_price,brg_cabang_notes,brg_cabang_status,id_fk_brg,id_fk_cabang,brg_cabang_create_date,brg_cabang_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_cabang,new.brg_cabang_last_price,new.brg_cabang_qty,new.brg_cabang_notes,new.brg_cabang_status,new.id_fk_brg,new.id_fk_cabang,new.brg_cabang_create_date,new.brg_cabang_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+
+        drop procedure if exists update_stok_barang_cabang;
+        delimiter //
+        create procedure update_stok_barang_cabang(
+            in id_barang int,
+            in id_cabang int,
+            in barang_masuk double,
+            in id_satuan_masuk int,
+            in barang_keluar double,
+            in id_satuan_keluar int
+        )
+        begin
+            /*
+            the logic is
+            barang_masuk = n, barang_keluar = 0 [insert new data]
+            barang_masuk = n, barang_keluar = m [update data]
+            barang_masuk = 0, barang_keluar = m [delete data]
+            */
+            if barang_masuk != 0 then
+            call ubah_satuan_barang(id_satuan_masuk, barang_masuk);
+            end if;
+            if barang_keluar != 0 then
+            call ubah_satuan_barang(id_satuan_keluar, barang_keluar);
+            end if;
+            update tbl_brg_cabang 
+            set brg_cabang_qty = brg_cabang_qty+barang_masuk-barang_keluar
+            where id_fk_brg = id_barang and id_fk_cabang = id_cabang;
+
+            call update_stok_kombinasi_barang_cabang(id_barang,barang_masuk, barang_keluar, id_cabang);
+
+        end //
+        delimiter ;
+        
+        drop procedure if exists update_stok_kombinasi_barang_cabang;
+        delimiter //
+        create procedure update_stok_kombinasi_barang_cabang(
+            in id_barang_utama_in int,
+            in qty_brg_masuk_in double,
+            in qty_brg_keluar_in double,
+            in id_cabang_in int
+        )
+        begin
+            update tbl_barang_kombinasi
+            inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_barang_kombinasi.id_barang_kombinasi
+            set brg_cabang_qty = brg_cabang_qty+(barang_kombinasi_qty*qty_brg_masuk_in)-(barang_kombinasi_qty*qty_brg_keluar_in)
+            where id_barang_utama = id_barang_utama_in and id_fk_cabang = id_cabang_in and barang_kombinasi_status = 'aktif';
+        end//
+        delimiter ;
+        drop table if exists tbl_brg_pembelian;
+        create table tbl_brg_pembelian(
+            id_pk_brg_pembelian int primary key auto_increment,
+            brg_pem_qty double,
+            brg_pem_satuan varchar(20),
+            brg_pem_harga int,
+            brg_pem_note varchar(150),
+            brg_pem_status varchar(15),
+            id_fk_pembelian int,
+            id_fk_barang int,
+            brg_pem_create_date datetime,
+            brg_pem_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_brg_pembelian_log;
+        create table tbl_brg_pembelian_log(
+            id_pk_brg_pembelian_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_brg_pembelian int,
+            brg_pem_qty double,
+            brg_pem_satuan varchar(20),
+            brg_pem_harga int,
+            brg_pem_note varchar(150),
+            brg_pem_status varchar(15),
+            id_fk_pembelian int,
+            id_fk_barang int,
+            brg_pem_create_date datetime,
+            brg_pem_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_brg_pembelian;
+        delimiter $$
+        create trigger trg_after_insert_brg_pembelian
+        after insert on tbl_brg_pembelian
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_pem_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.brg_pem_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_pembelian_log(executed_function,id_pk_brg_pembelian,brg_pem_qty,brg_pem_satuan,brg_pem_harga,brg_pem_note,brg_pem_status,id_fk_pembelian,id_fk_barang,brg_pem_create_date,brg_pem_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_pembelian,new.brg_pem_qty,new.brg_pem_satuan,new.brg_pem_harga,new.brg_pem_note,new.brg_pem_status,new.id_fk_pembelian,new.id_fk_barang,new.brg_pem_create_date,new.brg_pem_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_brg_pembelian;
+        delimiter $$
+        create trigger trg_after_update_brg_pembelian
+        after update on tbl_brg_pembelian
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_pem_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_pem_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_pembelian_log(executed_function,id_pk_brg_pembelian,brg_pem_qty,brg_pem_satuan,brg_pem_harga,brg_pem_note,brg_pem_status,id_fk_pembelian,id_fk_barang,brg_pem_create_date,brg_pem_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_pembelian,new.brg_pem_qty,new.brg_pem_satuan,new.brg_pem_harga,new.brg_pem_note,new.brg_pem_status,new.id_fk_pembelian,new.id_fk_barang,new.brg_pem_create_date,new.brg_pem_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_brg_pemenuhan;
+        create table tbl_brg_pemenuhan(
+            id_pk_brg_pemenuhan int primary key auto_increment,
+            brg_pemenuhan_qty int,
+            brg_pemenuhan_tipe varchar(9) comment 'warehouse/cabang',
+            brg_pemenuhan_status varchar(8) comment 'aktif/nonaktif',
+            id_fk_brg_permintaan int,
+            id_fk_cabang int,
+            id_fk_warehouse int,
+            brg_pemenuhan_create_date datetime,
+            brg_pemenuhan_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_brg_pemenuhan_log;
+        create table tbl_brg_pemenuhan_log(
+            id_pk_brg_pemenuhan_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_brg_pemenuhan int,
+            brg_pemenuhan_qty int,
+            brg_pemenuhan_tipe varchar(9) comment 'warehouse/cabang',
+            brg_pemenuhan_status varchar(8) comment 'aktif/nonaktif',
+            id_fk_brg_permintaan int,
+            id_fk_cabang int,
+            id_fk_warehouse int,
+            brg_pemenuhan_create_date datetime,
+            brg_pemenuhan_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int 
+        );
+        drop trigger if exists trg_after_insert_brg_pemenuhan;
+        delimiter $$
+        create trigger trg_after_insert_brg_pemenuhan
+        after insert on tbl_brg_pemenuhan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_pemenuhan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.brg_pemenuhan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_pemenuhan_log(executed_function,
+            id_pk_brg_pemenuhan,
+            brg_pemenuhan_qty,
+            brg_pemenuhan_tipe,
+            brg_pemenuhan_status,
+            id_fk_brg_permintaan,
+            id_fk_cabang,
+            id_fk_warehouse,
+            brg_pemenuhan_create_date,
+            brg_pemenuhan_last_modified,
+            id_create_data,
+            id_last_modified,
+            id_log_all) values ('after insert',
+            new.id_pk_brg_pemenuhan,
+            new.brg_pemenuhan_qty,
+            new.brg_pemenuhan_tipe,
+            brg_pemenuhan_status,
+            new.id_fk_brg_permintaan,
+            new.id_fk_cabang,
+            new.id_fk_warehouse,
+            new.brg_pemenuhan_create_date,
+            new.brg_pemenuhan_last_modified,
+            new.id_create_data,
+            new.id_last_modified
+            ,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_brg_pemenuhan;
+        delimiter $$
+        create trigger trg_after_update_brg_pemenuhan
+        after update on tbl_brg_pemenuhan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_pemenuhan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.brg_pemenuhan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_pemenuhan_log(executed_function,
+            id_pk_brg_pemenuhan,
+            brg_pemenuhan_qty,
+            brg_pemenuhan_tipe,
+            brg_pemenuhan_status,
+            id_fk_brg_permintaan,
+            id_fk_cabang,
+            id_fk_warehouse,
+            brg_pemenuhan_create_date,
+            brg_pemenuhan_last_modified,
+            id_create_data,
+            id_last_modified,
+            id_log_all) values ('after insert',
+            new.id_pk_brg_pemenuhan,
+            new.brg_pemenuhan_qty,
+            new.brg_pemenuhan_tipe,
+            brg_pemenuhan_status,
+            new.id_fk_brg_permintaan,
+            new.id_fk_cabang,
+            new.id_fk_warehouse,
+            new.brg_pemenuhan_create_date,
+            new.brg_pemenuhan_last_modified,
+            new.id_create_data,
+            new.id_last_modified
+            ,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_brg_penerimaan;
+        create table tbl_brg_penerimaan(
+            id_pk_brg_penerimaan int primary key auto_increment,
+            brg_penerimaan_qty double,
+            brg_penerimaan_note varchar(200),
+            id_fk_penerimaan int,
+            id_fk_brg_pembelian int,
+            id_fk_satuan int,
+            brg_penerimaan_create_date datetime,
+            brg_penerimaan_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_brg_penerimaan_log;
+        create table tbl_brg_penerimaan_log(
+            id_pk_brg_penerimaan_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_brg_penerimaan int,
+            brg_penerimaan_qty double,
+            brg_penerimaan_note varchar(200),
+            id_fk_penerimaan int,
+            id_fk_brg_pembelian int,
+            id_fk_satuan int,
+            brg_penerimaan_create_date datetime,
+            brg_penerimaan_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_brg_penerimaan;
+        delimiter $$
+        create trigger trg_after_insert_brg_penerimaan
+        after insert on tbl_brg_penerimaan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_penerimaan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.brg_penerimaan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_penerimaan_log(executed_function,id_pk_brg_penerimaan,brg_penerimaan_qty,brg_penerimaan_note,id_fk_penerimaan,id_fk_brg_pembelian,id_fk_satuan,brg_penerimaan_create_date,brg_penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_penerimaan,new.brg_penerimaan_qty,new.brg_penerimaan_note,new.id_fk_penerimaan,new.id_fk_brg_pembelian,new.id_fk_satuan,new.brg_penerimaan_create_date,new.brg_penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+
+            set @id_cabang = 0;
+            set @id_barang = 0;
+            set @id_warehouse = 0;
+            set @brg_penerimaan_qty = new.brg_penerimaan_qty;
+            set @id_satuan_terima = new.id_fk_satuan;
+            select id_fk_cabang, id_fk_barang, id_fk_warehouse into @id_cabang,@id_barang,@id_warehouse from tbl_brg_penerimaan
+            inner join tbl_brg_pembelian on tbl_brg_pembelian.id_pk_brg_pembelian = tbl_brg_penerimaan.ID_FK_BRG_PEMBELIAN
+            inner join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan
+            where id_pk_brg_penerimaan = new.id_pk_brg_penerimaan;
+
+            if @id_warehouse is not null then
+            call update_stok_barang_warehouse(@id_barang,@id_warehouse,@brg_penerimaan_qty,@id_satuan_terima,0,0);
+            elseif @id_cabang is not null then 
+            call update_stok_barang_cabang(@id_barang,@id_cabang,@brg_penerimaan_qty,@id_satuan_terima,0,0);
+            end if;
+
+        end$$
+        delimiter ;
+
+        drop trigger if exists trg_after_update_brg_penerimaan;
+        delimiter $$
+        create trigger trg_after_update_brg_penerimaan
+        after update on tbl_brg_penerimaan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_penerimaan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_penerimaan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_penerimaan_log(executed_function,id_pk_brg_penerimaan,brg_penerimaan_qty,brg_penerimaan_note,id_fk_penerimaan,id_fk_brg_pembelian,id_fk_satuan,brg_penerimaan_create_date,brg_penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_penerimaan,new.brg_penerimaan_qty,new.brg_penerimaan_note,new.id_fk_penerimaan,new.id_fk_brg_pembelian,new.id_fk_satuan,new.brg_penerimaan_create_date,new.brg_penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+
+            set @id_cabang = 0;
+            set @id_barang = 0;
+            set @id_warehouse = 0;
+            set @brg_penerimaan_qty = new.brg_penerimaan_qty;
+            set @id_satuan_terima = new.id_fk_satuan;
+            set @brg_keluar_qty = old.brg_penerimaan_qty;
+            set @id_satuan_keluar = old.id_fk_satuan;
+
+            select id_fk_cabang, id_fk_barang,id_fk_warehouse into @id_cabang, @id_barang,@id_warehouse from tbl_brg_penerimaan
+            inner join tbl_brg_pembelian on tbl_brg_pembelian.id_pk_brg_pembelian = tbl_brg_penerimaan.ID_FK_BRG_PEMBELIAN
+            inner join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan
+            where id_pk_brg_penerimaan = new.id_pk_brg_penerimaan;
+            
+            if @id_warehouse is not null then
+            call update_stok_barang_warehouse(@id_barang,@id_warehouse,@brg_penerimaan_qty,@id_satuan_terima,@brg_keluar_qty,@id_satuan_keluar);
+            elseif @id_cabang is not null then 
+            call update_stok_barang_cabang(@id_barang,@id_cabang,@brg_penerimaan_qty,@id_satuan_terima,@brg_keluar_qty,@id_satuan_keluar);
+            end if;
+
+        end$$
+        delimiter ;
+        drop table if exists tbl_brg_pengiriman;
+        create table tbl_brg_pengiriman(
+            id_pk_brg_pengiriman int primary key auto_increment,
+            brg_pengiriman_qty double,
+            brg_pengiriman_note varchar(200),
+            id_fk_pengiriman int,
+            id_fk_brg_penjualan int,
+            id_fk_satuan int,
+            brg_pengiriman_create_date datetime,
+            brg_pengiriman_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_brg_pengiriman_log;
+        create table tbl_brg_pengiriman_log(
+            id_pk_brg_pengiriman_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_brg_pengiriman int,
+            brg_pengiriman_qty double,
+            brg_pengiriman_note varchar(200),
+            id_fk_pengiriman int,
+            id_fk_brg_penjualan int,
+            id_fk_satuan int,
+            brg_pengiriman_create_date datetime,
+            brg_pengiriman_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_brg_pengiriman;
+        delimiter $$
+        create trigger trg_after_insert_brg_pengiriman
+        after insert on tbl_brg_pengiriman
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_pengiriman_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.brg_pengiriman_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_pengiriman_log(executed_function,id_pk_brg_pengiriman,brg_pengiriman_qty,brg_pengiriman_note,id_fk_pengiriman,id_fk_brg_penjualan,id_fk_satuan,brg_pengiriman_create_date,brg_pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_pengiriman,new.brg_pengiriman_qty,new.brg_pengiriman_note,new.id_fk_pengiriman,new.id_fk_brg_penjualan,new.id_fk_satuan,new.brg_pengiriman_create_date,new.brg_pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            
+            set @id_cabang = 0;
+            set @id_barang = 0;
+            set @brg_pengiriman_qty = new.brg_pengiriman_qty;
+            set @id_satuan_kirim = new.id_fk_satuan;
+            
+            select id_fk_cabang, id_fk_barang into @id_cabang, @id_barang 
+            from tbl_brg_pengiriman
+            inner join tbl_brg_penjualan on tbl_brg_penjualan.id_pk_brg_penjualan = tbl_brg_pengiriman.id_fk_brg_penjualan
+            inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = tbl_brg_penjualan.id_fk_penjualan
+            where id_pk_brg_pengiriman = new.id_pk_brg_pengiriman;
+            call update_stok_barang_cabang(@id_barang,@id_cabang,0,0,@brg_pengiriman_qty,@id_satuan_kirim);
+        end$$
+        delimiter ;
+
+        drop trigger if exists trg_after_update_brg_pengiriman;
+        delimiter $$
+        create trigger trg_after_update_brg_pengiriman
+        after update on tbl_brg_pengiriman
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_pengiriman_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_pengiriman_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_pengiriman_log(executed_function,id_pk_brg_pengiriman,brg_pengiriman_qty,brg_pengiriman_note,id_fk_pengiriman,id_fk_brg_penjualan,id_fk_satuan,brg_pengiriman_create_date,brg_pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_pengiriman,new.brg_pengiriman_qty,new.brg_pengiriman_note,new.id_fk_pengiriman,new.id_fk_brg_penjualan,new.id_fk_satuan,new.brg_pengiriman_create_date,new.brg_pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            
+            set @id_cabang = 0;
+            set @id_barang = 0;
+            set @brg_keluar_qty = new.brg_pengiriman_qty;
+            set @id_satuan_keluar = new.id_fk_satuan;
+            set @brg_penerimaan_qty = old.brg_pengiriman_qty;
+            set @id_satuan_terima = old.id_fk_satuan;
+
+            select id_fk_cabang, id_fk_barang into @id_cabang, @id_barang 
+            from tbl_brg_pengiriman
+            inner join tbl_brg_penjualan on tbl_brg_penjualan.id_pk_brg_penjualan = tbl_brg_pengiriman.id_fk_brg_penjualan
+            inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = tbl_brg_penjualan.id_fk_penjualan
+            where id_pk_brg_pengiriman = new.id_pk_brg_pengiriman;
+            call update_stok_barang_cabang(@id_barang,@id_cabang,@brg_penerimaan_qty,@id_satuan_terima,@brg_keluar_qty,@id_satuan_keluar);
+        end$$
+        delimiter ;
+        drop table if exists tbl_brg_penjualan;
+        create table tbl_brg_penjualan(
+            id_pk_brg_penjualan int primary key auto_increment,
+            brg_penjualan_qty_real double,
+            brg_penjualan_satuan_real varchar(20),
+            brg_penjualan_qty double,
+            brg_penjualan_satuan varchar(20),
+            brg_penjualan_harga int,
+            brg_penjualan_note varchar(150),
+            brg_penjualan_status varchar(15),
+            id_fk_penjualan int,
+            id_fk_barang int,
+            brg_penjualan_create_date datetime,
+            brg_penjualan_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_brg_penjualan_log;
+        create table tbl_brg_penjualan_log(
+            id_pk_brg_penjualan_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_brg_penjualan int,
+            brg_penjualan_qty_real double,
+            brg_penjualan_satuan_real varchar(20),
+            brg_penjualan_qty double,
+            brg_penjualan_satuan varchar(20),
+            brg_penjualan_harga int,
+            brg_penjualan_note varchar(150),
+            brg_penjualan_status varchar(15),
+            id_fk_penjualan int,
+            id_fk_barang int,
+            brg_penjualan_create_date datetime,
+            brg_penjualan_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_brg_penjualan;
+        delimiter $$
+        create trigger trg_after_insert_brg_penjualan
+        after insert on tbl_brg_penjualan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_penjualan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.brg_penjualan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_penjualan_log(executed_function,id_pk_brg_penjualan,brg_penjualan_qty_real,brg_penjualan_satuan_real,brg_penjualan_qty,brg_penjualan_satuan,brg_penjualan_harga,brg_penjualan_note,brg_penjualan_status,id_fk_penjualan,id_fk_barang,brg_penjualan_create_date,brg_penjualan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_penjualan,new.brg_penjualan_qty_real,new.brg_penjualan_satuan_real,new.brg_penjualan_qty,new.brg_penjualan_satuan,new.brg_penjualan_harga,new.brg_penjualan_note,new.brg_penjualan_status,new.id_fk_penjualan,new.id_fk_barang,new.brg_penjualan_create_date,new.brg_penjualan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_brg_penjualan;
+        delimiter $$
+        create trigger trg_after_update_brg_penjualan
+        after update on tbl_brg_penjualan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_penjualan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_penjualan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_penjualan_log(executed_function,id_pk_brg_penjualan,brg_penjualan_qty_real,brg_penjualan_satuan_real,brg_penjualan_qty,brg_penjualan_satuan,brg_penjualan_harga,brg_penjualan_note,brg_penjualan_status,id_fk_penjualan,id_fk_barang,brg_penjualan_create_date,brg_penjualan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_penjualan,new.brg_penjualan_qty_real,new.brg_penjualan_satuan_real,new.brg_penjualan_qty,new.brg_penjualan_satuan,new.brg_penjualan_harga,new.brg_penjualan_note,new.brg_penjualan_status,new.id_fk_penjualan,new.id_fk_barang,new.brg_penjualan_create_date,new.brg_penjualan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_brg_permintaan;
+        create table tbl_brg_permintaan(
+            id_pk_brg_permintaan int primary key auto_increment,
+            brg_permintaan_qty int,
+            brg_permintaan_notes text,
+            brg_permintaan_deadline date,
+            brg_permintaan_status varchar(7) comment 'BELUM/SEDANG/SUDAH/BATAL',
+            id_fk_brg int,
+            id_fk_cabang int,
+            brg_permintaan_create_date datetime,
+            brg_permintaan_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_brg_permintaan_log;
+        create table tbl_brg_permintaan_log(
+            id_pk_penerimaan_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_brg_permintaan int,
+            brg_permintaan_qty int,
+            brg_permintaan_notes text,
+            brg_permintaan_deadline date,
+            brg_permintaan_status varchar(7) comment 'BELUM/SEDANG/SUDAH/BATAL',
+            id_fk_brg int,
+            id_fk_cabang int,
+            brg_permintaan_create_date datetime,
+            brg_permintaan_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int 
+        );
+        drop trigger if exists trg_after_insert_brg_permintaan;
+        delimiter $$
+        create trigger trg_after_insert_brg_permintaan
+        after insert on tbl_brg_permintaan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_permintaan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.brg_permintaan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_permintaan_log(executed_function,
+            id_pk_brg_permintaan,
+            brg_permintaan_qty,
+            brg_permintaan_notes,
+            brg_permintaan_deadline,
+            brg_permintaan_status,
+            id_fk_brg,
+            id_fk_cabang,
+            brg_permintaan_create_date,
+            brg_permintaan_last_modified,
+            id_create_data,
+            id_last_modified,
+            id_log_all) values ('after insert',
+            new.id_pk_brg_permintaan,
+            new.brg_permintaan_qty,
+            new.brg_permintaan_notes,
+            new.brg_permintaan_deadline,
+            new.brg_permintaan_status,
+            new.id_fk_brg,
+            new.id_fk_cabang,
+            new.brg_permintaan_create_date,
+            new.brg_permintaan_last_modified,
+            new.id_create_data,
+            new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_brg_permintaan;
+        delimiter $$
+        create trigger trg_after_update_brg_permintaan
+        after update on tbl_brg_permintaan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_permintaan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.brg_permintaan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_permintaan_log(executed_function,
+            id_pk_brg_permintaan,
+            brg_permintaan_qty,
+            brg_permintaan_notes,
+            brg_permintaan_deadline,
+            brg_permintaan_status,
+            id_fk_brg,
+            id_fk_cabang,
+            brg_permintaan_create_date,
+            brg_permintaan_last_modified,
+            id_create_data,
+            id_last_modified,
+            id_log_all) values ('after insert',
+            new.id_pk_brg_permintaan,
+            new.brg_permintaan_qty,
+            new.brg_permintaan_notes,
+            new.brg_permintaan_deadline,
+            new.brg_permintaan_status,
+            new.id_fk_brg,
+            new.id_fk_cabang,
+            new.brg_permintaan_create_date,
+            new.brg_permintaan_last_modified,
+            new.id_create_data,
+            new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_brg_pindah;
+        create table tbl_brg_pindah(
+            id_pk_brg_pindah int primary key auto_increment,
+            brg_pindah_sumber varchar(50) comment 'warehouse/penjualan/...',
+            id_fk_refrensi_sumber int comment 'id_warehouse/id_penjualan/...',
+            id_brg_awal int,
+            id_brg_tujuan int,
+            brg_pindah_qty double,
+            brg_pindah_status varchar(15),
+            brg_pindah_create_date datetime,
+            brg_pindah_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_brg_pindah_log;
+        create table tbl_brg_pindah_log(
+            id_pk_brg_pindah_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_brg_pindah int,
+            brg_pindah_sumber varchar(50) comment 'warehouse/penjualan/...',
+            id_fk_refrensi_sumber int comment 'id_warehouse/id_penjualan/...',
+            id_brg_awal int,
+            id_brg_tujuan int,
+            brg_pindah_qty double,
+            brg_pindah_status varchar(15),
+            brg_pindah_create_date datetime,
+            brg_pindah_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_brg_pindah;
+        delimiter $$
+        create trigger trg_after_insert_brg_pindah
+        after insert on tbl_brg_pindah
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_pindah_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.brg_pindah_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_pindah_log(executed_function,id_pk_brg_pindah,brg_pindah_sumber,id_fk_refrensi_sumber,id_brg_awal,id_brg_tujuan,brg_pindah_qty,brg_pindah_status,brg_pindah_create_date,brg_pindah_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_pindah,new.brg_pindah_sumber,new.id_fk_refrensi_sumber,new.id_brg_awal,new.id_brg_tujuan,new.brg_pindah_qty,new.brg_pindah_status,new.brg_pindah_create_date,new.brg_pindah_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_brg_pindah;
+        delimiter $$
+        create trigger trg_after_update_brg_pindah
+        after update on tbl_brg_pindah
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_pindah_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_pindah_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_pindah_log(executed_function,id_pk_brg_pindah,brg_pindah_sumber,id_fk_refrensi_sumber,id_brg_awal,id_brg_tujuan,brg_pindah_qty,brg_pindah_status,brg_pindah_create_date,brg_pindah_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_pindah,new.brg_pindah_sumber,new.id_fk_refrensi_sumber,new.id_brg_awal,new.id_brg_tujuan,new.brg_pindah_qty,new.brg_pindah_status,new.brg_pindah_create_date,new.brg_pindah_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_brg_warehouse;
+        create table tbl_brg_warehouse(
+            id_pk_brg_warehouse int primary key auto_increment,
+            brg_warehouse_qty int,
+            brg_warehouse_notes varchar(200),
+            brg_warehouse_status varchar(15),
+            id_fk_brg int,
+            id_fk_warehouse int,
+            brg_warehouse_create_date datetime,
+            brg_warehouse_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_brg_warehouse_log;
+        create table tbl_brg_warehouse_log(
+            id_pk_brg_warehouse_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_brg_warehouse int,
+            brg_warehouse_qty int,
+            brg_warehouse_notes varchar(200),
+            brg_warehouse_status varchar(15),
+            id_fk_brg int,
+            id_fk_warehouse int,
+            brg_warehouse_create_date datetime,
+            brg_warehouse_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_brg_warehouse;
+        delimiter $$
+        create trigger trg_after_insert_brg_warehouse
+        after insert on tbl_brg_warehouse
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_warehouse_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.brg_warehouse_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_warehouse_log(executed_function,id_pk_brg_warehouse,brg_warehouse_qty,brg_warehouse_notes,brg_warehouse_status,id_fk_brg,id_fk_warehouse,brg_warehouse_create_date,brg_warehouse_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_warehouse,new.brg_warehouse_qty,new.brg_warehouse_notes,new.brg_warehouse_status,new.id_fk_brg,new.id_fk_warehouse,new.brg_warehouse_create_date,new.brg_warehouse_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+
+        drop trigger if exists trg_after_update_brg_warehouse;
+        delimiter $$
+        create trigger trg_after_update_brg_warehouse
+        after update on tbl_brg_warehouse
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_warehouse_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.brg_warehouse_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_warehouse_log(executed_function,id_pk_brg_warehouse,brg_warehouse_qty,brg_warehouse_notes,brg_warehouse_status,id_fk_brg,id_fk_warehouse,brg_warehouse_create_date,brg_warehouse_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_warehouse,new.brg_warehouse_qty,new.brg_warehouse_notes,new.brg_warehouse_status,new.id_fk_brg,new.id_fk_warehouse,new.brg_warehouse_create_date,new.brg_warehouse_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop procedure if exists update_stok_barang_warehouse;
+        delimiter //
+        create procedure update_stok_barang_warehouse(
+            in id_barang int,
+            in id_warehouse int,
+            in barang_masuk double,
+            in id_satuan_masuk int,
+            in barang_keluar double,
+            in id_satuan_keluar int
+        )
+        begin
+            /*
+            the logic is
+            barang_masuk = n, barang_keluar = 0 [insert new data]
+            barang_masuk = n, barang_keluar = m [update data]
+            barang_masuk = 0, barang_keluar = m [delete data]
+            */
+            if barang_masuk != 0 then
+            call ubah_satuan_barang(id_satuan_masuk, barang_masuk);
+            end if;
+            if barang_keluar != 0 then
+            call ubah_satuan_barang(id_satuan_keluar, barang_keluar);
+            end if;
+            update tbl_brg_warehouse 
+            set brg_warehouse_qty = brg_warehouse_qty+barang_masuk-barang_keluar
+            where id_fk_brg = id_barang and id_fk_warehouse = id_warehouse;
+        end //
+        delimiter ;
+        drop table if exists mstr_cabang;
+        create table mstr_cabang(
+            id_pk_cabang int primary key auto_increment,
+            cabang_daerah varchar(50),
+            cabang_notelp varchar(30),
+            cabang_alamat varchar(100),
+            cabang_status varchar(15),
+            cabang_create_date datetime,
+            cabang_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_fk_toko int
+        );
+        drop table if exists mstr_cabang_log;
+        create table mstr_cabang_log(
+            id_pk_cabang_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_cabang int,
+            cabang_daerah varchar(50),
+            cabang_notelp varchar(30),
+            cabang_alamat varchar(100),
+            cabang_status varchar(15),
+            cabang_create_date datetime,
+            cabang_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_fk_toko int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_cabang;
+        delimiter $$
+        create trigger trg_after_insert_cabang
+        after insert on mstr_cabang
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.cabang_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.cabang_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_cabang_log(executed_function,id_pk_cabang,cabang_daerah,cabang_notelp,cabang_alamat,cabang_status,cabang_create_date,cabang_last_modified,id_create_data,id_last_modified,id_fk_toko,id_log_all) values ('after insert',new.id_pk_cabang,new.cabang_daerah,new.cabang_notelp,new.cabang_alamat,new.cabang_status,new.cabang_create_date,new.cabang_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_toko,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_cabang;
+        delimiter $$
+        create trigger trg_after_update_cabang
+        after update on mstr_cabang
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.cabang_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.cabang_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_cabang_log(executed_function,id_pk_cabang,cabang_daerah,cabang_notelp,cabang_alamat,cabang_status,cabang_create_date,cabang_last_modified,id_create_data,id_last_modified,id_fk_toko,id_log_all) values ('after update',new.id_pk_cabang,new.cabang_daerah,new.cabang_notelp,new.cabang_alamat,new.cabang_status,new.cabang_create_date,new.cabang_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_toko,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_cabang_admin;
+        create table tbl_cabang_admin(
+            id_pk_cabang_admin int primary key auto_increment,
+            id_fk_cabang int,
+            id_fk_user int,
+            cabang_admin_status varchar(15),
+            cabang_admin_create_date datetime,
+            cabang_admin_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_cabang_admin_log;
+        create table tbl_cabang_admin_log(
+            id_pk_cabang_admin_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_cabang_admin int,
+            id_fk_cabang int,
+            id_fk_user int,
+            cabang_admin_status varchar(15),
+            cabang_admin_create_date datetime,
+            cabang_admin_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_cabang_admin;
+        delimiter $$
+        create trigger trg_after_insert_cabang_admin
+        after insert on tbl_cabang_admin
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.cabang_admin_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.cabang_admin_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_cabang_admin_log(executed_function,id_pk_cabang_admin,id_fk_cabang,id_fk_user,cabang_admin_status,cabang_admin_create_date,cabang_admin_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_cabang_admin,new.id_fk_cabang,new.id_fk_user,new.cabang_admin_status,new.cabang_admin_create_date,new.cabang_admin_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_cabang_admin;
+        delimiter $$
+        create trigger trg_after_update_cabang_admin
+        after update on tbl_cabang_admin
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.cabang_admin_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.cabang_admin_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_cabang_admin_log(executed_function,id_pk_cabang_admin,id_fk_cabang,id_fk_user,cabang_admin_status,cabang_admin_create_date,cabang_admin_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_cabang_admin,new.id_fk_cabang,new.id_fk_user,new.cabang_admin_status,new.cabang_admin_create_date,new.cabang_admin_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists mstr_customer;
+        create table mstr_customer(
+            id_pk_cust int primary key auto_increment,
+            cust_name varchar(100),
+            cust_suff varchar(10),
+            cust_perusahaan varchar(100),
+            cust_email varchar(100),
+            cust_telp varchar(30),
+            cust_hp varchar(30),
+            cust_alamat varchar(150),
+            cust_keterangan varchar(150),
+            id_fk_toko int,
+            cust_status varchar(15),
+            cust_create_date datetime,
+            cust_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists mstr_customer_log;
+        create table mstr_customer_log(
+            id_pk_cust_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_cust int,
+            cust_name varchar(100),
+            cust_suff varchar(10),
+            cust_perusahaan varchar(100),
+            cust_email varchar(100),
+            cust_telp varchar(30),
+            cust_hp varchar(30),
+            cust_alamat varchar(150),
+            cust_keterangan varchar(150),
+            id_fk_toko int,
+            cust_status varchar(15),
+            cust_create_date datetime,
+            cust_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_customer;
+        delimiter $$
+        create trigger trg_after_insert_customer
+        after insert on mstr_customer
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.cust_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.cust_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_customer_log(executed_function,id_pk_cust,cust_name,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,id_fk_toko,cust_status,cust_create_date,cust_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_cust,new.cust_name,new.cust_suff,new.cust_perusahaan,new.cust_email,new.cust_telp,new.cust_hp,new.cust_alamat,new.cust_keterangan,new.id_fk_toko,new.cust_status,new.cust_create_date,new.cust_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_customer;
+        delimiter $$
+        create trigger trg_after_update_customer
+        after update on mstr_customer
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.cust_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.cust_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_customer_log(executed_function,id_pk_cust,cust_name,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,id_fk_toko,cust_status,cust_create_date,cust_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_cust,new.cust_name,new.cust_suff,new.cust_perusahaan,new.cust_email,new.cust_telp,new.cust_hp,new.cust_alamat,new.cust_keterangan,new.id_fk_toko,new.cust_status,new.cust_create_date,new.cust_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists mstr_employee;
+        create table mstr_employee(
+            id_pk_employee int primary key auto_increment,
+            emp_nama varchar(400),
+            emp_npwp varchar(25),
+            emp_ktp varchar(20),
+            emp_hp varchar(15),
+            emp_alamat varchar(300),
+            emp_kode_pos varchar(10),
+            emp_foto_npwp varchar(50),
+            emp_foto_ktp varchar(50),
+            emp_foto_lain varchar(50),
+            emp_foto varchar(50),
+            emp_gaji int,
+            emp_startdate datetime,
+            emp_enddate datetime,
+            emp_rek varchar(30),
+            emp_gender varchar(6),
+            emp_suff varchar(10),
+            emp_status varchar(15),
+            id_fk_toko int,
+            emp_create_date datetime,
+            emp_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists mstr_employee_log;
+        create table mstr_employee_log(
+            id_pk_employee_log int primary key auto_increment,
+            executed_function varchar(40),
+            id_pk_employee int,
+            emp_nama varchar(400),
+            emp_npwp varchar(25),
+            emp_ktp varchar(20),
+            emp_hp varchar(15),
+            emp_alamat varchar(300),
+            emp_kode_pos varchar(10),
+            emp_foto_npwp varchar(50),
+            emp_foto_ktp varchar(50),
+            emp_foto_lain varchar(50),
+            emp_foto varchar(50),
+            emp_gaji int,
+            emp_startdate datetime,
+            emp_enddate datetime,
+            emp_rek varchar(30),
+            emp_gender varchar(6),
+            emp_suff varchar(10),
+            emp_status varchar(15),
+            id_fk_toko int,
+            emp_create_date datetime,
+            emp_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_employee;
+        delimiter $$
+        create trigger trg_after_insert_employee
+        after insert on mstr_employee
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.emp_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.emp_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_employee_log(executed_function,id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,id_fk_toko,emp_create_date,emp_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_employee,new.emp_nama,new.emp_npwp,new.emp_ktp,new.emp_hp,new.emp_alamat,new.emp_kode_pos,new.emp_foto_npwp,new.emp_foto_ktp,new.emp_foto_lain,new.emp_foto,new.emp_gaji,new.emp_startdate,new.emp_enddate,new.emp_rek,new.emp_gender,new.emp_suff,new.emp_status,new.id_fk_toko,new.emp_create_date,new.emp_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+
+        drop trigger if exists trg_after_update_employee;
+        delimiter $$
+        create trigger trg_after_update_employee
+        after update on mstr_employee
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.emp_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.emp_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_employee_log(executed_function,id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,id_fk_toko,emp_create_date,emp_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_employee,new.emp_nama,new.emp_npwp,new.emp_ktp,new.emp_hp,new.emp_alamat,new.emp_kode_pos,new.emp_foto_npwp,new.emp_foto_ktp,new.emp_foto_lain,new.emp_foto,new.emp_gaji,new.emp_startdate,new.emp_enddate,new.emp_rek,new.emp_gender,new.emp_suff,new.emp_status,new.id_fk_toko,new.emp_create_date,new.emp_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_hak_akses;
+        create table tbl_hak_akses(
+            id_pk_hak_akses int primary key auto_increment,
+            id_fk_jabatan int,
+            id_fk_menu int,
+            hak_akses_status varchar(15),    
+            hak_akses_create_date datetime,
+            hak_akses_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_hak_akses_log;
+        create table tbl_hak_akses_log(
+            id_pk_hak_akses_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_hak_akses int,
+            id_fk_jabatan int,
+            id_fk_menu int,
+            hak_akses_status varchar(15),    
+            hak_akses_create_date datetime,
+            hak_akses_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_hak_akses;
+        delimiter $$
+        create trigger trg_after_insert_hak_akses
+        after insert on tbl_hak_akses
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.hak_akses_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.hak_akses_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_hak_akses_log(executed_function,id_pk_hak_akses,id_fk_jabatan,id_fk_menu,hak_akses_status,hak_akses_create_date,hak_akses_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_hak_akses,new.id_fk_jabatan,new.id_fk_menu,new.hak_akses_status,new.hak_akses_create_date,new.hak_akses_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_hak_akses;
+        delimiter $$
+        create trigger trg_after_update_hak_akses
+        after update on tbl_hak_akses
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.hak_akses_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.hak_akses_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_hak_akses_log(executed_function,id_pk_hak_akses,id_fk_jabatan,id_fk_menu,hak_akses_status,hak_akses_create_date,hak_akses_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_hak_akses,new.id_fk_jabatan,new.id_fk_menu,new.hak_akses_status,new.hak_akses_create_date,new.hak_akses_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists mstr_menu;
+        create table mstr_menu(
+            id_pk_menu int primary key auto_increment,
+            menu_name varchar(100),
+            menu_display varchar(100),
+            menu_icon varchar(100),
+            menu_category varchar(100),
+            menu_status varchar(15),
+            menu_create_date datetime,
+            menu_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists mstr_menu_log;
+        create table mstr_menu_log(
+            id_pk_menu_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_menu int,
+            menu_name varchar(100),
+            menu_display varchar(100),
+            menu_icon varchar(100),
+            menu_category varchar(100),
+            menu_status varchar(15),
+            menu_create_date datetime,
+            menu_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_menu;
+        delimiter $$
+        create trigger trg_after_insert_menu
+        after insert on mstr_menu
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.menu_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.menu_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_menu_log(executed_function,id_pk_menu,menu_name,menu_display,menu_icon,menu_category,menu_status,menu_create_date,menu_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_menu,new.menu_name,new.menu_display,new.menu_icon,new.menu_category,new.menu_status,new.menu_create_date,new.menu_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            
+            /* insert new menu to all hak akses*/
+            set @id_menu = new.id_pk_menu;
+            insert into tbl_hak_akses(id_fk_jabatan,id_fk_menu,hak_akses_status,hak_akses_create_date,hak_akses_last_modified,id_create_data,id_last_modified)
+            select id_pk_jabatan,@id_menu,'nonaktif',@tgl_action,@tgl_action,@id_user,@id_user from mstr_jabatan;
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_menu;
+        delimiter $$
+        create trigger trg_after_update_menu
+        after update on mstr_menu
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.menu_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.menu_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_menu_log(executed_function,id_pk_menu,menu_name,menu_display,menu_icon,menu_category,menu_status,menu_create_date,menu_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_menu,new.menu_name,new.menu_display,new.menu_icon,new.menu_category,new.menu_status,new.menu_create_date,new.menu_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table mstr_pembelian;
+        create table mstr_pembelian(
+            id_pk_pembelian int primary key auto_increment,
+            pem_pk_nomor varchar(30),
+            pem_tgl date,
+            pem_status varchar(15),
+            id_fk_supp int,
+            id_fk_cabang int,
+            pem_create_date datetime,
+            pem_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table mstr_pembelian_log;
+        create table mstr_pembelian_log(
+            id_pk_pembelian_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_pembelian int,
+            pem_pk_nomor varchar(30),
+            pem_tgl date,
+            pem_status varchar(15),
+            id_fk_supp int,
+            id_fk_cabang int,
+            pem_create_date datetime,
+            pem_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_pembelian;
+        delimiter $$
+        create trigger trg_after_insert_pembelian
+        after insert on mstr_pembelian
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.pem_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.pem_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_pembelian_log(executed_function,id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,id_fk_supp,id_fk_cabang,pem_create_date,pem_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_pembelian,new.pem_pk_nomor,new.pem_tgl,new.pem_status,new.id_fk_supp,new.id_fk_cabang,new.pem_create_date,new.pem_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_pembelian;
+        delimiter $$
+        create trigger trg_after_update_pembelian
+        after update on mstr_pembelian
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.pem_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.pem_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_pembelian_log(executed_function,id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,id_fk_supp,id_fk_cabang,pem_create_date,pem_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_pembelian,new.pem_pk_nomor,new.pem_tgl,new.pem_status,new.id_fk_supp,new.id_fk_cabang,new.pem_create_date,new.pem_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists mstr_penerimaan;
+        create table mstr_penerimaan(
+            id_pk_penerimaan int primary key auto_increment,
+            penerimaan_tgl datetime, 
+            penerimaan_status varchar(15), 
+            id_fk_pembelian int, 
+            penerimaan_tempat varchar(30) comment 'warehouse/cabang', 
+            id_fk_warehouse int, 
+            id_fk_cabang int, 
+            penerimaan_create_date datetime, 
+            penerimaan_last_modified datetime, 
+            id_create_data int, 
+            id_last_modified int 
+        );
+        drop table if exists mstr_penerimaan_log;
+        create table mstr_penerimaan_log(
+            id_pk_penerimaan_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_penerimaan int,
+            penerimaan_tgl datetime, 
+            penerimaan_status varchar(15), 
+            id_fk_pembelian int, 
+            penerimaan_tempat varchar(30) comment 'warehouse/cabang', 
+            id_fk_warehouse int, 
+            id_fk_cabang int, 
+            penerimaan_create_date datetime, 
+            penerimaan_last_modified datetime, 
+            id_create_data int, 
+            id_last_modified int, 
+            id_log_all int 
+        );
+        drop trigger if exists trg_after_insert_penerimaan;
+        delimiter $$
+        create trigger trg_after_insert_penerimaan
+        after insert on mstr_penerimaan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.penerimaan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.penerimaan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_penerimaan_log(executed_function,id_pk_penerimaan,penerimaan_tgl,penerimaan_status,id_fk_pembelian,penerimaan_tempat,id_fk_warehouse,id_fk_cabang,penerimaan_create_date,penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_penerimaan,new.penerimaan_tgl,new.penerimaan_status,new.id_fk_pembelian,new.penerimaan_tempat,new.id_fk_warehouse,new.id_fk_cabang,new.penerimaan_create_date,new.penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_penerimaan;
+        delimiter $$
+        create trigger trg_after_update_penerimaan
+        after update on mstr_penerimaan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.penerimaan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.penerimaan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_penerimaan_log(executed_function,id_pk_penerimaan,penerimaan_tgl,penerimaan_status,id_fk_pembelian,penerimaan_tempat,id_fk_warehouse,id_fk_cabang,penerimaan_create_date,penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_penerimaan,new.penerimaan_tgl,new.penerimaan_status,new.id_fk_pembelian,new.penerimaan_tempat,new.id_fk_warehouse,new.id_fk_cabang,new.penerimaan_create_date,new.penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists mstr_pengiriman;
+        create table mstr_pengiriman(
+            id_pk_pengiriman int primary key auto_increment,
+            pengiriman_tgl datetime, 
+            pengiriman_status varchar(15), 
+            id_fk_penjualan int, 
+            pengiriman_tempat varchar(30) comment 'warehouse/cabang', 
+            id_fk_warehouse int, 
+            id_fk_cabang int, 
+            pengiriman_create_date datetime, 
+            pengiriman_last_modified datetime, 
+            id_create_data int, 
+            id_last_modified int 
+        );
+        drop table if exists mstr_pengiriman_log;
+        create table mstr_pengiriman_log(
+            id_pk_pengiriman_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_pengiriman int,
+            pengiriman_tgl datetime, 
+            pengiriman_status varchar(15), 
+            id_fk_penjualan int, 
+            pengiriman_tempat varchar(30) comment 'warehouse/cabang', 
+            id_fk_warehouse int, 
+            id_fk_cabang int, 
+            pengiriman_create_date datetime, 
+            pengiriman_last_modified datetime, 
+            id_create_data int, 
+            id_last_modified int, 
+            id_log_all int 
+        );
+        drop trigger if exists trg_after_insert_pengiriman;
+        delimiter $$
+        create trigger trg_after_insert_pengiriman
+        after insert on mstr_pengiriman
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.pengiriman_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.pengiriman_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_pengiriman_log(executed_function,id_pk_pengiriman,pengiriman_tgl,pengiriman_status,id_fk_penjualan,pengiriman_tempat,id_fk_warehouse,id_fk_cabang,pengiriman_create_date,pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_pengiriman,new.pengiriman_tgl,new.pengiriman_status,new.id_fk_penjualan,new.pengiriman_tempat,new.id_fk_warehouse,new.id_fk_cabang,new.pengiriman_create_date,new.pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_pengiriman;
+        delimiter $$
+        create trigger trg_after_update_pengiriman
+        after update on mstr_pengiriman
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.pengiriman_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.pengiriman_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_pengiriman_log(executed_function,id_pk_pengiriman,pengiriman_tgl,pengiriman_status,id_fk_penjualan,pengiriman_tempat,id_fk_warehouse,id_fk_cabang,pengiriman_create_date,pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_pengiriman,new.pengiriman_tgl,new.pengiriman_status,new.id_fk_penjualan,new.pengiriman_tempat,new.id_fk_warehouse,new.id_fk_cabang,new.pengiriman_create_date,new.pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists mstr_penjualan;
+        create table mstr_penjualan(
+            id_pk_penjualan int primary key auto_increment,
+            penj_nomor varchar(30),
+            penj_tgl datetime,
+            penj_dateline_tgl datetime,
+            penj_jenis varchar(50),
+            penj_tipe_pembayaran varchar(50),
+            penj_status varchar(15),
+            id_fk_customer int,
+            id_fk_cabang int,
+            penj_create_date datetime,
+            penj_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists mstr_penjualan_log;
+        create table mstr_penjualan_log(
+            id_pk_penjualan_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_penjualan int,
+            penj_nomor varchar(30),
+            penj_tgl datetime,
+            penj_dateline_tgl datetime,
+            penj_jenis varchar(50),
+            penj_tipe_pembayaran varchar(50),
+            penj_status varchar(15),
+            id_fk_customer int,
+            id_fk_cabang int,
+            penj_create_date datetime,
+            penj_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_penjualan;
+        delimiter $$
+        create trigger trg_after_insert_penjualan
+        after insert on mstr_penjualan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.penj_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.penj_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_penjualan_log(executed_function,id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_jenis,penj_tipe_pembayaran,penj_status,id_fk_customer,id_fk_cabang,penj_create_date,penj_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_penjualan,new.penj_nomor,new.penj_tgl,new.penj_dateline_tgl,new.penj_jenis,new.penj_tipe_pembayaran,new.penj_status,new.id_fk_customer,new.id_fk_cabang,new.penj_create_date,new.penj_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_penjualan;
+        delimiter $$
+        create trigger trg_after_update_penjualan
+        after update on mstr_penjualan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.penj_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.penj_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_penjualan_log(executed_function,id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_jenis,penj_tipe_pembayaran,penj_status,id_fk_customer,id_fk_cabang,penj_create_date,penj_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_penjualan,new.penj_nomor,new.penj_tgl,new.penj_dateline_tgl,new.penj_jenis,new.penj_tipe_pembayaran,new.penj_status,new.id_fk_customer,new.id_fk_cabang,new.penj_create_date,new.penj_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_penjualan_online;
+        create table tbl_penjualan_online(
+            id_pk_penjualan_online int primary key auto_increment,
+            penj_on_marketplace varchar(40),
+            penj_on_no_resi varchar(40),
+            penj_on_kurir varchar(40),
+            penj_on_status varchar(15),
+            id_fk_penjualan int,
+            penj_on_create_date datetime,
+            penj_on_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_penjualan_online_log;
+        create table tbl_penjualan_online_log(
+            id_pk_penjualan_online_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_penjualan_online int,
+            penj_on_marketplace varchar(40),
+            penj_on_no_resi varchar(40),
+            penj_on_kurir varchar(40),
+            penj_on_status varchar(15),
+            id_fk_penjualan int,
+            penj_on_create_date datetime,
+            penj_on_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_penjualan_online;
+        delimiter $$
+        create trigger trg_after_insert_penjualan_online
+        after insert on tbl_penjualan_online
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.penj_on_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.penj_on_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_penjualan_online_log(executed_function,id_pk_penjualan_online,penj_on_marketplace,penj_on_no_resi,penj_on_kurir,penj_on_status,id_fk_penjualan,penj_on_create_date,penj_on_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_penjualan_online,new.penj_on_marketplace,new.penj_on_no_resi,new.penj_on_kurir,new.penj_on_status,new.id_fk_penjualan,new.penj_on_create_date,new.penj_on_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_penjualan_online;
+        delimiter $$
+        create trigger trg_after_update_penjualan_online
+        after update on tbl_penjualan_online
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.penj_on_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.penj_on_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_penjualan_online_log(executed_function,id_pk_penjualan_online,penj_on_marketplace,penj_on_no_resi,penj_on_kurir,penj_on_status,id_fk_penjualan,penj_on_create_date,penj_on_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_penjualan_online,new.penj_on_marketplace,new.penj_on_no_resi,new.penj_on_kurir,new.penj_on_status,new.id_fk_penjualan,new.penj_on_create_date,new.penj_on_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_penjualan_pembayaran;
+        create table tbl_penjualan_pembayaran(
+            id_pk_penjualan_pembayaran int primary key auto_increment,
+            id_fk_penjualan int,
+            penjualan_pmbyrn_nama varchar(100),
+            penjualan_pmbyrn_persen double,
+            penjualan_pmbyrn_nominal int,
+            penjualan_pmbyrn_notes varchar(200),
+            penjualan_pmbyrn_dateline datetime,
+            penjualan_pmbyrn_status varchar(15),
+            penjualan_pmbyrn_create_date datetime,
+            penjualan_pmbyrn_last_modified datetime,
+            id_create_data int,
+            id_last_modified int                   
+        );
+        drop table if exists tbl_penjualan_pembayaran_log;
+        create table tbl_penjualan_pembayaran_log(
+            id_pk_penjualan_pembayaran_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_penjualan_pembayaran int,
+            id_fk_penjualan int,
+            penjualan_pmbyrn_nama varchar(100),
+            penjualan_pmbyrn_persen double,
+            penjualan_pmbyrn_nominal int,
+            penjualan_pmbyrn_notes varchar(200),
+            penjualan_pmbyrn_dateline datetime,
+            penjualan_pmbyrn_status varchar(15),
+            penjualan_pmbyrn_create_date datetime,
+            penjualan_pmbyrn_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,                   
+            id_log_all int                   
+        );
+        drop trigger if exists trg_after_insert_penjualan_pembayaran;
+        delimiter $$
+        create trigger trg_after_insert_penjualan_pembayaran
+        after insert on tbl_penjualan_pembayaran
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.penjualan_pmbyrn_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.penjualan_pmbyrn_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_penjualan_pembayaran_log(executed_function,id_pk_penjualan_pembayaran,id_fk_penjualan,penjualan_pmbyrn_nama,penjualan_pmbyrn_persen,penjualan_pmbyrn_nominal,penjualan_pmbyrn_notes,penjualan_pmbyrn_dateline,penjualan_pmbyrn_status,penjualan_pmbyrn_create_date,penjualan_pmbyrn_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_penjualan_pembayaran,new.id_fk_penjualan,new.penjualan_pmbyrn_nama,new.penjualan_pmbyrn_persen,new.penjualan_pmbyrn_nominal,new.penjualan_pmbyrn_notes,new.penjualan_pmbyrn_dateline,new.penjualan_pmbyrn_status,new.penjualan_pmbyrn_create_date,new.penjualan_pmbyrn_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_penjualan_pembayaran;
+        delimiter $$
+        create trigger trg_after_update_penjualan_pembayaran
+        after update on tbl_penjualan_pembayaran
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.penjualan_pmbyrn_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.penjualan_pmbyrn_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_penjualan_pembayaran_log(executed_function,id_pk_penjualan_pembayaran,id_fk_penjualan,penjualan_pmbyrn_nama,penjualan_pmbyrn_persen,penjualan_pmbyrn_nominal,penjualan_pmbyrn_notes,penjualan_pmbyrn_dateline,penjualan_pmbyrn_status,penjualan_pmbyrn_create_date,penjualan_pmbyrn_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_penjualan_pembayaran,new.id_fk_penjualan,new.penjualan_pmbyrn_nama,new.penjualan_pmbyrn_persen,new.penjualan_pmbyrn_nominal,new.penjualan_pmbyrn_notes,new.penjualan_pmbyrn_dateline,new.penjualan_pmbyrn_status,new.penjualan_pmbyrn_create_date,new.penjualan_pmbyrn_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists mstr_retur;
+        create table mstr_retur(
+            id_pk_retur int primary key auto_increment,
+            id_fk_penjualan int,
+            retur_no varchar(100),
+            retur_tgl datetime,
+            retur_tipe varchar(15),
+            retur_status varchar(15),
+            retur_create_date datetime,
+            retur_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists mstr_retur_log;
+        create table mstr_retur_log(
+            id_pk_retur_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_retur int,
+            id_fk_penjualan int,
+            retur_no varchar(100),
+            retur_tgl datetime,
+            retur_tipe varchar(15),
+            retur_status varchar(15),
+            retur_create_date datetime,
+            retur_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_retur;
+        delimiter $$
+        create trigger trg_after_insert_retur
+        after insert on mstr_retur
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.retur_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.retur_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_retur_log(executed_function,id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_tipe,retur_status,retur_create_date,retur_last_modified,id_create_data,id_last_modified,id_log_all) values('after insert',new.id_pk_retur,new.id_fk_penjualan,new.retur_no,new.retur_tgl,new.retur_tipe,new.retur_status,new.retur_create_date,new.retur_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_retur;
+        delimiter $$
+        create trigger trg_after_update_retur
+        after update on mstr_retur
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.retur_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.retur_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_retur_log(executed_function,id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_tipe,retur_status,retur_create_date,retur_last_modified,id_create_data,id_last_modified,id_log_all) values('after update',new.id_pk_retur,new.id_fk_penjualan,new.retur_no,new.retur_tgl,new.retur_tipe,new.retur_status,new.retur_create_date,new.retur_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_retur_brg;
+        create table tbl_retur_brg(
+            id_pk_retur_brg int primary key auto_increment,
+            id_fk_retur int,
+            id_fk_brg int,
+            retur_brg_qty double,
+            retur_brg_satuan varchar(30),
+            retur_brg_notes varchar(100),
+            retur_brg_status varchar(15),
+            retur_create_date datetime,
+            retur_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_retur_brg_log;
+        create table tbl_retur_brg_log(
+            id_pk_retur_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_retur_brg int,
+            id_fk_retur int,
+            id_fk_brg int,
+            retur_brg_qty double,
+            retur_brg_satuan varchar(30),
+            retur_brg_notes varchar(100),
+            retur_brg_status varchar(15),
+            retur_create_date datetime,
+            retur_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_retur;
+        delimiter $$
+        create trigger trg_after_insert_retur
+        after insert on tbl_retur_brg
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.retur_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.retur_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_retur_brg_log(executed_function,id_pk_retur_brg,id_fk_retur,id_fk_brg,retur_brg_qty,retur_brg_satuan,retur_brg_notes,retur_brg_status,retur_create_date,retur_last_modified,id_create_data,id_last_modified,id_log_all) values('after insert',new.id_pk_retur_brg,new.id_fk_retur,new.id_fk_brg,new.retur_brg_qty,new.retur_brg_satuan,new.retur_brg_notes,new.retur_brg_status,new.retur_create_date,new.retur_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_retur;
+        delimiter $$
+        create trigger trg_after_update_retur
+        after update on tbl_retur_brg
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.retur_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.retur_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_retur_brg_log(executed_function,id_pk_retur_brg,id_fk_retur,id_fk_brg,retur_brg_qty,retur_brg_satuan,retur_brg_notes,retur_brg_status,retur_create_date,retur_last_modified,id_create_data,id_last_modified,id_log_all) values('after update',new.id_pk_retur_brg,new.id_fk_retur,new.id_fk_brg,new.retur_brg_qty,new.retur_brg_satuan,new.retur_brg_notes,new.retur_brg_status,new.retur_create_date,new.retur_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_retur_kembali;
+        create table tbl_retur_kembali(
+            id_pk_retur_kembali int primary key auto_increment,
+            retur_kembali_qty_real double,
+            retur_kembali_satuan_real varchar(20),
+            retur_kembali_qty double,
+            retur_kembali_satuan varchar(20),
+            retur_kembali_harga int,
+            retur_kembali_note varchar(150),
+            retur_kembali_status varchar(15),
+            id_fk_retur int,
+            id_fk_brg int,
+            retur_kembali_create_date datetime,
+            retur_kembali_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_retur_kembali_log;
+        create table tbl_retur_kembali_log(
+            id_pk_retur_kembali_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_retur_kembali int,
+            retur_kembali_qty_real double,
+            retur_kembali_satuan_real varchar(20),
+            retur_kembali_qty double,
+            retur_kembali_satuan varchar(20),
+            retur_kembali_harga int,
+            retur_kembali_note varchar(150),
+            retur_kembali_status varchar(15),
+            id_fk_retur int,
+            id_fk_brg int,
+            retur_kembali_create_date datetime,
+            retur_kembali_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_retur_kembali;
+        delimiter $$
+        create trigger trg_after_insert_retur_kembali
+        after insert on tbl_retur_kembali
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.retur_kembali_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.retur_kembali_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_retur_kembali_log(executed_function,id_pk_retur_kembali,retur_kembali_qty_real,retur_kembali_satuan_real,retur_kembali_qty,retur_kembali_satuan,retur_kembali_harga,retur_kembali_note,retur_kembali_status,id_fk_retur,id_fk_brg,retur_kembali_create_date,retur_kembali_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_retur_kembali,new.retur_kembali_qty_real,new.retur_kembali_satuan_real,new.retur_kembali_qty,new.retur_kembali_satuan,new.retur_kembali_harga,new.retur_kembali_note,new.retur_kembali_status,new.id_fk_retur,new.id_fk_brg,new.retur_kembali_create_date,new.retur_kembali_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_retur_kembali;
+        delimiter $$
+        create trigger trg_after_update_retur_kembali
+        after update on tbl_retur_kembali
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.retur_kembali_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.retur_kembali_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_retur_kembali_log(executed_function,id_pk_retur_kembali,retur_kembali_qty_real,retur_kembali_satuan_real,retur_kembali_qty,retur_kembali_satuan,retur_kembali_harga,retur_kembali_note,retur_kembali_status,id_fk_retur,id_fk_brg,retur_kembali_create_date,retur_kembali_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_retur_kembali,new.retur_kembali_qty_real,new.retur_kembali_satuan_real,new.retur_kembali_qty,new.retur_kembali_satuan,new.retur_kembali_harga,new.retur_kembali_note,new.retur_kembali_status,new.id_fk_retur,new.id_fk_brg,new.retur_kembali_create_date,new.retur_kembali_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists mstr_jabatan;
+        create table mstr_jabatan(
+            id_pk_jabatan int primary key auto_increment,
+            jabatan_nama varchar(100),
+            jabatan_status varchar(15),
+            jabatan_create_date datetime,
+            jabatan_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists mstr_jabatan_log;
+        create table mstr_jabatan_log(
+            id_pk_jabatan_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_jabatan int,
+            jabatan_nama varchar(100),
+            jabatan_status varchar(15),
+            jabatan_create_date datetime,
+            jabatan_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_jabatan;
+        delimiter $$
+        create trigger trg_after_insert_jabatan
+        after insert on mstr_jabatan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.jabatan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.jabatan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_jabatan_log(executed_function,id_pk_jabatan,jabatan_nama,jabatan_status,jabatan_create_date,jabatan_last_modified,id_create_data,id_last_modified,id_log_all) values('after insert',new.id_pk_jabatan,new.jabatan_nama,new.jabatan_status,new.jabatan_create_date,new.jabatan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+
+            /* insert new jabatan to all hak akses*/
+            set @id_jabatan = new.id_pk_jabatan;
+            insert into tbl_hak_akses(id_fk_jabatan,id_fk_menu,hak_akses_status,hak_akses_create_date,hak_akses_last_modified,id_create_data,id_last_modified)
+            select @id_jabatan,id_pk_menu,'nonaktif',@tgl_action,@tgl_action,@id_user,@id_user from mstr_menu;
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_jabatan;
+        delimiter $$
+        create trigger trg_after_update_jabatan
+        after update on mstr_jabatan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.jabatan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.jabatan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_jabatan_log(executed_function,id_pk_jabatan,jabatan_nama,jabatan_status,jabatan_create_date,jabatan_last_modified,id_create_data,id_last_modified,id_log_all) values('after update',new.id_pk_jabatan,new.jabatan_nama,new.jabatan_status,new.jabatan_create_date,new.jabatan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists mstr_satuan;
+        create table mstr_satuan(
+            id_pk_satuan int primary key auto_increment,
+            satuan_nama varchar(100),
+            satuan_rumus varchar(100),
+            satuan_status varchar(15),
+            satuan_create_date datetime,
+            satuan_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists mstr_satuan_log;
+        create table mstr_satuan_log(
+            id_pk_satuan_log int primary key auto_increment,
+            executed_function varchar(20),
+            id_pk_satuan int,
+            satuan_nama varchar(100),
+            satuan_rumus varchar(100),
+            satuan_status varchar(15),
+            satuan_create_date datetime,
+            satuan_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_satuan;
+        delimiter $$
+        create trigger trg_after_insert_satuan
+        after insert on mstr_satuan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.satuan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.satuan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_satuan_log(executed_function,id_pk_satuan,satuan_nama,satuan_rumus,satuan_status,satuan_create_date,satuan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_satuan,new.satuan_nama,new.satuan_status,new.satuan_rumus,new.satuan_create_date,new.satuan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+
+        drop trigger if exists trg_after_update_satuan;
+        delimiter $$
+        create trigger trg_after_update_satuan
+        after update on mstr_satuan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.satuan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.satuan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_satuan_log(executed_function,id_pk_satuan,satuan_nama,satuan_rumus,satuan_status,satuan_create_date,satuan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_satuan,new.satuan_nama,new.satuan_status,new.satuan_rumus,new.satuan_create_date,new.satuan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+
+        drop procedure if exists ubah_satuan_barang;
+        delimiter //
+        create procedure ubah_satuan_barang(
+            in id_satuan_in int,
+            inout brg_qty double
+        )
+        begin
+            declare conversion_exp varchar(20);
+            select satuan_rumus 
+            into conversion_exp
+            from mstr_satuan
+            where id_pk_satuan = id_satuan_in;
+            
+            set brg_qty = conversion_exp * brg_qty;
+            
+        end //
+        delimiter ;
+        drop table if exists tbl_sj_item;
+        create table tbl_sj_item(
+            id_pk_sj_item int primary key auto_increment,
+            sj_item_qty double,
+            sj_item_note varchar(150),
+            sj_item_status varchar(15),
+            id_fk_satuan int,
+            id_fk_surat_jalan int,
+            id_fk_brg_penjualan int,
+            sj_item_create_date datetime,
+            sj_item_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_sj_item_log;
+        create table tbl_sj_item_log(
+            id_pk_sj_item_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_sj_item int,
+            sj_item_qty double,
+            sj_item_note varchar(150),
+            sj_item_status varchar(15),
+            id_fk_satuan int,
+            id_fk_surat_jalan int,
+            id_fk_brg_penjualan int,
+            sj_item_create_date datetime,
+            sj_item_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_sj_item;
+        delimiter $$
+        create trigger trg_after_insert_sj_item
+        after insert on tbl_sj_item
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.sj_item_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.sj_item_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_sj_item_log(executed_function,id_pk_sj_item,sj_item_qty,sj_item_note,sj_item_status,id_fk_satuan,id_fk_surat_jalan,id_fk_brg_penjualan,sj_item_create_date,sj_item_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_sj_item,new.sj_item_qty,new.sj_item_note,new.sj_item_status,new.id_fk_satuan,new.id_fk_surat_jalan,new.id_fk_brg_penjualan,new.sj_item_create_date,new.sj_item_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_sj_item;
+        delimiter $$
+        create trigger trg_after_update_sj_item
+        after update on tbl_sj_item
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.sj_item_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.sj_item_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_sj_item_log(executed_function,id_pk_sj_item,sj_item_qty,sj_item_note,sj_item_status,id_fk_satuan,id_fk_surat_jalan,id_fk_brg_penjualan,sj_item_create_date,sj_item_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_sj_item,new.sj_item_qty,new.sj_item_note,new.sj_item_status,new.id_fk_satuan,new.id_fk_surat_jalan,new.id_fk_brg_penjualan,new.sj_item_create_date,new.sj_item_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists mstr_supplier;
+        create table mstr_supplier(
+            id_pk_sup int primary key auto_increment,
+            sup_nama varchar(100),
+            sup_suff varchar(10),
+            sup_perusahaan varchar(100),
+            sup_email varchar(100),
+            sup_telp varchar(30),
+            sup_hp varchar(30),
+            sup_alamat varchar(150),
+            sup_keterangan varchar(150),
+            sup_status varchar(15),
+            sup_create_date datetime,
+            sup_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists mstr_supplier_log;
+        create table mstr_supplier_log(
+            id_pk_sup_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_sup int,
+            sup_nama varchar(100),
+            sup_suff varchar(10),
+            sup_perusahaan varchar(100),
+            sup_email varchar(100),
+            sup_telp varchar(30),
+            sup_hp varchar(30),
+            sup_alamat varchar(150),
+            sup_keterangan varchar(150),
+            sup_status varchar(15),
+            sup_create_date datetime,
+            sup_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_supplier;
+        delimiter $$
+        create trigger trg_after_insert_supplier
+        after insert on mstr_supplier
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.sup_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.sup_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_supplier_log(executed_function,id_pk_sup,sup_nama,sup_suff,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_create_date,sup_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_sup,new.sup_nama,new.sup_suff,new.sup_perusahaan,new.sup_email,new.sup_telp,new.sup_hp,new.sup_alamat,new.sup_keterangan,new.sup_status,new.sup_create_date,new.sup_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+
+        drop trigger if exists trg_after_update_supplier;
+        delimiter $$
+        create trigger trg_after_update_supplier
+        after update on mstr_supplier
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.sup_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.sup_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_supplier_log(executed_function,id_pk_sup,sup_nama,sup_suff,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_create_date,sup_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_sup,new.sup_nama,new.sup_suff,new.sup_perusahaan,new.sup_email,new.sup_telp,new.sup_hp,new.sup_alamat,new.sup_keterangan,new.sup_status,new.sup_create_date,new.sup_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_tambahan_pembelian;
+        create table tbl_tambahan_pembelian(
+            id_pk_tmbhn int primary key auto_increment,
+            tmbhn varchar(100),
+            tmbhn_jumlah double,
+            tmbhn_satuan varchar(20),
+            tmbhn_harga int,
+            tmbhn_notes varchar(200),
+            tmbhn_status varchar(15),
+            id_fk_pembelian int,
+            tmbhn_create_date datetime,
+            tmbhn_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_tambahan_pembelian_log;
+        create table tbl_tambahan_pembelian_log(
+            id_pk_tmbhn_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_tmbhn int,
+            tmbhn varchar(100),
+            tmbhn_jumlah double,
+            tmbhn_satuan varchar(20),
+            tmbhn_harga int,
+            tmbhn_notes varchar(200),
+            tmbhn_status varchar(15),
+            id_fk_pembelian int,
+            tmbhn_create_date datetime,
+            tmbhn_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_tambahan_pembelian;
+        delimiter $$
+        create trigger trg_after_insert_tambahan_pembelian
+        after insert on tbl_tambahan_pembelian
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.tmbhn_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.tmbhn_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_tambahan_pembelian_log(executed_function,id_pk_tmbhn,tmbhn,tmbhn_jumlah,tmbhn_satuan,tmbhn_harga,tmbhn_notes,tmbhn_status,id_fk_pembelian,tmbhn_create_date,tmbhn_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_tmbhn,new.tmbhn,new.tmbhn_jumlah,new.tmbhn_satuan,new.tmbhn_harga,new.tmbhn_notes,new.tmbhn_status,new.id_fk_pembelian,new.tmbhn_create_date,new.tmbhn_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_tambahan_pembelian;
+        delimiter $$
+        create trigger trg_after_update_tambahan_pembelian
+        after update on tbl_tambahan_pembelian
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.tmbhn_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.tmbhn_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_tambahan_pembelian_log(executed_function,id_pk_tmbhn,tmbhn,tmbhn_jumlah,tmbhn_satuan,tmbhn_harga,tmbhn_notes,tmbhn_status,id_fk_pembelian,tmbhn_create_date,tmbhn_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_tmbhn,new.tmbhn,new.tmbhn_jumlah,new.tmbhn_satuan,new.tmbhn_harga,new.tmbhn_notes,new.tmbhn_status,new.id_fk_pembelian,new.tmbhn_create_date,new.tmbhn_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_tambahan_penjualan;
+        create table tbl_tambahan_penjualan(
+            id_pk_tmbhn int primary key auto_increment,
+            tmbhn varchar(100),
+            tmbhn_jumlah double,
+            tmbhn_satuan varchar(20),
+            tmbhn_harga int,
+            tmbhn_notes varchar(200),
+            tmbhn_status varchar(15),
+            id_fk_penjualan int,
+            tmbhn_create_date datetime,
+            tmbhn_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_tambahan_penjualan_log;
+        create table tbl_tambahan_penjualan_log(
+            id_pk_tmbhn_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_tmbhn int,
+            tmbhn varchar(100),
+            tmbhn_jumlah double,
+            tmbhn_satuan varchar(20),
+            tmbhn_harga int,
+            tmbhn_notes varchar(200),
+            tmbhn_status varchar(15),
+            id_fk_penjualan int,
+            tmbhn_create_date datetime,
+            tmbhn_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_tambahan_penjualan;
+        delimiter $$
+        create trigger trg_after_insert_tambahan_penjualan
+        after insert on tbl_tambahan_penjualan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.tmbhn_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.tmbhn_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_tambahan_penjualan_log(executed_function,id_pk_tmbhn,tmbhn,tmbhn_jumlah,tmbhn_satuan,tmbhn_harga,tmbhn_notes,tmbhn_status,id_fk_penjualan,tmbhn_create_date,tmbhn_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_tmbhn,new.tmbhn,new.tmbhn_jumlah,new.tmbhn_satuan,new.tmbhn_harga,new.tmbhn_notes,new.tmbhn_status,new.id_fk_penjualan,new.tmbhn_create_date,new.tmbhn_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_tambahan_penjualan;
+        delimiter $$
+        create trigger trg_after_update_tambahan_penjualan
+        after update on tbl_tambahan_penjualan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.tmbhn_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.tmbhn_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_tambahan_penjualan_log(executed_function,id_pk_tmbhn,tmbhn,tmbhn_jumlah,tmbhn_satuan,tmbhn_harga,tmbhn_notes,tmbhn_status,id_fk_penjualan,tmbhn_create_date,tmbhn_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_tmbhn,new.tmbhn,new.tmbhn_jumlah,new.tmbhn_satuan,new.tmbhn_harga,new.tmbhn_notes,new.tmbhn_status,new.id_fk_penjualan,new.tmbhn_create_date,new.tmbhn_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists mstr_toko;
+        create table mstr_toko(
+            id_pk_toko int primary key auto_increment,
+            toko_logo varchar(100),
+            toko_nama varchar(100),
+            toko_kode varchar(20),
+            toko_status varchar(15),
+            toko_create_date datetime,
+            toko_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists mstr_toko_log;
+        create table mstr_toko_log(
+            id_pk_toko_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_toko int,
+            toko_logo varchar(100),
+            toko_nama varchar(100),
+            toko_kode varchar(20),
+            toko_status varchar(15),
+            toko_create_date datetime,
+            toko_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_toko;
+        delimiter $$
+        create trigger trg_after_insert_toko
+        after insert on mstr_toko
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.toko_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.toko_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_toko_log(executed_function,id_pk_toko,toko_logo,toko_nama,toko_kode,toko_status,toko_create_date,toko_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_toko,new.toko_logo,new.toko_nama,new.toko_kode,new.toko_status,new.toko_create_date,new.toko_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_toko;
+        delimiter $$
+        create trigger trg_after_update_toko
+        after update on mstr_toko
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.toko_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.toko_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_toko_log(executed_function,id_pk_toko,toko_logo,toko_nama,toko_kode,toko_status,toko_create_date,toko_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_toko,new.toko_logo,new.toko_nama,new.toko_kode,new.toko_status,new.toko_create_date,new.toko_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_toko_admin;
+        create table tbl_toko_admin(
+            id_pk_toko_admin int primary key auto_increment,
+            id_fk_toko int,
+            id_fk_user int,
+            toko_admin_status varchar(15),
+            toko_admin_create_date datetime,
+            toko_admin_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_toko_admin_log;
+        create table tbl_toko_admin_log(
+            id_pk_toko_admin_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_toko_admin int,
+            id_fk_toko int,
+            id_fk_user int,
+            toko_admin_status varchar(15),
+            toko_admin_create_date datetime,
+            toko_admin_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_toko_admin;
+        delimiter $$
+        create trigger trg_after_insert_toko_admin
+        after insert on tbl_toko_admin
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.toko_admin_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.toko_admin_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_toko_admin_log(executed_function,id_pk_toko_admin,id_fk_toko,id_fk_user,toko_admin_status,toko_admin_create_date,toko_admin_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_toko_admin,new.id_fk_toko,new.id_fk_user,new.toko_admin_status,new.toko_admin_create_date,new.toko_admin_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_toko_admin;
+        delimiter $$
+        create trigger trg_after_update_toko_admin
+        after update on tbl_toko_admin
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.toko_admin_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.toko_admin_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_toko_admin_log(executed_function,id_pk_toko_admin,id_fk_toko,id_fk_user,toko_admin_status,toko_admin_create_date,toko_admin_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_toko_admin,new.id_fk_toko,new.id_fk_user,new.toko_admin_status,new.toko_admin_create_date,new.toko_admin_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists mstr_user;
+        create table mstr_user(
+            id_pk_user int primary key auto_increment,
+            user_name varchar(50),
+            user_pass varchar(200),
+            user_email varchar(100),
+            user_status varchar(15),
+            id_fk_role int,
+            user_last_modified datetime,
+            user_create_date datetime,
+            id_create_date int,
+            id_last_modified int
+        );
+        drop table if exists mstr_user_log;
+        create table mstr_user_log(
+            id_pk_user_log int primary key auto_increment,
+            executed_function varchar(40),
+            id_pk_user int,
+            user_name varchar(50),
+            user_pass varchar(200),
+            user_email varchar(100),
+            user_status varchar(15),
+            id_fk_role int,
+            user_last_modified datetime,
+            user_create_date datetime,
+            id_create_date int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_user;
+        delimiter $$
+        create trigger trg_after_insert_user
+        after insert on mstr_user
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.user_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at',' ', new.user_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_user_log(executed_function,id_pk_user,user_name,user_pass,user_email,user_status,id_fk_role,user_last_modified,user_create_date,id_create_date,id_last_modified,id_log_all) values('after insert',new.id_pk_user,new.user_name,new.user_pass,new.user_email,new.user_status,new.id_fk_role,new.user_last_modified,new.user_create_date,new.id_create_date,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_user;
+        delimiter $$
+        create trigger trg_after_update_user
+        after update on mstr_user
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.user_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at ' , new.user_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_user_log(executed_function,id_pk_user,user_name,user_pass,user_email,user_status,id_fk_role,user_last_modified,user_create_date,id_create_date,id_last_modified,id_log_all) values('after update',new.id_pk_user,new.user_name,new.user_pass,new.user_email,new.user_status,new.id_fk_role,new.user_last_modified,new.user_create_date,new.id_create_date,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists mstr_warehouse;
+        create table mstr_warehouse(
+            id_pk_warehouse int primary key auto_increment,
+            warehouse_nama varchar(100),
+            warehouse_alamat varchar(200),
+            warehouse_notelp varchar(30),
+            warehouse_desc varchar(150),
+            warehouse_status varchar(15),
+            warehouse_create_date datetime,
+            warehouse_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists mstr_warehouse_log;
+        create table mstr_warehouse_log(
+            id_pk_warehouse_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_warehouse int,
+            warehouse_nama varchar(100),
+            warehouse_alamat varchar(200),
+            warehouse_notelp varchar(30),
+            warehouse_desc varchar(150),
+            warehouse_status varchar(15),
+            warehouse_create_date datetime,
+            warehouse_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_warehouse;
+        delimiter $$
+        create trigger trg_after_insert_warehouse
+        after insert on mstr_warehouse
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.warehouse_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.warehouse_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_warehouse_log(executed_function,id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_create_date,warehouse_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_warehouse,new.warehouse_nama,new.warehouse_alamat,new.warehouse_notelp,new.warehouse_desc,new.warehouse_status,new.warehouse_create_date,new.warehouse_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+
+        drop trigger if exists trg_after_update_warehouse;
+        delimiter $$
+        create trigger trg_after_update_warehouse
+        after update on mstr_warehouse
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.warehouse_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.warehouse_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into mstr_warehouse_log(executed_function,id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_create_date,warehouse_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_warehouse,new.warehouse_nama,new.warehouse_alamat,new.warehouse_notelp,new.warehouse_desc,new.warehouse_status,new.warehouse_create_date,new.warehouse_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        drop table if exists tbl_warehouse_admin;
+        create table tbl_warehouse_admin(
+            id_pk_warehouse_admin int primary key auto_increment,
+            id_fk_warehouse int,
+            id_fk_user int,
+            warehouse_admin_status varchar(15),
+            warehouse_admin_create_date datetime,
+            warehouse_admin_last_modified datetime,
+            id_create_data int,
+            id_last_modified int
+        );
+        drop table if exists tbl_warehouse_admin_log;
+        create table tbl_warehouse_admin_log(
+            id_pk_warehouse_admin_log int primary key auto_increment,
+            executed_function varchar(30),
+            id_pk_warehouse_admin int,
+            id_fk_warehouse int,
+            id_fk_user int,
+            warehouse_admin_status varchar(15),
+            warehouse_admin_create_date datetime,
+            warehouse_admin_last_modified datetime,
+            id_create_data int,
+            id_last_modified int,
+            id_log_all int
+        );
+        drop trigger if exists trg_after_insert_warehouse_admin;
+        delimiter $$
+        create trigger trg_after_insert_warehouse_admin
+        after insert on tbl_warehouse_admin
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.warehouse_admin_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.warehouse_admin_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_warehouse_admin_log(executed_function,id_pk_warehouse_admin,id_fk_warehouse,id_fk_user,warehouse_admin_status,warehouse_admin_create_date,warehouse_admin_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_warehouse_admin,new.id_fk_warehouse,new.id_fk_user,new.warehouse_admin_status,new.warehouse_admin_create_date,new.warehouse_admin_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
+        
+        drop trigger if exists trg_after_update_warehouse_admin;
+        delimiter $$
+        create trigger trg_after_update_warehouse_admin
+        after update on tbl_warehouse_admin
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.warehouse_admin_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.warehouse_admin_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_warehouse_admin_log(executed_function,id_pk_warehouse_admin,id_fk_warehouse,id_fk_user,warehouse_admin_status,warehouse_admin_create_date,warehouse_admin_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_warehouse_admin,new.id_fk_warehouse,new.id_fk_user,new.warehouse_admin_status,new.warehouse_admin_create_date,new.warehouse_admin_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+        end$$
+        delimiter ;
