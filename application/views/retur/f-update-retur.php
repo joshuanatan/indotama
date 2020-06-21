@@ -32,7 +32,7 @@
                             </thead>
                             <tbody id = "daftar_brg_retur">
                                 <tr id = "add_brg_retur_but_container_edit">
-                                    <td colspan = 5><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_brg_retur()">Tambah Barang Retur</button>
+                                    <td colspan = 5><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_brg_retur_edit()">Tambah Barang Retur</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -58,7 +58,7 @@
                             </thead>
                             <tbody id = "daftar_brg_kembali">
                                 <tr id = "add_brg_kembali_but_container_edit">
-                                    <td colspan = 7><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_brg_kembali()">Tambah Barang Pengembalian</button>
+                                    <td colspan = 7><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_brg_kembali_edit()">Tambah Barang Pengembalian</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -150,13 +150,13 @@
             }
         })
     }
-    function add_brg_retur(){
+    function add_brg_retur_edit(){
         var count = $(".brg_retur_counter").length;
         var html = "<tr class = 'brg_retur_counter'><td id = 'brg_retur_counter"+count+"'><input name = 'brg_retur_check[]' value = "+count+" type = 'hidden'><input name = 'brg_retur"+count+"' type = 'text' class = 'form-control' list = 'datalist_barang_cabang'></td><td>-</td><td><input name = 'brg_retur_jumlah"+count+"' type = 'text' class = 'form-control'></td><td><input name = 'brg_retur_notes"+count+"' type = 'text' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
         $("#add_brg_retur_but_container_edit").before(html);
     }
     var brg_kembali_row = 0;  
-    function add_brg_kembali(){
+    function add_brg_kembali_edit(){
         var html = "<tr class = 'add_brg_kembali_row'><td id = 'brg_kembali_counter"+brg_kembali_row+"'><input name = 'brg_kembali_check[]' value = "+brg_kembali_row+" type = 'hidden'><input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang("+brg_kembali_row+")' id = 'brg"+brg_kembali_row+"' name = 'brg"+brg_kembali_row+"' class = 'form-control'></td><td><input name = 'brg_qty_real"+brg_kembali_row+"' type = 'text' class = 'form-control'></td><td><input name = 'brg_qty"+brg_kembali_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' readonly id = 'harga_barang_jual"+brg_kembali_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_price"+brg_kembali_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+brg_kembali_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
         $("#add_brg_kembali_but_container_edit").before(html);
         brg_kembali_row++;    
