@@ -141,8 +141,6 @@ class Login extends CI_Controller {
 			$this->session->set_flashdata("gagal_pass","Password sekarang tidak sesuai!");
 			redirect("login/change_password");
 		}
-
-		
 	}
 
 	public function forget_get_new_pass($id_pk_user){
