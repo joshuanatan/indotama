@@ -2,7 +2,7 @@
 defined("BASEPATH") or exit("no direct script");
 date_default_timezone_set("asia/jakarta");
 
-class m_hak_akses extends ci_model{
+class M_hak_akses extends ci_model{
     private $tbl_name = "tbl_hak_akses";
     private $columns = array();
     private $id_pk_hak_akses;

@@ -1,7 +1,7 @@
 <?php
 defined("BASEPATH") or exit("no direct script");
 date_default_timezone_set("asia/jakarta");
-class m_tambahan_pembelian extends ci_model{
+class M_tambahan_pembelian extends ci_model{
     private $tbl_name = "tbl_tambahan_pembelian";
     private $columns = array();
     private $id_pk_tmbhn;

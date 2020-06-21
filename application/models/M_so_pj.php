@@ -1,7 +1,7 @@
 <?php
 defined("BASEPATH") or exit("no direct script");
 date_default_timezone_set("asia/jakarta");
-class m_so_pj extends ci_model{
+class M_so_pj extends ci_model{
     private $tbl_name = "tbl_so_pj";
     private $columns = array();
     private $id_pk_so_pj;
