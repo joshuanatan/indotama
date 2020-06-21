@@ -1,14 +1,14 @@
 
-CREATE TABLE LOG_ALL(
-	ID_LOG_ALL INT PRIMARY KEY AUTO_INCREMENT,
-    ID_USER INT,
-    LOG_DATE DATETIME,
-    LOG VARCHAR(100)
+create table log_all(
+	id_log_all int primary key auto_increment,
+    id_user int,
+    log_date datetime,
+    log varchar(100)
 );
-DELIMITER $$
-CREATE PROCEDURE INSERT_LOG_ALL(IN ID_USER INT, IN LOG_DATE DATETIME, IN LOG_TEXT VARCHAR(100), OUT ID_LOG_ALL INT)
-BEGIN
-	INSERT INTO LOG_ALL(ID_USER,LOG_DATE,LOG) VALUES(ID_USER,LOG_DATE,LOG_TEXT);
-    SELECT LAST_INSERT_ID() INTO ID_LOG_ALL ;
-END$$
-DELIMITER ;
+delimiter $$
+create procedure insert_log_all(in id_user int, in log_date datetime, in log_text varchar(100), out id_log_all int)
+begin
+	insert into log_all(id_user,log_date,log) values(id_user,log_date,log_text);
+    select last_insert_id() into id_log_all ;
+end$$
+delimiter ;
