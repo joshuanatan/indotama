@@ -35,6 +35,12 @@ class Toko extends CI_Controller{
             $result["data"] = $result["data"]->result_array();
             for($a = 0; $a<count($result["data"]); $a++){
                 $response["content"][$a]["id"] = $result["data"][$a]["id_pk_toko"];
+                if($result["data"][$a]["toko_logo"]){
+                    $response["content"][$a]["logo"] = "<img src = '".base_url()."asset/uploads/toko/".$result["data"][$a]["toko_logo"]."' width = '80px'>";
+                }
+                else{
+                    $response["content"][$a]["logo"] = "-";
+                }
                 $response["content"][$a]["nama"] = $result["data"][$a]["toko_nama"];
                 $response["content"][$a]["kode"] = $result["data"][$a]["toko_kode"];
                 $response["content"][$a]["status"] = $result["data"][$a]["toko_status"];
@@ -47,6 +53,7 @@ class Toko extends CI_Controller{
         }
         $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
         $response["key"] = array(
+            "logo",
             "nama",
             "kode",
             "status",
@@ -63,7 +70,17 @@ class Toko extends CI_Controller{
             $toko_nama = $this->input->post("nama");
             $toko_kode = $this->input->post("kode");
             $toko_status = "AKTIF";
-            if($this->m_toko->set_insert($toko_nama,$toko_kode,$toko_status)){
+            
+            $config['upload_path'] = './asset/uploads/toko/';
+            $config['allowed_types'] = 'gif|jpg|png';
+
+            $this->load->library('upload', $config);
+            $toko_logo = "-";
+            if($this->upload->do_upload('logo')){
+                $toko_logo = $this->upload->data("file_name");
+            }
+
+            if($this->m_toko->set_insert($toko_logo,$toko_nama,$toko_kode,$toko_status)){
                 if($this->m_toko->insert()){
                     $response["msg"] = "Data is recorded to database";
                 }
@@ -93,7 +110,17 @@ class Toko extends CI_Controller{
             $id_pk_toko = $this->input->post("id");
             $toko_nama = $this->input->post("nama");
             $toko_kode = $this->input->post("kode");
-            if($this->m_toko->set_update($id_pk_toko,$toko_nama,$toko_kode)){
+
+            $config['upload_path'] = './asset/uploads/toko/';
+            $config['allowed_types'] = 'gif|jpg|png';
+
+            $this->load->library('upload', $config);
+            $toko_logo = $this->input->post("logo_current");
+            if($this->upload->do_upload('logo')){
+                $toko_logo = $this->upload->data("file_name");
+            }
+
+            if($this->m_toko->set_update($id_pk_toko,$toko_logo,$toko_nama,$toko_kode)){
                 if($this->m_toko->update()){
                     $response["msg"] = "Data is updated to database";
                 }

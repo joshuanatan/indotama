@@ -13,13 +13,17 @@
             $this->load->view('_notification/update_error',$notif_data); ?>
                 <form id = "update_form" method = "POST">
                     <input type = "hidden" name = "id" id = "id_edit">
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Nama Toko</h5>
                         <input type = "text" class = "form-control" required name = "nama" id = "nama_edit">
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Kode Toko</h5>
                         <input type = "text" class = "form-control" required name = "kode" id = "kode_edit">
+                    </div>
+                    <div class = "form-group">
+                        <h5>Logo Toko</h5>
+                        <input type = "file" class = "form-control" name = "logo">
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
