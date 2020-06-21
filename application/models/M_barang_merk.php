@@ -36,6 +36,7 @@ class M_barang_merk extends ci_model{
     }
     public function install(){
         $sql = "
+        drop table if exists mstr_barang_merk;
         create table mstr_barang_merk(
             id_pk_brg_merk int primary key auto_increment,
             brg_merk_nama varchar(100),
@@ -45,6 +46,7 @@ class M_barang_merk extends ci_model{
             id_create_data int,
             id_last_modified int
         );
+        drop table if exists mstr_barang_merk_log;
         create table mstr_barang_merk_log(
             id_pk_brg_merk_log int primary key auto_increment,
             executed_function varchar(30),
