@@ -77,7 +77,7 @@ $notif_data = array(
     var ctrl = "warehouse";
     var url_add = "";
     var custom_contentCtrl = "list_gudang_admin";
-    var unautorized_button = ["edit_button","delete_button"];
+    var unautorized_button = ["edit_button","delete_button","detail_button"];
     var additional_button = [
         {
             class:"md-wrench",

@@ -390,11 +390,11 @@ class Employee extends CI_Controller{
     }
     public function delete(){
         $response["status"] = "SUCCESS";
-		$this->form_validation->set_rules("id_pk_employee","ID Employee","required");
+		//$this->form_validation->set_rules("id_pk_employee","ID Employee","required");
 
-		if($this->form_validation->run()){
+		//if($this->form_validation->run()){
             $this->load->model("m_employee");
-            $id_pk_employee = $this->input->post("id_pk_employee");
+            $id_pk_employee = $this->input->get("id");
 
 			if($this->m_employee->set_delete($id_pk_employee)){
 				if($this->m_employee->delete()){
@@ -407,11 +407,11 @@ class Employee extends CI_Controller{
 				$response["status"] = "ERROR";
                 $response["msg"] = "Setter function is error";
 			}
-		}else{
-			$response["status"] = "ERROR";
-			$response["msg"] = validation_errors();
-            $this->session->set_flashdata("msg",$response['msg']);
-		}
+		//}else{
+			//$response["status"] = "ERROR";
+			//$response["msg"] = validation_errors();
+//$this->session->set_flashdata("msg",$response['msg']);
+		//}
         //redirect(md5('Employee'));
         echo json_encode($response);
     }

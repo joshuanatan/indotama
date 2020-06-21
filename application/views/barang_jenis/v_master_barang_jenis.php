@@ -73,74 +73,6 @@ $notif_data = array(
         <?php $this->load->view('req/mm_js.php');?>
     </body>
 </html>
-<div class = "modal fade" id = "register_modal">
-    <div class = "modal-dialog">
-        <div class = "modal-content">
-            <div class = "modal-header">
-                <h4 class = "modal-title">Tambah Data <?php echo ucwords($page_title);?></h4>
-            </div>
-            <div class = "modal-body">
-                <form id = "register_form" method = "POST">
-                    <div class = "form-group">
-                        <h5>Nama Jenis</h5>
-                        <input type = "text" class = "form-control" required name = "nama">
-                    </div>
-                    <div class = "form-group">
-                        <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <button type = "button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<div class = "modal fade" id = "update_modal">
-    <div class = "modal-dialog">
-        <div class = "modal-content">
-            <div class = "modal-header">
-                <h4 class = "modal-title">Ubah Data <?php echo ucwords($page_title);?></h4>
-            </div>
-            <div class = "modal-body">
-                <form id = "update_form" method = "POST">
-                    <input type = "hidden" name = "id" id = "id_edit">
-                    <div class = "form-group">
-                        <h5>Nama Jenis</h5>
-                        <input type = "text" class = "form-control" required name = "nama" id = "nama_edit">
-                    </div>
-                    <div class = "form-group">
-                        <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <button type = "button" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<div class = "modal fade" id = "delete_modal">
-    <div class = "modal-dialog">
-        <div class = "modal-content">
-            <div class = "modal-header">
-                <h4 class = "modal-title">Hapus Data <?php echo ucwords($page_title);?></h4>
-            </div>
-            <div class = "modal-body">
-                <input type = "hidden" id = "id_delete">
-                <h4 align = "center">Apakah anda yakin akan menghapus data di bawah ini?</h4>
-                <table class = "table table-bordered table-striped table-hover">
-                    <tbody>
-                        <tr>
-                            <td>Nama Jenis</td>
-                            <td id = "nama_delete"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class = "form-group">
-                    <button type = "button" class = "btn btn-sm btn-primary" data-dismiss = "modal">Cancel</button>
-                    <button type = "button" onclick = "delete_func()" class = "btn btn-sm btn-danger">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <script>
     var ctrl = "barang_jenis";
     var url_add = "";
@@ -156,6 +88,7 @@ $data = array(
 <?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view("barang_jenis/f-add-barang_jenis",$data);?>
 <?php $this->load->view("barang_jenis/f-update-barang_jenis",$data);?>
+<?php $this->load->view("barang_jenis/f-detail-barang_jenis",$data);?>
 <?php $this->load->view("barang_jenis/f-delete-barang_jenis",$data);?>
 
 <?php $this->load->view('_notification/notif_general'); ?>

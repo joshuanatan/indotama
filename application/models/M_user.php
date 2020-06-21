@@ -128,7 +128,7 @@ class m_user extends ci_model{
         order by ".$order_by." ".$order_direction." 
         limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "aktif"
+            "AKTIF"
         );
         $result["data"] = executequery($query,$args);
         
@@ -147,7 +147,7 @@ class m_user extends ci_model{
         inner join mstr_jabatan on mstr_jabatan.id_pk_jabatan = mstr_user.id_fk_role
         inner join tbl_hak_akses on tbl_hak_akses.id_fk_jabatan = mstr_jabatan.id_pk_jabatan
         inner join mstr_menu on mstr_menu.id_pk_menu = tbl_hak_akses.id_fk_menu
-        where menu_status = 'aktif' and hak_akses_status = 'aktif' and jabatan_status = 'aktif' and id_pk_user = ?
+        where menu_status = 'AKTIF' and hak_akses_status = 'AKTIF' and jabatan_status = 'AKTIF' and id_pk_user = ?
         order by menu_category,menu_display";
         $args = array(
             $this->session->id_user
@@ -156,7 +156,7 @@ class m_user extends ci_model{
     }
     public function list(){
         $where = array(
-            "user_status" => "aktif"
+            "user_status" => "AKTIF"
         );
         $field = array(
             "id_pk_user","user_name","user_email","user_status","id_fk_role","user_last_modified","user_create_date"
@@ -199,7 +199,7 @@ class m_user extends ci_model{
                 "user_name" => $this->user_name,
                 "user_email" => $this->user_email,
                 "id_fk_role" => $this->id_fk_role,
-                "user_status" => "aktif",
+                "user_status" => "AKTIF",
             );
             if(!isexistsintable($this->tbl_name,$where)){
                 $where = array(
@@ -246,7 +246,7 @@ class m_user extends ci_model{
                 "id_pk_user" => $this->id_pk_user
             );
             $data = array(
-                "user_status" => "nonaktif",
+                "user_status" => "nonAKTIF",
                 "id_last_modified" => $this->id_last_modified,
                 "user_last_modified" => $this->user_last_modified
             );
@@ -261,7 +261,7 @@ class m_user extends ci_model{
         if($this->check_login()){
             $where = array(
                 "user_name" => $this->user_name,
-                "user_status" => "aktif",
+                "user_status" => "AKTIF",
                 "user_pass" => $this->user_pass
             );
             $field = array(

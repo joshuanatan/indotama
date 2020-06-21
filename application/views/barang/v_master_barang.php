@@ -90,6 +90,7 @@ $data = array(
 <?php $this->load->view("barang/f-add-barang",$data);?>
 <?php $this->load->view("barang/f-update-barang",$data);?>
 <?php $this->load->view("barang/f-delete-barang",$data);?>
+<?php $this->load->view("barang/f-detail-barang",$data);?>
 <?php $this->load->view("_base_element/datalist_barang_jenis");?>
 <?php $this->load->view("_base_element/datalist_barang_merk");?>
 <?php $this->load->view("_base_element/datalist_barang");?>

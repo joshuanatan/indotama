@@ -11,7 +11,7 @@
             );
             $this->load->view('_notification/update_error',$notif_data); ?>
                 <form id = "update_form" method = "POST">
-                    <input type="hidden" name="id_pk_employee"> 
+                    <input type="hidden" name="id_pk_employee" id="id_pk_employee_edit"> 
                     
                     <div class = "form-group col-lg-6">
                         <h5>Nama Lengkap</h5>
@@ -128,6 +128,7 @@
 </div>
 <script>
     function load_edit_content(id){
+        $("#id_pk_employee_edit").val(content[id]["id"]);
         $("#emp_nama_edit").val(content[id]["nama"]);
         $("#emp_npwp_edit").val(content[id]["npwp"]);
         $("#emp_ktp_edit").val(content[id]["ktp"]);
@@ -135,13 +136,13 @@
         $("#emp_alamat_edit").val(content[id]["alamat"]);
         $("#emp_kode_pos_edit").val(content[id]["kode_pos"]);
 
-        var npwp = "<?php echo base_url() ?>asset/images/employee/npwp/" + content[id]["foto_npwp"];
+        var npwp = "<?php echo base_url() ?>asset/uploads/employee/npwp/" + content[id]["foto_npwp"];
         $("#emp_foto_npwp_edit").attr("src", npwp);
-        var ktp = "<?php echo base_url() ?>asset/images/employee/ktp/" + content[id]["foto_ktp"];
+        var ktp = "<?php echo base_url() ?>asset/uploads/employee/ktp/" + content[id]["foto_ktp"];
         $("#emp_foto_ktp_edit").attr("src", ktp);
-        var foto = "<?php echo base_url() ?>asset/images/employee/foto/" + content[id]["foto"];
+        var foto = "<?php echo base_url() ?>asset/uploads/employee/foto/" + content[id]["foto"];
         $("#emp_foto_edit").attr("src", foto);
-        var lain = "<?php echo base_url() ?>asset/images/employee/lain/" + content[id]["foto_lain"];
+        var lain = "<?php echo base_url() ?>asset/uploads/employee/lain/" + content[id]["foto_lain"];
         $("#emp_foto_lain_edit").attr("src", lain);
 
         if(content[id]["gender"]=="PRIA"){
@@ -158,7 +159,6 @@
             $('#yes_enddate_edit').prop('checked', true);
             $("#emp_enddate_edit").show();
             $("#emp_enddate_edit").prop('required',true);
-            //jeen masukin content[id]["enddate"] ke #emp_enddate_edit
         }
 
         $("#emp_suff_edit").val(content[id]["suff"]);
@@ -166,7 +166,6 @@
 
         $("#emp_kode_pos_edit").val(content[id]["kode_pos"]);
         
-        //jeen masukin content[id]["startdate"] ke #emp_startdate_edit
         var split_date = content[id]["startdate"].split(" ");
         $("#emp_startdate_edit").val(split_date[0]);
         split_date = content[id]["enddate"].split(" ");

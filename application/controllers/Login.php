@@ -56,7 +56,6 @@ class Login extends CI_Controller {
 		$this->form_validation->set_rules("user_name","Username","required");
 
 		$user_name = $this->input->post("user_name");
-		echo $user_name;
 		if($this->form_validation->run()){
 			$where = array(
 				"user_status" => "AKTIF"
@@ -118,6 +117,29 @@ class Login extends CI_Controller {
 			$response["msg"] = validation_errors();
 			$this->session->set_flashdata("msg",$response['msg']);
 			redirect("login/forget_password");
+		}
+	}
+
+	public function change_password(){
+		$this->load->view("login/V_change_password");
+	}
+
+	public function change_password_method(){
+		$where =array(
+			"id_pk_user"=>$this->input->post("id_pk_user")
+		);
+		$passlama = get1Value("mstr_user","user_pass",$where);
+		if($passlama==md5($this->input->post("pass_lama"))){
+			$data = array(
+				"user_pass"=>md5($this->input->post("pass_baru")),
+				"user_last_modified"=>date("Y-m-d H:i:s"),
+				"id_last_modified"=>$_SESSION['id_user']
+			);
+			updateRow("mstr_user",$data,$where);
+			redirect("login/logout");
+		}else{
+			$this->session->set_flashdata("gagal_pass","Password sekarang tidak sesuai!");
+			redirect("login/change_password");
 		}
 	}
 

@@ -88,6 +88,7 @@ $data = array(
 <?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view('customer/f-add-customer',$data);?>
 <?php $this->load->view('customer/f-update-customer',$data);?>
+<?php $this->load->view('customer/f-detail-customer',$data);?>
 <?php $this->load->view('customer/f-delete-customer',$data);?>
 
 <?php $this->load->view('_notification/notif_general'); ?>

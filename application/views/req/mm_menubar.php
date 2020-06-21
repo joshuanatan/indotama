@@ -71,6 +71,9 @@
                     <li>
                         <a href="profile.html"><i class="zmdi zmdi-account"></i><span>Profile</span></a>
                     </li>
+                    <li>
+                        <a href="<?php echo base_url() ?>login/change_password"><i class="zmdi zmdi-account"></i><span>Change Password</span></a>
+                    </li>
                     <li class="divider"></li>
                     <li>
                         <a href="<?php echo base_url() ?>login/logout"><i class="zmdi zmdi-power"></i><span>Log Out</span></a>

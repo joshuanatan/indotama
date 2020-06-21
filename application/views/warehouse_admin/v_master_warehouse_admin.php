@@ -77,6 +77,7 @@ $notif_data = array(
 <script>
     var ctrl = "warehouse_admin";
     var url_add = "id_warehouse=<?php echo $warehouse[0]["id_pk_warehouse"];?>";
+    var unautorized_button = ["detail_button"];
 </script>
 <?php 
 $data = array(
