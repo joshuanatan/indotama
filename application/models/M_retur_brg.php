@@ -10,6 +10,7 @@ class M_retur_brg extends CI_Model{
     private $id_fk_brg;
     private $retur_brg_qty;
     private $retur_brg_satuan;
+    private $retur_brg_notes;
     private $retur_brg_status;
     private $retur_create_date;
     private $retur_last_modified;
@@ -32,6 +33,7 @@ class M_retur_brg extends CI_Model{
             id_fk_brg int,
             retur_brg_qty double,
             retur_brg_satuan varchar(30),
+            retur_brg_notes varchar(100),
             retur_brg_status varchar(15),
             retur_create_date datetime,
             retur_last_modified datetime,
@@ -47,6 +49,7 @@ class M_retur_brg extends CI_Model{
             id_fk_brg int,
             retur_brg_qty double,
             retur_brg_satuan varchar(30),
+            retur_brg_notes varchar(100),
             retur_brg_status varchar(15),
             retur_create_date datetime,
             retur_last_modified datetime,
@@ -65,7 +68,7 @@ class M_retur_brg extends CI_Model{
             set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.retur_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into tbl_retur_brg_log(executed_function,id_pk_retur_brg,id_fk_retur,id_fk_brg,retur_brg_qty,retur_brg_satuan,retur_brg_status,retur_create_date,retur_last_modified,id_create_data,id_last_modified,id_log_all) values('after insert',new.id_pk_retur_brg,new.id_fk_retur,new.id_fk_brg,new.retur_brg_qty,new.retur_brg_satuan,new.retur_brg_status,new.retur_create_date,new.retur_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into tbl_retur_brg_log(executed_function,id_pk_retur_brg,id_fk_retur,id_fk_brg,retur_brg_qty,retur_brg_satuan,retur_brg_notes,retur_brg_status,retur_create_date,retur_last_modified,id_create_data,id_last_modified,id_log_all) values('after insert',new.id_pk_retur_brg,new.id_fk_retur,new.id_fk_brg,new.retur_brg_qty,new.retur_brg_satuan,new.retur_brg_notes,new.retur_brg_status,new.retur_create_date,new.retur_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
 
         end$$
         delimiter ;
@@ -81,7 +84,7 @@ class M_retur_brg extends CI_Model{
             set @log_text = concat(new.id_last_modified,' ','update data at ' , new.retur_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into tbl_retur_brg_log(executed_function,id_pk_retur_brg,id_fk_retur,id_fk_brg,retur_brg_qty,retur_brg_satuan,retur_brg_status,retur_create_date,retur_last_modified,id_create_data,id_last_modified,id_log_all) values('after update',new.id_pk_retur_brg,new.id_fk_retur,new.id_fk_brg,new.retur_brg_qty,new.retur_brg_satuan,new.retur_brg_status,new.retur_create_date,new.retur_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into tbl_retur_brg_log(executed_function,id_pk_retur_brg,id_fk_retur,id_fk_brg,retur_brg_qty,retur_brg_satuan,retur_brg_notes,retur_brg_status,retur_create_date,retur_last_modified,id_create_data,id_last_modified,id_log_all) values('after update',new.id_pk_retur_brg,new.id_fk_retur,new.id_fk_brg,new.retur_brg_qty,new.retur_brg_satuan,new.retur_brg_notes,new.retur_brg_status,new.retur_create_date,new.retur_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         ";
@@ -97,7 +100,7 @@ class M_retur_brg extends CI_Model{
     }
     public function list(){
         $sql = "
-        select id_pk_retur_brg,retur_brg_qty,retur_brg_satuan,brg_nama,retur_brg_status 
+        select id_pk_retur_brg,retur_brg_qty,retur_brg_satuan,brg_nama,retur_brg_status,retur_brg_notes 
         from tbl_retur_brg
         inner join mstr_barang on mstr_barang.id_pk_brg = tbl_retur_brg.id_fk_brg
         where retur_brg_status = 'aktif' and id_fk_retur = ?
@@ -117,6 +120,7 @@ class M_retur_brg extends CI_Model{
                 "id_fk_brg" => $this->id_fk_brg,
                 "retur_brg_qty" => $this->retur_brg_qty,
                 "retur_brg_satuan" => $this->retur_brg_satuan,
+                "retur_brg_notes" => $this->retur_brg_notes,
                 "retur_brg_status" => $this->retur_brg_status,
                 "retur_create_date" => $this->retur_create_date,
                 "retur_last_modified" => $this->retur_last_modified,
@@ -136,6 +140,7 @@ class M_retur_brg extends CI_Model{
                 "id_fk_brg" => $this->id_fk_brg,
                 "retur_brg_qty" => $this->retur_brg_qty,
                 "retur_brg_satuan" => $this->retur_brg_satuan,
+                "retur_brg_notes" => $this->retur_brg_notes,
                 "retur_last_modified" => $this->retur_last_modified,
                 "id_last_modified" => $this->id_last_modified,
             );
@@ -222,7 +227,7 @@ class M_retur_brg extends CI_Model{
         }
         return true;
     }
-    public function set_insert($id_fk_retur,$id_fk_brg,$retur_brg_qty,$retur_brg_satuan,$retur_brg_status){
+    public function set_insert($id_fk_retur,$id_fk_brg,$retur_brg_qty,$retur_brg_satuan,$retur_brg_status,$retur_brg_notes){
         if(!$this->set_id_fk_retur($id_fk_retur)){
             return false;
         }
@@ -235,12 +240,15 @@ class M_retur_brg extends CI_Model{
         if(!$this->set_retur_brg_satuan($retur_brg_satuan)){
             return false;
         }
+        if(!$this->set_retur_brg_notes($retur_brg_notes)){
+            return false;
+        }
         if(!$this->set_retur_brg_status($retur_brg_status)){
             return false;
         }
         return true;
     }
-    public function set_update($id_pk_retur_brg,$id_fk_brg,$retur_brg_qty,$retur_brg_satuan){
+    public function set_update($id_pk_retur_brg,$id_fk_brg,$retur_brg_qty,$retur_brg_satuan,$retur_brg_notes){
         if(!$this->set_id_pk_retur_brg($id_pk_retur_brg)){
             return false;
         }
@@ -251,6 +259,9 @@ class M_retur_brg extends CI_Model{
             return false;
         }
         if(!$this->set_retur_brg_satuan($retur_brg_satuan)){
+            return false;
+        }
+        if(!$this->set_retur_brg_notes($retur_brg_notes)){
             return false;
         }
         return true;
@@ -275,6 +286,9 @@ class M_retur_brg extends CI_Model{
     }
     public function get_retur_brg_satuan(){
         return $this->retur_brg_satuan;
+    }
+    public function get_retur_brg_notes(){
+        return $this->retur_brg_notes;
     }
     public function get_retur_brg_status(){
         return $this->retur_brg_status;
@@ -310,6 +324,13 @@ class M_retur_brg extends CI_Model{
     public function set_retur_brg_satuan($retur_brg_satuan){
         if($retur_brg_satuan != ""){
             $this->retur_brg_satuan = $retur_brg_satuan;
+            return true;
+        }
+        return false;
+    }
+    public function set_retur_brg_notes($retur_brg_notes){
+        if($retur_brg_notes != ""){
+            $this->retur_brg_notes = $retur_brg_notes;
             return true;
         }
         return false;

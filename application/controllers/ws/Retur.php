@@ -113,6 +113,8 @@ class Retur extends CI_Controller{
                                     $result = $result->result_array();
                                     $id_fk_brg_cabang = $result[0]["id_pk_brg"];
                                     
+                                    $retur_brg_notes = $this->input->post("brg_retur_notes".$a);
+
                                     $brg_retur_qty = $this->input->post("brg_retur_jumlah".$a);
                                     $brg_retur_qty = explode(" ",$brg_retur_qty);
                                     $retur_brg_qty = $brg_retur_qty[0];
@@ -120,7 +122,7 @@ class Retur extends CI_Controller{
 
                                     $retur_brg_status = "aktif";
                                     
-                                    if($this->m_retur_brg->set_insert($id_fk_retur,$id_fk_brg_cabang,$retur_brg_qty,$retur_brg_satuan,$retur_brg_status)){
+                                    if($this->m_retur_brg->set_insert($id_fk_retur,$id_fk_brg_cabang,$retur_brg_qty,$retur_brg_satuan,$retur_brg_status,$retur_brg_notes)){
                                         if($this->m_retur_brg->insert()){
                                             $response["statusitm"][$counter] = "SUCCESS";
                                             $response["msgitm"][$counter] = "Item is recorded to database";
@@ -217,6 +219,8 @@ class Retur extends CI_Controller{
                             $this->load->model("m_retur_brg");
                             $id_pk_retur_brg = $this->input->post("id_brg_retur_edit".$a);
 
+                            $retur_brg_notes = $this->input->post("brg_retur_notes_edit".$a);
+
                             $id_fk_brg = $this->input->post("brg_retur_edit".$a);
                             $this->load->model("m_barang");
                             $this->m_barang->set_brg_nama($id_fk_brg);
@@ -231,7 +235,7 @@ class Retur extends CI_Controller{
                             $retur_brg_qty = $brg[0]; 
                             $retur_brg_satuan = $brg[1];
                             
-                            if($this->m_retur_brg->set_update($id_pk_retur_brg,$id_fk_brg,$retur_brg_qty,$retur_brg_satuan)){
+                            if($this->m_retur_brg->set_update($id_pk_retur_brg,$id_fk_brg,$retur_brg_qty,$retur_brg_satuan,$retur_brg_notes)){
                                 if($this->m_retur_brg->update()){
                                     $response["statusitm"][$counter] = "SUCCESS";
                                     $response["msgitm"][$counter] = "Item is updated to database";
@@ -312,6 +316,8 @@ class Retur extends CI_Controller{
                                 $result = $result->result_array();
                                 $id_fk_brg_cabang = $result[0]["id_pk_brg"];
                                 
+                                $retur_brg_notes = $this->input->post("brg_retur_notes".$a);
+
                                 $brg_retur_qty = $this->input->post("brg_retur_jumlah".$a);
                                 $brg_retur_qty = explode(" ",$brg_retur_qty);
                                 $retur_brg_qty = $brg_retur_qty[0];
@@ -319,7 +325,7 @@ class Retur extends CI_Controller{
 
                                 $retur_brg_status = "aktif";
                                 
-                                if($this->m_retur_brg->set_insert($id_fk_retur,$id_fk_brg_cabang,$retur_brg_qty,$retur_brg_satuan,$retur_brg_status)){
+                                if($this->m_retur_brg->set_insert($id_fk_retur,$id_fk_brg_cabang,$retur_brg_qty,$retur_brg_satuan,$retur_brg_status,$retur_brg_notes)){
                                     if($this->m_retur_brg->insert()){
                                         $response["statusitm"][$counter] = "SUCCESS";
                                         $response["msgitm"][$counter] = "Item is recorded to database";
@@ -429,6 +435,7 @@ class Retur extends CI_Controller{
             for($a = 0; $a<count($result); $a++){
                 $response["content"][$a]["id"] = $result[$a]["id_pk_retur_brg"];
                 $response["content"][$a]["qty"] = $result[$a]["retur_brg_qty"];
+                $response["content"][$a]["notes"] = $result[$a]["retur_brg_notes"];
                 $response["content"][$a]["satuan"] = $result[$a]["retur_brg_satuan"];
                 $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
                 $response["content"][$a]["status"] = $result[$a]["retur_brg_status"];
