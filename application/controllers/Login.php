@@ -125,7 +125,24 @@ class Login extends CI_Controller {
 	}
 
 	public function change_password_method(){
-		$this->load->view("login/V_change_password");
+		$where =array(
+			"id_pk_user"=>$this->input->post("id_pk_user")
+		);
+		$passlama = get1Value("mstr_user","user_pass",$where);
+		if($passlama==md5($this->input->post("pass_lama"))){
+			$data = array(
+				"user_pass"=>md5($this->input->post("pass_baru")),
+				"user_last_modified"=>date("Y-m-d H:i:s"),
+				"id_last_modified"=>$_SESSION['id_user']
+			);
+			updateRow("mstr_user",$data,$where);
+			redirect("login/logout");
+		}else{
+			$this->session->set_flashdata("gagal_pass","Password sekarang tidak sesuai!");
+			redirect("login/change_password");
+		}
+
+		
 	}
 
 	public function forget_get_new_pass($id_pk_user){
