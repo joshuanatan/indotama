@@ -93,7 +93,7 @@ $data = array(
 <?php $this->load->view("pembelian/f-add-pembelian",$data);?>
 <?php $this->load->view("pembelian/f-update-pembelian",$data);?>
 <?php $this->load->view("pembelian/f-delete-pembelian",$data);?>
-
+<?php $this->load->view("pembelian/f-detail-pembelian",$data);?>
 
 <?php $this->load->view("_base_element/datalist_supplier");?>
 <?php $this->load->view("_base_element/datalist_barang_cabang");?>
