@@ -58,7 +58,8 @@ class Login extends CI_Controller {
 		$user_name = $this->input->post("user_name");
 		if($this->form_validation->run()){
 			$where = array(
-				"user_status" => "AKTIF"
+				"user_status" => "AKTIF",
+				"user_name"=>$user_name
 			);
 			if(isExistsInTable("mstr_user",$where)){
 				$where = array(
@@ -68,7 +69,6 @@ class Login extends CI_Controller {
 				if(isExistsInTable("mstr_user",$where)){
 					$data['user_email'] = get1Value("mstr_user","user_email",$where);
 					$data['id_pk_user'] = get1Value("mstr_user","id_pk_user",$where);
-					echo $data['id_pk_user'];
 					//send email
 					$this->load->library('phpmailer_lib');
 					$mail = $this->phpmailer_lib->load();
@@ -105,19 +105,22 @@ class Login extends CI_Controller {
 				else{
 					$response["status"] = "ERROR";
 					$response["msg"] = "Employee tidak ditemukan!";
+					//redirect("login/forget_password");
 				}
 			}
 			else{
 				$response["status"] = "ERROR";
-				$response["msg"] = "Employee tidak ditemukan!";
+				$response["msg"] = "Employee tidak ditemukan!!";
+				//redirect("login/forget_password");
 			}
 		}
 		else{
 			$response["status"] = "ERROR";
 			$response["msg"] = validation_errors();
 			$this->session->set_flashdata("msg",$response['msg']);
-			redirect("login/forget_password");
+			//redirect("login/forget_password");
 		}
+		echo $response['msg'];
 	}
 
 	public function change_password(){

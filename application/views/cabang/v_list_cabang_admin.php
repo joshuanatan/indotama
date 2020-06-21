@@ -49,9 +49,6 @@ $notif_data = array(
                                 <div class="panel-wrapper collapse in">
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
-                                            <div class = "d-block">
-                                                <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#register_modal" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
-                                            </div>
                                             <br/>
                                             <br/>
                                             <div class = "align-middle text-center d-block">
@@ -78,7 +75,7 @@ $notif_data = array(
     var url_add = "";
     var custom_contentCtrl = "list_cabang_admin";
     var custom_tblHeaderCtrl = "columns_cabang_admin";
-    var unautorized_button = ["edit_button","delete_button"];
+    var unautorized_button = ["detail_button","edit_button","delete_button"];
     var additional_button = [
         {
             class:"md-wrench",

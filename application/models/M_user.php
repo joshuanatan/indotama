@@ -229,7 +229,7 @@ class m_user extends ci_model{
                 "id_pk_user" => $this->id_pk_user
             );
             $data = array(
-                "user_pass" => password_hash($this->user_pass,password_default),
+                "user_pass" => md5($this->user_pass),
                 "id_last_modified" => $this->id_last_modified,
                 "user_last_modified" => $this->user_last_modified
             );
@@ -246,7 +246,7 @@ class m_user extends ci_model{
                 "id_pk_user" => $this->id_pk_user
             );
             $data = array(
-                "user_status" => "nonAKTIF",
+                "user_status" => "NONAKTIF",
                 "id_last_modified" => $this->id_last_modified,
                 "user_last_modified" => $this->user_last_modified
             );
