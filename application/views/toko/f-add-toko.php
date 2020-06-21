@@ -11,14 +11,18 @@
                 "page_title"=>$page_title
             );
             $this->load->view('_notification/register_error',$notif_data); ?>
-                <form id = "register_form" method = "POST">
-                    <div class = "form-group col-lg-6">
+                <form id = "register_form" method = "POST" enctype = "multipart/form-data">
+                    <div class = "form-group">
                         <h5>Nama Toko</h5>
                         <input type = "text" class = "form-control" required name = "nama">
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Kode Toko</h5>
                         <input type = "text" class = "form-control" required name = "kode">
+                    </div>
+                    <div class = "form-group">
+                        <h5>Logo Toko</h5>
+                        <input type = "file" class = "form-control" name = "logo">
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>

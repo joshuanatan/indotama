@@ -2,7 +2,7 @@
 defined("BASEPATH") or exit("no direct script");
 date_default_timezone_set("asia/jakarta");
 
-class m_cabang_admin extends ci_model{
+class M_cabang_admin extends ci_model{
     private $tbl_name = "tbl_cabang_admin";
     private $columns = array();
     private $id_pk_cabang_admin;
