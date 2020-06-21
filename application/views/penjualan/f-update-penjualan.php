@@ -67,18 +67,18 @@ $notif_data = array(
                                                 <input <?php if(strtolower($detail[0]["penj_jenis"]) == "online") echo "checked";?> type="radio" name="jenis_penjualan" value="ONLINE" onclick = "$('#online_info_container').show()">&nbsp;ONLINE
                                             </div>
                                             <?php if(strtolower($detail[0]["penj_jenis"]) == "online" && $online):?>
-                                            <div id = "online_info_container" class = "col-lg-12">
+                                            <div id = "online_info_container" class = "col-lg-6">
                                                 <div class = "form-group">
                                                     <h5>Marketplace</h5>
                                                     <input type = "text" class = "form-control" required value = "<?php echo $online[0]["penj_on_marketplace"];?>" name = "marketplace">
                                                 </div>
                                                 <div class = "form-group">
                                                     <h5>Kurir</h5>
-                                                    <input type = "text" class = "form-control" required value = "<?php echo $online[0]["penj_on_kurir"];?>" name = "no_resi">
+                                                    <input type = "text" class = "form-control" required value = "<?php echo $online[0]["penj_on_kurir"];?>" name = "kurir">
                                                 </div>
                                                 <div class = "form-group">
                                                     <h5>No Resi</h5>
-                                                    <input type = "text" class = "form-control" required value = "<?php echo $online[0]["penj_on_no_resi"];?>" name = "kurir">
+                                                    <input type = "text" class = "form-control" required value = "<?php echo $online[0]["penj_on_no_resi"];?>" name = "no_resi">
                                                 </div>
                                             </div>
                                             <?php endif;?>
@@ -105,12 +105,13 @@ $notif_data = array(
                                                 </table>
                                             </div>
                                             
-                                            <div class = "form-group col-lg-6">
+                                            <div class = "form-group col-lg-8">
                                                 <h5>Item Penjualan</h5>
                                                 <table class = "table table-striped table-bordered">
                                                     <thead>
                                                         <th>Barang</th>
                                                         <th>Jumlah</th>
+                                                        <th>Jumlah Markup</th>
                                                         <th>Harga</th>
                                                         <th>Harga Markup</th>
                                                         <th>Notes</th>
@@ -124,6 +125,7 @@ $notif_data = array(
                                                                 <input name = 'check_edit[]' value = "<?php echo $a;?>" type = 'hidden'>
                                                                 <input type = 'text' value = "<?php echo $item[$a]["brg_nama"];?>" list = 'datalist_barang_cabang' name = 'brg_edit<?php echo $a;?>' class = 'form-control'>
                                                             </td>
+                                                            <td><input type = 'text' value = "<?php echo $item[$a]["brg_penjualan_qty_real"]." ". $item[$a]["brg_penjualan_satuan_real"];?>" name = 'brg_qty_real_edit<?php echo $a;?>' class = 'form-control'></td>
                                                             <td><input type = 'text' value = "<?php echo $item[$a]["brg_penjualan_qty"]." ". $item[$a]["brg_penjualan_satuan"];?>" name = 'brg_qty_edit<?php echo $a;?>' class = 'form-control'></td>
                                                             <td><input type = 'text' value = "<?php echo $item[$a]["brg_harga"];?>" class = 'form-control' readonly></td>
                                                             <td><input type = 'text' value = "<?php echo $item[$a]["brg_penjualan_harga"];?>" name = 'brg_price_edit<?php echo $a;?>' class = 'form-control'></td>
@@ -131,13 +133,13 @@ $notif_data = array(
                                                             <td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_brg_penjualan(<?php echo $a;?>);'></i></td></tr>
                                                         <?php endfor;?>
                                                         <tr id = "add_brg_jual_but_container">
-                                                            <td colspan = 6><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_brg_jual_row()">Tambah Barang Penjualan</button>
+                                                            <td colspan = 7><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_brg_jual_row()">Tambah Barang Penjualan</button>
                                                             </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <div class = "form-group col-lg-6">
+                                            <div class = "form-group col-lg-8">
                                                 <h5>Tambahan Penjualan</h5>
                                                 <table class = "table table-striped table-bordered">
                                                     <thead>
@@ -255,7 +257,7 @@ $notif_data = array(
 
     var brg_jual_row = 0;  
     function add_brg_jual_row(){
-        var html = "<tr class = 'add_brg_jual_row'><td id = 'row"+brg_jual_row+"'><input name = 'check[]' value = "+brg_jual_row+" type = 'hidden'><input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang("+brg_jual_row+")' id = 'brg"+brg_jual_row+"' name = 'brg"+brg_jual_row+"' class = 'form-control'></td><td><input name = 'brg_qty"+brg_jual_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' readonly id = 'harga_barang_jual"+brg_jual_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_price"+brg_jual_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+brg_jual_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = "<tr class = 'add_brg_jual_row'><td id = 'row"+brg_jual_row+"'><input name = 'check[]' value = "+brg_jual_row+" type = 'hidden'><input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang("+brg_jual_row+")' id = 'brg"+brg_jual_row+"' name = 'brg"+brg_jual_row+"' class = 'form-control'></td><td><input name = 'brg_qty_real"+brg_jual_row+"' type = 'text' class = 'form-control'></td><td><input name = 'brg_qty"+brg_jual_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' readonly id = 'harga_barang_jual"+brg_jual_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_price"+brg_jual_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+brg_jual_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
         $("#add_brg_jual_but_container").before(html);
         brg_jual_row++;    
     }

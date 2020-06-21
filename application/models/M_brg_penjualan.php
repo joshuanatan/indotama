@@ -5,6 +5,7 @@ class m_brg_penjualan extends ci_model{
     private $tbl_name = "tbl_brg_penjualan";
     private $columns = array();
     private $id_pk_brg_penjualan;
+    private $brg_penjualan_qty_real;
     private $brg_penjualan_qty;
     private $brg_penjualan_satuan;
     private $brg_penjualan_harga;
@@ -29,6 +30,8 @@ class m_brg_penjualan extends ci_model{
         drop table if exists tbl_brg_penjualan;
         create table tbl_brg_penjualan(
             id_pk_brg_penjualan int primary key auto_increment,
+            brg_penjualan_qty_real double,
+            brg_penjualan_satuan_real varchar(20),
             brg_penjualan_qty double,
             brg_penjualan_satuan varchar(20),
             brg_penjualan_harga int,
@@ -46,6 +49,8 @@ class m_brg_penjualan extends ci_model{
             id_pk_brg_penjualan_log int primary key auto_increment,
             executed_function varchar(30),
             id_pk_brg_penjualan int,
+            brg_penjualan_qty_real double,
+            brg_penjualan_satuan_real varchar(20),
             brg_penjualan_qty double,
             brg_penjualan_satuan varchar(20),
             brg_penjualan_harga int,
@@ -70,7 +75,7 @@ class m_brg_penjualan extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at' , new.brg_penjualan_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into tbl_brg_penjualan_log(executed_function,id_pk_brg_penjualan,brg_penjualan_qty,brg_penjualan_satuan,brg_penjualan_harga,brg_penjualan_note,brg_penjualan_status,id_fk_penjualan,id_fk_barang,brg_penjualan_create_date,brg_penjualan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_penjualan,new.brg_penjualan_qty,new.brg_penjualan_satuan,new.brg_penjualan_harga,new.brg_penjualan_note,new.brg_penjualan_status,new.id_fk_penjualan,new.id_fk_barang,new.brg_penjualan_create_date,new.brg_penjualan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into tbl_brg_penjualan_log(executed_function,id_pk_brg_penjualan,brg_penjualan_qty_real,brg_penjualan_satuan_real,brg_penjualan_qty,brg_penjualan_satuan,brg_penjualan_harga,brg_penjualan_note,brg_penjualan_status,id_fk_penjualan,id_fk_barang,brg_penjualan_create_date,brg_penjualan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_penjualan,new.brg_penjualan_qty_real,new.brg_penjualan_satuan_real,new.brg_penjualan_qty,new.brg_penjualan_satuan,new.brg_penjualan_harga,new.brg_penjualan_note,new.brg_penjualan_status,new.id_fk_penjualan,new.id_fk_barang,new.brg_penjualan_create_date,new.brg_penjualan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         
@@ -85,7 +90,7 @@ class m_brg_penjualan extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_penjualan_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into tbl_brg_penjualan_log(executed_function,id_pk_brg_penjualan,brg_penjualan_qty,brg_penjualan_satuan,brg_penjualan_harga,brg_penjualan_note,brg_penjualan_status,id_fk_penjualan,id_fk_barang,brg_penjualan_create_date,brg_penjualan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_penjualan,new.brg_penjualan_qty,new.brg_penjualan_satuan,new.brg_penjualan_harga,new.brg_penjualan_note,new.brg_penjualan_status,new.id_fk_penjualan,new.id_fk_barang,new.brg_penjualan_create_date,new.brg_penjualan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into tbl_brg_penjualan_log(executed_function,id_pk_brg_penjualan,brg_penjualan_qty_real,brg_penjualan_satuan_real,brg_penjualan_qty,brg_penjualan_satuan,brg_penjualan_harga,brg_penjualan_note,brg_penjualan_status,id_fk_penjualan,id_fk_barang,brg_penjualan_create_date,brg_penjualan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_penjualan,new.brg_penjualan_qty_real,new.brg_penjualan_satuan_real,new.brg_penjualan_qty,new.brg_penjualan_satuan,new.brg_penjualan_harga,new.brg_penjualan_note,new.brg_penjualan_status,new.id_fk_penjualan,new.id_fk_barang,new.brg_penjualan_create_date,new.brg_penjualan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;";
         executequery($sql);
@@ -95,7 +100,7 @@ class m_brg_penjualan extends ci_model{
     }
     public function list(){
         $sql = "
-        select id_pk_brg_penjualan,brg_penjualan_qty,brg_penjualan_satuan,brg_penjualan_harga,brg_penjualan_note,id_fk_penjualan,id_fk_barang,brg_nama,brg_harga,brg_penjualan_create_date,brg_penjualan_last_modified
+        select id_pk_brg_penjualan,brg_penjualan_qty_real,brg_penjualan_satuan_real,brg_penjualan_qty,brg_penjualan_satuan,brg_penjualan_harga,brg_penjualan_note,id_fk_penjualan,id_fk_barang,brg_nama,brg_harga,brg_penjualan_create_date,brg_penjualan_last_modified
         from ".$this->tbl_name."
         inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_barang
         where brg_penjualan_status = ? and id_fk_penjualan = ?
@@ -108,6 +113,8 @@ class m_brg_penjualan extends ci_model{
     public function insert(){
         if($this->check_insert()){
             $data = array(
+                "brg_penjualan_qty_real" => $this->brg_penjualan_qty_real,
+                "brg_penjualan_satuan_real" => $this->brg_penjualan_satuan_real,
                 "brg_penjualan_qty" => $this->brg_penjualan_qty,
                 "brg_penjualan_satuan" => $this->brg_penjualan_satuan,
                 "brg_penjualan_harga" => $this->brg_penjualan_harga,
@@ -132,6 +139,8 @@ class m_brg_penjualan extends ci_model{
                 "id_pk_brg_penjualan" => $this->id_pk_brg_penjualan,
             );
             $data = array(
+                "brg_penjualan_qty_real" => $this->brg_penjualan_qty_real,
+                "brg_penjualan_satuan_real" => $this->brg_penjualan_satuan_real,
                 "brg_penjualan_qty" => $this->brg_penjualan_qty,
                 "brg_penjualan_satuan" => $this->brg_penjualan_satuan,
                 "brg_penjualan_harga" => $this->brg_penjualan_harga,
@@ -163,6 +172,12 @@ class m_brg_penjualan extends ci_model{
         }
     }
     public function check_insert(){
+        if($this->brg_penjualan_qty_real == ""){
+            return false;
+        }
+        if($this->brg_penjualan_satuan_real == ""){
+            return false;
+        }
         if($this->brg_penjualan_qty == ""){
             return false;
         }
@@ -203,6 +218,12 @@ class m_brg_penjualan extends ci_model{
         if($this->id_pk_brg_penjualan == ""){
             return false;
         }
+        if($this->brg_penjualan_qty_real == ""){
+            return false;
+        }
+        if($this->brg_penjualan_satuan_real == ""){
+            return false;
+        }
         if($this->brg_penjualan_qty == ""){
             return false;
         }
@@ -238,7 +259,16 @@ class m_brg_penjualan extends ci_model{
         }
         return true;
     }
-    public function set_insert($brg_penjualan_qty,$brg_penjualan_satuan,$brg_penjualan_harga,$brg_penjualan_note,$brg_penjualan_status,$id_fk_penjualan,$id_fk_barang){
+    public function set_insert($brg_penjualan_qty_real,$brg_penjualan_satuan_real,$brg_penjualan_qty,$brg_penjualan_satuan,$brg_penjualan_harga,$brg_penjualan_note,$brg_penjualan_status,$id_fk_penjualan,$id_fk_barang){
+        if(!$this->set_brg_penjualan_qty_real($brg_penjualan_qty_real)){
+            return false;
+        }
+        if(!$this->set_brg_penjualan_qty($brg_penjualan_qty)){
+            return false;
+        }
+        if(!$this->set_brg_penjualan_satuan_real($brg_penjualan_satuan_real)){
+            return false;
+        }
         if(!$this->set_brg_penjualan_qty($brg_penjualan_qty)){
             return false;
         }
@@ -262,8 +292,14 @@ class m_brg_penjualan extends ci_model{
         }
         return true;
     }
-    public function set_update($id_pk_brg_penjualan,$brg_penjualan_qty,$brg_penjualan_satuan,$brg_penjualan_harga,$brg_penjualan_note,$id_fk_barang){
+    public function set_update($id_pk_brg_penjualan,$brg_penjualan_qty_real,$brg_penjualan_satuan_real,$brg_penjualan_qty,$brg_penjualan_satuan,$brg_penjualan_harga,$brg_penjualan_note,$id_fk_barang){
         if(!$this->set_id_pk_brg_penjualan($id_pk_brg_penjualan)){
+            return false;
+        }
+        if(!$this->set_brg_penjualan_qty_real($brg_penjualan_qty_real)){
+            return false;
+        }
+        if(!$this->set_brg_penjualan_satuan_real($brg_penjualan_satuan_real)){
             return false;
         }
         if(!$this->set_brg_penjualan_qty($brg_penjualan_qty)){
@@ -292,6 +328,20 @@ class m_brg_penjualan extends ci_model{
     public function set_id_pk_brg_penjualan($id_pk_brg_penjualan){
         if($id_pk_brg_penjualan != ""){
             $this->id_pk_brg_penjualan = $id_pk_brg_penjualan;
+            return true;
+        }
+        return false;
+    }
+    public function set_brg_penjualan_qty_real($brg_penjualan_qty_real){
+        if($brg_penjualan_qty_real != ""){
+            $this->brg_penjualan_qty_real = $brg_penjualan_qty_real;
+            return true;
+        }
+        return false;
+    }
+    public function set_brg_penjualan_satuan_real($brg_penjualan_satuan_real){
+        if($brg_penjualan_satuan_real != ""){
+            $this->brg_penjualan_satuan_real = $brg_penjualan_satuan_real;
             return true;
         }
         return false;
@@ -347,6 +397,12 @@ class m_brg_penjualan extends ci_model{
     }
     public function get_id_pk_brg_penjualan(){
         return $this->id_pk_brg_penjualan;
+    }
+    public function get_brg_penjualan_qty_real(){
+        return $this->brg_penjualan_qty_real;
+    }
+    public function get_brg_penjualan_satuan_real(){
+        return $this->brg_penjualan_satuan_real;
     }
     public function get_brg_penjualan_qty(){
         return $this->brg_penjualan_qty;

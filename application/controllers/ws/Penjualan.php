@@ -75,8 +75,8 @@ class Penjualan extends CI_Controller{
                 $result = $result->result_array();
                 for($a = 0; $a<count($result); $a++){
                     $response["content"][$a]["id"] = $result[$a]["id_pk_brg_penjualan"];
-                    $response["content"][$a]["qty"] = $result[$a]["brg_penjualan_qty"];
-                    $response["content"][$a]["satuan"] = $result[$a]["brg_penjualan_satuan"];
+                    $response["content"][$a]["qty"] = $result[$a]["brg_penjualan_qty_real"];
+                    $response["content"][$a]["satuan"] = $result[$a]["brg_penjualan_satuan_real"];
                     $response["content"][$a]["harga"] = $result[$a]["brg_penjualan_harga"];
                     $response["content"][$a]["note"] = $result[$a]["brg_penjualan_note"];
                     $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
@@ -248,6 +248,7 @@ class Penjualan extends CI_Controller{
                         $counter = 0;
                         foreach($check as $a){
                             $this->form_validation->set_rules("brg".$a,"brg","required");
+                            $this->form_validation->set_rules("brg_qty_real".$a,"brg_qty_real","required");
                             $this->form_validation->set_rules("brg_qty".$a,"brg_qty","required");
                             $this->form_validation->set_rules("brg_price".$a,"brg_price","required");
                             $this->form_validation->set_rules("brg_notes".$a,"brg_notes","required");
@@ -256,6 +257,12 @@ class Penjualan extends CI_Controller{
                                 $brg_qty = explode(" ",$brg_qty);
                                 $brg_penjualan_qty = $brg_qty[0];
                                 $brg_penjualan_satuan = $brg_qty[1];
+                                
+                                $brg_qty = $this->input->post("brg_qty_real".$a);
+                                $brg_qty = explode(" ",$brg_qty);
+                                $brg_penjualan_qty_real = $brg_qty[0];
+                                $brg_penjualan_satuan_real = $brg_qty[1];
+
                                 $brg_penjualan_harga = $this->input->post("brg_price".$a);
                                 $brg_penjualan_note = $this->input->post("brg_notes".$a);
                                 $brg_penjualan_status = "AKTIF";
@@ -269,7 +276,7 @@ class Penjualan extends CI_Controller{
                                     $id_fk_barang = $result[0]["id_pk_brg"];
 
                                     $this->load->model("m_brg_penjualan");
-                                    if($this->m_brg_penjualan->set_insert($brg_penjualan_qty,$brg_penjualan_satuan,$brg_penjualan_harga,$brg_penjualan_note,$brg_penjualan_status,$id_fk_penjualan,$id_fk_barang)){
+                                    if($this->m_brg_penjualan->set_insert($brg_penjualan_qty_real,$brg_penjualan_satuan_real,$brg_penjualan_qty,$brg_penjualan_satuan,$brg_penjualan_harga,$brg_penjualan_note,$brg_penjualan_status,$id_fk_penjualan,$id_fk_barang)){
                                         if($this->m_brg_penjualan->insert()){
                                             $response["itmsts"][$counter] = "SUCCESS";
                                             $response["itmmsg"][$counter] = "Data is recorded to database";
@@ -511,6 +518,7 @@ class Penjualan extends CI_Controller{
                 foreach($check as $a){
                     $this->form_validation->set_rules("brg".$a,"brg","required");
                     $this->form_validation->set_rules("brg_qty".$a,"brg_qty","required");
+                    $this->form_validation->set_rules("brg_qty".$a,"brg_qty","required");
                     $this->form_validation->set_rules("brg_price".$a,"brg_price","required");
                     $this->form_validation->set_rules("brg_notes".$a,"brg_notes","required");
                     if($this->form_validation->run()){
@@ -570,6 +578,7 @@ class Penjualan extends CI_Controller{
                 foreach($check as $a){
                     $this->form_validation->set_rules("id_brg_jual_edit".$a,"id","required");
                     $this->form_validation->set_rules("brg_edit".$a,"brg","required");
+                    $this->form_validation->set_rules("brg_qty_real_edit".$a,"brg_qty_real","required");
                     $this->form_validation->set_rules("brg_qty_edit".$a,"brg_qty","required");
                     $this->form_validation->set_rules("brg_price_edit".$a,"brg_price","required");
                     $this->form_validation->set_rules("brg_notes_edit".$a,"brg_notes","required");
@@ -579,6 +588,12 @@ class Penjualan extends CI_Controller{
                         $brg_qty = explode(" ",$brg_qty);
                         $brg_penjualan_qty = $brg_qty[0];
                         $brg_penjualan_satuan = $brg_qty[1];
+                        
+                        $brg_qty = $this->input->post("brg_qty_real_edit".$a);
+                        $brg_qty = explode(" ",$brg_qty);
+                        $brg_penjualan_qty_real = $brg_qty[0];
+                        $brg_penjualan_satuan_real = $brg_qty[1];
+
                         $brg_penjualan_harga = $this->input->post("brg_price_edit".$a);
                         $brg_penjualan_note = $this->input->post("brg_notes_edit".$a);
                         $barang = $this->input->post("brg_edit".$a);
@@ -591,7 +606,7 @@ class Penjualan extends CI_Controller{
                             $id_fk_barang = $result[0]["id_pk_brg"];
 
                             $this->load->model("m_brg_penjualan");
-                            if($this->m_brg_penjualan->set_update($id_pk_brg_penjualan,$brg_penjualan_qty,$brg_penjualan_satuan,$brg_penjualan_harga,$brg_penjualan_note,$id_fk_barang)){
+                            if($this->m_brg_penjualan->set_update($id_pk_brg_penjualan,$brg_penjualan_qty_real,$brg_penjualan_satuan_real,$brg_penjualan_qty,$brg_penjualan_satuan,$brg_penjualan_harga,$brg_penjualan_note,$id_fk_barang)){
                                 if($this->m_brg_penjualan->update()){
                                     $response["itmsts"][$counter] = "SUCCESS";
                                     $response["itmmsg"][$counter] = "Data is updated to database";
