@@ -102,8 +102,8 @@
         <!-- /User Profile -->
         <?php $this->load->view("req/menu/general");?>
         <?php $this->load->view("req/menu/warehouse");?>
-        <?php $this->load->view("Req/menu/toko"); ?>
-        <?php $this->load->view("Req/menu/cabang"); ?>
+        <?php $this->load->view("req/menu/toko"); ?>
+        <?php $this->load->view("req/menu/cabang"); ?>
     </ul>
 </div>
 <!-- /Left Sidebar Menu -->
