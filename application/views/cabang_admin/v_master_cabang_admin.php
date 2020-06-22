@@ -92,40 +92,13 @@ $data = array(
 <?php $this->load->view('cabang_admin/f-update-cabang_admin',$data);?>
 <?php $this->load->view('cabang_admin/f-delete-cabang_admin',$data);?>
 
-<datalist id = 'daftar_user'></datalist>
-<script>
-    window.onload = function(){
-        $.ajax({
-            url:"<?php echo base_url();?>ws/user/list",
-            type:"GET",
-            dataType:"JSON",
-            success:function(respond){
-                var html = "";
-                if(respond["status"] == "SUCCESS"){
-                    for(var a = 0; a<respond["content"].length; a++){
-                        html+="<option value = '"+respond['content'][a]["name"]+"'></option>";
-                    }
-                    $("#daftar_user").html(html);
-                }
-            }
-        });
-    }
-    window.onfocus = function(){
-        $.ajax({
-            url:"<?php echo base_url();?>ws/user/list",
-            type:"GET",
-            dataType:"JSON",
-            success:function(respond){
-                var html = "";
-                if(respond["status"] == "SUCCESS"){
-                    for(var a = 0; a<respond["content"].length; a++){
-                        html+="<option value = '"+respond['content'][a]["name"]+"'></option>";
-                    }
-                    $("#daftar_user").html(html);
-                }
-            }
-        });
-    }
-</script>
+
 
 <?php $this->load->view('_notification/notif_general'); ?>
+
+<?php $this->load->view("_base_element/datalist_user");?>
+<script>
+    function load_datalist(){
+        load_datalist_user();
+    }
+</script>

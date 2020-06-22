@@ -14,7 +14,6 @@
                 <form id = "register_form" method = "POST">
                     <input type = "hidden" name = "id_cabang" value = "<?php echo $cabang[0]["id_pk_cabang"];?>">
                     <div class = "form-group">
-                        <h5>Item Pembelian</h5>
                         <table class = "table table-striped table-bordered">
                             <thead>
                                 <th>Username</th>
@@ -40,7 +39,7 @@
 <script>
     var toko_admin = 0;  
     function add_toko_admin(){
-        var html = "<tr class = 'add_toko_admin'><td id = 'row"+toko_admin+"'><input name = 'check[]' value = "+toko_admin+" type = 'hidden'><input type = 'text' list = 'daftar_user' name = 'nama"+toko_admin+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = "<tr class = 'add_toko_admin'><td id = 'row"+toko_admin+"'><input name = 'check[]' value = "+toko_admin+" type = 'hidden'><input type = 'text' list = 'datalist_user' name = 'nama"+toko_admin+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
         $("#add_brg_beli_but_container").before(html);
         toko_admin++;    
     }
