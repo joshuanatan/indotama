@@ -172,6 +172,20 @@ class M_brg_pengiriman extends ci_model{
         }
         return false;
     }
+    public function delete_brg_pengiriman(){
+        
+        #method ini dibuat untuk ngosongin brg_pengiriman kalau pengirimannya diapus
+        $where = array(
+            "id_fk_pengiriman" => $this->id_fk_pengiriman
+        );
+        $data = array(
+            "brg_pengiriman_qty" => 0,
+            "brg_pengiriman_last_modified" => $this->brg_pengiriman_last_modified,
+            "id_last_modified" => $this->id_last_modified
+        );
+        updaterow($this->tbl_name,$data,$where);
+        return true;
+    }
     public function check_insert(){
         if($this->brg_pengiriman_qty == ""){
             return false;

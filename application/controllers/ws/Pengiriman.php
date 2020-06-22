@@ -234,6 +234,9 @@ class pengiriman extends CI_Controller{
             $this->load->model("m_pengiriman");
             if($this->m_pengiriman->set_delete($id)){
                 if($this->m_pengiriman->delete()){
+                    $this->load->model("m_brg_pengiriman");
+                    $this->m_brg_pengiriman->set_id_fk_pengiriman($id);
+                    $this->m_brg_pengiriman->delete_brg_pengiriman();
                     $response["msg"] = "Data is deleted from database";
                 }
                 else{
