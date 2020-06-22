@@ -11,9 +11,9 @@
             contentType: false,
             success:function(respond){
                 if(respond["status"] == "SUCCESS"){
+                    $('#notif_update_success').show(1).delay(2000).hide(1);
                     $("#update_modal").modal("hide");
                     refresh(page);
-                    $('#notif_update_success').show(1).delay(2000).hide(1);
                 }
 
                 if(respond["status"] == "ERROR"){
