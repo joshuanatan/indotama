@@ -180,7 +180,7 @@ $notif_data = array(
                                             </div>
                                             <div class = "form-group col-lg-12">
                                                 <h5>Total Price</h5>
-                                                <input style = "width:50%" type = "text" class = "form-control" required readonly>
+                                                <input style = "width:50%" type = "text" class = "form-control" required readonly onclick = "count_total_price()" id = "total_price">
                                             </div>
                                             <div class = "form-group col-lg-12">
                                                 <h5>Jenis Pembayaran</h5>
@@ -215,7 +215,7 @@ $notif_data = array(
                                                                 <input value = "<?php echo $pembayaran[$a]["penjualan_pmbyrn_persen"];?>" name = 'pmbyrn_persen_edit<?php echo $a;?>' type = 'text' class = 'form-control'>
                                                             </td>
                                                             <td>
-                                                                <input type = 'text' value = "<?php echo $pembayaran[$a]["penjualan_pmbyrn_nominal"];?>" name = 'pmbyrn_nominal_edit<?php echo $a;?>' class = 'form-control'>
+                                                                <input type = 'text' onfocus = "count_nominal_persentase('edit',<?php echo $a;?>)" value = "<?php echo $pembayaran[$a]["penjualan_pmbyrn_nominal"];?>" name = 'pmbyrn_nominal_edit<?php echo $a;?>' class = 'form-control'>
                                                             </td>
                                                             <td>
                                                                 <input type = 'text' value = "<?php echo $pembayaran[$a]["penjualan_pmbyrn_notes"];?>" name = 'pmbyrn_notes_edit<?php echo $a;?>' class = 'form-control'>
@@ -269,7 +269,7 @@ $notif_data = array(
     }
     var pembayaran_row = 0;  
     function add_pembayaran_row(){
-        var html = "<tr class = 'add_pembayaran_row'><td id = 'row"+pembayaran_row+"'><input name = 'pembayaran[]' value = "+pembayaran_row+" type = 'hidden'><input type = 'text' name = 'pmbyrn_nama"+pembayaran_row+"' class = 'form-control'></td><td><input name = 'pmbyrn_persen"+pembayaran_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' name = 'pmbyrn_nominal"+pembayaran_row+"' class = 'form-control'></td><td><input type = 'text' name = 'pmbyrn_notes"+pembayaran_row+"' class = 'form-control'></td><td><input type = 'date' name = 'pmbyrn_dateline"+pembayaran_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = "<tr class = 'add_pembayaran_row'><td id = 'row"+pembayaran_row+"'><input name = 'pembayaran[]' value = "+pembayaran_row+" type = 'hidden'><input type = 'text' name = 'pmbyrn_nama"+pembayaran_row+"' class = 'form-control'></td><td><input name = 'pmbyrn_persen"+pembayaran_row+"' type = 'text' class = 'form-control'></td><td><input onfocus = 'count_nominal_persentase('',"+pembayaran_row+")' type = 'text' name = 'pmbyrn_nominal"+pembayaran_row+"' class = 'form-control'></td><td><input type = 'text' name = 'pmbyrn_notes"+pembayaran_row+"' class = 'form-control'></td><td><input type = 'date' name = 'pmbyrn_dateline"+pembayaran_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
         $("#add_pembayaran_but_container").before(html);
         pembayaran_row++;    
     }
@@ -334,6 +334,63 @@ $notif_data = array(
 </script>
 <?php $this->load->view("_core_script/update_func");?>
 <script>
+    function count_total_price(){
+        var total = 0;
+        for(var a = 0; a < brg_jual_row; a++){
+            var qty = $("input[name='brg_qty"+a+"'").val();
+            var price = $("input[name='brg_price"+a+"'").val();
+            if(typeof(qty) == 'undefined' || typeof(price) == 'undefined' || !price || !qty){
+                total += 0;
+            }
+            else{
+                total += parseFloat(qty.split(" ")[0])*parseInt(price);
+            }
+        }
+        for(var a = 0; a < tambahan_jual_row; a++){
+            var qty = $("input[name='tmbhn_jumlah"+a+"'").val();
+            var price = $("input[name='tmbhn_harga"+a+"'").val();
+            if(typeof(qty) == 'undefined' || typeof(price) == 'undefined' || !price || !qty){
+                total += 0;
+            }
+            else{
+                total += parseFloat(qty.split(" ")[0])*parseInt(price);
+            }
+        }
+        var brg_jual_edit_row = $(".add_brg_jual_row_edit").length; 
+        for(var a = 0; a < brg_jual_edit_row; a++){
+            var qty = $("input[name='brg_qty_edit"+a+"'").val();
+            var price = $("input[name='brg_price_edit"+a+"'").val();
+            if(typeof(qty) == 'undefined' || typeof(price) == 'undefined' || !price || !qty){
+                total += 0;
+            }
+            else{
+                total += parseFloat(qty.split(" ")[0])*parseInt(price);
+            }
+        }
+        var tambahan_jual_edit_row = $(".add_tambahan_jual_row_edit").length;
+        for(var a = 0; a < tambahan_jual_edit_row; a++){
+            var qty = $("input[name='tmbhn_jumlah_edit"+a+"'").val();
+            var price = $("input[name='tmbhn_harga_edit"+a+"'").val();
+            if(typeof(qty) == 'undefined' || typeof(price) == 'undefined' || !price || !qty){
+                total += 0;
+            }
+            else{
+                total += parseFloat(qty.split(" ")[0])*parseInt(price);
+            }
+        }
+        $("#total_price").val(total);
+    }
+    function count_nominal_persentase(type,row){
+        var total = $("#total_price").val();
+        var persen = $("input[name='pmbyrn_persen_"+type+row+"']").val();
+        if(typeof(persen) == 'undefined' || !persen){
+            nominal = 0;
+        }
+        else{
+            nominal = parseFloat(persen.split("%")[0])/100*total;
+        }
+        $("input[name='pmbyrn_nominal_"+type+row+"']").val(nominal);
+    }
     function register_brg_pindah(){
         var form = $("#register_brg_pindah_form")[0];
         var data = new FormData(form);
