@@ -20,6 +20,13 @@ $breadcrumb = array(
             <?php $this->load->view('req/mm_menubar.php');?>
 
             <div class="page-wrapper">
+            
+            <?php $this->load->view('_notification/register_success',$notif_data); ?>
+            <?php $this->load->view('_notification/update_success',$notif_data); ?>
+            <?php $this->load->view('_notification/delete_success',$notif_data); ?>
+            <?php $this->load->view('_notification/register_error',$notif_data); ?>
+            <?php $this->load->view('_notification/update_error',$notif_data); ?>
+            <?php $this->load->view('_notification/delete_error',$notif_data); ?>
                 <div class="container-fluid">
                     <div class="row mt-20">
                         <div class="col-lg-12 col-sm-12">
@@ -98,3 +105,5 @@ $data = array(
 <?php $this->load->view("penerimaan/f-add-penerimaan",$data);?>
 <?php $this->load->view("penerimaan/f-update-penerimaan",$data);?>
 <?php $this->load->view("penerimaan/f-delete-penerimaan",$data);?>
+
+<?php $this->load->view('_notification/notif_general'); ?>
