@@ -26,7 +26,7 @@ DELIMITER $$
 --
 -- 存储过程
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `check_and_auto_insert_brg_cabang` (IN `id_fk_brg_in` INT, IN `id_fk_cabang_in` INT, IN `id_create_data_in` INT)  begin
+CREATE PROCEDURE `check_and_auto_insert_brg_cabang` (IN `id_fk_brg_in` INT, IN `id_fk_cabang_in` INT, IN `id_create_data_in` INT)  begin
             set @a = "";
             select count(id_pk_brg_cabang) into @a from tbl_brg_cabang where id_fk_brg = id_fk_brg_in and id_fk_cabang = id_fk_cabang_in;
 
@@ -37,12 +37,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `check_and_auto_insert_brg_cabang` (
             end if;
         end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_log_all` (IN `id_user` INT, IN `log_date` DATETIME, IN `log_text` VARCHAR(100), OUT `id_log_all` INT)  begin
+CREATE PROCEDURE `insert_log_all` (IN `id_user` INT, IN `log_date` DATETIME, IN `log_text` VARCHAR(100), OUT `id_log_all` INT)  begin
 	insert into log_all(id_user,log_date,log) values(id_user,log_date,log_text);
     select last_insert_id() into id_log_all ;
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ubah_satuan_barang` (IN `id_satuan_in` INT, INOUT `brg_qty` DOUBLE)  begin
+CREATE PROCEDURE `ubah_satuan_barang` (IN `id_satuan_in` INT, INOUT `brg_qty` DOUBLE)  begin
             declare conversion_exp varchar(20);
             select satuan_rumus 
             into conversion_exp
@@ -53,7 +53,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `ubah_satuan_barang` (IN `id_satuan_
             
         end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `update_stok_barang_cabang` (IN `id_barang` INT, IN `id_cabang` INT, IN `barang_masuk` DOUBLE, IN `id_satuan_masuk` INT, IN `barang_keluar` DOUBLE, IN `id_satuan_keluar` INT)  begin
+CREATE PROCEDURE `update_stok_barang_cabang` (IN `id_barang` INT, IN `id_cabang` INT, IN `barang_masuk` DOUBLE, IN `id_satuan_masuk` INT, IN `barang_keluar` DOUBLE, IN `id_satuan_keluar` INT)  begin
             /*
             the logic is
             barang_masuk = n, barang_keluar = 0 [insert new data]
@@ -74,7 +74,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `update_stok_barang_cabang` (IN `id_
 
         end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `update_stok_barang_warehouse` (IN `id_barang` INT, IN `id_warehouse` INT, IN `barang_masuk` DOUBLE, IN `id_satuan_masuk` INT, IN `barang_keluar` DOUBLE, IN `id_satuan_keluar` INT)  begin
+CREATE PROCEDURE `update_stok_barang_warehouse` (IN `id_barang` INT, IN `id_warehouse` INT, IN `barang_masuk` DOUBLE, IN `id_satuan_masuk` INT, IN `barang_keluar` DOUBLE, IN `id_satuan_keluar` INT)  begin
             /*
             the logic is
             barang_masuk = n, barang_keluar = 0 [insert new data]
@@ -92,14 +92,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `update_stok_barang_warehouse` (IN `
             where id_fk_brg = id_barang and id_fk_warehouse = id_warehouse;
         end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `update_stok_kombinasi_barang_cabang` (IN `id_barang_utama_in` INT, IN `qty_brg_masuk_in` DOUBLE, IN `qty_brg_keluar_in` DOUBLE, IN `id_cabang_in` INT)  begin
+CREATE PROCEDURE `update_stok_kombinasi_barang_cabang` (IN `id_barang_utama_in` INT, IN `qty_brg_masuk_in` DOUBLE, IN `qty_brg_keluar_in` DOUBLE, IN `id_cabang_in` INT)  begin
             update tbl_barang_kombinasi
             inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_barang_kombinasi.id_barang_kombinasi
             set brg_cabang_qty = brg_cabang_qty+(barang_kombinasi_qty*qty_brg_masuk_in)-(barang_kombinasi_qty*qty_brg_keluar_in)
             where id_barang_utama = id_barang_utama_in and id_fk_cabang = id_cabang_in and barang_kombinasi_status = 'aktif';
         end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `use_combinasi_barang` (IN `id_barang_utama_in` INT, IN `qty_brg_masuk_in` DOUBLE, IN `id_cabang_in` INT, IN `jenis_transaksi` VARCHAR(15))  begin
+CREATE PROCEDURE `use_combinasi_barang` (IN `id_barang_utama_in` INT, IN `qty_brg_masuk_in` DOUBLE, IN `id_cabang_in` INT, IN `jenis_transaksi` VARCHAR(15))  begin
 	if jenis_transaksi = "penerimaan"
     then 
 		update tbl_barang_kombinasi
