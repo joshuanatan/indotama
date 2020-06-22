@@ -58,6 +58,7 @@ $breadcrumb = array(
                                             <br/>
                                             <br/>
                                             <div class = "align-middle text-center d-block">
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-success md-eye"></i><b> - Details </b>
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
                                             </div>
@@ -97,4 +98,6 @@ $data = array(
 <?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view("penerimaan/f-add-penerimaan",$data);?>
 <?php $this->load->view("penerimaan/f-update-penerimaan",$data);?>
+<?php $this->load->view("penerimaan/f-detail-penerimaan",$data);?>
 <?php $this->load->view("penerimaan/f-delete-penerimaan",$data);?>
+<?php $this->load->view('_notification/notif_general'); ?>
