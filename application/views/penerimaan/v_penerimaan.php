@@ -3,6 +3,9 @@ $page_title = "Penerimaan";
 $breadcrumb = array(
     "Penerimaan"
 );
+$notif_data = array(
+    "page_title"=>$page_title
+);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,9 +27,6 @@ $breadcrumb = array(
             <?php $this->load->view('_notification/register_success',$notif_data); ?>
             <?php $this->load->view('_notification/update_success',$notif_data); ?>
             <?php $this->load->view('_notification/delete_success',$notif_data); ?>
-            <?php $this->load->view('_notification/register_error',$notif_data); ?>
-            <?php $this->load->view('_notification/update_error',$notif_data); ?>
-            <?php $this->load->view('_notification/delete_error',$notif_data); ?>
                 <div class="container-fluid">
                     <div class="row mt-20">
                         <div class="col-lg-12 col-sm-12">
