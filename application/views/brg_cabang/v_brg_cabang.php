@@ -92,6 +92,7 @@ $data = array(
 <?php $this->load->view("brg_cabang/f-add-brg_cabang",$data);?>
 <?php $this->load->view("brg_cabang/f-update-brg_cabang",$data);?>
 <?php $this->load->view("brg_cabang/f-delete-brg_cabang",$data);?>
+<?php $this->load->view("brg_cabang/f-detail-brg_cabang",$data);?>
 
 <?php $this->load->view("_base_element/datalist_barang");?>
 <script>

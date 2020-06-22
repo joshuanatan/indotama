@@ -76,7 +76,7 @@ $notif_data = array(
 <script>
     var ctrl = "barang_warehouse";
     var url_add = "id_warehouse=<?php echo $warehouse[0]["id_pk_warehouse"];?>";
-    var unautorized_button = ["detail_button"];
+    //var unautorized_button = ["detail_button"];
 </script>
 
 <?php
@@ -92,6 +92,7 @@ $data = array(
 <?php $this->load->view("brg_warehouse/f-add-brg_warehouse",$data);?>
 <?php $this->load->view("brg_warehouse/f-update-brg_warehouse",$data);?>
 <?php $this->load->view("brg_warehouse/f-delete-brg_warehouse",$data);?>
+<?php $this->load->view("brg_warehouse/f-detail-brg_warehouse",$data);?>
 
 <?php $this->load->view("_base_element/datalist_barang");?>
 <script>
