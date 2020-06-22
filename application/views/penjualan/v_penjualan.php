@@ -55,6 +55,7 @@ $notif_data = array(
                                             <br/>
                                             <br/>
                                             <div class = "align-middle text-center d-block">
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-success md-eye"></i><b> - Details </b>
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
                                             </div>
@@ -76,12 +77,17 @@ $notif_data = array(
 <script>
     var ctrl = "penjualan";
     var url_add = "id_cabang=<?php echo $this->session->id_cabang;?>";
-    var unautorized_button = ["edit_button"];
+    var unautorized_button = ["edit_button","detail_button"];
     var additional_button = [
         {
             style:'cursor:pointer;font-size:large',
             class:'text-primary md-edit',
             onclick:'redirect_edit_penjualan()'
+        },
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-success md-eye',
+            onclick:'redirect_detail_penjualan()'
         }
     ];
 </script>
@@ -97,6 +103,14 @@ $data = array(
             var row = $(this).index();
             var id_penjualan = content[row]["id"];
             window.open("<?php echo base_url();?>penjualan/update/"+id_penjualan,"_blank");
+        });
+    }
+
+    function redirect_detail_penjualan(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_penjualan = content[row]["id"];
+            window.open("<?php echo base_url();?>penjualan/detail/"+id_penjualan,"_blank");
         });
     }
 </script>

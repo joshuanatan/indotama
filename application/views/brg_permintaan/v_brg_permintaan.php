@@ -56,6 +56,7 @@ $notif_data = array(
                                             <br/>
                                             <br/>
                                             <div class = "align-middle text-center d-block">
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-success md-eye"></i><b> - Details </b>
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
                                             </div>
@@ -100,6 +101,7 @@ $data = array(
 <?php $this->load->view("brg_permintaan/f-add-brg-permintaan",$data);?>
 <?php $this->load->view("brg_permintaan/f-update-brg-permintaan",$data);?>
 <?php $this->load->view("brg_permintaan/f-delete-brg-permintaan",$data);?>
+<?php $this->load->view("brg_permintaan/f-detail-brg-permintaan",$data);?>
 <?php $this->load->view("brg_permintaan/f-selesai-brg-permintaan",$data);?>
 
 <?php $this->load->view('_notification/notif_general'); ?>
