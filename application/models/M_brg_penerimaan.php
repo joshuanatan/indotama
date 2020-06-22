@@ -75,7 +75,7 @@ class M_brg_penerimaan extends ci_model{
             set @brg_penerimaan_qty = new.brg_penerimaan_qty;
             set @id_satuan_terima = new.id_fk_satuan;
             select id_fk_cabang, id_fk_barang, id_fk_warehouse into @id_cabang,@id_barang,@id_warehouse from tbl_brg_penerimaan
-            inner join tbl_brg_pembelian on tbl_brg_pembelian.id_pk_brg_pembelian = tbl_brg_penerimaan.ID_FK_BRG_PEMBELIAN
+            inner join tbl_brg_pembelian on tbl_brg_pembelian.id_pk_brg_pembelian = tbl_brg_penerimaan.id_fk_brg_pembelian
             inner join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan
             where id_pk_brg_penerimaan = new.id_pk_brg_penerimaan;
 
@@ -110,7 +110,7 @@ class M_brg_penerimaan extends ci_model{
             set @id_satuan_keluar = old.id_fk_satuan;
 
             select id_fk_cabang, id_fk_barang,id_fk_warehouse into @id_cabang, @id_barang,@id_warehouse from tbl_brg_penerimaan
-            inner join tbl_brg_pembelian on tbl_brg_pembelian.id_pk_brg_pembelian = tbl_brg_penerimaan.ID_FK_BRG_PEMBELIAN
+            inner join tbl_brg_pembelian on tbl_brg_pembelian.id_pk_brg_pembelian = tbl_brg_penerimaan.id_fk_brg_pembelian
             inner join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan
             where id_pk_brg_penerimaan = new.id_pk_brg_penerimaan;
             
