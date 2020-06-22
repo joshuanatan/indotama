@@ -13,15 +13,15 @@
             $this->load->view('_notification/update_error',$notif_data); ?>
                 <form id = "update_form" method = "POST">
                     <input type = "hidden" name = "id" id = "id_edit">
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Nama Supplier</h5>
                         <input type = "text" class = "form-control" required name = "nama" id = "nama_edit">
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Nama PIC</h5>
                         <input type = "text" class = "form-control" required name = "pic" id = "pic_edit">
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Panggilan</h5>
                         <select name="suff" class="form-control" id = "suff_edit">
                             <option value="0" disabled>Pilih Panggilan</option>
@@ -33,23 +33,23 @@
                             <option value="NONA">Nona</option>
                         </select>
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Email</h5>
                         <input type = "text" class = "form-control" required name = "email" id = "email_edit">
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>No Telp</h5>
                         <input type = "text" class = "form-control" required name = "notelp" id = "notelp_edit">
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>No HP</h5>
                         <input type = "text" class = "form-control" required name = "nohp" id = "nohp_edit">
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Alamat</h5>
                         <input type = "text" class = "form-control" required name = "alamat" id = "alamat_edit">
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Keterangan</h5>
                         <textarea type = "text" class = "form-control" required name = "keterangan" id = "keterangan_edit"></textarea>
                     </div>
