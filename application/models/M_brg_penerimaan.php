@@ -183,6 +183,19 @@ class M_brg_penerimaan extends ci_model{
         }
         return false;
     }
+    public function delete_brg_penerimaan(){
+        #method ini dibuat untuk ngosongin brg_penerimaan kalau penerimaannya diapus
+        $where = array(
+            "id_fk_penerimaan" => $this->id_fk_penerimaan
+        );
+        $data = array(
+            "brg_penerimaan_qty" => 0,
+            "brg_penerimaan_last_modified" => $this->brg_penerimaan_last_modified,
+            "id_last_modified" => $this->id_last_modified
+        );
+        updaterow($this->tbl_name,$data,$where);
+        return true;
+    }
     public function check_insert(){
         if($this->brg_penerimaan_qty == ""){
             return false;
