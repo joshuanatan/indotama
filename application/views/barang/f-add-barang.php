@@ -11,49 +11,49 @@
             );
             $this->load->view('_notification/register_error',$notif_data); ?>
                 <form id = "register_form" method = "POST" enctype = "multipart/form-data">
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Kode Barang</h5>
                         <input type = "text" class = "form-control" required name = "kode">
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Jenis Barang</h5>
                         <input list = "datalist_barang_jenis" type = "text"  required name = "id_brg_jenis" class = "form-control">
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Nama Barang</h5>
                         <input type = "text" class = "form-control" required name = "nama">
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Keterangan</h5>
                         <input type = "text" class = "form-control" required name = "keterangan">
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Merk Barang</h5>
                         <input list = "datalist_barang_merk" type = "text"  required name = "id_brg_merk" class = "form-control">
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Minimal Stok</h5>
                         <input type = "text" class = "form-control" required name = "minimal">
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Satuan</h5>
                         <input type = "text" class = "form-control" required name = "satuan">
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group">
                         <h5>Harga Satuan</h5>
                         <input type = "text" class = "form-control" required name = "harga">
                     </div>
-                    <div class = "form-group col-lg-12">
+                    <div class = "form-group">
                         <h5>Gambar</h5>
                         <input type = "file" required name = "gambar">
                     </div>
-                    <div class = "form-group col-lg-12">
+                    <div class = "form-group">
                         <h5>Kombinasi Barang</h5>
                         <input type="radio" name = "kombinasi_barang" checked value="TIDAK KOMBINASI" onclick = "$('#barang_kombinasi_container').hide()">&nbsp;TIDAK KOMBINASI
                         &nbsp;&nbsp;
                         <input type="radio" name = "kombinasi_barang" value="KOMBINASI" onclick = "$('#barang_kombinasi_container').show()">&nbsp;KOMBINASI
                     </div>
-                    <table class = "table table-striped table-bordered col-lg-12" id = "barang_kombinasi_container" style = "display:none">
+                    <table class = "table table-striped table-bordered" id = "barang_kombinasi_container" style = "display:none">
                         <thead>
                             <th>Nama Barang</th>
                             <th>Qty (Pcs)</th>
