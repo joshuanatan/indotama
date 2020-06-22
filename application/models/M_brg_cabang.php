@@ -277,6 +277,29 @@ class M_brg_cabang extends ci_model{
         }
         return false;
     }
+    public function update_last_price(){
+        if($this->id_pk_brg_cabang != ""){
+            $where = array(
+                "id_pk_brg_cabang" => $this->id_pk_brg_cabang
+            );
+        }
+        else if ($this->id_fk_brg != "" && $this->id_fk_cabang != ""){
+            $where = array(
+                "id_fk_brg" => $this->id_fk_brg,
+                "id_fk_cabang" => $this->id_fk_cabang
+            );
+        }
+        else{
+            return false;
+        }
+        $data = array(
+            "brg_cabang_last_price" => $this->brg_cabang_last_price,
+            "brg_cabang_last_modified" => $this->brg_cabang_last_modified,
+            "id_last_modified" => $this->id_last_modified
+        );
+        updateRow($this->tbl_name,$data,$where);
+        return true;
+    }
     public function delete(){
         if($this->check_delete()){
             $where = array(
@@ -418,6 +441,13 @@ class M_brg_cabang extends ci_model{
     public function set_brg_cabang_status($brg_cabang_status){
         if($brg_cabang_status != ""){
             $this->brg_cabang_status = $brg_cabang_status;
+            return true;
+        }
+        return false;
+    }
+    public function set_brg_cabang_last_price($brg_cabang_last_price){
+        if($brg_cabang_last_price != ""){
+            $this->brg_cabang_last_price = $brg_cabang_last_price;
             return true;
         }
         return false;
