@@ -19,6 +19,13 @@ $notif_data = array(
             <div class="la-anim-1"></div>
         </div>
         <div class="wrapper theme-1-active pimary-color-pink">
+        
+            <?php $this->load->view('_notification/register_success',$notif_data); ?>
+            <?php $this->load->view('_notification/update_success',$notif_data); ?>
+            <?php $this->load->view('_notification/delete_success',$notif_data); ?>
+            <?php $this->load->view('_notification/register_error',$notif_data); ?>
+            <?php $this->load->view('_notification/update_error',$notif_data); ?>
+            <?php $this->load->view('_notification/delete_error',$notif_data); ?>
             <div class="container-fluid">
                 <div class="row mt-20">
                     <div class="col-lg-12 col-sm-12">
@@ -43,22 +50,22 @@ $notif_data = array(
                                 <div class="panel-body" style = "background-color:white">
                                     <div class = "col-lg-12">
                                         <form id = "register_form" method = "POST">
-                                            <input type = "hidden" name = "id_cabang" value = "<?php echo $this->session->id_cabang;?>">
+                                            <input required type = "hidden" name = "id_cabang" value = "<?php echo $this->session->id_cabang;?>">
                                             <div class = "form-group col-lg-6">
                                                 <h5>Nomor Penjualan</h5>
-                                                <input type = "text" class = "form-control" required name = "nomor">
+                                                <input required type = "text" class = "form-control" required name = "nomor">
                                             </div>
                                             <div class = "form-group col-lg-6">
                                                 <h5>Customer</h5>
-                                                <input type = 'text' class = "form-control" list = "datalist_customer" required name = "customer">
+                                                <input required type = 'text' class = "form-control" list = "datalist_customer" required name = "customer">
                                             </div>
                                             <div class = "form-group col-lg-6">
                                                 <h5>Tanggal Penjualan</h5>
-                                                <input type = "date" class = "form-control" required name = "tgl">
+                                                <input required type = "date" class = "form-control" required name = "tgl">
                                             </div>
                                             <div class = "form-group col-lg-6">
                                                 <h5>Dateline</h5>
-                                                <input type = "date" class = "form-control" required name = "dateline">
+                                                <input required type = "date" class = "form-control" required name = "dateline">
                                             </div>
                                             <div class = "form-group col-lg-12">
                                                 <h5>Jenis Penjualan</h5>
@@ -69,15 +76,15 @@ $notif_data = array(
                                             <div id = "online_info_container" class = "col-lg-6" style = "display:none">
                                                 <div class = "form-group">
                                                     <h5>Marketplace</h5>
-                                                    <input type = "text" class = "form-control" required name = "marketplace">
+                                                    <input type required = "text" class = "form-control" required name = "marketplace">
                                                 </div>
                                                 <div class = "form-group">
                                                     <h5>Kurir</h5>
-                                                    <input type = "text" class = "form-control" required name = "kurir">
+                                                    <input type required = "text" class = "form-control" required name = "kurir">
                                                 </div>
                                                 <div class = "form-group">
                                                     <h5>No Resi</h5>
-                                                    <input type = "text" class = "form-control" required name = "no_resi">
+                                                    <input type required = "text" class = "form-control" required name = "no_resi">
                                                 </div>
                                             </div>
                                             <div class = "form-group col-lg-12">
@@ -327,3 +334,5 @@ $notif_data = array(
         });
     }
 </script>
+
+<?php $this->load->view('_notification/notif_general'); ?>
