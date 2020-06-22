@@ -136,7 +136,7 @@ $notif_data = array(
                                             </div>
                                             <div class = "form-group col-lg-12">
                                                 <h5>Total Price</h5>
-                                                <input style = "width:50%" type = "text" class = "form-control" required readonly>
+                                                <input style = "width:50%" type = "text" class = "form-control" required readonly onclick = "count_total_price()" id = "total_price">
                                             </div>
                                             <div class = "form-group col-lg-12">
                                                 <h5>Jenis Pembayaran</h5>
@@ -200,7 +200,7 @@ $notif_data = array(
     }
     var pembayaran_row = 0;  
     function add_pembayaran_row(){
-        var html = "<tr class = 'add_pembayaran_row'><td id = 'row"+pembayaran_row+"'><input name = 'pembayaran[]' value = "+pembayaran_row+" type = 'hidden'><input type = 'text' name = 'pmbyrn_nama"+pembayaran_row+"' class = 'form-control'></td><td><input name = 'pmbyrn_persen"+pembayaran_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' name = 'pmbyrn_nominal"+pembayaran_row+"' class = 'form-control'></td><td><input type = 'text' name = 'pmbyrn_notes"+pembayaran_row+"' class = 'form-control'></td><td><input type = 'date' name = 'pmbyrn_dateline"+pembayaran_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = "<tr class = 'add_pembayaran_row'><td id = 'row"+pembayaran_row+"'><input name = 'pembayaran[]' value = "+pembayaran_row+" type = 'hidden'><input type = 'text' name = 'pmbyrn_nama"+pembayaran_row+"' class = 'form-control'></td><td><input name = 'pmbyrn_persen"+pembayaran_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' onfocus = 'count_nominal_persentase("+pembayaran_row+")' name = 'pmbyrn_nominal"+pembayaran_row+"' class = 'form-control'></td><td><input type = 'text' name = 'pmbyrn_notes"+pembayaran_row+"' class = 'form-control'></td><td><input type = 'date' name = 'pmbyrn_dateline"+pembayaran_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
         $("#add_pembayaran_but_container").before(html);
         pembayaran_row++;    
     }
@@ -214,6 +214,41 @@ $notif_data = array(
         var nama_barang = $("#brg"+row).val();
         var hrg_brg_dsr = $("#datalist_barang_cabang option[value='"+nama_barang+"']").attr("data-baseprice");
         $("#harga_barang_jual"+row).val(hrg_brg_dsr);
+    }
+    function count_total_price(){
+        var total = 0;
+        for(var a = 0; a < brg_jual_row; a++){
+            var qty = $("input[name='brg_qty"+a+"'").val();
+            var price = $("input[name='brg_price"+a+"'").val();
+            if(typeof(qty) == 'undefined' || typeof(price) == 'undefined' || !price || !qty){
+                total += 0;
+            }
+            else{
+                total += parseFloat(qty.split(" ")[0])*parseInt(price);
+            }
+        }
+        for(var a = 0; a < tambahan_jual_row; a++){
+            var qty = $("input[name='tmbhn_jumlah"+a+"'").val();
+            var price = $("input[name='tmbhn_harga"+a+"'").val();
+            if(typeof(qty) == 'undefined' || typeof(price) == 'undefined' || !price || !qty){
+                total += 0;
+            }
+            else{
+                total += parseFloat(qty.split(" ")[0])*parseInt(price);
+            }
+        }
+        $("#total_price").val(total);
+    }
+    function count_nominal_persentase(row){
+        var total = $("#total_price").val();
+        var persen = $("input[name='pmbyrn_persen"+row+"'").val();
+        if(typeof(persen) == 'undefined' || !persen){
+            nominal = 0;
+        }
+        else{
+            nominal = parseFloat(persen.split("%")[0])/100*total;
+        }
+        $("input[name='pmbyrn_nominal"+row+"'").val(nominal);
     }
 </script>
 <?php $this->load->view("_base_element/datalist_customer");?>
@@ -257,24 +292,6 @@ $notif_data = array(
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
                         <button type = "button" onclick = "register_brg_pindah()" class = "btn btn-sm btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<div class = "modal fade" id = "exit_confirmation">
-    <div class = "modal-dialog modal-center">
-        <div class = "modal-content">
-            <div class = "modal-header">
-                <h4>Exit Confirmation</h4>
-            </div>
-            <div class = "modal-body">
-                <form method = "POST" id = "register_brg_pindah_form">
-                    <h5>Apakah ingin menutup halaman ini? segala yang telah diisi tidak dapat dikembalikan</h5>
-                    <div class = "form-group">
-                        <button type = "button" onclick = "close()" class = "btn btn-sm btn-danger">Exit</button>
-                        <button type = "button" data-dismiss = "modal" class = "btn btn-sm btn-primary">Cancel</button>
                     </div>
                 </form>
             </div>
