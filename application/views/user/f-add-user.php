@@ -62,7 +62,7 @@
                     var html = "";
                     if(respond["content"].length > 0){
                         for(var a = 0; a<respond["content"].length; a++){
-                            if(respond["content"][a]["status"] == "AKTIF"){
+                            if(respond["content"][a]["status"].toLowerCase() == "aktif"){
                                 html += "<tr><td>"+respond["content"][a]["menu_display"].toUpperCase()+"</td></tr>";
                             }
                         }

@@ -41,6 +41,7 @@ class Toko extends CI_Controller{
                 else{
                     $response["content"][$a]["logo"] = "-";
                 }
+                $response["content"][$a]["logo_file"] = $result["data"][$a]["toko_logo"];
                 $response["content"][$a]["nama"] = $result["data"][$a]["toko_nama"];
                 $response["content"][$a]["kode"] = $result["data"][$a]["toko_kode"];
                 $response["content"][$a]["status"] = $result["data"][$a]["toko_status"];

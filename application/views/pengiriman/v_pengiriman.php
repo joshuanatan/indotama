@@ -20,6 +20,13 @@ $breadcrumb = array(
             <?php $this->load->view('req/mm_menubar.php');?>
 
             <div class="page-wrapper">
+            
+            <?php $this->load->view('_notification/register_success',$notif_data); ?>
+            <?php $this->load->view('_notification/update_success',$notif_data); ?>
+            <?php $this->load->view('_notification/delete_success',$notif_data); ?>
+            <?php $this->load->view('_notification/register_error',$notif_data); ?>
+            <?php $this->load->view('_notification/update_error',$notif_data); ?>
+            <?php $this->load->view('_notification/delete_error',$notif_data); ?>
                 <div class="container-fluid">
                     <div class="row mt-20">
                         <div class="col-lg-12 col-sm-12">
@@ -43,6 +50,15 @@ $breadcrumb = array(
                                 <div class="panel-wrapper collapse in">
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
+                                            <div class = "form-inline">
+                                                <select class = "form-control form-sm" id = "tipe_penerimaan" style = "width:20%">
+                                                    <option value = "pembelian">Pengiriman Penjualan</option>
+                                                    <option value = "permintaan" <?php if($tipe == "permintaan") echo "selected";?>>Pengiriman Pemberian</option>
+                                                    <option value = "retur" <?php if($tipe == "retur") echo "selected";?>>Pengiriman Retur</option>
+                                                </select>
+                                                <button type = "button" onclick = "redirect_tipe_penerimaan()" class = "btn btn-primary btn-sm">Buka</button>
+                                            </div>
+                                            <br/>
                                             <div class = "d-block">
                                                 <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#register_modal" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
                                             </div>

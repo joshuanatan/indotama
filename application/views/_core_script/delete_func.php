@@ -7,10 +7,10 @@
             dataType:"JSON",
             success:function(respond){
                 if(respond["status"] == "SUCCESS"){
+                    $('#notif_delete_success').show(1).delay(2000).hide(1);
                     $("#delete_modal").modal("hide");
                     refresh(page);
                     //notification
-                    $('#notif_delete_success').show(1).delay(2000).hide(1);
                 }
                 if(respond["status"] == "ERROR"){
                     $('#delete_error_msg').empty();

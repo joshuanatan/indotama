@@ -23,6 +23,7 @@
                     </div>
                     <div class = "form-group">
                         <h5>Logo Toko</h5>
+                        <input type = "hidden" class = "form-control" name = "logo_current" id = "logo_current_edit">
                         <input type = "file" class = "form-control" name = "logo">
                     </div>
                     <div class = "form-group">
@@ -40,6 +41,7 @@
         $("#id_edit").val(content[id]["id"]);
         $("#nama_edit").val(content[id]["nama"]);
         $("#kode_edit").val(content[id]["kode"]);
+        $("#logo_current_edit").val(content[id]["logo_file"]);
     }
     function update_func(){
         var form = $("#update_form")[0];
