@@ -2,10 +2,10 @@
 -- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
--- 主机： 127.0.0.1
--- 生成日期： 2020-06-22 05:11:58
--- 服务器版本： 10.4.11-MariaDB
--- PHP 版本： 7.4.3
+-- Host: 127.0.0.1
+-- Generation Time: Jun 22, 2020 at 09:46 AM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,13 +19,14 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- 数据库： `indotama`
+-- Database: `indotama`
 --
 
 DELIMITER $$
 --
--- 存储过程
+-- Procedures
 --
+DROP PROCEDURE IF EXISTS `check_and_auto_insert_brg_cabang`$$
 CREATE PROCEDURE `check_and_auto_insert_brg_cabang` (IN `id_fk_brg_in` INT, IN `id_fk_cabang_in` INT, IN `id_create_data_in` INT)  begin
             set @a = "";
             select count(id_pk_brg_cabang) into @a from tbl_brg_cabang where id_fk_brg = id_fk_brg_in and id_fk_cabang = id_fk_cabang_in;
@@ -37,11 +38,13 @@ CREATE PROCEDURE `check_and_auto_insert_brg_cabang` (IN `id_fk_brg_in` INT, IN `
             end if;
         end$$
 
+DROP PROCEDURE IF EXISTS `insert_log_all`$$
 CREATE PROCEDURE `insert_log_all` (IN `id_user` INT, IN `log_date` DATETIME, IN `log_text` VARCHAR(100), OUT `id_log_all` INT)  begin
 	insert into log_all(id_user,log_date,log) values(id_user,log_date,log_text);
     select last_insert_id() into id_log_all ;
 end$$
 
+DROP PROCEDURE IF EXISTS `ubah_satuan_barang`$$
 CREATE PROCEDURE `ubah_satuan_barang` (IN `id_satuan_in` INT, INOUT `brg_qty` DOUBLE)  begin
             declare conversion_exp varchar(20);
             select satuan_rumus 
@@ -53,6 +56,7 @@ CREATE PROCEDURE `ubah_satuan_barang` (IN `id_satuan_in` INT, INOUT `brg_qty` DO
             
         end$$
 
+DROP PROCEDURE IF EXISTS `update_stok_barang_cabang`$$
 CREATE PROCEDURE `update_stok_barang_cabang` (IN `id_barang` INT, IN `id_cabang` INT, IN `barang_masuk` DOUBLE, IN `id_satuan_masuk` INT, IN `barang_keluar` DOUBLE, IN `id_satuan_keluar` INT)  begin
             /*
             the logic is
@@ -74,6 +78,7 @@ CREATE PROCEDURE `update_stok_barang_cabang` (IN `id_barang` INT, IN `id_cabang`
 
         end$$
 
+DROP PROCEDURE IF EXISTS `update_stok_barang_warehouse`$$
 CREATE PROCEDURE `update_stok_barang_warehouse` (IN `id_barang` INT, IN `id_warehouse` INT, IN `barang_masuk` DOUBLE, IN `id_satuan_masuk` INT, IN `barang_keluar` DOUBLE, IN `id_satuan_keluar` INT)  begin
             /*
             the logic is
@@ -92,6 +97,7 @@ CREATE PROCEDURE `update_stok_barang_warehouse` (IN `id_barang` INT, IN `id_ware
             where id_fk_brg = id_barang and id_fk_warehouse = id_warehouse;
         end$$
 
+DROP PROCEDURE IF EXISTS `update_stok_kombinasi_barang_cabang`$$
 CREATE PROCEDURE `update_stok_kombinasi_barang_cabang` (IN `id_barang_utama_in` INT, IN `qty_brg_masuk_in` DOUBLE, IN `qty_brg_keluar_in` DOUBLE, IN `id_cabang_in` INT)  begin
             update tbl_barang_kombinasi
             inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_barang_kombinasi.id_barang_kombinasi
@@ -99,6 +105,7 @@ CREATE PROCEDURE `update_stok_kombinasi_barang_cabang` (IN `id_barang_utama_in` 
             where id_barang_utama = id_barang_utama_in and id_fk_cabang = id_cabang_in and barang_kombinasi_status = 'aktif';
         end$$
 
+DROP PROCEDURE IF EXISTS `use_combinasi_barang`$$
 CREATE PROCEDURE `use_combinasi_barang` (IN `id_barang_utama_in` INT, IN `qty_brg_masuk_in` DOUBLE, IN `id_cabang_in` INT, IN `jenis_transaksi` VARCHAR(15))  begin
 	if jenis_transaksi = "penerimaan"
     then 
@@ -120,9 +127,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `log_all`
+-- Table structure for table `log_all`
 --
 
+DROP TABLE IF EXISTS `log_all`;
 CREATE TABLE `log_all` (
   `id_log_all` int(11) NOT NULL,
   `id_user` int(11) DEFAULT NULL,
@@ -131,7 +139,7 @@ CREATE TABLE `log_all` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `log_all`
+-- Dumping data for table `log_all`
 --
 
 INSERT INTO `log_all` (`id_log_all`, `id_user`, `log_date`, `log`) VALUES
@@ -481,14 +489,176 @@ INSERT INTO `log_all` (`id_log_all`, `id_user`, `log_date`, `log`) VALUES
 (344, 1, '2020-06-22 10:05:28', '1 update data at2020-06-22 10:05:28'),
 (345, 1, '2020-06-22 10:05:28', '1 update data at2020-06-22 10:05:28'),
 (346, 1, '2020-06-22 10:05:28', '1 update data at2020-06-22 10:05:28'),
-(347, 1, '2020-06-22 10:05:28', '1 update data at2020-06-22 10:05:28');
+(347, 1, '2020-06-22 10:05:28', '1 update data at2020-06-22 10:05:28'),
+(348, 1, '2020-06-22 10:24:24', '1 insert data at2020-06-22 10:24:24'),
+(349, 1, '2020-06-22 10:24:24', '1 insert data at2020-06-22 10:24:24'),
+(350, 1, '2020-06-22 08:07:23', '1 update data at 2020-06-22 08:07:23'),
+(351, 1, '2020-06-22 08:08:55', '1 update data at 2020-06-22 08:08:55'),
+(352, 1, '2020-06-22 08:10:02', '1 update data at 2020-06-22 08:10:02'),
+(353, 1, '2020-06-22 10:24:24', '1 insert data at2020-06-22 10:24:24'),
+(354, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(355, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(356, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(357, 1, '2020-06-22 10:24:24', '1 insert data at2020-06-22 10:24:24'),
+(358, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(359, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(360, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(361, 1, '2020-06-22 10:24:37', '1 update data at2020-06-22 10:24:37'),
+(362, 1, '2020-06-22 10:24:37', '1 update data at2020-06-22 10:24:37'),
+(363, 1, '2020-06-22 08:07:23', '1 update data at 2020-06-22 08:07:23'),
+(364, 1, '2020-06-22 08:08:55', '1 update data at 2020-06-22 08:08:55'),
+(365, 1, '2020-06-22 08:10:02', '1 update data at 2020-06-22 08:10:02'),
+(366, 1, '2020-06-22 10:24:37', '1 update data at2020-06-22 10:24:37'),
+(367, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(368, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(369, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(370, 1, '2020-06-22 10:24:37', '1 update data at2020-06-22 10:24:37'),
+(371, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(372, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(373, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(374, 1, '2020-06-22 10:29:40', '1 update data at2020-06-22 10:29:40'),
+(375, 1, '2020-06-22 10:29:40', '1 update data at2020-06-22 10:29:40'),
+(376, 1, '2020-06-22 08:07:23', '1 update data at 2020-06-22 08:07:23'),
+(377, 1, '2020-06-22 08:08:55', '1 update data at 2020-06-22 08:08:55'),
+(378, 1, '2020-06-22 08:10:02', '1 update data at 2020-06-22 08:10:02'),
+(379, 1, '2020-06-22 10:29:40', '1 update data at2020-06-22 10:29:40'),
+(380, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(381, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(382, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(383, 1, '2020-06-22 10:29:40', '1 update data at2020-06-22 10:29:40'),
+(384, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(385, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(386, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(387, 1, '2020-06-22 10:48:36', '1 insert data at2020-06-22 10:48:36'),
+(388, 1, '2020-06-22 10:48:36', '1 insert data at2020-06-22 10:48:36'),
+(389, 1, '2020-06-22 08:07:23', '1 update data at 2020-06-22 08:07:23'),
+(390, 1, '2020-06-22 08:08:55', '1 update data at 2020-06-22 08:08:55'),
+(391, 1, '2020-06-22 08:10:02', '1 update data at 2020-06-22 08:10:02'),
+(392, 1, '2020-06-22 10:48:36', '1 insert data at2020-06-22 10:48:36'),
+(393, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(394, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(395, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(396, 1, '2020-06-22 10:48:36', '1 insert data at2020-06-22 10:48:36'),
+(397, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(398, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(399, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(400, 1, '2020-06-22 10:48:48', '1 insert data at2020-06-22 10:48:48'),
+(401, 1, '2020-06-22 10:48:48', '1 insert data at2020-06-22 10:48:48'),
+(402, 1, '2020-06-22 08:07:23', '1 update data at 2020-06-22 08:07:23'),
+(403, 1, '2020-06-22 08:08:55', '1 update data at 2020-06-22 08:08:55'),
+(404, 1, '2020-06-22 08:10:02', '1 update data at 2020-06-22 08:10:02'),
+(405, 1, '2020-06-22 10:48:48', '1 insert data at2020-06-22 10:48:48'),
+(406, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(407, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(408, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(409, 1, '2020-06-22 10:48:48', '1 insert data at2020-06-22 10:48:48'),
+(410, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(411, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(412, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(413, 1, '2020-06-22 10:50:14', '1 update data at2020-06-22 10:50:14'),
+(414, 1, '2020-06-22 10:50:14', '1 update data at2020-06-22 10:50:14'),
+(415, 1, '2020-06-22 08:07:23', '1 update data at 2020-06-22 08:07:23'),
+(416, 1, '2020-06-22 08:08:55', '1 update data at 2020-06-22 08:08:55'),
+(417, 1, '2020-06-22 08:10:02', '1 update data at 2020-06-22 08:10:02'),
+(418, 1, '2020-06-22 10:50:14', '1 update data at2020-06-22 10:50:14'),
+(419, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(420, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(421, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(422, 1, '2020-06-22 10:50:14', '1 update data at2020-06-22 10:50:14'),
+(423, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(424, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(425, 1, '2020-06-22 08:26:28', '1 update data at 2020-06-22 08:26:28'),
+(426, 1, '2020-06-22 10:52:54', '1 insert data at 2020-06-22 10:52:54'),
+(427, 1, '2020-06-22 10:52:54', '1 insert data at 2020-06-22 10:52:54'),
+(428, 1, '2020-06-22 10:52:54', '1 insert data at 2020-06-22 10:52:54'),
+(429, 1, '2020-06-22 10:52:54', '1 insert data at2020-06-22 10:52:54'),
+(430, 1, '2020-06-22 10:54:41', '1 update data at 2020-06-22 10:54:41'),
+(431, 1, '2020-06-22 10:54:41', '1 update data at 2020-06-22 10:54:41'),
+(432, 1, '2020-06-22 10:54:41', '1 update data at 2020-06-22 10:54:41'),
+(433, 1, '2020-06-22 10:54:41', '1 update data at2020-06-22 10:54:41'),
+(434, 1, '2020-06-22 10:59:26', '1 insert data at2020-06-22 10:59:26'),
+(435, 1, '2020-06-22 10:59:26', '1 insert data at2020-06-22 10:59:26'),
+(436, 1, '2020-06-22 11:02:12', '1 insert data at2020-06-22 11:02:12'),
+(437, 1, '2020-06-22 11:03:50', '1 update data at2020-06-22 11:03:50'),
+(438, 1, '2020-06-22 10:59:26', '1 update data at2020-06-22 10:59:26'),
+(439, 1, '2020-06-22 11:53:18', '1 insert data at 2020-06-22 11:53:18'),
+(440, 1, '2020-06-22 11:53:39', '1 update data at 2020-06-22 11:53:39'),
+(441, 1, '2020-06-22 11:56:00', '1 insert data at2020-06-22 11:56:00'),
+(442, 1, '2020-06-22 11:59:26', '1 insert data at2020-06-22 11:59:26'),
+(443, 1, '2020-06-22 12:32:52', '1 insert data at2020-06-22 12:32:52'),
+(444, 1, '2020-06-22 12:32:52', '1 insert data at2020-06-22 12:32:52'),
+(445, 1, '2020-06-22 12:32:52', '1 insert data at2020-06-22 12:32:52'),
+(446, 1, '2020-06-22 12:32:52', '1 insert data at2020-06-22 12:32:52'),
+(447, 1, '2020-06-22 12:32:52', '1 insert data at2020-06-22 12:32:52'),
+(448, 1, '2020-06-22 12:33:02', '1 update data at 2020-06-22 12:33:02'),
+(449, 1, '2020-06-21 11:28:57', '1 update data at2020-06-21 11:28:57'),
+(450, 1, '2020-06-21 11:28:57', '1 update data at2020-06-21 11:28:57'),
+(451, 1, '2020-06-21 11:38:11', '1 update data at2020-06-21 11:38:11'),
+(452, 1, '2020-06-21 11:38:23', '1 update data at2020-06-21 11:38:23'),
+(453, 1, '2020-06-21 11:38:35', '1 update data at2020-06-21 11:38:35'),
+(454, 1, '2020-06-21 11:38:44', '1 update data at2020-06-21 11:38:44'),
+(455, 1, '2020-06-21 11:38:54', '1 update data at2020-06-21 11:38:54'),
+(456, 1, '2020-06-21 11:39:36', '1 update data at2020-06-21 11:39:36'),
+(457, 1, '2020-06-21 11:40:07', '1 update data at2020-06-21 11:40:07'),
+(458, 1, '2020-06-21 11:40:52', '1 update data at2020-06-21 11:40:52'),
+(459, 1, '2020-06-21 11:41:04', '1 update data at2020-06-21 11:41:04'),
+(460, 1, '2020-06-21 11:41:23', '1 update data at2020-06-21 11:41:23'),
+(461, 1, '2020-06-21 11:41:33', '1 update data at2020-06-21 11:41:33'),
+(462, 1, '2020-06-21 11:41:42', '1 update data at2020-06-21 11:41:42'),
+(463, 1, '2020-06-21 11:41:58', '1 update data at2020-06-21 11:41:58'),
+(464, 1, '2020-06-21 11:42:07', '1 update data at2020-06-21 11:42:07'),
+(465, 1, '2020-06-21 11:42:16', '1 update data at2020-06-21 11:42:16'),
+(466, 1, '2020-06-21 11:42:28', '1 update data at2020-06-21 11:42:28'),
+(467, 1, '2020-06-21 11:42:37', '1 update data at2020-06-21 11:42:37'),
+(468, 1, '2020-06-22 12:12:04', '1 update data at2020-06-22 12:12:04'),
+(469, 1, '2020-06-22 07:50:23', '1 update data at2020-06-22 07:50:23'),
+(470, 1, '2020-06-22 12:32:52', '1 update data at2020-06-22 12:32:52'),
+(471, 1, '2020-06-21 11:28:57', '1 update data at2020-06-21 11:28:57'),
+(472, 1, '2020-06-21 11:28:57', '1 update data at2020-06-21 11:28:57'),
+(473, 1, '2020-06-21 11:38:11', '1 update data at2020-06-21 11:38:11'),
+(474, 1, '2020-06-21 11:38:23', '1 update data at2020-06-21 11:38:23'),
+(475, 1, '2020-06-21 11:38:35', '1 update data at2020-06-21 11:38:35'),
+(476, 1, '2020-06-21 11:38:44', '1 update data at2020-06-21 11:38:44'),
+(477, 1, '2020-06-21 11:38:54', '1 update data at2020-06-21 11:38:54'),
+(478, 1, '2020-06-21 11:39:36', '1 update data at2020-06-21 11:39:36'),
+(479, 1, '2020-06-21 11:40:07', '1 update data at2020-06-21 11:40:07'),
+(480, 1, '2020-06-21 11:40:52', '1 update data at2020-06-21 11:40:52'),
+(481, 1, '2020-06-21 11:41:04', '1 update data at2020-06-21 11:41:04'),
+(482, 1, '2020-06-21 11:41:23', '1 update data at2020-06-21 11:41:23'),
+(483, 1, '2020-06-21 11:41:33', '1 update data at2020-06-21 11:41:33'),
+(484, 1, '2020-06-21 11:41:42', '1 update data at2020-06-21 11:41:42'),
+(485, 1, '2020-06-21 11:41:58', '1 update data at2020-06-21 11:41:58'),
+(486, 1, '2020-06-21 11:42:07', '1 update data at2020-06-21 11:42:07'),
+(487, 1, '2020-06-21 11:42:16', '1 update data at2020-06-21 11:42:16'),
+(488, 1, '2020-06-21 11:42:28', '1 update data at2020-06-21 11:42:28'),
+(489, 1, '2020-06-21 11:42:37', '1 update data at2020-06-21 11:42:37'),
+(490, 1, '2020-06-22 12:12:04', '1 update data at2020-06-22 12:12:04'),
+(491, 1, '2020-06-22 12:32:52', '1 update data at2020-06-22 12:32:52'),
+(492, 1, '2020-06-22 12:33:51', '1 update data at2020-06-22 12:33:51'),
+(493, 1, '2020-06-22 12:42:09', '1 update data at 2020-06-22 12:42:09'),
+(494, 1, '2020-06-22 12:43:35', '1 insert data at 2020-06-22 12:43:35'),
+(495, 1, '2020-06-22 12:43:35', '1 insert data at 2020-06-22 12:43:35'),
+(496, 1, '2020-06-22 12:43:35', '1 insert data at 2020-06-22 12:43:35'),
+(497, 1, '2020-06-22 12:43:35', '1 insert data at 2020-06-22 12:43:35'),
+(498, 1, '2020-06-22 12:43:35', '1 insert data at 2020-06-22 12:43:35'),
+(499, 1, '2020-06-22 08:37:11', '1 update data at 2020-06-22 08:37:11'),
+(500, 1, '2020-06-22 08:37:11', '1 insert data at 2020-06-22 08:37:11'),
+(501, 1, '2020-06-22 08:55:25', '1 update data at 2020-06-22 08:55:25'),
+(502, 1, '2020-06-22 08:55:25', '1 insert data at 2020-06-22 08:55:25'),
+(503, 1, NULL, NULL),
+(504, 1, '2020-06-22 02:19:54', '1 update data at 2020-06-22 02:19:54'),
+(505, 1, '2020-06-22 09:20:19', '1 update data at 2020-06-22 09:20:19'),
+(506, 1, '2020-06-22 09:20:19', '1 insert data at 2020-06-22 09:20:19'),
+(507, 1, '2020-06-22 02:20:24', '1 update data at 2020-06-22 02:20:24'),
+(508, 1, '2020-06-22 02:21:14', '1 update data at 2020-06-22 02:21:14');
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_barang`
+-- Table structure for table `mstr_barang`
 --
 
+DROP TABLE IF EXISTS `mstr_barang`;
 CREATE TABLE `mstr_barang` (
   `id_pk_brg` int(11) NOT NULL,
   `brg_kode` varchar(50) DEFAULT NULL,
@@ -508,17 +678,20 @@ CREATE TABLE `mstr_barang` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_barang`
+-- Dumping data for table `mstr_barang`
 --
 
 INSERT INTO `mstr_barang` (`id_pk_brg`, `brg_kode`, `brg_nama`, `brg_ket`, `brg_minimal`, `brg_satuan`, `brg_image`, `brg_harga`, `brg_status`, `brg_create_date`, `brg_last_modified`, `id_create_data`, `id_last_modified`, `id_fk_brg_jenis`, `id_fk_brg_merk`) VALUES
 (1, 'BARANG 1', 'BARANG 1', '-', 10, 'PCS', '-', 20000, 'AKTIF', '2020-06-22 08:03:15', '2020-06-22 08:03:15', 1, 1, 1, 1),
 (2, 'BARANG 2', 'BARANG 2', '-', 10, 'PCS', '-', 20000, 'AKTIF', '2020-06-22 08:03:23', '2020-06-22 08:03:23', 1, 1, 2, 2),
-(3, 'BARANG 3', 'BARANG 3', '-', 10, 'PCS', '-', 20000, 'AKTIF', '2020-06-22 08:03:32', '2020-06-22 08:03:32', 1, 1, 3, 3);
+(3, 'BARANG 3', 'BARANG 3', '-', 10, 'PCS', '-', 20000, 'AKTIF', '2020-06-22 08:03:32', '2020-06-22 08:03:32', 1, 1, 3, 3),
+(4, 'BARANG 4', 'BARANG 4', '-', 10, 'PCS', '-', 20000, 'AKTIF', '2020-06-22 10:59:26', '2020-06-22 10:59:26', 1, 1, 1, 3),
+(5, 'BARANG 5', 'BARANG 5', '-', 10, 'PCS', '-', 20000, 'AKTIF', '2020-06-22 11:02:12', '2020-06-22 11:02:12', 1, 1, 1, 3);
 
 --
--- 触发器 `mstr_barang`
+-- Triggers `mstr_barang`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_barang`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_barang` AFTER INSERT ON `mstr_barang` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -531,6 +704,7 @@ CREATE TRIGGER `trg_after_insert_barang` AFTER INSERT ON `mstr_barang` FOR EACH 
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_barang`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_barang` AFTER UPDATE ON `mstr_barang` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -547,9 +721,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_barang_jenis`
+-- Table structure for table `mstr_barang_jenis`
 --
 
+DROP TABLE IF EXISTS `mstr_barang_jenis`;
 CREATE TABLE `mstr_barang_jenis` (
   `id_pk_brg_jenis` int(11) NOT NULL,
   `brg_jenis_nama` varchar(100) DEFAULT NULL,
@@ -561,7 +736,7 @@ CREATE TABLE `mstr_barang_jenis` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_barang_jenis`
+-- Dumping data for table `mstr_barang_jenis`
 --
 
 INSERT INTO `mstr_barang_jenis` (`id_pk_brg_jenis`, `brg_jenis_nama`, `brg_jenis_status`, `brg_jenis_create_date`, `brg_jenis_last_modified`, `id_create_data`, `id_last_modified`) VALUES
@@ -570,8 +745,9 @@ INSERT INTO `mstr_barang_jenis` (`id_pk_brg_jenis`, `brg_jenis_nama`, `brg_jenis
 (3, 'JENIS 3', 'AKTIF', '2020-06-22 08:03:32', '2020-06-22 08:03:32', 1, 1);
 
 --
--- 触发器 `mstr_barang_jenis`
+-- Triggers `mstr_barang_jenis`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_barang_jenis`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_barang_jenis` AFTER INSERT ON `mstr_barang_jenis` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -583,6 +759,7 @@ CREATE TRIGGER `trg_after_insert_barang_jenis` AFTER INSERT ON `mstr_barang_jeni
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_barang_jenis`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_barang_jenis` AFTER UPDATE ON `mstr_barang_jenis` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -598,9 +775,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_barang_jenis_log`
+-- Table structure for table `mstr_barang_jenis_log`
 --
 
+DROP TABLE IF EXISTS `mstr_barang_jenis_log`;
 CREATE TABLE `mstr_barang_jenis_log` (
   `id_pk_brg_jenis_log` int(11) NOT NULL,
   `executed_function` varchar(20) DEFAULT NULL,
@@ -615,7 +793,7 @@ CREATE TABLE `mstr_barang_jenis_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_barang_jenis_log`
+-- Dumping data for table `mstr_barang_jenis_log`
 --
 
 INSERT INTO `mstr_barang_jenis_log` (`id_pk_brg_jenis_log`, `executed_function`, `id_pk_brg_jenis`, `brg_jenis_nama`, `brg_jenis_status`, `brg_jenis_create_date`, `brg_jenis_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -626,9 +804,10 @@ INSERT INTO `mstr_barang_jenis_log` (`id_pk_brg_jenis_log`, `executed_function`,
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_barang_log`
+-- Table structure for table `mstr_barang_log`
 --
 
+DROP TABLE IF EXISTS `mstr_barang_log`;
 CREATE TABLE `mstr_barang_log` (
   `id_pk_brg_log` int(11) NOT NULL,
   `executed_function` varchar(20) DEFAULT NULL,
@@ -651,20 +830,24 @@ CREATE TABLE `mstr_barang_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_barang_log`
+-- Dumping data for table `mstr_barang_log`
 --
 
 INSERT INTO `mstr_barang_log` (`id_pk_brg_log`, `executed_function`, `id_pk_brg`, `brg_kode`, `brg_nama`, `brg_ket`, `brg_minimal`, `brg_satuan`, `brg_image`, `brg_harga`, `brg_status`, `brg_create_date`, `brg_last_modified`, `id_create_data`, `id_last_modified`, `id_fk_brg_jenis`, `id_fk_brg_merk`, `id_log_all`) VALUES
 (1, 'after insert', 1, 'BARANG 1', 'BARANG 1', '-', 10, 'PCS', '-', 20000, 'AKTIF', '2020-06-22 08:03:15', '2020-06-22 08:03:15', 1, 1, 1, 1, 211),
 (2, 'after insert', 2, 'BARANG 2', 'BARANG 2', '-', 10, 'PCS', '-', 20000, 'AKTIF', '2020-06-22 08:03:23', '2020-06-22 08:03:23', 1, 1, 2, 2, 214),
-(3, 'after insert', 3, 'BARANG 3', 'BARANG 3', '-', 10, 'PCS', '-', 20000, 'AKTIF', '2020-06-22 08:03:32', '2020-06-22 08:03:32', 1, 1, 3, 3, 217);
+(3, 'after insert', 3, 'BARANG 3', 'BARANG 3', '-', 10, 'PCS', '-', 20000, 'AKTIF', '2020-06-22 08:03:32', '2020-06-22 08:03:32', 1, 1, 3, 3, 217),
+(4, 'after insert', 4, 'BARANG 4', 'BARANG 4', '-', 10, 'PCS', '-', 20000, 'AKTIF', '2020-06-22 10:59:26', '2020-06-22 10:59:26', 1, 1, 1, 4, 435),
+(5, 'after insert', 5, 'BARANG 5', 'BARANG 5', '-', 10, 'PCS', '-', 20000, 'AKTIF', '2020-06-22 11:02:12', '2020-06-22 11:02:12', 1, 1, 1, 3, 436),
+(6, 'after update', 4, 'BARANG 4', 'BARANG 4', '-', 10, 'PCS', '-', 20000, 'AKTIF', '2020-06-22 10:59:26', '2020-06-22 10:59:26', 1, 1, 1, 3, 438);
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_barang_merk`
+-- Table structure for table `mstr_barang_merk`
 --
 
+DROP TABLE IF EXISTS `mstr_barang_merk`;
 CREATE TABLE `mstr_barang_merk` (
   `id_pk_brg_merk` int(11) NOT NULL,
   `brg_merk_nama` varchar(100) DEFAULT NULL,
@@ -676,17 +859,19 @@ CREATE TABLE `mstr_barang_merk` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_barang_merk`
+-- Dumping data for table `mstr_barang_merk`
 --
 
 INSERT INTO `mstr_barang_merk` (`id_pk_brg_merk`, `brg_merk_nama`, `brg_merk_status`, `brg_merk_create_date`, `brg_merk_last_modified`, `id_create_data`, `id_last_modified`) VALUES
 (1, 'MERK 1', 'AKTIF', '2020-06-22 08:03:15', '2020-06-22 08:03:15', 1, 1),
 (2, 'MERK 2', 'AKTIF', '2020-06-22 08:03:23', '2020-06-22 08:03:23', 1, 1),
-(3, 'MERK 3', 'AKTIF', '2020-06-22 08:03:32', '2020-06-22 08:03:32', 1, 1);
+(3, 'MERK 3', 'AKTIF', '2020-06-22 08:03:32', '2020-06-22 08:03:32', 1, 1),
+(4, 'MERK 2', 'nonaktif', '2020-06-22 10:59:26', '2020-06-22 11:03:50', 1, 1);
 
 --
--- 触发器 `mstr_barang_merk`
+-- Triggers `mstr_barang_merk`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_barang_merk`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_barang_merk` AFTER INSERT ON `mstr_barang_merk` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -698,6 +883,7 @@ CREATE TRIGGER `trg_after_insert_barang_merk` AFTER INSERT ON `mstr_barang_merk`
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_barang_merk`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_barang_merk` AFTER UPDATE ON `mstr_barang_merk` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -713,9 +899,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_barang_merk_log`
+-- Table structure for table `mstr_barang_merk_log`
 --
 
+DROP TABLE IF EXISTS `mstr_barang_merk_log`;
 CREATE TABLE `mstr_barang_merk_log` (
   `id_pk_brg_merk_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -730,20 +917,23 @@ CREATE TABLE `mstr_barang_merk_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_barang_merk_log`
+-- Dumping data for table `mstr_barang_merk_log`
 --
 
 INSERT INTO `mstr_barang_merk_log` (`id_pk_brg_merk_log`, `executed_function`, `id_pk_brg_merk`, `brg_merk_nama`, `brg_merk_status`, `brg_merk_create_date`, `brg_merk_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
 (1, 'after insert', 1, 'MERK 1', 'AKTIF', '2020-06-22 08:03:15', '2020-06-22 08:03:15', 1, 1, 210),
 (2, 'after insert', 2, 'MERK 2', 'AKTIF', '2020-06-22 08:03:23', '2020-06-22 08:03:23', 1, 1, 213),
-(3, 'after insert', 3, 'MERK 3', 'AKTIF', '2020-06-22 08:03:32', '2020-06-22 08:03:32', 1, 1, 216);
+(3, 'after insert', 3, 'MERK 3', 'AKTIF', '2020-06-22 08:03:32', '2020-06-22 08:03:32', 1, 1, 216),
+(4, 'after insert', 4, 'MERK 2', 'AKTIF', '2020-06-22 10:59:26', '2020-06-22 10:59:26', 1, 1, 434),
+(5, 'after update', 4, 'MERK 2', 'nonaktif', '2020-06-22 10:59:26', '2020-06-22 11:03:50', 1, 1, 437);
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_cabang`
+-- Table structure for table `mstr_cabang`
 --
 
+DROP TABLE IF EXISTS `mstr_cabang`;
 CREATE TABLE `mstr_cabang` (
   `id_pk_cabang` int(11) NOT NULL,
   `cabang_daerah` varchar(50) DEFAULT NULL,
@@ -758,15 +948,17 @@ CREATE TABLE `mstr_cabang` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_cabang`
+-- Dumping data for table `mstr_cabang`
 --
 
 INSERT INTO `mstr_cabang` (`id_pk_cabang`, `cabang_daerah`, `cabang_notelp`, `cabang_alamat`, `cabang_status`, `cabang_create_date`, `cabang_last_modified`, `id_create_data`, `id_last_modified`, `id_fk_toko`) VALUES
-(1, 'TAMAN ANGGREK', '12345678', 'Taman Anggrek Tanjung Duren', 'AKTIF', '2020-06-21 11:44:49', '2020-06-21 11:44:49', 1, 1, 1);
+(1, 'TAMAN ANGGREK', '12345678', 'Taman Anggrek Tanjung Duren', 'AKTIF', '2020-06-21 11:44:49', '2020-06-21 11:44:49', 1, 1, 1),
+(2, 'KOTA', '123456789', 'Ruko Boulevard Blok A3', 'AKTIF', '2020-06-22 11:56:00', '2020-06-22 11:56:00', 1, 1, 1);
 
 --
--- 触发器 `mstr_cabang`
+-- Triggers `mstr_cabang`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_cabang`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_cabang` AFTER INSERT ON `mstr_cabang` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -778,6 +970,7 @@ CREATE TRIGGER `trg_after_insert_cabang` AFTER INSERT ON `mstr_cabang` FOR EACH 
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_cabang`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_cabang` AFTER UPDATE ON `mstr_cabang` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -793,9 +986,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_cabang_log`
+-- Table structure for table `mstr_cabang_log`
 --
 
+DROP TABLE IF EXISTS `mstr_cabang_log`;
 CREATE TABLE `mstr_cabang_log` (
   `id_pk_cabang_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -813,18 +1007,20 @@ CREATE TABLE `mstr_cabang_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_cabang_log`
+-- Dumping data for table `mstr_cabang_log`
 --
 
 INSERT INTO `mstr_cabang_log` (`id_pk_cabang_log`, `executed_function`, `id_pk_cabang`, `cabang_daerah`, `cabang_notelp`, `cabang_alamat`, `cabang_status`, `cabang_create_date`, `cabang_last_modified`, `id_create_data`, `id_last_modified`, `id_fk_toko`, `id_log_all`) VALUES
-(1, 'after insert', 1, 'TAMAN ANGGREK', '12345678', 'Taman Anggrek Tanjung Duren', 'AKTIF', '2020-06-21 11:44:49', '2020-06-21 11:44:49', 1, 1, 1, 90);
+(1, 'after insert', 1, 'TAMAN ANGGREK', '12345678', 'Taman Anggrek Tanjung Duren', 'AKTIF', '2020-06-21 11:44:49', '2020-06-21 11:44:49', 1, 1, 1, 90),
+(2, 'after insert', 2, 'KOTA', '123456789', 'Ruko Boulevard Blok A3', 'AKTIF', '2020-06-22 11:56:00', '2020-06-22 11:56:00', 1, 1, 1, 441);
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_customer`
+-- Table structure for table `mstr_customer`
 --
 
+DROP TABLE IF EXISTS `mstr_customer`;
 CREATE TABLE `mstr_customer` (
   `id_pk_cust` int(11) NOT NULL,
   `cust_name` varchar(100) DEFAULT NULL,
@@ -844,15 +1040,16 @@ CREATE TABLE `mstr_customer` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_customer`
+-- Dumping data for table `mstr_customer`
 --
 
 INSERT INTO `mstr_customer` (`id_pk_cust`, `cust_name`, `cust_suff`, `cust_perusahaan`, `cust_email`, `cust_telp`, `cust_hp`, `cust_alamat`, `cust_keterangan`, `id_fk_toko`, `cust_status`, `cust_create_date`, `cust_last_modified`, `id_create_data`, `id_last_modified`) VALUES
 (1, NULL, NULL, 'TOTAL Construction', NULL, NULL, NULL, NULL, NULL, NULL, 'aktif', '2020-06-22 09:39:50', '2020-06-22 09:39:50', 1, 1);
 
 --
--- 触发器 `mstr_customer`
+-- Triggers `mstr_customer`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_customer`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_customer` AFTER INSERT ON `mstr_customer` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -864,6 +1061,7 @@ CREATE TRIGGER `trg_after_insert_customer` AFTER INSERT ON `mstr_customer` FOR E
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_customer`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_customer` AFTER UPDATE ON `mstr_customer` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -879,9 +1077,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_customer_log`
+-- Table structure for table `mstr_customer_log`
 --
 
+DROP TABLE IF EXISTS `mstr_customer_log`;
 CREATE TABLE `mstr_customer_log` (
   `id_pk_cust_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -904,7 +1103,7 @@ CREATE TABLE `mstr_customer_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_customer_log`
+-- Dumping data for table `mstr_customer_log`
 --
 
 INSERT INTO `mstr_customer_log` (`id_pk_cust_log`, `executed_function`, `id_pk_cust`, `cust_name`, `cust_suff`, `cust_perusahaan`, `cust_email`, `cust_telp`, `cust_hp`, `cust_alamat`, `cust_keterangan`, `id_fk_toko`, `cust_status`, `cust_create_date`, `cust_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -913,9 +1112,10 @@ INSERT INTO `mstr_customer_log` (`id_pk_cust_log`, `executed_function`, `id_pk_c
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_employee`
+-- Table structure for table `mstr_employee`
 --
 
+DROP TABLE IF EXISTS `mstr_employee`;
 CREATE TABLE `mstr_employee` (
   `id_pk_employee` int(11) NOT NULL,
   `emp_nama` varchar(400) DEFAULT NULL,
@@ -943,8 +1143,9 @@ CREATE TABLE `mstr_employee` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 触发器 `mstr_employee`
+-- Triggers `mstr_employee`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_employee`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_employee` AFTER INSERT ON `mstr_employee` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -956,6 +1157,7 @@ CREATE TRIGGER `trg_after_insert_employee` AFTER INSERT ON `mstr_employee` FOR E
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_employee`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_employee` AFTER UPDATE ON `mstr_employee` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -971,9 +1173,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_employee_log`
+-- Table structure for table `mstr_employee_log`
 --
 
+DROP TABLE IF EXISTS `mstr_employee_log`;
 CREATE TABLE `mstr_employee_log` (
   `id_pk_employee_log` int(11) NOT NULL,
   `executed_function` varchar(40) DEFAULT NULL,
@@ -1006,9 +1209,10 @@ CREATE TABLE `mstr_employee_log` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_jabatan`
+-- Table structure for table `mstr_jabatan`
 --
 
+DROP TABLE IF EXISTS `mstr_jabatan`;
 CREATE TABLE `mstr_jabatan` (
   `id_pk_jabatan` int(11) NOT NULL,
   `jabatan_nama` varchar(100) DEFAULT NULL,
@@ -1020,18 +1224,19 @@ CREATE TABLE `mstr_jabatan` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_jabatan`
+-- Dumping data for table `mstr_jabatan`
 --
 
 INSERT INTO `mstr_jabatan` (`id_pk_jabatan`, `jabatan_nama`, `jabatan_status`, `jabatan_create_date`, `jabatan_last_modified`, `id_create_data`, `id_last_modified`) VALUES
-(1, 'admin', 'AKTIF', '2020-06-21 11:28:57', '2020-06-22 07:50:39', 1, 1),
+(1, 'admin', 'AKTIF', '2020-06-21 11:28:57', '2020-06-22 12:33:02', 1, 1),
 (2, 'admin2', 'AKTIF', '2020-06-22 07:51:13', '2020-06-22 07:51:42', 1, 1),
 (3, 'admin3', 'AKTIF', '2020-06-22 07:53:15', '2020-06-22 07:53:15', 1, 1),
 (4, 'admin4', 'AKTIF', '2020-06-22 08:02:21', '2020-06-22 08:02:21', 1, 1);
 
 --
--- 触发器 `mstr_jabatan`
+-- Triggers `mstr_jabatan`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_jabatan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_jabatan` AFTER INSERT ON `mstr_jabatan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1048,6 +1253,7 @@ CREATE TRIGGER `trg_after_insert_jabatan` AFTER INSERT ON `mstr_jabatan` FOR EAC
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_jabatan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_jabatan` AFTER UPDATE ON `mstr_jabatan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1063,9 +1269,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_jabatan_log`
+-- Table structure for table `mstr_jabatan_log`
 --
 
+DROP TABLE IF EXISTS `mstr_jabatan_log`;
 CREATE TABLE `mstr_jabatan_log` (
   `id_pk_jabatan_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -1080,7 +1287,7 @@ CREATE TABLE `mstr_jabatan_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_jabatan_log`
+-- Dumping data for table `mstr_jabatan_log`
 --
 
 INSERT INTO `mstr_jabatan_log` (`id_pk_jabatan_log`, `executed_function`, `id_pk_jabatan`, `jabatan_nama`, `jabatan_status`, `jabatan_create_date`, `jabatan_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -1091,14 +1298,16 @@ INSERT INTO `mstr_jabatan_log` (`id_pk_jabatan_log`, `executed_function`, `id_pk
 (5, 'after insert', 2, 'admin2', 'AKTIF', '2020-06-22 07:51:13', '2020-06-22 07:51:13', 1, 1, 140),
 (6, 'after update', 2, 'admin2', 'AKTIF', '2020-06-22 07:51:13', '2020-06-22 07:51:42', 1, 1, 162),
 (7, 'after insert', 3, 'admin3', 'AKTIF', '2020-06-22 07:53:15', '2020-06-22 07:53:15', 1, 1, 163),
-(8, 'after insert', 4, 'admin4', 'AKTIF', '2020-06-22 08:02:21', '2020-06-22 08:02:21', 1, 1, 185);
+(8, 'after insert', 4, 'admin4', 'AKTIF', '2020-06-22 08:02:21', '2020-06-22 08:02:21', 1, 1, 185),
+(9, 'after update', 1, 'admin', 'AKTIF', '2020-06-21 11:28:57', '2020-06-22 12:33:02', 1, 1, 448);
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_menu`
+-- Table structure for table `mstr_menu`
 --
 
+DROP TABLE IF EXISTS `mstr_menu`;
 CREATE TABLE `mstr_menu` (
   `id_pk_menu` int(11) NOT NULL,
   `menu_name` varchar(100) DEFAULT NULL,
@@ -1113,7 +1322,7 @@ CREATE TABLE `mstr_menu` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_menu`
+-- Dumping data for table `mstr_menu`
 --
 
 INSERT INTO `mstr_menu` (`id_pk_menu`, `menu_name`, `menu_display`, `menu_icon`, `menu_category`, `menu_status`, `menu_create_date`, `menu_last_modified`, `id_create_data`, `id_last_modified`) VALUES
@@ -1137,11 +1346,13 @@ INSERT INTO `mstr_menu` (`id_pk_menu`, `menu_name`, `menu_display`, `menu_icon`,
 (18, 'user', 'USER', 'edit', 'GENERAL', 'AKTIF', '2020-06-21 11:42:28', '2020-06-21 11:42:28', 1, 1),
 (19, 'warehouse', 'WAREHOUSE', 'edit', 'GENERAL', 'AKTIF', '2020-06-21 11:42:37', '2020-06-21 11:42:37', 1, 1),
 (20, 'toko/brg_cabang', 'STOK CABANG', 'edit', 'CABANG', 'AKTIF', '2020-06-22 12:12:04', '2020-06-22 12:12:04', 1, 1),
-(21, 'toko/brg_cabang', 'STOK CABANG', 'edit', 'CABANG', 'AKTIF', '2020-06-22 07:50:23', '2020-06-22 07:50:23', 1, 1);
+(21, 'toko/brg_cabang', 'STOK CABANG', 'edit', 'CABANG', 'AKTIF', '2020-06-22 07:50:23', '2020-06-22 07:50:23', 1, 1),
+(22, 'pemenuhan/cabang', 'PEMENUHAN CABANG', 'edit', 'CABANG', 'AKTIF', '2020-06-22 12:32:52', '2020-06-22 12:33:51', 1, 1);
 
 --
--- 触发器 `mstr_menu`
+-- Triggers `mstr_menu`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_menu`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_menu` AFTER INSERT ON `mstr_menu` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1158,6 +1369,7 @@ CREATE TRIGGER `trg_after_insert_menu` AFTER INSERT ON `mstr_menu` FOR EACH ROW 
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_menu`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_menu` AFTER UPDATE ON `mstr_menu` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1173,9 +1385,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_menu_log`
+-- Table structure for table `mstr_menu_log`
 --
 
+DROP TABLE IF EXISTS `mstr_menu_log`;
 CREATE TABLE `mstr_menu_log` (
   `id_pk_menu_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -1193,7 +1406,7 @@ CREATE TABLE `mstr_menu_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_menu_log`
+-- Dumping data for table `mstr_menu_log`
 --
 
 INSERT INTO `mstr_menu_log` (`id_pk_menu_log`, `executed_function`, `id_pk_menu`, `menu_name`, `menu_display`, `menu_icon`, `menu_category`, `menu_status`, `menu_create_date`, `menu_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -1219,14 +1432,17 @@ INSERT INTO `mstr_menu_log` (`id_pk_menu_log`, `executed_function`, `id_pk_menu`
 (20, 'after insert', 19, 'warehouse', 'WAREHOUSE', 'edit', 'GENERAL', 'AKTIF', '2020-06-21 11:42:37', '2020-06-21 11:42:37', 1, 1, 46),
 (21, 'after update', 2, 'roles', 'ROLE', 'edit', 'GENERAL', 'AKTIF', '2020-06-21 11:28:42', '2020-06-21 11:43:08', 1, 1, 87),
 (22, 'after insert', 20, 'toko/brg_cabang', 'STOK CABANG', 'edit', 'CABANG', 'AKTIF', '2020-06-22 12:12:04', '2020-06-22 12:12:04', 1, 1, 94),
-(23, 'after insert', 21, 'toko/brg_cabang', 'STOK CABANG', 'edit', 'CABANG', 'AKTIF', '2020-06-22 07:50:23', '2020-06-22 07:50:23', 1, 1, 96);
+(23, 'after insert', 21, 'toko/brg_cabang', 'STOK CABANG', 'edit', 'CABANG', 'AKTIF', '2020-06-22 07:50:23', '2020-06-22 07:50:23', 1, 1, 96),
+(24, 'after insert', 22, 'pemenuhan', 'PEMENUHAN CABANG', 'edit', 'CABANG', 'AKTIF', '2020-06-22 12:32:52', '2020-06-22 12:32:52', 1, 1, 443),
+(25, 'after update', 22, 'pemenuhan/cabang', 'PEMENUHAN CABANG', 'edit', 'CABANG', 'AKTIF', '2020-06-22 12:32:52', '2020-06-22 12:33:51', 1, 1, 492);
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_pembelian`
+-- Table structure for table `mstr_pembelian`
 --
 
+DROP TABLE IF EXISTS `mstr_pembelian`;
 CREATE TABLE `mstr_pembelian` (
   `id_pk_pembelian` int(11) NOT NULL,
   `pem_pk_nomor` varchar(30) DEFAULT NULL,
@@ -1241,7 +1457,7 @@ CREATE TABLE `mstr_pembelian` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_pembelian`
+-- Dumping data for table `mstr_pembelian`
 --
 
 INSERT INTO `mstr_pembelian` (`id_pk_pembelian`, `pem_pk_nomor`, `pem_tgl`, `pem_status`, `id_fk_supp`, `id_fk_cabang`, `pem_create_date`, `pem_last_modified`, `id_create_data`, `id_last_modified`) VALUES
@@ -1249,8 +1465,9 @@ INSERT INTO `mstr_pembelian` (`id_pk_pembelian`, `pem_pk_nomor`, `pem_tgl`, `pem
 (2, 'nomorpembelian2', '2000-12-22', 'AKTIF', 2, 1, '2020-06-22 08:26:28', '2020-06-22 08:27:08', 1, 1);
 
 --
--- 触发器 `mstr_pembelian`
+-- Triggers `mstr_pembelian`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_pembelian`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_pembelian` AFTER INSERT ON `mstr_pembelian` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1262,6 +1479,7 @@ CREATE TRIGGER `trg_after_insert_pembelian` AFTER INSERT ON `mstr_pembelian` FOR
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_pembelian`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_pembelian` AFTER UPDATE ON `mstr_pembelian` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1277,9 +1495,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_pembelian_log`
+-- Table structure for table `mstr_pembelian_log`
 --
 
+DROP TABLE IF EXISTS `mstr_pembelian_log`;
 CREATE TABLE `mstr_pembelian_log` (
   `id_pk_pembelian_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -1297,7 +1516,7 @@ CREATE TABLE `mstr_pembelian_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_pembelian_log`
+-- Dumping data for table `mstr_pembelian_log`
 --
 
 INSERT INTO `mstr_pembelian_log` (`id_pk_pembelian_log`, `executed_function`, `id_pk_pembelian`, `pem_pk_nomor`, `pem_tgl`, `pem_status`, `id_fk_supp`, `id_fk_cabang`, `pem_create_date`, `pem_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -1310,9 +1529,10 @@ INSERT INTO `mstr_pembelian_log` (`id_pk_pembelian_log`, `executed_function`, `i
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_penerimaan`
+-- Table structure for table `mstr_penerimaan`
 --
 
+DROP TABLE IF EXISTS `mstr_penerimaan`;
 CREATE TABLE `mstr_penerimaan` (
   `id_pk_penerimaan` int(11) NOT NULL,
   `penerimaan_tgl` datetime DEFAULT NULL,
@@ -1328,15 +1548,16 @@ CREATE TABLE `mstr_penerimaan` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_penerimaan`
+-- Dumping data for table `mstr_penerimaan`
 --
 
 INSERT INTO `mstr_penerimaan` (`id_pk_penerimaan`, `penerimaan_tgl`, `penerimaan_status`, `id_fk_pembelian`, `penerimaan_tempat`, `id_fk_warehouse`, `id_fk_cabang`, `penerimaan_create_date`, `penerimaan_last_modified`, `id_create_data`, `id_last_modified`) VALUES
 (1, '1111-11-11 00:00:00', 'nonaktif', 1, 'CABANG', NULL, 1, '2020-06-22 08:52:15', '2020-06-22 09:00:47', 1, 1);
 
 --
--- 触发器 `mstr_penerimaan`
+-- Triggers `mstr_penerimaan`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_penerimaan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_penerimaan` AFTER INSERT ON `mstr_penerimaan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1348,6 +1569,7 @@ CREATE TRIGGER `trg_after_insert_penerimaan` AFTER INSERT ON `mstr_penerimaan` F
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_penerimaan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_penerimaan` AFTER UPDATE ON `mstr_penerimaan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1363,9 +1585,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_penerimaan_log`
+-- Table structure for table `mstr_penerimaan_log`
 --
 
+DROP TABLE IF EXISTS `mstr_penerimaan_log`;
 CREATE TABLE `mstr_penerimaan_log` (
   `id_pk_penerimaan_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -1384,7 +1607,7 @@ CREATE TABLE `mstr_penerimaan_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_penerimaan_log`
+-- Dumping data for table `mstr_penerimaan_log`
 --
 
 INSERT INTO `mstr_penerimaan_log` (`id_pk_penerimaan_log`, `executed_function`, `id_pk_penerimaan`, `penerimaan_tgl`, `penerimaan_status`, `id_fk_pembelian`, `penerimaan_tempat`, `id_fk_warehouse`, `id_fk_cabang`, `penerimaan_create_date`, `penerimaan_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -1400,9 +1623,10 @@ INSERT INTO `mstr_penerimaan_log` (`id_pk_penerimaan_log`, `executed_function`, 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_pengiriman`
+-- Table structure for table `mstr_pengiriman`
 --
 
+DROP TABLE IF EXISTS `mstr_pengiriman`;
 CREATE TABLE `mstr_pengiriman` (
   `id_pk_pengiriman` int(11) NOT NULL,
   `pengiriman_tgl` datetime DEFAULT NULL,
@@ -1418,8 +1642,18 @@ CREATE TABLE `mstr_pengiriman` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 触发器 `mstr_pengiriman`
+-- Dumping data for table `mstr_pengiriman`
 --
+
+INSERT INTO `mstr_pengiriman` (`id_pk_pengiriman`, `pengiriman_tgl`, `pengiriman_status`, `id_fk_penjualan`, `pengiriman_tempat`, `id_fk_warehouse`, `id_fk_cabang`, `pengiriman_create_date`, `pengiriman_last_modified`, `id_create_data`, `id_last_modified`) VALUES
+(1, '2020-06-23 00:00:00', 'nonaktif', 1, 'cabang', NULL, 1, '2020-06-22 10:24:24', '2020-06-22 10:29:40', 1, 1),
+(2, '2020-06-23 00:00:00', 'AKTIF', 1, 'cabang', NULL, 1, '2020-06-22 10:48:36', '2020-06-22 10:50:14', 1, 1),
+(3, '2020-06-23 00:00:00', 'AKTIF', 1, 'cabang', NULL, 1, '2020-06-22 10:48:48', '2020-06-22 10:48:48', 1, 1);
+
+--
+-- Triggers `mstr_pengiriman`
+--
+DROP TRIGGER IF EXISTS `trg_after_insert_pengiriman`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_pengiriman` AFTER INSERT ON `mstr_pengiriman` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1431,6 +1665,7 @@ CREATE TRIGGER `trg_after_insert_pengiriman` AFTER INSERT ON `mstr_pengiriman` F
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_pengiriman`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_pengiriman` AFTER UPDATE ON `mstr_pengiriman` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1446,9 +1681,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_pengiriman_log`
+-- Table structure for table `mstr_pengiriman_log`
 --
 
+DROP TABLE IF EXISTS `mstr_pengiriman_log`;
 CREATE TABLE `mstr_pengiriman_log` (
   `id_pk_pengiriman_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -1466,12 +1702,25 @@ CREATE TABLE `mstr_pengiriman_log` (
   `id_log_all` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `mstr_pengiriman_log`
+--
+
+INSERT INTO `mstr_pengiriman_log` (`id_pk_pengiriman_log`, `executed_function`, `id_pk_pengiriman`, `pengiriman_tgl`, `pengiriman_status`, `id_fk_penjualan`, `pengiriman_tempat`, `id_fk_warehouse`, `id_fk_cabang`, `pengiriman_create_date`, `pengiriman_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
+(1, 'after insert', 1, '2020-06-23 00:00:00', 'AKTIF', 1, 'cabang', NULL, 1, '2020-06-22 10:24:24', '2020-06-22 10:24:24', 1, 1, 348),
+(2, 'after update', 1, '2020-06-23 00:00:00', 'AKTIF', 1, 'cabang', NULL, 1, '2020-06-22 10:24:24', '2020-06-22 10:24:37', 1, 1, 361),
+(3, 'after update', 1, '2020-06-23 00:00:00', 'nonaktif', 1, 'cabang', NULL, 1, '2020-06-22 10:24:24', '2020-06-22 10:29:40', 1, 1, 374),
+(4, 'after insert', 2, '2020-06-23 00:00:00', 'AKTIF', 1, 'cabang', NULL, 1, '2020-06-22 10:48:36', '2020-06-22 10:48:36', 1, 1, 387),
+(5, 'after insert', 3, '2020-06-23 00:00:00', 'AKTIF', 1, 'cabang', NULL, 1, '2020-06-22 10:48:48', '2020-06-22 10:48:48', 1, 1, 400),
+(6, 'after update', 2, '2020-06-23 00:00:00', 'AKTIF', 1, 'cabang', NULL, 1, '2020-06-22 10:48:36', '2020-06-22 10:50:14', 1, 1, 413);
+
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_penjualan`
+-- Table structure for table `mstr_penjualan`
 --
 
+DROP TABLE IF EXISTS `mstr_penjualan`;
 CREATE TABLE `mstr_penjualan` (
   `id_pk_penjualan` int(11) NOT NULL,
   `penj_nomor` varchar(30) DEFAULT NULL,
@@ -1489,15 +1738,16 @@ CREATE TABLE `mstr_penjualan` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_penjualan`
+-- Dumping data for table `mstr_penjualan`
 --
 
 INSERT INTO `mstr_penjualan` (`id_pk_penjualan`, `penj_nomor`, `penj_tgl`, `penj_dateline_tgl`, `penj_jenis`, `penj_tipe_pembayaran`, `penj_status`, `id_fk_customer`, `id_fk_cabang`, `penj_create_date`, `penj_last_modified`, `id_create_data`, `id_last_modified`) VALUES
 (1, 'nomorpenjualan1', '1111-11-11 00:00:00', '2222-02-22 00:00:00', 'ONLINE', 'DP', 'AKTIF', 1, 1, '2020-06-22 09:39:50', '2020-06-22 10:05:28', 1, 1);
 
 --
--- 触发器 `mstr_penjualan`
+-- Triggers `mstr_penjualan`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_penjualan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_penjualan` AFTER INSERT ON `mstr_penjualan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1509,6 +1759,7 @@ CREATE TRIGGER `trg_after_insert_penjualan` AFTER INSERT ON `mstr_penjualan` FOR
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_penjualan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_penjualan` AFTER UPDATE ON `mstr_penjualan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1524,9 +1775,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_penjualan_log`
+-- Table structure for table `mstr_penjualan_log`
 --
 
+DROP TABLE IF EXISTS `mstr_penjualan_log`;
 CREATE TABLE `mstr_penjualan_log` (
   `id_pk_penjualan_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -1547,7 +1799,7 @@ CREATE TABLE `mstr_penjualan_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_penjualan_log`
+-- Dumping data for table `mstr_penjualan_log`
 --
 
 INSERT INTO `mstr_penjualan_log` (`id_pk_penjualan_log`, `executed_function`, `id_pk_penjualan`, `penj_nomor`, `penj_tgl`, `penj_dateline_tgl`, `penj_jenis`, `penj_tipe_pembayaran`, `penj_status`, `id_fk_customer`, `id_fk_cabang`, `penj_create_date`, `penj_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -1559,9 +1811,10 @@ INSERT INTO `mstr_penjualan_log` (`id_pk_penjualan_log`, `executed_function`, `i
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_retur`
+-- Table structure for table `mstr_retur`
 --
 
+DROP TABLE IF EXISTS `mstr_retur`;
 CREATE TABLE `mstr_retur` (
   `id_pk_retur` int(11) NOT NULL,
   `id_fk_penjualan` int(11) DEFAULT NULL,
@@ -1575,12 +1828,20 @@ CREATE TABLE `mstr_retur` (
   `id_last_modified` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `mstr_retur`
+--
+
+INSERT INTO `mstr_retur` (`id_pk_retur`, `id_fk_penjualan`, `retur_no`, `retur_tgl`, `retur_tipe`, `retur_status`, `retur_create_date`, `retur_last_modified`, `id_create_data`, `id_last_modified`) VALUES
+(1, 1, 'nomorretur1', '1111-11-11 00:00:00', 'BARANG', 'aktif', '2020-06-22 10:52:54', '2020-06-22 10:54:54', 1, 1);
+
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_retur_log`
+-- Table structure for table `mstr_retur_log`
 --
 
+DROP TABLE IF EXISTS `mstr_retur_log`;
 CREATE TABLE `mstr_retur_log` (
   `id_pk_retur_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -1600,9 +1861,10 @@ CREATE TABLE `mstr_retur_log` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_satuan`
+-- Table structure for table `mstr_satuan`
 --
 
+DROP TABLE IF EXISTS `mstr_satuan`;
 CREATE TABLE `mstr_satuan` (
   `id_pk_satuan` int(11) NOT NULL,
   `satuan_nama` varchar(100) DEFAULT NULL,
@@ -1615,7 +1877,7 @@ CREATE TABLE `mstr_satuan` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_satuan`
+-- Dumping data for table `mstr_satuan`
 --
 
 INSERT INTO `mstr_satuan` (`id_pk_satuan`, `satuan_nama`, `satuan_rumus`, `satuan_status`, `satuan_create_date`, `satuan_last_modified`, `id_create_data`, `id_last_modified`) VALUES
@@ -1624,8 +1886,9 @@ INSERT INTO `mstr_satuan` (`id_pk_satuan`, `satuan_nama`, `satuan_rumus`, `satua
 (3, 'LUSIN', '12', 'AKTIF', '2020-06-22 08:36:23', '2020-06-22 08:36:23', 1, 1);
 
 --
--- 触发器 `mstr_satuan`
+-- Triggers `mstr_satuan`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_satuan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_satuan` AFTER INSERT ON `mstr_satuan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1637,6 +1900,7 @@ CREATE TRIGGER `trg_after_insert_satuan` AFTER INSERT ON `mstr_satuan` FOR EACH 
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_satuan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_satuan` AFTER UPDATE ON `mstr_satuan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1652,9 +1916,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_satuan_log`
+-- Table structure for table `mstr_satuan_log`
 --
 
+DROP TABLE IF EXISTS `mstr_satuan_log`;
 CREATE TABLE `mstr_satuan_log` (
   `id_pk_satuan_log` int(11) NOT NULL,
   `executed_function` varchar(20) DEFAULT NULL,
@@ -1670,7 +1935,7 @@ CREATE TABLE `mstr_satuan_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_satuan_log`
+-- Dumping data for table `mstr_satuan_log`
 --
 
 INSERT INTO `mstr_satuan_log` (`id_pk_satuan_log`, `executed_function`, `id_pk_satuan`, `satuan_nama`, `satuan_rumus`, `satuan_status`, `satuan_create_date`, `satuan_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -1681,9 +1946,10 @@ INSERT INTO `mstr_satuan_log` (`id_pk_satuan_log`, `executed_function`, `id_pk_s
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_stock_opname`
+-- Table structure for table `mstr_stock_opname`
 --
 
+DROP TABLE IF EXISTS `mstr_stock_opname`;
 CREATE TABLE `mstr_stock_opname` (
   `ID_PK_STOCK_OPNAME` int(11) NOT NULL,
   `SO_TGL` datetime DEFAULT NULL,
@@ -1697,8 +1963,9 @@ CREATE TABLE `mstr_stock_opname` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 触发器 `mstr_stock_opname`
+-- Triggers `mstr_stock_opname`
 --
+DROP TRIGGER IF EXISTS `TRG_AFTER_INSERT_STOCK_OPNAME`;
 DELIMITER $$
 CREATE TRIGGER `TRG_AFTER_INSERT_STOCK_OPNAME` AFTER INSERT ON `mstr_stock_opname` FOR EACH ROW BEGIN
     SET @ID_USER = NEW.ID_LAST_MODIFIED;
@@ -1710,6 +1977,7 @@ CREATE TRIGGER `TRG_AFTER_INSERT_STOCK_OPNAME` AFTER INSERT ON `mstr_stock_opnam
 END
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `TRG_AFTER_UPDATE_STOCK_OPNAME`;
 DELIMITER $$
 CREATE TRIGGER `TRG_AFTER_UPDATE_STOCK_OPNAME` AFTER UPDATE ON `mstr_stock_opname` FOR EACH ROW BEGIN
     SET @ID_USER = NEW.ID_LAST_MODIFIED;
@@ -1725,9 +1993,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_stock_opname_log`
+-- Table structure for table `mstr_stock_opname_log`
 --
 
+DROP TABLE IF EXISTS `mstr_stock_opname_log`;
 CREATE TABLE `mstr_stock_opname_log` (
   `ID_PK_STOCK_OPNAME_LOG` int(11) NOT NULL,
   `EXECUTED_FUNCTION` varchar(30) DEFAULT NULL,
@@ -1746,9 +2015,10 @@ CREATE TABLE `mstr_stock_opname_log` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_supplier`
+-- Table structure for table `mstr_supplier`
 --
 
+DROP TABLE IF EXISTS `mstr_supplier`;
 CREATE TABLE `mstr_supplier` (
   `id_pk_sup` int(11) NOT NULL,
   `sup_nama` varchar(100) DEFAULT NULL,
@@ -1767,7 +2037,7 @@ CREATE TABLE `mstr_supplier` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_supplier`
+-- Dumping data for table `mstr_supplier`
 --
 
 INSERT INTO `mstr_supplier` (`id_pk_sup`, `sup_nama`, `sup_suff`, `sup_perusahaan`, `sup_email`, `sup_telp`, `sup_hp`, `sup_alamat`, `sup_keterangan`, `sup_status`, `sup_create_date`, `sup_last_modified`, `id_create_data`, `id_last_modified`) VALUES
@@ -1775,8 +2045,9 @@ INSERT INTO `mstr_supplier` (`id_pk_sup`, `sup_nama`, `sup_suff`, `sup_perusahaa
 (2, NULL, NULL, 'IBM', NULL, NULL, NULL, NULL, NULL, 'aktif', '2020-06-22 08:26:28', '2020-06-22 08:26:28', 1, 1);
 
 --
--- 触发器 `mstr_supplier`
+-- Triggers `mstr_supplier`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_supplier`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_supplier` AFTER INSERT ON `mstr_supplier` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1788,6 +2059,7 @@ CREATE TRIGGER `trg_after_insert_supplier` AFTER INSERT ON `mstr_supplier` FOR E
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_supplier`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_supplier` AFTER UPDATE ON `mstr_supplier` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1803,9 +2075,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_supplier_log`
+-- Table structure for table `mstr_supplier_log`
 --
 
+DROP TABLE IF EXISTS `mstr_supplier_log`;
 CREATE TABLE `mstr_supplier_log` (
   `id_pk_sup_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -1827,7 +2100,7 @@ CREATE TABLE `mstr_supplier_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_supplier_log`
+-- Dumping data for table `mstr_supplier_log`
 --
 
 INSERT INTO `mstr_supplier_log` (`id_pk_sup_log`, `executed_function`, `id_pk_sup`, `sup_nama`, `sup_suff`, `sup_perusahaan`, `sup_email`, `sup_telp`, `sup_hp`, `sup_alamat`, `sup_keterangan`, `sup_status`, `sup_create_date`, `sup_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -1837,9 +2110,10 @@ INSERT INTO `mstr_supplier_log` (`id_pk_sup_log`, `executed_function`, `id_pk_su
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_surat_jalan`
+-- Table structure for table `mstr_surat_jalan`
 --
 
+DROP TABLE IF EXISTS `mstr_surat_jalan`;
 CREATE TABLE `mstr_surat_jalan` (
   `ID_PK_SURAT_JALAN` int(11) NOT NULL,
   `SJ_NOMOR` varchar(30) DEFAULT NULL,
@@ -1861,8 +2135,9 @@ CREATE TABLE `mstr_surat_jalan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 触发器 `mstr_surat_jalan`
+-- Triggers `mstr_surat_jalan`
 --
+DROP TRIGGER IF EXISTS `TRG_AFTER_INSERT_SURAT_JALAN`;
 DELIMITER $$
 CREATE TRIGGER `TRG_AFTER_INSERT_SURAT_JALAN` AFTER INSERT ON `mstr_surat_jalan` FOR EACH ROW BEGIN
     SET @ID_USER = NEW.ID_LAST_MODIFIED;
@@ -1874,6 +2149,7 @@ CREATE TRIGGER `TRG_AFTER_INSERT_SURAT_JALAN` AFTER INSERT ON `mstr_surat_jalan`
 END
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `TRG_AFTER_UPDATE_SURAT_JALAN`;
 DELIMITER $$
 CREATE TRIGGER `TRG_AFTER_UPDATE_SURAT_JALAN` AFTER UPDATE ON `mstr_surat_jalan` FOR EACH ROW BEGIN
     SET @ID_USER = NEW.ID_LAST_MODIFIED;
@@ -1889,9 +2165,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_surat_jalan_log`
+-- Table structure for table `mstr_surat_jalan_log`
 --
 
+DROP TABLE IF EXISTS `mstr_surat_jalan_log`;
 CREATE TABLE `mstr_surat_jalan_log` (
   `ID_PK_SURAT_JALAN_LOG` int(11) NOT NULL,
   `EXECUTED_FUNCTION` varchar(30) DEFAULT NULL,
@@ -1918,9 +2195,10 @@ CREATE TABLE `mstr_surat_jalan_log` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_toko`
+-- Table structure for table `mstr_toko`
 --
 
+DROP TABLE IF EXISTS `mstr_toko`;
 CREATE TABLE `mstr_toko` (
   `id_pk_toko` int(11) NOT NULL,
   `toko_logo` varchar(100) DEFAULT NULL,
@@ -1934,15 +2212,16 @@ CREATE TABLE `mstr_toko` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_toko`
+-- Dumping data for table `mstr_toko`
 --
 
 INSERT INTO `mstr_toko` (`id_pk_toko`, `toko_logo`, `toko_nama`, `toko_kode`, `toko_status`, `toko_create_date`, `toko_last_modified`, `id_create_data`, `id_last_modified`) VALUES
 (1, 'Pendaftaran_SYNC_STUDY.png', 'TOKO MAJU MANDIRI', 'MM', 'AKTIF', '2020-06-21 11:44:14', '2020-06-21 11:44:14', 1, 1);
 
 --
--- 触发器 `mstr_toko`
+-- Triggers `mstr_toko`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_toko`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_toko` AFTER INSERT ON `mstr_toko` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1954,6 +2233,7 @@ CREATE TRIGGER `trg_after_insert_toko` AFTER INSERT ON `mstr_toko` FOR EACH ROW 
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_toko`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_toko` AFTER UPDATE ON `mstr_toko` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -1969,9 +2249,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_toko_log`
+-- Table structure for table `mstr_toko_log`
 --
 
+DROP TABLE IF EXISTS `mstr_toko_log`;
 CREATE TABLE `mstr_toko_log` (
   `id_pk_toko_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -1988,7 +2269,7 @@ CREATE TABLE `mstr_toko_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_toko_log`
+-- Dumping data for table `mstr_toko_log`
 --
 
 INSERT INTO `mstr_toko_log` (`id_pk_toko_log`, `executed_function`, `id_pk_toko`, `toko_logo`, `toko_nama`, `toko_kode`, `toko_status`, `toko_create_date`, `toko_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -1997,9 +2278,10 @@ INSERT INTO `mstr_toko_log` (`id_pk_toko_log`, `executed_function`, `id_pk_toko`
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_user`
+-- Table structure for table `mstr_user`
 --
 
+DROP TABLE IF EXISTS `mstr_user`;
 CREATE TABLE `mstr_user` (
   `id_pk_user` int(11) NOT NULL,
   `user_name` varchar(50) DEFAULT NULL,
@@ -2014,15 +2296,16 @@ CREATE TABLE `mstr_user` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_user`
+-- Dumping data for table `mstr_user`
 --
 
 INSERT INTO `mstr_user` (`id_pk_user`, `user_name`, `user_pass`, `user_email`, `user_status`, `id_fk_role`, `user_last_modified`, `user_create_date`, `id_create_date`, `id_last_modified`) VALUES
 (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@example.com', 'AKTIF', 1, '2020-06-21 23:26:35', '2020-06-21 23:26:35', 0, 0);
 
 --
--- 触发器 `mstr_user`
+-- Triggers `mstr_user`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_user`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_user` AFTER INSERT ON `mstr_user` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2034,6 +2317,7 @@ CREATE TRIGGER `trg_after_insert_user` AFTER INSERT ON `mstr_user` FOR EACH ROW 
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_user`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_user` AFTER UPDATE ON `mstr_user` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2049,9 +2333,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_user_log`
+-- Table structure for table `mstr_user_log`
 --
 
+DROP TABLE IF EXISTS `mstr_user_log`;
 CREATE TABLE `mstr_user_log` (
   `id_pk_user_log` int(11) NOT NULL,
   `executed_function` varchar(40) DEFAULT NULL,
@@ -2069,7 +2354,7 @@ CREATE TABLE `mstr_user_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_user_log`
+-- Dumping data for table `mstr_user_log`
 --
 
 INSERT INTO `mstr_user_log` (`id_pk_user_log`, `executed_function`, `id_pk_user`, `user_name`, `user_pass`, `user_email`, `user_status`, `id_fk_role`, `user_last_modified`, `user_create_date`, `id_create_date`, `id_last_modified`, `id_log_all`) VALUES
@@ -2078,9 +2363,10 @@ INSERT INTO `mstr_user_log` (`id_pk_user_log`, `executed_function`, `id_pk_user`
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_warehouse`
+-- Table structure for table `mstr_warehouse`
 --
 
+DROP TABLE IF EXISTS `mstr_warehouse`;
 CREATE TABLE `mstr_warehouse` (
   `id_pk_warehouse` int(11) NOT NULL,
   `warehouse_nama` varchar(100) DEFAULT NULL,
@@ -2095,15 +2381,16 @@ CREATE TABLE `mstr_warehouse` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_warehouse`
+-- Dumping data for table `mstr_warehouse`
 --
 
 INSERT INTO `mstr_warehouse` (`id_pk_warehouse`, `warehouse_nama`, `warehouse_alamat`, `warehouse_notelp`, `warehouse_desc`, `warehouse_status`, `warehouse_create_date`, `warehouse_last_modified`, `id_create_data`, `id_last_modified`) VALUES
 (1, 'GUDANG 1', 'Puri Indah', '12345', '-', 'AKTIF', '2020-06-21 11:45:42', '2020-06-21 11:45:42', 1, 1);
 
 --
--- 触发器 `mstr_warehouse`
+-- Triggers `mstr_warehouse`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_warehouse`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_warehouse` AFTER INSERT ON `mstr_warehouse` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2115,6 +2402,7 @@ CREATE TRIGGER `trg_after_insert_warehouse` AFTER INSERT ON `mstr_warehouse` FOR
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_warehouse`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_warehouse` AFTER UPDATE ON `mstr_warehouse` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2130,9 +2418,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `mstr_warehouse_log`
+-- Table structure for table `mstr_warehouse_log`
 --
 
+DROP TABLE IF EXISTS `mstr_warehouse_log`;
 CREATE TABLE `mstr_warehouse_log` (
   `id_pk_warehouse_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -2150,7 +2439,7 @@ CREATE TABLE `mstr_warehouse_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `mstr_warehouse_log`
+-- Dumping data for table `mstr_warehouse_log`
 --
 
 INSERT INTO `mstr_warehouse_log` (`id_pk_warehouse_log`, `executed_function`, `id_pk_warehouse`, `warehouse_nama`, `warehouse_alamat`, `warehouse_notelp`, `warehouse_desc`, `warehouse_status`, `warehouse_create_date`, `warehouse_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -2159,9 +2448,10 @@ INSERT INTO `mstr_warehouse_log` (`id_pk_warehouse_log`, `executed_function`, `i
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_barang_kombinasi`
+-- Table structure for table `tbl_barang_kombinasi`
 --
 
+DROP TABLE IF EXISTS `tbl_barang_kombinasi`;
 CREATE TABLE `tbl_barang_kombinasi` (
   `id_pk_barang_kombinasi` int(11) NOT NULL,
   `id_barang_utama` int(11) DEFAULT NULL,
@@ -2175,8 +2465,9 @@ CREATE TABLE `tbl_barang_kombinasi` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 触发器 `tbl_barang_kombinasi`
+-- Triggers `tbl_barang_kombinasi`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_barang_kombinasi`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_barang_kombinasi` AFTER INSERT ON `tbl_barang_kombinasi` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2188,6 +2479,7 @@ CREATE TRIGGER `trg_after_insert_barang_kombinasi` AFTER INSERT ON `tbl_barang_k
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_barang_kombinasi`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_barang_kombinasi` AFTER UPDATE ON `tbl_barang_kombinasi` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2203,9 +2495,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_barang_kombinasi_log`
+-- Table structure for table `tbl_barang_kombinasi_log`
 --
 
+DROP TABLE IF EXISTS `tbl_barang_kombinasi_log`;
 CREATE TABLE `tbl_barang_kombinasi_log` (
   `id_pk_barang_kombinasi_log` int(11) NOT NULL,
   `executed_function` varchar(20) DEFAULT NULL,
@@ -2224,9 +2517,10 @@ CREATE TABLE `tbl_barang_kombinasi_log` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_barang_ukuran`
+-- Table structure for table `tbl_barang_ukuran`
 --
 
+DROP TABLE IF EXISTS `tbl_barang_ukuran`;
 CREATE TABLE `tbl_barang_ukuran` (
   `ID_PK_BARANG_UKURAN` int(11) NOT NULL,
   `ID_FK_BARANG` int(11) DEFAULT NULL,
@@ -2239,7 +2533,7 @@ CREATE TABLE `tbl_barang_ukuran` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 转存表中的数据 `tbl_barang_ukuran`
+-- Dumping data for table `tbl_barang_ukuran`
 --
 
 INSERT INTO `tbl_barang_ukuran` (`ID_PK_BARANG_UKURAN`, `ID_FK_BARANG`, `UKURAN`, `BRG_UKURAN_STATUS`, `BRG_UKURAN_CREATE_DATE`, `BRG_UKURAN_LAST_MODIFIED`, `ID_CREATE_DATE`, `ID_LAST_MODIFIED`) VALUES
@@ -2276,9 +2570,10 @@ INSERT INTO `tbl_barang_ukuran` (`ID_PK_BARANG_UKURAN`, `ID_FK_BARANG`, `UKURAN`
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_cabang`
+-- Table structure for table `tbl_brg_cabang`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_cabang`;
 CREATE TABLE `tbl_brg_cabang` (
   `id_pk_brg_cabang` int(11) NOT NULL,
   `brg_cabang_qty` int(11) DEFAULT NULL,
@@ -2294,23 +2589,29 @@ CREATE TABLE `tbl_brg_cabang` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_brg_cabang`
+-- Dumping data for table `tbl_brg_cabang`
 --
 
 INSERT INTO `tbl_brg_cabang` (`id_pk_brg_cabang`, `brg_cabang_qty`, `brg_cabang_notes`, `brg_cabang_status`, `brg_cabang_last_price`, `id_fk_brg`, `id_fk_cabang`, `brg_cabang_create_date`, `brg_cabang_last_modified`, `id_create_data`, `id_last_modified`) VALUES
 (1, 10, '-', 'nonaktif', 0, 1, 1, '2020-06-22 08:03:53', '2020-06-22 08:07:23', 1, 1),
-(2, 10, '-', 'nonaktif', 30000, 2, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1),
-(3, 10, '-', 'nonaktif', 40000, 3, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1),
+(2, 8, '-', 'nonaktif', 30000, 2, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1),
+(3, 8, '-', 'nonaktif', 40000, 3, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1),
 (4, 10, '-', 'nonaktif', 0, 1, 1, '2020-06-22 08:07:40', '2020-06-22 08:08:55', 1, 1),
-(5, 10, '-', 'nonaktif', 30000, 2, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1),
-(6, 10, '-', 'nonaktif', 40000, 3, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1),
+(5, 8, '-', 'nonaktif', 30000, 2, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1),
+(6, 8, '-', 'nonaktif', 40000, 3, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1),
 (7, 15, '-', 'AKTIF', 0, 1, 1, '2020-06-22 08:09:14', '2020-06-22 08:10:02', 1, 1),
-(8, 15, '-', 'AKTIF', 30000, 2, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1),
-(9, 10, '-', 'AKTIF', 40000, 3, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1);
+(8, 13, '-', 'AKTIF', 30000, 2, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1),
+(9, 8, '-', 'AKTIF', 40000, 3, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1),
+(10, 10, '-', 'AKTIF', 0, 1, 2, '2020-06-22 12:43:35', '2020-06-22 12:43:35', 1, 1),
+(11, 10, '-', 'AKTIF', 0, 2, 2, '2020-06-22 12:43:35', '2020-06-22 12:43:35', 1, 1),
+(12, 10, '-', 'AKTIF', 0, 3, 2, '2020-06-22 12:43:35', '2020-06-22 12:43:35', 1, 1),
+(13, 10, '-', 'AKTIF', 0, 4, 2, '2020-06-22 12:43:35', '2020-06-22 12:43:35', 1, 1),
+(14, 10, '-', 'AKTIF', 0, 5, 2, '2020-06-22 12:43:35', '2020-06-22 12:43:35', 1, 1);
 
 --
--- 触发器 `tbl_brg_cabang`
+-- Triggers `tbl_brg_cabang`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_brg_cabang`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_brg_cabang` AFTER INSERT ON `tbl_brg_cabang` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2322,6 +2623,7 @@ CREATE TRIGGER `trg_after_insert_brg_cabang` AFTER INSERT ON `tbl_brg_cabang` FO
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_brg_cabang`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_brg_cabang` AFTER UPDATE ON `tbl_brg_cabang` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2337,9 +2639,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_cabang_log`
+-- Table structure for table `tbl_brg_cabang_log`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_cabang_log`;
 CREATE TABLE `tbl_brg_cabang_log` (
   `id_pk_brg_cabang_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -2358,7 +2661,7 @@ CREATE TABLE `tbl_brg_cabang_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_brg_cabang_log`
+-- Dumping data for table `tbl_brg_cabang_log`
 --
 
 INSERT INTO `tbl_brg_cabang_log` (`id_pk_brg_cabang_log`, `executed_function`, `id_pk_brg_cabang`, `brg_cabang_qty`, `brg_cabang_last_price`, `brg_cabang_notes`, `brg_cabang_status`, `id_fk_brg`, `id_fk_cabang`, `brg_cabang_create_date`, `brg_cabang_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -2414,14 +2717,74 @@ INSERT INTO `tbl_brg_cabang_log` (`id_pk_brg_cabang_log`, `executed_function`, `
 (50, 'after update', 7, 0, 15, '-', 'AKTIF', 1, 1, '2020-06-22 08:09:14', '2020-06-22 08:10:02', 1, 1, 310),
 (51, 'after update', 2, 30000, 10, '-', 'nonaktif', 2, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1, 312),
 (52, 'after update', 5, 30000, 10, '-', 'nonaktif', 2, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1, 313),
-(53, 'after update', 8, 30000, 15, '-', 'AKTIF', 2, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1, 314);
+(53, 'after update', 8, 30000, 15, '-', 'AKTIF', 2, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1, 314),
+(54, 'after update', 1, 0, 9, '-', 'nonaktif', 1, 1, '2020-06-22 08:03:53', '2020-06-22 08:07:23', 1, 1, 350),
+(55, 'after update', 4, 0, 9, '-', 'nonaktif', 1, 1, '2020-06-22 08:07:40', '2020-06-22 08:08:55', 1, 1, 351),
+(56, 'after update', 7, 0, 14, '-', 'AKTIF', 1, 1, '2020-06-22 08:09:14', '2020-06-22 08:10:02', 1, 1, 352),
+(57, 'after update', 2, 30000, 9, '-', 'nonaktif', 2, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1, 354),
+(58, 'after update', 5, 30000, 9, '-', 'nonaktif', 2, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1, 355),
+(59, 'after update', 8, 30000, 14, '-', 'AKTIF', 2, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1, 356),
+(60, 'after update', 3, 40000, 9, '-', 'nonaktif', 3, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1, 358),
+(61, 'after update', 6, 40000, 9, '-', 'nonaktif', 3, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1, 359),
+(62, 'after update', 9, 40000, 9, '-', 'AKTIF', 3, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1, 360),
+(63, 'after update', 1, 0, 8, '-', 'nonaktif', 1, 1, '2020-06-22 08:03:53', '2020-06-22 08:07:23', 1, 1, 363),
+(64, 'after update', 4, 0, 8, '-', 'nonaktif', 1, 1, '2020-06-22 08:07:40', '2020-06-22 08:08:55', 1, 1, 364),
+(65, 'after update', 7, 0, 13, '-', 'AKTIF', 1, 1, '2020-06-22 08:09:14', '2020-06-22 08:10:02', 1, 1, 365),
+(66, 'after update', 2, 30000, 8, '-', 'nonaktif', 2, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1, 367),
+(67, 'after update', 5, 30000, 8, '-', 'nonaktif', 2, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1, 368),
+(68, 'after update', 8, 30000, 13, '-', 'AKTIF', 2, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1, 369),
+(69, 'after update', 3, 40000, 8, '-', 'nonaktif', 3, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1, 371),
+(70, 'after update', 6, 40000, 8, '-', 'nonaktif', 3, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1, 372),
+(71, 'after update', 9, 40000, 8, '-', 'AKTIF', 3, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1, 373),
+(72, 'after update', 1, 0, 10, '-', 'nonaktif', 1, 1, '2020-06-22 08:03:53', '2020-06-22 08:07:23', 1, 1, 376),
+(73, 'after update', 4, 0, 10, '-', 'nonaktif', 1, 1, '2020-06-22 08:07:40', '2020-06-22 08:08:55', 1, 1, 377),
+(74, 'after update', 7, 0, 15, '-', 'AKTIF', 1, 1, '2020-06-22 08:09:14', '2020-06-22 08:10:02', 1, 1, 378),
+(75, 'after update', 2, 30000, 10, '-', 'nonaktif', 2, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1, 380),
+(76, 'after update', 5, 30000, 10, '-', 'nonaktif', 2, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1, 381),
+(77, 'after update', 8, 30000, 15, '-', 'AKTIF', 2, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1, 382),
+(78, 'after update', 3, 40000, 10, '-', 'nonaktif', 3, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1, 384),
+(79, 'after update', 6, 40000, 10, '-', 'nonaktif', 3, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1, 385),
+(80, 'after update', 9, 40000, 10, '-', 'AKTIF', 3, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1, 386),
+(81, 'after update', 1, 0, 9, '-', 'nonaktif', 1, 1, '2020-06-22 08:03:53', '2020-06-22 08:07:23', 1, 1, 389),
+(82, 'after update', 4, 0, 9, '-', 'nonaktif', 1, 1, '2020-06-22 08:07:40', '2020-06-22 08:08:55', 1, 1, 390),
+(83, 'after update', 7, 0, 14, '-', 'AKTIF', 1, 1, '2020-06-22 08:09:14', '2020-06-22 08:10:02', 1, 1, 391),
+(84, 'after update', 2, 30000, 9, '-', 'nonaktif', 2, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1, 393),
+(85, 'after update', 5, 30000, 9, '-', 'nonaktif', 2, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1, 394),
+(86, 'after update', 8, 30000, 14, '-', 'AKTIF', 2, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1, 395),
+(87, 'after update', 3, 40000, 9, '-', 'nonaktif', 3, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1, 397),
+(88, 'after update', 6, 40000, 9, '-', 'nonaktif', 3, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1, 398),
+(89, 'after update', 9, 40000, 9, '-', 'AKTIF', 3, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1, 399),
+(90, 'after update', 1, 0, 9, '-', 'nonaktif', 1, 1, '2020-06-22 08:03:53', '2020-06-22 08:07:23', 1, 1, 402),
+(91, 'after update', 4, 0, 9, '-', 'nonaktif', 1, 1, '2020-06-22 08:07:40', '2020-06-22 08:08:55', 1, 1, 403),
+(92, 'after update', 7, 0, 14, '-', 'AKTIF', 1, 1, '2020-06-22 08:09:14', '2020-06-22 08:10:02', 1, 1, 404),
+(93, 'after update', 2, 30000, 8, '-', 'nonaktif', 2, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1, 406),
+(94, 'after update', 5, 30000, 8, '-', 'nonaktif', 2, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1, 407),
+(95, 'after update', 8, 30000, 13, '-', 'AKTIF', 2, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1, 408),
+(96, 'after update', 3, 40000, 8, '-', 'nonaktif', 3, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1, 410),
+(97, 'after update', 6, 40000, 8, '-', 'nonaktif', 3, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1, 411),
+(98, 'after update', 9, 40000, 8, '-', 'AKTIF', 3, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1, 412),
+(99, 'after update', 1, 0, 10, '-', 'nonaktif', 1, 1, '2020-06-22 08:03:53', '2020-06-22 08:07:23', 1, 1, 415),
+(100, 'after update', 4, 0, 10, '-', 'nonaktif', 1, 1, '2020-06-22 08:07:40', '2020-06-22 08:08:55', 1, 1, 416),
+(101, 'after update', 7, 0, 15, '-', 'AKTIF', 1, 1, '2020-06-22 08:09:14', '2020-06-22 08:10:02', 1, 1, 417),
+(102, 'after update', 2, 30000, 8, '-', 'nonaktif', 2, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1, 419),
+(103, 'after update', 5, 30000, 8, '-', 'nonaktif', 2, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1, 420),
+(104, 'after update', 8, 30000, 13, '-', 'AKTIF', 2, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1, 421),
+(105, 'after update', 3, 40000, 8, '-', 'nonaktif', 3, 1, '2020-06-22 08:04:32', '2020-06-22 08:26:28', 1, 1, 423),
+(106, 'after update', 6, 40000, 8, '-', 'nonaktif', 3, 1, '2020-06-22 08:07:40', '2020-06-22 08:26:28', 1, 1, 424),
+(107, 'after update', 9, 40000, 8, '-', 'AKTIF', 3, 1, '2020-06-22 08:09:14', '2020-06-22 08:26:28', 1, 1, 425),
+(108, 'after insert', 10, 0, 10, '-', 'AKTIF', 1, 2, '2020-06-22 12:43:35', '2020-06-22 12:43:35', 1, 1, 494),
+(109, 'after insert', 11, 0, 10, '-', 'AKTIF', 2, 2, '2020-06-22 12:43:35', '2020-06-22 12:43:35', 1, 1, 495),
+(110, 'after insert', 12, 0, 10, '-', 'AKTIF', 3, 2, '2020-06-22 12:43:35', '2020-06-22 12:43:35', 1, 1, 496),
+(111, 'after insert', 13, 0, 10, '-', 'AKTIF', 4, 2, '2020-06-22 12:43:35', '2020-06-22 12:43:35', 1, 1, 497),
+(112, 'after insert', 14, 0, 10, '-', 'AKTIF', 5, 2, '2020-06-22 12:43:35', '2020-06-22 12:43:35', 1, 1, 498);
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_pembelian`
+-- Table structure for table `tbl_brg_pembelian`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_pembelian`;
 CREATE TABLE `tbl_brg_pembelian` (
   `id_pk_brg_pembelian` int(11) NOT NULL,
   `brg_pem_qty` double DEFAULT NULL,
@@ -2438,7 +2801,7 @@ CREATE TABLE `tbl_brg_pembelian` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_brg_pembelian`
+-- Dumping data for table `tbl_brg_pembelian`
 --
 
 INSERT INTO `tbl_brg_pembelian` (`id_pk_brg_pembelian`, `brg_pem_qty`, `brg_pem_satuan`, `brg_pem_harga`, `brg_pem_note`, `brg_pem_status`, `id_fk_pembelian`, `id_fk_barang`, `brg_pem_create_date`, `brg_pem_last_modified`, `id_create_data`, `id_last_modified`) VALUES
@@ -2449,8 +2812,9 @@ INSERT INTO `tbl_brg_pembelian` (`id_pk_brg_pembelian`, `brg_pem_qty`, `brg_pem_
 (5, 10, 'Pcs', 20000, '-', 'nonaktif', 2, 1, '2020-06-22 08:27:08', '2020-06-22 08:27:18', 1, 1);
 
 --
--- 触发器 `tbl_brg_pembelian`
+-- Triggers `tbl_brg_pembelian`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_brg_pembelian`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_brg_pembelian` AFTER INSERT ON `tbl_brg_pembelian` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2462,6 +2826,7 @@ CREATE TRIGGER `trg_after_insert_brg_pembelian` AFTER INSERT ON `tbl_brg_pembeli
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_brg_pembelian`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_brg_pembelian` AFTER UPDATE ON `tbl_brg_pembelian` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2477,9 +2842,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_pembelian_log`
+-- Table structure for table `tbl_brg_pembelian_log`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_pembelian_log`;
 CREATE TABLE `tbl_brg_pembelian_log` (
   `id_pk_brg_pembelian_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -2499,7 +2865,7 @@ CREATE TABLE `tbl_brg_pembelian_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_brg_pembelian_log`
+-- Dumping data for table `tbl_brg_pembelian_log`
 --
 
 INSERT INTO `tbl_brg_pembelian_log` (`id_pk_brg_pembelian_log`, `executed_function`, `id_pk_brg_pembelian`, `brg_pem_qty`, `brg_pem_satuan`, `brg_pem_harga`, `brg_pem_note`, `brg_pem_status`, `id_fk_pembelian`, `id_fk_barang`, `brg_pem_create_date`, `brg_pem_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -2519,9 +2885,10 @@ INSERT INTO `tbl_brg_pembelian_log` (`id_pk_brg_pembelian_log`, `executed_functi
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_pemenuhan`
+-- Table structure for table `tbl_brg_pemenuhan`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_pemenuhan`;
 CREATE TABLE `tbl_brg_pemenuhan` (
   `id_pk_brg_pemenuhan` int(11) NOT NULL,
   `brg_pemenuhan_qty` int(11) DEFAULT NULL,
@@ -2537,8 +2904,18 @@ CREATE TABLE `tbl_brg_pemenuhan` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 触发器 `tbl_brg_pemenuhan`
+-- Dumping data for table `tbl_brg_pemenuhan`
 --
+
+INSERT INTO `tbl_brg_pemenuhan` (`id_pk_brg_pemenuhan`, `brg_pemenuhan_qty`, `brg_pemenuhan_tipe`, `brg_pemenuhan_status`, `id_fk_brg_permintaan`, `id_fk_cabang`, `id_fk_warehouse`, `brg_pemenuhan_create_date`, `brg_pemenuhan_last_modified`, `id_create_data`, `id_last_modified`) VALUES
+(1, 10, 'CABANG', 'nonaktif', 1, 2, 0, '2020-06-22 08:37:11', '2020-06-22 02:20:24', 1, 1),
+(2, 5, 'CABANG', 'nonaktif', 1, 2, 0, '2020-06-22 08:55:25', '2020-06-22 02:19:54', 1, 1),
+(3, 17, 'CABANG', 'nonaktif', 1, 2, 0, '2020-06-22 09:20:19', '2020-06-22 02:21:14', 1, 1);
+
+--
+-- Triggers `tbl_brg_pemenuhan`
+--
+DROP TRIGGER IF EXISTS `trg_after_insert_brg_pemenuhan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_brg_pemenuhan` AFTER INSERT ON `tbl_brg_pemenuhan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2574,6 +2951,7 @@ CREATE TRIGGER `trg_after_insert_brg_pemenuhan` AFTER INSERT ON `tbl_brg_pemenuh
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_brg_pemenuhan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_brg_pemenuhan` AFTER UPDATE ON `tbl_brg_pemenuhan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2613,9 +2991,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_pemenuhan_log`
+-- Table structure for table `tbl_brg_pemenuhan_log`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_pemenuhan_log`;
 CREATE TABLE `tbl_brg_pemenuhan_log` (
   `id_pk_brg_pemenuhan_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -2633,12 +3012,26 @@ CREATE TABLE `tbl_brg_pemenuhan_log` (
   `id_log_all` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `tbl_brg_pemenuhan_log`
+--
+
+INSERT INTO `tbl_brg_pemenuhan_log` (`id_pk_brg_pemenuhan_log`, `executed_function`, `id_pk_brg_pemenuhan`, `brg_pemenuhan_qty`, `brg_pemenuhan_tipe`, `brg_pemenuhan_status`, `id_fk_brg_permintaan`, `id_fk_cabang`, `id_fk_warehouse`, `brg_pemenuhan_create_date`, `brg_pemenuhan_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
+(1, 'after insert', 1, 10, 'CABANG', NULL, 1, 2, 0, '2020-06-22 08:37:11', '2020-06-22 08:37:11', 1, 1, 500),
+(2, 'after insert', 2, 5, 'CABANG', NULL, 1, 2, 0, '2020-06-22 08:55:25', '2020-06-22 08:55:25', 1, 1, 502),
+(3, 'after insert', 2, 5, 'CABANG', NULL, 1, 2, 0, '2020-06-22 08:55:25', NULL, 1, 1, 503),
+(4, 'after insert', 2, 5, 'CABANG', NULL, 1, 2, 0, '2020-06-22 08:55:25', '2020-06-22 02:19:54', 1, 1, 504),
+(5, 'after insert', 3, 17, 'CABANG', NULL, 1, 2, 0, '2020-06-22 09:20:19', '2020-06-22 09:20:19', 1, 1, 506),
+(6, 'after insert', 1, 10, 'CABANG', NULL, 1, 2, 0, '2020-06-22 08:37:11', '2020-06-22 02:20:24', 1, 1, 507),
+(7, 'after insert', 3, 17, 'CABANG', NULL, 1, 2, 0, '2020-06-22 09:20:19', '2020-06-22 02:21:14', 1, 1, 508);
+
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_penerimaan`
+-- Table structure for table `tbl_brg_penerimaan`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_penerimaan`;
 CREATE TABLE `tbl_brg_penerimaan` (
   `id_pk_brg_penerimaan` int(11) NOT NULL,
   `brg_penerimaan_qty` double DEFAULT NULL,
@@ -2653,7 +3046,7 @@ CREATE TABLE `tbl_brg_penerimaan` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_brg_penerimaan`
+-- Dumping data for table `tbl_brg_penerimaan`
 --
 
 INSERT INTO `tbl_brg_penerimaan` (`id_pk_brg_penerimaan`, `brg_penerimaan_qty`, `brg_penerimaan_note`, `id_fk_penerimaan`, `id_fk_brg_pembelian`, `id_fk_satuan`, `brg_penerimaan_create_date`, `brg_penerimaan_last_modified`, `id_create_data`, `id_last_modified`) VALUES
@@ -2661,8 +3054,9 @@ INSERT INTO `tbl_brg_penerimaan` (`id_pk_brg_penerimaan`, `brg_penerimaan_qty`, 
 (2, 0, '-', 1, 2, 1, '2020-06-22 08:52:15', '2020-06-22 09:00:47', 1, 1);
 
 --
--- 触发器 `tbl_brg_penerimaan`
+-- Triggers `tbl_brg_penerimaan`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_brg_penerimaan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_brg_penerimaan` AFTER INSERT ON `tbl_brg_penerimaan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2678,7 +3072,7 @@ CREATE TRIGGER `trg_after_insert_brg_penerimaan` AFTER INSERT ON `tbl_brg_peneri
             set @brg_penerimaan_qty = new.brg_penerimaan_qty;
             set @id_satuan_terima = new.id_fk_satuan;
             select id_fk_cabang, id_fk_barang, id_fk_warehouse into @id_cabang,@id_barang,@id_warehouse from tbl_brg_penerimaan
-            inner join tbl_brg_pembelian on tbl_brg_pembelian.id_pk_brg_pembelian = tbl_brg_penerimaan.ID_FK_BRG_PEMBELIAN
+            inner join tbl_brg_pembelian on tbl_brg_pembelian.id_pk_brg_pembelian = tbl_brg_penerimaan.id_fk_brg_pembelian
             inner join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan
             where id_pk_brg_penerimaan = new.id_pk_brg_penerimaan;
 
@@ -2691,6 +3085,7 @@ CREATE TRIGGER `trg_after_insert_brg_penerimaan` AFTER INSERT ON `tbl_brg_peneri
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_brg_penerimaan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_brg_penerimaan` AFTER UPDATE ON `tbl_brg_penerimaan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2709,7 +3104,7 @@ CREATE TRIGGER `trg_after_update_brg_penerimaan` AFTER UPDATE ON `tbl_brg_peneri
             set @id_satuan_keluar = old.id_fk_satuan;
 
             select id_fk_cabang, id_fk_barang,id_fk_warehouse into @id_cabang, @id_barang,@id_warehouse from tbl_brg_penerimaan
-            inner join tbl_brg_pembelian on tbl_brg_pembelian.id_pk_brg_pembelian = tbl_brg_penerimaan.ID_FK_BRG_PEMBELIAN
+            inner join tbl_brg_pembelian on tbl_brg_pembelian.id_pk_brg_pembelian = tbl_brg_penerimaan.id_fk_brg_pembelian
             inner join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan
             where id_pk_brg_penerimaan = new.id_pk_brg_penerimaan;
             
@@ -2726,9 +3121,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_penerimaan_log`
+-- Table structure for table `tbl_brg_penerimaan_log`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_penerimaan_log`;
 CREATE TABLE `tbl_brg_penerimaan_log` (
   `id_pk_brg_penerimaan_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -2746,7 +3142,7 @@ CREATE TABLE `tbl_brg_penerimaan_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_brg_penerimaan_log`
+-- Dumping data for table `tbl_brg_penerimaan_log`
 --
 
 INSERT INTO `tbl_brg_penerimaan_log` (`id_pk_brg_penerimaan_log`, `executed_function`, `id_pk_brg_penerimaan`, `brg_penerimaan_qty`, `brg_penerimaan_note`, `id_fk_penerimaan`, `id_fk_brg_pembelian`, `id_fk_satuan`, `brg_penerimaan_create_date`, `brg_penerimaan_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -2764,9 +3160,10 @@ INSERT INTO `tbl_brg_penerimaan_log` (`id_pk_brg_penerimaan_log`, `executed_func
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_pengiriman`
+-- Table structure for table `tbl_brg_pengiriman`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_pengiriman`;
 CREATE TABLE `tbl_brg_pengiriman` (
   `id_pk_brg_pengiriman` int(11) NOT NULL,
   `brg_pengiriman_qty` double DEFAULT NULL,
@@ -2781,8 +3178,24 @@ CREATE TABLE `tbl_brg_pengiriman` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 触发器 `tbl_brg_pengiriman`
+-- Dumping data for table `tbl_brg_pengiriman`
 --
+
+INSERT INTO `tbl_brg_pengiriman` (`id_pk_brg_pengiriman`, `brg_pengiriman_qty`, `brg_pengiriman_note`, `id_fk_pengiriman`, `id_fk_brg_penjualan`, `id_fk_satuan`, `brg_pengiriman_create_date`, `brg_pengiriman_last_modified`, `id_create_data`, `id_last_modified`) VALUES
+(1, 0, '-', 1, 1, 1, '2020-06-22 10:24:24', '2020-06-22 10:29:40', 1, 1),
+(2, 0, '-', 1, 2, 1, '2020-06-22 10:24:24', '2020-06-22 10:29:40', 1, 1),
+(3, 0, '-', 1, 3, 1, '2020-06-22 10:24:24', '2020-06-22 10:29:40', 1, 1),
+(4, 0, '-', 2, 1, 1, '2020-06-22 10:48:36', '2020-06-22 10:50:14', 1, 1),
+(5, 1, '-', 2, 2, 1, '2020-06-22 10:48:36', '2020-06-22 10:50:14', 1, 1),
+(6, 1, '-', 2, 3, 1, '2020-06-22 10:48:36', '2020-06-22 10:50:14', 1, 1),
+(7, 0, '-', 3, 1, 1, '2020-06-22 10:48:48', '2020-06-22 10:48:48', 1, 1),
+(8, 1, '-', 3, 2, 1, '2020-06-22 10:48:48', '2020-06-22 10:48:48', 1, 1),
+(9, 1, '-', 3, 3, 1, '2020-06-22 10:48:48', '2020-06-22 10:48:48', 1, 1);
+
+--
+-- Triggers `tbl_brg_pengiriman`
+--
+DROP TRIGGER IF EXISTS `trg_after_insert_brg_pengiriman`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_brg_pengiriman` AFTER INSERT ON `tbl_brg_pengiriman` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2806,6 +3219,7 @@ CREATE TRIGGER `trg_after_insert_brg_pengiriman` AFTER INSERT ON `tbl_brg_pengir
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_brg_pengiriman`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_brg_pengiriman` AFTER UPDATE ON `tbl_brg_pengiriman` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2835,9 +3249,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_pengiriman_log`
+-- Table structure for table `tbl_brg_pengiriman_log`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_pengiriman_log`;
 CREATE TABLE `tbl_brg_pengiriman_log` (
   `id_pk_brg_pengiriman_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -2854,12 +3269,37 @@ CREATE TABLE `tbl_brg_pengiriman_log` (
   `id_log_all` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `tbl_brg_pengiriman_log`
+--
+
+INSERT INTO `tbl_brg_pengiriman_log` (`id_pk_brg_pengiriman_log`, `executed_function`, `id_pk_brg_pengiriman`, `brg_pengiriman_qty`, `brg_pengiriman_note`, `id_fk_pengiriman`, `id_fk_brg_penjualan`, `id_fk_satuan`, `brg_pengiriman_create_date`, `brg_pengiriman_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
+(1, 'after insert', 1, 1, '-', 1, 1, 1, '2020-06-22 10:24:24', '2020-06-22 10:24:24', 1, 1, 349),
+(2, 'after insert', 2, 1, '-', 1, 2, 1, '2020-06-22 10:24:24', '2020-06-22 10:24:24', 1, 1, 353),
+(3, 'after insert', 3, 1, '-', 1, 3, 1, '2020-06-22 10:24:24', '2020-06-22 10:24:24', 1, 1, 357),
+(4, 'after update', 1, 2, '-', 1, 1, 1, '2020-06-22 10:24:24', '2020-06-22 10:24:37', 1, 1, 362),
+(5, 'after update', 2, 2, '-', 1, 2, 1, '2020-06-22 10:24:24', '2020-06-22 10:24:37', 1, 1, 366),
+(6, 'after update', 3, 2, '-', 1, 3, 1, '2020-06-22 10:24:24', '2020-06-22 10:24:37', 1, 1, 370),
+(7, 'after update', 1, 0, '-', 1, 1, 1, '2020-06-22 10:24:24', '2020-06-22 10:29:40', 1, 1, 375),
+(8, 'after update', 2, 0, '-', 1, 2, 1, '2020-06-22 10:24:24', '2020-06-22 10:29:40', 1, 1, 379),
+(9, 'after update', 3, 0, '-', 1, 3, 1, '2020-06-22 10:24:24', '2020-06-22 10:29:40', 1, 1, 383),
+(10, 'after insert', 4, 1, '-', 2, 1, 1, '2020-06-22 10:48:36', '2020-06-22 10:48:36', 1, 1, 388),
+(11, 'after insert', 5, 1, '-', 2, 2, 1, '2020-06-22 10:48:36', '2020-06-22 10:48:36', 1, 1, 392),
+(12, 'after insert', 6, 1, '-', 2, 3, 1, '2020-06-22 10:48:36', '2020-06-22 10:48:36', 1, 1, 396),
+(13, 'after insert', 7, 0, '-', 3, 1, 1, '2020-06-22 10:48:48', '2020-06-22 10:48:48', 1, 1, 401),
+(14, 'after insert', 8, 1, '-', 3, 2, 1, '2020-06-22 10:48:48', '2020-06-22 10:48:48', 1, 1, 405),
+(15, 'after insert', 9, 1, '-', 3, 3, 1, '2020-06-22 10:48:48', '2020-06-22 10:48:48', 1, 1, 409),
+(16, 'after update', 4, 0, '-', 2, 1, 1, '2020-06-22 10:48:36', '2020-06-22 10:50:14', 1, 1, 414),
+(17, 'after update', 5, 1, '-', 2, 2, 1, '2020-06-22 10:48:36', '2020-06-22 10:50:14', 1, 1, 418),
+(18, 'after update', 6, 1, '-', 2, 3, 1, '2020-06-22 10:48:36', '2020-06-22 10:50:14', 1, 1, 422);
+
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_penjualan`
+-- Table structure for table `tbl_brg_penjualan`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_penjualan`;
 CREATE TABLE `tbl_brg_penjualan` (
   `id_pk_brg_penjualan` int(11) NOT NULL,
   `brg_penjualan_qty_real` double DEFAULT NULL,
@@ -2878,7 +3318,7 @@ CREATE TABLE `tbl_brg_penjualan` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_brg_penjualan`
+-- Dumping data for table `tbl_brg_penjualan`
 --
 
 INSERT INTO `tbl_brg_penjualan` (`id_pk_brg_penjualan`, `brg_penjualan_qty_real`, `brg_penjualan_satuan_real`, `brg_penjualan_qty`, `brg_penjualan_satuan`, `brg_penjualan_harga`, `brg_penjualan_note`, `brg_penjualan_status`, `id_fk_penjualan`, `id_fk_barang`, `brg_penjualan_create_date`, `brg_penjualan_last_modified`, `id_create_data`, `id_last_modified`) VALUES
@@ -2887,8 +3327,9 @@ INSERT INTO `tbl_brg_penjualan` (`id_pk_brg_penjualan`, `brg_penjualan_qty_real`
 (3, 3, 'Pcs', 4, 'Pcs', 4000, '-', 'AKTIF', 1, 3, '2020-06-22 09:55:58', '2020-06-22 10:05:28', 1, 1);
 
 --
--- 触发器 `tbl_brg_penjualan`
+-- Triggers `tbl_brg_penjualan`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_brg_penjualan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_brg_penjualan` AFTER INSERT ON `tbl_brg_penjualan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2900,6 +3341,7 @@ CREATE TRIGGER `trg_after_insert_brg_penjualan` AFTER INSERT ON `tbl_brg_penjual
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_brg_penjualan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_brg_penjualan` AFTER UPDATE ON `tbl_brg_penjualan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -2915,9 +3357,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_penjualan_log`
+-- Table structure for table `tbl_brg_penjualan_log`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_penjualan_log`;
 CREATE TABLE `tbl_brg_penjualan_log` (
   `id_pk_brg_penjualan_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -2939,7 +3382,7 @@ CREATE TABLE `tbl_brg_penjualan_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_brg_penjualan_log`
+-- Dumping data for table `tbl_brg_penjualan_log`
 --
 
 INSERT INTO `tbl_brg_penjualan_log` (`id_pk_brg_penjualan_log`, `executed_function`, `id_pk_brg_penjualan`, `brg_penjualan_qty_real`, `brg_penjualan_satuan_real`, `brg_penjualan_qty`, `brg_penjualan_satuan`, `brg_penjualan_harga`, `brg_penjualan_note`, `brg_penjualan_status`, `id_fk_penjualan`, `id_fk_barang`, `brg_penjualan_create_date`, `brg_penjualan_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -2955,9 +3398,10 @@ INSERT INTO `tbl_brg_penjualan_log` (`id_pk_brg_penjualan_log`, `executed_functi
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_permintaan`
+-- Table structure for table `tbl_brg_permintaan`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_permintaan`;
 CREATE TABLE `tbl_brg_permintaan` (
   `id_pk_brg_permintaan` int(11) NOT NULL,
   `brg_permintaan_qty` int(11) DEFAULT NULL,
@@ -2973,8 +3417,16 @@ CREATE TABLE `tbl_brg_permintaan` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 触发器 `tbl_brg_permintaan`
+-- Dumping data for table `tbl_brg_permintaan`
 --
+
+INSERT INTO `tbl_brg_permintaan` (`id_pk_brg_permintaan`, `brg_permintaan_qty`, `brg_permintaan_notes`, `brg_permintaan_deadline`, `brg_permintaan_status`, `id_fk_brg`, `id_fk_cabang`, `brg_permintaan_create_date`, `brg_permintaan_last_modified`, `id_create_data`, `id_last_modified`) VALUES
+(1, 3, '-', '2222-02-22', 'SEDANG', 1, 1, '2020-06-22 11:53:18', '2020-06-22 09:20:19', 1, 1);
+
+--
+-- Triggers `tbl_brg_permintaan`
+--
+DROP TRIGGER IF EXISTS `trg_after_insert_brg_permintaan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_brg_permintaan` AFTER INSERT ON `tbl_brg_permintaan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3009,6 +3461,7 @@ CREATE TRIGGER `trg_after_insert_brg_permintaan` AFTER INSERT ON `tbl_brg_permin
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_brg_permintaan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_brg_permintaan` AFTER UPDATE ON `tbl_brg_permintaan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3047,9 +3500,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_permintaan_log`
+-- Table structure for table `tbl_brg_permintaan_log`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_permintaan_log`;
 CREATE TABLE `tbl_brg_permintaan_log` (
   `id_pk_penerimaan_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -3067,12 +3521,25 @@ CREATE TABLE `tbl_brg_permintaan_log` (
   `id_log_all` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `tbl_brg_permintaan_log`
+--
+
+INSERT INTO `tbl_brg_permintaan_log` (`id_pk_penerimaan_log`, `executed_function`, `id_pk_brg_permintaan`, `brg_permintaan_qty`, `brg_permintaan_notes`, `brg_permintaan_deadline`, `brg_permintaan_status`, `id_fk_brg`, `id_fk_cabang`, `brg_permintaan_create_date`, `brg_permintaan_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
+(1, 'after insert', 1, 1, '-', '1111-11-11', 'BELUM', 1, 1, '2020-06-22 11:53:18', '2020-06-22 11:53:18', 1, 1, 439),
+(2, 'after insert', 1, 3, '-', '1111-11-11', 'BELUM', 1, 1, '2020-06-22 11:53:18', '2020-06-22 11:53:39', 1, 1, 440),
+(3, 'after insert', 1, 3, '-', '2222-02-22', 'BELUM', 1, 1, '2020-06-22 11:53:18', '2020-06-22 12:42:09', 1, 1, 493),
+(4, 'after insert', 1, 3, '-', '2222-02-22', 'SEDANG', 1, 1, '2020-06-22 11:53:18', '2020-06-22 08:37:11', 1, 1, 499),
+(5, 'after insert', 1, 3, '-', '2222-02-22', 'SEDANG', 1, 1, '2020-06-22 11:53:18', '2020-06-22 08:55:25', 1, 1, 501),
+(6, 'after insert', 1, 3, '-', '2222-02-22', 'SEDANG', 1, 1, '2020-06-22 11:53:18', '2020-06-22 09:20:19', 1, 1, 505);
+
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_pindah`
+-- Table structure for table `tbl_brg_pindah`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_pindah`;
 CREATE TABLE `tbl_brg_pindah` (
   `id_pk_brg_pindah` int(11) NOT NULL,
   `brg_pindah_sumber` varchar(50) DEFAULT NULL COMMENT 'warehouse/penjualan/...',
@@ -3088,7 +3555,7 @@ CREATE TABLE `tbl_brg_pindah` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_brg_pindah`
+-- Dumping data for table `tbl_brg_pindah`
 --
 
 INSERT INTO `tbl_brg_pindah` (`id_pk_brg_pindah`, `brg_pindah_sumber`, `id_fk_refrensi_sumber`, `id_brg_awal`, `id_brg_tujuan`, `brg_pindah_qty`, `brg_pindah_status`, `brg_pindah_create_date`, `brg_pindah_last_modified`, `id_create_data`, `id_last_modified`) VALUES
@@ -3096,8 +3563,9 @@ INSERT INTO `tbl_brg_pindah` (`id_pk_brg_pindah`, `brg_pindah_sumber`, `id_fk_re
 (2, 'penjualan', 1, 1, 2, 5, 'AKTIF', '2020-06-22 09:38:00', '2020-06-22 09:38:00', 1, 1);
 
 --
--- 触发器 `tbl_brg_pindah`
+-- Triggers `tbl_brg_pindah`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_brg_pindah`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_brg_pindah` AFTER INSERT ON `tbl_brg_pindah` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3109,6 +3577,7 @@ CREATE TRIGGER `trg_after_insert_brg_pindah` AFTER INSERT ON `tbl_brg_pindah` FO
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_brg_pindah`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_brg_pindah` AFTER UPDATE ON `tbl_brg_pindah` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3124,9 +3593,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_pindah_log`
+-- Table structure for table `tbl_brg_pindah_log`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_pindah_log`;
 CREATE TABLE `tbl_brg_pindah_log` (
   `id_pk_brg_pindah_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -3145,7 +3615,7 @@ CREATE TABLE `tbl_brg_pindah_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_brg_pindah_log`
+-- Dumping data for table `tbl_brg_pindah_log`
 --
 
 INSERT INTO `tbl_brg_pindah_log` (`id_pk_brg_pindah_log`, `executed_function`, `id_pk_brg_pindah`, `brg_pindah_sumber`, `id_fk_refrensi_sumber`, `id_brg_awal`, `id_brg_tujuan`, `brg_pindah_qty`, `brg_pindah_status`, `brg_pindah_create_date`, `brg_pindah_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -3156,9 +3626,10 @@ INSERT INTO `tbl_brg_pindah_log` (`id_pk_brg_pindah_log`, `executed_function`, `
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_so`
+-- Table structure for table `tbl_brg_so`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_so`;
 CREATE TABLE `tbl_brg_so` (
   `ID_PK_SO_BRG` int(11) NOT NULL,
   `BRG_SO_RESULT` double DEFAULT NULL,
@@ -3172,8 +3643,9 @@ CREATE TABLE `tbl_brg_so` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 触发器 `tbl_brg_so`
+-- Triggers `tbl_brg_so`
 --
+DROP TRIGGER IF EXISTS `TRG_AFTER_INSERT_BRG_SO`;
 DELIMITER $$
 CREATE TRIGGER `TRG_AFTER_INSERT_BRG_SO` AFTER INSERT ON `tbl_brg_so` FOR EACH ROW BEGIN
     SET @ID_USER = NEW.ID_LAST_MODIFIED;
@@ -3185,6 +3657,7 @@ CREATE TRIGGER `TRG_AFTER_INSERT_BRG_SO` AFTER INSERT ON `tbl_brg_so` FOR EACH R
 END
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `TRG_AFTER_UPDATE_BRG_SO`;
 DELIMITER $$
 CREATE TRIGGER `TRG_AFTER_UPDATE_BRG_SO` AFTER UPDATE ON `tbl_brg_so` FOR EACH ROW BEGIN
     SET @ID_USER = NEW.ID_LAST_MODIFIED;
@@ -3200,9 +3673,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_so_log`
+-- Table structure for table `tbl_brg_so_log`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_so_log`;
 CREATE TABLE `tbl_brg_so_log` (
   `ID_PK_SO_BRG_LOG` int(11) NOT NULL,
   `EXECUTED_FUNCTION` varchar(30) DEFAULT NULL,
@@ -3221,9 +3695,10 @@ CREATE TABLE `tbl_brg_so_log` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_warehouse`
+-- Table structure for table `tbl_brg_warehouse`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_warehouse`;
 CREATE TABLE `tbl_brg_warehouse` (
   `id_pk_brg_warehouse` int(11) NOT NULL,
   `brg_warehouse_qty` int(11) DEFAULT NULL,
@@ -3238,8 +3713,9 @@ CREATE TABLE `tbl_brg_warehouse` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 触发器 `tbl_brg_warehouse`
+-- Triggers `tbl_brg_warehouse`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_brg_warehouse`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_brg_warehouse` AFTER INSERT ON `tbl_brg_warehouse` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3251,6 +3727,7 @@ CREATE TRIGGER `trg_after_insert_brg_warehouse` AFTER INSERT ON `tbl_brg_warehou
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_brg_warehouse`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_brg_warehouse` AFTER UPDATE ON `tbl_brg_warehouse` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3266,9 +3743,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_brg_warehouse_log`
+-- Table structure for table `tbl_brg_warehouse_log`
 --
 
+DROP TABLE IF EXISTS `tbl_brg_warehouse_log`;
 CREATE TABLE `tbl_brg_warehouse_log` (
   `id_pk_brg_warehouse_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -3288,9 +3766,10 @@ CREATE TABLE `tbl_brg_warehouse_log` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_cabang_admin`
+-- Table structure for table `tbl_cabang_admin`
 --
 
+DROP TABLE IF EXISTS `tbl_cabang_admin`;
 CREATE TABLE `tbl_cabang_admin` (
   `id_pk_cabang_admin` int(11) NOT NULL,
   `id_fk_cabang` int(11) DEFAULT NULL,
@@ -3303,15 +3782,17 @@ CREATE TABLE `tbl_cabang_admin` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_cabang_admin`
+-- Dumping data for table `tbl_cabang_admin`
 --
 
 INSERT INTO `tbl_cabang_admin` (`id_pk_cabang_admin`, `id_fk_cabang`, `id_fk_user`, `cabang_admin_status`, `cabang_admin_create_date`, `cabang_admin_last_modified`, `id_create_data`, `id_last_modified`) VALUES
-(1, 1, 1, 'AKTIF', '2020-06-21 11:45:03', '2020-06-21 11:45:03', 1, 1);
+(1, 1, 1, 'AKTIF', '2020-06-21 11:45:03', '2020-06-21 11:45:03', 1, 1),
+(2, 2, 1, 'AKTIF', '2020-06-22 11:59:26', '2020-06-22 11:59:26', 1, 1);
 
 --
--- 触发器 `tbl_cabang_admin`
+-- Triggers `tbl_cabang_admin`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_cabang_admin`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_cabang_admin` AFTER INSERT ON `tbl_cabang_admin` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3323,6 +3804,7 @@ CREATE TRIGGER `trg_after_insert_cabang_admin` AFTER INSERT ON `tbl_cabang_admin
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_cabang_admin`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_cabang_admin` AFTER UPDATE ON `tbl_cabang_admin` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3338,9 +3820,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_cabang_admin_log`
+-- Table structure for table `tbl_cabang_admin_log`
 --
 
+DROP TABLE IF EXISTS `tbl_cabang_admin_log`;
 CREATE TABLE `tbl_cabang_admin_log` (
   `id_pk_cabang_admin_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -3356,18 +3839,20 @@ CREATE TABLE `tbl_cabang_admin_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_cabang_admin_log`
+-- Dumping data for table `tbl_cabang_admin_log`
 --
 
 INSERT INTO `tbl_cabang_admin_log` (`id_pk_cabang_admin_log`, `executed_function`, `id_pk_cabang_admin`, `id_fk_cabang`, `id_fk_user`, `cabang_admin_status`, `cabang_admin_create_date`, `cabang_admin_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
-(1, 'after insert', 1, 1, 1, 'AKTIF', '2020-06-21 11:45:03', '2020-06-21 11:45:03', 1, 1, 91);
+(1, 'after insert', 1, 1, 1, 'AKTIF', '2020-06-21 11:45:03', '2020-06-21 11:45:03', 1, 1, 91),
+(2, 'after insert', 2, 2, 1, 'AKTIF', '2020-06-22 11:59:26', '2020-06-22 11:59:26', 1, 1, 442);
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_hak_akses`
+-- Table structure for table `tbl_hak_akses`
 --
 
+DROP TABLE IF EXISTS `tbl_hak_akses`;
 CREATE TABLE `tbl_hak_akses` (
   `id_pk_hak_akses` int(11) NOT NULL,
   `id_fk_jabatan` int(11) DEFAULT NULL,
@@ -3380,7 +3865,7 @@ CREATE TABLE `tbl_hak_akses` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_hak_akses`
+-- Dumping data for table `tbl_hak_akses`
 --
 
 INSERT INTO `tbl_hak_akses` (`id_pk_hak_akses`, `id_fk_jabatan`, `id_fk_menu`, `hak_akses_status`, `hak_akses_create_date`, `hak_akses_last_modified`, `id_create_data`, `id_last_modified`) VALUES
@@ -3467,11 +3952,16 @@ INSERT INTO `tbl_hak_akses` (`id_pk_hak_akses`, `id_fk_jabatan`, `id_fk_menu`, `
 (81, 4, 18, 'nonaktif', '2020-06-22 08:02:21', '2020-06-22 08:02:21', 1, 1),
 (82, 4, 19, 'nonaktif', '2020-06-22 08:02:21', '2020-06-22 08:02:21', 1, 1),
 (83, 4, 20, 'nonaktif', '2020-06-22 08:02:21', '2020-06-22 08:02:21', 1, 1),
-(84, 4, 21, 'nonaktif', '2020-06-22 08:02:21', '2020-06-22 08:02:21', 1, 1);
+(84, 4, 21, 'nonaktif', '2020-06-22 08:02:21', '2020-06-22 08:02:21', 1, 1),
+(85, 1, 22, 'aktif', '2020-06-22 12:32:52', '2020-06-22 12:32:52', 1, 1),
+(86, 2, 22, 'nonaktif', '2020-06-22 12:32:52', '2020-06-22 12:32:52', 1, 1),
+(87, 3, 22, 'nonaktif', '2020-06-22 12:32:52', '2020-06-22 12:32:52', 1, 1),
+(88, 4, 22, 'nonaktif', '2020-06-22 12:32:52', '2020-06-22 12:32:52', 1, 1);
 
 --
--- 触发器 `tbl_hak_akses`
+-- Triggers `tbl_hak_akses`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_hak_akses`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_hak_akses` AFTER INSERT ON `tbl_hak_akses` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3483,6 +3973,7 @@ CREATE TRIGGER `trg_after_insert_hak_akses` AFTER INSERT ON `tbl_hak_akses` FOR 
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_hak_akses`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_hak_akses` AFTER UPDATE ON `tbl_hak_akses` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3498,9 +3989,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_hak_akses_log`
+-- Table structure for table `tbl_hak_akses_log`
 --
 
+DROP TABLE IF EXISTS `tbl_hak_akses_log`;
 CREATE TABLE `tbl_hak_akses_log` (
   `id_pk_hak_akses_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -3516,7 +4008,7 @@ CREATE TABLE `tbl_hak_akses_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_hak_akses_log`
+-- Dumping data for table `tbl_hak_akses_log`
 --
 
 INSERT INTO `tbl_hak_akses_log` (`id_pk_hak_akses_log`, `executed_function`, `id_pk_hak_akses`, `id_fk_jabatan`, `id_fk_menu`, `hak_akses_status`, `hak_akses_create_date`, `hak_akses_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -3688,14 +4180,62 @@ INSERT INTO `tbl_hak_akses_log` (`id_pk_hak_akses_log`, `executed_function`, `id
 (166, 'after insert', 83, 4, 20, 'nonaktif', '2020-06-22 08:02:21', '2020-06-22 08:02:21', 1, 1, 205),
 (167, 'after insert', 84, 4, 21, 'nonaktif', '2020-06-22 08:02:21', '2020-06-22 08:02:21', 1, 1, 206),
 (168, 'after update', 64, 4, 1, 'aktif', '2020-06-22 08:02:21', '2020-06-22 08:02:21', 1, 1, 207),
-(169, 'after update', 65, 4, 2, 'aktif', '2020-06-22 08:02:21', '2020-06-22 08:02:21', 1, 1, 208);
+(169, 'after update', 65, 4, 2, 'aktif', '2020-06-22 08:02:21', '2020-06-22 08:02:21', 1, 1, 208),
+(170, 'after insert', 85, 1, 22, 'nonaktif', '2020-06-22 12:32:52', '2020-06-22 12:32:52', 1, 1, 444),
+(171, 'after insert', 86, 2, 22, 'nonaktif', '2020-06-22 12:32:52', '2020-06-22 12:32:52', 1, 1, 445),
+(172, 'after insert', 87, 3, 22, 'nonaktif', '2020-06-22 12:32:52', '2020-06-22 12:32:52', 1, 1, 446),
+(173, 'after insert', 88, 4, 22, 'nonaktif', '2020-06-22 12:32:52', '2020-06-22 12:32:52', 1, 1, 447),
+(174, 'after update', 1, 1, 1, 'nonaktif', '2020-06-21 11:28:57', '2020-06-21 11:28:57', 1, 1, 449),
+(175, 'after update', 2, 1, 2, 'nonaktif', '2020-06-21 11:28:57', '2020-06-21 11:28:57', 1, 1, 450),
+(176, 'after update', 3, 1, 3, 'nonaktif', '2020-06-21 11:38:11', '2020-06-21 11:38:11', 1, 1, 451),
+(177, 'after update', 4, 1, 4, 'nonaktif', '2020-06-21 11:38:23', '2020-06-21 11:38:23', 1, 1, 452),
+(178, 'after update', 5, 1, 5, 'nonaktif', '2020-06-21 11:38:35', '2020-06-21 11:38:35', 1, 1, 453),
+(179, 'after update', 6, 1, 6, 'nonaktif', '2020-06-21 11:38:44', '2020-06-21 11:38:44', 1, 1, 454),
+(180, 'after update', 7, 1, 7, 'nonaktif', '2020-06-21 11:38:54', '2020-06-21 11:38:54', 1, 1, 455),
+(181, 'after update', 8, 1, 8, 'nonaktif', '2020-06-21 11:39:36', '2020-06-21 11:39:36', 1, 1, 456),
+(182, 'after update', 9, 1, 9, 'nonaktif', '2020-06-21 11:40:07', '2020-06-21 11:40:07', 1, 1, 457),
+(183, 'after update', 10, 1, 10, 'nonaktif', '2020-06-21 11:40:52', '2020-06-21 11:40:52', 1, 1, 458),
+(184, 'after update', 11, 1, 11, 'nonaktif', '2020-06-21 11:41:04', '2020-06-21 11:41:04', 1, 1, 459),
+(185, 'after update', 12, 1, 12, 'nonaktif', '2020-06-21 11:41:23', '2020-06-21 11:41:23', 1, 1, 460),
+(186, 'after update', 13, 1, 13, 'nonaktif', '2020-06-21 11:41:33', '2020-06-21 11:41:33', 1, 1, 461),
+(187, 'after update', 14, 1, 14, 'nonaktif', '2020-06-21 11:41:42', '2020-06-21 11:41:42', 1, 1, 462),
+(188, 'after update', 15, 1, 15, 'nonaktif', '2020-06-21 11:41:58', '2020-06-21 11:41:58', 1, 1, 463),
+(189, 'after update', 16, 1, 16, 'nonaktif', '2020-06-21 11:42:07', '2020-06-21 11:42:07', 1, 1, 464),
+(190, 'after update', 17, 1, 17, 'nonaktif', '2020-06-21 11:42:16', '2020-06-21 11:42:16', 1, 1, 465),
+(191, 'after update', 18, 1, 18, 'nonaktif', '2020-06-21 11:42:28', '2020-06-21 11:42:28', 1, 1, 466),
+(192, 'after update', 19, 1, 19, 'nonaktif', '2020-06-21 11:42:37', '2020-06-21 11:42:37', 1, 1, 467),
+(193, 'after update', 20, 1, 20, 'nonaktif', '2020-06-22 12:12:04', '2020-06-22 12:12:04', 1, 1, 468),
+(194, 'after update', 21, 1, 21, 'nonaktif', '2020-06-22 07:50:23', '2020-06-22 07:50:23', 1, 1, 469),
+(195, 'after update', 85, 1, 22, 'nonaktif', '2020-06-22 12:32:52', '2020-06-22 12:32:52', 1, 1, 470),
+(196, 'after update', 1, 1, 1, 'aktif', '2020-06-21 11:28:57', '2020-06-21 11:28:57', 1, 1, 471),
+(197, 'after update', 2, 1, 2, 'aktif', '2020-06-21 11:28:57', '2020-06-21 11:28:57', 1, 1, 472),
+(198, 'after update', 3, 1, 3, 'aktif', '2020-06-21 11:38:11', '2020-06-21 11:38:11', 1, 1, 473),
+(199, 'after update', 4, 1, 4, 'aktif', '2020-06-21 11:38:23', '2020-06-21 11:38:23', 1, 1, 474),
+(200, 'after update', 5, 1, 5, 'aktif', '2020-06-21 11:38:35', '2020-06-21 11:38:35', 1, 1, 475),
+(201, 'after update', 6, 1, 6, 'aktif', '2020-06-21 11:38:44', '2020-06-21 11:38:44', 1, 1, 476),
+(202, 'after update', 7, 1, 7, 'aktif', '2020-06-21 11:38:54', '2020-06-21 11:38:54', 1, 1, 477),
+(203, 'after update', 8, 1, 8, 'aktif', '2020-06-21 11:39:36', '2020-06-21 11:39:36', 1, 1, 478),
+(204, 'after update', 9, 1, 9, 'aktif', '2020-06-21 11:40:07', '2020-06-21 11:40:07', 1, 1, 479),
+(205, 'after update', 10, 1, 10, 'aktif', '2020-06-21 11:40:52', '2020-06-21 11:40:52', 1, 1, 480),
+(206, 'after update', 11, 1, 11, 'aktif', '2020-06-21 11:41:04', '2020-06-21 11:41:04', 1, 1, 481),
+(207, 'after update', 12, 1, 12, 'aktif', '2020-06-21 11:41:23', '2020-06-21 11:41:23', 1, 1, 482),
+(208, 'after update', 13, 1, 13, 'aktif', '2020-06-21 11:41:33', '2020-06-21 11:41:33', 1, 1, 483),
+(209, 'after update', 14, 1, 14, 'aktif', '2020-06-21 11:41:42', '2020-06-21 11:41:42', 1, 1, 484),
+(210, 'after update', 15, 1, 15, 'aktif', '2020-06-21 11:41:58', '2020-06-21 11:41:58', 1, 1, 485),
+(211, 'after update', 16, 1, 16, 'aktif', '2020-06-21 11:42:07', '2020-06-21 11:42:07', 1, 1, 486),
+(212, 'after update', 17, 1, 17, 'aktif', '2020-06-21 11:42:16', '2020-06-21 11:42:16', 1, 1, 487),
+(213, 'after update', 18, 1, 18, 'aktif', '2020-06-21 11:42:28', '2020-06-21 11:42:28', 1, 1, 488),
+(214, 'after update', 19, 1, 19, 'aktif', '2020-06-21 11:42:37', '2020-06-21 11:42:37', 1, 1, 489),
+(215, 'after update', 20, 1, 20, 'aktif', '2020-06-22 12:12:04', '2020-06-22 12:12:04', 1, 1, 490),
+(216, 'after update', 85, 1, 22, 'aktif', '2020-06-22 12:32:52', '2020-06-22 12:32:52', 1, 1, 491);
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_penjualan_online`
+-- Table structure for table `tbl_penjualan_online`
 --
 
+DROP TABLE IF EXISTS `tbl_penjualan_online`;
 CREATE TABLE `tbl_penjualan_online` (
   `id_pk_penjualan_online` int(11) NOT NULL,
   `penj_on_marketplace` varchar(40) DEFAULT NULL,
@@ -3710,15 +4250,16 @@ CREATE TABLE `tbl_penjualan_online` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_penjualan_online`
+-- Dumping data for table `tbl_penjualan_online`
 --
 
 INSERT INTO `tbl_penjualan_online` (`id_pk_penjualan_online`, `penj_on_marketplace`, `penj_on_no_resi`, `penj_on_kurir`, `penj_on_status`, `id_fk_penjualan`, `penj_on_create_date`, `penj_on_last_modified`, `id_create_data`, `id_last_modified`) VALUES
 (1, 'Tokopedia', '1234567', 'JNE', 'AKTIF', 1, '2020-06-22 09:39:50', '2020-06-22 10:05:28', 1, 1);
 
 --
--- 触发器 `tbl_penjualan_online`
+-- Triggers `tbl_penjualan_online`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_penjualan_online`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_penjualan_online` AFTER INSERT ON `tbl_penjualan_online` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3730,6 +4271,7 @@ CREATE TRIGGER `trg_after_insert_penjualan_online` AFTER INSERT ON `tbl_penjuala
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_penjualan_online`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_penjualan_online` AFTER UPDATE ON `tbl_penjualan_online` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3745,9 +4287,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_penjualan_online_log`
+-- Table structure for table `tbl_penjualan_online_log`
 --
 
+DROP TABLE IF EXISTS `tbl_penjualan_online_log`;
 CREATE TABLE `tbl_penjualan_online_log` (
   `id_pk_penjualan_online_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -3765,7 +4308,7 @@ CREATE TABLE `tbl_penjualan_online_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_penjualan_online_log`
+-- Dumping data for table `tbl_penjualan_online_log`
 --
 
 INSERT INTO `tbl_penjualan_online_log` (`id_pk_penjualan_online_log`, `executed_function`, `id_pk_penjualan_online`, `penj_on_marketplace`, `penj_on_no_resi`, `penj_on_kurir`, `penj_on_status`, `id_fk_penjualan`, `penj_on_create_date`, `penj_on_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -3777,9 +4320,10 @@ INSERT INTO `tbl_penjualan_online_log` (`id_pk_penjualan_online_log`, `executed_
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_penjualan_pembayaran`
+-- Table structure for table `tbl_penjualan_pembayaran`
 --
 
+DROP TABLE IF EXISTS `tbl_penjualan_pembayaran`;
 CREATE TABLE `tbl_penjualan_pembayaran` (
   `id_pk_penjualan_pembayaran` int(11) NOT NULL,
   `id_fk_penjualan` int(11) DEFAULT NULL,
@@ -3796,7 +4340,7 @@ CREATE TABLE `tbl_penjualan_pembayaran` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_penjualan_pembayaran`
+-- Dumping data for table `tbl_penjualan_pembayaran`
 --
 
 INSERT INTO `tbl_penjualan_pembayaran` (`id_pk_penjualan_pembayaran`, `id_fk_penjualan`, `penjualan_pmbyrn_nama`, `penjualan_pmbyrn_persen`, `penjualan_pmbyrn_nominal`, `penjualan_pmbyrn_notes`, `penjualan_pmbyrn_dateline`, `penjualan_pmbyrn_status`, `penjualan_pmbyrn_create_date`, `penjualan_pmbyrn_last_modified`, `id_create_data`, `id_last_modified`) VALUES
@@ -3805,8 +4349,9 @@ INSERT INTO `tbl_penjualan_pembayaran` (`id_pk_penjualan_pembayaran`, `id_fk_pen
 (3, 1, 'Pelunasan 2', 25, 31000, '-', '1111-11-11 00:00:00', 'AKTIF', '2020-06-22 09:55:58', '2020-06-22 10:05:28', 1, 1);
 
 --
--- 触发器 `tbl_penjualan_pembayaran`
+-- Triggers `tbl_penjualan_pembayaran`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_penjualan_pembayaran`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_penjualan_pembayaran` AFTER INSERT ON `tbl_penjualan_pembayaran` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3818,6 +4363,7 @@ CREATE TRIGGER `trg_after_insert_penjualan_pembayaran` AFTER INSERT ON `tbl_penj
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_penjualan_pembayaran`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_penjualan_pembayaran` AFTER UPDATE ON `tbl_penjualan_pembayaran` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3833,9 +4379,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_penjualan_pembayaran_log`
+-- Table structure for table `tbl_penjualan_pembayaran_log`
 --
 
+DROP TABLE IF EXISTS `tbl_penjualan_pembayaran_log`;
 CREATE TABLE `tbl_penjualan_pembayaran_log` (
   `id_pk_penjualan_pembayaran_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -3855,7 +4402,7 @@ CREATE TABLE `tbl_penjualan_pembayaran_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_penjualan_pembayaran_log`
+-- Dumping data for table `tbl_penjualan_pembayaran_log`
 --
 
 INSERT INTO `tbl_penjualan_pembayaran_log` (`id_pk_penjualan_pembayaran_log`, `executed_function`, `id_pk_penjualan_pembayaran`, `id_fk_penjualan`, `penjualan_pmbyrn_nama`, `penjualan_pmbyrn_persen`, `penjualan_pmbyrn_nominal`, `penjualan_pmbyrn_notes`, `penjualan_pmbyrn_dateline`, `penjualan_pmbyrn_status`, `penjualan_pmbyrn_create_date`, `penjualan_pmbyrn_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -3871,9 +4418,10 @@ INSERT INTO `tbl_penjualan_pembayaran_log` (`id_pk_penjualan_pembayaran_log`, `e
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_retur_brg`
+-- Table structure for table `tbl_retur_brg`
 --
 
+DROP TABLE IF EXISTS `tbl_retur_brg`;
 CREATE TABLE `tbl_retur_brg` (
   `id_pk_retur_brg` int(11) NOT NULL,
   `id_fk_retur` int(11) DEFAULT NULL,
@@ -3889,8 +4437,18 @@ CREATE TABLE `tbl_retur_brg` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 触发器 `tbl_retur_brg`
+-- Dumping data for table `tbl_retur_brg`
 --
+
+INSERT INTO `tbl_retur_brg` (`id_pk_retur_brg`, `id_fk_retur`, `id_fk_brg`, `retur_brg_qty`, `retur_brg_satuan`, `retur_brg_notes`, `retur_brg_status`, `retur_create_date`, `retur_last_modified`, `id_create_data`, `id_last_modified`) VALUES
+(1, 1, 1, 0, 'Pcs', '-', 'aktif', '2020-06-22 10:52:54', '2020-06-22 10:54:41', 1, 1),
+(2, 1, 2, 1, 'Pcs', '-', 'aktif', '2020-06-22 10:52:54', '2020-06-22 10:54:41', 1, 1),
+(3, 1, 3, 1, 'Pcs', '-', 'aktif', '2020-06-22 10:52:54', '2020-06-22 10:54:41', 1, 1);
+
+--
+-- Triggers `tbl_retur_brg`
+--
+DROP TRIGGER IF EXISTS `trg_after_insert_retur`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_retur` AFTER INSERT ON `tbl_retur_brg` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3903,6 +4461,7 @@ CREATE TRIGGER `trg_after_insert_retur` AFTER INSERT ON `tbl_retur_brg` FOR EACH
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_retur`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_retur` AFTER UPDATE ON `tbl_retur_brg` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3918,9 +4477,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_retur_brg_log`
+-- Table structure for table `tbl_retur_brg_log`
 --
 
+DROP TABLE IF EXISTS `tbl_retur_brg_log`;
 CREATE TABLE `tbl_retur_brg_log` (
   `id_pk_retur_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -3938,12 +4498,25 @@ CREATE TABLE `tbl_retur_brg_log` (
   `id_log_all` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `tbl_retur_brg_log`
+--
+
+INSERT INTO `tbl_retur_brg_log` (`id_pk_retur_log`, `executed_function`, `id_pk_retur_brg`, `id_fk_retur`, `id_fk_brg`, `retur_brg_qty`, `retur_brg_satuan`, `retur_brg_notes`, `retur_brg_status`, `retur_create_date`, `retur_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
+(1, 'after insert', 1, 1, 1, 0, 'Pcs', '-', 'aktif', '2020-06-22 10:52:54', '2020-06-22 10:52:54', 1, 1, 426),
+(2, 'after insert', 2, 1, 2, 1, 'Pcs', '-', 'aktif', '2020-06-22 10:52:54', '2020-06-22 10:52:54', 1, 1, 427),
+(3, 'after insert', 3, 1, 3, 0, 'Pcs', '-', 'aktif', '2020-06-22 10:52:54', '2020-06-22 10:52:54', 1, 1, 428),
+(4, 'after update', 1, 1, 1, 0, 'Pcs', '-', 'aktif', '2020-06-22 10:52:54', '2020-06-22 10:54:41', 1, 1, 430),
+(5, 'after update', 2, 1, 2, 1, 'Pcs', '-', 'aktif', '2020-06-22 10:52:54', '2020-06-22 10:54:41', 1, 1, 431),
+(6, 'after update', 3, 1, 3, 1, 'Pcs', '-', 'aktif', '2020-06-22 10:52:54', '2020-06-22 10:54:41', 1, 1, 432);
+
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_retur_kembali`
+-- Table structure for table `tbl_retur_kembali`
 --
 
+DROP TABLE IF EXISTS `tbl_retur_kembali`;
 CREATE TABLE `tbl_retur_kembali` (
   `id_pk_retur_kembali` int(11) NOT NULL,
   `retur_kembali_qty_real` double DEFAULT NULL,
@@ -3962,8 +4535,16 @@ CREATE TABLE `tbl_retur_kembali` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 触发器 `tbl_retur_kembali`
+-- Dumping data for table `tbl_retur_kembali`
 --
+
+INSERT INTO `tbl_retur_kembali` (`id_pk_retur_kembali`, `retur_kembali_qty_real`, `retur_kembali_satuan_real`, `retur_kembali_qty`, `retur_kembali_satuan`, `retur_kembali_harga`, `retur_kembali_note`, `retur_kembali_status`, `id_fk_retur`, `id_fk_brg`, `retur_kembali_create_date`, `retur_kembali_last_modified`, `id_create_data`, `id_last_modified`) VALUES
+(1, 2, 'Pcs', 3, 'Pcs', 20000, '-', 'aktif', 1, 3, '2020-06-22 10:52:54', '2020-06-22 10:54:41', 1, 1);
+
+--
+-- Triggers `tbl_retur_kembali`
+--
+DROP TRIGGER IF EXISTS `trg_after_insert_retur_kembali`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_retur_kembali` AFTER INSERT ON `tbl_retur_kembali` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3975,6 +4556,7 @@ CREATE TRIGGER `trg_after_insert_retur_kembali` AFTER INSERT ON `tbl_retur_kemba
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_retur_kembali`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_retur_kembali` AFTER UPDATE ON `tbl_retur_kembali` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -3990,9 +4572,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_retur_kembali_log`
+-- Table structure for table `tbl_retur_kembali_log`
 --
 
+DROP TABLE IF EXISTS `tbl_retur_kembali_log`;
 CREATE TABLE `tbl_retur_kembali_log` (
   `id_pk_retur_kembali_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -4013,12 +4596,21 @@ CREATE TABLE `tbl_retur_kembali_log` (
   `id_log_all` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `tbl_retur_kembali_log`
+--
+
+INSERT INTO `tbl_retur_kembali_log` (`id_pk_retur_kembali_log`, `executed_function`, `id_pk_retur_kembali`, `retur_kembali_qty_real`, `retur_kembali_satuan_real`, `retur_kembali_qty`, `retur_kembali_satuan`, `retur_kembali_harga`, `retur_kembali_note`, `retur_kembali_status`, `id_fk_retur`, `id_fk_brg`, `retur_kembali_create_date`, `retur_kembali_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
+(1, 'after insert', 1, 2, 'Pcs', 2, 'Pcs', 20000, '-', 'aktif', 1, 3, '2020-06-22 10:52:54', '2020-06-22 10:52:54', 1, 1, 429),
+(2, 'after update', 1, 2, 'Pcs', 3, 'Pcs', 20000, '-', 'aktif', 1, 3, '2020-06-22 10:52:54', '2020-06-22 10:54:41', 1, 1, 433);
+
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_sj_item`
+-- Table structure for table `tbl_sj_item`
 --
 
+DROP TABLE IF EXISTS `tbl_sj_item`;
 CREATE TABLE `tbl_sj_item` (
   `id_pk_sj_item` int(11) NOT NULL,
   `sj_item_qty` double DEFAULT NULL,
@@ -4034,8 +4626,9 @@ CREATE TABLE `tbl_sj_item` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 触发器 `tbl_sj_item`
+-- Triggers `tbl_sj_item`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_sj_item`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_sj_item` AFTER INSERT ON `tbl_sj_item` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -4047,6 +4640,7 @@ CREATE TRIGGER `trg_after_insert_sj_item` AFTER INSERT ON `tbl_sj_item` FOR EACH
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_sj_item`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_sj_item` AFTER UPDATE ON `tbl_sj_item` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -4062,9 +4656,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_sj_item_log`
+-- Table structure for table `tbl_sj_item_log`
 --
 
+DROP TABLE IF EXISTS `tbl_sj_item_log`;
 CREATE TABLE `tbl_sj_item_log` (
   `id_pk_sj_item_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -4085,9 +4680,10 @@ CREATE TABLE `tbl_sj_item_log` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_so_pj`
+-- Table structure for table `tbl_so_pj`
 --
 
+DROP TABLE IF EXISTS `tbl_so_pj`;
 CREATE TABLE `tbl_so_pj` (
   `ID_PK_SO_PJ` int(11) NOT NULL,
   `ID_FK_STOCK_OPNAME` int(11) DEFAULT NULL,
@@ -4099,8 +4695,9 @@ CREATE TABLE `tbl_so_pj` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 触发器 `tbl_so_pj`
+-- Triggers `tbl_so_pj`
 --
+DROP TRIGGER IF EXISTS `TRG_AFTER_INSERT_SO_PJ`;
 DELIMITER $$
 CREATE TRIGGER `TRG_AFTER_INSERT_SO_PJ` AFTER INSERT ON `tbl_so_pj` FOR EACH ROW BEGIN
     SET @ID_USER = NEW.ID_LAST_MODIFIED;
@@ -4112,6 +4709,7 @@ CREATE TRIGGER `TRG_AFTER_INSERT_SO_PJ` AFTER INSERT ON `tbl_so_pj` FOR EACH ROW
 END
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `TRG_AFTER_UPDATE_SO_PJ`;
 DELIMITER $$
 CREATE TRIGGER `TRG_AFTER_UPDATE_SO_PJ` AFTER UPDATE ON `tbl_so_pj` FOR EACH ROW BEGIN
     SET @ID_USER = NEW.ID_LAST_MODIFIED;
@@ -4127,9 +4725,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_so_pj_log`
+-- Table structure for table `tbl_so_pj_log`
 --
 
+DROP TABLE IF EXISTS `tbl_so_pj_log`;
 CREATE TABLE `tbl_so_pj_log` (
   `ID_PK_SO_PJ_LOG` int(11) NOT NULL,
   `EXECUTED_FUNCTION` varchar(30) DEFAULT NULL,
@@ -4146,9 +4745,10 @@ CREATE TABLE `tbl_so_pj_log` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_tambahan_pembelian`
+-- Table structure for table `tbl_tambahan_pembelian`
 --
 
+DROP TABLE IF EXISTS `tbl_tambahan_pembelian`;
 CREATE TABLE `tbl_tambahan_pembelian` (
   `id_pk_tmbhn` int(11) NOT NULL,
   `tmbhn` varchar(100) DEFAULT NULL,
@@ -4165,7 +4765,7 @@ CREATE TABLE `tbl_tambahan_pembelian` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_tambahan_pembelian`
+-- Dumping data for table `tbl_tambahan_pembelian`
 --
 
 INSERT INTO `tbl_tambahan_pembelian` (`id_pk_tmbhn`, `tmbhn`, `tmbhn_jumlah`, `tmbhn_satuan`, `tmbhn_harga`, `tmbhn_notes`, `tmbhn_status`, `id_fk_pembelian`, `tmbhn_create_date`, `tmbhn_last_modified`, `id_create_data`, `id_last_modified`) VALUES
@@ -4173,8 +4773,9 @@ INSERT INTO `tbl_tambahan_pembelian` (`id_pk_tmbhn`, `tmbhn`, `tmbhn_jumlah`, `t
 (2, 'PARKIR', 1, 'Jam', 4000, '-', 'AKTIF', 2, '2020-06-22 08:26:28', '0000-00-00 00:00:00', 20, 1);
 
 --
--- 触发器 `tbl_tambahan_pembelian`
+-- Triggers `tbl_tambahan_pembelian`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_tambahan_pembelian`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_tambahan_pembelian` AFTER INSERT ON `tbl_tambahan_pembelian` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -4186,6 +4787,7 @@ CREATE TRIGGER `trg_after_insert_tambahan_pembelian` AFTER INSERT ON `tbl_tambah
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_tambahan_pembelian`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_tambahan_pembelian` AFTER UPDATE ON `tbl_tambahan_pembelian` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -4201,9 +4803,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_tambahan_pembelian_log`
+-- Table structure for table `tbl_tambahan_pembelian_log`
 --
 
+DROP TABLE IF EXISTS `tbl_tambahan_pembelian_log`;
 CREATE TABLE `tbl_tambahan_pembelian_log` (
   `id_pk_tmbhn_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -4223,7 +4826,7 @@ CREATE TABLE `tbl_tambahan_pembelian_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_tambahan_pembelian_log`
+-- Dumping data for table `tbl_tambahan_pembelian_log`
 --
 
 INSERT INTO `tbl_tambahan_pembelian_log` (`id_pk_tmbhn_log`, `executed_function`, `id_pk_tmbhn`, `tmbhn`, `tmbhn_jumlah`, `tmbhn_satuan`, `tmbhn_harga`, `tmbhn_notes`, `tmbhn_status`, `id_fk_pembelian`, `tmbhn_create_date`, `tmbhn_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -4235,9 +4838,10 @@ INSERT INTO `tbl_tambahan_pembelian_log` (`id_pk_tmbhn_log`, `executed_function`
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_tambahan_penjualan`
+-- Table structure for table `tbl_tambahan_penjualan`
 --
 
+DROP TABLE IF EXISTS `tbl_tambahan_penjualan`;
 CREATE TABLE `tbl_tambahan_penjualan` (
   `id_pk_tmbhn` int(11) NOT NULL,
   `tmbhn` varchar(100) DEFAULT NULL,
@@ -4254,7 +4858,7 @@ CREATE TABLE `tbl_tambahan_penjualan` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_tambahan_penjualan`
+-- Dumping data for table `tbl_tambahan_penjualan`
 --
 
 INSERT INTO `tbl_tambahan_penjualan` (`id_pk_tmbhn`, `tmbhn`, `tmbhn_jumlah`, `tmbhn_satuan`, `tmbhn_harga`, `tmbhn_notes`, `tmbhn_status`, `id_fk_penjualan`, `tmbhn_create_date`, `tmbhn_last_modified`, `id_create_data`, `id_last_modified`) VALUES
@@ -4262,8 +4866,9 @@ INSERT INTO `tbl_tambahan_penjualan` (`id_pk_tmbhn`, `tmbhn`, `tmbhn_jumlah`, `t
 (2, 'Kurir', 1, 'Trip', 4000, '-', 'AKTIF', 1, '2020-06-22 09:55:58', '2020-06-22 10:05:28', 1, 1);
 
 --
--- 触发器 `tbl_tambahan_penjualan`
+-- Triggers `tbl_tambahan_penjualan`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_tambahan_penjualan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_tambahan_penjualan` AFTER INSERT ON `tbl_tambahan_penjualan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -4275,6 +4880,7 @@ CREATE TRIGGER `trg_after_insert_tambahan_penjualan` AFTER INSERT ON `tbl_tambah
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_tambahan_penjualan`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_tambahan_penjualan` AFTER UPDATE ON `tbl_tambahan_penjualan` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -4290,9 +4896,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_tambahan_penjualan_log`
+-- Table structure for table `tbl_tambahan_penjualan_log`
 --
 
+DROP TABLE IF EXISTS `tbl_tambahan_penjualan_log`;
 CREATE TABLE `tbl_tambahan_penjualan_log` (
   `id_pk_tmbhn_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -4312,7 +4919,7 @@ CREATE TABLE `tbl_tambahan_penjualan_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_tambahan_penjualan_log`
+-- Dumping data for table `tbl_tambahan_penjualan_log`
 --
 
 INSERT INTO `tbl_tambahan_penjualan_log` (`id_pk_tmbhn_log`, `executed_function`, `id_pk_tmbhn`, `tmbhn`, `tmbhn_jumlah`, `tmbhn_satuan`, `tmbhn_harga`, `tmbhn_notes`, `tmbhn_status`, `id_fk_penjualan`, `tmbhn_create_date`, `tmbhn_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -4325,9 +4932,10 @@ INSERT INTO `tbl_tambahan_penjualan_log` (`id_pk_tmbhn_log`, `executed_function`
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_toko_admin`
+-- Table structure for table `tbl_toko_admin`
 --
 
+DROP TABLE IF EXISTS `tbl_toko_admin`;
 CREATE TABLE `tbl_toko_admin` (
   `id_pk_toko_admin` int(11) NOT NULL,
   `id_fk_toko` int(11) DEFAULT NULL,
@@ -4340,15 +4948,16 @@ CREATE TABLE `tbl_toko_admin` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_toko_admin`
+-- Dumping data for table `tbl_toko_admin`
 --
 
 INSERT INTO `tbl_toko_admin` (`id_pk_toko_admin`, `id_fk_toko`, `id_fk_user`, `toko_admin_status`, `toko_admin_create_date`, `toko_admin_last_modified`, `id_create_data`, `id_last_modified`) VALUES
 (1, 1, 1, 'AKTIF', '2020-06-21 11:44:24', '2020-06-21 11:44:24', 1, 1);
 
 --
--- 触发器 `tbl_toko_admin`
+-- Triggers `tbl_toko_admin`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_toko_admin`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_toko_admin` AFTER INSERT ON `tbl_toko_admin` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -4360,6 +4969,7 @@ CREATE TRIGGER `trg_after_insert_toko_admin` AFTER INSERT ON `tbl_toko_admin` FO
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_toko_admin`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_toko_admin` AFTER UPDATE ON `tbl_toko_admin` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -4375,9 +4985,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_toko_admin_log`
+-- Table structure for table `tbl_toko_admin_log`
 --
 
+DROP TABLE IF EXISTS `tbl_toko_admin_log`;
 CREATE TABLE `tbl_toko_admin_log` (
   `id_pk_toko_admin_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -4393,7 +5004,7 @@ CREATE TABLE `tbl_toko_admin_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_toko_admin_log`
+-- Dumping data for table `tbl_toko_admin_log`
 --
 
 INSERT INTO `tbl_toko_admin_log` (`id_pk_toko_admin_log`, `executed_function`, `id_pk_toko_admin`, `id_fk_toko`, `id_fk_user`, `toko_admin_status`, `toko_admin_create_date`, `toko_admin_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
@@ -4402,9 +5013,10 @@ INSERT INTO `tbl_toko_admin_log` (`id_pk_toko_admin_log`, `executed_function`, `
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_warehouse_admin`
+-- Table structure for table `tbl_warehouse_admin`
 --
 
+DROP TABLE IF EXISTS `tbl_warehouse_admin`;
 CREATE TABLE `tbl_warehouse_admin` (
   `id_pk_warehouse_admin` int(11) NOT NULL,
   `id_fk_warehouse` int(11) DEFAULT NULL,
@@ -4417,15 +5029,16 @@ CREATE TABLE `tbl_warehouse_admin` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_warehouse_admin`
+-- Dumping data for table `tbl_warehouse_admin`
 --
 
 INSERT INTO `tbl_warehouse_admin` (`id_pk_warehouse_admin`, `id_fk_warehouse`, `id_fk_user`, `warehouse_admin_status`, `warehouse_admin_create_date`, `warehouse_admin_last_modified`, `id_create_data`, `id_last_modified`) VALUES
 (1, 1, 1, 'AKTIF', '2020-06-21 11:45:53', '2020-06-21 11:45:53', 1, 1);
 
 --
--- 触发器 `tbl_warehouse_admin`
+-- Triggers `tbl_warehouse_admin`
 --
+DROP TRIGGER IF EXISTS `trg_after_insert_warehouse_admin`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_warehouse_admin` AFTER INSERT ON `tbl_warehouse_admin` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -4437,6 +5050,7 @@ CREATE TRIGGER `trg_after_insert_warehouse_admin` AFTER INSERT ON `tbl_warehouse
         end
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_update_warehouse_admin`;
 DELIMITER $$
 CREATE TRIGGER `trg_after_update_warehouse_admin` AFTER UPDATE ON `tbl_warehouse_admin` FOR EACH ROW begin
             set @id_user = new.id_last_modified;
@@ -4452,9 +5066,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tbl_warehouse_admin_log`
+-- Table structure for table `tbl_warehouse_admin_log`
 --
 
+DROP TABLE IF EXISTS `tbl_warehouse_admin_log`;
 CREATE TABLE `tbl_warehouse_admin_log` (
   `id_pk_warehouse_admin_log` int(11) NOT NULL,
   `executed_function` varchar(30) DEFAULT NULL,
@@ -4470,1072 +5085,1072 @@ CREATE TABLE `tbl_warehouse_admin_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tbl_warehouse_admin_log`
+-- Dumping data for table `tbl_warehouse_admin_log`
 --
 
 INSERT INTO `tbl_warehouse_admin_log` (`id_pk_warehouse_admin_log`, `executed_function`, `id_pk_warehouse_admin`, `id_fk_warehouse`, `id_fk_user`, `warehouse_admin_status`, `warehouse_admin_create_date`, `warehouse_admin_last_modified`, `id_create_data`, `id_last_modified`, `id_log_all`) VALUES
 (1, 'after insert', 1, 1, 1, 'AKTIF', '2020-06-21 11:45:53', '2020-06-21 11:45:53', 1, 1, 93);
 
 --
--- 转储表的索引
+-- Indexes for dumped tables
 --
 
 --
--- 表的索引 `log_all`
+-- Indexes for table `log_all`
 --
 ALTER TABLE `log_all`
   ADD PRIMARY KEY (`id_log_all`);
 
 --
--- 表的索引 `mstr_barang`
+-- Indexes for table `mstr_barang`
 --
 ALTER TABLE `mstr_barang`
   ADD PRIMARY KEY (`id_pk_brg`);
 
 --
--- 表的索引 `mstr_barang_jenis`
+-- Indexes for table `mstr_barang_jenis`
 --
 ALTER TABLE `mstr_barang_jenis`
   ADD PRIMARY KEY (`id_pk_brg_jenis`);
 
 --
--- 表的索引 `mstr_barang_jenis_log`
+-- Indexes for table `mstr_barang_jenis_log`
 --
 ALTER TABLE `mstr_barang_jenis_log`
   ADD PRIMARY KEY (`id_pk_brg_jenis_log`);
 
 --
--- 表的索引 `mstr_barang_log`
+-- Indexes for table `mstr_barang_log`
 --
 ALTER TABLE `mstr_barang_log`
   ADD PRIMARY KEY (`id_pk_brg_log`);
 
 --
--- 表的索引 `mstr_barang_merk`
+-- Indexes for table `mstr_barang_merk`
 --
 ALTER TABLE `mstr_barang_merk`
   ADD PRIMARY KEY (`id_pk_brg_merk`);
 
 --
--- 表的索引 `mstr_barang_merk_log`
+-- Indexes for table `mstr_barang_merk_log`
 --
 ALTER TABLE `mstr_barang_merk_log`
   ADD PRIMARY KEY (`id_pk_brg_merk_log`);
 
 --
--- 表的索引 `mstr_cabang`
+-- Indexes for table `mstr_cabang`
 --
 ALTER TABLE `mstr_cabang`
   ADD PRIMARY KEY (`id_pk_cabang`);
 
 --
--- 表的索引 `mstr_cabang_log`
+-- Indexes for table `mstr_cabang_log`
 --
 ALTER TABLE `mstr_cabang_log`
   ADD PRIMARY KEY (`id_pk_cabang_log`);
 
 --
--- 表的索引 `mstr_customer`
+-- Indexes for table `mstr_customer`
 --
 ALTER TABLE `mstr_customer`
   ADD PRIMARY KEY (`id_pk_cust`);
 
 --
--- 表的索引 `mstr_customer_log`
+-- Indexes for table `mstr_customer_log`
 --
 ALTER TABLE `mstr_customer_log`
   ADD PRIMARY KEY (`id_pk_cust_log`);
 
 --
--- 表的索引 `mstr_employee`
+-- Indexes for table `mstr_employee`
 --
 ALTER TABLE `mstr_employee`
   ADD PRIMARY KEY (`id_pk_employee`);
 
 --
--- 表的索引 `mstr_employee_log`
+-- Indexes for table `mstr_employee_log`
 --
 ALTER TABLE `mstr_employee_log`
   ADD PRIMARY KEY (`id_pk_employee_log`);
 
 --
--- 表的索引 `mstr_jabatan`
+-- Indexes for table `mstr_jabatan`
 --
 ALTER TABLE `mstr_jabatan`
   ADD PRIMARY KEY (`id_pk_jabatan`);
 
 --
--- 表的索引 `mstr_jabatan_log`
+-- Indexes for table `mstr_jabatan_log`
 --
 ALTER TABLE `mstr_jabatan_log`
   ADD PRIMARY KEY (`id_pk_jabatan_log`);
 
 --
--- 表的索引 `mstr_menu`
+-- Indexes for table `mstr_menu`
 --
 ALTER TABLE `mstr_menu`
   ADD PRIMARY KEY (`id_pk_menu`);
 
 --
--- 表的索引 `mstr_menu_log`
+-- Indexes for table `mstr_menu_log`
 --
 ALTER TABLE `mstr_menu_log`
   ADD PRIMARY KEY (`id_pk_menu_log`);
 
 --
--- 表的索引 `mstr_pembelian`
+-- Indexes for table `mstr_pembelian`
 --
 ALTER TABLE `mstr_pembelian`
   ADD PRIMARY KEY (`id_pk_pembelian`);
 
 --
--- 表的索引 `mstr_pembelian_log`
+-- Indexes for table `mstr_pembelian_log`
 --
 ALTER TABLE `mstr_pembelian_log`
   ADD PRIMARY KEY (`id_pk_pembelian_log`);
 
 --
--- 表的索引 `mstr_penerimaan`
+-- Indexes for table `mstr_penerimaan`
 --
 ALTER TABLE `mstr_penerimaan`
   ADD PRIMARY KEY (`id_pk_penerimaan`);
 
 --
--- 表的索引 `mstr_penerimaan_log`
+-- Indexes for table `mstr_penerimaan_log`
 --
 ALTER TABLE `mstr_penerimaan_log`
   ADD PRIMARY KEY (`id_pk_penerimaan_log`);
 
 --
--- 表的索引 `mstr_pengiriman`
+-- Indexes for table `mstr_pengiriman`
 --
 ALTER TABLE `mstr_pengiriman`
   ADD PRIMARY KEY (`id_pk_pengiriman`);
 
 --
--- 表的索引 `mstr_pengiriman_log`
+-- Indexes for table `mstr_pengiriman_log`
 --
 ALTER TABLE `mstr_pengiriman_log`
   ADD PRIMARY KEY (`id_pk_pengiriman_log`);
 
 --
--- 表的索引 `mstr_penjualan`
+-- Indexes for table `mstr_penjualan`
 --
 ALTER TABLE `mstr_penjualan`
   ADD PRIMARY KEY (`id_pk_penjualan`);
 
 --
--- 表的索引 `mstr_penjualan_log`
+-- Indexes for table `mstr_penjualan_log`
 --
 ALTER TABLE `mstr_penjualan_log`
   ADD PRIMARY KEY (`id_pk_penjualan_log`);
 
 --
--- 表的索引 `mstr_retur`
+-- Indexes for table `mstr_retur`
 --
 ALTER TABLE `mstr_retur`
   ADD PRIMARY KEY (`id_pk_retur`);
 
 --
--- 表的索引 `mstr_retur_log`
+-- Indexes for table `mstr_retur_log`
 --
 ALTER TABLE `mstr_retur_log`
   ADD PRIMARY KEY (`id_pk_retur_log`);
 
 --
--- 表的索引 `mstr_satuan`
+-- Indexes for table `mstr_satuan`
 --
 ALTER TABLE `mstr_satuan`
   ADD PRIMARY KEY (`id_pk_satuan`);
 
 --
--- 表的索引 `mstr_satuan_log`
+-- Indexes for table `mstr_satuan_log`
 --
 ALTER TABLE `mstr_satuan_log`
   ADD PRIMARY KEY (`id_pk_satuan_log`);
 
 --
--- 表的索引 `mstr_stock_opname`
+-- Indexes for table `mstr_stock_opname`
 --
 ALTER TABLE `mstr_stock_opname`
   ADD PRIMARY KEY (`ID_PK_STOCK_OPNAME`);
 
 --
--- 表的索引 `mstr_stock_opname_log`
+-- Indexes for table `mstr_stock_opname_log`
 --
 ALTER TABLE `mstr_stock_opname_log`
   ADD PRIMARY KEY (`ID_PK_STOCK_OPNAME_LOG`);
 
 --
--- 表的索引 `mstr_supplier`
+-- Indexes for table `mstr_supplier`
 --
 ALTER TABLE `mstr_supplier`
   ADD PRIMARY KEY (`id_pk_sup`);
 
 --
--- 表的索引 `mstr_supplier_log`
+-- Indexes for table `mstr_supplier_log`
 --
 ALTER TABLE `mstr_supplier_log`
   ADD PRIMARY KEY (`id_pk_sup_log`);
 
 --
--- 表的索引 `mstr_surat_jalan`
+-- Indexes for table `mstr_surat_jalan`
 --
 ALTER TABLE `mstr_surat_jalan`
   ADD PRIMARY KEY (`ID_PK_SURAT_JALAN`);
 
 --
--- 表的索引 `mstr_surat_jalan_log`
+-- Indexes for table `mstr_surat_jalan_log`
 --
 ALTER TABLE `mstr_surat_jalan_log`
   ADD PRIMARY KEY (`ID_PK_SURAT_JALAN_LOG`);
 
 --
--- 表的索引 `mstr_toko`
+-- Indexes for table `mstr_toko`
 --
 ALTER TABLE `mstr_toko`
   ADD PRIMARY KEY (`id_pk_toko`);
 
 --
--- 表的索引 `mstr_toko_log`
+-- Indexes for table `mstr_toko_log`
 --
 ALTER TABLE `mstr_toko_log`
   ADD PRIMARY KEY (`id_pk_toko_log`);
 
 --
--- 表的索引 `mstr_user`
+-- Indexes for table `mstr_user`
 --
 ALTER TABLE `mstr_user`
   ADD PRIMARY KEY (`id_pk_user`);
 
 --
--- 表的索引 `mstr_user_log`
+-- Indexes for table `mstr_user_log`
 --
 ALTER TABLE `mstr_user_log`
   ADD PRIMARY KEY (`id_pk_user_log`);
 
 --
--- 表的索引 `mstr_warehouse`
+-- Indexes for table `mstr_warehouse`
 --
 ALTER TABLE `mstr_warehouse`
   ADD PRIMARY KEY (`id_pk_warehouse`);
 
 --
--- 表的索引 `mstr_warehouse_log`
+-- Indexes for table `mstr_warehouse_log`
 --
 ALTER TABLE `mstr_warehouse_log`
   ADD PRIMARY KEY (`id_pk_warehouse_log`);
 
 --
--- 表的索引 `tbl_barang_kombinasi`
+-- Indexes for table `tbl_barang_kombinasi`
 --
 ALTER TABLE `tbl_barang_kombinasi`
   ADD PRIMARY KEY (`id_pk_barang_kombinasi`);
 
 --
--- 表的索引 `tbl_barang_kombinasi_log`
+-- Indexes for table `tbl_barang_kombinasi_log`
 --
 ALTER TABLE `tbl_barang_kombinasi_log`
   ADD PRIMARY KEY (`id_pk_barang_kombinasi_log`);
 
 --
--- 表的索引 `tbl_barang_ukuran`
+-- Indexes for table `tbl_barang_ukuran`
 --
 ALTER TABLE `tbl_barang_ukuran`
   ADD PRIMARY KEY (`ID_PK_BARANG_UKURAN`);
 
 --
--- 表的索引 `tbl_brg_cabang`
+-- Indexes for table `tbl_brg_cabang`
 --
 ALTER TABLE `tbl_brg_cabang`
   ADD PRIMARY KEY (`id_pk_brg_cabang`);
 
 --
--- 表的索引 `tbl_brg_cabang_log`
+-- Indexes for table `tbl_brg_cabang_log`
 --
 ALTER TABLE `tbl_brg_cabang_log`
   ADD PRIMARY KEY (`id_pk_brg_cabang_log`);
 
 --
--- 表的索引 `tbl_brg_pembelian`
+-- Indexes for table `tbl_brg_pembelian`
 --
 ALTER TABLE `tbl_brg_pembelian`
   ADD PRIMARY KEY (`id_pk_brg_pembelian`);
 
 --
--- 表的索引 `tbl_brg_pembelian_log`
+-- Indexes for table `tbl_brg_pembelian_log`
 --
 ALTER TABLE `tbl_brg_pembelian_log`
   ADD PRIMARY KEY (`id_pk_brg_pembelian_log`);
 
 --
--- 表的索引 `tbl_brg_pemenuhan`
+-- Indexes for table `tbl_brg_pemenuhan`
 --
 ALTER TABLE `tbl_brg_pemenuhan`
   ADD PRIMARY KEY (`id_pk_brg_pemenuhan`);
 
 --
--- 表的索引 `tbl_brg_pemenuhan_log`
+-- Indexes for table `tbl_brg_pemenuhan_log`
 --
 ALTER TABLE `tbl_brg_pemenuhan_log`
   ADD PRIMARY KEY (`id_pk_brg_pemenuhan_log`);
 
 --
--- 表的索引 `tbl_brg_penerimaan`
+-- Indexes for table `tbl_brg_penerimaan`
 --
 ALTER TABLE `tbl_brg_penerimaan`
   ADD PRIMARY KEY (`id_pk_brg_penerimaan`);
 
 --
--- 表的索引 `tbl_brg_penerimaan_log`
+-- Indexes for table `tbl_brg_penerimaan_log`
 --
 ALTER TABLE `tbl_brg_penerimaan_log`
   ADD PRIMARY KEY (`id_pk_brg_penerimaan_log`);
 
 --
--- 表的索引 `tbl_brg_pengiriman`
+-- Indexes for table `tbl_brg_pengiriman`
 --
 ALTER TABLE `tbl_brg_pengiriman`
   ADD PRIMARY KEY (`id_pk_brg_pengiriman`);
 
 --
--- 表的索引 `tbl_brg_pengiriman_log`
+-- Indexes for table `tbl_brg_pengiriman_log`
 --
 ALTER TABLE `tbl_brg_pengiriman_log`
   ADD PRIMARY KEY (`id_pk_brg_pengiriman_log`);
 
 --
--- 表的索引 `tbl_brg_penjualan`
+-- Indexes for table `tbl_brg_penjualan`
 --
 ALTER TABLE `tbl_brg_penjualan`
   ADD PRIMARY KEY (`id_pk_brg_penjualan`);
 
 --
--- 表的索引 `tbl_brg_penjualan_log`
+-- Indexes for table `tbl_brg_penjualan_log`
 --
 ALTER TABLE `tbl_brg_penjualan_log`
   ADD PRIMARY KEY (`id_pk_brg_penjualan_log`);
 
 --
--- 表的索引 `tbl_brg_permintaan`
+-- Indexes for table `tbl_brg_permintaan`
 --
 ALTER TABLE `tbl_brg_permintaan`
   ADD PRIMARY KEY (`id_pk_brg_permintaan`);
 
 --
--- 表的索引 `tbl_brg_permintaan_log`
+-- Indexes for table `tbl_brg_permintaan_log`
 --
 ALTER TABLE `tbl_brg_permintaan_log`
   ADD PRIMARY KEY (`id_pk_penerimaan_log`);
 
 --
--- 表的索引 `tbl_brg_pindah`
+-- Indexes for table `tbl_brg_pindah`
 --
 ALTER TABLE `tbl_brg_pindah`
   ADD PRIMARY KEY (`id_pk_brg_pindah`);
 
 --
--- 表的索引 `tbl_brg_pindah_log`
+-- Indexes for table `tbl_brg_pindah_log`
 --
 ALTER TABLE `tbl_brg_pindah_log`
   ADD PRIMARY KEY (`id_pk_brg_pindah_log`);
 
 --
--- 表的索引 `tbl_brg_so`
+-- Indexes for table `tbl_brg_so`
 --
 ALTER TABLE `tbl_brg_so`
   ADD PRIMARY KEY (`ID_PK_SO_BRG`);
 
 --
--- 表的索引 `tbl_brg_so_log`
+-- Indexes for table `tbl_brg_so_log`
 --
 ALTER TABLE `tbl_brg_so_log`
   ADD PRIMARY KEY (`ID_PK_SO_BRG_LOG`);
 
 --
--- 表的索引 `tbl_brg_warehouse`
+-- Indexes for table `tbl_brg_warehouse`
 --
 ALTER TABLE `tbl_brg_warehouse`
   ADD PRIMARY KEY (`id_pk_brg_warehouse`);
 
 --
--- 表的索引 `tbl_brg_warehouse_log`
+-- Indexes for table `tbl_brg_warehouse_log`
 --
 ALTER TABLE `tbl_brg_warehouse_log`
   ADD PRIMARY KEY (`id_pk_brg_warehouse_log`);
 
 --
--- 表的索引 `tbl_cabang_admin`
+-- Indexes for table `tbl_cabang_admin`
 --
 ALTER TABLE `tbl_cabang_admin`
   ADD PRIMARY KEY (`id_pk_cabang_admin`);
 
 --
--- 表的索引 `tbl_cabang_admin_log`
+-- Indexes for table `tbl_cabang_admin_log`
 --
 ALTER TABLE `tbl_cabang_admin_log`
   ADD PRIMARY KEY (`id_pk_cabang_admin_log`);
 
 --
--- 表的索引 `tbl_hak_akses`
+-- Indexes for table `tbl_hak_akses`
 --
 ALTER TABLE `tbl_hak_akses`
   ADD PRIMARY KEY (`id_pk_hak_akses`);
 
 --
--- 表的索引 `tbl_hak_akses_log`
+-- Indexes for table `tbl_hak_akses_log`
 --
 ALTER TABLE `tbl_hak_akses_log`
   ADD PRIMARY KEY (`id_pk_hak_akses_log`);
 
 --
--- 表的索引 `tbl_penjualan_online`
+-- Indexes for table `tbl_penjualan_online`
 --
 ALTER TABLE `tbl_penjualan_online`
   ADD PRIMARY KEY (`id_pk_penjualan_online`);
 
 --
--- 表的索引 `tbl_penjualan_online_log`
+-- Indexes for table `tbl_penjualan_online_log`
 --
 ALTER TABLE `tbl_penjualan_online_log`
   ADD PRIMARY KEY (`id_pk_penjualan_online_log`);
 
 --
--- 表的索引 `tbl_penjualan_pembayaran`
+-- Indexes for table `tbl_penjualan_pembayaran`
 --
 ALTER TABLE `tbl_penjualan_pembayaran`
   ADD PRIMARY KEY (`id_pk_penjualan_pembayaran`);
 
 --
--- 表的索引 `tbl_penjualan_pembayaran_log`
+-- Indexes for table `tbl_penjualan_pembayaran_log`
 --
 ALTER TABLE `tbl_penjualan_pembayaran_log`
   ADD PRIMARY KEY (`id_pk_penjualan_pembayaran_log`);
 
 --
--- 表的索引 `tbl_retur_brg`
+-- Indexes for table `tbl_retur_brg`
 --
 ALTER TABLE `tbl_retur_brg`
   ADD PRIMARY KEY (`id_pk_retur_brg`);
 
 --
--- 表的索引 `tbl_retur_brg_log`
+-- Indexes for table `tbl_retur_brg_log`
 --
 ALTER TABLE `tbl_retur_brg_log`
   ADD PRIMARY KEY (`id_pk_retur_log`);
 
 --
--- 表的索引 `tbl_retur_kembali`
+-- Indexes for table `tbl_retur_kembali`
 --
 ALTER TABLE `tbl_retur_kembali`
   ADD PRIMARY KEY (`id_pk_retur_kembali`);
 
 --
--- 表的索引 `tbl_retur_kembali_log`
+-- Indexes for table `tbl_retur_kembali_log`
 --
 ALTER TABLE `tbl_retur_kembali_log`
   ADD PRIMARY KEY (`id_pk_retur_kembali_log`);
 
 --
--- 表的索引 `tbl_sj_item`
+-- Indexes for table `tbl_sj_item`
 --
 ALTER TABLE `tbl_sj_item`
   ADD PRIMARY KEY (`id_pk_sj_item`);
 
 --
--- 表的索引 `tbl_sj_item_log`
+-- Indexes for table `tbl_sj_item_log`
 --
 ALTER TABLE `tbl_sj_item_log`
   ADD PRIMARY KEY (`id_pk_sj_item_log`);
 
 --
--- 表的索引 `tbl_so_pj`
+-- Indexes for table `tbl_so_pj`
 --
 ALTER TABLE `tbl_so_pj`
   ADD PRIMARY KEY (`ID_PK_SO_PJ`);
 
 --
--- 表的索引 `tbl_so_pj_log`
+-- Indexes for table `tbl_so_pj_log`
 --
 ALTER TABLE `tbl_so_pj_log`
   ADD PRIMARY KEY (`ID_PK_SO_PJ_LOG`);
 
 --
--- 表的索引 `tbl_tambahan_pembelian`
+-- Indexes for table `tbl_tambahan_pembelian`
 --
 ALTER TABLE `tbl_tambahan_pembelian`
   ADD PRIMARY KEY (`id_pk_tmbhn`);
 
 --
--- 表的索引 `tbl_tambahan_pembelian_log`
+-- Indexes for table `tbl_tambahan_pembelian_log`
 --
 ALTER TABLE `tbl_tambahan_pembelian_log`
   ADD PRIMARY KEY (`id_pk_tmbhn_log`);
 
 --
--- 表的索引 `tbl_tambahan_penjualan`
+-- Indexes for table `tbl_tambahan_penjualan`
 --
 ALTER TABLE `tbl_tambahan_penjualan`
   ADD PRIMARY KEY (`id_pk_tmbhn`);
 
 --
--- 表的索引 `tbl_tambahan_penjualan_log`
+-- Indexes for table `tbl_tambahan_penjualan_log`
 --
 ALTER TABLE `tbl_tambahan_penjualan_log`
   ADD PRIMARY KEY (`id_pk_tmbhn_log`);
 
 --
--- 表的索引 `tbl_toko_admin`
+-- Indexes for table `tbl_toko_admin`
 --
 ALTER TABLE `tbl_toko_admin`
   ADD PRIMARY KEY (`id_pk_toko_admin`);
 
 --
--- 表的索引 `tbl_toko_admin_log`
+-- Indexes for table `tbl_toko_admin_log`
 --
 ALTER TABLE `tbl_toko_admin_log`
   ADD PRIMARY KEY (`id_pk_toko_admin_log`);
 
 --
--- 表的索引 `tbl_warehouse_admin`
+-- Indexes for table `tbl_warehouse_admin`
 --
 ALTER TABLE `tbl_warehouse_admin`
   ADD PRIMARY KEY (`id_pk_warehouse_admin`);
 
 --
--- 表的索引 `tbl_warehouse_admin_log`
+-- Indexes for table `tbl_warehouse_admin_log`
 --
 ALTER TABLE `tbl_warehouse_admin_log`
   ADD PRIMARY KEY (`id_pk_warehouse_admin_log`);
 
 --
--- 在导出的表使用AUTO_INCREMENT
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- 使用表AUTO_INCREMENT `log_all`
+-- AUTO_INCREMENT for table `log_all`
 --
 ALTER TABLE `log_all`
-  MODIFY `id_log_all` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=348;
+  MODIFY `id_log_all` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=509;
 
 --
--- 使用表AUTO_INCREMENT `mstr_barang`
+-- AUTO_INCREMENT for table `mstr_barang`
 --
 ALTER TABLE `mstr_barang`
-  MODIFY `id_pk_brg` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_pk_brg` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- 使用表AUTO_INCREMENT `mstr_barang_jenis`
+-- AUTO_INCREMENT for table `mstr_barang_jenis`
 --
 ALTER TABLE `mstr_barang_jenis`
   MODIFY `id_pk_brg_jenis` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- 使用表AUTO_INCREMENT `mstr_barang_jenis_log`
+-- AUTO_INCREMENT for table `mstr_barang_jenis_log`
 --
 ALTER TABLE `mstr_barang_jenis_log`
   MODIFY `id_pk_brg_jenis_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- 使用表AUTO_INCREMENT `mstr_barang_log`
+-- AUTO_INCREMENT for table `mstr_barang_log`
 --
 ALTER TABLE `mstr_barang_log`
-  MODIFY `id_pk_brg_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_pk_brg_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- 使用表AUTO_INCREMENT `mstr_barang_merk`
+-- AUTO_INCREMENT for table `mstr_barang_merk`
 --
 ALTER TABLE `mstr_barang_merk`
-  MODIFY `id_pk_brg_merk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_pk_brg_merk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- 使用表AUTO_INCREMENT `mstr_barang_merk_log`
+-- AUTO_INCREMENT for table `mstr_barang_merk_log`
 --
 ALTER TABLE `mstr_barang_merk_log`
-  MODIFY `id_pk_brg_merk_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_pk_brg_merk_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- 使用表AUTO_INCREMENT `mstr_cabang`
+-- AUTO_INCREMENT for table `mstr_cabang`
 --
 ALTER TABLE `mstr_cabang`
-  MODIFY `id_pk_cabang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_pk_cabang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- 使用表AUTO_INCREMENT `mstr_cabang_log`
+-- AUTO_INCREMENT for table `mstr_cabang_log`
 --
 ALTER TABLE `mstr_cabang_log`
-  MODIFY `id_pk_cabang_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_pk_cabang_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- 使用表AUTO_INCREMENT `mstr_customer`
+-- AUTO_INCREMENT for table `mstr_customer`
 --
 ALTER TABLE `mstr_customer`
   MODIFY `id_pk_cust` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `mstr_customer_log`
+-- AUTO_INCREMENT for table `mstr_customer_log`
 --
 ALTER TABLE `mstr_customer_log`
   MODIFY `id_pk_cust_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `mstr_employee`
+-- AUTO_INCREMENT for table `mstr_employee`
 --
 ALTER TABLE `mstr_employee`
   MODIFY `id_pk_employee` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `mstr_employee_log`
+-- AUTO_INCREMENT for table `mstr_employee_log`
 --
 ALTER TABLE `mstr_employee_log`
   MODIFY `id_pk_employee_log` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `mstr_jabatan`
+-- AUTO_INCREMENT for table `mstr_jabatan`
 --
 ALTER TABLE `mstr_jabatan`
   MODIFY `id_pk_jabatan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- 使用表AUTO_INCREMENT `mstr_jabatan_log`
+-- AUTO_INCREMENT for table `mstr_jabatan_log`
 --
 ALTER TABLE `mstr_jabatan_log`
-  MODIFY `id_pk_jabatan_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_pk_jabatan_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- 使用表AUTO_INCREMENT `mstr_menu`
+-- AUTO_INCREMENT for table `mstr_menu`
 --
 ALTER TABLE `mstr_menu`
-  MODIFY `id_pk_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_pk_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- 使用表AUTO_INCREMENT `mstr_menu_log`
+-- AUTO_INCREMENT for table `mstr_menu_log`
 --
 ALTER TABLE `mstr_menu_log`
-  MODIFY `id_pk_menu_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_pk_menu_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- 使用表AUTO_INCREMENT `mstr_pembelian`
+-- AUTO_INCREMENT for table `mstr_pembelian`
 --
 ALTER TABLE `mstr_pembelian`
   MODIFY `id_pk_pembelian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- 使用表AUTO_INCREMENT `mstr_pembelian_log`
+-- AUTO_INCREMENT for table `mstr_pembelian_log`
 --
 ALTER TABLE `mstr_pembelian_log`
   MODIFY `id_pk_pembelian_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- 使用表AUTO_INCREMENT `mstr_penerimaan`
+-- AUTO_INCREMENT for table `mstr_penerimaan`
 --
 ALTER TABLE `mstr_penerimaan`
   MODIFY `id_pk_penerimaan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `mstr_penerimaan_log`
+-- AUTO_INCREMENT for table `mstr_penerimaan_log`
 --
 ALTER TABLE `mstr_penerimaan_log`
   MODIFY `id_pk_penerimaan_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- 使用表AUTO_INCREMENT `mstr_pengiriman`
+-- AUTO_INCREMENT for table `mstr_pengiriman`
 --
 ALTER TABLE `mstr_pengiriman`
-  MODIFY `id_pk_pengiriman` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pk_pengiriman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- 使用表AUTO_INCREMENT `mstr_pengiriman_log`
+-- AUTO_INCREMENT for table `mstr_pengiriman_log`
 --
 ALTER TABLE `mstr_pengiriman_log`
-  MODIFY `id_pk_pengiriman_log` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pk_pengiriman_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- 使用表AUTO_INCREMENT `mstr_penjualan`
+-- AUTO_INCREMENT for table `mstr_penjualan`
 --
 ALTER TABLE `mstr_penjualan`
   MODIFY `id_pk_penjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `mstr_penjualan_log`
+-- AUTO_INCREMENT for table `mstr_penjualan_log`
 --
 ALTER TABLE `mstr_penjualan_log`
   MODIFY `id_pk_penjualan_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- 使用表AUTO_INCREMENT `mstr_retur`
+-- AUTO_INCREMENT for table `mstr_retur`
 --
 ALTER TABLE `mstr_retur`
-  MODIFY `id_pk_retur` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pk_retur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `mstr_retur_log`
+-- AUTO_INCREMENT for table `mstr_retur_log`
 --
 ALTER TABLE `mstr_retur_log`
   MODIFY `id_pk_retur_log` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `mstr_satuan`
+-- AUTO_INCREMENT for table `mstr_satuan`
 --
 ALTER TABLE `mstr_satuan`
   MODIFY `id_pk_satuan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- 使用表AUTO_INCREMENT `mstr_satuan_log`
+-- AUTO_INCREMENT for table `mstr_satuan_log`
 --
 ALTER TABLE `mstr_satuan_log`
   MODIFY `id_pk_satuan_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- 使用表AUTO_INCREMENT `mstr_stock_opname`
+-- AUTO_INCREMENT for table `mstr_stock_opname`
 --
 ALTER TABLE `mstr_stock_opname`
   MODIFY `ID_PK_STOCK_OPNAME` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `mstr_stock_opname_log`
+-- AUTO_INCREMENT for table `mstr_stock_opname_log`
 --
 ALTER TABLE `mstr_stock_opname_log`
   MODIFY `ID_PK_STOCK_OPNAME_LOG` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `mstr_supplier`
+-- AUTO_INCREMENT for table `mstr_supplier`
 --
 ALTER TABLE `mstr_supplier`
   MODIFY `id_pk_sup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- 使用表AUTO_INCREMENT `mstr_supplier_log`
+-- AUTO_INCREMENT for table `mstr_supplier_log`
 --
 ALTER TABLE `mstr_supplier_log`
   MODIFY `id_pk_sup_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- 使用表AUTO_INCREMENT `mstr_surat_jalan`
+-- AUTO_INCREMENT for table `mstr_surat_jalan`
 --
 ALTER TABLE `mstr_surat_jalan`
   MODIFY `ID_PK_SURAT_JALAN` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `mstr_surat_jalan_log`
+-- AUTO_INCREMENT for table `mstr_surat_jalan_log`
 --
 ALTER TABLE `mstr_surat_jalan_log`
   MODIFY `ID_PK_SURAT_JALAN_LOG` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `mstr_toko`
+-- AUTO_INCREMENT for table `mstr_toko`
 --
 ALTER TABLE `mstr_toko`
   MODIFY `id_pk_toko` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `mstr_toko_log`
+-- AUTO_INCREMENT for table `mstr_toko_log`
 --
 ALTER TABLE `mstr_toko_log`
   MODIFY `id_pk_toko_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `mstr_user`
+-- AUTO_INCREMENT for table `mstr_user`
 --
 ALTER TABLE `mstr_user`
   MODIFY `id_pk_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `mstr_user_log`
+-- AUTO_INCREMENT for table `mstr_user_log`
 --
 ALTER TABLE `mstr_user_log`
   MODIFY `id_pk_user_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `mstr_warehouse`
+-- AUTO_INCREMENT for table `mstr_warehouse`
 --
 ALTER TABLE `mstr_warehouse`
   MODIFY `id_pk_warehouse` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `mstr_warehouse_log`
+-- AUTO_INCREMENT for table `mstr_warehouse_log`
 --
 ALTER TABLE `mstr_warehouse_log`
   MODIFY `id_pk_warehouse_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `tbl_barang_kombinasi`
+-- AUTO_INCREMENT for table `tbl_barang_kombinasi`
 --
 ALTER TABLE `tbl_barang_kombinasi`
   MODIFY `id_pk_barang_kombinasi` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `tbl_barang_kombinasi_log`
+-- AUTO_INCREMENT for table `tbl_barang_kombinasi_log`
 --
 ALTER TABLE `tbl_barang_kombinasi_log`
   MODIFY `id_pk_barang_kombinasi_log` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `tbl_barang_ukuran`
+-- AUTO_INCREMENT for table `tbl_barang_ukuran`
 --
 ALTER TABLE `tbl_barang_ukuran`
   MODIFY `ID_PK_BARANG_UKURAN` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_cabang`
+-- AUTO_INCREMENT for table `tbl_brg_cabang`
 --
 ALTER TABLE `tbl_brg_cabang`
-  MODIFY `id_pk_brg_cabang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_pk_brg_cabang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_cabang_log`
+-- AUTO_INCREMENT for table `tbl_brg_cabang_log`
 --
 ALTER TABLE `tbl_brg_cabang_log`
-  MODIFY `id_pk_brg_cabang_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id_pk_brg_cabang_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_pembelian`
+-- AUTO_INCREMENT for table `tbl_brg_pembelian`
 --
 ALTER TABLE `tbl_brg_pembelian`
   MODIFY `id_pk_brg_pembelian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_pembelian_log`
+-- AUTO_INCREMENT for table `tbl_brg_pembelian_log`
 --
 ALTER TABLE `tbl_brg_pembelian_log`
   MODIFY `id_pk_brg_pembelian_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_pemenuhan`
+-- AUTO_INCREMENT for table `tbl_brg_pemenuhan`
 --
 ALTER TABLE `tbl_brg_pemenuhan`
-  MODIFY `id_pk_brg_pemenuhan` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pk_brg_pemenuhan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_pemenuhan_log`
+-- AUTO_INCREMENT for table `tbl_brg_pemenuhan_log`
 --
 ALTER TABLE `tbl_brg_pemenuhan_log`
-  MODIFY `id_pk_brg_pemenuhan_log` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pk_brg_pemenuhan_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_penerimaan`
+-- AUTO_INCREMENT for table `tbl_brg_penerimaan`
 --
 ALTER TABLE `tbl_brg_penerimaan`
   MODIFY `id_pk_brg_penerimaan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_penerimaan_log`
+-- AUTO_INCREMENT for table `tbl_brg_penerimaan_log`
 --
 ALTER TABLE `tbl_brg_penerimaan_log`
   MODIFY `id_pk_brg_penerimaan_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_pengiriman`
+-- AUTO_INCREMENT for table `tbl_brg_pengiriman`
 --
 ALTER TABLE `tbl_brg_pengiriman`
-  MODIFY `id_pk_brg_pengiriman` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pk_brg_pengiriman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_pengiriman_log`
+-- AUTO_INCREMENT for table `tbl_brg_pengiriman_log`
 --
 ALTER TABLE `tbl_brg_pengiriman_log`
-  MODIFY `id_pk_brg_pengiriman_log` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pk_brg_pengiriman_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_penjualan`
+-- AUTO_INCREMENT for table `tbl_brg_penjualan`
 --
 ALTER TABLE `tbl_brg_penjualan`
   MODIFY `id_pk_brg_penjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_penjualan_log`
+-- AUTO_INCREMENT for table `tbl_brg_penjualan_log`
 --
 ALTER TABLE `tbl_brg_penjualan_log`
   MODIFY `id_pk_brg_penjualan_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_permintaan`
+-- AUTO_INCREMENT for table `tbl_brg_permintaan`
 --
 ALTER TABLE `tbl_brg_permintaan`
-  MODIFY `id_pk_brg_permintaan` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pk_brg_permintaan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_permintaan_log`
+-- AUTO_INCREMENT for table `tbl_brg_permintaan_log`
 --
 ALTER TABLE `tbl_brg_permintaan_log`
-  MODIFY `id_pk_penerimaan_log` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pk_penerimaan_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_pindah`
+-- AUTO_INCREMENT for table `tbl_brg_pindah`
 --
 ALTER TABLE `tbl_brg_pindah`
   MODIFY `id_pk_brg_pindah` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_pindah_log`
+-- AUTO_INCREMENT for table `tbl_brg_pindah_log`
 --
 ALTER TABLE `tbl_brg_pindah_log`
   MODIFY `id_pk_brg_pindah_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_so`
+-- AUTO_INCREMENT for table `tbl_brg_so`
 --
 ALTER TABLE `tbl_brg_so`
   MODIFY `ID_PK_SO_BRG` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_so_log`
+-- AUTO_INCREMENT for table `tbl_brg_so_log`
 --
 ALTER TABLE `tbl_brg_so_log`
   MODIFY `ID_PK_SO_BRG_LOG` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_warehouse`
+-- AUTO_INCREMENT for table `tbl_brg_warehouse`
 --
 ALTER TABLE `tbl_brg_warehouse`
   MODIFY `id_pk_brg_warehouse` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `tbl_brg_warehouse_log`
+-- AUTO_INCREMENT for table `tbl_brg_warehouse_log`
 --
 ALTER TABLE `tbl_brg_warehouse_log`
   MODIFY `id_pk_brg_warehouse_log` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `tbl_cabang_admin`
+-- AUTO_INCREMENT for table `tbl_cabang_admin`
 --
 ALTER TABLE `tbl_cabang_admin`
-  MODIFY `id_pk_cabang_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_pk_cabang_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- 使用表AUTO_INCREMENT `tbl_cabang_admin_log`
+-- AUTO_INCREMENT for table `tbl_cabang_admin_log`
 --
 ALTER TABLE `tbl_cabang_admin_log`
-  MODIFY `id_pk_cabang_admin_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_pk_cabang_admin_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- 使用表AUTO_INCREMENT `tbl_hak_akses`
+-- AUTO_INCREMENT for table `tbl_hak_akses`
 --
 ALTER TABLE `tbl_hak_akses`
-  MODIFY `id_pk_hak_akses` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id_pk_hak_akses` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
--- 使用表AUTO_INCREMENT `tbl_hak_akses_log`
+-- AUTO_INCREMENT for table `tbl_hak_akses_log`
 --
 ALTER TABLE `tbl_hak_akses_log`
-  MODIFY `id_pk_hak_akses_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=170;
+  MODIFY `id_pk_hak_akses_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=217;
 
 --
--- 使用表AUTO_INCREMENT `tbl_penjualan_online`
+-- AUTO_INCREMENT for table `tbl_penjualan_online`
 --
 ALTER TABLE `tbl_penjualan_online`
   MODIFY `id_pk_penjualan_online` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `tbl_penjualan_online_log`
+-- AUTO_INCREMENT for table `tbl_penjualan_online_log`
 --
 ALTER TABLE `tbl_penjualan_online_log`
   MODIFY `id_pk_penjualan_online_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- 使用表AUTO_INCREMENT `tbl_penjualan_pembayaran`
+-- AUTO_INCREMENT for table `tbl_penjualan_pembayaran`
 --
 ALTER TABLE `tbl_penjualan_pembayaran`
   MODIFY `id_pk_penjualan_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- 使用表AUTO_INCREMENT `tbl_penjualan_pembayaran_log`
+-- AUTO_INCREMENT for table `tbl_penjualan_pembayaran_log`
 --
 ALTER TABLE `tbl_penjualan_pembayaran_log`
   MODIFY `id_pk_penjualan_pembayaran_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- 使用表AUTO_INCREMENT `tbl_retur_brg`
+-- AUTO_INCREMENT for table `tbl_retur_brg`
 --
 ALTER TABLE `tbl_retur_brg`
-  MODIFY `id_pk_retur_brg` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pk_retur_brg` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- 使用表AUTO_INCREMENT `tbl_retur_brg_log`
+-- AUTO_INCREMENT for table `tbl_retur_brg_log`
 --
 ALTER TABLE `tbl_retur_brg_log`
-  MODIFY `id_pk_retur_log` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pk_retur_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- 使用表AUTO_INCREMENT `tbl_retur_kembali`
+-- AUTO_INCREMENT for table `tbl_retur_kembali`
 --
 ALTER TABLE `tbl_retur_kembali`
-  MODIFY `id_pk_retur_kembali` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pk_retur_kembali` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `tbl_retur_kembali_log`
+-- AUTO_INCREMENT for table `tbl_retur_kembali_log`
 --
 ALTER TABLE `tbl_retur_kembali_log`
-  MODIFY `id_pk_retur_kembali_log` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pk_retur_kembali_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- 使用表AUTO_INCREMENT `tbl_sj_item`
+-- AUTO_INCREMENT for table `tbl_sj_item`
 --
 ALTER TABLE `tbl_sj_item`
   MODIFY `id_pk_sj_item` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `tbl_sj_item_log`
+-- AUTO_INCREMENT for table `tbl_sj_item_log`
 --
 ALTER TABLE `tbl_sj_item_log`
   MODIFY `id_pk_sj_item_log` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `tbl_so_pj`
+-- AUTO_INCREMENT for table `tbl_so_pj`
 --
 ALTER TABLE `tbl_so_pj`
   MODIFY `ID_PK_SO_PJ` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `tbl_so_pj_log`
+-- AUTO_INCREMENT for table `tbl_so_pj_log`
 --
 ALTER TABLE `tbl_so_pj_log`
   MODIFY `ID_PK_SO_PJ_LOG` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `tbl_tambahan_pembelian`
+-- AUTO_INCREMENT for table `tbl_tambahan_pembelian`
 --
 ALTER TABLE `tbl_tambahan_pembelian`
   MODIFY `id_pk_tmbhn` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- 使用表AUTO_INCREMENT `tbl_tambahan_pembelian_log`
+-- AUTO_INCREMENT for table `tbl_tambahan_pembelian_log`
 --
 ALTER TABLE `tbl_tambahan_pembelian_log`
   MODIFY `id_pk_tmbhn_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- 使用表AUTO_INCREMENT `tbl_tambahan_penjualan`
+-- AUTO_INCREMENT for table `tbl_tambahan_penjualan`
 --
 ALTER TABLE `tbl_tambahan_penjualan`
   MODIFY `id_pk_tmbhn` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- 使用表AUTO_INCREMENT `tbl_tambahan_penjualan_log`
+-- AUTO_INCREMENT for table `tbl_tambahan_penjualan_log`
 --
 ALTER TABLE `tbl_tambahan_penjualan_log`
   MODIFY `id_pk_tmbhn_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- 使用表AUTO_INCREMENT `tbl_toko_admin`
+-- AUTO_INCREMENT for table `tbl_toko_admin`
 --
 ALTER TABLE `tbl_toko_admin`
   MODIFY `id_pk_toko_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `tbl_toko_admin_log`
+-- AUTO_INCREMENT for table `tbl_toko_admin_log`
 --
 ALTER TABLE `tbl_toko_admin_log`
   MODIFY `id_pk_toko_admin_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `tbl_warehouse_admin`
+-- AUTO_INCREMENT for table `tbl_warehouse_admin`
 --
 ALTER TABLE `tbl_warehouse_admin`
   MODIFY `id_pk_warehouse_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- 使用表AUTO_INCREMENT `tbl_warehouse_admin_log`
+-- AUTO_INCREMENT for table `tbl_warehouse_admin_log`
 --
 ALTER TABLE `tbl_warehouse_admin_log`
   MODIFY `id_pk_warehouse_admin_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
