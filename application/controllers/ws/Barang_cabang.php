@@ -137,20 +137,17 @@ class Barang_cabang extends CI_Controller{
                                 $response["itmmsg"][$counter] = "Data is recorded to database";
                             }
                             else{
-                                $response["status"] = "ERROR";
                                 $response["itmsts"][$counter] = "ERROR";
                                 $response["itmmsg"][$counter] = "Insert function error";
                             }
                         }
                         else{
-                            $response["status"] = "ERROR";
                             $response["itmsts"][$counter] = "ERROR";
                             $response["itmmsg"][$counter] = "Setter function error";
                         }
                     }
                 }
                 else{
-                    $response["status"] = "ERROR";
                     $response["itmsts"][$counter] = "ERROR";
                     $response["itmmsg"][$counter] = validation_errors();
                 }
