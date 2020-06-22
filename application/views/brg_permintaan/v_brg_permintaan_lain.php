@@ -1,7 +1,7 @@
 <?php
-$page_title = "Permintaan Barang";
+$page_title = "Permintaan Barang Cabang Lain";
 $breadcrumb = array(
-    "Permintaan Barang"
+    "Permintaan Barang Cabang Lain"
 );
 $notif_data = array(
     "page_title"=>$page_title
@@ -50,8 +50,7 @@ $notif_data = array(
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
                                             <div class = "d-block">
-                                                <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#register_modal" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
-                                                <a class = "btn btn-primary btn-sm col-lg-2 col-sm-12" href = "<?php echo base_url();?>permintaan/lain" style = "margin-right:10px">Permintaan Cabang Lain</a>
+                                                <a class = "btn btn-primary btn-sm col-lg-2 col-sm-12" href = "<?php echo base_url();?>permintaan" style = "margin-right:10px">Permintaan Cabang Ini</a>
                                             </div>
                                             <br/>
                                             <br/>

@@ -9,8 +9,14 @@ class Permintaan extends CI_Controller{
         $result = $this->m_barang->list();
         $data["barang"] = $result->result_array();
         
-        $this->load->model("m_brg_permintaan");
-        $this->m_brg_permintaan->set_id_fk_cabang($this->session->id_cabang);
         $this->load->view("brg_permintaan/v_brg_permintaan",$data);
+    }
+    public function lain(){
+        $data["id_tempat_penerimaan"] = $this->session->id_cabang;
+        $data["type"] = "CABANG";
+        $this->load->view("brg_pemenuhan/v_brg_pemenuhan",$data);
+    }
+    public function warehouse(){
+        $this->load->view("brg_pemenuhan/v_brg_pemenuhan");
     }
 }
