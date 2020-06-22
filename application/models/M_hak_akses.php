@@ -137,10 +137,10 @@ class M_hak_akses extends ci_model{
         from ".$this->tbl_name."
         inner join mstr_jabatan on mstr_jabatan.id_pk_jabatan = ".$this->tbl_name.".id_fk_jabatan
         inner join mstr_menu on mstr_menu.id_pk_menu = ".$this->tbl_name.".id_fk_menu
-        where id_fk_jabatan = ?
+        where id_fk_jabatan = ? and mstr_menu.menu_status = ?
         ";
         $args = array(
-            $this->id_fk_jabatan
+            $this->id_fk_jabatan,"aktif"
         );
         return executequery($sql,$args);
     }
