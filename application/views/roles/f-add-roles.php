@@ -37,7 +37,7 @@
     </div>
 </div>
 <script>
-    window.onload = function(){
+    function load_list_menu(){
         $.ajax({
             url:"<?php echo base_url();?>ws/menu/list",
             type:"GET",

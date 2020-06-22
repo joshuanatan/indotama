@@ -52,7 +52,7 @@
             success:function(respond){
                 var html = "";
                 for(var a = 0; a<respond["content"].length; a++){
-                    if(respond["content"][a]["status"] == "NONAKTIF"){
+                    if(respond["content"][a]["status"].toUpperCase() == "NONAKTIF"){
                         html+="<tr><td>"+respond["content"][a]["menu_display"]+"</td><td><input type = 'checkbox' value = '"+respond["content"][a]["id_menu"]+"' name = 'check[]'></td></tr>";
                     }
                     else{
