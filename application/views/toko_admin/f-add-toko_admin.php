@@ -14,7 +14,6 @@
                 <form id = "register_form" method = "POST">
                     <input type = "hidden" name = "id_toko" value = "<?php echo $toko[0]["id_pk_toko"];?>">
                     <div class = "form-group">
-                        <h5>Item Pembelian</h5>
                         <table class = "table table-striped table-bordered">
                             <thead>
                                 <th>Username</th>
@@ -22,7 +21,7 @@
                             </thead>
                             <tbody id = "daftar_brg_beli_add">
                                 <tr id = "add_brg_beli_but_container">
-                                    <td colspan = 6><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_toko_admin()">Tambah Barang Pembelian</button>
+                                    <td colspan = 6><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_toko_admin()">Tambah Admin Toko</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -40,7 +39,7 @@
 <script>
     var toko_admin = 0;  
     function add_toko_admin(){
-        var html = "<tr class = 'add_toko_admin'><td id = 'row"+toko_admin+"'><input name = 'check[]' value = "+toko_admin+" type = 'hidden'><input type = 'text' list = 'daftar_user' name = 'nama"+toko_admin+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = "<tr class = 'add_toko_admin'><td id = 'row"+toko_admin+"'><input name = 'check[]' value = "+toko_admin+" type = 'hidden'><input type = 'text' list = 'datalist_user' name = 'nama"+toko_admin+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
         $("#add_brg_beli_but_container").before(html);
         toko_admin++;    
     }

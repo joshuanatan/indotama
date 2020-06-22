@@ -92,39 +92,10 @@ $data = array(
 <?php $this->load->view('toko_admin/f-update-toko_admin',$data);?>
 <?php $this->load->view('toko_admin/f-delete-toko_admin',$data);?>
 
-<datalist id = 'daftar_user'></datalist>
+<?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("_base_element/datalist_user");?>
 <script>
-    window.onload = function(){
-        $.ajax({
-            url:"<?php echo base_url();?>ws/user/list",
-            type:"GET",
-            dataType:"JSON",
-            success:function(respond){
-                var html = "";
-                if(respond["status"] == "SUCCESS"){
-                    for(var a = 0; a<respond["content"].length; a++){
-                        html+="<option value = '"+respond['content'][a]["name"]+"'></option>";
-                    }
-                    $("#daftar_user").html(html);
-                }
-            }
-        });
-    }
-    window.onfocus = function(){
-        $.ajax({
-            url:"<?php echo base_url();?>ws/user/list",
-            type:"GET",
-            dataType:"JSON",
-            success:function(respond){
-                var html = "";
-                if(respond["status"] == "SUCCESS"){
-                    for(var a = 0; a<respond["content"].length; a++){
-                        html+="<option value = '"+respond['content'][a]["name"]+"'></option>";
-                    }
-                    $("#daftar_user").html(html);
-                }
-            }
-        });
+    function load_datalist(){
+        load_datalist_user();
     }
 </script>
-<?php $this->load->view('_notification/notif_general'); ?>
