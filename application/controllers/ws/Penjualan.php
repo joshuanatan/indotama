@@ -517,7 +517,7 @@ class Penjualan extends CI_Controller{
                 $counter = 0;
                 foreach($check as $a){
                     $this->form_validation->set_rules("brg".$a,"brg","required");
-                    $this->form_validation->set_rules("brg_qty".$a,"brg_qty","required");
+                    $this->form_validation->set_rules("brg_qty_real".$a,"brg_qty_real","required");
                     $this->form_validation->set_rules("brg_qty".$a,"brg_qty","required");
                     $this->form_validation->set_rules("brg_price".$a,"brg_price","required");
                     $this->form_validation->set_rules("brg_notes".$a,"brg_notes","required");
@@ -526,6 +526,12 @@ class Penjualan extends CI_Controller{
                         $brg_qty = explode(" ",$brg_qty);
                         $brg_penjualan_qty = $brg_qty[0];
                         $brg_penjualan_satuan = $brg_qty[1];
+                        
+                        $brg_qty = $this->input->post("brg_qty_real".$a);
+                        $brg_qty = explode(" ",$brg_qty);
+                        $brg_penjualan_qty_real = $brg_qty[0];
+                        $brg_penjualan_satuan_real = $brg_qty[1];
+
                         $brg_penjualan_harga = $this->input->post("brg_price".$a);
                         $brg_penjualan_note = $this->input->post("brg_notes".$a);
                         $brg_penjualan_status = "AKTIF";
@@ -539,7 +545,7 @@ class Penjualan extends CI_Controller{
                             $id_fk_barang = $result[0]["id_pk_brg"];
 
                             $this->load->model("m_brg_penjualan");
-                            if($this->m_brg_penjualan->set_insert($brg_penjualan_qty,$brg_penjualan_satuan,$brg_penjualan_harga,$brg_penjualan_note,$brg_penjualan_status,$id_fk_penjualan,$id_fk_barang)){
+                            if($this->m_brg_penjualan->set_insert($brg_penjualan_qty_real,$brg_penjualan_satuan_real,$brg_penjualan_qty,$brg_penjualan_satuan,$brg_penjualan_harga,$brg_penjualan_note,$brg_penjualan_status,$id_fk_penjualan,$id_fk_barang)){
                                 if($this->m_brg_penjualan->insert()){
                                     $response["itmsts"][$counter] = "SUCCESS";
                                     $response["itmmsg"][$counter] = "Data is recorded to database";
