@@ -81,6 +81,7 @@ $data = array(
 <?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view("retur/f-add-retur",$data);?>
 <?php $this->load->view("retur/f-update-retur",$data);?>
+<?php $this->load->view("retur/f-detail-retur",$data);?>
 <?php $this->load->view("retur/f-delete-retur",$data);?>
 
 
