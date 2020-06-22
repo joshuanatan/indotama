@@ -50,7 +50,7 @@
                     
                     <div class = "form-group col-lg-6">
                         <h5>Foto</h5>
-                        <img id="d_emp_foto_edit" width="200px">
+                        <span id="d_emp_foto_edit"></span>
                     </div>
                     
                     <div class = "form-group col-lg-6">
@@ -124,13 +124,12 @@
         $("#d_emp_hp_edit").val(content[id]["hp"]);
         $("#d_emp_alamat_edit").html(content[id]["alamat"]);
         $("#d_emp_kode_pos_edit").val(content[id]["kode_pos"]);
+        $("#d_emp_foto_edit").html(content[id]["foto"]);
 
         var npwp = "<?php echo base_url() ?>asset/uploads/employee/npwp/" + content[id]["foto_npwp"];
         $("#d_emp_foto_npwp_edit").attr("src", npwp);
         var ktp = "<?php echo base_url() ?>asset/uploads/employee/ktp/" + content[id]["foto_ktp"];
         $("#d_emp_foto_ktp_edit").attr("src", ktp);
-        var foto = "<?php echo base_url() ?>asset/uploads/employee/foto/" + content[id]["foto"];
-        $("#d_emp_foto_edit").attr("src", foto);
         var lain = "<?php echo base_url() ?>asset/uploads/employee/lain/" + content[id]["foto_lain"];
         $("#d_emp_foto_lain_edit").attr("src", lain);
 

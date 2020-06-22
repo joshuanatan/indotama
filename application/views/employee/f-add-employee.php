@@ -108,7 +108,7 @@
                         <select class="form-control" name="id_fk_toko">
                             <option value="0" disabled>Pilih Toko</option>
                             <?php for($p=0 ; $p<count($toko); $p++){ ?>
-                                <option value="<?php echo $toko[$p]['ID_PK_TOKO'] ?>"><?php echo $toko[$p]['TOKO_NAMA']?></option>
+                                <option value="<?php echo $toko[$p]['id_pk_toko'] ?>"><?php echo $toko[$p]['toko_nama']?></option>
                             <?php } ?>
                         </select>
                     </div>

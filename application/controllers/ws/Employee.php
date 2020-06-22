@@ -44,7 +44,7 @@ class Employee extends CI_Controller{
 				$response["content"][$a]["foto_npwp"] = $result["data"][$a]["emp_foto_npwp"];
 				$response["content"][$a]["foto_ktp"] = $result["data"][$a]["emp_foto_ktp"];
 				$response["content"][$a]["foto_lain"] = $result["data"][$a]["emp_foto_lain"];
-				$response["content"][$a]["foto"] = $result["data"][$a]["emp_foto"];
+				$response["content"][$a]["foto"] = "<img src='". base_url() . "asset/uploads/employee/foto/". $result["data"][$a]["emp_foto"]."' width='100px'>";
 				$response["content"][$a]["gaji"] = $result["data"][$a]["emp_gaji"];
 				$response["content"][$a]["startdate"] = $result["data"][$a]["emp_startdate"];
 				$response["content"][$a]["enddate"] = $result["data"][$a]["emp_enddate"];
