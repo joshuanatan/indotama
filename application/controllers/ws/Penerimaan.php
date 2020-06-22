@@ -218,6 +218,9 @@ class Penerimaan extends CI_Controller{
             $this->load->model("m_penerimaan");
             if($this->m_penerimaan->set_delete($id)){
                 if($this->m_penerimaan->delete()){
+                    $this->load->model("m_brg_penerimaan");
+                    $this->m_brg_penerimaan->set_id_fk_penerimaan($id);
+                    $this->m_brg_penerimaan->delete_brg_penerimaan();
                     $response["msg"] = "Data is deleted from database";
                 }
                 else{
