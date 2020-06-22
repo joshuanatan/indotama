@@ -164,6 +164,7 @@ class M_brg_pengiriman extends ci_model{
                 "id_pk_brg_pengiriman" => $this->id_pk_brg_pengiriman
             );
             $data = array(
+                "brg_pengiriman_qty" => 0,
                 "brg_pengiriman_last_modified" => $this->brg_pengiriman_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );

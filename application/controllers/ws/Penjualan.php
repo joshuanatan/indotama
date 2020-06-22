@@ -77,10 +77,13 @@ class Penjualan extends CI_Controller{
                     $response["content"][$a]["id"] = $result[$a]["id_pk_brg_penjualan"];
                     $response["content"][$a]["qty"] = $result[$a]["brg_penjualan_qty_real"];
                     $response["content"][$a]["satuan"] = $result[$a]["brg_penjualan_satuan_real"];
+                    $response["content"][$a]["qty_mu"] = $result[$a]["brg_penjualan_qty"];
+                    $response["content"][$a]["satuan_mu"] = $result[$a]["brg_penjualan_satuan"];
                     $response["content"][$a]["harga"] = $result[$a]["brg_penjualan_harga"];
                     $response["content"][$a]["note"] = $result[$a]["brg_penjualan_note"];
                     $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
                     $response["content"][$a]["last_modified"] = $result[$a]["brg_penjualan_last_modified"];
+                    $response["content"][$a]["jmlh_terkirim"] = $result[$a]["jumlah_terkirim"];
                 }
             }
             else{

@@ -9,7 +9,7 @@
                 <form id = "register_form" method = "POST">
                     <div class = "form-group">
                         <h5>Nomor Retur</h5>
-                        <input type = "text" class = "form-control" list = "datalist_penjualan" required id = "no_retur" name = "no_retur">
+                        <input type = "text" class = "form-control" required id = "no_retur" name = "no_retur">
                     </div>
                     <div class = "form-group">
                         <h5>Nomor Penjualan</h5>
@@ -110,7 +110,7 @@
                     content_brg_penjualan = respond["content"];
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr class = 'brg_retur_counter'><td><input name = 'brg_retur_check[]' value = "+a+" type = 'hidden'><input readonly type = 'text' class = 'form-control' name = 'brg_retur"+a+"' value = '"+respond["content"][a]["nama_brg"]+"' ></td><td>1 / 2 PCS</td><td><input type = 'text' class = 'form-control' name = 'brg_retur_jumlah"+a+"'></td><td><input name = 'brg_retur_notes"+a+"' type = 'text' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+                        html += "<tr class = 'brg_retur_counter'><td><input name = 'brg_retur_check[]' value = "+a+" type = 'hidden'><input readonly type = 'text' class = 'form-control' name = 'brg_retur"+a+"' value = '"+respond["content"][a]["nama_brg"]+"' ></td><td>"+respond["content"][a]["jmlh_terkirim"]+" / "+respond["content"][a]["qty_mu"]+" "+respond["content"][a]["satuan_mu"]+"</td><td><input type = 'text' class = 'form-control' name = 'brg_retur_jumlah"+a+"'></td><td><input name = 'brg_retur_notes"+a+"' type = 'text' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
                     }
                     $("#daftar_brg_retur").html(html);
                     var html_datalist_satuan = "";
