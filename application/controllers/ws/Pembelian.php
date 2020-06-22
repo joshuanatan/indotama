@@ -220,23 +220,26 @@ class Pembelian extends CI_Controller{
                                 $this->load->model("m_brg_pembelian");
                                 if($this->m_brg_pembelian->set_insert($brg_pem_qty,$brg_pem_satuan,$brg_pem_harga,$brg_pem_note,$brg_pem_status,$id_fk_pembelian,$id_fk_barang)){
                                     if($this->m_brg_pembelian->insert()){
+                                        $this->load->model("m_brg_cabang");
+                                        $this->m_brg_cabang->set_id_fk_brg($id_fk_barang);
+                                        $this->m_brg_cabang->set_id_fk_cabang($id_fk_cabang);
+                                        $this->m_brg_cabang->set_brg_cabang_last_price($brg_pem_harga);
+                                        $this->m_brg_cabang->update_last_price();
+
                                         $response["itmsts"][$counter] = "SUCCESS";
                                         $response["itmmsg"][$counter] = "Data is recorded to database";
                                     }
                                     else{
-                                        $response["status"] = "ERROR";
                                         $response["itmsts"][$counter] = "ERROR";
                                         $response["itmmsg"][$counter] = "Insert function error";
                                     }
                                 }
                                 else{
-                                    $response["status"] = "ERROR";
                                     $response["itmsts"][$counter] = "ERROR";
                                     $response["itmmsg"][$counter] = "Setter function error";
                                 }
                             }
                             else{
-                                $response["status"] = "ERROR";
                                 $response["itmsts"][$counter] = "ERROR";
                                 $response["itmmsg"][$counter] = validation_errors();
                             }
@@ -275,19 +278,16 @@ class Pembelian extends CI_Controller{
                                         $response["tmbhnmsg"][$counter] = "Data is recorded to database";
                                     }
                                     else{
-                                        $response["status"] = "ERROR";
                                         $response["tmbhnsts"][$counter] = "ERROR";
                                         $response["tmbhnmsg"][$counter] = "Insert function error";
                                     }
                                 }
                                 else{
-                                    $response["status"] = "ERROR";
                                     $response["tmbhnsts"][$counter] = "ERROR";
                                     $response["tmbhnmsg"][$counter] = "Setter function error";
                                 }
                             }
                             else{
-                                $response["status"] = "ERROR";
                                 $response["tmbhnsts"][$counter] = "ERROR";
                                 $response["tmbhnmsg"][$counter] = validation_errors();
                             }
