@@ -13,7 +13,7 @@ class Pemenuhan extends CI_Controller{
     }
     public function cabang(){
         $this->load->model("m_brg_pemenuhan");
-        $data["id_tempat_penerimaan"] = $this->session->id_warehouse;
+        $data["id_tempat_penerimaan"] = $this->session->id_cabang;
         $data["type"] = "CABANG";
         $this->m_brg_pemenuhan->set_id_fk_warehouse($this->session->id_cabang);
         $this->load->view("brg_pemenuhan/v_brg_pemenuhan",$data);
