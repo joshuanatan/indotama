@@ -1,5 +1,5 @@
 <div class = "modal fade" id = "modal_insert">
-    <div class = "modal-dialog modal-lg">
+    <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
                 <h4 class = "modal-title">Insert Data <?php echo ucwords($page_title);?></h4>
@@ -34,12 +34,11 @@
     function load_edit_content(){
         $('body table').find('tr').click( function(){
             var row = $(this).index();
-            $("#id_fk_brg_permintaan_insert").val(content[row]["id_fk_brg_permintaan"]);
+            $("#id_fk_brg_permintaan_insert").val(content[row]["id"]);
             $("#brg_skrg_insert").html(content[row]["jml_brg_cbg"]);
             $("#vbrg_skrg_insert").val(content[row]["jml_brg_cbg"]);
-            $("#brg_pemenuhan_tipe_insert").val(<?php echo $type ?>);
+            $("#brg_pemenuhan_tipe_insert").val('<?php echo $type ?>');
         });
     }
 
-    
 </script>

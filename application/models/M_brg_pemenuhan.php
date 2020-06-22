@@ -19,14 +19,14 @@ class M_brg_pemenuhan extends ci_model{
     public function __construct(){
         parent::__construct();
         $this->set_column("brg_permintaan_create_date","tanggal permintaan",true);
-        $this->set_column("cabang_nama","cabang peminta",false);
+        $this->set_column("cabang_daerah","cabang peminta",false);
         $this->set_column("brg_image","gambar barang",false);
         $this->set_column("brg_nama","nama barang",false);
-        $this->set_column("qty_pemenuhan","jumlah terpenuhi",false);
+        $this->set_column("brg_permintaan_qty","jumlah terpenuhi",false);
         $this->set_column("brg_permintaan_qty","jumlah permintaan",false);
         $this->set_column("brg_permintaan_status","status permintaan",false);
-        $this->penerimaan_create_date = date("y-m-d h:i:s");
-        $this->penerimaan_last_modified = date("y-m-d h:i:s");
+        $this->brg_pemenuhan_create_date = date("y-m-d h:i:s");
+        $this->brg_pemenuhan_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
         $this->today = date("y-m-d");
@@ -165,8 +165,6 @@ class M_brg_pemenuhan extends ci_model{
                 brg_permintaan_notes like '%".$search_key."%' or
                 brg_permintaan_deadline like '%".$search_key."%' or
                 brg_permintaan_status like '%".$search_key."%' or
-                id_fk_brg like '%".$search_key."%' or
-                id_fk_cabang like '%".$search_key."%' or
                 brg_permintaan_create_date like '%".$search_key."%' or
                 brg_permintaan_last_modified like '%".$search_key."%' or
                 brg_nama like '%".$search_key."%' or
@@ -175,12 +173,13 @@ class M_brg_pemenuhan extends ci_model{
         }
         if(strtoupper($this->brg_pemenuhan_tipe) == "CABANG"){
             $query = "
-            select id_pk_brg_permintaan, brg_permintaan_deadline, brg_permintaan_qty, brg_permintaan_status,brg_cabang_qty,tbl_brg_permintaan.id_fk_brg as id_mstr_barang_cabang_peminta, tbl_brg_permintaan.id_fk_cabang as id_cabang_peminta, brg_cabang_status,tbl_brg_cabang.id_fk_brg as id_mstr_barang_cabang_penyedia, tbl_brg_cabang.id_fk_cabang as id_cabang_penyedia,brg_nama, ifnull(sum(tbl_brg_pemenuhan.brg_pemenuhan_qty),0) as qty_pemenuhan,cabang_daerah
+            select id_pk_brg_permintaan, brg_permintaan_deadline, brg_permintaan_qty, brg_permintaan_status,brg_cabang_qty,brg_permintaan_notes,brg_image,tbl_brg_permintaan.id_fk_brg as id_mstr_barang_cabang_peminta, tbl_brg_permintaan.id_fk_cabang as id_cabang_peminta, brg_cabang_status,tbl_brg_cabang.id_fk_brg as id_mstr_barang_cabang_penyedia, brg_permintaan_create_date,tbl_brg_cabang.id_fk_cabang as id_cabang_penyedia,brg_nama, ifnull(sum(tbl_brg_pemenuhan.brg_pemenuhan_qty),0) as qty_pemenuhan,cabang_daerah,mstr_toko.toko_nama, mstr_toko.toko_kode
             from tbl_brg_permintaan
             inner join mstr_cabang on mstr_cabang.id_pk_cabang = tbl_brg_permintaan.id_fk_cabang
-            inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.ID_FK_BRG
+            inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+            inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg
             inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = mstr_barang.id_pk_brg
-            left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan 
+            left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan and brg_pemenuhan_status != 'nonaktif'
             where tbl_brg_cabang.id_fk_cabang = ?
             and tbl_brg_permintaan.id_fk_cabang != ?
             and tbl_brg_cabang.brg_cabang_status = ?
@@ -195,12 +194,13 @@ class M_brg_pemenuhan extends ci_model{
             );
             $result["data"] = executequery($query,$args);
             $query = "
-            select id_pk_brg_permintaan, brg_permintaan_deadline, brg_permintaan_qty, brg_permintaan_status,brg_cabang_qty,tbl_brg_permintaan.id_fk_brg as id_mstr_barang_cabang_peminta, tbl_brg_permintaan.id_fk_cabang as id_cabang_peminta, brg_cabang_status,tbl_brg_cabang.id_fk_brg as id_mstr_barang_cabang_penyedia, tbl_brg_cabang.id_fk_cabang as id_cabang_penyedia,brg_nama, ifnull(sum(tbl_brg_pemenuhan.brg_pemenuhan_qty),0) as qty_pemenuhan,cabang_daerah
+            select id_pk_brg_permintaan
             from tbl_brg_permintaan
             inner join mstr_cabang on mstr_cabang.id_pk_cabang = tbl_brg_permintaan.id_fk_cabang
-            inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.ID_FK_BRG
+            inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+            inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg
             inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = mstr_barang.id_pk_brg
-            left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan 
+            left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan and brg_pemenuhan_status != 'nonaktif'
             where tbl_brg_cabang.id_fk_cabang = ?
             and tbl_brg_permintaan.id_fk_cabang != ?
             and tbl_brg_cabang.brg_cabang_status = ?
@@ -212,6 +212,8 @@ class M_brg_pemenuhan extends ci_model{
             $result["total_data"] = executequery($query,$args)->num_rows();
         }
         else{
+            #ini bagian warehouse harus di cek lagi querynya
+            /*
             $query = "
             select id_pk_brg_permintaan, brg_permintaan_qty, brg_nama, brg_permintaan_notes, brg_permintaan_deadline, brg_permintaan_status,brg_image, tbl_brg_permintaan.id_fk_brg, tbl_brg_permintaan.id_fk_cabang, brg_permintaan_create_date, brg_permintaan_last_modified, sum(tbl_brg_pemenuhan.brg_pemenuhan_qty) as qty_pemenuhan, cabang_daerah from tbl_brg_permintaan join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg join mstr_cabang on mstr_cabang.id_pk_cabang =tbl_brg_permintaan.id_fk_cabang left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan where tbl_brg_permintaan.brg_permintaan_status!= ? group by id_pk_brg_permintaan ".$search_query." 
             order by ".$order_by." ".$order_direction." 
@@ -224,6 +226,7 @@ class M_brg_pemenuhan extends ci_model{
             select id_pk_brg_permintaan, brg_permintaan_qty,brg_image, brg_nama, brg_permintaan_notes, brg_permintaan_deadline, brg_permintaan_status, tbl_brg_permintaan.id_fk_brg, tbl_brg_permintaan.id_fk_cabang, brg_permintaan_create_date, brg_permintaan_last_modified, sum(tbl_brg_pemenuhan.brg_pemenuhan_qty) as qty_pemenuhan, cabang_daerah from tbl_brg_permintaan join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg join mstr_cabang on mstr_cabang.id_pk_cabang =tbl_brg_permintaan.id_fk_cabang left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan where tbl_brg_permintaan.brg_permintaan_status!= ? group by id_pk_brg_permintaan ".$search_query." 
             order by ".$order_by." ".$order_direction;
             $result["total_data"] = executequery($query,$args)->num_rows();
+            */
         }
         
         return $result;
@@ -264,22 +267,42 @@ class M_brg_pemenuhan extends ci_model{
         }
         return false;
     }
-    /*public function delete(){
+    public function list_pemenuhan(){
+        $field = array(
+            "id_pk_brg_pemenuhan",
+            "brg_pemenuhan_last_modified",
+            "brg_pemenuhan_qty",
+            "brg_pemenuhan_status"
+        );
+        $where = array(
+            "id_fk_brg_permintaan" => $this->id_fk_brg_permintaan,
+            "brg_pemenuhan_status !=" => "nonaktif" 
+
+        );
+        if($this->id_fk_cabang){
+            $where["id_fk_cabang"] = $this->id_fk_cabang;
+        }
+        else if($this->id_fk_warehouse){
+            $where["id_fk_warehouse"] = $this->id_fk_warehouse;
+        }
+        return selectRow($this->tbl_name,$where,$field);
+    }
+    public function delete(){
         //belom
         if($this->check_delete()){
             $where = array(
                 "id_pk_brg_pemenuhan" => $this->id_pk_brg_pemenuhan
             );
             $data = array(
-                "penerimaan_status" => "nonaktif",
-                "penerimaan_last_modified" => $this->penerimaan_last_modified,
+                "brg_pemenuhan_status" => "nonaktif",
+                "brg_pemenuhan_last_modified" => $this->brg_pemenuhan_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
             updaterow($this->tbl_name,$data,$where);
             return true;
         }
         return false;
-    }*/
+    }
     public function check_insert(){
 
         if($this->brg_pemenuhan_qty == ""){
@@ -295,12 +318,12 @@ class M_brg_pemenuhan extends ci_model{
             return false;
         }
         
-        if(strtoupper($this->brg_pemenuhan_tipe) == "warehouse"){
+        if(strtolower($this->brg_pemenuhan_tipe) == "warehouse"){
             if($this->id_fk_warehouse == ""){
                 return false;
             }
         }
-        else if(strtoupper($this->brg_pemenuhan_tipe) == "cabang"){
+        else if(strtolower($this->brg_pemenuhan_tipe) == "cabang"){
             if($this->id_fk_cabang == ""){
                 return false;
             }
@@ -318,13 +341,13 @@ class M_brg_pemenuhan extends ci_model{
     }
     public function check_update(){
         //belom
-        if($this->id_pk_penerimaan == ""){
+        if($this->id_pk_brg_pemenuhan == ""){
             return false;
         }
-        if($this->penerimaan_tgl == ""){
+        if($this->brg_pemenuhan_tgl == ""){
             return false;
         }
-        if($this->penerimaan_last_modified == ""){
+        if($this->brg_pemenuhan_last_modified == ""){
             return false;
         }
         if($this->id_last_modified == ""){
@@ -342,7 +365,7 @@ class M_brg_pemenuhan extends ci_model{
         if($this->id_last_modified == ""){
             return false;
         }
-        else return true;
+        return true;
     }
     public function set_insert($brg_pemenuhan_qty,$id_fk_brg_permintaan,$brg_pemenuhan_tipe){
         //ceklagi
@@ -367,12 +390,12 @@ class M_brg_pemenuhan extends ci_model{
         }
         return true;
     }
-    public function set_update($id_pk_penerimaan,$penerimaan_tgl){
+    public function set_update($id_pk_brg_pemenuhan,$brg_pemenuhan_tgl){
         //belom
-        if(!$this->set_id_pk_penerimaan($id_pk_penerimaan)){
+        if(!$this->set_id_pk_brg_pemenuhan($id_pk_brg_pemenuhan)){
             return false;
         }
-        if(!$this->set_penerimaan_tgl($penerimaan_tgl)){
+        if(!$this->set_brg_pemenuhan_tgl($brg_pemenuhan_tgl)){
             return false;
         }
         return true;
@@ -385,6 +408,13 @@ class M_brg_pemenuhan extends ci_model{
         return true;
     }
 
+    public function set_id_pk_brg_pemenuhan($id_pk_brg_pemenuhan){
+        if($id_pk_brg_pemenuhan != ""){
+            $this->id_pk_brg_pemenuhan = $id_pk_brg_pemenuhan;
+            return true;
+        }
+        return false;
+    }
     public function set_brg_pemenuhan_qty($brg_pemenuhan_qty){
         if($brg_pemenuhan_qty != ""){
             $this->brg_pemenuhan_qty = $brg_pemenuhan_qty;

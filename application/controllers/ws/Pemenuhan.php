@@ -49,22 +49,19 @@ class Pemenuhan extends CI_Controller{
             if($result["data"]->num_rows() > 0){
                 $result["data"] = $result["data"]->result_array();
                 for($a = 0; $a<count($result["data"]); $a++){
-                    $response["content"][$a]["id_fk_brg_permintaan"] = $result["data"][$a]["id_pk_brg_permintaan"];
+                    $response["content"][$a]["id"] = $result["data"][$a]["id_pk_brg_permintaan"];
                     $response["content"][$a]["stok_permintaan"] = $result["data"][$a]["brg_permintaan_qty"];
                     $response["content"][$a]["notes"] = $result["data"][$a]["brg_permintaan_notes"];
                     $response["content"][$a]["deadline"] = $result["data"][$a]["brg_permintaan_deadline"];
                     $response["content"][$a]["status_permintaan"] = $result["data"][$a]["brg_permintaan_status"];
-                    $response["content"][$a]["id_fk_brg"] = $result["data"][$a]["id_fk_brg"];
+                    $response["content"][$a]["id_fk_brg"] = $result["data"][$a]["id_mstr_barang_cabang_penyedia"];
                     $response["content"][$a]["nama_barang"] = $result["data"][$a]["brg_nama"];
-                    if($result["data"][$a]["qty_pemenuhan"]==null){
-                        $response["content"][$a]["stok_terpenuhi"] = 0;
-                    }else{
-                        $response["content"][$a]["stok_terpenuhi"] = $result["data"][$a]["qty_pemenuhan"];
-                    }
+                    $response["content"][$a]["stok_terpenuhi"] = $result["data"][$a]["qty_pemenuhan"];
                     $response["content"][$a]["cabang_peminta"] = $result["data"][$a]["cabang_daerah"];
-                    $response["content"][$a]["id_fk_cabang"] = $result["data"][$a]["id_fk_cabang"];
+                    $response["content"][$a]["toko_peminta"] = $result["data"][$a]["toko_nama"];
+                    $response["content"][$a]["toko"] = $result["data"][$a]["toko_nama"]." ".$result["data"][$a]["cabang_daerah"];
+                    $response["content"][$a]["id_fk_cabang"] = $result["data"][$a]["id_cabang_penyedia"];
                     $response["content"][$a]["tgl_permintaan"] = $result["data"][$a]["brg_permintaan_create_date"];
-                    $response["content"][$a]["last_modified"] = $result["data"][$a]["brg_permintaan_last_modified"];
                     $response["content"][$a]["gambar_barang"] = "<img width='100px' src='" .$result["data"][$a]["brg_image"] . "'>";
                     $response["content"][$a]["jml_brg_cbg"] = $result["data"][$a]["brg_cabang_qty"];
                     
@@ -76,7 +73,7 @@ class Pemenuhan extends CI_Controller{
             $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
             $response["key"] = array(
                 "tgl_permintaan",
-                "cabang_peminta",
+                "toko",
                 "gambar_barang",
                 "nama_barang",
                 "stok_terpenuhi",
@@ -226,6 +223,47 @@ class Pemenuhan extends CI_Controller{
         else{
             $response["status"] = "ERROR";
             $response["msg"] = "Invalid ID Supplier";
+        }
+        echo json_encode($response);
+    }
+    public function list_pemenuhan(){
+        $response["status"] = "SUCCESS";
+        $id_brg_permintaan = $this->input->get("id_brg_permintaan");
+        $this->load->model("m_brg_pemenuhan");
+        $this->m_brg_pemenuhan->set_id_fk_brg_permintaan($id_brg_permintaan);
+        $this->m_brg_pemenuhan->set_id_fk_cabang($this->session->id_cabang);
+        $result = $this->m_brg_pemenuhan->list_pemenuhan();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_brg_pemenuhan"];
+                $response["content"][$a]["last_modified"] = $result[$a]["brg_pemenuhan_last_modified"];
+                $response["content"][$a]["qty"] = $result[$a]["brg_pemenuhan_qty"];
+                $response["content"][$a]["status"] = $result[$a]["brg_pemenuhan_status"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "No Data";
+        }
+        echo json_encode($response);
+    }
+    public function hapus_pemberian(){
+        $response["status"] = "SUCCESS";
+        $id_pemenuhan = $this->input->get("id_pemenuhan");
+        $this->load->model("m_brg_pemenuhan");
+        if($this->m_brg_pemenuhan->set_delete($id_pemenuhan)){
+            if($this->m_brg_pemenuhan->delete()){
+
+            }
+            else{
+                $response["status"] = "ERROR";
+                $response["msg"] = "Delete Function Error";
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "Setter Function Error";
         }
         echo json_encode($response);
     }

@@ -1,7 +1,7 @@
 <?php
-$page_title = "Pemenuhan";
+$page_title = "Permintaan Cabang Lain";
 $breadcrumb = array(
-    "Pemenuhan"
+    "Permintaan Cabang Lain"
 );
 $notif_data = array(
     "page_title"=>$page_title
@@ -76,7 +76,7 @@ $notif_data = array(
 <script>
     var ctrl = "pemenuhan";
     var url_add = "type=<?php echo $type;?>";
-    var unautorized_button = ["edit_button"];
+    var unautorized_button = ["edit_button","delete_button"];
     var additional_button = [
         {
             data_toggle:'modal',
@@ -89,7 +89,8 @@ $notif_data = array(
 </script>
 <?php
 $data = array(
-    "page_title" => "Pemenuhan"
+    "page_title" => "Pemberian",
+    "type" => $type
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
@@ -98,5 +99,6 @@ $data = array(
 <?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view("brg_pemenuhan/f-insert-brg-pemenuhan",$data);?>
 <?php $this->load->view("brg_pemenuhan/f-delete-brg-pemenuhan",$data);?>
+<?php $this->load->view("brg_pemenuhan/f-detail-brg-pemenuhan",$data);?>
 
 <?php $this->load->view('_notification/notif_general'); ?>
