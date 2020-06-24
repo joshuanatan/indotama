@@ -132,21 +132,30 @@ class M_retur extends CI_Model{
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
-    public function list(){
-        $where = array(
-            "retur_status" => "aktif"
+    public function detail_by_no(){
+        $sql = "
+        select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified, penj_nomor, penj_tgl, penj_dateline_tgl, id_fk_customer,id_fk_cabang,cust_name,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat
+        from mstr_retur
+        inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
+        inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        where retur_status = ? and retur_no = ?
+        ";
+        $args = array(
+            "aktif",$this->retur_no
         );
-        $field = array(
-            "id_pk_retur",
-            "id_fk_penjualan",
-            "retur_no",
-            "retur_tgl",
-            "retur_status",
-            "retur_tipe",
-            "retur_create_date",
-            "retur_last_modified"
+        return executeQuery($sql,$args);
+    }
+    public function list($id_fk_cabang){
+        $sql = "
+        select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified, penj_nomor, penj_tgl, penj_dateline_tgl, id_fk_customer,id_fk_cabang
+        from mstr_retur
+        inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
+        where retur_status = ? and id_fk_cabang = ?
+        ";
+        $args = array(
+            "aktif",$id_fk_cabang
         );
-        return selectrow($this->tbl_name,$where,$field);
+        return executeQuery($sql,$args);
     }
     public function columns(){
         return $this->columns;

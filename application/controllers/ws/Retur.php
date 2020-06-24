@@ -59,20 +59,58 @@ class Retur extends CI_Controller{
     }
     public function list(){
         $response["status"] = "SUCCESS";
+        $id_cabang = $this->input->get("id_cabang");
+        
         $this->load->model("m_retur");
-        $result = $this->m_retur->list();
-        if($result->num_rows()){
+        $result = $this->m_retur->list($id_cabang);
+        if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
-                $response["content"][$a]["id"] = $result[$a]["id_pk_brg_jenis"];
-                $response["content"][$a]["nama"] = $result[$a]["brg_jenis_nama"];
-                $response["content"][$a]["status"] = $result[$a]["brg_jenis_status"];
-                $response["content"][$a]["last_modified"] = $result[$a]["brg_jenis_last_modified"];
+                $response["content"][$a]["id"] = $result[$a]["id_pk_retur"];
+                $response["content"][$a]["id_penjualan"] = $result[$a]["id_fk_penjualan"];
+                $response["content"][$a]["no"] = $result[$a]["retur_no"];
+                $response["content"][$a]["tgl"] = $result[$a]["retur_tgl"];
+                $response["content"][$a]["status"] = $result[$a]["retur_status"];
+                $response["content"][$a]["tipe"] = $result[$a]["retur_tipe"];
+                $response["content"][$a]["last_modified"] = $result[$a]["retur_last_modified"];
             }
         }
         else{
             $response["status"] = "ERROR";
             $response["msg"] = "No data is recorded in database";
+        }
+        echo json_encode($response);
+    }
+    public function detail($no_retur){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_retur");
+        $this->m_retur->set_retur_no($no_retur);
+        $result = $this->m_retur->detail_by_no();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_retur"];
+                $response["content"][$a]["id_penjualan"] = $result[$a]["id_fk_penjualan"];
+                $response["content"][$a]["no_retur"] = $result[$a]["retur_no"];
+                $response["content"][$a]["tgl_retur"] = $result[$a]["retur_tgl"];
+                $response["content"][$a]["status_retur"] = $result[$a]["retur_status"];
+                $response["content"][$a]["tipe_retur"] = $result[$a]["retur_tipe"];
+                $response["content"][$a]["last_modified_retur"] = $result[$a]["retur_last_modified"];
+                $response["content"][$a]["nomor_penj"] = $result[$a]["penj_nomor"];
+                $response["content"][$a]["tgl_penj"] = $result[$a]["penj_tgl"];
+                $response["content"][$a]["dateline_tgl_penj"] = $result[$a]["penj_dateline_tgl"];
+                $response["content"][$a]["name_cust"] = $result[$a]["cust_name"];
+                $response["content"][$a]["suff_cust"] = $result[$a]["cust_suff"];
+                $response["content"][$a]["perusahaan_cust"] = $result[$a]["cust_perusahaan"];
+                $response["content"][$a]["email_cust"] = $result[$a]["cust_email"];
+                $response["content"][$a]["telp_cust"] = $result[$a]["cust_telp"];
+                $response["content"][$a]["hp_cust"] = $result[$a]["cust_hp"];
+                $response["content"][$a]["alamat_cust"] = $result[$a]["cust_alamat"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "No Data";
         }
         echo json_encode($response);
     }
