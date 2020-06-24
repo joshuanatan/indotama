@@ -12,7 +12,8 @@
             );
             $this->load->view('_notification/register_error',$notif_data); ?>
                 <form id = "register_form" method = "POST">
-                    <input type = 'hidden' name = 'id_pembelian' id = 'id_pembelian'>
+                    <input type = 'hidden' name = 'id_reff' id = 'id_pembelian'>
+                    <input type = 'hidden' name = 'tipe_penerimaan' value = 'pembelian'>
                     <input type = 'hidden' name = 'tempat' value = '<?php echo $type;?>'>
                     <input type = 'hidden' name = 'id_tempat_penerimaan' value = '<?php echo $id_tempat_penerimaan;?>'>
                     <div class = "form-group">

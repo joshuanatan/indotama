@@ -53,8 +53,7 @@ $notif_data = array(
                                             <div class = "form-inline">
                                                 <select class = "form-control form-sm" id = "tipe_penerimaan" style = "width:20%">
                                                     <option value = "pembelian">Penerimaan Pembelian</option>
-                                                    <option value = "permintaan" <?php if($tipe == "permintaan") echo "selected";?>>Penerimaan Permintaan</option>
-                                                    <option value = "retur" <?php if($tipe == "retur") echo "selected";?>>Penerimaan Retur</option>
+                                                    <option value = "retur">Penerimaan Retur</option>
                                                 </select>
                                                 <button type = "button" onclick = "redirect_tipe_penerimaan()" class = "btn btn-primary btn-sm">Buka</button>
                                             </div>
