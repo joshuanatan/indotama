@@ -9,6 +9,7 @@ class M_brg_penerimaan extends ci_model{
     private $brg_penerimaan_note;
     private $id_fk_penerimaan;
     private $id_fk_brg_pembelian;
+    private $id_fk_brg_retur;
     private $id_fk_satuan;
     private $brg_penerimaan_create_date;
     private $brg_penerimaan_last_modified;
@@ -34,6 +35,7 @@ class M_brg_penerimaan extends ci_model{
             brg_penerimaan_note varchar(200),
             id_fk_penerimaan int,
             id_fk_brg_pembelian int,
+            id_fk_brg_retur int,
             id_fk_satuan int,
             brg_penerimaan_create_date datetime,
             brg_penerimaan_last_modified datetime,
@@ -49,6 +51,7 @@ class M_brg_penerimaan extends ci_model{
             brg_penerimaan_note varchar(200),
             id_fk_penerimaan int,
             id_fk_brg_pembelian int,
+            id_fk_brg_retur int,
             id_fk_satuan int,
             brg_penerimaan_create_date datetime,
             brg_penerimaan_last_modified datetime,
@@ -67,18 +70,31 @@ class M_brg_penerimaan extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at' , new.brg_penerimaan_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into tbl_brg_penerimaan_log(executed_function,id_pk_brg_penerimaan,brg_penerimaan_qty,brg_penerimaan_note,id_fk_penerimaan,id_fk_brg_pembelian,id_fk_satuan,brg_penerimaan_create_date,brg_penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_penerimaan,new.brg_penerimaan_qty,new.brg_penerimaan_note,new.id_fk_penerimaan,new.id_fk_brg_pembelian,new.id_fk_satuan,new.brg_penerimaan_create_date,new.brg_penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into tbl_brg_penerimaan_log(executed_function,id_pk_brg_penerimaan,brg_penerimaan_qty,brg_penerimaan_note,id_fk_penerimaan,id_fk_brg_pembelian,id_fk_brg_retur,id_fk_satuan,brg_penerimaan_create_date,brg_penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_penerimaan,new.brg_penerimaan_qty,new.brg_penerimaan_note,new.id_fk_penerimaan,new.id_fk_brg_pembelian,new.id_fk_brg_retur,new.id_fk_satuan,new.brg_penerimaan_create_date,new.brg_penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
 
             set @id_cabang = 0;
             set @id_barang = 0;
             set @id_warehouse = 0;
             set @brg_penerimaan_qty = new.brg_penerimaan_qty;
             set @id_satuan_terima = new.id_fk_satuan;
-            select id_fk_cabang, id_fk_barang, id_fk_warehouse into @id_cabang,@id_barang,@id_warehouse from tbl_brg_penerimaan
+            set @id_fk_brg_pembelian = new.id_fk_brg_pembelian;
+            set @id_fk_brg_retur = new.id_fk_brg_retur;
+            
+            if @id_fk_brg_pembelian is not null and @id_fk_brg_pembelian != 0
+            then
+            select id_fk_cabang, id_fk_barang, id_fk_warehouse into @id_cabang,@id_barang,@id_warehouse 
+            from tbl_brg_penerimaan
             inner join tbl_brg_pembelian on tbl_brg_pembelian.id_pk_brg_pembelian = tbl_brg_penerimaan.id_fk_brg_pembelian
             inner join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan
             where id_pk_brg_penerimaan = new.id_pk_brg_penerimaan;
-
+            elseif @id_fk_brg_retur is not null and @id_fk_brg_retur != 0 then
+            select id_fk_cabang, id_fk_brg, id_fk_warehouse into @id_cabang,@id_barang,@id_warehouse
+            from tbl_brg_penerimaan
+            inner join tbl_retur_brg on tbl_retur_brg.id_pk_retur_brg = tbl_brg_penerimaan.id_fk_brg_retur
+            inner join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan
+            where id_pk_brg_penerimaan = new.id_pk_brg_penerimaan;
+            end if;
+            
             if @id_warehouse is not null then
             call update_stok_barang_warehouse(@id_barang,@id_warehouse,@brg_penerimaan_qty,@id_satuan_terima,0,0);
             elseif @id_cabang is not null then 
@@ -99,7 +115,7 @@ class M_brg_penerimaan extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_penerimaan_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into tbl_brg_penerimaan_log(executed_function,id_pk_brg_penerimaan,brg_penerimaan_qty,brg_penerimaan_note,id_fk_penerimaan,id_fk_brg_pembelian,id_fk_satuan,brg_penerimaan_create_date,brg_penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_penerimaan,new.brg_penerimaan_qty,new.brg_penerimaan_note,new.id_fk_penerimaan,new.id_fk_brg_pembelian,new.id_fk_satuan,new.brg_penerimaan_create_date,new.brg_penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into tbl_brg_penerimaan_log(executed_function,id_pk_brg_penerimaan,brg_penerimaan_qty,brg_penerimaan_note,id_fk_penerimaan,id_fk_brg_pembelian,id_fk_brg_retur,id_fk_satuan,brg_penerimaan_create_date,brg_penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_penerimaan,new.brg_penerimaan_qty,new.brg_penerimaan_note,new.id_fk_penerimaan,new.id_fk_brg_pembelian,new.id_fk_brg_retur,new.id_fk_satuan,new.brg_penerimaan_create_date,new.brg_penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
 
             set @id_cabang = 0;
             set @id_barang = 0;
@@ -108,11 +124,23 @@ class M_brg_penerimaan extends ci_model{
             set @id_satuan_terima = new.id_fk_satuan;
             set @brg_keluar_qty = old.brg_penerimaan_qty;
             set @id_satuan_keluar = old.id_fk_satuan;
-
-            select id_fk_cabang, id_fk_barang,id_fk_warehouse into @id_cabang, @id_barang,@id_warehouse from tbl_brg_penerimaan
+            set @id_fk_brg_pembelian = new.id_fk_brg_pembelian;
+            set @id_fk_brg_retur = new.id_fk_brg_retur;
+            
+            if @id_fk_brg_pembelian is not null and @id_fk_brg_pembelian != 0
+            then
+            select id_fk_cabang, id_fk_barang, id_fk_warehouse into @id_cabang,@id_barang,@id_warehouse 
+            from tbl_brg_penerimaan
             inner join tbl_brg_pembelian on tbl_brg_pembelian.id_pk_brg_pembelian = tbl_brg_penerimaan.id_fk_brg_pembelian
             inner join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan
             where id_pk_brg_penerimaan = new.id_pk_brg_penerimaan;
+            elseif @id_fk_brg_retur is not null and @id_fk_brg_retur != 0 then
+            select id_fk_cabang, id_fk_brg, id_fk_warehouse into @id_cabang,@id_barang,@id_warehouse
+            from tbl_brg_penerimaan
+            inner join tbl_retur_brg on tbl_retur_brg.id_pk_retur_brg = tbl_brg_penerimaan.id_fk_brg_retur
+            inner join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan
+            where id_pk_brg_penerimaan = new.id_pk_brg_penerimaan;
+            end if;
             
             if @id_warehouse is not null then
             call update_stok_barang_warehouse(@id_barang,@id_warehouse,@brg_penerimaan_qty,@id_satuan_terima,@brg_keluar_qty,@id_satuan_keluar);
@@ -138,19 +166,36 @@ class M_brg_penerimaan extends ci_model{
         );
         return executequery($query,$args);
     }
+    public function list_retur(){
+        $query = "
+        select id_pk_brg_penerimaan,brg_penerimaan_qty,brg_penerimaan_note,id_fk_penerimaan,id_fk_satuan,brg_nama,satuan_nama,retur_brg_qty,retur_brg_satuan,retur_brg_notes
+        from ".$this->tbl_name."
+        inner join tbl_retur_brg on tbl_retur_brg.id_pk_retur_brg = ".$this->tbl_name.".id_fk_brg_retur
+        inner join mstr_barang on mstr_barang.id_pk_brg = tbl_retur_brg.id_fk_brg
+        inner join mstr_satuan on mstr_satuan.id_pk_satuan = ".$this->tbl_name.".id_fk_satuan
+        where id_fk_penerimaan = ? and retur_brg_status = ? and brg_status = ?
+        ";
+        $args = array(
+            $this->id_fk_penerimaan,"aktif","aktif"
+        );
+        return executequery($query,$args);
+    }
     public function insert(){
         $data = array(
             "brg_penerimaan_qty" => $this->brg_penerimaan_qty,
             "brg_penerimaan_note" => $this->brg_penerimaan_note,
             "id_fk_penerimaan" => $this->id_fk_penerimaan,
             "id_fk_brg_pembelian" => $this->id_fk_brg_pembelian,
+            "id_fk_brg_retur" => $this->id_fk_brg_retur,
             "id_fk_satuan" => $this->id_fk_satuan,
             "brg_penerimaan_create_date" => $this->brg_penerimaan_create_date,
             "brg_penerimaan_last_modified" => $this->brg_penerimaan_last_modified,
             "id_create_data" => $this->id_create_data,
             "id_last_modified" => $this->id_last_modified
         );
-        return insertrow($this->tbl_name,$data);
+        insertrow($this->tbl_name,$data);
+        echo $this->db->last_query();
+        return true;
     }
     public function update(){
         if($this->check_update()){
@@ -206,9 +251,6 @@ class M_brg_penerimaan extends ci_model{
         if($this->id_fk_penerimaan == ""){
             return false;
         }
-        if($this->id_fk_brg_pembelian == ""){
-            return false;
-        }
         if($this->id_fk_satuan == ""){
             return false;
         }
@@ -259,7 +301,7 @@ class M_brg_penerimaan extends ci_model{
         }
         return true;
     }
-    public function set_insert($brg_penerimaan_qty,$brg_penerimaan_note,$id_fk_penerimaan,$id_fk_brg_pembelian,$id_fk_satuan){
+    public function set_insert($brg_penerimaan_qty,$brg_penerimaan_note,$id_fk_penerimaan,$id_fk_brg_pembelian = "",$id_fk_satuan, $id_fk_brg_retur = ""){
         if(!$this->set_brg_penerimaan_qty($brg_penerimaan_qty)){
             return false;
         }
@@ -269,9 +311,8 @@ class M_brg_penerimaan extends ci_model{
         if(!$this->set_id_fk_penerimaan($id_fk_penerimaan)){
             return false;
         }
-        if(!$this->set_id_fk_brg_pembelian($id_fk_brg_pembelian)){
-            return false;
-        }
+        $this->id_fk_brg_pembelian = $id_fk_brg_pembelian;
+        $this->id_fk_brg_retur = $id_fk_brg_retur;
         if(!$this->set_id_fk_satuan($id_fk_satuan)){
             return false;
         }
