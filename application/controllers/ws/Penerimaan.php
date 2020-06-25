@@ -12,7 +12,7 @@ class Penerimaan extends CI_Controller{
             $columns = $this->m_penerimaan->columns($tipe);
         }
         else{
-            $columns = $this->m_penerimaan->columns(    );
+            $columns = $this->m_penerimaan->columns();
         }
         if(count($columns) > 0){
             for($a = 0; $a<count($columns); $a++){

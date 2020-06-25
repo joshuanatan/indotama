@@ -97,7 +97,7 @@
                 if(respond["status"] == "SUCCESS"){
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr><td>"+respond["content"][a]["nama_brg"]+"<br/>Notes:"+respond["content"][a]["brg_notes_retur"]+"</td><td>"+respond["content"][a]["brg_qty_retur"]+" "+respond["content"][a]["brg_satuan_retur"]+"</td><td>"+respond["content"][a]["note"]+"</td></tr>";
+                        html += "<tr><td>"+respond["content"][a]["nama_brg"]+"<br/>Notes:"+respond["content"][a]["brg_notes_retur"]+"</td><td>"+respond["content"][a]["qty"]+" "+respond["content"][a]["satuan"]+"</td><td>"+respond["content"][a]["note"]+"</td></tr>";
                     }
                     $("#daftar_brg_beli_delete").html(html);
                 }

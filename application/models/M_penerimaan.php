@@ -126,12 +126,12 @@ class M_penerimaan extends ci_model{
         if($tipe_penerimaan == "pembelian"){
             $this->column_penerimaan_pembelian();
             $order_by = $this->columns[$order_by]["col_name"];
-            $result = $this->content_pembelian($page,$order_by,$order_direction,$search_key,$data_per_page,$tipe_penerimaan);
+            $result = $this->content_pembelian($page,$order_by,$order_direction,$search_key,$data_per_page);
         }
         else if($tipe_penerimaan == "retur"){
             $this->column_penerimaan_retur();
             $order_by = $this->columns[$order_by]["col_name"];
-            $result = $this->content_retur($page,$order_by,$order_direction,$search_key,$data_per_page,$tipe_penerimaan);
+            $result = $this->content_retur($page,$order_by,$order_direction,$search_key,$data_per_page);
         }
         return $result;
     }
