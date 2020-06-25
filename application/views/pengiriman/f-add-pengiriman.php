@@ -12,8 +12,9 @@
             );
             $this->load->view('_notification/register_error',$notif_data); ?>
                 <form id = "register_form" method = "POST">
-                    <input type = 'hidden' name = 'id_penjualan' id = 'id_penjualan'>
+                    <input type = 'hidden' name = 'id_reff' id = 'id_penjualan'>
                     <input type = 'hidden' name = 'type' value = '<?php echo $type;?>'>
+                    <input type = 'hidden' name = 'tipe_pengiriman' value = '<?php echo $tipe_pengiriman;?>'>
                     <input type = 'hidden' name = 'id_tempat_pengiriman' value = '<?php echo $id_tempat_pengiriman;?>'>
                     <div class = "form-group">
                         <h5>Nomor Penjualan</h5>

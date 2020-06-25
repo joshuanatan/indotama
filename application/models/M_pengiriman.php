@@ -8,6 +8,7 @@ class M_pengiriman extends ci_model{
     private $pengiriman_tgl;
     private $pengiriman_status;
     private $id_fk_penjualan;
+    private $id_fk_retur;
     private $pengiriman_tempat;
     private $id_fk_warehouse;
     private $id_fk_cabang;
@@ -27,17 +28,6 @@ class M_pengiriman extends ci_model{
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
-    private function set_column($col_name,$col_disp,$order_by){
-        $array = array(
-            "col_name" => $col_name,
-            "col_disp" => $col_disp,
-            "order_by" => $order_by
-        );
-        $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
-    }
-    public function columns(){
-        return $this->columns;
-    }
     public function install(){
         $sql = "
         drop table if exists mstr_pengiriman;
@@ -46,6 +36,7 @@ class M_pengiriman extends ci_model{
             pengiriman_tgl datetime, 
             pengiriman_status varchar(15), 
             id_fk_penjualan int, 
+            id_fk_retur int, 
             pengiriman_tempat varchar(30) comment 'warehouse/cabang', 
             id_fk_warehouse int, 
             id_fk_cabang int, 
@@ -62,6 +53,7 @@ class M_pengiriman extends ci_model{
             pengiriman_tgl datetime, 
             pengiriman_status varchar(15), 
             id_fk_penjualan int, 
+            id_fk_retur int, 
             pengiriman_tempat varchar(30) comment 'warehouse/cabang', 
             id_fk_warehouse int, 
             id_fk_cabang int, 
@@ -82,7 +74,7 @@ class M_pengiriman extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at' , new.pengiriman_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_pengiriman_log(executed_function,id_pk_pengiriman,pengiriman_tgl,pengiriman_status,id_fk_penjualan,pengiriman_tempat,id_fk_warehouse,id_fk_cabang,pengiriman_create_date,pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_pengiriman,new.pengiriman_tgl,new.pengiriman_status,new.id_fk_penjualan,new.pengiriman_tempat,new.id_fk_warehouse,new.id_fk_cabang,new.pengiriman_create_date,new.pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_pengiriman_log(executed_function,id_pk_pengiriman,pengiriman_tgl,pengiriman_status,id_fk_penjualan,id_fk_retur,pengiriman_tempat,id_fk_warehouse,id_fk_cabang,pengiriman_create_date,pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_pengiriman,new.pengiriman_tgl,new.pengiriman_status,new.id_fk_penjualan,new.id_fk_retur,new.pengiriman_tempat,new.id_fk_warehouse,new.id_fk_cabang,new.pengiriman_create_date,new.pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         
@@ -97,14 +89,57 @@ class M_pengiriman extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at' , new.pengiriman_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_pengiriman_log(executed_function,id_pk_pengiriman,pengiriman_tgl,pengiriman_status,id_fk_penjualan,pengiriman_tempat,id_fk_warehouse,id_fk_cabang,pengiriman_create_date,pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_pengiriman,new.pengiriman_tgl,new.pengiriman_status,new.id_fk_penjualan,new.pengiriman_tempat,new.id_fk_warehouse,new.id_fk_cabang,new.pengiriman_create_date,new.pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_pengiriman_log(executed_function,id_pk_pengiriman,pengiriman_tgl,pengiriman_status,id_fk_penjualan,id_fk_retur,pengiriman_tempat,id_fk_warehouse,id_fk_cabang,pengiriman_create_date,pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_pengiriman,new.pengiriman_tgl,new.pengiriman_status,new.id_fk_penjualan,new.id_fk_retur,new.pengiriman_tempat,new.id_fk_warehouse,new.id_fk_cabang,new.pengiriman_create_date,new.pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         ";
         executequery($sql);
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
-        $order_by = $this->columns[$order_by]["col_name"];
+    public function columns($tipe = "penjualan"){
+        if($tipe == "penjualan"){
+            $this->column_pengiriman_penjualan();
+        }
+        else if($tipe == "retur"){
+            $this->column_pengiriman_retur();
+        }
+        return $this->columns;
+    }
+    private function column_pengiriman_penjualan(){
+        $this->columns = array();
+        $this->set_column("pengiriman_tgl","tanggal pengiriman",true);
+        $this->set_column("pem_pk_nomor","nomor penjualan",false);
+        $this->set_column("pengiriman_status","status",false);
+        $this->set_column("pengiriman_last_modified","last modified",false);
+    }
+    private function column_pengiriman_retur(){
+        $this->columns = array();
+        $this->set_column("pengiriman_tgl","tanggal pengiriman",true);
+        $this->set_column("retur_no","nomor retur",false);
+        $this->set_column("pengiriman_status","status",false);
+        $this->set_column("pengiriman_last_modified","last modified",false);
+    }
+    private function set_column($col_name,$col_disp,$order_by){
+        $array = array(
+            "col_name" => $col_name,
+            "col_disp" => $col_disp,
+            "order_by" => $order_by
+        );
+        $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
+    }
+    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = "",$tipe_pengiriman = "penjualan"){
+        if($tipe_pengiriman == "penjualan"){
+            $this->column_pengiriman_penjualan();
+            $order_by = $this->columns[$order_by]["col_name"];
+            $result = $this->content_penjualan($page,$order_by,$order_direction,$search_key,$data_per_page,$tipe_pengiriman);
+        }
+        else if($tipe_pengiriman == "retur"){
+            $this->column_pengiriman_retur();
+            $order_by = $this->columns[$order_by]["col_name"];
+            $result = $this->content_retur($page,$order_by,$order_direction,$search_key,$data_per_page,$tipe_pengiriman);
+        }
+        return $result;
+    }
+    private function content_penjualan($page,$order_by,$order_direction,$search_key,$data_per_page){
         $search_query = "";
         if($search_key != ""){
             $search_query .= "and
@@ -169,12 +204,83 @@ class M_pengiriman extends ci_model{
         }
         return $result;
     }
+    private function content_retur($page,$order_by,$order_direction,$search_key,$data_per_page){
+
+        $search_query = "";
+        if($search_key != ""){
+            $search_query .= "and
+            (
+                id_pk_pengiriman like '%".$search_key."%' or
+                penj_nomor like '%".$search_key."%' or 
+                pengiriman_tgl like '%".$search_key."%' or
+                pengiriman_status like '%".$search_key."%' or
+                pengiriman_tempat like '%".$search_key."%' or
+                pengiriman_last_modified like '%".$search_key."%'
+            )";
+        }
+        if(strtolower($this->pengiriman_tempat) == "cabang"){
+            $query = "
+            select id_pk_pengiriman,pengiriman_tgl,pengiriman_status,pengiriman_tempat,".$this->tbl_name.".id_fk_warehouse,".$this->tbl_name.".id_fk_cabang,pengiriman_last_modified,penj_nomor,cust_perusahaan, cust_name, cust_suff, cust_hp, cust_email,penj_nomor,retur_no
+            from ".$this->tbl_name."
+            inner join mstr_retur on mstr_retur.id_pk_retur = ".$this->tbl_name.".id_fk_retur 
+            inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
+            inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+            inner join mstr_cabang on mstr_cabang.id_pk_cabang = ".$this->tbl_name.".id_fk_cabang
+            inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+            where pengiriman_status = ? and cust_status = ? and cabang_status = ? and toko_status = ? and ".$this->tbl_name.".id_fk_cabang = ? ".$search_query."  
+            order by ".$order_by." ".$order_direction." 
+            limit 20 offset ".($page-1)*$data_per_page;
+            $args = array(
+                "aktif","aktif","aktif","aktif",$this->id_fk_cabang
+            );
+            $result["data"] = executequery($query,$args);
+            $query = "
+            select id_pk_pengiriman
+            from ".$this->tbl_name." 
+            inner join mstr_retur on mstr_retur.id_pk_retur = ".$this->tbl_name.".id_fk_retur 
+            inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
+            inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+            inner join mstr_cabang on mstr_cabang.id_pk_cabang = ".$this->tbl_name.".id_fk_cabang
+            inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+            where pengiriman_status = ? and cust_status = ? and cabang_status = ? and toko_status = ? and ".$this->tbl_name.".id_fk_cabang = ? ".$search_query."  
+            order by ".$order_by." ".$order_direction;
+            $result["total_data"] = executequery($query,$args)->num_rows();
+        }
+        else{
+            $query = "
+            select id_pk_pengiriman,pengiriman_tgl,pengiriman_status,id_fk_penjualan,pengiriman_tempat,".$this->tbl_name.".id_fk_warehouse,".$this->tbl_name.".id_fk_cabang,pengiriman_last_modified,penj_nomor,cust_perusahaan, cust_name, cust_suff, cust_hp, cust_email,penj_nomor,retur_no
+            from ".$this->tbl_name."
+            inner join mstr_retur on mstr_retur.id_pk_retur = ".$this->tbl_name.".id_fk_retur 
+            inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
+            inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+            inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = ".$this->tbl_name.".id_fk_warehouse
+            where pengiriman_status = ? and cust_status = ? and ".$this->tbl_name.".id_fk_warehouse = ? ".$search_query." 
+            order by ".$order_by." ".$order_direction." 
+            limit 20 offset ".($page-1)*$data_per_page;
+            $args = array(
+                "aktif","aktif",$this->id_fk_warehouse
+            );
+            $result["data"] = executequery($query,$args);
+            $query = "
+            select id_pk_pengiriman
+            from ".$this->tbl_name." 
+            inner join mstr_retur on mstr_retur.id_pk_retur = ".$this->tbl_name.".id_fk_retur 
+            inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
+            inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+            inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = ".$this->tbl_name.".id_fk_warehouse
+            where pengiriman_status = ? and cust_status = ? and ".$this->tbl_name.".id_fk_warehouse = ? ".$search_query." 
+            order by ".$order_by." ".$order_direction;
+            $result["total_data"] = executequery($query,$args)->num_rows();
+        }
+        return $result;
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(
                 "pengiriman_tgl" => $this->pengiriman_tgl,
                 "pengiriman_status" => $this->pengiriman_status,
                 "id_fk_penjualan" => $this->id_fk_penjualan,
+                "id_fk_retur" => $this->id_fk_retur,
                 "pengiriman_tempat" => $this->pengiriman_tempat,
                 "pengiriman_create_date" => $this->pengiriman_create_date,
                 "pengiriman_last_modified" => $this->pengiriman_last_modified,
@@ -226,9 +332,6 @@ class M_pengiriman extends ci_model{
             return false;
         }
         if($this->pengiriman_status == ""){
-            return false;
-        }
-        if($this->id_fk_penjualan == ""){
             return false;
         }
         if(strtolower($this->pengiriman_tempat) == ""){
@@ -286,16 +389,15 @@ class M_pengiriman extends ci_model{
         }
         else return true;
     }
-    public function set_insert($pengiriman_tgl,$pengiriman_status,$id_fk_penjualan,$pengiriman_tempat,$id_tempat_pengiriman){
+    public function set_insert($pengiriman_tgl,$pengiriman_status,$id_fk_penjualan = "",$pengiriman_tempat,$id_tempat_pengiriman,$id_fk_retur = ""){
         if(!$this->set_pengiriman_tgl($pengiriman_tgl)){
             return false;
         }
         if(!$this->set_pengiriman_status($pengiriman_status)){
             return false;
         }
-        if(!$this->set_id_fk_penjualan($id_fk_penjualan)){
-            return false;
-        }
+        $this->id_fk_penjualan = $id_fk_penjualan;
+        $this->id_fk_retur = $id_fk_retur;
         if(!$this->set_pengiriman_tempat($pengiriman_tempat)){
             return false;
         }

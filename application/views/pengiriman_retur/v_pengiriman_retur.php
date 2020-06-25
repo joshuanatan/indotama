@@ -1,7 +1,7 @@
 <?php
-$page_title = "Pengiriman";
+$page_title = "Pengiriman Retur";
 $breadcrumb = array(
-    "Pengiriman"
+    "Pengiriman Retur"
 );
 $notif_data = array(
     "page_title"=>$page_title
@@ -52,8 +52,8 @@ $notif_data = array(
                                         <div class = "col-lg-12">
                                             <div class = "form-inline">
                                                 <select class = "form-control form-sm" id = "tipe_pengiriman" style = "width:20%">
-                                                    <option value = "pembelian">Pengiriman Penjualan</option>
                                                     <option value = "retur">Pengiriman Retur</option>
+                                                    <option value = "cabang">Pengiriman Penjualan</option>
                                                 </select>
                                                 <button type = "button" onclick = "redirect_tipe_pengiriman()" class = "btn btn-primary btn-sm">Buka</button>
                                             </div>
@@ -84,12 +84,13 @@ $notif_data = array(
     </body>
 </html>
 <script>
-    var ctrl = "pengiriman";
-    var url_add = "type=<?php echo $type;?>";
+    var ctrl = "pengiriman"; 
+    var custom_tblHeaderCtrl = "columns?tipe_pengiriman=retur"; 
+    var url_add = "type=<?php echo $type;?>&tipe_pengiriman=retur";
 </script>
 <?php
 $data = array(
-    "page_title" => "Pengiriman",
+    "page_title" => "Pengiriman Retur",
     "type" => $type,
     "id_tempat_pengiriman" => $id_tempat_pengiriman
 );
@@ -99,17 +100,17 @@ $data = array(
 <?php $this->load->view("_core_script/update_func");?>
 <?php $this->load->view("_core_script/delete_func");?>
 
-<?php $this->load->view("pengiriman/f-add-pengiriman",$data);?>
-<?php $this->load->view("pengiriman/f-update-pengiriman",$data);?>
-<?php $this->load->view("pengiriman/f-delete-pengiriman",$data);?>
-<?php $this->load->view("pengiriman/f-detail-pengiriman",$data);?>
+<?php $this->load->view("pengiriman_retur/f-add-pengiriman_retur",$data);?>
+<?php $this->load->view("pengiriman_retur/f-update-pengiriman_retur",$data);?>
+<?php $this->load->view("pengiriman_retur/f-delete-pengiriman_retur",$data);?>
+<?php $this->load->view("pengiriman_retur/f-detail-pengiriman_retur",$data);?>
 
 
-<?php $this->load->view("_base_element/datalist_penjualan");?>
+<?php $this->load->view("_base_element/datalist_retur");?>
 <?php $this->load->view("_base_element/datalist_satuan");?>
 <script>
     function load_datalist(){
-        load_datalist_penjualan();
+        load_datalist_retur();
         load_datalist_satuan();
     }
 </script>

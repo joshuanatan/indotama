@@ -9,6 +9,7 @@ class M_brg_pengiriman extends ci_model{
     private $brg_pengiriman_note;
     private $id_fk_pengiriman;
     private $id_fk_brg_penjualan;
+    private $id_fk_brg_retur_kembali;
     private $id_fk_satuan;
     private $brg_pengiriman_create_date;
     private $brg_pengiriman_last_modified;
@@ -34,6 +35,7 @@ class M_brg_pengiriman extends ci_model{
             brg_pengiriman_note varchar(200),
             id_fk_pengiriman int,
             id_fk_brg_penjualan int,
+            id_fk_brg_retur_kembali int,
             id_fk_satuan int,
             brg_pengiriman_create_date datetime,
             brg_pengiriman_last_modified datetime,
@@ -49,6 +51,7 @@ class M_brg_pengiriman extends ci_model{
             brg_pengiriman_note varchar(200),
             id_fk_pengiriman int,
             id_fk_brg_penjualan int,
+            id_fk_brg_retur_kembali int,
             id_fk_satuan int,
             brg_pengiriman_create_date datetime,
             brg_pengiriman_last_modified datetime,
@@ -67,19 +70,38 @@ class M_brg_pengiriman extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at' , new.brg_pengiriman_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into tbl_brg_pengiriman_log(executed_function,id_pk_brg_pengiriman,brg_pengiriman_qty,brg_pengiriman_note,id_fk_pengiriman,id_fk_brg_penjualan,id_fk_satuan,brg_pengiriman_create_date,brg_pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_pengiriman,new.brg_pengiriman_qty,new.brg_pengiriman_note,new.id_fk_pengiriman,new.id_fk_brg_penjualan,new.id_fk_satuan,new.brg_pengiriman_create_date,new.brg_pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into tbl_brg_pengiriman_log(executed_function,id_pk_brg_pengiriman,brg_pengiriman_qty,brg_pengiriman_note,id_fk_pengiriman,id_fk_brg_penjualan,id_fk_brg_retur_kembali,id_fk_satuan,brg_pengiriman_create_date,brg_pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_pengiriman,new.brg_pengiriman_qty,new.brg_pengiriman_note,new.id_fk_pengiriman,new.id_fk_brg_penjualan,new.id_fk_brg_retur_kembali,new.id_fk_satuan,new.brg_pengiriman_create_date,new.brg_pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
             
             set @id_cabang = 0;
             set @id_barang = 0;
+            set @id_warehouse = 0;
             set @brg_pengiriman_qty = new.brg_pengiriman_qty;
             set @id_satuan_kirim = new.id_fk_satuan;
+            set @id_fk_brg_penjualan = new.id_fk_brg_penjualan;
+            set @id_fk_brg_retur = new.id_fk_brg_retur_kembali;
             
-            select id_fk_cabang, id_fk_barang into @id_cabang, @id_barang 
+            if @id_fk_brg_penjualan is not null and @id_fk_brg_penjualan != 0
+            then
+            select mstr_pengiriman.id_fk_cabang, id_fk_barang, id_fk_warehouse into @id_cabang,@id_barang,@id_warehouse 
             from tbl_brg_pengiriman
             inner join tbl_brg_penjualan on tbl_brg_penjualan.id_pk_brg_penjualan = tbl_brg_pengiriman.id_fk_brg_penjualan
             inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = tbl_brg_penjualan.id_fk_penjualan
+            inner join mstr_pengiriman on mstr_pengiriman.id_pk_pengiriman = tbl_brg_pengiriman.id_fk_pengiriman
             where id_pk_brg_pengiriman = new.id_pk_brg_pengiriman;
+            
+            elseif @id_fk_brg_retur is not null and @id_fk_brg_retur != 0 then
+            select mstr_pengiriman.id_fk_cabang, id_fk_brg, id_fk_warehouse into @id_cabang,@id_barang,@id_warehouse
+            from tbl_brg_pengiriman
+            inner join tbl_retur_kembali on tbl_retur_kembali.id_pk_retur_kembali = tbl_brg_pengiriman.id_fk_brg_retur_kembali
+            inner join mstr_pengiriman on mstr_pengiriman.id_pk_pengiriman = tbl_brg_pengiriman.id_fk_pengiriman
+            where id_pk_brg_pengiriman = new.id_pk_brg_pengiriman;
+            end if;
+
+            if @id_warehouse is not null then
+            call update_stok_barang_warehouse(@id_barang,@id_warehouse,0,0,@brg_pengiriman_qty,@id_satuan_terima);
+            elseif @id_cabang is not null then 
             call update_stok_barang_cabang(@id_barang,@id_cabang,0,0,@brg_pengiriman_qty,@id_satuan_kirim);
+            end if;
         end$$
         delimiter ;
 
@@ -94,21 +116,39 @@ class M_brg_pengiriman extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_pengiriman_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into tbl_brg_pengiriman_log(executed_function,id_pk_brg_pengiriman,brg_pengiriman_qty,brg_pengiriman_note,id_fk_pengiriman,id_fk_brg_penjualan,id_fk_satuan,brg_pengiriman_create_date,brg_pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_pengiriman,new.brg_pengiriman_qty,new.brg_pengiriman_note,new.id_fk_pengiriman,new.id_fk_brg_penjualan,new.id_fk_satuan,new.brg_pengiriman_create_date,new.brg_pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into tbl_brg_pengiriman_log(executed_function,id_pk_brg_pengiriman,brg_pengiriman_qty,brg_pengiriman_note,id_fk_pengiriman,id_fk_brg_penjualan,id_fk_brg_retur_kembali,id_fk_satuan,brg_pengiriman_create_date,brg_pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_pengiriman,new.brg_pengiriman_qty,new.brg_pengiriman_note,new.id_fk_pengiriman,new.id_fk_brg_penjualan,new.id_fk_brg_retur_kembali,new.id_fk_satuan,new.brg_pengiriman_create_date,new.brg_pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
             
             set @id_cabang = 0;
             set @id_barang = 0;
-            set @brg_keluar_qty = new.brg_pengiriman_qty;
-            set @id_satuan_keluar = new.id_fk_satuan;
-            set @brg_penerimaan_qty = old.brg_pengiriman_qty;
-            set @id_satuan_terima = old.id_fk_satuan;
+            set @id_warehouse = 0;
+            set @brg_pengiriman_qty = new.brg_pengiriman_qty;
+            set @id_satuan_terima = new.id_fk_satuan;
+            set @brg_keluar_qty = old.brg_pengiriman_qty;
+            set @id_satuan_keluar = old.id_fk_satuan;
+            set @id_fk_brg_penjualan = new.id_fk_brg_penjualan;
+            set @id_fk_brg_retur = new.id_fk_brg_retur_kembali;
 
-            select id_fk_cabang, id_fk_barang into @id_cabang, @id_barang 
+            if @id_fk_brg_penjualan is not null and @id_fk_brg_penjualan != 0
+            then
+            select mstr_pengiriman.id_fk_cabang, id_fk_barang, id_fk_warehouse into @id_cabang,@id_barang,@id_warehouse 
             from tbl_brg_pengiriman
             inner join tbl_brg_penjualan on tbl_brg_penjualan.id_pk_brg_penjualan = tbl_brg_pengiriman.id_fk_brg_penjualan
-            inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = tbl_brg_penjualan.id_fk_penjualan
+            inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = tbl_brg_penjualan.id_fk_penjualan inner join mstr_pengiriman on mstr_pengiriman.id_pk_pengiriman = tbl_brg_pengiriman.id_fk_pengiriman
             where id_pk_brg_pengiriman = new.id_pk_brg_pengiriman;
-            call update_stok_barang_cabang(@id_barang,@id_cabang,@brg_penerimaan_qty,@id_satuan_terima,@brg_keluar_qty,@id_satuan_keluar);
+            
+            elseif @id_fk_brg_retur is not null and @id_fk_brg_retur != 0 then
+            select mstr_pengiriman.id_fk_cabang, id_fk_brg, id_fk_warehouse into @id_cabang,@id_barang,@id_warehouse
+            from tbl_brg_pengiriman
+            inner join tbl_retur_kembali on tbl_retur_kembali.id_pk_retur_kembali = tbl_brg_pengiriman.id_fk_brg_retur_kembali
+            inner join mstr_pengiriman on mstr_pengiriman.id_pk_pengiriman = tbl_brg_pengiriman.id_fk_pengiriman
+            where id_pk_brg_pengiriman = new.id_pk_brg_pengiriman;
+            end if;
+
+            if @id_warehouse is not null then
+            call update_stok_barang_cabang(@id_barang,@id_warehouse,@brg_pengiriman_qty,@id_satuan_terima,@brg_keluar_qty,@id_satuan_keluar);
+            elseif @id_cabang is not null then 
+            call update_stok_barang_cabang(@id_barang,@id_cabang,@brg_pengiriman_qty,@id_satuan_terima,@brg_keluar_qty,@id_satuan_keluar);
+            end if;
         end$$
         delimiter ;
         ";
@@ -127,19 +167,35 @@ class M_brg_pengiriman extends ci_model{
         );
         return executequery($query,$args);
     }
+    public function list_retur(){
+        $query = "
+        select id_pk_brg_pengiriman,brg_pengiriman_qty,brg_pengiriman_note,id_fk_pengiriman,id_fk_brg_penjualan,id_fk_satuan,brg_pengiriman_create_date,brg_pengiriman_last_modified,retur_kembali_qty,retur_kembali_note,retur_kembali_satuan,satuan_nama,brg_nama,brg_kode,brg_minimal,brg_satuan
+        from ".$this->tbl_name."
+        inner join tbl_retur_kembali on tbl_retur_kembali.id_pk_retur_kembali = ".$this->tbl_name.".id_fk_brg_retur_kembali
+        inner join mstr_barang on mstr_barang.id_pk_brg = tbl_retur_kembali.id_fk_brg
+        inner join mstr_satuan on mstr_satuan.id_pk_satuan = ".$this->tbl_name.".id_fk_satuan
+        where id_fk_pengiriman = ? and retur_kembali_status = ? and brg_status = ?
+        ";
+        $args = array(
+            $this->id_fk_pengiriman,"aktif","aktif"
+        );
+        return executequery($query,$args);
+    }
     public function insert(){
         $data = array(
             "brg_pengiriman_qty" => $this->brg_pengiriman_qty,
             "brg_pengiriman_note" => $this->brg_pengiriman_note,
             "id_fk_pengiriman" => $this->id_fk_pengiriman,
             "id_fk_brg_penjualan" => $this->id_fk_brg_penjualan,
+            "id_fk_brg_retur_kembali" => $this->id_fk_brg_retur_kembali,
             "id_fk_satuan" => $this->id_fk_satuan,
             "brg_pengiriman_create_date" => $this->brg_pengiriman_create_date,
             "brg_pengiriman_last_modified" => $this->brg_pengiriman_last_modified,
             "id_create_data" => $this->id_create_data,
             "id_last_modified" => $this->id_last_modified
         );
-        return insertrow($this->tbl_name,$data);
+        insertrow($this->tbl_name,$data);
+        return true; 
     }
     public function update(){
         if($this->check_update()){
@@ -197,9 +253,6 @@ class M_brg_pengiriman extends ci_model{
         if($this->id_fk_pengiriman == ""){
             return false;
         }
-        if($this->id_fk_brg_penjualan == ""){
-            return false;
-        }
         if($this->id_fk_satuan == ""){
             return false;
         }
@@ -250,7 +303,7 @@ class M_brg_pengiriman extends ci_model{
         }
         return true;
     }
-    public function set_insert($brg_pengiriman_qty,$brg_pengiriman_note,$id_fk_pengiriman,$id_fk_brg_penjualan,$id_fk_satuan){
+    public function set_insert($brg_pengiriman_qty,$brg_pengiriman_note,$id_fk_pengiriman,$id_fk_brg_penjualan = "",$id_fk_satuan, $id_fk_brg_retur_kembali = ""){
         if(!$this->set_brg_pengiriman_qty($brg_pengiriman_qty)){
             return false;
         }
@@ -260,9 +313,8 @@ class M_brg_pengiriman extends ci_model{
         if(!$this->set_id_fk_pengiriman($id_fk_pengiriman)){
             return false;
         }
-        if(!$this->set_id_fk_brg_penjualan($id_fk_brg_penjualan)){
-            return false;
-        }
+        $this->id_fk_brg_penjualan = $id_fk_brg_penjualan;
+        $this->id_fk_brg_retur_kembali = $id_fk_brg_retur_kembali;
         if(!$this->set_id_fk_satuan($id_fk_satuan)){
             return false;
         }

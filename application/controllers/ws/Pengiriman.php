@@ -7,7 +7,13 @@ class pengiriman extends CI_Controller{
     public function columns(){
         $response["status"] = "SUCCESS";
         $this->load->model("m_pengiriman");
-        $columns = $this->m_pengiriman->columns();
+        $tipe = $this->input->get("tipe_pengiriman");
+        if($tipe){
+            $columns = $this->m_pengiriman->columns($tipe);
+        }
+        else{
+            $columns = $this->m_pengiriman->columns();
+        }
         if(count($columns) > 0){
             for($a = 0; $a<count($columns); $a++){
                 $response["content"][$a]["col_name"] = $columns[$a]["col_disp"];
@@ -28,6 +34,7 @@ class pengiriman extends CI_Controller{
         $search_key = $this->input->get("searchKey");
         $data_per_page = 20;
         $type = strtoupper($this->input->get("type")); //CABANG / WAREHOUSE
+        $tipe_pengiriman = $this->input->get("tipe_pengiriman");
         
         $this->load->model("m_pengiriman");
         $flag = true;
@@ -44,43 +51,78 @@ class pengiriman extends CI_Controller{
         }
 
         if($flag){
-            $this->m_pengiriman->set_pengiriman_tempat($type);
-            $result = $this->m_pengiriman->content($page,$order_by,$order_direction,$search_key,$data_per_page);
-            if($result["data"]->num_rows() > 0){
-                $result["data"] = $result["data"]->result_array();
-                for($a = 0; $a<count($result["data"]); $a++){
-                    $response["content"][$a]["id"] = $result["data"][$a]["id_pk_pengiriman"];
-                    $response["content"][$a]["tgl"] = $result["data"][$a]["pengiriman_tgl"];
-                    $response["content"][$a]["status"] = $result["data"][$a]["pengiriman_status"];
-                    $response["content"][$a]["id_penjualan"] = $result["data"][$a]["id_fk_penjualan"];
-                    $response["content"][$a]["tempat"] = $result["data"][$a]["pengiriman_tempat"];
-                    $response["content"][$a]["last_modified"] = $result["data"][$a]["pengiriman_last_modified"];
-                    $response["content"][$a]["nomor_penj"] = $result["data"][$a]["penj_nomor"];
-                    $response["content"][$a]["perusahaan_cust"] = strtoupper($result["data"][$a]["cust_perusahaan"]);
-                    $response["content"][$a]["name_cust"] = strtoupper($result["data"][$a]["cust_name"]);
-                    $response["content"][$a]["suff_cust"] = strtoupper($result["data"][$a]["cust_suff"]);
-                    $response["content"][$a]["hp_cust"] = $result["data"][$a]["cust_hp"];
-                    $response["content"][$a]["email_cust"] = $result["data"][$a]["cust_email"];
-                    $response["content"][$a]["nomor"] = $result["data"][$a]["penj_nomor"];
-                    if(strtoupper($response["content"][$a]["tempat"]) == "WAREHOUSE"){
-                        $response["content"][$a]["id_tempat_pengiriman"] = $result["data"][$a]["id_fk_warehouse"];
-                    }
-                    else if(strtoupper($response["content"][$a]["tempat"]) == "CABANG"){
-                        $response["content"][$a]["id_tempat_pengiriman"] = $result["data"][$a]["id_fk_cabang"];
+            if($tipe_pengiriman == ""){
+                $tipe_pengiriman = "penjualan";
+                $this->m_pengiriman->set_pengiriman_tempat($type);
+                $result = $this->m_pengiriman->content($page,$order_by,$order_direction,$search_key,$data_per_page);
+                if($result["data"]->num_rows() > 0){
+                    $result["data"] = $result["data"]->result_array();
+                    for($a = 0; $a<count($result["data"]); $a++){
+                        $response["content"][$a]["id"] = $result["data"][$a]["id_pk_pengiriman"];
+                        $response["content"][$a]["tgl"] = $result["data"][$a]["pengiriman_tgl"];
+                        $response["content"][$a]["status"] = $result["data"][$a]["pengiriman_status"];
+                        $response["content"][$a]["id_penjualan"] = $result["data"][$a]["id_fk_penjualan"];
+                        $response["content"][$a]["tempat"] = $result["data"][$a]["pengiriman_tempat"];
+                        $response["content"][$a]["last_modified"] = $result["data"][$a]["pengiriman_last_modified"];
+                        $response["content"][$a]["nomor_penj"] = $result["data"][$a]["penj_nomor"];
+                        $response["content"][$a]["perusahaan_cust"] = strtoupper($result["data"][$a]["cust_perusahaan"]);
+                        $response["content"][$a]["name_cust"] = strtoupper($result["data"][$a]["cust_name"]);
+                        $response["content"][$a]["suff_cust"] = strtoupper($result["data"][$a]["cust_suff"]);
+                        $response["content"][$a]["hp_cust"] = $result["data"][$a]["cust_hp"];
+                        $response["content"][$a]["email_cust"] = $result["data"][$a]["cust_email"];
+                        $response["content"][$a]["nomor"] = $result["data"][$a]["penj_nomor"];
+                        if(strtoupper($response["content"][$a]["tempat"]) == "WAREHOUSE"){
+                            $response["content"][$a]["id_tempat_pengiriman"] = $result["data"][$a]["id_fk_warehouse"];
+                        }
+                        else if(strtoupper($response["content"][$a]["tempat"]) == "CABANG"){
+                            $response["content"][$a]["id_tempat_pengiriman"] = $result["data"][$a]["id_fk_cabang"];
 
+                        }
                     }
                 }
+                else{
+                    $response["status"] = "ERROR";
+                }
+                $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
+                $response["key"] = array(
+                    "tgl",
+                    "nomor_penj",
+                    "status",
+                    "last_modified",
+                );
             }
-            else{
-                $response["status"] = "ERROR";
+            else if($tipe_pengiriman == "retur"){
+                $this->m_pengiriman->set_pengiriman_tempat($type);
+                $result = $this->m_pengiriman->content($page,$order_by,$order_direction,$search_key,$data_per_page,$tipe_pengiriman);
+                if($result["data"]->num_rows() > 0){
+                    $result["data"] = $result["data"]->result_array();
+                    for($a = 0; $a<count($result["data"]); $a++){
+                        $response["content"][$a]["id"] = $result["data"][$a]["id_pk_pengiriman"];
+                        $response["content"][$a]["tgl"] = $result["data"][$a]["pengiriman_tgl"];
+                        $response["content"][$a]["status"] = $result["data"][$a]["pengiriman_status"];
+                        $response["content"][$a]["tempat"] = $result["data"][$a]["pengiriman_tempat"];
+                        if($response["content"][$a]["tempat"] == "WAREHOUSE"){
+                            $response["content"][$a]["id_tempat_pengiriman"] = $result["data"][$a]["id_fk_warehouse"];
+                        }
+                        else if($response["content"][$a]["tempat"] == "CABANG"){
+                            $response["content"][$a]["id_tempat_pengiriman"] = $result["data"][$a]["id_fk_cabang"];
+
+                        }
+                        $response["content"][$a]["last_modified"] = $result["data"][$a]["pengiriman_last_modified"];
+                        $response["content"][$a]["retur_no"] = $result["data"][$a]["retur_no"];
+                    }
+                }
+                else{
+                    $response["status"] = "ERROR";
+                }
+                $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
+                $response["key"] = array(
+                    "tgl",
+                    "retur_no",
+                    "status",
+                    "last_modified",
+                );
             }
-            $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
-            $response["key"] = array(
-                "tgl",
-                "nomor_penj",
-                "status",
-                "last_modified",
-            );
         }
         echo json_encode($response);
     }
@@ -105,17 +147,24 @@ class pengiriman extends CI_Controller{
     }
     public function register(){
         $response["status"] = "SUCCESS";
-        $this->form_validation->set_rules("id_penjualan","Nomor","required");
+        $this->form_validation->set_rules("id_reff","Nomor","required");
         $this->form_validation->set_rules("tgl_pengiriman","Tanggal Penerimaan","required");
         if($this->form_validation->run()){
             $pengiriman_tgl = $this->input->post("tgl_pengiriman");
             $pengiriman_status = "AKTIF";
-            $id_fk_penjualan = $this->input->post("id_penjualan");
+            $id_fk_penjualan = "";
+            $id_fk_retur = "";
+            if($this->input->post("tipe_pengiriman") == "retur"){
+                $id_fk_retur = $this->input->post("id_reff");
+            }
+            else if($this->input->post("tipe_pengiriman") == "penjualan"){
+                $id_fk_penjualan = $this->input->post("id_reff");
+            }
             $pengiriman_tempat = $this->input->post("type");
             $id_tempat_pengiriman = $this->input->post("id_tempat_pengiriman"); //id_warehouse or id_cabang
 
             $this->load->model("m_pengiriman");
-            if($this->m_pengiriman->set_insert($pengiriman_tgl,$pengiriman_status,$id_fk_penjualan,$pengiriman_tempat,$id_tempat_pengiriman)){
+            if($this->m_pengiriman->set_insert($pengiriman_tgl,$pengiriman_status,$id_fk_penjualan,$pengiriman_tempat,$id_tempat_pengiriman,$id_fk_retur)){
                 $id_pengiriman = $this->m_pengiriman->insert();
                 if($id_pengiriman){
                     $response["msg"] = "Data is recorded to database";
@@ -130,14 +179,22 @@ class pengiriman extends CI_Controller{
                             $this->form_validation->set_rules("qty_kirim".$a,"qty_kirim","required");
                             $this->form_validation->set_rules("id_satuan".$a,"id_satuan","required");
                             if($this->form_validation->run()){
-                                $id_fk_brg_penjualan = $this->input->post("id_brg".$a);
-                                $brg_pengiriman_note = $this->input->post("notes".$a);
                                 $brg_pengiriman_qty = $this->input->post("qty_kirim".$a);
+                                $brg_pengiriman_note = $this->input->post("notes".$a);
                                 $id_fk_pengiriman = $id_pengiriman;
+                                
+                                $id_fk_brg_penjualan = "";
+                                $id_fk_brg_retur = "";
+                                if($this->input->post("tipe_pengiriman") == "retur"){
+                                    $id_fk_brg_retur = $this->input->post("id_brg".$a);
+                                }
+                                else if($this->input->post("tipe_pengiriman") == "penjualan"){
+                                    $id_fk_brg_penjualan = $this->input->post("id_brg".$a);
+                                }
+                                $tipe_pengiriman = $this->input->post("tipe_pengiriman");
                                 $id_fk_satuan = $this->input->post("id_satuan".$a);
-
                                 $this->load->model("m_brg_pengiriman");
-                                if($this->m_brg_pengiriman->set_insert($brg_pengiriman_qty,$brg_pengiriman_note,$id_fk_pengiriman,$id_fk_brg_penjualan,$id_fk_satuan)){
+                                if($this->m_brg_pengiriman->set_insert($brg_pengiriman_qty,$brg_pengiriman_note,$id_fk_pengiriman,$id_fk_brg_penjualan,$id_fk_satuan,$id_fk_brg_retur)){
                                     if($this->m_brg_pengiriman->insert()){
                                         $response["statusitm"][$counter] = "SUCCESS";
                                         $response["msgitm"][$counter] = "Item is recorded to database";
@@ -278,6 +335,33 @@ class pengiriman extends CI_Controller{
                 $response["content"][$a]["status_brg_penjualan"] = $result[$a]["brg_penjualan_status"];
                 $response["content"][$a]["satuan"] = $result[$a]["satuan_nama"];
                 $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "TIDAK ADA BARANG PENERIMAAN";
+        }
+        echo json_encode($response);
+    }
+    public function brg_pengiriman_retur(){
+        $response["status"] = "SUCCESS";
+        $id_pengiriman = $this->input->get("id");
+        $this->load->model("m_brg_pengiriman");
+        $this->m_brg_pengiriman->set_id_fk_pengiriman($id_pengiriman);
+        $result = $this->m_brg_pengiriman->list_retur();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_brg_pengiriman"];
+                $response["content"][$a]["qty"] = $result[$a]["brg_pengiriman_qty"];
+                $response["content"][$a]["note"] = $result[$a]["brg_pengiriman_note"];
+                $response["content"][$a]["id_pengiriman"] = $result[$a]["id_fk_pengiriman"];
+                $response["content"][$a]["id_satuan"] = $result[$a]["id_fk_satuan"];
+                $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
+                $response["content"][$a]["satuan"] = $result[$a]["satuan_nama"];
+                $response["content"][$a]["brg_qty_retur"] = $result[$a]["retur_kembali_qty"];
+                $response["content"][$a]["brg_satuan_retur"] = $result[$a]["retur_kembali_satuan"];
+                $response["content"][$a]["brg_notes_retur"] = $result[$a]["retur_kembali_note"];
             }
         }
         else{
