@@ -12,8 +12,6 @@ class Penerimaan extends CI_Controller{
         $data["type"] = "WAREHOUSE";
         
         $this->load->model("m_pembelian");
-        $this->m_pembelian->set_id_fk_cabang($this->session->id_cabang);
-        $data["pembelian"] = $this->m_pembelian->list()->result_array();
         $this->load->view("penerimaan/v_penerimaan",$data);
     }
     public function cabang(){
@@ -24,8 +22,6 @@ class Penerimaan extends CI_Controller{
         $data["type"] = "CABANG";
 
         $this->load->model("m_pembelian");
-        $this->m_pembelian->set_id_fk_cabang($this->session->id_cabang);
-        $data["pembelian"] = $this->m_pembelian->list()->result_array();
         $data["tipe_penerimaan"] = "pembelian";
         $this->load->view("penerimaan/v_penerimaan",$data);
     }
@@ -42,8 +38,18 @@ class Penerimaan extends CI_Controller{
         $data["type"] = "CABANG";
 
         $this->load->model("m_pembelian");
-        $this->m_pembelian->set_id_fk_cabang($this->session->id_cabang);
-        $data["pembelian"] = $this->m_pembelian->list()->result_array();
+        $this->load->view("penerimaan_retur/v_penerimaan_retur",$data);
+    }
+    public function permintaan(){
+        $this->load->model("m_satuan");
+        $result = $this->m_satuan->list();
+        $data["satuan"] = $result->result_array();
+        
+        $data["id_tempat_penerimaan"] = $this->session->id_cabang;
+        $data["tipe_penerimaan"] = "permintaan";
+        $data["type"] = "CABANG";
+
+        $this->load->model("m_pembelian");
         $this->load->view("penerimaan_retur/v_penerimaan_retur",$data);
     }
 }

@@ -107,4 +107,10 @@ $data = array(
 <?php $this->load->view("penerimaan/f-detail-penerimaan",$data);?>
 <?php $this->load->view("penerimaan/f-delete-penerimaan",$data);?>
 
+<?php $this->load->view("_base_element/datalist_pembelian");?>
+<script>
+function load_datalist(){
+    load_datalist_pembelian();
+}
+</script>
 <?php $this->load->view('_notification/notif_general'); ?>

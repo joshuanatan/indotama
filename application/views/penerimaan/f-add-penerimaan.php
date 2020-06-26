@@ -82,11 +82,6 @@
         </div>
     </div>
 </div> 
-<datalist id = "datalist_pembelian">
-    <?php for($a = 0; $a<count($pembelian); $a++):?>
-    <option value = '<?php echo $pembelian[$a]["pem_pk_nomor"];?>'><?php echo $pembelian[$a]["toko_nama"]." - ".$pembelian[$a]["cabang_daerah"]." / Supplier: ".$pembelian[$a]["sup_perusahaan"];?></option>
-    <?php endfor;?>
-</datalist>
 <script>
     function load_detail_pembelian(){
         var satuan_opt = "";
