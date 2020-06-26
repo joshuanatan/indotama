@@ -618,4 +618,28 @@ class Pembelian extends CI_Controller{
         echo json_encode($response);
 
     }
+    public function list_pembelian(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_pembelian");
+        $this->m_pembelian->set_id_fk_cabang($this->session->id_cabang);
+        $result = $this->m_pembelian->list();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_pembelian"];
+                $response["content"][$a]["nomor"] = $result[$a]["pem_pk_nomor"];
+                $response["content"][$a]["tgl"] = $result[$a]["pem_tgl"];
+                $response["content"][$a]["status"] = $result[$a]["pem_status"];
+                $response["content"][$a]["perusahaan_sup"] = $result[$a]["sup_perusahaan"];
+                $response["content"][$a]["last_modified"] = $result[$a]["pem_last_modified"];
+                $response["content"][$a]["nama_toko"] = $result[$a]["toko_nama"];
+                $response["content"][$a]["daerah_cabang"] = $result[$a]["cabang_daerah"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "No Data";
+        }
+        echo json_encode($response);
+    }
 }
