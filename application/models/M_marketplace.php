@@ -136,7 +136,7 @@ class M_marketplace extends ci_model{
     public function list(){
         $sql = "select id_pk_marketplace,marketplace_nama,marketplace_ket,marketplace_status,marketplace_last_modified,marketplace_biaya
         from ".$this->tbl_name." 
-        where marketplace_status = ? ".$search_query."  
+        where marketplace_status = ?  
         order by marketplace_nama asc"; 
         $args = array(
             "aktif"

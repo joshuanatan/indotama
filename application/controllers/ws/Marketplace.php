@@ -62,12 +62,12 @@ class Marketplace extends CI_Controller{
         if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
-                $response["content"][$a]["id"] = $result["data"][$a]["id_pk_marketplace"];
-                $response["content"][$a]["nama"] = $result["data"][$a]["marketplace_nama"];
-                $response["content"][$a]["ket"] = $result["data"][$a]["marketplace_ket"];
-                $response["content"][$a]["status"] = $result["data"][$a]["marketplace_status"];
-                $response["content"][$a]["last_modified"] = $result["data"][$a]["marketplace_last_modified"];
-                $response["content"][$a]["biaya"] = $result["data"][$a]["marketplace_biaya"];
+                $response["content"][$a]["id"] = $result[$a]["id_pk_marketplace"];
+                $response["content"][$a]["nama"] = $result[$a]["marketplace_nama"];
+                $response["content"][$a]["ket"] = $result[$a]["marketplace_ket"];
+                $response["content"][$a]["status"] = $result[$a]["marketplace_status"];
+                $response["content"][$a]["last_modified"] = $result[$a]["marketplace_last_modified"];
+                $response["content"][$a]["biaya"] = $result[$a]["marketplace_biaya"];
             }
         }
         else{
