@@ -85,8 +85,8 @@ $notif_data = array(
 </html>
 <script>
     var ctrl = "pengiriman"; 
-    var custom_tblHeaderCtrl = "columns?tipe_pengiriman=retur"; 
-    var url_add = "type=<?php echo $type;?>&tipe_pengiriman=retur";
+    var custom_tblHeaderCtrl = "columns?tipe_pengiriman=<?php echo $tipe_pengiriman;?>"; 
+    var url_add = "type=<?php echo $type;?>&tipe_pengiriman=<?php echo $tipe_pengiriman;?>";
 </script>
 <?php
 $data = array(

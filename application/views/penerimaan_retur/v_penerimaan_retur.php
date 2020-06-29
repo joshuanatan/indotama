@@ -85,8 +85,8 @@ $notif_data = array(
 </html>
 <script>
     var ctrl = "penerimaan"; 
-    var custom_tblHeaderCtrl = "columns?tipe_penerimaan=retur"; 
-    var url_add = "type=<?php echo $type;?>&tipe_penerimaan=retur";
+    var custom_tblHeaderCtrl = "columns?tipe_penerimaan=<?php echo $tipe_penerimaan;?>"; 
+    var url_add = "type=<?php echo $type;?>&tipe_penerimaan=<?php echo $tipe_penerimaan;?>";
 </script>
 <script>
     function redirect_tipe_penerimaan(){
