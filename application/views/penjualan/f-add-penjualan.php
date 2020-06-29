@@ -20,165 +20,168 @@ $notif_data = array(
         </div>
         <div class="wrapper theme-1-active pimary-color-pink">
         
+            <?php $this->load->view('req/mm_menubar.php');?>
+            <div class="page-wrapper">
             <?php $this->load->view('_notification/register_success',$notif_data); ?>
             <?php $this->load->view('_notification/update_success',$notif_data); ?>
             <?php $this->load->view('_notification/delete_success',$notif_data); ?>
             <?php $this->load->view('_notification/register_error',$notif_data); ?>
             <?php $this->load->view('_notification/update_error',$notif_data); ?>
             <?php $this->load->view('_notification/delete_error',$notif_data); ?>
-            <div class="container-fluid">
-                <div class="row mt-20">
-                    <div class="col-lg-12 col-sm-12">
-                        <div class="panel panel-default card-view">
-                            <div class="panel-heading bg-gradient">
-                                <div class="pull-left">
-                                    <h6 class="panel-title txt-light"><?php echo ucwords($page_title);?></h6>
+                <div class="container-fluid">
+                    <div class="row mt-20">
+                        <div class="col-lg-12 col-sm-12">
+                            <div class="panel panel-default card-view">
+                                <div class="panel-heading bg-gradient">
+                                    <div class="pull-left">
+                                        <h6 class="panel-title txt-light"><?php echo ucwords($page_title);?></h6>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item">Home</a></li>
+                                        <?php for($a = 0; $a<count($breadcrumb); $a++):?>
+                                        <?php if($a+1 != count($breadcrumb)):?>
+                                        <li class="breadcrumb-item"><?php echo ucwords($breadcrumb[$a]);?></a></li>
+                                        <?php else:?>
+                                        <li class="breadcrumb-item active"><?php echo ucwords($breadcrumb[$a]);?></li>
+                                        <?php endif;?>
+                                        <?php endfor;?>
+                                    </ol>
                                 </div>
-                                <div class="clearfix"></div>
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item">Home</a></li>
-                                    <?php for($a = 0; $a<count($breadcrumb); $a++):?>
-                                    <?php if($a+1 != count($breadcrumb)):?>
-                                    <li class="breadcrumb-item"><?php echo ucwords($breadcrumb[$a]);?></a></li>
-                                    <?php else:?>
-                                    <li class="breadcrumb-item active"><?php echo ucwords($breadcrumb[$a]);?></li>
-                                    <?php endif;?>
-                                    <?php endfor;?>
-                                </ol>
-                            </div>
-                            <div class="panel-wrapper collapse in">
-                                <div class="panel-body" style = "background-color:white">
-                                    <div class = "col-lg-12">
-                                        <form id = "register_form" method = "POST">
-                                            <input required type = "hidden" name = "id_cabang" value = "<?php echo $this->session->id_cabang;?>">
-                                            <div class = "form-group col-lg-6">
-                                                <h5>Nomor Penjualan</h5>
-                                                <input required type = "text" class = "form-control" required name = "nomor">
-                                            </div>
-                                            <div class = "form-group col-lg-6">
-                                                <h5>Customer</h5>
-                                                <input required type = 'text' class = "form-control" list = "datalist_customer" required name = "customer">
-                                            </div>
-                                            <div class = "form-group col-lg-6">
-                                                <h5>Tanggal Penjualan</h5>
-                                                <input required type = "date" class = "form-control" required name = "tgl">
-                                            </div>
-                                            <div class = "form-group col-lg-6">
-                                                <h5>Dateline</h5>
-                                                <input required type = "date" class = "form-control" required name = "dateline">
-                                            </div>
-                                            <div class = "form-group col-lg-12">
-                                                <h5>Jenis Penjualan</h5>
-                                                <input checked type="radio" name="jenis_penjualan" value="OFFLINE" onclick = "$('#online_info_container').hide()">&nbsp;OFFLINE
-                                                &nbsp;&nbsp;
-                                                <input type="radio" name="jenis_penjualan" value="ONLINE" onclick = "$('#online_info_container').show()">&nbsp;ONLINE
-                                            </div>
-                                            <div id = "online_info_container" class = "col-lg-6" style = "display:none">
-                                                <div class = "form-group">
-                                                    <h5>Marketplace</h5>
-                                                    <input type required = "text" class = "form-control" required name = "marketplace">
+                                <div class="panel-wrapper collapse in">
+                                    <div class="panel-body">
+                                        <div class = "col-lg-12">
+                                            <form id = "register_form" method = "POST">
+                                                <input required type = "hidden" name = "id_cabang" value = "<?php echo $this->session->id_cabang;?>">
+                                                <div class = "form-group col-lg-6">
+                                                    <h5>Nomor Penjualan</h5>
+                                                    <input required type = "text" class = "form-control" required name = "nomor">
                                                 </div>
-                                                <div class = "form-group">
-                                                    <h5>Kurir</h5>
-                                                    <input type required = "text" class = "form-control" required name = "kurir">
+                                                <div class = "form-group col-lg-6">
+                                                    <h5>Customer</h5>
+                                                    <input required type = 'text' class = "form-control" list = "datalist_customer" required name = "customer">
                                                 </div>
-                                                <div class = "form-group">
-                                                    <h5>No Resi</h5>
-                                                    <input type required = "text" class = "form-control" required name = "no_resi">
+                                                <div class = "form-group col-lg-6">
+                                                    <h5>Tanggal Penjualan</h5>
+                                                    <input required type = "date" class = "form-control" required name = "tgl">
                                                 </div>
-                                            </div>
-                                            <div class = "form-group col-lg-12">
-                                                <h5>Custom</h5>
-                                                <button type = "button" class = "btn btn-primary btn-sm" data-toggle = "modal" data-target = "#custom_produk_modal">Custom Produk</button>
+                                                <div class = "form-group col-lg-6">
+                                                    <h5>Dateline</h5>
+                                                    <input required type = "date" class = "form-control" required name = "dateline">
+                                                </div>
+                                                <div class = "form-group col-lg-12">
+                                                    <h5>Jenis Penjualan</h5>
+                                                    <input checked type="radio" name="jenis_penjualan" value="OFFLINE" onclick = "$('#online_info_container').hide()">&nbsp;OFFLINE
+                                                    &nbsp;&nbsp;
+                                                    <input type="radio" name="jenis_penjualan" value="ONLINE" onclick = "open_online_container()">&nbsp;ONLINE
+                                                </div>
+                                                <div id = "online_info_container" class = "col-lg-6" style = "display:none">
+                                                    <div class = "form-group">
+                                                        <h5>Marketplace</h5>
+                                                        <select required class = "form-control" required name = "marketplace" id = "marketplace"></select>
+                                                    </div>
+                                                    <div class = "form-group">
+                                                        <h5>Kurir</h5>
+                                                        <input type required = "text" class = "form-control" required name = "kurir">
+                                                    </div>
+                                                    <div class = "form-group">
+                                                        <h5>No Resi</h5>
+                                                        <input type required = "text" class = "form-control" required name = "no_resi">
+                                                    </div>
+                                                </div>
+                                                <div class = "form-group col-lg-12">
+                                                    <h5>Custom</h5>
+                                                    <button type = "button" class = "btn btn-primary btn-sm" data-toggle = "modal" data-target = "#custom_produk_modal">Custom Produk</button>
+                                                    
+                                                    <h5>Produk Custom</h5>
+                                                    <table class = "table table-striped table-bordered" style = "width:50%">
+                                                        <thead>
+                                                            <th>Barang Awal</th>
+                                                            <th>Barang Pindah</th>
+                                                            <th>Jumlah</th>
+                                                        </thead>
+                                                        <tbody id = "daftar_brg_custom_container">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                                 
-                                                <h5>Produk Custom</h5>
-                                                <table class = "table table-striped table-bordered" style = "width:50%">
-                                                    <thead>
-                                                        <th>Barang Awal</th>
-                                                        <th>Barang Pindah</th>
-                                                        <th>Jumlah</th>
-                                                    </thead>
-                                                    <tbody id = "daftar_brg_custom_container">
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            
-                                            <div class = "form-group col-lg-8">
-                                                <h5>Item Penjualan</h5>
-                                                <table class = "table table-striped table-bordered">
-                                                    <thead>
-                                                        <th>Barang</th>
-                                                        <th>Jumlah</th>
-                                                        <th>Jumlah Markup</th>
-                                                        <th>Harga</th>
-                                                        <th>Harga Final</th>
-                                                        <th>Notes</th>
-                                                        <th>Action</th>
-                                                    </thead>
-                                                    <tbody id = "daftar_brg_jual_add">
-                                                        <tr id = "add_brg_jual_but_container">
-                                                            <td colspan = 7><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_brg_jual_row()">Tambah Barang Penjualan</button>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class = "form-group col-lg-8">
-                                                <h5>Tambahan Penjualan</h5>
-                                                <table class = "table table-striped table-bordered">
-                                                    <thead>
-                                                        <th>Tambahan</th>
-                                                        <th>Jumlah</th>
-                                                        <th>Harga</th>
-                                                        <th>Notes</th>
-                                                        <th>Action</th>
-                                                    </thead>
-                                                    <tbody id = "daftar_tambahan_jual_add">
-                                                        <tr id = "add_tambahan_jual_but_container">
-                                                            <td colspan = 6><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_tambahan_jual_row()">Tambah Barang Penjualan</button>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class = "form-group col-lg-12">
-                                                <h5>Total Price</h5>
-                                                <input style = "width:50%" type = "text" class = "form-control" required readonly onclick = "count_total_price()" id = "total_price">
-                                            </div>
-                                            <div class = "form-group col-lg-12">
-                                                <h5>Jenis Pembayaran</h5>
-                                                <input checked type="radio" name="jenis_pembayaran" value="FULL PAYMENT">&nbsp;FULL PAYMENT
-                                                &nbsp;&nbsp;
-                                                <input type="radio" name="jenis_pembayaran" value="DP">&nbsp;DP
-                                                &nbsp;&nbsp;
-                                                <input type="radio" name="jenis_pembayaran" value="TEMPO">&nbsp;TEMPO
-                                                &nbsp;&nbsp;
-                                                <input type="radio" name="jenis_pembayaran" value="KEEP">&nbsp;KEEP
-                                            </div>
-                                            <div class = "form-group col-lg-8">
-                                                <h5>Tahapan Pembayaran</h5>
-                                                <table class = "table table-striped table-bordered">
-                                                    <thead>
-                                                        <th>Pembayaran #</th>
-                                                        <th>Persentase</th>
-                                                        <th>Jumlah</th>
-                                                        <th>Notes</th>
-                                                        <th>Dateline Bayar</th>
-                                                        <th>Action</th>
-                                                    </thead>
-                                                    <tbody id = "daftar_pembayaran_add">
-                                                        <tr id = "add_pembayaran_but_container">
-                                                            <td colspan = 6><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_pembayaran_row()">Tambah Tahap Pembayaran</button>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class = "form-group col-lg-12" style = "width:50%">
-                                                <button type = "button" class = "btn btn-sm btn-danger" onclick = "close_window()">Cancel</button>
-                                                <button type = "button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
-                                            </div>
-                                        </form>
+                                                <div class = "form-group col-lg-8">
+                                                    <h5>Item Penjualan</h5>
+                                                    <table class = "table table-striped table-bordered">
+                                                        <thead>
+                                                            <th>Barang</th>
+                                                            <th>Jumlah</th>
+                                                            <th>Jumlah Markup</th>
+                                                            <th>Harga</th>
+                                                            <th>Harga Final</th>
+                                                            <th>Notes</th>
+                                                            <th>Action</th>
+                                                        </thead>
+                                                        <tbody id = "daftar_brg_jual_add">
+                                                            <tr id = "add_brg_jual_but_container">
+                                                                <td colspan = 7><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_brg_jual_row()">Tambah Barang Penjualan</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class = "form-group col-lg-8">
+                                                    <h5>Tambahan Penjualan</h5>
+                                                    <table class = "table table-striped table-bordered">
+                                                        <thead>
+                                                            <th>Tambahan</th>
+                                                            <th>Jumlah</th>
+                                                            <th>Harga</th>
+                                                            <th>Notes</th>
+                                                            <th>Action</th>
+                                                        </thead>
+                                                        <tbody id = "daftar_tambahan_jual_add">
+                                                            <tr id = "add_tambahan_jual_but_container">
+                                                                <td colspan = 6><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_tambahan_jual_row()">Tambah Barang Penjualan</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class = "form-group col-lg-12">
+                                                    <h5>Total Price</h5>
+                                                    <input style = "width:50%" type = "text" class = "form-control" required readonly onclick = "count_total_price()" id = "total_price">
+                                                </div>
+                                                <div class = "form-group col-lg-12">
+                                                    <h5>Jenis Pembayaran</h5>
+                                                    <input checked type="radio" name="jenis_pembayaran" value="FULL PAYMENT">&nbsp;FULL PAYMENT
+                                                    &nbsp;&nbsp;
+                                                    <input type="radio" name="jenis_pembayaran" value="DP">&nbsp;DP
+                                                    &nbsp;&nbsp;
+                                                    <input type="radio" name="jenis_pembayaran" value="TEMPO">&nbsp;TEMPO
+                                                    &nbsp;&nbsp;
+                                                    <input type="radio" name="jenis_pembayaran" value="KEEP">&nbsp;KEEP
+                                                </div>
+                                                <div class = "form-group col-lg-8">
+                                                    <h5>Tahapan Pembayaran</h5>
+                                                    <table class = "table table-striped table-bordered">
+                                                        <thead>
+                                                            <th>Pembayaran #</th>
+                                                            <th>Persentase</th>
+                                                            <th>Jumlah</th>
+                                                            <th>Notes</th>
+                                                            <th>Dateline Bayar</th>
+                                                            <th>Action</th>
+                                                        </thead>
+                                                        <tbody id = "daftar_pembayaran_add">
+                                                            <tr id = "add_pembayaran_but_container">
+                                                                <td colspan = 6><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_pembayaran_row()">Tambah Tahap Pembayaran</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class = "form-group col-lg-12" style = "width:50%">
+                                                    <button type = "button" class = "btn btn-sm btn-danger" onclick = "close_window()">Cancel</button>
+                                                    <button type = "button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -257,14 +260,20 @@ $notif_data = array(
         }
         $("input[name='pmbyrn_nominal"+row+"'").val(nominal);
     }
+    function open_online_container(){
+        $('#online_info_container').show();
+        $('#marketplace').html(html_option_marketplace);
+    }
 </script>
 <?php $this->load->view("_base_element/datalist_customer");?>
 <?php $this->load->view("_base_element/datalist_barang_cabang");?>
+<?php $this->load->view("_base_element/datalist_marketplace");?>
 <script>
     load_datalist();
     function load_datalist(){
         load_datalist_customer();
         load_datalist_barang_cabang();
+        load_datalist_marketplace();
     }
 </script>
 <script>
