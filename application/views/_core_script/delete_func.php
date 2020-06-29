@@ -1,8 +1,17 @@
 <script>
     function delete_func(){
         var id = $("#id_delete").val();
+        var url = "";
+        console.log(typeof(delete_params));
+        if(typeof(delete_params) == 'undefined'){
+            url = "<?php echo base_url();?>ws/"+ctrl+"/delete?id="+id;
+        }
+        else{
+            console.log("test");
+            url = "<?php echo base_url();?>ws/"+ctrl+"/delete?id="+id+delete_params;
+        }
         $.ajax({
-            url:"<?php echo base_url();?>ws/"+ctrl+"/delete?id="+id,
+            url:url,
             type:"DELETE",
             dataType:"JSON",
             success:function(respond){
