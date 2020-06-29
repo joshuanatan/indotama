@@ -7,6 +7,7 @@ class M_pengiriman extends ci_model{
     private $id_pk_pengiriman;
     private $pengiriman_tgl;
     private $pengiriman_status;
+    private $pengiriman_tipe;
     private $id_fk_penjualan;
     private $id_fk_retur;
     private $pengiriman_tempat;
@@ -35,6 +36,7 @@ class M_pengiriman extends ci_model{
             id_pk_pengiriman int primary key auto_increment,
             pengiriman_tgl datetime, 
             pengiriman_status varchar(15), 
+            pengiriman_tipe varchar(30), 
             id_fk_penjualan int, 
             id_fk_retur int, 
             pengiriman_tempat varchar(30) comment 'warehouse/cabang', 
@@ -52,6 +54,7 @@ class M_pengiriman extends ci_model{
             id_pk_pengiriman int,
             pengiriman_tgl datetime, 
             pengiriman_status varchar(15), 
+            pengiriman_tipe varchar(30), 
             id_fk_penjualan int, 
             id_fk_retur int, 
             pengiriman_tempat varchar(30) comment 'warehouse/cabang', 
@@ -74,7 +77,7 @@ class M_pengiriman extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at' , new.pengiriman_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_pengiriman_log(executed_function,id_pk_pengiriman,pengiriman_tgl,pengiriman_status,id_fk_penjualan,id_fk_retur,pengiriman_tempat,id_fk_warehouse,id_fk_cabang,pengiriman_create_date,pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_pengiriman,new.pengiriman_tgl,new.pengiriman_status,new.id_fk_penjualan,new.id_fk_retur,new.pengiriman_tempat,new.id_fk_warehouse,new.id_fk_cabang,new.pengiriman_create_date,new.pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_pengiriman_log(executed_function,id_pk_pengiriman,pengiriman_tgl,pengiriman_status,pengiriman_tipe,id_fk_penjualan,id_fk_retur,pengiriman_tempat,id_fk_warehouse,id_fk_cabang,pengiriman_create_date,pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_pengiriman,new.pengiriman_tgl,new.pengiriman_status,new.pengiriman_tipe,new.id_fk_penjualan,new.id_fk_retur,new.pengiriman_tempat,new.id_fk_warehouse,new.id_fk_cabang,new.pengiriman_create_date,new.pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         
@@ -89,7 +92,7 @@ class M_pengiriman extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at' , new.pengiriman_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_pengiriman_log(executed_function,id_pk_pengiriman,pengiriman_tgl,pengiriman_status,id_fk_penjualan,id_fk_retur,pengiriman_tempat,id_fk_warehouse,id_fk_cabang,pengiriman_create_date,pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_pengiriman,new.pengiriman_tgl,new.pengiriman_status,new.id_fk_penjualan,new.id_fk_retur,new.pengiriman_tempat,new.id_fk_warehouse,new.id_fk_cabang,new.pengiriman_create_date,new.pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_pengiriman_log(executed_function,id_pk_pengiriman,pengiriman_tgl,pengiriman_status,pengiriman_tipe,id_fk_penjualan,id_fk_retur,pengiriman_tempat,id_fk_warehouse,id_fk_cabang,pengiriman_create_date,pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_pengiriman,new.pengiriman_tgl,new.pengiriman_status,new.pengiriman_tipe,new.id_fk_penjualan,new.id_fk_retur,new.pengiriman_tempat,new.id_fk_warehouse,new.id_fk_cabang,new.pengiriman_create_date,new.pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         ";
@@ -101,6 +104,9 @@ class M_pengiriman extends ci_model{
         }
         else if($tipe == "retur"){
             $this->column_pengiriman_retur();
+        }
+        else if($tipe == "permintaan"){
+            $this->column_pengiriman_permintaan();
         }
         return $this->columns;
     }
@@ -116,6 +122,14 @@ class M_pengiriman extends ci_model{
         $this->set_column("pengiriman_tgl","tanggal pengiriman",true);
         $this->set_column("retur_no","nomor retur",false);
         $this->set_column("pengiriman_status","status",false);
+        $this->set_column("pengiriman_last_modified","last modified",false);
+    }
+    private function column_pengiriman_permintaan(){
+        $this->columns = array();
+        $this->set_column("retur_no","Nama Barang",false);
+        $this->set_column("retur_no","Jumlah Barang",false);
+        $this->set_column("pengiriman_status","status",false);
+        $this->set_column("pengiriman_tgl","tanggal pengiriman",true);
         $this->set_column("pengiriman_last_modified","last modified",false);
     }
     private function set_column($col_name,$col_disp,$order_by){
@@ -279,6 +293,7 @@ class M_pengiriman extends ci_model{
             $data = array(
                 "pengiriman_tgl" => $this->pengiriman_tgl,
                 "pengiriman_status" => $this->pengiriman_status,
+                "pengiriman_tipe" => $this->pengiriman_tipe,
                 "id_fk_penjualan" => $this->id_fk_penjualan,
                 "id_fk_retur" => $this->id_fk_retur,
                 "pengiriman_tempat" => $this->pengiriman_tempat,
@@ -332,6 +347,9 @@ class M_pengiriman extends ci_model{
             return false;
         }
         if($this->pengiriman_status == ""){
+            return false;
+        }
+        if($this->pengiriman_tipe == ""){
             return false;
         }
         if(strtolower($this->pengiriman_tempat) == ""){
@@ -389,11 +407,14 @@ class M_pengiriman extends ci_model{
         }
         else return true;
     }
-    public function set_insert($pengiriman_tgl,$pengiriman_status,$id_fk_penjualan = "",$pengiriman_tempat,$id_tempat_pengiriman,$id_fk_retur = ""){
+    public function set_insert($pengiriman_tgl,$pengiriman_status,$pengiriman_tipe,$id_fk_penjualan = "",$pengiriman_tempat,$id_tempat_pengiriman,$id_fk_retur = ""){
         if(!$this->set_pengiriman_tgl($pengiriman_tgl)){
             return false;
         }
         if(!$this->set_pengiriman_status($pengiriman_status)){
+            return false;
+        }
+        if(!$this->set_pengiriman_tipe($pengiriman_tipe)){
             return false;
         }
         $this->id_fk_penjualan = $id_fk_penjualan;
@@ -450,6 +471,13 @@ class M_pengiriman extends ci_model{
         }
         return false;
     }
+    public function set_pengiriman_tipe($pengiriman_tipe){
+        if($pengiriman_tipe != ""){
+            $this->pengiriman_tipe = $pengiriman_tipe;
+            return true;
+        }
+        return false;
+    }
     public function set_id_fk_penjualan($id_fk_penjualan){
         if($id_fk_penjualan != ""){
             $this->id_fk_penjualan = $id_fk_penjualan;
@@ -486,6 +514,9 @@ class M_pengiriman extends ci_model{
     }
     public function get_pengiriman_status(){
         return $this->pengiriman_status;
+    }
+    public function get_pengiriman_tipe(){
+        return $this->pengiriman_tipe;
     }
     public function get_id_fk_penjualan(){
         return $this->id_fk_penjualan;

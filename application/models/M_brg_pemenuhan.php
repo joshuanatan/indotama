@@ -12,6 +12,7 @@ class M_brg_pemenuhan extends ci_model{
     private $brg_pemenuhan_tipe;
     private $brg_pemenuhan_create_date;
     private $brg_pemenuhan_last_modified;
+    private $brg_pemenuhan_status;
     private $id_create_data;
     private $id_last_modified;
     private $today;
@@ -262,10 +263,22 @@ class M_brg_pemenuhan extends ci_model{
                 "brg_pemenuhan_last_modified" => $this->brg_pemenuhan_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updaterow($this->tbl_name,$data,$where);
+            updateRow($this->tbl_name,$data,$where);
             return true;
         }
         return false;
+    }
+    public function update_status(){
+        $where = array(
+            "id_pk_brg_pemenuhan" => $this->id_pk_brg_pemenuhan
+        );
+        $data = array(
+            "brg_pemenuhan_status" => $this->brg_pemenuhan_status,
+            "brg_pemenuhan_last_modified" => $this->brg_pemenuhan_last_modified,
+            "id_last_modified" => $this->id_last_modified
+        );
+        updateRow($this->tbl_name,$data,$where);
+        return true;
     }
     public function list_pemenuhan(){
         $field = array(
@@ -298,7 +311,7 @@ class M_brg_pemenuhan extends ci_model{
                 "brg_pemenuhan_last_modified" => $this->brg_pemenuhan_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updaterow($this->tbl_name,$data,$where);
+            updateRow($this->tbl_name,$data,$where);
             return true;
         }
         return false;
@@ -437,6 +450,13 @@ class M_brg_pemenuhan extends ci_model{
         return false;
     }
 
+    public function set_brg_pemenuhan_status($brg_pemenuhan_status){
+        if($brg_pemenuhan_status != ""){
+            $this->brg_pemenuhan_status = $brg_pemenuhan_status;
+            return true;
+        }
+        return false;
+    }
     public function set_id_fk_cabang($id_fk_cabang){
         if($id_fk_cabang != ""){
             $this->id_fk_cabang = $id_fk_cabang;
