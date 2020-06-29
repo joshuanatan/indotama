@@ -161,10 +161,11 @@ class pengiriman extends CI_Controller{
                 $id_fk_penjualan = $this->input->post("id_reff");
             }
             $pengiriman_tempat = $this->input->post("type");
+            $pengiriman_tipe = $this->input->post("tipe_pengiriman");
             $id_tempat_pengiriman = $this->input->post("id_tempat_pengiriman"); //id_warehouse or id_cabang
 
             $this->load->model("m_pengiriman");
-            if($this->m_pengiriman->set_insert($pengiriman_tgl,$pengiriman_status,$id_fk_penjualan,$pengiriman_tempat,$id_tempat_pengiriman,$id_fk_retur)){
+            if($this->m_pengiriman->set_insert($pengiriman_tgl,$pengiriman_status,$pengiriman_tipe,$id_fk_penjualan,$pengiriman_tempat,$id_tempat_pengiriman,$id_fk_retur)){
                 $id_pengiriman = $this->m_pengiriman->insert();
                 if($id_pengiriman){
                     $response["msg"] = "Data is recorded to database";
@@ -295,6 +296,12 @@ class pengiriman extends CI_Controller{
                     $this->m_brg_pengiriman->set_id_fk_pengiriman($id);
                     $this->m_brg_pengiriman->delete_brg_pengiriman();
                     $response["msg"] = "Data is deleted from database";
+
+                    $id_fk_brg_pemenuhan = $this->input->post("id_brg_pemenuhan");
+                    $this->load->model("m_brg_pemenuhan");
+                    $this->m_brg_pemenuhan->set_id_pk_brg_pemenuhan($id_fk_brg_pemenuhan);
+                    $this->m_brg_pemenuhan->set_brg_pemenuhan_status("Aktif");
+                    $this->m_brg_pemenuhan->update_status();
                 }
                 else{
                     $response["status"] = "ERROR";
@@ -308,7 +315,7 @@ class pengiriman extends CI_Controller{
         }
         else{
             $response["status"] = "ERROR";
-            $response["msg"] = "Invalid ID Supplier";
+            $response["msg"] = "Invalid ID Pengiriman";
         }
         echo json_encode($response);
     }

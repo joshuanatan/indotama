@@ -28,4 +28,14 @@ class Pengiriman extends CI_Controller{
         $data["type"] = "cabang";
         $this->load->view("pengiriman_retur/v_pengiriman_retur",$data);
     }
+    public function permintaan(){
+        $this->load->model("m_satuan");
+        $result = $this->m_satuan->list();
+        $data["satuan"] = $result->result_array();
+        
+        $data["id_tempat_pengiriman"] = $this->session->id_cabang;
+        $data["tipe_pengiriman"] = "permintaan";
+        $data["type"] = "cabang";
+        $this->load->view("pengiriman_permintaan/v_pengiriman_permintaan",$data);
+    }
 }
