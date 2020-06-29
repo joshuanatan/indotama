@@ -176,7 +176,7 @@ class M_satuan extends ci_model{
             "id_create_data",
             "id_last_modified"
         );
-        return selectrow($this->tbl_name,$where,$field);
+        return selectrow($this->tbl_name,$where,$field,"","","satuan_rumus");
     }
     public function insert(){
         if($this->check_insert()){
