@@ -50,6 +50,6 @@ class Penerimaan extends CI_Controller{
         $data["type"] = "CABANG";
 
         $this->load->model("m_pembelian");
-        $this->load->view("penerimaan_retur/v_penerimaan_retur",$data);
+        $this->load->view("penerimaan_permintaan/v_penerimaan_permintaan",$data);
     }
 }

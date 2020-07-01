@@ -157,8 +157,9 @@ class Penerimaan extends CI_Controller{
             }
             $penerimaan_tempat = $this->input->post("tempat");
             $id_tempat_penerimaan = $this->input->post("id_tempat_penerimaan"); //id_warehouse or id_cabang
+            $penerimaan_tipe = $this->input->post("tipe_penerimaan");
             $this->load->model("m_penerimaan");
-            if($this->m_penerimaan->set_insert($penerimaan_tgl,$penerimaan_status,$id_fk_pembelian,$penerimaan_tempat,$id_tempat_penerimaan,$id_fk_retur)){
+            if($this->m_penerimaan->set_insert($penerimaan_tgl,$penerimaan_status,$penerimaan_tipe,$id_fk_pembelian,$penerimaan_tempat,$id_tempat_penerimaan,$id_fk_retur)){
                 $id_penerimaan = $this->m_penerimaan->insert();
                 if($id_penerimaan){
                     $response["msg"] = "Data is recorded to database";

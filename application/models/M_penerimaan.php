@@ -7,6 +7,7 @@ class M_penerimaan extends ci_model{
     private $id_pk_penerimaan;
     private $penerimaan_tgl;
     private $penerimaan_status;
+    private $penerimaan_tipe;
     private $id_fk_pembelian;
     private $id_fk_retur;
     private $penerimaan_tempat;
@@ -31,6 +32,7 @@ class M_penerimaan extends ci_model{
             id_pk_penerimaan int primary key auto_increment,
             penerimaan_tgl datetime, 
             penerimaan_status varchar(15), 
+            penerimaan_tipe varchar(30), 
             id_fk_pembelian int, 
             id_fk_retur int, 
             penerimaan_tempat varchar(30) comment 'warehouse/cabang', 
@@ -48,6 +50,7 @@ class M_penerimaan extends ci_model{
             id_pk_penerimaan int,
             penerimaan_tgl datetime, 
             penerimaan_status varchar(15), 
+            penerimaan_tipe varchar(30), 
             id_fk_pembelian int, 
             id_fk_retur int, 
             penerimaan_tempat varchar(30) comment 'warehouse/cabang', 
@@ -70,7 +73,7 @@ class M_penerimaan extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at' , new.penerimaan_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_penerimaan_log(executed_function,id_pk_penerimaan,penerimaan_tgl,penerimaan_status,id_fk_retur,id_fk_pembelian,penerimaan_tempat,id_fk_warehouse,id_fk_cabang,penerimaan_create_date,penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_penerimaan,new.penerimaan_tgl,new.penerimaan_status,new.id_fk_retur,new.id_fk_pembelian,new.penerimaan_tempat,new.id_fk_warehouse,new.id_fk_cabang,new.penerimaan_create_date,new.penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_penerimaan_log(executed_function,id_pk_penerimaan,penerimaan_tgl,penerimaan_status,penerimaan_tipe,id_fk_retur,id_fk_pembelian,penerimaan_tempat,id_fk_warehouse,id_fk_cabang,penerimaan_create_date,penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_penerimaan,new.penerimaan_tgl,new.penerimaan_status,new.penerimaan_tipe,new.id_fk_retur,new.id_fk_pembelian,new.penerimaan_tempat,new.id_fk_warehouse,new.id_fk_cabang,new.penerimaan_create_date,new.penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         
@@ -85,7 +88,7 @@ class M_penerimaan extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at' , new.penerimaan_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_penerimaan_log(executed_function,id_pk_penerimaan,penerimaan_tgl,penerimaan_status,id_fk_retur,id_fk_pembelian,penerimaan_tempat,id_fk_warehouse,id_fk_cabang,penerimaan_create_date,penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_penerimaan,new.penerimaan_tgl,new.penerimaan_status,new.id_fk_retur,new.id_fk_pembelian,new.penerimaan_tempat,new.id_fk_warehouse,new.id_fk_cabang,new.penerimaan_create_date,new.penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_penerimaan_log(executed_function,id_pk_penerimaan,penerimaan_tgl,penerimaan_status,penerimaan_tipe,id_fk_retur,id_fk_pembelian,penerimaan_tempat,id_fk_warehouse,id_fk_cabang,penerimaan_create_date,penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_penerimaan,new.penerimaan_tgl,new.penerimaan_status,new.penerimaan_tipe,new.id_fk_retur,new.id_fk_pembelian,new.penerimaan_tempat,new.id_fk_warehouse,new.id_fk_cabang,new.penerimaan_create_date,new.penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         ";
@@ -122,13 +125,13 @@ class M_penerimaan extends ci_model{
         );
         $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
     }
-    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = "",$tipe_penerimaan = "pembelian"){
-        if($tipe_penerimaan == "pembelian"){
+    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = "",$penerimaan_tipe = "pembelian"){
+        if($penerimaan_tipe == "pembelian"){
             $this->column_penerimaan_pembelian();
             $order_by = $this->columns[$order_by]["col_name"];
             $result = $this->content_pembelian($page,$order_by,$order_direction,$search_key,$data_per_page);
         }
-        else if($tipe_penerimaan == "retur"){
+        else if($penerimaan_tipe == "retur"){
             $this->column_penerimaan_retur();
             $order_by = $this->columns[$order_by]["col_name"];
             $result = $this->content_retur($page,$order_by,$order_direction,$search_key,$data_per_page);
@@ -269,6 +272,7 @@ class M_penerimaan extends ci_model{
             $data = array(
                 "penerimaan_tgl" => $this->penerimaan_tgl,
                 "penerimaan_status" => $this->penerimaan_status,
+                "penerimaan_tipe" => $this->penerimaan_tipe,
                 "id_fk_pembelian" => $this->id_fk_pembelian,
                 "id_fk_retur" => $this->id_fk_retur,
                 "penerimaan_tempat" => $this->penerimaan_tempat,
@@ -379,12 +383,15 @@ class M_penerimaan extends ci_model{
         }
         else return true;
     }
-    public function set_insert($penerimaan_tgl,$penerimaan_status,$id_fk_pembelian = "", $penerimaan_tempat,$id_tempat_penerimaan, $id_fk_retur = ""){
+    public function set_insert($penerimaan_tgl,$penerimaan_status,$penerimaan_tipe,$id_fk_pembelian = "", $penerimaan_tempat,$id_tempat_penerimaan, $id_fk_retur = ""){
         #id_fk_retur ditaro dibelakang supaya ga ngerusakin yang sudah ada
         if(!$this->set_penerimaan_tgl($penerimaan_tgl)){
             return false;
         }
         if(!$this->set_penerimaan_status($penerimaan_status)){
+            return false;
+        }
+        if(!$this->set_penerimaan_tipe($penerimaan_tipe)){
             return false;
         }
         $this->id_fk_pembelian = $id_fk_pembelian;
@@ -451,6 +458,13 @@ class M_penerimaan extends ci_model{
     public function set_penerimaan_tempat($penerimaan_tempat){
         if($penerimaan_tempat != ""){
             $this->penerimaan_tempat = $penerimaan_tempat;
+            return true;
+        }
+        return false;
+    }
+    public function set_penerimaan_tipe($penerimaan_tipe){
+        if($penerimaan_tipe != ""){
+            $this->penerimaan_tipe = $penerimaan_tipe;
             return true;
         }
         return false;
