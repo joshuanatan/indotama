@@ -73,7 +73,7 @@ $notif_data = array(
 <script>
     var ctrl = "pengiriman_permintaan";  
     var url_add = "type=<?php echo $type;?>";
-    var unautorized_button = ["edit_button","delete_button"];
+    var unautorized_button = ["edit_button","delete_button","detail_button"];
     var additional_button = [
         {
             class:"md-truck",
