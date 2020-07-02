@@ -116,11 +116,43 @@ class M_retur extends CI_Model{
         select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified,penj_nomor
         from ".$this->tbl_name." 
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = ".$this->tbl_name.".id_fk_penjualan
+        where retur_status != ? ".$search_query."  
+        order by ".$order_by." ".$order_direction." 
+        limit 20 offset ".($page-1)*$data_per_page;
+        $args = array(
+            "nonaktif"
+        );
+        $result["data"] = executequery($query,$args);
+        
+        $query = "
+        select id_pk_retur
+        from ".$this->tbl_name." 
+        where retur_status != ? ".$search_query."  
+        order by ".$order_by." ".$order_direction;
+        $result["total_data"] = executequery($query,$args)->num_rows();
+        return $result;
+    }
+    public function content_konfirmasi($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
+        $order_by = $this->columns[$order_by]["col_name"];
+        $search_query = "";
+        if($search_key != ""){
+            $search_query .= "and
+            ( 
+                retur_no like '%".$search_key."%' or
+                retur_tgl like '%".$search_key."%' or
+                retur_status like '%".$search_key."%' or
+                retur_tipe like '%".$search_key."%'
+            )";
+        }
+        $query = "
+        select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified,penj_nomor
+        from ".$this->tbl_name." 
+        inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = ".$this->tbl_name.".id_fk_penjualan
         where retur_status = ? ".$search_query."  
         order by ".$order_by." ".$order_direction." 
         limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "aktif"
+            "konfirmasi"
         );
         $result["data"] = executequery($query,$args);
         
@@ -151,6 +183,19 @@ class M_retur extends CI_Model{
         from mstr_retur
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
         where retur_status = ? and id_fk_cabang = ?
+        ";
+        $args = array(
+            "aktif",$id_fk_cabang
+        );
+        return executeQuery($sql,$args);
+    }
+    public function list_retur_pengiriman($id_fk_cabang){
+        #list retur yang bisa tipenya barang / yang bisa masuk pengiriman
+        $sql = "
+        select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified, penj_nomor, penj_tgl, penj_dateline_tgl, id_fk_customer,id_fk_cabang
+        from mstr_retur
+        inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
+        where retur_status = ? and id_fk_cabang = ? and retur_tipe = 'barang'
         ";
         $args = array(
             "aktif",$id_fk_cabang
@@ -193,6 +238,16 @@ class M_retur extends CI_Model{
             return true;
         }
         return false;
+    }
+    public function update_status(){
+        $where = array(
+            "id_pk_retur" => $this->id_pk_retur
+        );
+        $data = array(
+            "retur_status" => $this->retur_status
+        );
+        updateRow($this->tbl_name,$data,$where);
+        return true;
     }
     public function delete(){
         if($this->check_delete()){

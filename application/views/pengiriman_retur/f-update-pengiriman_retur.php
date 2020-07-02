@@ -14,7 +14,7 @@
                     <input type = "hidden" name = "id" id = "id_edit">
                     <div class = "form-group">
                         <h5>Nomor Retur</h5>
-                        <input type = "text" class = "form-control" list = "datalist_retur" required id = "no_retur_edit" readonly>
+                        <input type = "text" class = "form-control" list = "datalist_retur_pengiriman" required id = "no_retur_edit" readonly>
                     </div>
                     <div class = "form-group">
                         <h5>Tanggal Penerimaan</h5>

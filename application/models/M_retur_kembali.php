@@ -103,7 +103,8 @@ class M_retur_kembali extends ci_model{
         select id_pk_retur_kembali,retur_kembali_qty_real,retur_kembali_satuan_real,retur_kembali_qty,retur_kembali_satuan,retur_kembali_harga,retur_kembali_note,id_fk_retur,id_fk_brg,brg_nama,brg_harga,retur_kembali_create_date,retur_kembali_last_modified
         from ".$this->tbl_name."
         inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_brg
-        where retur_kembali_status = ? and id_fk_retur = ?
+        inner join mstr_retur on mstr_retur.id_pk_retur = ".$this->tbl_name.".id_fk_retur
+        where retur_kembali_status = ? and id_fk_retur = ? and retur_tipe = 'barang'
         ";
         $args = array(
             "aktif",$this->id_fk_retur

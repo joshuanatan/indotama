@@ -7,4 +7,7 @@ class Retur extends CI_Controller{
     public function index(){
         $this->load->view("retur/v_retur");
     }
+    public function konfirmasi(){
+        $this->load->view("retur/v_konfirmasi_retur");
+    }
 }

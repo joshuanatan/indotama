@@ -57,12 +57,76 @@ class Retur extends CI_Controller{
         );
         echo json_encode($response);
     }
+    public function content_konfirmasi(){
+        $response["status"] = "SUCCESS";
+        $response["content"] = array();
+
+        $order_by = $this->input->get("orderBy");
+        $order_direction = $this->input->get("orderDirection");
+        $page = $this->input->get("page");
+        $search_key = $this->input->get("searchKey");
+        $data_per_page = 20;
+        $type = $this->input->get("type"); //CABANG / WAREHOUSE
+        
+        $this->load->model("m_retur");
+        $result = $this->m_retur->content_konfirmasi($page,$order_by,$order_direction,$search_key,$data_per_page);
+        if($result["data"]->num_rows() > 0){
+            $result["data"] = $result["data"]->result_array();
+            for($a = 0; $a<count($result["data"]); $a++){
+                $response["content"][$a]["id"] = $result["data"][$a]["id_pk_retur"];
+                $response["content"][$a]["no"] = $result["data"][$a]["retur_no"];
+                $response["content"][$a]["tgl"] = $result["data"][$a]["retur_tgl"];
+                $response["content"][$a]["status"] = $result["data"][$a]["retur_status"];
+                $response["content"][$a]["tipe"] = $result["data"][$a]["retur_tipe"];
+                $response["content"][$a]["create_date"] = $result["data"][$a]["retur_create_date"];
+                $response["content"][$a]["last_modified"] = $result["data"][$a]["retur_last_modified"];
+                $response["content"][$a]["nomor_penj"] = $result["data"][$a]["penj_nomor"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+        }
+        $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
+        $response["key"] = array(
+            "no",
+            "tgl",
+            "tipe",
+            "status",
+            "last_modified",
+        );
+        echo json_encode($response);
+    }
     public function list(){
         $response["status"] = "SUCCESS";
         $id_cabang = $this->input->get("id_cabang");
         
         $this->load->model("m_retur");
         $result = $this->m_retur->list($id_cabang);
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_retur"];
+                $response["content"][$a]["id_penjualan"] = $result[$a]["id_fk_penjualan"];
+                $response["content"][$a]["no"] = $result[$a]["retur_no"];
+                $response["content"][$a]["tgl"] = $result[$a]["retur_tgl"];
+                $response["content"][$a]["status"] = $result[$a]["retur_status"];
+                $response["content"][$a]["tipe"] = $result[$a]["retur_tipe"];
+                $response["content"][$a]["last_modified"] = $result[$a]["retur_last_modified"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "No data is recorded in database";
+        }
+        echo json_encode($response);
+    }
+    public function list_pengiriman(){
+        #untuk ngelist list retur yang dipake buat pengiriman (dengan kata lain, tipe retur = barang)
+        $response["status"] = "SUCCESS";
+        $id_cabang = $this->input->get("id_cabang");
+        
+        $this->load->model("m_retur");
+        $result = $this->m_retur->list_retur_pengiriman($id_cabang);
         if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
@@ -131,7 +195,7 @@ class Retur extends CI_Controller{
 
                 $retur_no = $this->input->post("no_retur");
                 $retur_tgl = $this->input->post("tgl_retur");
-                $retur_status = "aktif";
+                $retur_status = "konfirmasi";
                 $retur_tipe = $this->input->post("tipe_retur");
                 if($this->m_retur->set_insert($id_fk_penjualan,$retur_no,$retur_tgl,$retur_status,$retur_tipe)){
                     $id_retur = $this->m_retur->insert();
@@ -534,5 +598,21 @@ class Retur extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function konfirmasi(){
+        $response["status"] = "SUCCESS";
+        $id_retur = $this->input->get("id");
+        $status = "aktif";
+        $this->load->model("m_retur");
+        $this->m_retur->set_id_pk_retur($id_retur);
+        $this->m_retur->set_retur_status($status);
+        if($this->m_retur->update_status()){
+            $response["msg"] = "Data retur dikonfirmasi";
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "Error updating status";
 
+        }            
+        echo json_encode($response);
+    }
 }
