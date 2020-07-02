@@ -6,6 +6,13 @@ class M_supplier extends ci_model{
     private $columns = array();
     private $id_pk_sup;
     private $sup_nama;
+
+    private $sup_no_npwp;
+    private $sup_foto_npwp;
+    private $sup_foto_kartu_nama;
+    private $sup_badan_usaha;
+    private $sup_no_rekening;
+
     private $sup_suff;
     private $sup_perusahaan;
     private $sup_email;
@@ -52,6 +59,11 @@ class M_supplier extends ci_model{
         create table mstr_supplier(
             id_pk_sup int primary key auto_increment,
             sup_nama varchar(100),
+            sup_no_npwp varchar(100),
+            sup_foto_npwp varchar(100),
+            sup_foto_kartu_nama varchar(100),
+            sup_badan_usaha varchar(100),
+            sup_no_rekening varchar(100),
             sup_suff varchar(10),
             sup_perusahaan varchar(100),
             sup_email varchar(100),
@@ -71,6 +83,11 @@ class M_supplier extends ci_model{
             executed_function varchar(30),
             id_pk_sup int,
             sup_nama varchar(100),
+            sup_no_npwp varchar(100),
+            sup_foto_npwp varchar(100),
+            sup_foto_kartu_nama varchar(100),
+            sup_badan_usaha varchar(100),
+            sup_no_rekening varchar(100),
             sup_suff varchar(10),
             sup_perusahaan varchar(100),
             sup_email varchar(100),
@@ -96,7 +113,7 @@ class M_supplier extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at' , new.sup_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_supplier_log(executed_function,id_pk_sup,sup_nama,sup_suff,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_create_date,sup_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_sup,new.sup_nama,new.sup_suff,new.sup_perusahaan,new.sup_email,new.sup_telp,new.sup_hp,new.sup_alamat,new.sup_keterangan,new.sup_status,new.sup_create_date,new.sup_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_supplier_log(executed_function,id_pk_sup,sup_nama,sup_no_npwp,sup_foto_npwp,sup_foto_kartu_nama,sup_badan_usaha,sup_no_rekening,sup_suff,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_create_date,sup_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_sup,new.sup_nama,new.sup_no_npwp,new.sup_foto_npwp,new.sup_foto_kartu_nama,new.sup_badan_usaha,new.sup_no_rekening,new.sup_suff,new.sup_perusahaan,new.sup_email,new.sup_telp,new.sup_hp,new.sup_alamat,new.sup_keterangan,new.sup_status,new.sup_create_date,new.sup_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
 
@@ -111,7 +128,7 @@ class M_supplier extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at' , new.sup_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_supplier_log(executed_function,id_pk_sup,sup_nama,sup_suff,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_create_date,sup_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_sup,new.sup_nama,new.sup_suff,new.sup_perusahaan,new.sup_email,new.sup_telp,new.sup_hp,new.sup_alamat,new.sup_keterangan,new.sup_status,new.sup_create_date,new.sup_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_supplier_log(executed_function,id_pk_sup,sup_nama,sup_no_npwp,sup_foto_npwp,sup_foto_kartu_nama,sup_badan_usaha,sup_no_rekening,sup_suff,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_create_date,sup_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_sup,new.sup_nama,new.sup_no_npwp,new.sup_foto_npwp,new.sup_foto_kartu_nama,new.sup_badan_usaha,new.sup_no_rekening,new.sup_suff,new.sup_perusahaan,new.sup_email,new.sup_telp,new.sup_hp,new.sup_alamat,new.sup_keterangan,new.sup_status,new.sup_create_date,new.sup_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         ";
@@ -124,6 +141,11 @@ class M_supplier extends ci_model{
             $search_query .= "and
             ( 
                 sup_nama like '%".$search_key."%' or
+                sup_no_npwp like '%".$search_key."%' or
+                sup_foto_npwp like '%".$search_key."%' or
+                sup_foto_kartu_nama like '%".$search_key."%' or
+                sup_badan_usaha like '%".$search_key."%' or
+                sup_no_rekening like '%".$search_key."%' or
                 sup_perusahaan like '%".$search_key."%' or
                 sup_email like '%".$search_key."%' or
                 sup_telp like '%".$search_key."%' or
@@ -135,7 +157,7 @@ class M_supplier extends ci_model{
             )";
         }
         $query = "
-        select id_pk_sup,sup_nama,sup_suff,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_last_modified
+        select id_pk_sup,sup_nama,sup_no_npwp,sup_foto_npwp,sup_foto_kartu_nama,sup_badan_usaha,sup_no_rekening,sup_suff,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_last_modified
         from ".$this->tbl_name." 
         where sup_status = ? ".$search_query."  
         order by ".$order_by." ".$order_direction." 
@@ -168,7 +190,7 @@ class M_supplier extends ci_model{
             "sup_perusahaan" => $this->sup_perusahaan
         );
         $field = array(
-            "id_pk_sup","sup_nama","sup_suff","sup_perusahaan","sup_email","sup_telp","sup_hp","sup_alamat","sup_keterangan","sup_status","sup_last_modified"
+            "id_pk_sup","sup_nama","sup_no_npwp","sup_foto_npwp","sup_foto_kartu_nama","sup_badan_usaha","sup_no_rekening","sup_suff","sup_perusahaan","sup_email","sup_telp","sup_hp","sup_alamat","sup_keterangan","sup_status","sup_last_modified"
         );
         return selectrow($this->tbl_name,$where,$field);
     }
@@ -176,6 +198,11 @@ class M_supplier extends ci_model{
         if($this->check_insert()){
             $data = array(
                 "sup_nama" => $this->sup_nama,
+                "sup_no_npwp" => $this->sup_no_npwp,
+                "sup_foto_npwp" => $this->sup_foto_npwp,
+                "sup_foto_kartu_nama" => $this->sup_foto_kartu_nama,
+                "sup_badan_usaha" => $this->sup_badan_usaha,
+                "sup_no_rekening" => $this->sup_no_rekening,
                 "sup_suff" => $this->sup_suff,
                 "sup_perusahaan" => $this->sup_perusahaan,
                 "sup_email" => $this->sup_email,
@@ -211,6 +238,11 @@ class M_supplier extends ci_model{
             );
             $data = array(
                 "sup_nama" => $this->sup_nama,
+                "sup_no_npwp" => $this->sup_no_npwp,
+                "sup_foto_npwp" => $this->sup_foto_npwp,
+                "sup_foto_kartu_nama" => $this->sup_foto_kartu_nama,
+                "sup_badan_usaha" => $this->sup_badan_usaha,
+                "sup_no_rekening" => $this->sup_no_rekening,
                 "sup_suff" => $this->sup_suff,
                 "sup_perusahaan" => $this->sup_perusahaan,
                 "sup_email" => $this->sup_email,
@@ -243,6 +275,21 @@ class M_supplier extends ci_model{
     }
     public function check_insert(){
         if($this->sup_nama == ""){
+            return false;
+        }
+        if($this->sup_no_npwp == ""){
+            return false;
+        }
+        if($this->sup_foto_npwp == ""){
+            return false;
+        }
+        if($this->sup_foto_kartu_nama == ""){
+            return false;
+        }
+        if($this->sup_badan_usaha == ""){
+            return false;
+        }
+        if($this->sup_no_rekening == ""){
             return false;
         }
         if($this->sup_suff == ""){
@@ -290,6 +337,21 @@ class M_supplier extends ci_model{
         if($this->sup_nama == ""){
             return false;
         }
+        if($this->sup_no_npwp == ""){
+            return false;
+        }
+        if($this->sup_foto_npwp == ""){
+            return false;
+        }
+        if($this->sup_foto_kartu_nama == ""){
+            return false;
+        }
+        if($this->sup_badan_usaha == ""){
+            return false;
+        }
+        if($this->sup_no_rekening == ""){
+            return false;
+        }
         if($this->sup_suff == ""){
             return false;
         }
@@ -331,8 +393,23 @@ class M_supplier extends ci_model{
         }
         return true;
     }
-    public function set_insert($sup_nama,$sup_suff,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan,$sup_status){
+    public function set_insert($sup_nama,$sup_suff,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan,$sup_status,$sup_no_npwp,$sup_foto_npwp,$sup_foto_kartu_nama,$sup_badan_usaha,$sup_no_rekening){
         if(!$this->set_sup_nama($sup_nama)){
+            return false;
+        }
+        if(!$this->set_sup_no_npwp($sup_no_npwp)){
+            return false;
+        }
+        if(!$this->set_sup_foto_npwp($sup_foto_npwp)){
+            return false;
+        }
+        if(!$this->set_sup_foto_kartu_nama($sup_foto_kartu_nama)){
+            return false;
+        }
+        if(!$this->set_sup_badan_usaha($sup_badan_usaha)){
+            return false;
+        }
+        if(!$this->set_sup_no_rekening($sup_no_rekening)){
             return false;
         }
         if(!$this->set_sup_suff($sup_suff)){
@@ -361,11 +438,26 @@ class M_supplier extends ci_model{
         }
         return true;
     }
-    public function set_update($id_pk_sup,$sup_nama,$sup_suff,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan){
+    public function set_update($id_pk_sup,$sup_nama,$sup_suff,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan,$sup_no_npwp,$sup_foto_npwp,$sup_foto_kartu_nama,$sup_badan_usaha,$sup_no_rekening){
         if(!$this->set_id_pk_sup($id_pk_sup)){
             return false;
         }
         if(!$this->set_sup_nama($sup_nama)){
+            return false;
+        }
+        if(!$this->set_sup_no_npwp($sup_no_npwp)){
+            return false;
+        }
+        if(!$this->set_sup_foto_npwp($sup_foto_npwp)){
+            return false;
+        }
+        if(!$this->set_sup_foto_kartu_nama($sup_foto_kartu_nama)){
+            return false;
+        }
+        if(!$this->set_sup_badan_usaha($sup_badan_usaha)){
+            return false;
+        }
+        if(!$this->set_sup_no_rekening($sup_no_rekening)){
             return false;
         }
         if(!$this->set_sup_suff($sup_suff)){
@@ -407,6 +499,41 @@ class M_supplier extends ci_model{
     public function set_sup_nama($sup_nama){
         if($sup_nama != ""){
             $this->sup_nama = $sup_nama;
+            return true;
+        }
+        return false;
+    }
+    public function set_sup_no_npwp($sup_no_npwp){
+        if($sup_no_npwp != ""){
+            $this->sup_no_npwp = $sup_no_npwp;
+            return true;
+        }
+        return false;
+    }
+    public function set_sup_foto_npwp($sup_foto_npwp){
+        if($sup_foto_npwp != ""){
+            $this->sup_foto_npwp = $sup_foto_npwp;
+            return true;
+        }
+        return false;
+    }
+    public function set_sup_foto_kartu_nama($sup_foto_kartu_nama){
+        if($sup_foto_kartu_nama != ""){
+            $this->sup_foto_kartu_nama = $sup_foto_kartu_nama;
+            return true;
+        }
+        return false;
+    }
+    public function set_sup_badan_usaha($sup_badan_usaha){
+        if($sup_badan_usaha != ""){
+            $this->sup_badan_usaha = $sup_badan_usaha;
+            return true;
+        }
+        return false;
+    }
+    public function set_sup_no_rekening($sup_no_rekening){
+        if($sup_no_rekening != ""){
+            $this->sup_no_rekening = $sup_no_rekening;
             return true;
         }
         return false;

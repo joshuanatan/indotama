@@ -45,6 +45,11 @@ class Supplier extends CI_Controller{
                 $response["content"][$a]["keterangan"] = $result["data"][$a]["sup_keterangan"];
                 $response["content"][$a]["status"] = $result["data"][$a]["sup_status"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["sup_last_modified"];
+                $response["content"][$a]["no_npwp"] = $result["data"][$a]["sup_no_npwp"];
+                $response["content"][$a]["foto_npwp"] = $result["data"][$a]["sup_foto_npwp"];
+                $response["content"][$a]["foto_kartu_nama"] = $result["data"][$a]["sup_foto_kartu_nama"];
+                $response["content"][$a]["badan_usaha"] = $result["data"][$a]["sup_badan_usaha"];
+                $response["content"][$a]["no_rekening"] = $result["data"][$a]["sup_no_rekening"];
             }
         }
         else{
@@ -99,8 +104,34 @@ class Supplier extends CI_Controller{
         $this->form_validation->set_rules("nohp","nohp","required");
         $this->form_validation->set_rules("alamat","alamat","required");
         $this->form_validation->set_rules("keterangan","keterangan","required");
-
+        $this->form_validation->set_rules("sup_badan_usaha","sup_badan_usaha","required");
+        $this->form_validation->set_rules("sup_npwp","sup_npwp","required");
+        $this->form_validation->set_rules("sup_rek","sup_rek","required");
+        
         if($this->form_validation->run()){
+            
+            $config1['upload_path'] = './asset/uploads/supplier/npwp/';
+            $config1['allowed_types'] = 'jpg|png|jpeg';
+            $this->load->library('upload', $config1);
+            if ( ! $this->upload->do_upload('sup_foto_npwp')){
+                $error = array('error' => $this->upload->display_errors());
+                $sup_foto_npwp = "noimage.jpg";
+            }
+            else{
+                $sup_foto_npwp = $this->upload->data('file_name');
+            }
+            
+            $config2['upload_path']          = './asset/uploads/supplier/krt_nama/';
+            $config2['allowed_types']        = 'jpg|png|jpeg';
+            $this->upload->initialize($config2);
+            if ( ! $this->upload->do_upload('sup_krt_nama')){
+                $error = array('error' => $this->upload->display_errors());
+                $sup_foto_kartu_nama = "noimage.jpg";
+            }
+            else{
+                $sup_foto_kartu_nama = $this->upload->data('file_name');
+            }
+        
             $sup_perusahaan = $this->input->post("nama");
             $sup_suff = $this->input->post("suff");
             $sup_nama = $this->input->post("pic");
@@ -109,10 +140,13 @@ class Supplier extends CI_Controller{
             $sup_hp = $this->input->post("nohp");
             $sup_alamat = $this->input->post("alamat");
             $sup_keterangan = $this->input->post("keterangan");
+            $sup_no_npwp = $this->input->post("sup_npwp");
+            $sup_badan_usaha = $this->input->post("sup_badan_usaha");
+            $sup_no_rekening = $this->input->post("sup_rek");
             $sup_status = "AKTIF";
 
             $this->load->model("m_supplier");
-            if($this->m_supplier->set_insert($sup_nama,$sup_suff,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan,$sup_status)){
+            if($this->m_supplier->set_insert($sup_nama,$sup_suff,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan,$sup_status,$sup_no_npwp,$sup_foto_npwp,$sup_foto_kartu_nama,$sup_badan_usaha,$sup_no_rekening)){
                 if($this->m_supplier->insert()){
                     $response["msg"] = "Data is recorded to database";
                 }
@@ -145,6 +179,29 @@ class Supplier extends CI_Controller{
         $this->form_validation->set_rules("keterangan","keterangan","required");
 
         if($this->form_validation->run()){
+
+            $config1['upload_path'] = './asset/uploads/supplier/npwp/';
+            $config1['allowed_types'] = 'jpg|png|jpeg';
+            $this->load->library('upload', $config1);
+            if ( ! $this->upload->do_upload('sup_foto_npwp')){
+                $error = array('error' => $this->upload->display_errors());
+                $sup_foto_npwp = $this->input->post("sup_foto_npwp_current");
+            }
+            else{
+                $sup_foto_npwp = $this->upload->data('file_name');
+            }
+            
+            $config2['upload_path']          = './asset/uploads/supplier/krt_nama/';
+            $config2['allowed_types']        = 'jpg|png|jpeg';
+            $this->upload->initialize($config2);
+            if ( ! $this->upload->do_upload('sup_krt_nama')){
+                $error = array('error' => $this->upload->display_errors());
+                $sup_foto_kartu_nama = $this->input->post("sup_krt_nama_current");
+            }
+            else{
+                $sup_foto_kartu_nama = $this->upload->data('file_name');
+            }
+
             $id_pk_sup = $this->input->post("id");
             $sup_perusahaan = $this->input->post("nama");
             $sup_suff = $this->input->post("suff");
@@ -154,9 +211,12 @@ class Supplier extends CI_Controller{
             $sup_hp = $this->input->post("nohp");
             $sup_alamat = $this->input->post("alamat");
             $sup_keterangan = $this->input->post("keterangan");
+            $sup_no_npwp = $this->input->post("sup_npwp");
+            $sup_badan_usaha = $this->input->post("sup_badan_usaha");
+            $sup_no_rekening = $this->input->post("sup_rek");
 
             $this->load->model("m_supplier");
-            if($this->m_supplier->set_update($id_pk_sup,$sup_nama,$sup_suff,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan)){
+            if($this->m_supplier->set_update($id_pk_sup,$sup_nama,$sup_suff,$sup_perusahaan,$sup_email,$sup_telp,$sup_hp,$sup_alamat,$sup_keterangan,$sup_no_npwp,$sup_foto_npwp,$sup_foto_kartu_nama,$sup_badan_usaha,$sup_no_rekening)){
                 if($this->m_supplier->update()){
                     $response["msg"] = "Data is updated to database";
                 }
