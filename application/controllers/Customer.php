@@ -5,7 +5,7 @@ class Customer extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('customer/V_customer');
+		$this->load->view('customer/v_customer');
 	}
     
 }
