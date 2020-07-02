@@ -6,6 +6,13 @@ class M_customer extends ci_model{
     private $columns = array();
     private $id_pk_cust;
     private $cust_name;
+
+    private $cust_no_npwp;
+    private $cust_foto_npwp;
+    private $cust_foto_kartu_nama;
+    private $cust_badan_usaha;
+    private $cust_no_rekening;
+
     private $cust_suff;
     private $cust_sapaan;
     private $cust_perusahaan;
@@ -53,6 +60,11 @@ class M_customer extends ci_model{
         create table mstr_customer(
             id_pk_cust int primary key auto_increment,
             cust_name varchar(100),
+            cust_no_npwp varchar(100),
+            cust_foto_npwp varchar(100),
+            cust_foto_kartu_nama varchar(100),
+            cust_badan_usaha varchar(100),
+            cust_no_rekening varchar(100),
             cust_suff varchar(10),
             cust_perusahaan varchar(100),
             cust_email varchar(100),
@@ -73,6 +85,11 @@ class M_customer extends ci_model{
             executed_function varchar(30),
             id_pk_cust int,
             cust_name varchar(100),
+            cust_no_npwp varchar(100),
+            cust_foto_npwp varchar(100),
+            cust_foto_kartu_nama varchar(100),
+            cust_badan_usaha varchar(100),
+            cust_no_rekening varchar(100),
             cust_suff varchar(10),
             cust_perusahaan varchar(100),
             cust_email varchar(100),
@@ -99,7 +116,7 @@ class M_customer extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.cust_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_customer_log(executed_function,id_pk_cust,cust_name,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,id_fk_toko,cust_status,cust_create_date,cust_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_cust,new.cust_name,new.cust_suff,new.cust_perusahaan,new.cust_email,new.cust_telp,new.cust_hp,new.cust_alamat,new.cust_keterangan,new.id_fk_toko,new.cust_status,new.cust_create_date,new.cust_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_customer_log(executed_function,id_pk_cust,cust_name,cust_no_npwp,cust_foto_npwp,cust_foto_kartu_nama,cust_badan_usaha,cust_no_rekening,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,id_fk_toko,cust_status,cust_create_date,cust_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_cust,new.cust_name,new.cust_no_npwp,new.cust_foto_npwp,new.cust_foto_kartu_nama,new.cust_badan_usaha,new.cust_no_rekening,new.cust_suff,new.cust_perusahaan,new.cust_email,new.cust_telp,new.cust_hp,new.cust_alamat,new.cust_keterangan,new.id_fk_toko,new.cust_status,new.cust_create_date,new.cust_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         
@@ -114,7 +131,7 @@ class M_customer extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at ' , new.cust_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_customer_log(executed_function,id_pk_cust,cust_name,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,id_fk_toko,cust_status,cust_create_date,cust_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_cust,new.cust_name,new.cust_suff,new.cust_perusahaan,new.cust_email,new.cust_telp,new.cust_hp,new.cust_alamat,new.cust_keterangan,new.id_fk_toko,new.cust_status,new.cust_create_date,new.cust_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_customer_log(executed_function,id_pk_cust,cust_name,cust_no_npwp,cust_foto_npwp,cust_foto_kartu_nama,cust_badan_usaha,cust_no_rekening,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,id_fk_toko,cust_status,cust_create_date,cust_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_cust,new.cust_name,new.cust_no_npwp,new.cust_foto_npwp,new.cust_foto_kartu_nama,new.cust_badan_usaha,new.cust_no_rekening,new.cust_suff,new.cust_perusahaan,new.cust_email,new.cust_telp,new.cust_hp,new.cust_alamat,new.cust_keterangan,new.id_fk_toko,new.cust_status,new.cust_create_date,new.cust_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;";
         executequery($sql);
@@ -134,11 +151,16 @@ class M_customer extends ci_model{
                 cust_alamat like '%".$search_key."%' or
                 cust_keterangan like '%".$search_key."%' or
                 cust_status like '%".$search_key."%' or
+                cust_no_npwp like '%".$search_key."%' or
+                cust_foto_npwp like '%".$search_key."%' or
+                cust_foto_kartu_nama like '%".$search_key."%' or
+                cust_badan_usaha like '%".$search_key."%' or
+                cust_no_rekening like '%".$search_key."%' or
                 cust_last_modified like '%".$search_key."%'
             )";
         }
         $query = "
-        select id_pk_cust,cust_name,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,cust_status,cust_last_modified
+        select id_pk_cust,cust_name,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,cust_no_npwp,cust_foto_npwp,cust_foto_kartu_nama,cust_badan_usaha,cust_no_rekening,cust_last_modified,cust_status
         from ".$this->tbl_name." 
         where cust_status = ? ".$search_query."  
         order by ".$order_by." ".$order_direction." 
@@ -183,6 +205,11 @@ class M_customer extends ci_model{
         $field = array(
             "id_pk_cust",
             "cust_name",
+            "cust_no_npwp",
+            "cust_foto_npwp",
+            "cust_foto_kartu_nama",
+            "cust_badan_usaha",
+            "cust_no_rekening",
             "cust_suff",
             "cust_perusahaan",
             "cust_email",
@@ -211,6 +238,11 @@ class M_customer extends ci_model{
         if($this->check_insert()){
             $data = array(
                 "cust_name" => $this->cust_name,
+                "cust_no_npwp" => $this->cust_no_npwp,
+                "cust_foto_npwp" => $this->cust_foto_npwp,
+                "cust_foto_kartu_nama" => $this->cust_foto_kartu_nama,
+                "cust_badan_usaha" => $this->cust_badan_usaha,
+                "cust_no_rekening" => $this->cust_no_rekening,
                 "cust_suff" => $this->cust_suff,
                 "cust_perusahaan" => $this->cust_perusahaan,
                 "cust_email" => $this->cust_email,
@@ -235,6 +267,11 @@ class M_customer extends ci_model{
             );
             $data = array(
                 "cust_name" => $this->cust_name,
+                "cust_no_npwp" => $this->cust_no_npwp,
+                "cust_foto_npwp" => $this->cust_foto_npwp,
+                "cust_foto_kartu_nama" => $this->cust_foto_kartu_nama,
+                "cust_badan_usaha" => $this->cust_badan_usaha,
+                "cust_no_rekening" => $this->cust_no_rekening,
                 "cust_suff" => $this->cust_suff,
                 "cust_perusahaan" => $this->cust_perusahaan,
                 "cust_email" => $this->cust_email,
@@ -267,6 +304,21 @@ class M_customer extends ci_model{
     }
     public function check_insert(){
         if($this->cust_name == ""){
+            return false;
+        }
+        if($this->cust_no_npwp == ""){
+            return false;
+        }
+        if($this->cust_foto_npwp == ""){
+            return false;
+        }
+        if($this->cust_foto_kartu_nama == ""){
+            return false;
+        }
+        if($this->cust_badan_usaha == ""){
+            return false;
+        }
+        if($this->cust_no_rekening == ""){
             return false;
         }
         if($this->cust_suff == ""){
@@ -314,6 +366,21 @@ class M_customer extends ci_model{
         if($this->cust_name == ""){
             return false;
         }
+        if($this->cust_no_npwp == ""){
+            return false;
+        }
+        if($this->cust_foto_npwp == ""){
+            return false;
+        }
+        if($this->cust_foto_kartu_nama == ""){
+            return false;
+        }
+        if($this->cust_badan_usaha == ""){
+            return false;
+        }
+        if($this->cust_no_rekening == ""){
+            return false;
+        }
         if($this->cust_suff == ""){
             return false;
         }
@@ -355,8 +422,23 @@ class M_customer extends ci_model{
         }
         return true;
     }
-    public function set_insert($cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_status){
+    public function set_insert($cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_status,$cust_no_npwp,$cust_foto_npwp,$cust_foto_kartu_nama,$cust_badan_usaha,$cust_no_rekening){
         if(!$this->set_cust_name($cust_name)){
+            return false;
+        }
+        if(!$this->set_cust_no_npwp($cust_no_npwp)){
+            return false;
+        }
+        if(!$this->set_cust_foto_npwp($cust_foto_npwp)){
+            return false;
+        }
+        if(!$this->set_cust_foto_kartu_nama($cust_foto_kartu_nama)){
+            return false;
+        }
+        if(!$this->set_cust_badan_usaha($cust_badan_usaha)){
+            return false;
+        }
+        if(!$this->set_cust_no_rekening($cust_no_rekening)){
             return false;
         }
         if(!$this->set_cust_suff($cust_suff)){
@@ -385,11 +467,26 @@ class M_customer extends ci_model{
         }
         return true;
     }
-    public function set_update($id_pk_cust,$cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan){
+    public function set_update($id_pk_cust,$cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_no_npwp,$cust_foto_npwp,$cust_foto_kartu_nama,$cust_badan_usaha,$cust_no_rekening){
         if(!$this->set_id_pk_cust($id_pk_cust)){
             return false;
         }
         if(!$this->set_cust_name($cust_name)){
+            return false;
+        }
+        if(!$this->set_cust_no_npwp($cust_no_npwp)){
+            return false;
+        }
+        if(!$this->set_cust_foto_npwp($cust_foto_npwp)){
+            return false;
+        }
+        if(!$this->set_cust_foto_kartu_nama($cust_foto_kartu_nama)){
+            return false;
+        }
+        if(!$this->set_cust_badan_usaha($cust_badan_usaha)){
+            return false;
+        }
+        if(!$this->set_cust_no_rekening($cust_no_rekening)){
             return false;
         }
         if(!$this->set_cust_suff($cust_suff)){
@@ -431,6 +528,41 @@ class M_customer extends ci_model{
     public function set_cust_name($cust_name){
         if($cust_name != ""){
             $this->cust_name = $cust_name;
+            return true;
+        }
+        return false;
+    }
+    public function set_cust_no_npwp($cust_no_npwp){
+        if($cust_no_npwp != ""){
+            $this->cust_no_npwp = $cust_no_npwp;
+            return true;
+        }
+        return false;
+    }
+    public function set_cust_foto_npwp($cust_foto_npwp){
+        if($cust_foto_npwp != ""){
+            $this->cust_foto_npwp = $cust_foto_npwp;
+            return true;
+        }
+        return false;
+    }
+    public function set_cust_foto_kartu_nama($cust_foto_kartu_nama){
+        if($cust_foto_kartu_nama != ""){
+            $this->cust_foto_kartu_nama = $cust_foto_kartu_nama;
+            return true;
+        }
+        return false;
+    }
+    public function set_cust_badan_usaha($cust_badan_usaha){
+        if($cust_badan_usaha != ""){
+            $this->cust_badan_usaha = $cust_badan_usaha;
+            return true;
+        }
+        return false;
+    }
+    public function set_cust_no_rekening($cust_no_rekening){
+        if($cust_no_rekening != ""){
+            $this->cust_no_rekening = $cust_no_rekening;
             return true;
         }
         return false;

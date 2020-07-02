@@ -44,6 +44,11 @@ class Customer extends CI_Controller{
                 $response["content"][$a]["alamat"] = $result["data"][$a]["cust_alamat"];
                 $response["content"][$a]["keterangan"] = $result["data"][$a]["cust_keterangan"];
                 $response["content"][$a]["status"] = $result["data"][$a]["cust_status"];
+                $response["content"][$a]["no_npwp"] = $result["data"][$a]["cust_no_npwp"];
+                $response["content"][$a]["foto_npwp"] = $result["data"][$a]["cust_foto_npwp"];
+                $response["content"][$a]["foto_kartu_nama"] = $result["data"][$a]["cust_foto_kartu_nama"];
+                $response["content"][$a]["badan_usaha"] = $result["data"][$a]["cust_badan_usaha"];
+                $response["content"][$a]["no_rekening"] = $result["data"][$a]["cust_no_rekening"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["cust_last_modified"];
             }
         }
@@ -83,6 +88,11 @@ class Customer extends CI_Controller{
                 $response["content"][$a]["status"] = $result[$a]["cust_status"];
                 $response["content"][$a]["create_date"] = $result[$a]["cust_create_date"];
                 $response["content"][$a]["last_modified"] = $result[$a]["cust_last_modified"];
+                $response["content"][$a]["no_npwp"] = $result[$a]["cust_no_npwp"];
+                $response["content"][$a]["foto_npwp"] = $result[$a]["cust_foto_npwp"];
+                $response["content"][$a]["foto_kartu_nama"] = $result[$a]["cust_foto_kartu_nama"];
+                $response["content"][$a]["badan_usaha"] = $result[$a]["cust_badan_usaha"];
+                $response["content"][$a]["no_rekening"] = $result[$a]["cust_no_rekening"];
             }
         }
         else{
@@ -101,11 +111,41 @@ class Customer extends CI_Controller{
         $this->form_validation->set_rules("cust_hp","No HP","required");
         $this->form_validation->set_rules("cust_alamat","Alamat","required");
         $this->form_validation->set_rules("cust_keterangan","Keterangan","required");
+        $this->form_validation->set_rules("cust_badan_usaha","cust_badan_usaha","required");
+        $this->form_validation->set_rules("cust_npwp","cust_npwp","required");
+        $this->form_validation->set_rules("cust_rek","cust_rek","required");
 			
         if($this->form_validation->run()){
             $this->load->model("m_customer");
+            
+
+            $config1['upload_path'] = './asset/uploads/customer/npwp/';
+			$config1['allowed_types'] = 'jpg|png|jpeg';
+			$this->load->library('upload', $config1);
+			if ( ! $this->upload->do_upload('cust_foto_npwp')){
+				$error = array('error' => $this->upload->display_errors());
+				$cust_foto_npwp = "noimage.jpg";
+			}
+			else{
+				$cust_foto_npwp = $this->upload->data('file_name');
+            }
+            
+            $config2['upload_path']          = './asset/uploads/customer/krt_nama/';
+			$config2['allowed_types']        = 'jpg|png|jpeg';
+			$this->upload->initialize($config2);
+			if ( ! $this->upload->do_upload('cust_krt_nama')){
+				$error = array('error' => $this->upload->display_errors());
+				$cust_foto_kartu_nama = "noimage.jpg";
+			}
+			else{
+				$cust_foto_kartu_nama = $this->upload->data('file_name');
+			}
+
 
             $cust_name = $this->input->post("cust_name");
+            $cust_badan_usaha = $this->input->post("cust_badan_usaha");
+            $cust_no_npwp = $this->input->post("cust_npwp");
+            $cust_no_rekening = $this->input->post("cust_rek");
             $cust_suff = $this->input->post("cust_suff");
             $cust_perusahaan = $this->input->post("cust_perusahaan");
             $cust_email = $this->input->post("cust_email");
@@ -115,7 +155,7 @@ class Customer extends CI_Controller{
             $cust_keterangan = $this->input->post("cust_keterangan");
             $cust_status = "AKTIF";
 
-            if($this->m_customer->set_insert($cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_status)){
+            if($this->m_customer->set_insert($cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_status,$cust_no_npwp,$cust_foto_npwp,$cust_foto_kartu_nama,$cust_badan_usaha,$cust_no_rekening)){
                 if($this->m_customer->insert()){
                     $response["msg"] = "Data is recorded to database";
                 }
@@ -147,8 +187,34 @@ class Customer extends CI_Controller{
         $this->form_validation->set_rules("cust_keterangan","Keterangan","required");
         
         if($this->form_validation->run()){
+
+            $config1['upload_path'] = './asset/uploads/customer/npwp/';
+			$config1['allowed_types'] = 'jpg|png|jpeg';
+			$this->load->library('upload', $config1);
+			if ( ! $this->upload->do_upload('cust_foto_npwp')){
+				$error = array('error' => $this->upload->display_errors());
+				$cust_foto_npwp = $this->input->post("cust_foto_npwp_current");
+			}
+			else{
+				$cust_foto_npwp = $this->upload->data('file_name');
+            }
+            
+            $config2['upload_path']          = './asset/uploads/customer/krt_nama/';
+			$config2['allowed_types']        = 'jpg|png|jpeg';
+			$this->upload->initialize($config2);
+			if ( ! $this->upload->do_upload('cust_krt_nama')){
+				$error = array('error' => $this->upload->display_errors());
+				$cust_foto_kartu_nama = $this->input->post("cust_krt_nama_current");
+			}
+			else{
+				$cust_foto_kartu_nama = $this->upload->data('file_name');
+			}
+
             $id_pk_cust = $this->input->post("id_pk_cust");
             $cust_name = $this->input->post("cust_name");
+            $cust_badan_usaha = $this->input->post("cust_badan_usaha");
+            $cust_no_npwp = $this->input->post("cust_npwp");
+            $cust_no_rekening = $this->input->post("cust_rek");
             $cust_suff = $this->input->post("cust_suff");
             $cust_perusahaan = $this->input->post("cust_perusahaan");
             $cust_email = $this->input->post("cust_email");
@@ -158,7 +224,7 @@ class Customer extends CI_Controller{
             $cust_keterangan = $this->input->post("cust_keterangan");
 
             $this->load->model("m_customer");
-            if($this->m_customer->set_update($id_pk_cust,$cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan)){
+            if($this->m_customer->set_update($id_pk_cust,$cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_no_npwp,$cust_foto_npwp,$cust_foto_kartu_nama,$cust_badan_usaha,$cust_no_rekening)){
                 if($this->m_customer->update()){
                     $response["msg"] = "Data is updated to database";
                 }
