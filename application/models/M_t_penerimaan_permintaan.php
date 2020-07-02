@@ -72,7 +72,7 @@ class M_t_penerimaan_permintaan extends ci_model{
             inner join tbl_brg_permintaan on tbl_brg_permintaan.id_pk_brg_permintaan = tbl_brg_pemenuhan.id_fk_brg_permintaan and tbl_brg_permintaan.id_fk_cabang = 1 #menentukan peminta barang yang akan jadi penerima
             inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg #dapetin detail barang
             left join tbl_brg_penerimaan on tbl_brg_penerimaan.id_fk_brg_pengiriman = tbl_brg_pengiriman.id_pk_brg_pengiriman and tbl_brg_penerimaan.brg_penerimaan_qty > 0 #dianggap diterima apabila brgditerima > 0 (klo delete, ini ke 0 sendiri)
-            left join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan and mstr_penerimaan.penerimaan_status = 'aktif' #dianggap diterima apabila status penerimaan > 0
+            left join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan and mstr_penerimaan.penerimaan_status = 'aktif' and mstr_penerimaan.penerimaan_tipe = 'permintaan' #dianggap diterima apabila status penerimaan > 0
             where tbl_brg_pengiriman.brg_pengiriman_qty > 0 #dianggap terkirim apabila tidak di cancel (klo cancel, qty jadi 0)
             ".$search_query."
             order by ".$order_by." ".$order_direction." 
@@ -92,7 +92,7 @@ class M_t_penerimaan_permintaan extends ci_model{
             inner join tbl_brg_permintaan on tbl_brg_permintaan.id_pk_brg_permintaan = tbl_brg_pemenuhan.id_fk_brg_permintaan and tbl_brg_permintaan.id_fk_cabang = 1 #menentukan peminta barang yang akan jadi penerima
             inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg #dapetin detail barang
             left join tbl_brg_penerimaan on tbl_brg_penerimaan.id_fk_brg_pengiriman = tbl_brg_pengiriman.id_pk_brg_pengiriman and tbl_brg_penerimaan.brg_penerimaan_qty > 0 #dianggap diterima apabila brgditerima > 0 (klo delete, ini ke 0 sendiri)
-            left join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan and mstr_penerimaan.penerimaan_status = 'aktif' #dianggap diterima apabila status penerimaan > 0
+            left join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan and mstr_penerimaan.penerimaan_status = 'aktif' and mstr_penerimaan.penerimaan_tipe = 'permintaan' #dianggap diterima apabila status penerimaan > 0
             where tbl_brg_pengiriman.brg_pengiriman_qty > 0 #dianggap terkirim apabila tidak di cancel (klo cancel, qty jadi 0)
             ".$search_query."
             order by ".$order_by." ".$order_direction; 
