@@ -2307,9 +2307,7 @@ button.fc-agendaWeek-button, .fc-prev-button, .fc-next-button, .fc-today-button 
   border-right: 1px solid #dedede;
   -webkit-transition: all 0.4s ease;
   -moz-transition: all 0.4s ease;
-  transition: all 0.4s ease;
-  background-image: url("../../../img/sidebar1.jpg");
-  background-size: cover; }
+  transition: all 0.4s ease; }
   .fixed-sidebar-left .right-nav-text {
     opacity: 1;
     -webkit-transition: opacity 0.2s ease 0s;
