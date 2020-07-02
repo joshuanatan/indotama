@@ -14,7 +14,7 @@ class Employee extends CI_Controller {
 		$data['toko'] = selectRow("mstr_toko",$where1)->result_array();
 		$data['toko_all'] = selectRow("mstr_toko")->result_array();
         $data['view_employee'] = selectRow("mstr_employee",$where)->result_array();
-		$this->load->view('employee/V_employee',$data);
+		$this->load->view('employee/v_employee',$data);
 	}
 
 	public function register_employee(){
