@@ -27,6 +27,21 @@
                         <input type = "file" class = "form-control" name = "logo">
                     </div>
                     <div class = "form-group">
+                        <h5>Kop Surat</h5>
+                        <input type = "file" class = "form-control" name = "kop_surat">
+                        <input type = "hidden" name = "kop_surat_current" id = "kop_surat_edit">
+                    </div>
+                    <div class = "form-group">
+                        <h5>Surat Non PKP</h5>
+                        <input type = "file" class = "form-control" name = "nonpkp">
+                        <input type = "hidden" name = "nonpkp_current" id = "nonpkp_edit">
+                    </div>
+                    <div class = "form-group">
+                        <h5>Surat Pernyataan Nomor Rekening</h5>
+                        <input type = "file" class = "form-control" name = "pernyataan_rek">
+                        <input type = "hidden" name = "pernyataan_rek_current" id = "pernyataan_rek_edit">
+                    </div>
+                    <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
                         <button type = "button" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
@@ -42,23 +57,8 @@
         $("#nama_edit").val(content[id]["nama"]);
         $("#kode_edit").val(content[id]["kode"]);
         $("#logo_current_edit").val(content[id]["logo_file"]);
-    }
-    function update_func(){
-        var form = $("#update_form")[0];
-        var data = new FormData(form);
-        $.ajax({
-            url:"<?php echo base_url();?>ws/"+ctrl+"/update",
-            type:"POST",
-            dataType:"JSON",
-            data:data,
-            processData: false,
-            contentType: false,
-            success:function(respond){
-                if(respond["status"] == "SUCCESS"){
-                    $("#update_modal").modal("hide");
-                    refresh(page);
-                }
-            }
-        });
+        $("#kop_surat_edit").val(content[id]["kop_surat"]);
+        $("#nonpkp_edit").val(content[id]["nonpkp"]);
+        $("#pernyataan_rek_edit").val(content[id]["pernyataan_rek"]);
     }
 </script>

@@ -25,6 +25,18 @@
                         <input type = "file" class = "form-control" name = "logo">
                     </div>
                     <div class = "form-group">
+                        <h5>Kop Surat</h5>
+                        <input type = "file" class = "form-control" name = "kop_surat">
+                    </div>
+                    <div class = "form-group">
+                        <h5>Surat Non PKP</h5>
+                        <input type = "file" class = "form-control" name = "nonpkp">
+                    </div>
+                    <div class = "form-group">
+                        <h5>Surat Pernyataan Nomor Rekening</h5>
+                        <input type = "file" class = "form-control" name = "pernyataan_rek">
+                    </div>
+                    <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
                         <button type = "button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
@@ -33,24 +45,3 @@
         </div>
     </div>
 </div>
-<script>
-    function register_func(){
-        var form = $("#register_form")[0];
-        var data = new FormData(form);
-        $.ajax({
-            url:"<?php echo base_url();?>ws/"+ctrl+"/register",
-            type:"POST",
-            dataType:"JSON",
-            data:data,
-            processData:false,
-            contentType:false,
-            success:function(respond){
-                if(respond["status"] == "SUCCESS"){
-                    $("#register_modal").modal("hide");
-                    $("#register_form :input").val("");
-                    refresh(page);
-                }
-            }
-        });
-    }
-</script>

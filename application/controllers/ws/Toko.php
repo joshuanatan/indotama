@@ -36,7 +36,7 @@ class Toko extends CI_Controller{
             for($a = 0; $a<count($result["data"]); $a++){
                 $response["content"][$a]["id"] = $result["data"][$a]["id_pk_toko"];
                 if($result["data"][$a]["toko_logo"]){
-                    $response["content"][$a]["logo"] = "<img src = '".base_url()."asset/uploads/toko/".$result["data"][$a]["toko_logo"]."' width = '80px'>";
+                    $response["content"][$a]["logo"] = "<img src = '".base_url()."asset/uploads/toko/logo/".$result["data"][$a]["toko_logo"]."' width = '80px'>";
                 }
                 else{
                     $response["content"][$a]["logo"] = "-";
@@ -47,6 +47,9 @@ class Toko extends CI_Controller{
                 $response["content"][$a]["status"] = $result["data"][$a]["toko_status"];
                 $response["content"][$a]["create_date"] = $result["data"][$a]["toko_create_date"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["toko_last_modified"];
+                $response["content"][$a]["kop_surat"] = $result["data"][$a]["toko_kop_surat"];
+                $response["content"][$a]["nonpkp"] = $result["data"][$a]["toko_nonpkp"];
+                $response["content"][$a]["pernyataan_rek"] = $result["data"][$a]["toko_pernyataan_rek"];
             }
         }
         else{
@@ -72,16 +75,39 @@ class Toko extends CI_Controller{
             $toko_kode = $this->input->post("kode");
             $toko_status = "AKTIF";
             
-            $config['upload_path'] = './asset/uploads/toko/';
+            $config['upload_path'] = './asset/uploads/toko/logo/';
             $config['allowed_types'] = 'gif|jpg|png';
-
             $this->load->library('upload', $config);
-            $toko_logo = "-";
+            $toko_logo = "noimage.jpg";
             if($this->upload->do_upload('logo')){
                 $toko_logo = $this->upload->data("file_name");
             }
 
-            if($this->m_toko->set_insert($toko_logo,$toko_nama,$toko_kode,$toko_status)){
+            $config['upload_path'] = './asset/uploads/toko/kop_surat/';
+            $config['allowed_types'] = '*';
+            $this->upload->initialize($config);
+            $toko_kop_surat = "noimage.jpg";
+            if($this->upload->do_upload('kop_surat')){
+                $toko_kop_surat = $this->upload->data("file_name");
+            }
+
+            $config['upload_path'] = './asset/uploads/toko/nonpkp/';
+            $config['allowed_types'] = '*';
+            $this->upload->initialize($config);
+            $toko_nonpkp = "noimage.jpg";
+            if($this->upload->do_upload('nonpkp')){
+                $toko_nonpkp = $this->upload->data("file_name");
+            }
+
+            $config['upload_path'] = './asset/uploads/toko/pernyataan_rek/';
+            $config['allowed_types'] = '*';
+            $this->upload->initialize($config);
+            $toko_pernyataan_rek = "noimage.jpg";
+            if($this->upload->do_upload('pernyataan_rek')){
+                $toko_pernyataan_rek = $this->upload->data("file_name");
+            }
+
+            if($this->m_toko->set_insert($toko_logo,$toko_nama,$toko_kode,$toko_status,$toko_kop_surat,$toko_nonpkp,$toko_pernyataan_rek)){
                 if($this->m_toko->insert()){
                     $response["msg"] = "Data is recorded to database";
                 }
@@ -112,16 +138,39 @@ class Toko extends CI_Controller{
             $toko_nama = $this->input->post("nama");
             $toko_kode = $this->input->post("kode");
 
-            $config['upload_path'] = './asset/uploads/toko/';
+            $config['upload_path'] = './asset/uploads/toko/logo/';
             $config['allowed_types'] = 'gif|jpg|png';
-
             $this->load->library('upload', $config);
             $toko_logo = $this->input->post("logo_current");
             if($this->upload->do_upload('logo')){
                 $toko_logo = $this->upload->data("file_name");
             }
 
-            if($this->m_toko->set_update($id_pk_toko,$toko_logo,$toko_nama,$toko_kode)){
+            $config['upload_path'] = './asset/uploads/toko/kop_surat/';
+            $config['allowed_types'] = '*';
+            $this->upload->initialize($config);
+            $toko_kop_surat = $this->input->post("kop_surat_current");
+            if($this->upload->do_upload('kop_surat')){
+                $toko_kop_surat = $this->upload->data("file_name");
+            }
+
+            $config['upload_path'] = './asset/uploads/toko/nonpkp/';
+            $config['allowed_types'] = '*';
+            $this->upload->initialize($config);
+            $toko_nonpkp = $this->input->post("nonpkp_current");
+            if($this->upload->do_upload('nonpkp')){
+                $toko_nonpkp = $this->upload->data("file_name");
+            }
+
+            $config['upload_path'] = './asset/uploads/toko/pernyataan_rek/';
+            $config['allowed_types'] = '*';
+            $this->upload->initialize($config);
+            $toko_pernyataan_rek = $this->input->post("pernyataan_rek_current");
+            if($this->upload->do_upload('pernyataan_rek')){
+                $toko_pernyataan_rek = $this->upload->data("file_name");
+            }
+
+            if($this->m_toko->set_update($id_pk_toko,$toko_logo,$toko_nama,$toko_kode,$toko_kop_surat,$toko_nonpkp,$toko_pernyataan_rek)){
                 if($this->m_toko->update()){
                     $response["msg"] = "Data is updated to database";
                 }
