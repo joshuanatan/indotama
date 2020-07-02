@@ -43,6 +43,9 @@ class Cabang extends CI_Controller{
                 $response["content"][$a]["status"] = $result["data"][$a]["cabang_status"];
                 $response["content"][$a]["create_date"] = $result["data"][$a]["cabang_create_date"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["cabang_last_modified"];
+                $response["content"][$a]["kop_surat"] = $result["data"][$a]["cabang_kop_surat"];
+                $response["content"][$a]["nonpkp"] = $result["data"][$a]["cabang_nonpkp"];
+                $response["content"][$a]["pernyataan_rek"] = $result["data"][$a]["cabang_pernyataan_rek"];
             }
         }
         else{
@@ -72,7 +75,31 @@ class Cabang extends CI_Controller{
             $cabang_alamat = $this->input->post("alamat");
             $cabang_notelp = $this->input->post("notelp");
             
-            if($this->m_cabang->set_insert($cabang_daerah,$cabang_notelp,$cabang_status,$cabang_alamat,$id_fk_toko)){
+            $config['upload_path'] = './asset/uploads/cabang/kop_surat/';
+            $config['allowed_types'] = '*';
+            $this->load->library("upload",$config);
+            $cabang_kop_surat = "noimage.jpg";
+            if($this->upload->do_upload('kop_surat')){
+                $cabang_kop_surat = $this->upload->data("file_name");
+            }
+
+            $config['upload_path'] = './asset/uploads/cabang/nonpkp/';
+            $config['allowed_types'] = '*';
+            $this->upload->initialize($config);
+            $cabang_nonpkp = "noimage.jpg";
+            if($this->upload->do_upload('nonpkp')){
+                $cabang_nonpkp = $this->upload->data("file_name");
+            }
+
+            $config['upload_path'] = './asset/uploads/cabang/pernyataan_rek/';
+            $config['allowed_types'] = '*';
+            $this->upload->initialize($config);
+            $cabang_pernyataan_rek = "noimage.jpg";
+            if($this->upload->do_upload('pernyataan_rek')){
+                $cabang_pernyataan_rek = $this->upload->data("file_name");
+            }
+
+            if($this->m_cabang->set_insert($cabang_daerah,$cabang_notelp,$cabang_status,$cabang_alamat,$id_fk_toko,$cabang_kop_surat,$cabang_nonpkp,$cabang_pernyataan_rek)){
                 if($this->m_cabang->insert()){
                     $response["msg"] = "Data is recorded to database";
                 }
@@ -105,7 +132,31 @@ class Cabang extends CI_Controller{
             $cabang_alamat = $this->input->post("alamat");
             $cabang_notelp = $this->input->post("notelp");
             
-            if($this->m_cabang->set_update($id_pk_cabang,$cabang_daerah,$cabang_notelp,$cabang_alamat)){
+            $config['upload_path'] = './asset/uploads/cabang/kop_surat/';
+            $config['allowed_types'] = '*';
+            $this->load->library("upload",$config);
+            $cabang_kop_surat = $this->input->post("kop_surat_current");
+            if($this->upload->do_upload('kop_surat')){
+                $cabang_kop_surat = $this->upload->data("file_name");
+            }
+
+            $config['upload_path'] = './asset/uploads/cabang/nonpkp/';
+            $config['allowed_types'] = '*';
+            $this->upload->initialize($config);
+            $cabang_nonpkp = $this->input->post("nonpkp_current");
+            if($this->upload->do_upload('nonpkp')){
+                $cabang_nonpkp = $this->upload->data("file_name");
+            }
+
+            $config['upload_path'] = './asset/uploads/cabang/pernyataan_rek/';
+            $config['allowed_types'] = '*';
+            $this->upload->initialize($config);
+            $cabang_pernyataan_rek = $this->input->post("pernyataan_rek_current");
+            if($this->upload->do_upload('pernyataan_rek')){
+                $cabang_pernyataan_rek = $this->upload->data("file_name");
+            }
+
+            if($this->m_cabang->set_update($id_pk_cabang,$cabang_daerah,$cabang_notelp,$cabang_alamat,$cabang_kop_surat,$cabang_nonpkp,$cabang_pernyataan_rek)){
                 if($this->m_cabang->update()){
                     $response["msg"] = "Data is updated to database";
                 }
