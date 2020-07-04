@@ -18,6 +18,7 @@ class M_brg_cabang extends ci_model{
 
     public function __construct(){
         parent::__construct();
+        executeQuery("call list_barang_kombinasi_cabang();");
         $this->set_column("brg_kode","kode barang","required");
         $this->set_column("brg_nama","nama barang","required");
         $this->set_column("brg_ket","keterangan","required");
