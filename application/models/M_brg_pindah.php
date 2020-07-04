@@ -9,6 +9,7 @@ class M_brg_pindah extends CI_Model{
     private $id_fk_refrensi_sumber; /* id_warehouse/id_penjualan */
     private $id_brg_awal; /*klo dia warehouse, stok warehouse, cabang pake stok cabang*/
     private $id_brg_tujuan;
+    private $id_fk_cabang;
     private $brg_pindah_qty;
     private $brg_pindah_status;
     private $brg_pindah_create_date;
@@ -22,6 +23,7 @@ class M_brg_pindah extends CI_Model{
         $this->brg_pindah_last_modified = date("Y-m-d H:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
+        $this->id_fk_cabang = $this->session->id_cabang;
     }
     public function install(){
         $sql = "
@@ -32,6 +34,7 @@ class M_brg_pindah extends CI_Model{
             id_fk_refrensi_sumber int comment 'id_warehouse/id_penjualan/...',
             id_brg_awal int,
             id_brg_tujuan int,
+            id_fk_cabang int,
             brg_pindah_qty double,
             brg_pindah_status varchar(15),
             brg_pindah_create_date datetime,
@@ -48,6 +51,7 @@ class M_brg_pindah extends CI_Model{
             id_fk_refrensi_sumber int comment 'id_warehouse/id_penjualan/...',
             id_brg_awal int,
             id_brg_tujuan int,
+            id_fk_cabang int,
             brg_pindah_qty double,
             brg_pindah_status varchar(15),
             brg_pindah_create_date datetime,
@@ -67,7 +71,13 @@ class M_brg_pindah extends CI_Model{
             set @log_text = concat(new.id_last_modified,' ','insert data at' , new.brg_pindah_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into tbl_brg_pindah_log(executed_function,id_pk_brg_pindah,brg_pindah_sumber,id_fk_refrensi_sumber,id_brg_awal,id_brg_tujuan,brg_pindah_qty,brg_pindah_status,brg_pindah_create_date,brg_pindah_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_pindah,new.brg_pindah_sumber,new.id_fk_refrensi_sumber,new.id_brg_awal,new.id_brg_tujuan,new.brg_pindah_qty,new.brg_pindah_status,new.brg_pindah_create_date,new.brg_pindah_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into tbl_brg_pindah_log(executed_function,id_pk_brg_pindah,brg_pindah_sumber,id_fk_refrensi_sumber,id_brg_awal,id_brg_tujuan,id_fk_cabang,brg_pindah_qty,brg_pindah_status,brg_pindah_create_date,brg_pindah_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_pindah,new.brg_pindah_sumber,new.id_fk_refrensi_sumber,new.id_brg_awal,new.id_brg_tujuan,new.id_fk_cabang,new.brg_pindah_qty,new.brg_pindah_status,new.brg_pindah_create_date,new.brg_pindah_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+
+            /*update barang cabang*/
+            select id_pk_satuan into @id_satuan from mstr_satuan where mstr_satuan.satuan_rumus = 1;            
+            call update_stok_barang_cabang(new.id_brg_awal,new.id_fk_cabang,0,0,new.brg_pindah_qty,@id_satuan);
+            call update_stok_barang_cabang(new.id_brg_tujuan,new.id_fk_cabang,new.brg_pindah_qty,@id_satuan,0,0);
+            
         end$$
         delimiter ;
         
@@ -82,7 +92,7 @@ class M_brg_pindah extends CI_Model{
             set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_pindah_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into tbl_brg_pindah_log(executed_function,id_pk_brg_pindah,brg_pindah_sumber,id_fk_refrensi_sumber,id_brg_awal,id_brg_tujuan,brg_pindah_qty,brg_pindah_status,brg_pindah_create_date,brg_pindah_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_pindah,new.brg_pindah_sumber,new.id_fk_refrensi_sumber,new.id_brg_awal,new.id_brg_tujuan,new.brg_pindah_qty,new.brg_pindah_status,new.brg_pindah_create_date,new.brg_pindah_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into tbl_brg_pindah_log(executed_function,id_pk_brg_pindah,brg_pindah_sumber,id_fk_refrensi_sumber,id_brg_awal,id_brg_tujuan,id_fk_cabang,brg_pindah_qty,brg_pindah_status,brg_pindah_create_date,brg_pindah_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_pindah,new.brg_pindah_sumber,new.id_fk_refrensi_sumber,new.id_brg_awal,new.id_brg_tujuan,new.id_fk_cabang,new.brg_pindah_qty,new.brg_pindah_status,new.brg_pindah_create_date,new.brg_pindah_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         ";
@@ -118,6 +128,7 @@ class M_brg_pindah extends CI_Model{
                 "id_fk_refrensi_sumber" => $this->id_fk_refrensi_sumber,
                 "id_brg_awal" => $this->id_brg_awal,
                 "id_brg_tujuan" => $this->id_brg_tujuan,
+                "id_fk_cabang" => $this->id_fk_cabang,
                 "brg_pindah_qty" => $this->brg_pindah_qty,
                 "brg_pindah_status" => $this->brg_pindah_status,
                 "brg_pindah_create_date" => $this->brg_pindah_create_date,
