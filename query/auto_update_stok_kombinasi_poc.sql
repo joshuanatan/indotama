@@ -69,7 +69,6 @@ for not found set finished = 1;
 open brg_kombinasi_cur;
 mstr_kombinasi_loop: LOOP
 	fetch brg_kombinasi_cur into id_barang_utama_var,id_cabang_var;
-    select id_barang_utama_var,id_cabang_var;
     
     call update_latest_stok_mstr_brg_kombinasi(id_barang_utama_var,id_cabang_var,@new_stok);
     if finished = 1 then
@@ -84,4 +83,4 @@ END LOOP mstr_kombinasi_loop;
 end$$
 delimiter ;
 
-call list_barang_kombinasi_cabang();
+

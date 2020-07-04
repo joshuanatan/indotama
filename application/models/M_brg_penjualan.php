@@ -104,11 +104,11 @@ class M_brg_penjualan extends ci_model{
         from ".$this->tbl_name."
         inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_barang
         left join tbl_brg_pengiriman on tbl_brg_pengiriman.id_fk_brg_penjualan = tbl_brg_penjualan.id_pk_brg_penjualan and brg_pengiriman_qty > 0
-        where brg_penjualan_status = ? and id_fk_penjualan = ?
+        where brg_penjualan_status = ? and id_fk_penjualan = ? and brg_status = ?
         group by id_pk_brg_penjualan
         ";
         $args = array(
-            "aktif",$this->id_fk_penjualan
+            "aktif",$this->id_fk_penjualan,"aktif"
         );
         return executequery($sql,$args);
     }

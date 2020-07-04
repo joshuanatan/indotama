@@ -98,10 +98,10 @@ class M_brg_pembelian extends ci_model{
         select id_pk_brg_pembelian,brg_pem_qty,brg_pem_satuan,brg_pem_harga,brg_pem_note,id_fk_pembelian,id_fk_barang,brg_nama,brg_pem_create_date,brg_pem_last_modified
         from ".$this->tbl_name."
         inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_barang
-        where brg_pem_status = ? and id_fk_pembelian = ?
+        where brg_pem_status = ? and id_fk_pembelian = ? and brg_status = ?
         ";
         $args = array(
-            "aktif",$this->id_fk_pembelian
+            "aktif",$this->id_fk_pembelian,"aktif"
         );
         return executequery($sql,$args);
     }
