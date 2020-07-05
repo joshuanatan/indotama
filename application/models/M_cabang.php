@@ -159,7 +159,10 @@ class M_cabang extends ci_model{
             "cabang_alamat",
             "cabang_status",
             "cabang_last_modified",
-            "id_fk_toko"
+            "id_fk_toko",
+            "cabang_kop_surat",
+            "cabang_nonpkp",
+            "cabang_pernyataan_rek"
         );
         return selectrow($this->tbl_name,$where,$field);
     }

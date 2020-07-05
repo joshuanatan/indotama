@@ -258,4 +258,27 @@ class Cabang extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function pengaturan(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_cabang");
+		$this->m_cabang->set_id_pk_cabang($this->session->id_cabang);
+        $result = $this->m_cabang->detail_by_id();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            $response["content"][0]["id"] = $result[0]["id_pk_cabang"];
+            $response["content"][0]["daerah"] = $result[0]["cabang_daerah"];
+            $response["content"][0]["notelp"] = $result[0]["cabang_notelp"];
+            $response["content"][0]["alamat"] = $result[0]["cabang_alamat"];
+            $response["content"][0]["status"] = $result[0]["cabang_status"];
+            $response["content"][0]["last_modified"] = $result[0]["cabang_last_modified"];
+            $response["content"][0]["kop_surat"] = $result[0]["cabang_kop_surat"];
+            $response["content"][0]["nonpkp"] = $result[0]["cabang_nonpkp"];
+            $response["content"][0]["pernyataan_rek"] = $result[0]["cabang_pernyataan_rek"];
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "No Data";
+        }
+        echo json_encode($response);
+    }
 }

@@ -19,8 +19,22 @@ class Toko extends CI_Controller {
 
 		$this->load->view('cabang/v_master_toko_cabang',$data);
 	}
+	public function daftar_akses_toko(){
+		$this->load->view('toko/v_list_toko_admin');
+	}
 	public function daftar_akses_cabang(){
 		$this->load->view('cabang/v_list_cabang_admin');
+	}
+	public function admin($id_toko_page){
+		$this->load->model("m_toko");
+		$this->m_toko->set_id_pk_toko($id_toko_page);
+		$result = $this->m_toko->detail_by_id();
+		$detail_toko = $result->result_array();
+
+		$data["toko"] = $detail_toko;
+		$data["id_toko_page"] = $id_toko_page;
+		
+		$this->load->view('toko_admin/v_master_toko_admin',$data);
 	}
 	public function admin_cabang($id_cabang_page){
 
@@ -59,20 +73,6 @@ class Toko extends CI_Controller {
 		
 		$this->load->view('brg_cabang/v_brg_cabang',$data);
 	}
-	public function admin($id_toko_page){
-		$this->load->model("m_toko");
-		$this->m_toko->set_id_pk_toko($id_toko_page);
-		$result = $this->m_toko->detail_by_id();
-		$detail_toko = $result->result_array();
-
-		$data["toko"] = $detail_toko;
-		$data["id_toko_page"] = $id_toko_page;
-		
-		$this->load->view('toko_admin/v_master_toko_admin',$data);
-	}
-	public function daftar_akses_toko(){
-		$this->load->view('toko/v_list_toko_admin');
-	}
 	public function activate_toko_manajemen($id_toko){
 		$this->load->model("m_toko");
 		$this->m_toko->set_id_pk_toko($id_toko);
@@ -97,5 +97,11 @@ class Toko extends CI_Controller {
 		$this->session->nama_toko_cabang = $result[0]["toko_nama"];
 
 		redirect("toko/daftar_akses_cabang");
+	}
+	public function pengaturan_cabang(){
+		$this->load->view("cabang/v_pengaturan_cabang");
+	}
+	public function pengaturan_toko(){
+		$this->load->view("toko/v_pengaturan_toko");	
 	}
 }
