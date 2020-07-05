@@ -5,7 +5,7 @@ class Warehouse extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('warehouse/V_warehouse');
+		$this->load->view('warehouse/v_warehouse');
 	}
 	public function admin($id_warehouse){
 		
@@ -41,5 +41,8 @@ class Warehouse extends CI_Controller {
 		$data["warehouse"] = $result->result_array();
 		
 		$this->load->view('brg_warehouse/v_brg_warehouse',$data);
+	}
+	public function pengaturan_warehouse(){
+		$this->load->view("warehouse/v_pengaturan_warehouse");
 	}
 }

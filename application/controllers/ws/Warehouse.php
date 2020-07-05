@@ -190,4 +190,25 @@ class Warehouse extends CI_Controller{
         );
         echo json_encode($response);
     }
+    public function pengaturan(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_warehouse");
+		$this->m_warehouse->set_id_pk_warehouse($this->session->id_warehouse);
+        $result = $this->m_warehouse->detail_by_id();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            $response["content"][0]["id"] = $result[0]["id_pk_warehouse"];
+            $response["content"][0]["nama"] = $result[0]["warehouse_nama"];
+            $response["content"][0]["alamat"] = $result[0]["warehouse_alamat"];
+            $response["content"][0]["notelp"] = $result[0]["warehouse_notelp"];
+            $response["content"][0]["desc"] = $result[0]["warehouse_desc"];
+            $response["content"][0]["status"] = $result[0]["warehouse_status"];
+            $response["content"][0]["last_modified"] = $result[0]["warehouse_last_modified"];
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "No Data";
+        }
+        echo json_encode($response);
+    }
 }

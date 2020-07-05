@@ -28,15 +28,24 @@ if($this->session->id_warehouse):?>
         <?php if($this->session->multiple_warehouse_access):?>
         <li>
             <a href="<?php echo base_url();?>warehouse/daftar_akses_gudang"><?php #redirect ke daftar toko yang dia boleh akses?> 
-                <div class="pull-left">
-                    <span class="right-nav-text">Daftar Gudang</span>
-                </div>
-                <div class="clearfix"></div>
+                Daftar Gudang
             </a>
         </li>
         <?php endif;?>
         <?php if($this->session->id_warehouse):?>
+        <li>
+            <a href="<?php echo base_url();?>warehouse/dashboard_warehouse">
+                Dashboard Gudang
+            </a>
+        </li>
         <li id = "gudang_menu_separator"></li>
+        <?php endif;?>
+        <?php if($this->session->id_warehouse):?>
+        <li>
+            <a href="<?php echo base_url();?>warehouse/pengaturan_warehouse">
+                Pengaturan Warehouse
+            </a>
+        </li>
         <?php endif;?>
     </ul>
 </li>
