@@ -77,6 +77,38 @@ class M_barang_kombinasi extends CI_Model{
             
             insert into tbl_barang_kombinasi_log(executed_function,id_pk_barang_kombinasi,id_barang_utama,id_barang_kombinasi,barang_kombinasi_qty,barang_kombinasi_status,barang_kombinasi_create_date,barang_kombinasi_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_barang_kombinasi,new.id_barang_utama,new.id_barang_kombinasi,new.barang_kombinasi_qty,new.barang_kombinasi_status,new.barang_kombinasi_create_date,new.barang_kombinasi_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
+        delimiter ;
+
+        drop procedure if exists update_stok_kombinasi_barang_cabang;
+        delimiter //
+        create procedure update_stok_kombinasi_barang_cabang(
+            in id_barang_utama_in int,
+            in qty_brg_masuk_in double,
+            in qty_brg_keluar_in double,
+            in id_cabang_in int
+        )
+        begin
+            update tbl_barang_kombinasi
+            inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_barang_kombinasi.id_barang_kombinasi
+            set brg_cabang_qty = brg_cabang_qty+(barang_kombinasi_qty*qty_brg_masuk_in)-(barang_kombinasi_qty*qty_brg_keluar_in)
+            where id_barang_utama = id_barang_utama_in and id_fk_cabang = id_cabang_in and barang_kombinasi_status = 'aktif';
+        end//
+        delimiter ;
+        
+        drop procedure if exists update_stok_kombinasi_barang_warehouse;
+        delimiter //
+        create procedure update_stok_kombinasi_barang_warehouse(
+            in id_barang_utama_in int,
+            in qty_brg_masuk_in double,
+            in qty_brg_keluar_in double,
+            in id_warehouse_in int
+        )
+        begin
+            update tbl_barang_kombinasi
+            inner join tbl_brg_warehouse on tbl_brg_warehouse.id_fk_brg = tbl_barang_kombinasi.id_barang_kombinasi
+            set brg_warehouse_qty = brg_warehouse_qty+(barang_kombinasi_qty*qty_brg_masuk_in)-(barang_kombinasi_qty*qty_brg_keluar_in)
+            where id_barang_utama = id_barang_utama_in and id_fk_warehouse = id_warehouse_in and barang_kombinasi_status = 'aktif';
+        end//
         delimiter ;";
     }
     public function list(){
