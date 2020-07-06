@@ -14,17 +14,14 @@
                 <form id = "update_form" method = "POST">
                     <input type = "hidden" name = "id" id = "id_edit">
                     <div class = "form-group">
-                        <h5>Menu Display</h5>
+                        <h5>Nama Menu</h5>
                         <input type = "text" class = "form-control" required name = "display" id = "display_edit">
                     </div>
                     <div class = "form-group">
                         <h5>Controller</h5>
                         <input type = "text" class = "form-control" required name = "controller" id = "controller_edit">
                     </div>
-                    <div class = "form-group">
-                        <h5>Icon</h5>
-                        <input type = "text" class = "form-control" required name = "icon" id = "icon_edit">
-                    </div>
+                    <input type = "hidden" class = "form-control" required name = "icon" id = "icon_edit" value = "-">
                     <div class = "form-group">
                         <h5>Kategori</h5>
                         <select class = "form-control" required name = "kategori" id = "kategori_edit">
@@ -36,7 +33,7 @@
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <button type = "button" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
+                        <button type = "button" onclick = "update_func();menubar()" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
                 </form>
             </div>
