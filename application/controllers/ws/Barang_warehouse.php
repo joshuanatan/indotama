@@ -3,6 +3,7 @@ defined("BASEPATH") or exit("no direct script");
 class Barang_warehouse extends CI_Controller{
     public function __construct(){
         parent::__construct();
+        $this->update_list_barang();
     }
     public function columns(){
         $response["status"] = "SUCCESS";
@@ -186,5 +187,27 @@ class Barang_warehouse extends CI_Controller{
             $response["msg"] = "Invalid ID Supplier";
         }
         echo json_encode($response);
+    }
+    private function update_list_barang(){
+        //select semua yang belom ada   
+        $this->load->model("m_brg_warehouse");
+        $this->m_brg_warehouse->set_id_fk_warehouse($this->session->id_warehouse);
+        $result = $this->m_brg_warehouse->list_not_exists_brg_kombinasi();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                /*harusnya bukan 0 tapi sejumlah kombinasi qty * mstrkombinasi qty*/
+                /*kalau misalnya ada, itu harusnya ditambahin bukan di abaikan*/
+                if($this->m_brg_warehouse->set_insert($result[$a]["add_qty"],"Auto insert from item existance check","aktif",$result[$a]["id_barang_kombinasi"],$this->session->id_warehouse)){
+                    if($this->m_brg_warehouse->insert()){
+                    }
+                    else{
+                    }
+                }
+                else{
+                }
+            }   
+        }
+        //loop masuk
     }
 }

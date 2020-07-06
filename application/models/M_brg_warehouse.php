@@ -17,6 +17,7 @@ class M_brg_warehouse extends ci_model{
 
     public function __construct(){
         parent::__construct();
+        executeQuery("call list_barang_kombinasi_warehouse();");
         $this->set_column("brg_kode","kode barang","required");
         $this->set_column("brg_nama","nama barang","required");
         $this->set_column("brg_ket","keterangan","required");
@@ -172,20 +173,48 @@ class M_brg_warehouse extends ci_model{
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
+    public function list_not_exists_brg_kombinasi(){
+        $sql = "
+        select id_barang_kombinasi,barang_kombinasi_qty,brg_warehouse_qty,barang_kombinasi_qty*brg_warehouse_qty as add_qty 
+        from tbl_brg_warehouse
+        right join tbl_barang_kombinasi on tbl_barang_kombinasi.id_barang_utama = tbl_brg_warehouse.id_fk_brg
+        where id_fk_warehouse = ? and brg_warehouse_status = 'aktif'
+        and id_barang_kombinasi not in
+        (select id_fk_brg from tbl_brg_warehouse where id_fk_warehouse = ? and brg_warehouse_status = 'aktif')
+        ";
+        $args = array(
+            $this->id_fk_warehouse, $this->id_fk_warehouse
+        );
+        return executeQuery($sql,$args);
+    }
     public function insert(){
         if($this->check_insert()){
-            $data = array(
-                "brg_warehouse_qty" => $this->brg_warehouse_qty,
-                "brg_warehouse_notes" => $this->brg_warehouse_notes,
-                "brg_warehouse_status" => $this->brg_warehouse_status,
-                "id_fk_brg" => $this->id_fk_brg,
+            $where = array(
+                "brg_warehouse_status" => "aktif",
+                "id_fk_brg" => $this->id_fk_brg, 
                 "id_fk_warehouse" => $this->id_fk_warehouse,
-                "brg_warehouse_create_date" => $this->brg_warehouse_create_date,
-                "brg_warehouse_last_modified" => $this->brg_warehouse_last_modified,
-                "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified
             );
-            return insertrow($this->tbl_name,$data);
+            if(!isExistsInTable($this->tbl_name,$where)){
+                $data = array(
+                    "brg_warehouse_qty" => $this->brg_warehouse_qty,
+                    "brg_warehouse_notes" => $this->brg_warehouse_notes,
+                    "brg_warehouse_status" => $this->brg_warehouse_status,
+                    "id_fk_brg" => $this->id_fk_brg,
+                    "id_fk_warehouse" => $this->id_fk_warehouse,
+                    "brg_warehouse_create_date" => $this->brg_warehouse_create_date,
+                    "brg_warehouse_last_modified" => $this->brg_warehouse_last_modified,
+                    "id_create_data" => $this->id_create_data,
+                    "id_last_modified" => $this->id_last_modified
+                );
+                return insertrow($this->tbl_name,$data);
+            }
+            else{
+                $query = "update ".$this->tbl_name." set brg_warehouse_qty = brg_warehouse_qty+".$this->brg_warehouse_qty." where id_fk_brg = ? and id_fk_warehouse = ?";
+                $args =  array(
+                    $this->id_fk_brg,$this->id_fk_warehouse
+                );
+                executeQuery($query,$args);
+            }
         }
         return false;
     }
