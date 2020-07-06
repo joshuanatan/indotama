@@ -88,6 +88,8 @@ class M_brg_cabang extends ci_model{
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
             insert into tbl_brg_cabang_log(executed_function,id_pk_brg_cabang,brg_cabang_qty,brg_cabang_last_price,brg_cabang_notes,brg_cabang_status,id_fk_brg,id_fk_cabang,brg_cabang_create_date,brg_cabang_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_cabang,new.brg_cabang_last_price,new.brg_cabang_qty,new.brg_cabang_notes,new.brg_cabang_status,new.id_fk_brg,new.id_fk_cabang,new.brg_cabang_create_date,new.brg_cabang_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            
+            call update_stok_kombinasi_barang_cabang(new.id_fk_brg,new.brg_cabang_qty, 0, new.id_fk_cabang);
         end$$
         delimiter ;
 
@@ -103,6 +105,7 @@ class M_brg_cabang extends ci_model{
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
             insert into tbl_brg_cabang_log(executed_function,id_pk_brg_cabang,brg_cabang_qty,brg_cabang_last_price,brg_cabang_notes,brg_cabang_status,id_fk_brg,id_fk_cabang,brg_cabang_create_date,brg_cabang_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_cabang,new.brg_cabang_last_price,new.brg_cabang_qty,new.brg_cabang_notes,new.brg_cabang_status,new.id_fk_brg,new.id_fk_cabang,new.brg_cabang_create_date,new.brg_cabang_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+
         end$$
         delimiter ;
 
@@ -133,26 +136,9 @@ class M_brg_cabang extends ci_model{
             set brg_cabang_qty = brg_cabang_qty+barang_masuk-barang_keluar
             where id_fk_brg = id_barang and id_fk_cabang = id_cabang;
 
-            call update_stok_kombinasi_barang_cabang(id_barang,barang_masuk, barang_keluar, id_cabang);
-
         end //
         delimiter ;
-        
-        drop procedure if exists update_stok_kombinasi_barang_cabang;
-        delimiter //
-        create procedure update_stok_kombinasi_barang_cabang(
-            in id_barang_utama_in int,
-            in qty_brg_masuk_in double,
-            in qty_brg_keluar_in double,
-            in id_cabang_in int
-        )
-        begin
-            update tbl_barang_kombinasi
-            inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_barang_kombinasi.id_barang_kombinasi
-            set brg_cabang_qty = brg_cabang_qty+(barang_kombinasi_qty*qty_brg_masuk_in)-(barang_kombinasi_qty*qty_brg_keluar_in)
-            where id_barang_utama = id_barang_utama_in and id_fk_cabang = id_cabang_in and barang_kombinasi_status = 'aktif';
-        end//
-        delimiter ;";
+        ";
         executeQuery($sql);
     }
     public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
@@ -248,7 +234,9 @@ class M_brg_cabang extends ci_model{
                     "id_create_data" => $this->id_create_data,
                     "id_last_modified" => $this->id_last_modified
                 );
-                return insertrow($this->tbl_name,$data);
+                $id = insertrow($this->tbl_name,$data);
+                executeQuery("call update_stok_kombinasi_barang_cabang(".$this->id_fk_brg.",".$this->brg_cabang_qty.",0,".$this->id_fk_cabang);
+                return $id;
             }
             else{
                 $query = "update ".$this->tbl_name." set brg_cabang_qty = brg_cabang_qty+".$this->brg_cabang_qty." where id_fk_brg = ? and id_fk_cabang = ?";
@@ -279,7 +267,17 @@ class M_brg_cabang extends ci_model{
                     "brg_cabang_last_modified" => $this->brg_cabang_last_modified,
                     "id_last_modified" => $this->id_last_modified
                 );
-                updaterow($this->tbl_name,$data,$where);
+
+                /* untuk manggil stored procedure aja */
+                $query = "select brg_cabang_qty from tbl_brg_cabang where id_fk_brg = ? and id_fk_cabang = ?";
+                $args = array(
+                    $this->id_fk_brg, $this->id_fk_cabang
+                );
+                $result = executeQuery($query,$args);
+                $result = $result->result_array();
+                /*end store procedure*/
+                executeQuery("call update_stok_kombinasi_barang_cabang(".$this->id_fk_brg.",".$this->brg_cabang_qty.",".$result[0]["brg_cabang_qty"].",".$this->id_fk_cabang.")");
+                updateRow($this->tbl_name,$data,$where);
                 return true; 
             }
         }
