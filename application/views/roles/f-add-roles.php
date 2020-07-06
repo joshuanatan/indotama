@@ -29,7 +29,7 @@
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <button type = "button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
+                        <button type = "button" onclick = "register_func();menubar()" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
                 </form>
             </div>

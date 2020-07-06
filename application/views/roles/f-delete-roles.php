@@ -23,7 +23,7 @@
                 </table>
                 <div class = "form-group">
                     <button type = "button" class = "btn btn-sm btn-primary" data-dismiss = "modal">Cancel</button>
-                    <button type = "button" onclick = "delete_func()" class = "btn btn-sm btn-danger">Delete</button>
+                    <button type = "button" onclick = "delete_func();menubar()" class = "btn btn-sm btn-danger">Delete</button>
                 </div>
             </div>
         </div>
