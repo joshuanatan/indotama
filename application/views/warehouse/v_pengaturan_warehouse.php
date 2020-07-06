@@ -68,7 +68,7 @@ $notif_data = array(
                                                     <input type="text" class="form-control" name="warehouse_desc" id = "warehouse_desc_edit" required>
                                                 </div>
                                                 <div class = "form-group">
-                                                    <button type = "button" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
+                                                    <button type = "button" onclick = "update_func();update_id_gudang();location.reload()" class = "btn btn-sm btn-primary">Submit</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -104,6 +104,14 @@ $notif_data = array(
             }
         }
     });
+    function update_id_gudang(){
+        $.ajax({
+            url:"<?php echo base_url();?>ws/warehouse/refresh_id_warehouse",
+            type:"GET",
+            async:false,
+            dataType:"JSON"
+        });
+    }
 </script>
 
 

@@ -211,4 +211,26 @@ class Warehouse extends CI_Controller{
         }
         echo json_encode($response);
     }
+    
+    public function refresh_id_warehouse(){
+        #refresh session warehouse
+        #gabisa di taro di fungsi updatek karena fungsi update dipake di master warehouse juga yang ga boleh tiba2 ke assign session warehouse
+        
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_warehouse");
+		$this->m_warehouse->set_id_pk_warehouse($this->session->id_warehouse);
+        $result = $this->m_warehouse->detail_by_id();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            $this->session->id_warehouse = $result[0]["id_pk_warehouse"];
+            $this->session->nama_warehouse = $result[0]["warehouse_nama"];
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "Invalid Active ID";
+            $this->session->unset_userdata("id_warehouse");
+            $this->session->unset_userdata("nama_warehouse");
+        }
+        echo json_encode($response);
+    }
 }

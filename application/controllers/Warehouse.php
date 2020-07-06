@@ -25,7 +25,7 @@ class Warehouse extends CI_Controller {
 		$result = $this->m_warehouse->detail_by_id();
 		$result = $result->result_array();
 		$this->session->id_warehouse = $result[0]["id_pk_warehouse"];
-		$this->session->warehouse_nama = $result[0]["warehouse_nama"];
+		$this->session->nama_warehouse = $result[0]["warehouse_nama"];
 
 		redirect("warehouse/daftar_akses_gudang");
 	}

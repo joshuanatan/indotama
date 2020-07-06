@@ -78,7 +78,7 @@ $notif_data = array(
     var url_add = "";
     var custom_contentCtrl = "list_toko_admin";
     var custom_tblHeaderCtrl = "columns_toko_admin";
-    var unautorized_button = ["edit_button","delete_button"];
+    var unautorized_button = ["edit_button","delete_button","detail_button"];
     var additional_button = [
         {
             class:"md-wrench",

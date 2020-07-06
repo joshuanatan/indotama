@@ -33,17 +33,12 @@ if($this->session->id_warehouse):?>
         </li>
         <?php endif;?>
         <?php if($this->session->id_warehouse):?>
-        <li>
-            <a href="<?php echo base_url();?>warehouse/dashboard_warehouse">
-                Dashboard Gudang
-            </a>
-        </li>
         <li id = "gudang_menu_separator"></li>
         <?php endif;?>
         <?php if($this->session->id_warehouse):?>
         <li>
             <a href="<?php echo base_url();?>warehouse/pengaturan_warehouse">
-                Pengaturan Warehouse
+                Pengaturan Gudang
             </a>
         </li>
         <?php endif;?>
