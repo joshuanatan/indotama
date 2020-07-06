@@ -268,4 +268,46 @@ class Toko extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function pengaturan(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_toko");
+		$this->m_toko->set_id_pk_toko($this->session->id_toko);
+        $result = $this->m_toko->detail_by_id();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            $response["content"][0]["id"] = $result[0]["id_pk_toko"];
+            $response["content"][0]["logo"] = $result[0]["toko_logo"];
+            $response["content"][0]["nama"] = $result[0]["toko_nama"];
+            $response["content"][0]["kode"] = $result[0]["toko_kode"];
+            $response["content"][0]["kop_surat"] = $result[0]["toko_kop_surat"];
+            $response["content"][0]["nonpkp"] = $result[0]["toko_nonpkp"];
+            $response["content"][0]["pernyataan_rek"] = $result[0]["toko_pernyataan_rek"];
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "No Data";
+        }
+        echo json_encode($response);
+    }
+    public function refresh_id_toko(){
+        #refresh session toko
+        #gabisa di taro di fungsi updatek karena fungsi update dipake di master toko juga yang ga boleh tiba2 ke assign session toko
+        
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_toko");
+		$this->m_toko->set_id_pk_toko($this->session->id_toko);
+        $result = $this->m_toko->detail_by_id();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            $this->session->id_toko = $result[0]["id_pk_toko"];
+            $this->session->nama_toko = $result[0]["toko_nama"];
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "Invalid Active ID";
+            $this->session->unset_userdata("id_toko");
+            $this->session->unset_userdata("nama_toko");
+        }
+        echo json_encode($response);
+    }
 }

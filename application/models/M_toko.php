@@ -150,7 +150,7 @@ class m_toko extends ci_model{
             "id_pk_toko" => $this->id_pk_toko
         );
         $field = array(
-            "id_pk_toko","toko_logo","toko_nama","toko_kode","toko_status","toko_create_date","toko_last_modified","id_create_data","id_last_modified",
+            "id_pk_toko","toko_logo","toko_nama","toko_kode","toko_status","toko_create_date","toko_last_modified","id_create_data","id_last_modified","toko_kop_surat","toko_nonpkp","toko_pernyataan_rek"
         );
         return selectrow($this->tbl_name,$where,$field);
     }
