@@ -281,4 +281,25 @@ class Cabang extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function refresh_id_cabang(){
+        #refresh session cabang
+        #gabisa di taro di fungsi updatek karena fungsi update dipake di master cabang juga yang ga boleh tiba2 ke assign session cabang
+        
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_cabang");
+		$this->m_cabang->set_id_pk_cabang($this->session->id_cabang);
+        $result = $this->m_cabang->detail_by_id();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            $this->session->id_cabang = $result[0]["id_pk_cabang"];
+            $this->session->daerah_cabang = $result[0]["cabang_daerah"];
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "Invalid Active ID";
+            $this->session->unset_userdata("id_cabang");
+            $this->session->unset_userdata("daerah_cabang");
+        }
+        echo json_encode($response);
+    }
 }

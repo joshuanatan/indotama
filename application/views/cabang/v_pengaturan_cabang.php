@@ -85,7 +85,7 @@ $notif_data = array(
                                                     <input type = "hidden" name = "pernyataan_rek_current" id = "pernyataan_rek_current">
                                                 </div>
                                                 <div class = "form-group">
-                                                    <button type = "button" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
+                                                    <button type = "button" onclick = "update_func();update_id_cabang();location.reload()" class = "btn btn-sm btn-primary">Submit</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -126,6 +126,14 @@ $notif_data = array(
             }
         }
     });
+    function update_id_cabang(){
+        $.ajax({
+            url:"<?php echo base_url();?>ws/cabang/refresh_id_cabang",
+            type:"GET",
+            async:false,
+            dataType:"JSON"
+        });
+    }
 </script>
 
 
