@@ -206,6 +206,7 @@ class M_brg_warehouse extends ci_model{
                     "id_create_data" => $this->id_create_data,
                     "id_last_modified" => $this->id_last_modified
                 );
+                executeQuery("call update_stok_kombinasi_barang_cabang(".$this->id_fk_brg.",".$this->brg_warehouse_qty.",0,".$this->id_fk_warehouse);
                 return insertrow($this->tbl_name,$data);
             }
             else{
@@ -230,7 +231,18 @@ class M_brg_warehouse extends ci_model{
                 "brg_warehouse_last_modified" => $this->brg_warehouse_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updaterow($this->tbl_name,$data,$where);
+            
+            /* untuk manggil stored procedure aja */
+            $query = "select brg_warehouse_qty from tbl_brg_warehouse where id_fk_brg = ? and id_fk_warehouse = ?";
+            $args = array(
+                $this->id_fk_brg, $this->id_fk_warehouse
+            );
+            $result = executeQuery($query,$args);
+            $result = $result->result_array();
+            /*end store procedure*/
+            executeQuery("call update_stok_kombinasi_barang_warehouse(".$this->id_fk_brg.",".$this->brg_warehouse_qty.",".$result[0]["brg_warehouse_qty"].",".$this->id_fk_warehouse.")");
+
+            updateRow($this->tbl_name,$data,$where);
             return true; 
         }
         return false;
