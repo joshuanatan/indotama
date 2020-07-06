@@ -237,7 +237,7 @@ class Barang_cabang extends CI_Controller{
             for($a = 0; $a<count($result); $a++){
                 /*harusnya bukan 0 tapi sejumlah kombinasi qty * mstrkombinasi qty*/
                 /*kalau misalnya ada, itu harusnya ditambahin bukan di abaikan*/
-                if($this->m_brg_cabang->set_insert($result[0]["add_qty"],"Auto insert from item existance check","aktif",$result[$a]["id_barang_kombinasi"],$this->session->id_cabang)){
+                if($this->m_brg_cabang->set_insert($result[$a]["add_qty"],"Auto insert from item existance check","aktif",$result[$a]["id_barang_kombinasi"],$this->session->id_cabang)){
                     if($this->m_brg_cabang->insert()){
                     }
                     else{
