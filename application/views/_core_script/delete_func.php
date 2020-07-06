@@ -14,6 +14,7 @@
             url:url,
             type:"DELETE",
             dataType:"JSON",
+            async:false,
             success:function(respond){
                 if(respond["status"] == "SUCCESS"){
                     $('#notif_delete_success').show(1).delay(2000).hide(1);

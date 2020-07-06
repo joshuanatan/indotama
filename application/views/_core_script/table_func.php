@@ -214,6 +214,7 @@
                             html = "";
                             menu_category = respond["data"][a]["menu_category"];
                             $("."+menu_category.toLowerCase()+"_menu_item").remove();
+                            console.log("."+menu_category.toLowerCase()+"_menu_item");
                         }
                         html += "<li class = '"+menu_category.toLowerCase()+"_menu_item'><a href='<?php echo base_url();?>"+respond["data"][a]["menu_name"]+"'>"+respond["data"][a]["menu_display"]+"</a></li>";
                     }

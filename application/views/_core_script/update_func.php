@@ -7,6 +7,7 @@
             type:"POST",
             dataType:"JSON",
             data:data,
+            async:false,
             processData: false,
             contentType: false,
             success:function(respond){
