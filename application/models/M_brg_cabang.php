@@ -217,12 +217,12 @@ class M_brg_cabang extends ci_model{
     }
     public function list_not_exists_brg_kombinasi(){
         $sql = "
-        select id_barang_kombinasi 
+        select id_barang_kombinasi,barang_kombinasi_qty,brg_cabang_qty,barang_kombinasi_qty*brg_cabang_qty as add_qty 
         from tbl_brg_cabang
         right join tbl_barang_kombinasi on tbl_barang_kombinasi.id_barang_utama = tbl_brg_cabang.id_fk_brg
-        where id_fk_cabang = ? and brg_cabang_status = 'aktif'
+        where id_fk_cabang = 2 and brg_cabang_status = 'aktif'
         and id_barang_kombinasi not in
-        (select id_fk_brg from tbl_brg_cabang where id_fk_cabang = ? and brg_cabang_status = 'aktif')
+        (select id_fk_brg from tbl_brg_cabang where id_fk_cabang = 2 and brg_cabang_status = 'aktif')
         ";
         $args = array(
             $this->id_fk_cabang, $this->id_fk_cabang
@@ -249,6 +249,13 @@ class M_brg_cabang extends ci_model{
                     "id_last_modified" => $this->id_last_modified
                 );
                 return insertrow($this->tbl_name,$data);
+            }
+            else{
+                $query = "update ".$this->tbl_name." set brg_cabang_qty = brg_cabang_qty+".$this->brg_cabang_qty." where id_fk_brg = ? and id_fk_cabang = ?";
+                $args =  array(
+                    $this->id_fk_brg,$this->id_fk_cabang
+                );
+                executeQuery($query,$args);
             }
         }
         return false;
