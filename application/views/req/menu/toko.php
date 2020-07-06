@@ -29,16 +29,18 @@ if($this->session->id_toko):?>
         <?php if($this->session->multiple_toko_access):?>
         <li>
             <a href="<?php echo base_url();?>toko/daftar_akses_toko"><?php #redirect ke daftar toko yang dia boleh akses?> 
-                <div class="pull-left">
-                    <span class="right-nav-text">Daftar Toko</span>
-                </div>
-                <div class="clearfix"></div>
+            Daftar Toko
             </a>
         </li>
         <?php endif;?>
         <?php 
         if($this->session->id_toko):?>
         <li id = "toko_menu_separator"></li>
+        <li>
+            <a href="<?php echo base_url();?>toko/pengaturan_toko">
+            Pengaturan Toko
+            </a>
+        </li>
         <?php endif;?>
     </ul>
 </li>
