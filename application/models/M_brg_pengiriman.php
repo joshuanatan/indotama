@@ -112,7 +112,7 @@ class M_brg_pengiriman extends ci_model{
             where id_pk_brg_pengiriman = new.id_pk_brg_pengiriman;
             end if;
             if @id_warehouse is not null then
-            call update_stok_barang_warehouse(@id_barang,@id_warehouse,0,0,@brg_pengiriman_qty,@id_satuan_terima);
+            call update_stok_barang_warehouse(@id_barang,@id_warehouse,0,0,@brg_pengiriman_qty,@id_satuan_kirim);
             elseif @id_cabang is not null then 
             call update_stok_barang_cabang(@id_barang,@id_cabang,0,0,@brg_pengiriman_qty,@id_satuan_kirim);
             end if;
@@ -169,7 +169,7 @@ class M_brg_pengiriman extends ci_model{
             end if;
             
             if @id_warehouse is not null then
-            call update_stok_barang_cabang(@id_barang,@id_warehouse,@brg_keluar_qty,@id_satuan_keluar,@brg_pengiriman_qty,@id_satuan_terima);
+            call update_stok_barang_warehouse(@id_barang,@id_warehouse,@brg_keluar_qty,@id_satuan_keluar,@brg_pengiriman_qty,@id_satuan_terima);
             elseif @id_cabang is not null then 
             call update_stok_barang_cabang(@id_barang,@id_cabang,@brg_keluar_qty,@id_satuan_keluar,@brg_pengiriman_qty,@id_satuan_terima);
             end if;

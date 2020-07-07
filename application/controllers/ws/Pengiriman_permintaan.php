@@ -31,7 +31,12 @@ class Pengiriman_permintaan extends CI_Controller{
         $search_key = $this->input->get("searchKey");
         $data_per_page = 20;
         $pengiriman_tempat = $this->input->get("type");
-        $id_tempat_pengiriman = $this->session->id_cabang;
+        if(strtolower($pengiriman_tempat) == "cabang"){
+            $id_tempat_pengiriman = $this->session->id_cabang;
+        }
+        else if(strtolower($pengiriman_tempat) == "warehouse"){
+            $id_tempat_pengiriman = $this->session->id_warehouse;
+        }
         $this->load->model("m_t_pengiriman_permintaan");
 
         $result = $this->m_t_pengiriman_permintaan->content($page,$order_by,$order_direction,$search_key,$data_per_page,$pengiriman_tempat,$id_tempat_pengiriman);

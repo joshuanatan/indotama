@@ -92,6 +92,8 @@ class M_barang_kombinasi extends CI_Model{
             inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_barang_kombinasi.id_barang_kombinasi
             set brg_cabang_qty = brg_cabang_qty+(barang_kombinasi_qty*qty_brg_masuk_in)-(barang_kombinasi_qty*qty_brg_keluar_in)
             where id_barang_utama = id_barang_utama_in and id_fk_cabang = id_cabang_in and barang_kombinasi_status = 'aktif';
+
+            call update_stok_kombinasi_barang_warehouse(id_barang,barang_masuk, barang_keluar, id_warehouse);
         end//
         delimiter ;
         
@@ -108,6 +110,8 @@ class M_barang_kombinasi extends CI_Model{
             inner join tbl_brg_warehouse on tbl_brg_warehouse.id_fk_brg = tbl_barang_kombinasi.id_barang_kombinasi
             set brg_warehouse_qty = brg_warehouse_qty+(barang_kombinasi_qty*qty_brg_masuk_in)-(barang_kombinasi_qty*qty_brg_keluar_in)
             where id_barang_utama = id_barang_utama_in and id_fk_warehouse = id_warehouse_in and barang_kombinasi_status = 'aktif';
+
+            call update_stok_kombinasi_barang_warehouse(id_barang,barang_masuk, barang_keluar, id_warehouse);
         end//
         delimiter ;";
     }
