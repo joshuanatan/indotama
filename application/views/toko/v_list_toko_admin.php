@@ -1,7 +1,7 @@
 <?php
-$page_title = "Cabang";
+$page_title = "Toko";
 $breadcrumb = array(
-    "Warehouse"
+    "Toko"
 );
 $notif_data = array(
     "page_title"=>$page_title
@@ -49,13 +49,8 @@ $notif_data = array(
                                 <div class="panel-wrapper collapse in">
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
-                                            <div class = "d-block">
-                                                <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#register_modal" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
-                                            </div>
-                                            <br/>
-                                            <br/>
                                             <div class = "align-middle text-center d-block">
-                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "md-wrench"></i><b> - Aktivasi Toko Untuk Manajemen </b>   
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "md-wrench"></i><b> - Aktivasi Toko untuk Manajemen </b>   
                                             </div>
                                             <br/>
                                             
