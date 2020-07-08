@@ -16,22 +16,6 @@
 <!-- Fancy Dropdown JS -->
 <script src="<?php echo base_url(); ?>asset/dist/js/dropdown-bootstrap-extended.js"></script>
 
-<!-- Data table JavaScript -->
-<script src="<?php echo base_url(); ?>vendors/bower_components/datatables/media/js/jquery.dataTables.min.js">
-</script>
-<script
-    src="<?php echo base_url(); ?>vendors/bower_components/datatables.net-buttons/js/dataTables.buttons.min.js">
-</script>
-<script src="<?php echo base_url(); ?>vendors/bower_components/datatables.net-buttons/js/buttons.flash.min.js">
-</script>
-<script src="<?php echo base_url(); ?>vendors/bower_components/jszip/dist/jszip.min.js"></script>
-<script src="<?php echo base_url(); ?>vendors/bower_components/pdfmake/build/pdfmake.min.js"></script>
-<script src="<?php echo base_url(); ?>vendors/bower_components/pdfmake/build/vfs_fonts.js"></script>
-<script src="<?php echo base_url(); ?>vendors/bower_components/datatables.net-buttons/js/buttons.html5.min.js">
-</script>
-<script src="<?php echo base_url(); ?>vendors/bower_components/datatables.net-buttons/js/buttons.print.min.js">
-</script>
-<script src="<?php echo base_url(); ?>asset/dist/js/export-table-data.js"></script>
 
 <!-- simpleWeather JavaScript -->
 <script src="<?php echo base_url(); ?>vendors/bower_components/moment/min/moment.min.js"></script>

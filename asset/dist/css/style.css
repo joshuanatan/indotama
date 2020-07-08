@@ -108,7 +108,7 @@ strong {
 
 body {
   color: #878787;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Arial","Helvetica", sans-serif;
   font-size: 14px;
   font-style: normal;
   line-height: 1.5;
@@ -143,35 +143,25 @@ h1, h2, h3, .error-comment, h4, h5, h6, .panel-title {
   color: #212121; }
 
 h1 {
-  font-size: 48px;
-  line-height: 60px; }
+  }
 
 h2 {
-  font-size: 36px;
-  line-height: 44px; }
+  }
 
 h3, .error-comment {
-  font-size: 30px;
-  line-height: 40px; }
+  }
 
 h4 {
-  font-size: 24px;
-  line-height: 30px;
-  text-transform: capitalize; }
+    text-transform: capitalize; }
 
 h5 {
-  font-size: 18px;
-  line-height: 26px;
-  text-transform: capitalize; }
+    text-transform: capitalize; }
 
 h6, .panel-title {
-  font-size: 16px;
-  line-height: 24px;
-  text-transform: capitalize; }
+    text-transform: capitalize; }
 
 p {
-  font-size: 14px;
-  line-height: 25px; }
+  }
   p.lead {
     font-size: 18px;
     line-height: 29px;
@@ -3259,7 +3249,7 @@ footer {
   background-color: #fff;
   box-shadow: none;
   color: #212121;
-  height: 42px; }
+ }
   .form-control:focus, .select2-container--default .select2-selection--single .select2-selection__rendered:focus,
   .select2-container--default .select2-selection--single:focus, .select2-selection.select2-selection--multiple:focus, .wizard .content > .body input:focus, .mce-floatpanel .mce-textbox:focus, .mce-floatpanel .mce-btn:focus, .dataTables_wrapper .dataTables_filter input:focus, .dataTables_wrapper .dataTables_length select:focus, .jsgrid-cell input:focus, .jsgrid-cell select:focus, .tablesaw-bar .btn-select select:focus, .dd-handle:focus, .dd3-content:focus, .app-search .form-control:focus, .app-search .jsgrid-cell input:focus, .jsgrid-cell .app-search input:focus, .app-search .jsgrid-cell select:focus, .jsgrid-cell .app-search select:focus, .app-search .dd-handle:focus, .app-search .dd3-content:focus {
     border-color: rgba(33, 33, 33, 0.3);
@@ -3329,7 +3319,7 @@ footer {
 
 .form-control-feedback {
   line-height: 42px;
-  height: 42px; }
+ }
 
 .help-block {
   color: #878787; }
@@ -3563,7 +3553,7 @@ div.colorpicker {
 .editableform select.form-control.input-sm, .editableform .select2-container--default .select2-selection--single select.input-sm.select2-selection__rendered, .select2-container--default .select2-selection--single .editableform select.input-sm.select2-selection__rendered,
 .editableform .select2-container--default select.input-sm.select2-selection--single,
 .select2-container--default .editableform select.input-sm.select2-selection--single, .editableform select.input-sm.select2-selection.select2-selection--multiple, .editableform .mce-floatpanel select.input-sm.mce-textbox, .mce-floatpanel .editableform select.input-sm.mce-textbox, .editableform .mce-floatpanel select.input-sm.mce-btn, .mce-floatpanel .editableform select.input-sm.mce-btn, .editableform .dataTables_wrapper .dataTables_length select.input-sm, .dataTables_wrapper .dataTables_length .editableform select.input-sm, .editableform .jsgrid-cell select.input-sm, .jsgrid-cell .editableform select.input-sm, .editableform .tablesaw-bar .btn-select select.input-sm, .tablesaw-bar .btn-select .editableform select.input-sm, .editableform select.input-sm.dd-handle, .editableform select.input-sm.dd3-content {
-  height: 42px;
+  
   line-height: 1.428; }
 
 .dropify-wrapper {
@@ -4156,7 +4146,6 @@ ul.wysihtml5-toolbar a.btn.wysihtml5-command-active, ul.wysihtml5-toolbar .wizar
   border-color: #dedede !important; }
 
 .table > tbody > tr > td, .jsgrid-table > tbody > tr > td, .table > tbody > tr > th, .jsgrid-table > tbody > tr > th, .table > tfoot > tr > td, .jsgrid-table > tfoot > tr > td, .table > tfoot > tr > th, .jsgrid-table > tfoot > tr > th, .table > thead > tr > td, .jsgrid-table > thead > tr > td, .table > thead > tr > th, .jsgrid-table > thead > tr > th {
-  padding: 16px;
   border-top: 1px solid #dedede;
   vertical-align: middle; }
 
@@ -4283,7 +4272,7 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
   font-family: FontAwesome;
   position: absolute;
   right: 10px;
-  top: 15px;
+  top: 8px;
   font-size: 14px; }
 
 table.dataTable thead .sorting,
@@ -4313,7 +4302,6 @@ table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child::befor
   box-shadow: none; }
 
 table.footable > tbody > tr > td.footable-sortable, table.footable > tbody > tr > th.footable-sortable, table.footable > tfoot > tr > td.footable-sortable, table.footable > tfoot > tr > th.footable-sortable, table.footable > thead > tr > td.footable-sortable, table.footable > thead > tr > th.footable-sortable {
-  padding: 16px;
   border-top: none; }
 
 table.footable > tr.footable-filtering > th,
