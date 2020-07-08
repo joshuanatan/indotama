@@ -11,7 +11,7 @@
     <table class = "table table-bordered table-hover table-striped" id = "table_container">
         <thead id = "col_title_container">
         </thead>
-        <tbody id = "content_container">
+        <tbody id = "content_container" class = "content_container">
         </tbody>
     </table>
 </div>

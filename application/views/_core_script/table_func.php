@@ -69,7 +69,7 @@
                         html += "<td colspan = "+colCount+" class = 'align-middle text-center'>No Records Found</td>";
                         html += "</tr>";
                     }
-                    $("#content_container").html(html);
+                    $(".content_container:eq(0)").html(html);
                     pagination(respond["page"]);
 
                     /*
@@ -88,12 +88,13 @@
                     html += "<tr>";
                     html += "<td colspan = "+colCount+" class = 'align-middle text-center'>No Records Found</td>";
                     html += "</tr>";
-                    $("#content_container").html(html);
+                    
+                    $(".content_container:eq(0)").html(html);
                     
                     html = "";
                     html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed"><</a></li>';
                     html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed">></a></li>';
-                    $("#pagination_container").html(html);
+                    $(".pagination_container").html(html);
                 }
             });
             function pagination(page_rules){
