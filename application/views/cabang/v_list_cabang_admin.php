@@ -87,9 +87,10 @@ $notif_data = array(
         $('body table').find('tr').click( function(){
             var row = $(this).index();
             var id_cabang = content[row]["id"];
-            window.location.replace("<?php echo base_url();?>toko/activate_cabang_manajemen/"+id_cabang);
+            if(confirm("Apakah anda ingin mengaktifkan cabang "+content[row]["daerah"]+" pada toko "+content[row]["toko"]+"?")){
+                window.location.replace("<?php echo base_url();?>toko/activate_cabang_manajemen/"+id_cabang);
+            }
         });
     }
 </script>
-
 <?php $this->load->view('_notification/notif_general'); ?>
