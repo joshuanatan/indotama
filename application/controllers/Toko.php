@@ -144,7 +144,7 @@ class Toko extends CI_Controller {
 		$result = $result->result_array();
 		$this->session->nama_toko_cabang = $result[0]["toko_nama"];
 
-		redirect("toko/daftar_akses_cabang");
+		redirect("toko/dashboard_cabang");
 	}
 	public function pengaturan_cabang(){
 		$this->load->view("cabang/v_pengaturan_cabang");
