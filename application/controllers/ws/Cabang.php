@@ -302,4 +302,110 @@ class Cabang extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function dashboard(){
+        $this->load->model("m_dashboard_cabang");
+        $this->m_dashboard_cabang->set_id_cabang($this->session->id_cabang);
+        $response["status"] = "SUCCESS";
+        $response["content"] = array(
+            array(
+                "type" => "widget",
+                "data" => $this->m_dashboard_cabang->jumlah_penjualan_bulan_ini(),
+                "title" => "Jumlah Penjualan Bulan Ini"
+            ),
+            array(
+                "type" => "widget",
+                "data" => $this->m_dashboard_cabang->jumlah_penjualan_bulan_lalu(),
+                "title" => "Jumlah Penjualan Bulan Lalu"
+            ),
+            array(
+                "type" => "widget",
+                "data" => $this->m_dashboard_cabang->jumlah_penjualan_tahun_ini(),
+                "title" => "Jumlah Penjualan Tahun Ini"
+            ),
+            array(
+                "type" => "widget",
+                "data" => $this->m_dashboard_cabang->jumlah_penjualan_tahun_lalu(),
+                "title" => "Jumlah Penjualan Tahun Lalu"
+            ),
+            array(
+                "type" => "widget",
+                "data" => $this->m_dashboard_cabang->jumlah_konfirmasi_retur(),
+                "title" => "Jumlah Retur Dalam Konfirmasi"
+            ),
+            array(
+                "type" => "widget",
+                "data" => $this->m_dashboard_cabang->jumlah_item_urgen_restok(),
+                "title" => "Jumlah Item Butuh Restok"
+            ),
+            array(
+                "type" => "table",
+                "title" => "Daftar Item Butuh Restok",
+                "header" => array(
+                    "Nama Barang","Stok","Jumlah Minimal"
+                ),
+                "data" =>$this->m_dashboard_cabang->list_penjualan_belum_selesai(),
+            ),
+            array(
+                "type" => "table",
+                "title" => "Daftar Item Butuh Restok",
+                "header" => array(
+                    "Barang Awal","Barang Rubah","Jumlah Pindah","User","Tanggal Rubah"
+                ),
+                "data" =>$this->m_dashboard_cabang->list_barang_custom(),
+            )
+        );
+        $result = $this->m_dashboard_cabang->list_penjualan_3_tahun_terakhir();
+        $array = array(
+            "type" => "chart",
+            "title" => "Penjualan 3 Tahun Terakhir",
+            "data" => array(
+                array(
+                    "label" => "Jumlah Penjualan",
+                    "data" => $result["data"]
+                )
+            ),
+            "xlabel" => $result["label"]
+        );
+        array_push($response["content"],$array);
+        
+        $result = $this->m_dashboard_cabang->list_penjualan_tahun_ini_perbulan();
+        $array = array(
+            "type" => "chart",
+            "title" => "Penjualan Tahun Ini Setiap Bulan",
+            "data" => array(
+                array(
+                    "label" => "Jumlah Penjualan",
+                    "data" => $result["data"]
+                )
+            ),
+            "xlabel" => $result["label"]
+        );
+        array_push($response["content"],$array);
+        
+
+        $result = $this->m_dashboard_cabang->list_penjualan_tahun_ini_perbulan();
+        $result2 = $this->m_dashboard_cabang->list_penjualan_tahun_lalu_perbulan(1);
+        $result3 = $this->m_dashboard_cabang->list_penjualan_tahun_lalu_perbulan(2);
+        $array = array(
+            "type" => "chart",
+            "title" => "Penjualan Tahun Ini Setiap Bulan",
+            "data" => array(
+                array(
+                    "label" => "Jumlah Penjualan Tahun ".date("Y"),
+                    "data" => $result["data"]
+                ),
+                array(
+                    "label" => "Jumlah Penjualan Tahun ".((int)date("Y")-1),
+                    "data" => $result2["data"]
+                ),
+                array(
+                    "label" => "Jumlah Penjualan Tahun ".((int)date("Y")-2),
+                    "data" => $result3["data"]
+                )
+            ),
+            "xlabel" => $result["label"]
+        );
+        array_push($response["content"],$array);
+        echo json_encode($response);
+    }
 }
