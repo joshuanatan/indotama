@@ -158,7 +158,8 @@ class M_dashboard_cabang extends CI_Model{
         );
         $result = executeQuery($sql,$args);
         $result = $result->result_array();
-        $respond = array();
+        $respond["data"] = array();
+        $respond["label"] = array();
         for($a = 0; $a<count($result); $a++){
             $respond["data"][$a] = $result[$a]["jmlh_penjualan"];
             $respond["label"][$a] = $result[$a]["tahun"];
@@ -180,7 +181,8 @@ class M_dashboard_cabang extends CI_Model{
         );
         $result = executeQuery($sql,$args);
         $result = $result->result_array();
-        $respond = array();
+        $respond["data"] = array();
+        $respond["label"] = array();
         $respond["label"] = array(
             "Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"
         );
@@ -207,7 +209,8 @@ class M_dashboard_cabang extends CI_Model{
         );
         $result = executeQuery($sql,$args);
         $result = $result->result_array();
-        $respond = array();
+        $respond["data"] = array();
+        $respond["label"] = array();
         $respond["label"] = array(
             "Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"
         );
