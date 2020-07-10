@@ -7,7 +7,7 @@
             <div class = "modal-body">
                     <input type = "hidden" name = "id" id = "d_id_edit">
                     <div class = "form-group">
-                        <h5>Nama Merk</h5>
+                        <h5>Nama Jenis</h5>
                         <input disabled type = "text" class = "form-control" required name = "nama" id = "d_nama_edit">
                     </div>
                     <div class = "form-group">

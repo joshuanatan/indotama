@@ -15,7 +15,7 @@
                 <table class = "table table-bordered table-striped table-hover">
                     <tbody>
                         <tr>
-                            <td>Nama Merk</td>
+                            <td>Nama Jenis</td>
                             <td id = "nama_delete"></td>
                         </tr>
                     </tbody>
