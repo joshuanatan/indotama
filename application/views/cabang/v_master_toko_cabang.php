@@ -76,6 +76,7 @@ $notif_data = array(
 </html>
 <script>
     var ctrl = "cabang";
+    var unautorized_button = ["detail_button"];
     var url_add = "id_toko=<?php echo $toko[0]["id_pk_toko"];?>";
     var additional_button = [
         {

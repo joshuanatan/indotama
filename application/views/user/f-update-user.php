@@ -29,6 +29,8 @@
                             <option value = '<?php echo $roles[$a]["id_pk_jabatan"];?>'><?php echo $roles[$a]["jabatan_nama"];?></option>
                             <?php endfor;?>
                         </select>
+                    </div>
+                    <div class = "form-group">
                         <h5>Hak Akses</h5>
                         <table class = "table table-striped table-bordered">
                             <thead>

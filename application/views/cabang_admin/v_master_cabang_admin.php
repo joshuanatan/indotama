@@ -76,6 +76,7 @@ $notif_data = array(
 </html>
 <script>
     var ctrl = "cabang_admin";
+    var unautorized_button = ["detail_button"];
     var url_add = "id_cabang=<?php echo $id_cabang;?>";
 </script>
 <?php 
