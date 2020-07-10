@@ -1,7 +1,7 @@
 <?php
-$page_title = "Dashboard";
+$page_title = "Dashboard Cabang";
 $breadcrumb = array(
-    "Dashboard"
+    "Cabang","Dashboard"
 );
 ?>
 <!DOCTYPE html>
@@ -46,15 +46,7 @@ $breadcrumb = array(
 <script src="<?php echo base_url(); ?>vendors/bower_components/datatables.net-buttons/js/buttons.html5.min.js"></script>
 <script src="<?php echo base_url(); ?>vendors/bower_components/datatables.net-buttons/js/buttons.print.min.js"></script>
 <script src="<?php echo base_url(); ?>asset/dist/js/export-table-data.js"></script>
-<script>
-$(document).ready(function() {
-    "use strict";
-    $('#tbl_brg_custom').DataTable();
-    $('#tbl_pemberian_belum_kirim').DataTable();
-    $('#tbl_pengiriman_barang').DataTable();
-    $('#tbl_barang_urgen_restok').DataTable();
-});
-</script>
+
 
 <script src= "<?php echo base_url();?>vendors/chart.js/Chart.min.js"></script>
 <script src= "<?php echo base_url();?>asset/dashboard_elements/widget_elem.js"></script>
@@ -85,7 +77,7 @@ $.ajax({
                     var table_header = respond["content"][a]["header"];
                     var table_data = respond["content"][a]["data"];
                     var table_title = respond["content"][a]["title"];
-                    html_table += populate_table_data(table_header,table_data,table_title);
+                    html_table += populate_table_data(table_header,table_data,table_title,amt_table);
                     amt_table++;
                 }
                 else if(respond["content"][a]["type"].toLowerCase() == "chart"){
@@ -98,17 +90,21 @@ $.ajax({
             $("#widget_row").html(html_widget);
             $("#table_row").html(html_table);
             $("#chart_row").html(html_chart);
-            init_chart();
+
+            /*init chart*/
+            for(var a = 0; a<chart_content.length; a++){
+                var chart_data = chart_content[a]["data"];
+                var xlabel = chart_content[a]["xlabel"];
+                init_chart_data(xlabel,chart_data,a);
+            }
+
+            /*init table*/
+            for(var a = 0; a<amt_table; a++){
+                $(`#table${a}`).DataTable();
+            }
         }
     }
 });
-function init_chart(){
-    for(var a = 0; a<chart_content.length; a++){
-        var chart_data = chart_content[a]["data"];
-        var xlabel = chart_content[a]["xlabel"];
-        init_chart_data(xlabel,chart_data,a);
-    }
-}
 </script>
 <script>
 window.onload = function() {
