@@ -3,7 +3,6 @@ class M_dashboard_cabang extends CI_Model{
     private $id_cabang;
     public function __construct(){
         parent::__construct();
-        $this->id_cabang = $this->session->id_cabang;
     }
     public function set_id_cabang($id_cabang){
         $this->id_cabang = $id_cabang;
