@@ -16,16 +16,16 @@
                     
                     <div class = "form-group">
                         <h5>Nama Marketplace</h5>
-                        <input type = "text" class = "form-control" required name = "nama" id = "nama_edit">
+                        <input type = "text" class = "form-control" required id = "nama_edit">
                     </div>
                     
                     <div class = "form-group">
                         <h5>Keterangan</h5>
-                        <input type = "text" class = "form-control" required name = "keterangan" id = "keterangan_edit">
+                        <input type = "text" class = "form-control" required id = "keterangan_edit">
                     </div>
                     <div class = "form-group">
                         <h5>Biaya</h5>
-                        <input type = "text" class = "form-control" required name = "biaya" id = "biaya_edit">
+                        <input type = "text" class = "form-control" required id = "biaya_edit">
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
@@ -42,7 +42,6 @@
         $("#id_edit").val(content[row]["id"]);
         $("#nama_edit").val(content[row]["nama"]);
         $("#keterangan_edit").val(content[row]["ket"]);
-        $("#satuan_edit").val(content[row]["satuan"]);
         $("#biaya_edit").val(content[row]["biaya"]);
     }
 </script>
