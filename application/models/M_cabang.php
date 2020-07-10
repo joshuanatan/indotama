@@ -148,6 +148,16 @@ class M_cabang extends ci_model{
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
+    public function list_cabang(){
+        $query = "
+        select id_pk_cabang,cabang_daerah,cabang_notelp,cabang_alamat,cabang_status,cabang_create_date,cabang_last_modified,cabang_kop_surat,cabang_nonpkp,cabang_pernyataan_rek
+        from ".$this->tbl_name." 
+        where cabang_status = ? and id_fk_toko = ? ";
+        $args = array(
+            "aktif",$this->id_fk_toko
+        );
+        return executeQuery($query,$args);
+    }
     public function detail_by_id(){
         $where = array(
             "id_pk_cabang" => $this->id_pk_cabang

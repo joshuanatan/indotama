@@ -302,9 +302,12 @@ class Cabang extends CI_Controller{
         }
         echo json_encode($response);
     }
-    public function dashboard(){
+    public function dashboard($id_cabang = 0){
         $this->load->model("m_dashboard_cabang");
-        $this->m_dashboard_cabang->set_id_cabang($this->session->id_cabang);
+        if(!$id_cabang){
+            $id_cabang = $this->session->id_cabang;
+        }
+        $this->m_dashboard_cabang->set_id_cabang($id_cabang);
         $response["status"] = "SUCCESS";
         $response["content"] = array(
             array(

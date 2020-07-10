@@ -88,7 +88,9 @@ $notif_data = array(
         $('body table').find('tr').click( function(){
             var row = $(this).index();
             var id_toko = content[row]["id"];
-            window.location.replace("<?php echo base_url();?>toko/activate_toko_manajemen/"+id_toko);
+            if(confirm("Apakah anda ingin mengaktifkan toko "+content[row]["nama"]+"?")){
+                window.location.replace("<?php echo base_url();?>toko/activate_toko_manajemen/"+id_toko);
+            }
         });
     }
 </script>
