@@ -10,7 +10,7 @@ function populate_chart_data(chart_title,amt_chart){
             </div>
             <div class="panel-wrapper collapse in">
                 <div class="panel-body">
-                    <canvas class = "chart_elem" id="myChart${amt_chart}" height = "100"></canvas>
+                    <canvas class = "chart_elem" id="chart${amt_chart}" height = "100"></canvas>
                 </div>	
             </div>
         </div>
@@ -49,8 +49,8 @@ function init_chart_data(label,chart_data,count){
         obj.borderWidth  = 1;
         datasets.push(obj);
     }
-    var ctx = document.getElementById(`myChart${count}`);
-    var myChart = new Chart(ctx, {
+    var ctx = document.getElementById(`chart${count}`);
+    var chart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: label,

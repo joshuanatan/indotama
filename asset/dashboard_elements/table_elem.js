@@ -1,4 +1,4 @@
-function populate_table_data(table_header,table_data,table_title){
+function populate_table_data(table_header,table_data,table_title,amt_table){
     var header = "<tr role='row'>";
     for(var a = 0; a<table_header.length; a++){
         header += `<th>${table_header[a]}</th>`;
@@ -32,7 +32,7 @@ function populate_table_data(table_header,table_data,table_title){
                     <div class="panel-body">
                         <div class="table-wrap">
                             <div class="table-responsive">
-                                <table class="table table-hover table-bordered table-striped display mb-30"  id = "tbl_pemberian_belum_kirim">
+                                <table class="table table-hover table-bordered table-striped display mb-30"  id = "table${amt_table}">
                                     <thead>
                                         ${header}
                                     </thead>

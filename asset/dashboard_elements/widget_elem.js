@@ -1,6 +1,6 @@
-function populate_widget_data(widget_data,widget_title){
+function populate_widget_data(widget_data,widget_title,amt_widget){
     var template = `
-    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12" id = "widget${amt_widget}">
         <div class="panel panel-default card-view pa-0 bg-gradient">
             <div class="panel-wrapper collapse in">
                 <div class="panel-body pa-0">
