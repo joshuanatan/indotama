@@ -22,31 +22,77 @@ $breadcrumb = array(
         <?php $this->load->view('req/mm_menubar');?>
             <div class="page-wrapper">
                 <div class="container-fluid pt-25">
-                    <div class="col-lg-6" style = "padding:0px !important">
-                        <div class="panel panel-default card-view">
-                            <div class="panel-heading">
-                                <div class="pull-left">
-                                    <h6 class="panel-title txt-dark">Daftar Cabang</h6>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="panel-wrapper collapse in">
-                                <div class="panel-body">
-                                    <div class="table-wrap">
-                                        <div class="table-responsive">
-                                            <table class = "table table-striped table-bordered">
-                                                <thead>
-                                                    <th>Nama Cabang</th>
-                                                    <th>No Telp</th>
-                                                    <th>Alamat</th>
-                                                    <th>Action</th>
-                                                </thead>
-                                                <tbody id = "container_daftar_cabang"></tbody>
-                                            </table>
-                                        </div>	
+                    <div class = "row">
+                        <div class="col-lg-6">
+                            <div class="panel panel-default card-view">
+                                <div class="panel-heading">
+                                    <div class="pull-left">
+                                        <h6 class="panel-title txt-dark">Informasi Toko</h6>
                                     </div>
+                                    <div class="clearfix"></div>
                                 </div>
-                            </div> 
+                                <div class="panel-wrapper collapse in">
+                                    <div class="panel-body">
+                                        <div class="table-wrap">
+                                            <div class="table-responsive">
+                                                <table class = "table table-bordered" style = "color:black">
+                                                    <tr>
+                                                        <td style = "height:50px">Nama Toko</td>
+                                                        <td id = "nama_edit"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style = "height:50px">Kode Toko</td>
+                                                        <td id = "kode_edit"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style = "height:50px">Logo Toko</td>
+                                                        <td id = ""><a target = "_blank" class = "btn btn-primary btn-sm" id = "logo_download">Download</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style = "height:50px">Kop Surat</td>
+                                                        <td style = "height:50px"><a target = "_blank" class = "btn btn-primary btn-sm" id = "kop_surat_download">Download</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style = "height:50px">Surat Non PKP</td>
+                                                        <td style = "height:50px"><a target = "_blank" class = "btn btn-primary btn-sm" id = "nonpkp_download">Download</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style = "height:50px">Surat Pernyataan Nomor Rekening</td>
+                                                        <td style = "height:50px"><a target = "_blank" class = "btn btn-primary btn-sm" id = "pernyataan_rek_download">Download</a></td>
+                                                    </tr>
+                                                </table>
+                                            </div>	
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="panel panel-default card-view">
+                                <div class="panel-heading">
+                                    <div class="pull-left">
+                                        <h6 class="panel-title txt-dark">Daftar Cabang</h6>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="panel-wrapper collapse in">
+                                    <div class="panel-body">
+                                        <div class="table-wrap">
+                                            <div class="table-responsive">
+                                                <table class = "table table-striped table-bordered">
+                                                    <thead>
+                                                        <th>Nama Cabang</th>
+                                                        <th>No Telp</th>
+                                                        <th>Alamat</th>
+                                                        <th>Action</th>
+                                                    </thead>
+                                                    <tbody id = "container_daftar_cabang"></tbody>
+                                                </table>
+                                            </div>	
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
                         </div>
                     </div>
                     <div class="row" id = "widget_row"></div>
@@ -81,6 +127,22 @@ $breadcrumb = array(
 <script>
 var chart_content = [];
 $.ajax({
+    url:"<?php echo base_url();?>ws/toko/pengaturan",
+    type:"GET",
+    dataType:"JSON",
+    success:function(respond){
+        if(respond["status"].toLowerCase() == "success"){
+            $("#nama_edit").html(respond["content"][0]["nama"]);
+            $("#kode_edit").html(respond["content"][0]["kode"]);
+
+            $("#logo_download").attr("href","<?php echo base_url();?>asset/uploads/toko/logo/"+respond["content"][0]["logo"]);
+            $("#kop_surat_download").attr("href","<?php echo base_url();?>asset/uploads/toko/kop_surat/"+respond["content"][0]["kop_surat"]);
+            $("#nonpkp_download").attr("href","<?php echo base_url();?>asset/uploads/toko/nonpkp/"+respond["content"][0]["nonpkp"]);
+            $("#pernyataan_rek_download").attr("href","<?php echo base_url();?>asset/uploads/toko/pernyataan_rek/"+respond["content"][0]["pernyataan_rek"]);
+        }
+    }
+});
+$.ajax({
     url:"<?php echo base_url();?>ws/toko/list_cabang",
     type:"GET",
     dataType:"JSON",
@@ -94,7 +156,7 @@ $.ajax({
                     <td>${respond["content"][a]["notelp"]}</td>
                     <td>${respond["content"][a]["alamat"]}</td>
                     <td>
-                        <a target = "_blank" href = "<?php echo base_url();?>toko/dashboard_cabang_toko/${respond["content"][a]["id"]}" type = "button" class = "btn btn-primary btn-sm">Dasbor</a> 
+                        <a target = "_blank" href = "<?php echo base_url();?>toko/dashboard_cabang_toko/${respond["content"][a]["id"]}" type = "button" class = "btn btn-primary btn-sm">Beranda</a> 
                     </td>
                 </tr>`;
             }

@@ -23,6 +23,52 @@ $breadcrumb = array(
             <div class="page-wrapper">
 
                 <div class="container-fluid pt-25">
+                    <div class = "row">
+                        <div class="col-lg-6">
+                            <div class="panel panel-default card-view">
+                                <div class="panel-heading">
+                                    <div class="pull-left">
+                                        <h6 class="panel-title txt-dark">Informasi Cabang</h6>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="panel-wrapper collapse in">
+                                    <div class="panel-body">
+                                        <div class="table-wrap">
+                                            <div class="table-responsive">
+                                                <table class = "table table-bordered" style = "color:black">
+                                                    <tr>
+                                                        <td style = "height:50px">Daerah Cabang</td>
+                                                        <td id = "daerah_detail"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style = "height:50px">Alamat Cabang</td>
+                                                        <td id = "alamat_detail"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style = "height:50px">No Telp Cabang</td>
+                                                        <td id = "notelp_detail"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style = "height:50px">Kop Surat</td>
+                                                        <td style = "height:50px"><a target = "_blank" class = "btn btn-primary btn-sm" id = "kop_surat_download">Download</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style = "height:50px">Surat Non PKP</td>
+                                                        <td style = "height:50px"><a target = "_blank" class = "btn btn-primary btn-sm" id = "nonpkp_download">Download</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style = "height:50px">Surat Pernyataan Nomor Rekening</td>
+                                                        <td style = "height:50px"><a target = "_blank" class = "btn btn-primary btn-sm" id = "pernyataan_rek_download">Download</a></td>
+                                                    </tr>
+                                                </table>
+                                            </div>	
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
                     <div class="row" id = "widget_row"></div>
                     <div class="row" id = "table_row"></div>
                     <div class="row" id = "chart_row"></div>
@@ -53,6 +99,24 @@ $breadcrumb = array(
 <script src= "<?php echo base_url();?>asset/dashboard_elements/table_elem.js"></script>
 <script src= "<?php echo base_url();?>asset/dashboard_elements/chart_elem.js"></script>
 <script>
+$.ajax({
+    url:"<?php echo base_url();?>ws/cabang/pengaturan",
+    type:"GET",
+    dataType:"JSON",
+    success:function(respond){
+        if(respond["status"].toLowerCase() == "success"){
+            $("#daerah_detail").html(respond["content"][0]["daerah"]);
+            $("#alamat_detail").html(respond["content"][0]["alamat"]);
+            $("#notelp_detail").html(respond["content"][0]["notelp"]);
+            $("#kop_surat_download").attr("href","<?php echo base_url();?>asset/uploads/cabang/kop_surat/"+respond["content"][0]["kop_surat"]);
+            $("#nonpkp_download").attr("href","<?php echo base_url();?>asset/uploads/cabang/nonpkp/"+respond["content"][0]["nonpkp"]);
+            $("#pernyataan_rek_download").attr("href","<?php echo base_url();?>asset/uploads/cabang/pernyataan_rek/"+respond["content"][0]["pernyataan_rek"]);
+            $("#kop_surat_current").val(respond["content"][0]["kop_surat"]);
+            $("#nonpkp_current").val(respond["content"][0]["nonpkp"]);
+            $("#pernyataan_rek_current").val(respond["content"][0]["pernyataan_rek"]);
+        }
+    }
+});
 var chart_content = [];
 $.ajax({
     url:"<?php echo base_url();?>ws/cabang/dashboard",
