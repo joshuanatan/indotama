@@ -14,8 +14,11 @@
                 <form id = "register_form" method = "POST">
                     <input type = "hidden" name = "id_cabang" value = "<?php echo $this->session->id_cabang;?>">
                     <div class = "form-group">
+                        <input type = "checkbox" id = "penomoran_otomatis_cb" name = "generate_pem_no[]" value = 1 checked onclick = "toggle_nomor_pembelian()"> Gunakan Penomoran Otomatis
+                    </div>
+                    <div class = "form-group">
                         <h5>Nomor Pembelian</h5>
-                        <input type = "text" class = "form-control" required name = "nomor">
+                        <input type = "text" id = "nomor" class = "form-control" required name = "nomor" readonly value = "-">
                     </div>
                     <div class = "form-group">
                         <h5>Tanggal Pembelian</h5>
@@ -93,5 +96,17 @@
         var tambahan_beli_row = 0;
         $(".add_brg_beli_row").remove();
         $(".add_tambahan_beli_row").remove();
+    }
+    function toggle_nomor_pembelian(){
+        if($("#penomoran_otomatis_cb").prop("checked")){
+            $("#penomoran_otomatis_cb").prop("checked",true);
+            $("#nomor").prop("readonly",true);
+            $("#nomor").val("-");
+        }
+        else{
+            $("#penomoran_otomatis_cb").prop("checked",false);
+            $("#nomor").prop("readonly",false);
+            $("#nomor").val("");
+        }
     }
 </script>

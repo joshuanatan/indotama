@@ -14,6 +14,9 @@ class M_pembelian extends ci_model{
     private $pem_last_modified;
     private $id_create_data;
     private $id_last_modified;
+    private $no_control;
+    private $bln_control;
+    private $thn_control;
 
     public function __construct(){
         parent::__construct();
@@ -26,6 +29,8 @@ class M_pembelian extends ci_model{
         $this->pem_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
+        $this->bln_control = date("m");
+        $this->thn_control = date("Y");
     }
     private function set_column($col_name,$col_disp,$order_by){
         $array = array(
@@ -48,7 +53,10 @@ class M_pembelian extends ci_model{
             pem_create_date datetime,
             pem_last_modified datetime,
             id_create_data int,
-            id_last_modified int
+            id_last_modified int,
+            no_control int comment 'untuk tau udah nomor berapa untuk penomoran',
+            bln_control int,
+            thn_control int
         );
         drop table mstr_pembelian_log;
         create table mstr_pembelian_log(
@@ -180,7 +188,10 @@ class M_pembelian extends ci_model{
                 "pem_create_date" => $this->pem_create_date,
                 "pem_last_modified" => $this->pem_last_modified,
                 "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified
+                "id_last_modified" => $this->id_last_modified,
+                "no_control" => $this->no_control,
+                "bln_control" => $this->bln_control,
+                "thn_control" => $this->thn_control
             );
             return insertrow($this->tbl_name,$data);
         }
@@ -368,22 +379,14 @@ class M_pembelian extends ci_model{
         }
         return false;
     }
-    public function get_id_pk_pembelian(){
-        return $this->id_pk_pembelian;
+    public function get_pem_nomor($id_fk_cabang,$jenis_transaksi,$custom_tgl = "-"){
+        $this->db->trans_start();
+        executeQuery("call generate_trans_no(".$id_fk_cabang.",'".$jenis_transaksi."','".$custom_tgl."',@transno,@latest_no);");
+        $result = executeQuery("select @transno,@latest_no;");
+        $this->db->trans_complete(); 
+        $result = $result->result_array();
+        $this->no_control = $result[0]["@latest_no"];
+        return $result[0]["@transno"];
     }
-    public function get_pem_pk_nomor(){
-        return $this->pem_pk_nomor;
-    }
-    public function get_pem_tgl(){
-        return $this->pem_tgl;
-    }
-    public function get_pem_status(){
-        return $this->pem_status;
-    }
-    public function get_id_fk_supp(){
-        return $this->id_fk_supp;
-    }
-    public function get_id_fk_cabang(){
-        return $this->id_fk_cabang;
-    }
+    
 }
