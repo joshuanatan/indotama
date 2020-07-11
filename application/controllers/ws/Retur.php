@@ -197,6 +197,13 @@ class Retur extends CI_Controller{
                 $retur_tgl = $this->input->post("tgl_retur");
                 $retur_status = "konfirmasi";
                 $retur_tipe = $this->input->post("tipe_retur");
+                
+                if($this->input->post("generate_pem_no") != ""){
+                    $retur_no = $this->m_retur->get_retur_nomor($this->session->id_cabang,"retur",$retur_tgl);
+                }
+                else{
+                    $retur_no = $this->input->post("no_retur");
+                }
                 if($this->m_retur->set_insert($id_fk_penjualan,$retur_no,$retur_tgl,$retur_status,$retur_tipe)){
                     $id_retur = $this->m_retur->insert();
                     if($id_retur){
@@ -219,25 +226,27 @@ class Retur extends CI_Controller{
 
                                     $brg_retur_qty = $this->input->post("brg_retur_jumlah".$a);
                                     $brg_retur_qty = explode(" ",$brg_retur_qty);
-                                    $retur_brg_qty = $brg_retur_qty[0];
-                                    $retur_brg_satuan = $brg_retur_qty[1];
+                                    if(count($brg_retur_qty) == 2){
+                                        $retur_brg_qty = $brg_retur_qty[0];
+                                        $retur_brg_satuan = $brg_retur_qty[1];
 
-                                    $retur_brg_status = "aktif";
-                                    
-                                    if($this->m_retur_brg->set_insert($id_fk_retur,$id_fk_brg_cabang,$retur_brg_qty,$retur_brg_satuan,$retur_brg_status,$retur_brg_notes)){
-                                        if($this->m_retur_brg->insert()){
-                                            $response["statusitm"][$counter] = "SUCCESS";
-                                            $response["msgitm"][$counter] = "Item is recorded to database";
+                                        $retur_brg_status = "aktif";
+                                        
+                                        if($this->m_retur_brg->set_insert($id_fk_retur,$id_fk_brg_cabang,$retur_brg_qty,$retur_brg_satuan,$retur_brg_status,$retur_brg_notes)){
+                                            if($this->m_retur_brg->insert()){
+                                                $response["statusitm"][$counter] = "SUCCESS";
+                                                $response["msgitm"][$counter] = "Item is recorded to database";
+                                            }
+                                            else{
+                                                
+                                                $response["statusitm"][$counter] = "ERROR";
+                                                $response["msgitm"][$counter] = "Insert Item function error";
+                                            }
                                         }
                                         else{
-                                            
                                             $response["statusitm"][$counter] = "ERROR";
-                                            $response["msgitm"][$counter] = "Insert Item function error";
+                                            $response["msgitm"][$counter] = "Setter Item function error";
                                         }
-                                    }
-                                    else{
-                                        $response["statusitm"][$counter] = "ERROR";
-                                        $response["msgitm"][$counter] = "Setter Item function error";
                                     }
                                 }
                             }

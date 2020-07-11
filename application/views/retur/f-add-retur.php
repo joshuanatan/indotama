@@ -12,9 +12,13 @@
             );
             $this->load->view('_notification/register_error',$notif_data); ?>
                 <form id = "register_form" method = "POST">
+                
+                    <div class = "form-group">
+                        <input type = "checkbox" id = "penomoran_otomatis_cb" name = "generate_pem_no[]" value = 1 checked onclick = "toggle_nomor_retur()"> Gunakan Penomoran Otomatis
+                    </div>
                     <div class = "form-group">
                         <h5>Nomor Retur</h5>
-                        <input type = "text" class = "form-control" required id = "no_retur" name = "no_retur">
+                        <input id = "nomor" readonly value = "-" type = "text" class = "form-control" required id = "no_retur" name = "no_retur">
                     </div>
                     <div class = "form-group">
                         <h5>Nomor Penjualan</h5>
@@ -137,5 +141,18 @@
         var html = "<tr class = 'add_brg_kembali_row'><td id = 'brg_kembali_counter"+brg_kembali_row+"'><input name = 'brg_kembali_check[]' value = "+brg_kembali_row+" type = 'hidden'><input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang("+brg_kembali_row+")' id = 'brg"+brg_kembali_row+"' name = 'brg"+brg_kembali_row+"' class = 'form-control'></td><td><input name = 'brg_qty_real"+brg_kembali_row+"' type = 'text' class = 'form-control'></td><td><input name = 'brg_qty"+brg_kembali_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' readonly id = 'harga_barang_jual"+brg_kembali_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_price"+brg_kembali_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+brg_kembali_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
         $("#add_brg_kembali_but_container").before(html);
         brg_kembali_row++;    
+    }
+    
+    function toggle_nomor_retur(){
+        if($("#penomoran_otomatis_cb").prop("checked")){
+            $("#penomoran_otomatis_cb").prop("checked",true);
+            $("#nomor").prop("readonly",true);
+            $("#nomor").val("-");
+        }
+        else{
+            $("#penomoran_otomatis_cb").prop("checked",false);
+            $("#nomor").prop("readonly",false);
+            $("#nomor").val("");
+        }
     }
 </script>

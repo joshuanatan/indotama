@@ -15,6 +15,9 @@ class M_retur extends CI_Model{
     private $retur_last_modified;
     private $id_create_data;
     private $id_last_modified;
+    private $no_control;
+    private $bln_control;
+    private $thn_control;
 
     public function __construct(){
         parent::__construct();
@@ -27,6 +30,8 @@ class M_retur extends CI_Model{
         $this->retur_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
+        $this->bln_control = date("m");
+        $this->thn_control = date("Y");
     }
     public function install(){
         $sql = "
@@ -41,7 +46,10 @@ class M_retur extends CI_Model{
             retur_create_date datetime,
             retur_last_modified datetime,
             id_create_data int,
-            id_last_modified int
+            id_last_modified int,
+            no_control int comment 'untuk tau udah nomor berapa untuk penomoran',
+            bln_control int,
+            thn_control int
         );
         drop table if exists mstr_retur_log;
         create table mstr_retur_log(
@@ -217,6 +225,9 @@ class M_retur extends CI_Model{
                 "retur_last_modified" => $this->retur_last_modified,
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified,
+                "no_control" => $this->no_control,
+                "bln_control" => $this->bln_control,
+                "thn_control" => $this->thn_control
             );
             return insertRow($this->tbl_name,$data);
         }
@@ -408,22 +419,13 @@ class M_retur extends CI_Model{
         }
         return false;
     }
-    public function get_id_pk_retur(){
-        return $this->id_pk_retur;
-    }
-    public function get_id_fk_penjualan(){
-        return $this->id_fk_penjualan;
-    }
-    public function get_retur_tgl(){
-        return $this->retur_tgl;
-    }
-    public function get_retur_no(){
-        return $this->retur_no;
-    }
-    public function get_retur_status(){
-        return $this->retur_status;
-    }
-    public function get_retur_tipe(){
-        return $this->retur_tipe;
+    public function get_retur_nomor($id_fk_cabang,$jenis_transaksi,$custom_tgl = "-"){
+        $this->db->trans_start();
+        executeQuery("call generate_trans_no(".$id_fk_cabang.",'".$jenis_transaksi."','".$custom_tgl."',@transno,@latest_no);");
+        $result = executeQuery("select @transno,@latest_no;");
+        $this->db->trans_complete(); 
+        $result = $result->result_array();
+        $this->no_control = $result[0]["@latest_no"];
+        return $result[0]["@transno"];
     }
 }
