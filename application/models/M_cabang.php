@@ -5,7 +5,12 @@ class M_cabang extends ci_model{
     private $tbl_name = "mstr_cabang";
     private $columns = array();
     private $id_pk_cabang;
+
+    private $cabang_nama;
+    private $cabang_kode;
+    
     private $cabang_daerah;
+
     
     private $cabang_kop_surat;
     private $cabang_nonpkp;
@@ -22,6 +27,8 @@ class M_cabang extends ci_model{
 
     public function __construct(){
         parent::__construct();
+        $this->set_column("cabang_nama","nama",true);
+        $this->set_column("cabang_kode","kode",true);
         $this->set_column("cabang_daerah","daerah",true);
         $this->set_column("cabang_notelp","no telp",false);
         $this->set_column("cabang_alamat","alamat",false);
@@ -48,6 +55,8 @@ class M_cabang extends ci_model{
         $sql = "drop table if exists mstr_cabang;
         create table mstr_cabang(
             id_pk_cabang int primary key auto_increment,
+            cabang_nama varchar(50),
+            cabang_kode varchar(50),
             cabang_daerah varchar(50),
             cabang_kop_surat varchar(100),
             cabang_nonpkp varchar(100),
@@ -66,6 +75,8 @@ class M_cabang extends ci_model{
             id_pk_cabang_log int primary key auto_increment,
             executed_function varchar(30),
             id_pk_cabang int,
+            cabang_nama varchar(50),
+            cabang_kode varchar(50),
             cabang_daerah varchar(50),
             cabang_kop_surat varchar(100),
             cabang_nonpkp varchar(100),
@@ -91,7 +102,7 @@ class M_cabang extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at' , new.cabang_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_cabang_log(executed_function,id_pk_cabang,cabang_daerah,cabang_kop_surat,cabang_nonpkp,cabang_pernyataan_rek,cabang_notelp,cabang_alamat,cabang_status,cabang_create_date,cabang_last_modified,id_create_data,id_last_modified,id_fk_toko,id_log_all) values ('after insert',new.id_pk_cabang,new.cabang_daerah,new.cabang_kop_surat,new.cabang_nonpkp,new.cabang_pernyataan_rek,new.cabang_notelp,new.cabang_alamat,new.cabang_status,new.cabang_create_date,new.cabang_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_toko,@id_log_all);
+            insert into mstr_cabang_log(executed_function,id_pk_cabang,cabang_nama,cabang_kode,cabang_daerah,cabang_kop_surat,cabang_nonpkp,cabang_pernyataan_rek,cabang_notelp,cabang_alamat,cabang_status,cabang_create_date,cabang_last_modified,id_create_data,id_last_modified,id_fk_toko,id_log_all) values ('after insert',new.id_pk_cabang,new.cabang_nama,new.cabang_kode,new.cabang_daerah,new.cabang_kop_surat,new.cabang_nonpkp,new.cabang_pernyataan_rek,new.cabang_notelp,new.cabang_alamat,new.cabang_status,new.cabang_create_date,new.cabang_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_toko,@id_log_all);
         end$$
         delimiter ;
         
@@ -106,8 +117,7 @@ class M_cabang extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at' , new.cabang_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_cabang_log(executed_function,id_pk_cabang,cabang_daerah,cabang_kop_surat,cabang_nonpkp,cabang_pernyataan_rek,cabang_notelp,cabang_alamat,cabang_status,cabang_create_date,cabang_last_modified,id_create_data,id_last_modified,id_fk_toko,id_log_all) values ('after update',new.id_pk_cabang,new.cabang_daerah,new.cabang_kop_surat,new.cabang_nonpkp,new.cabang_pernyataan_rek,new.cabang_notelp,new.cabang_alamat,new.cabang_status,new.cabang_create_date,new.cabang_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_toko,@id_log_all);
-        end$$
+            insert into mstr_cabang_log(executed_function,id_pk_cabang,cabang_nama,cabang_kode,cabang_daerah,cabang_kop_surat,cabang_nonpkp,cabang_pernyataan_rek,cabang_notelp,cabang_alamat,cabang_status,cabang_create_date,cabang_last_modified,id_create_data,id_last_modified,id_fk_toko,id_log_all) values ('after update',new.id_pk_cabang,new.cabang_nama,new.cabang_kode,new.cabang_daerah,new.cabang_kop_surat,new.cabang_nonpkp,new.cabang_pernyataan_rek,new.cabang_notelp,new.cabang_alamat,new.cabang_status,new.cabang_create_date,new.cabang_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_toko,@id_log_all);
         delimiter ;";
         executequery($sql);
     }
@@ -118,6 +128,8 @@ class M_cabang extends ci_model{
             $search_query .= "and
             (
                 id_pk_cabang like '%".$search_key."%' or 
+                cabang_nama like '%".$search_key."%' or 
+                cabang_kode like '%".$search_key."%' or 
                 cabang_daerah like '%".$search_key."%' or 
                 cabang_kop_surat like '%".$search_key."%' or 
                 cabang_nonpkp like '%".$search_key."%' or 
@@ -130,7 +142,7 @@ class M_cabang extends ci_model{
             )";
         }
         $query = "
-        select id_pk_cabang,cabang_daerah,cabang_notelp,cabang_alamat,cabang_status,cabang_create_date,cabang_last_modified,cabang_kop_surat,cabang_nonpkp,cabang_pernyataan_rek
+        select id_pk_cabang,ifnull(cabang_nama,'-') as cabang_nama,ifnull(cabang_kode,'-') as cabang_kode,cabang_daerah,cabang_notelp,cabang_alamat,cabang_status,cabang_create_date,cabang_last_modified,cabang_kop_surat,cabang_nonpkp,cabang_pernyataan_rek
         from ".$this->tbl_name." 
         where cabang_status = ? and id_fk_toko = ? ".$search_query."  
         order by ".$order_by." ".$order_direction." 
@@ -150,7 +162,7 @@ class M_cabang extends ci_model{
     }
     public function list_cabang(){
         $query = "
-        select id_pk_cabang,cabang_daerah,cabang_notelp,cabang_alamat,cabang_status,cabang_create_date,cabang_last_modified,cabang_kop_surat,cabang_nonpkp,cabang_pernyataan_rek
+        select id_pk_cabang,cabang_nama,cabang_kode,cabang_daerah,cabang_notelp,cabang_alamat,cabang_status,cabang_create_date,cabang_last_modified,cabang_kop_surat,cabang_nonpkp,cabang_pernyataan_rek
         from ".$this->tbl_name." 
         where cabang_status = ? and id_fk_toko = ? ";
         $args = array(
@@ -164,6 +176,8 @@ class M_cabang extends ci_model{
         );
         $field = array(
             "id_pk_cabang",
+            "cabang_nama",
+            "cabang_kode",
             "cabang_daerah",
             "cabang_notelp",
             "cabang_alamat",
@@ -179,6 +193,8 @@ class M_cabang extends ci_model{
     public function insert(){
         if($this->check_insert()){
             $data = array(
+                "cabang_nama" => $this->cabang_nama,
+                "cabang_kode" => $this->cabang_kode,
                 "cabang_daerah" => $this->cabang_daerah,
                 "cabang_kop_surat" => $this->cabang_kop_surat,
                 "cabang_nonpkp" => $this->cabang_nonpkp,
@@ -202,6 +218,8 @@ class M_cabang extends ci_model{
                 "id_pk_cabang" => $this->id_pk_cabang,
             );
             $data = array(
+                "cabang_nama" => $this->cabang_nama,
+                "cabang_kode" => $this->cabang_kode,
                 "cabang_daerah" => $this->cabang_daerah,
                 "cabang_kop_surat" => $this->cabang_kop_surat,
                 "cabang_nonpkp" => $this->cabang_nonpkp,
@@ -232,6 +250,12 @@ class M_cabang extends ci_model{
         return false;
     }
     public function check_insert(){
+        if($this->cabang_nama == ""){
+            return false;
+        }
+        if($this->cabang_kode == ""){
+            return false;
+        }
         if($this->cabang_daerah == ""){
             return false;
         }
@@ -274,6 +298,12 @@ class M_cabang extends ci_model{
         if($this->id_pk_cabang == ""){
             return false;
         }
+        if($this->cabang_nama == ""){
+            return false;
+        }
+        if($this->cabang_kode == ""){
+            return false;
+        }
         if($this->cabang_daerah == ""){
             return false;
         }
@@ -313,7 +343,13 @@ class M_cabang extends ci_model{
         }
         return true;
     }
-    public function set_insert($cabang_daerah,$cabang_notelp,$cabang_status,$cabang_alamat,$id_fk_toko,$cabang_kop_surat,$cabang_nonpkp,$cabang_pernyataan_rek){
+    public function set_insert($cabang_nama,$cabang_kode,$cabang_daerah,$cabang_notelp,$cabang_status,$cabang_alamat,$id_fk_toko,$cabang_kop_surat,$cabang_nonpkp,$cabang_pernyataan_rek){
+        if(!$this->set_cabang_nama($cabang_nama)){
+            return false;
+        }
+        if(!$this->set_cabang_kode($cabang_kode)){
+            return false;
+        }
         if(!$this->set_cabang_daerah($cabang_daerah)){
             return false;
         }
@@ -340,8 +376,14 @@ class M_cabang extends ci_model{
         }
         return true;
     }
-    public function set_update($id_pk_cabang,$cabang_daerah,$cabang_notelp,$cabang_alamat,$cabang_kop_surat,$cabang_nonpkp,$cabang_pernyataan_rek){
+    public function set_update($cabang_nama,$cabang_kode,$id_pk_cabang,$cabang_daerah,$cabang_notelp,$cabang_alamat,$cabang_kop_surat,$cabang_nonpkp,$cabang_pernyataan_rek){
         if(!$this->set_id_pk_cabang($id_pk_cabang)){
+            return false;
+        }
+        if(!$this->set_cabang_nama($cabang_nama)){
+            return false;
+        }
+        if(!$this->set_cabang_kode($cabang_kode)){
             return false;
         }
         if(!$this->set_cabang_daerah($cabang_daerah)){
@@ -391,6 +433,20 @@ class M_cabang extends ci_model{
     public function set_id_pk_cabang($id_pk_cabang){
         if($id_pk_cabang != ""){
             $this->id_pk_cabang = $id_pk_cabang;
+            return true;
+        }
+        return false;
+    }
+    public function set_cabang_nama($cabang_nama){
+        if($cabang_nama != ""){
+            $this->cabang_nama = $cabang_nama;
+            return true;
+        }
+        return false;
+    }
+    public function set_cabang_kode($cabang_kode){
+        if($cabang_kode != ""){
+            $this->cabang_kode = $cabang_kode;
             return true;
         }
         return false;
