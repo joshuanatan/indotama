@@ -17,6 +17,9 @@ class M_penjualan extends ci_model{
     private $penj_last_modified;
     private $id_create_data;
     private $id_last_modified;
+    private $no_control;
+    private $bln_control;
+    private $thn_control;
 
     public function __construct(){
         parent::__construct();
@@ -32,6 +35,8 @@ class M_penjualan extends ci_model{
         $this->penj_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
+        $this->bln_control = date("m");
+        $this->thn_control = date("Y");
     }
     private function set_column($col_name,$col_disp,$order_by){
         $array = array(
@@ -81,7 +86,7 @@ class M_penjualan extends ci_model{
         drop table if exists mstr_penjualan;
         create table mstr_penjualan(
             id_pk_penjualan int primary key auto_increment,
-            penj_nomor varchar(30),
+            penj_nomor varchar(100),
             penj_tgl datetime,
             penj_dateline_tgl datetime,
             penj_jenis varchar(50),
@@ -92,14 +97,17 @@ class M_penjualan extends ci_model{
             penj_create_date datetime,
             penj_last_modified datetime,
             id_create_data int,
-            id_last_modified int
+            id_last_modified int,
+            no_control int comment 'untuk tau udah nomor berapa untuk penomoran',
+            bln_control int,
+            thn_control int
         );
         drop table if exists mstr_penjualan_log;
         create table mstr_penjualan_log(
             id_pk_penjualan_log int primary key auto_increment,
             executed_function varchar(30),
             id_pk_penjualan int,
-            penj_nomor varchar(30),
+            penj_nomor varchar(100),
             penj_tgl datetime,
             penj_dateline_tgl datetime,
             penj_jenis varchar(50),
@@ -195,7 +203,10 @@ class M_penjualan extends ci_model{
                 "penj_create_date" => $this->penj_create_date,
                 "penj_last_modified" => $this->penj_last_modified,
                 "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified
+                "id_last_modified" => $this->id_last_modified,
+                "no_control" => $this->no_control,
+                "bln_control" => $this->bln_control,
+                "thn_control" => $this->thn_control
             );
             return insertrow($this->tbl_name,$data);
         }
@@ -437,31 +448,13 @@ class M_penjualan extends ci_model{
         }
         return false;
     }
-    public function get_id_pk_penjualan(){
-        return $this->id_pk_penjualan;
-    }
-    public function get_penj_nomor(){
-        return $this->penj_nomor;
-    }
-    public function get_penj_dateline_tgl(){
-        return $this->penj_dateline_tgl;
-    }
-    public function get_penj_jenis(){
-        return $this->penj_jenis;
-    }
-    public function get_penj_tipe_pembayaran(){
-        return $this->penj_tipe_pembayaran;
-    }
-    public function get_penj_tgl(){
-        return $this->penj_tgl;
-    }
-    public function get_penj_status(){
-        return $this->penj_status;
-    }
-    public function get_id_fk_customer(){
-        return $this->id_fk_customer;
-    }
-    public function get_id_fk_cabang(){
-        return $this->id_fk_cabang;
+    public function get_penj_nomor($id_fk_cabang,$jenis_transaksi,$custom_tgl = "-"){
+        $this->db->trans_start();
+        executeQuery("call generate_trans_no(".$id_fk_cabang.",'".$jenis_transaksi."','".$custom_tgl."',@transno,@latest_no);");
+        $result = executeQuery("select @transno,@latest_no;");
+        $this->db->trans_complete(); 
+        $result = $result->result_array();
+        $this->no_control = $result[0]["@latest_no"];
+        return $result[0]["@transno"];
     }
 }
