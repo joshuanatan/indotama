@@ -86,7 +86,6 @@ class Customer extends CI_Controller{
                 $response["content"][$a]["alamat"] = $result[$a]["cust_alamat"];
                 $response["content"][$a]["keterangan"] = $result[$a]["cust_keterangan"];
                 $response["content"][$a]["status"] = $result[$a]["cust_status"];
-                $response["content"][$a]["create_date"] = $result[$a]["cust_create_date"];
                 $response["content"][$a]["last_modified"] = $result[$a]["cust_last_modified"];
                 $response["content"][$a]["no_npwp"] = $result[$a]["cust_no_npwp"];
                 $response["content"][$a]["foto_npwp"] = $result[$a]["cust_foto_npwp"];
