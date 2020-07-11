@@ -37,6 +37,8 @@ class Cabang extends CI_Controller{
             for($a = 0; $a<count($result["data"]); $a++){
                 
                 $response["content"][$a]["id"] = $result["data"][$a]["id_pk_cabang"];
+                $response["content"][$a]["nama"] = $result["data"][$a]["cabang_nama"];
+                $response["content"][$a]["kode"] = $result["data"][$a]["cabang_kode"];
                 $response["content"][$a]["daerah"] = $result["data"][$a]["cabang_daerah"];
                 $response["content"][$a]["notelp"] = $result["data"][$a]["cabang_notelp"];
                 $response["content"][$a]["alamat"] = $result["data"][$a]["cabang_alamat"];
@@ -53,6 +55,8 @@ class Cabang extends CI_Controller{
         }
         $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
         $response["key"] = array(
+            "nama",
+            "kode",
             "daerah",
             "notelp",
             "alamat",
@@ -64,12 +68,16 @@ class Cabang extends CI_Controller{
     public function register(){
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("id_toko","id_toko","required");
+        $this->form_validation->set_rules("nama","nama","required");
+        $this->form_validation->set_rules("kode","kode","required");
         $this->form_validation->set_rules("daerah","daerah","required");
         $this->form_validation->set_rules("alamat","alamat","required");
         $this->form_validation->set_rules("notelp","notelp","required");
         if($this->form_validation->run()){
             $this->load->model("m_cabang");
             $id_fk_toko = $this->input->post("id_toko");
+            $cabang_nama = $this->input->post("nama");
+            $cabang_kode = $this->input->post("kode");
             $cabang_daerah = $this->input->post("daerah");
             $cabang_status = "AKTIF";
             $cabang_alamat = $this->input->post("alamat");
@@ -99,7 +107,7 @@ class Cabang extends CI_Controller{
                 $cabang_pernyataan_rek = $this->upload->data("file_name");
             }
 
-            if($this->m_cabang->set_insert($cabang_daerah,$cabang_notelp,$cabang_status,$cabang_alamat,$id_fk_toko,$cabang_kop_surat,$cabang_nonpkp,$cabang_pernyataan_rek)){
+            if($this->m_cabang->set_insert($cabang_nama,$cabang_kode,$cabang_daerah,$cabang_notelp,$cabang_status,$cabang_alamat,$id_fk_toko,$cabang_kop_surat,$cabang_nonpkp,$cabang_pernyataan_rek)){
                 if($this->m_cabang->insert()){
                     $response["msg"] = "Data is recorded to database";
                 }
@@ -122,12 +130,16 @@ class Cabang extends CI_Controller{
     public function update(){
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("id","id","required");
+        $this->form_validation->set_rules("nama","nama","required");
+        $this->form_validation->set_rules("kode","kode","required");
         $this->form_validation->set_rules("daerah","daerah","required");
         $this->form_validation->set_rules("alamat","alamat","required");
         $this->form_validation->set_rules("notelp","notelp","required");
         if($this->form_validation->run()){
             $this->load->model("m_cabang");
             $id_pk_cabang = $this->input->post("id");
+            $cabang_nama = $this->input->post("nama");
+            $cabang_kode = $this->input->post("kode");
             $cabang_daerah = $this->input->post("daerah");
             $cabang_alamat = $this->input->post("alamat");
             $cabang_notelp = $this->input->post("notelp");
@@ -156,7 +168,7 @@ class Cabang extends CI_Controller{
                 $cabang_pernyataan_rek = $this->upload->data("file_name");
             }
 
-            if($this->m_cabang->set_update($id_pk_cabang,$cabang_daerah,$cabang_notelp,$cabang_alamat,$cabang_kop_surat,$cabang_nonpkp,$cabang_pernyataan_rek)){
+            if($this->m_cabang->set_update($cabang_nama,$cabang_kode,$id_pk_cabang,$cabang_daerah,$cabang_notelp,$cabang_alamat,$cabang_kop_surat,$cabang_nonpkp,$cabang_pernyataan_rek)){
                 if($this->m_cabang->update()){
                     $response["msg"] = "Data is updated to database";
                 }

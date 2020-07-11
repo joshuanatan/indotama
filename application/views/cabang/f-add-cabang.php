@@ -13,6 +13,14 @@
                 <form id = "register_form" method = "POST">
                     <input type = "hidden" name = "id_toko" value = "<?php echo $toko[0]["id_pk_toko"];?>">
                     <div class = "form-group">
+                        <h5>Nama Cabang</h5>
+                        <input type = "text" class = "form-control" required name = "nama">
+                    </div>
+                    <div class = "form-group">
+                        <h5>Kode Cabang</h5>
+                        <input type = "text" class = "form-control" required name = "kode">
+                    </div>
+                    <div class = "form-group">
                         <h5>Daerah Cabang</h5>
                         <input type = "text" class = "form-control" required name = "daerah">
                     </div>
