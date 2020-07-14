@@ -42,8 +42,8 @@
 										<div class="form-wrap mt-40">
 											<form action="<?php echo base_url(); ?>login/login_method" method="post">
 												<div class="form-group">
-													<label class="control-label mb-10" for="exampleInputEmail_2">Email</label>
-													<input type="text" name="user_name" class="form-control" id="exampleInputEmail_2" placeholder="johndoe@example.com">
+													<label class="control-label mb-10" for="exampleInputEmail_2">Username</label>
+													<input type="text" name="user_name" class="form-control" id="exampleInputEmail_2" placeholder="MMsafety">
 												</div>
 												<div class="form-group">
 													<label class="pull-left control-label mb-10" for="exampleInputpwd_2">Password</label>
