@@ -36,8 +36,6 @@ if($this->session->id_toko):?>
         <?php 
         if($this->session->id_toko):?>
         <li id = "toko_menu_separator"></li>
-        <?php endif;?>
-        <?php if(false):?>
         <li>
             <a href="<?php echo base_url();?>toko/pengaturan_toko">
             Pengaturan Toko

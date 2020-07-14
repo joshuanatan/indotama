@@ -37,7 +37,7 @@ if($this->session->id_cabang):?>
         if($this->session->id_cabang):?>
         <li id = "cabang_menu_separator"></li>
         <?php endif;?>
-        <?php if(false):?>
+        <?php if($this->session->id_cabang):?>
         <li>
             <a href="<?php echo base_url();?>toko/pengaturan_cabang">
                 Pengaturan Cabang
