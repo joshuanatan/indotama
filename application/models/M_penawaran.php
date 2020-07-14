@@ -8,6 +8,7 @@ class M_penawaran extends ci_model{
     private $penawaran_subject;
     private $penawaran_content;
     private $penawaran_notes;
+    private $penawaran_file;
     private $penawaran_refrensi;
     private $penawaran_tgl;
     private $penawaran_status;
@@ -24,6 +25,7 @@ class M_penawaran extends ci_model{
         $this->set_column("penawaran_subject","Subjek",true);
         $this->set_column("penawaran_content","Konten",false);
         $this->set_column("penawaran_notes","Notes",false);
+        $this->set_column("penawaran_file","File",false);
         $this->set_column("penawaran_status","status",false);
         $this->set_column("penawaran_last_modified","Last Modified",false);
 
@@ -51,12 +53,13 @@ class M_penawaran extends ci_model{
             penawaran_subject varchar(100),
             penawaran_content varchar(100),
             penawaran_notes varchar(100),
+            penawaran_file varchar(100),
             penawaran_tgl datetime,
             penawaran_refrensi varchar(100),
             penawaran_status varchar(30),
             id_fk_cabang int,
-            penawaran_create_date int,
-            penawaran_last_modified int,
+            penawaran_create_date datetime,
+            penawaran_last_modified datetime,
             id_create_date int,
             id_last_modified int
         );
@@ -68,12 +71,13 @@ class M_penawaran extends ci_model{
             penawaran_subject varchar(100),
             penawaran_content varchar(100),
             penawaran_notes varchar(100),
+            penawaran_file varchar(100),
             penawaran_tgl datetime,
             penawaran_refrensi varchar(100),
             penawaran_status varchar(30),
             id_fk_cabang int,
-            penawaran_create_date int,
-            penawaran_last_modified int,
+            penawaran_create_date datetime,
+            penawaran_last_modified datetime,
             id_create_date int,
             id_last_modified int,
             id_log_all int
@@ -89,7 +93,7 @@ class M_penawaran extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at' , new.penawaran_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_penawaran_log(executed_function,id_pk_penawaran,penawaran_subject,penawaran_content,penawaran_notes,penawaran_tgl,penawaran_refrensi,penawaran_status,id_fk_cabang,penawaran_create_date,penawaran_last_modified,id_create_date,id_last_modified,id_log_all) values ('after insert',new.id_pk_penawaran,new.penawaran_subject,new.penawaran_content,new.penawaran_notes,new.penawaran_tgl,new.penawaran_refrensi,new.penawaran_status,new.id_fk_cabang,new.penawaran_create_date,new.penawaran_last_modified,new.id_create_date,new.id_last_modified,@id_log_all);
+            insert into mstr_penawaran_log(executed_function,id_pk_penawaran,penawaran_subject,penawaran_content,penawaran_notes,penawaran_file,penawaran_tgl,penawaran_refrensi,penawaran_status,id_fk_cabang,penawaran_create_date,penawaran_last_modified,id_create_date,id_last_modified,id_log_all) values ('after insert',new.id_pk_penawaran,new.penawaran_subject,new.penawaran_content,new.penawaran_notes,new.penawaran_file,new.penawaran_tgl,new.penawaran_refrensi,new.penawaran_status,new.id_fk_cabang,new.penawaran_create_date,new.penawaran_last_modified,new.id_create_date,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         
@@ -104,7 +108,7 @@ class M_penawaran extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at' , new.penawaran_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_penawaran_log(executed_function,id_pk_penawaran,penawaran_subject,penawaran_content,penawaran_notes,penawaran_tgl,penawaran_refrensi,penawaran_status,id_fk_cabang,penawaran_create_date,penawaran_last_modified,id_create_date,id_last_modified,id_log_all) values ('after update',new.id_pk_penawaran,new.penawaran_subject,new.penawaran_content,new.penawaran_notes,new.penawaran_tgl,new.penawaran_refrensi,new.penawaran_status,new.id_fk_cabang,new.penawaran_create_date,new.penawaran_last_modified,new.id_create_date,new.id_last_modified,@id_log_all);
+            insert into mstr_penawaran_log(executed_function,id_pk_penawaran,penawaran_subject,penawaran_content,penawaran_notes,penawaran_file,penawaran_tgl,penawaran_refrensi,penawaran_status,id_fk_cabang,penawaran_create_date,penawaran_last_modified,id_create_date,id_last_modified,id_log_all) values ('after update',new.id_pk_penawaran,new.penawaran_subject,new.penawaran_content,new.penawaran_notes,new.penawaran_file,new.penawaran_tgl,new.penawaran_refrensi,new.penawaran_status,new.id_fk_cabang,new.penawaran_create_date,new.penawaran_last_modified,new.id_create_date,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;";
         executequery($sql);
@@ -118,6 +122,7 @@ class M_penawaran extends ci_model{
                 penawaran_subject like '%".$search_key."%' or 
                 penawaran_content like '%".$search_key."%' or 
                 penawaran_notes like '%".$search_key."%' or 
+                penawaran_file like '%".$search_key."%' or 
                 penawaran_refrensi like '%".$search_key."%' or 
                 penawaran_tgl like '%".$search_key."%' or 
                 penawaran_status like '%".$search_key."%' or 
@@ -125,7 +130,7 @@ class M_penawaran extends ci_model{
             )";
         }
         $query = "
-        select id_pk_penawaran,penawaran_subject,penawaran_content,penawaran_notes,penawaran_refrensi,penawaran_tgl,penawaran_status,penawaran_last_modified
+        select id_pk_penawaran,penawaran_subject,penawaran_file,penawaran_content,penawaran_notes,penawaran_refrensi,penawaran_tgl,penawaran_status,penawaran_last_modified
         from ".$this->tbl_name." 
         where penawaran_status = ? and id_fk_cabang = ? ".$search_query."  
         order by ".$order_by." ".$order_direction." 
@@ -149,6 +154,7 @@ class M_penawaran extends ci_model{
                 "penawaran_subject" => $this->penawaran_subject,
                 "penawaran_content" => $this->penawaran_content,
                 "penawaran_notes" => $this->penawaran_notes,
+                "penawaran_file" => $this->penawaran_file,
                 "penawaran_refrensi" => $this->penawaran_refrensi,
                 "penawaran_tgl" => $this->penawaran_tgl,
                 "penawaran_status" => $this->penawaran_status,
@@ -171,6 +177,7 @@ class M_penawaran extends ci_model{
                 "penawaran_subject" => $this->penawaran_subject,
                 "penawaran_content" => $this->penawaran_content,
                 "penawaran_notes" => $this->penawaran_notes,
+                "penawaran_file" => $this->penawaran_file,
                 "penawaran_refrensi" => $this->penawaran_refrensi,
                 "penawaran_tgl" => $this->penawaran_tgl,
                 "penawaran_last_modified" => $this->penawaran_last_modified,
@@ -204,6 +211,9 @@ class M_penawaran extends ci_model{
             return false;
         }
         if($this->penawaran_notes == ""){
+            return false;
+        }
+        if($this->penawaran_file == ""){
             return false;
         }
         if($this->penawaran_refrensi == ""){
@@ -245,6 +255,9 @@ class M_penawaran extends ci_model{
         if($this->penawaran_notes == ""){
             return false;
         }
+        if($this->penawaran_file == ""){
+            return false;
+        }
         if($this->penawaran_tgl == ""){
             return false;
         }
@@ -271,7 +284,7 @@ class M_penawaran extends ci_model{
         }
         return true;
     }
-    public function set_insert($penawaran_subject,$penawaran_content,$penawaran_notes,$penawaran_refrensi,$penawaran_tgl,$penawaran_status,$id_fk_cabang){
+    public function set_insert($penawaran_subject,$penawaran_content,$penawaran_notes,$penawaran_file,$penawaran_refrensi,$penawaran_tgl,$penawaran_status,$id_fk_cabang){
         if(!$this->set_penawaran_subject($penawaran_subject)){
             return false;
         }
@@ -279,6 +292,9 @@ class M_penawaran extends ci_model{
             return false;
         }
         if(!$this->set_penawaran_notes($penawaran_notes)){
+            return false;
+        }
+        if(!$this->set_penawaran_file($penawaran_file)){
             return false;
         }
         if(!$this->set_penawaran_refrensi($penawaran_refrensi)){
@@ -295,7 +311,7 @@ class M_penawaran extends ci_model{
         }
         return true;
     }
-    public function set_update($id_pk_penawaran,$penawaran_subject,$penawaran_content,$penawaran_notes,$penawaran_refrensi,$penawaran_tgl){
+    public function set_update($id_pk_penawaran,$penawaran_subject,$penawaran_content,$penawaran_notes,$penawaran_file,$penawaran_refrensi,$penawaran_tgl){
         if(!$this->set_id_pk_penawaran($id_pk_penawaran)){
             return false;
         }
@@ -306,6 +322,9 @@ class M_penawaran extends ci_model{
             return false;
         }
         if(!$this->set_penawaran_notes($penawaran_notes)){
+            return false;
+        }
+        if(!$this->set_penawaran_file($penawaran_file)){
             return false;
         }
         if(!$this->set_penawaran_refrensi($penawaran_refrensi)){
@@ -346,6 +365,13 @@ class M_penawaran extends ci_model{
     public function set_penawaran_notes($penawaran_notes){
         if($penawaran_notes != ""){
             $this->penawaran_notes = $penawaran_notes;
+            return true;
+        }
+        return false;
+    }
+    public function set_penawaran_file($penawaran_file){
+        if($penawaran_file != ""){
+            $this->penawaran_file = $penawaran_file;
             return true;
         }
         return false;

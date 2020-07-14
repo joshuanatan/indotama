@@ -34,6 +34,11 @@
                         <textarea class = "form-control" required name = "notes" id = "notes_edit"></textarea>
                     </div>
                     <div class = "form-group">
+                        <h5>File Penawaran</h5>
+                        <input type = "hidden" name = "file_current"  id = "file_edit">
+                        <input type = "file" name = "file">
+                    </div>
+                    <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
                         <button type = "button" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
@@ -50,5 +55,6 @@
         $("#subjek_edit").val(content[row]["subject"]);
         $("#content_edit").val(content[row]["content"]);
         $("#notes_edit").val(content[row]["notes"]);
+        $("#file_edit").val(content[row]["file"]);
     }
 </script>

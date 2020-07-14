@@ -34,6 +34,10 @@
                             <td>Notes Penawaran</td>
                             <td id = "notes_delete"></td>
                         </tr>
+                        <tr>
+                            <td>File Penawaran</td>
+                            <td id = "file_delete"></td>
+                        </tr>
                     </tbody>
                 </table>
                 <div class = "form-group">
@@ -52,6 +56,7 @@
         $("#subjek_delete").html(content[row]["subject"]);
         $("#content_delete").html(content[row]["content"]);
         $("#notes_delete").html(content[row]["notes"]);
+        $("#file_delete").html(content[row]["file_html"]);
     }
     
 </script>
