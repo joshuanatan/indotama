@@ -33,7 +33,22 @@
                                 if(respond["content"][a][respond["key"][b]] == null){
                                     respond["content"][a][respond["key"][b]] = "";
                                 }
-                                html += "<td class = 'align-middle text-center'>"+respond["content"][a][respond["key"][b]]+"</td>";
+                                if(respond["key"][b].toLowerCase() == "status"){
+                                    switch(respond["content"][a]["status"].toLowerCase()){
+                                        case "aktif":
+                                        html += `<td class = 'align-middle text-center'><span class="badge badge-success align-top" id = "orderDirection">${respond["content"][a][respond["key"][b]].toUpperCase()}</span></td>`;
+                                        break;
+                                        case "konfirmasi":
+                                        html += `<td class = 'align-middle text-center'><span class="badge badge-primary align-top" id = "orderDirection">${respond["content"][a][respond["key"][b]].toUpperCase()}</span></td>`;
+                                        break;
+                                        default:
+                                        html += `<td class = 'align-middle text-center'><span class="badge badge-danger align-top" id = "orderDirection">${respond["content"][a][respond["key"][b]].toUpperCase()}</span></td>`;
+                                        break;
+                                    }
+                                }
+                                else{
+                                    html += "<td class = 'align-middle text-center'>"+respond["content"][a][respond["key"][b]]+"</td>";
+                                }
                             }
                             /*
                                 additional button
@@ -134,19 +149,21 @@
         if(parseInt(colNum) != orderBy){
             orderBy = colNum; 
             orderDirection = "ASC";
-            var orderDirectionHtml = ' <span class="badge badge-primary align-top" id = "orderDirection">ASC</span>';
+            var orderDirectionHtml = ' <span class="badge badge-primary align-top" id = "orderDirection">A-Z</span>';
             $("#orderDirection").remove();
             $("#col"+colNum).append(orderDirectionHtml);
         }
         else{
             var direction = $("#orderDirection").text();
-            if(direction == "ASC"){
+            if(direction == "A-Z"){
                 orderDirection = "DESC";
+                orderDirectionHtml = "Z-A";
             }
             else{
                 orderDirection = "ASC";
+                orderDirectionHtml = "A-Z";
             }
-            $("#orderDirection").text(orderDirection);
+            $("#orderDirection").text(orderDirectionHtml);
         }
         refresh();
     }
@@ -173,7 +190,7 @@
                         for(var a = 0; a<respond["content"].length; a++){
                             html += "<th id = 'col"+a+"' style = 'cursor:pointer' onclick = 'sort("+a+")' class = 'text-center align-middle'>"+respond["content"][a]["col_name"];
                             if(a == 0){
-                                html += " <span class='badge badge-primary align-top' id = 'orderDirection'>ASC</span>";
+                                html += " <span class='badge badge-primary align-top' id = 'orderDirection'>A-Z</span>";
                             }
                             html += "</th>";
                         }

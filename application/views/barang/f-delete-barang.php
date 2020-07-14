@@ -49,8 +49,8 @@
                     </tbody>
                 </table>
                 <div class = "form-group">
-                    <button type = "button" class = "btn btn-sm btn-primary" data-dismiss = "modal">Cancel</button>
-                    <button type = "button" onclick = "delete_func()" class = "btn btn-sm btn-danger">Delete</button>
+                    <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
+                    <button type = "button" onclick = "delete_func()" class = "btn btn-sm btn-primary">Confirm</button>
                 </div>
             </div>
         </div>

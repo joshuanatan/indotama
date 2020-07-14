@@ -83,6 +83,12 @@ $data = array(
     "page_title" => "Master User"
 );
 ?>
+<?php $this->load->view("_base_element/datalist_employee");?>
+<script>
+    function load_datalist(){
+        load_datalist_employee();
+    }
+</script>
 <?php $this->load->view("_core_script/table_func");?>
 <?php $this->load->view("_core_script/register_func");?>
 <?php $this->load->view("_core_script/update_func");?>

@@ -16,8 +16,12 @@
                 <table class = "table table-bordered table-striped table-hover">
                     <tbody>
                         <tr>
-                            <td>Nama User</td>
+                            <td>Username</td>
                             <td id = "name_delete"></td>
+                        </tr>
+                        <tr>
+                            <td>Nama Karyawan</td>
+                            <td id = "nama_karyawan_delete"></td>
                         </tr>
                         <tr>
                             <td>Email</td>
@@ -43,5 +47,6 @@
         $("#name_delete").html(content[id]["name"]);
         $("#email_delete").html(content[id]["email"]);
         $("#role_list_delete").html(content[id]["jabatan"]);
+        $("#nama_karyawan_delete").html(content[id]["nama_employee"]);
     }
 </script>

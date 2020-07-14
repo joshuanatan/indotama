@@ -1,0 +1,9 @@
+/*css digunakan untuk menyesuaikan dengan request*/
+.modal-header{
+    background:linear-gradient(45deg, #635bd6, #f742aa)
+}
+.modal-header h4{
+    text-transform:uppercase;
+    font-size:15px;
+    color:white;
+}

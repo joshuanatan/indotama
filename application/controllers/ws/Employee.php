@@ -70,30 +70,36 @@ class Employee extends CI_Controller{
         );
         echo json_encode($response);
     }
-    public function list(){
+    public function list_employee(){
         $response["status"] = "SUCCESS";
         $this->load->model("m_employee");
-        $result = $this->m_employee->list();
+        $result = $this->m_employee->list_employee();
         if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
-                $response["content"][$a]["id"] = $result[$a]["id_pk_brg"];
-                $response["content"][$a]["kode"] = $result[$a]["brg_kode"];
-                $response["content"][$a]["nama"] = $result[$a]["brg_nama"];
-                $response["content"][$a]["ket"] = $result[$a]["brg_ket"];
-                $response["content"][$a]["minimal"] = $result[$a]["brg_minimal"];
-                $response["content"][$a]["status"] = $result[$a]["brg_status"];
-                $response["content"][$a]["satuan"] = $result[$a]["brg_satuan"];
-                $response["content"][$a]["image"] = $result[$a]["brg_image"];
-                $response["content"][$a]["last_modified"] = $result[$a]["brg_last_modified"];
-                $response["content"][$a]["merk_nama"] = $result[$a]["brg_merk_nama"];
-                $response["content"][$a]["jenis_nama"] = $result[$a]["brg_jenis_nama"];
-                $response["content"][$a]["ukuran"] = $result[$a]["ukuran"];
+                $response["content"][$a]["id"] = $result[$a]["id_pk_employee"];
+                $response["content"][$a]["nama"] = $result[$a]["emp_nama"];
+                $response["content"][$a]["npwp"] = $result[$a]["emp_npwp"];
+                $response["content"][$a]["ktp"] = $result[$a]["emp_ktp"];
+                $response["content"][$a]["hp"] = $result[$a]["emp_hp"];
+                $response["content"][$a]["alamat"] = $result[$a]["emp_alamat"];
+                $response["content"][$a]["kode_pos"] = $result[$a]["emp_kode_pos"];
+                $response["content"][$a]["foto_npwp"] = $result[$a]["emp_foto_npwp"];
+                $response["content"][$a]["foto_ktp"] = $result[$a]["emp_foto_ktp"];
+                $response["content"][$a]["foto_lain"] = $result[$a]["emp_foto_lain"];
+                $response["content"][$a]["foto"] = $result[$a]["emp_foto"];
+                $response["content"][$a]["gaji"] = $result[$a]["emp_gaji"];
+                $response["content"][$a]["startdate"] = $result[$a]["emp_startdate"];
+                $response["content"][$a]["enddate"] = $result[$a]["emp_enddate"];
+                $response["content"][$a]["rek"] = $result[$a]["emp_rek"];
+                $response["content"][$a]["gender"] = $result[$a]["emp_gender"];
+                $response["content"][$a]["suff"] = $result[$a]["emp_suff"];
+                $response["content"][$a]["status"] = $result[$a]["emp_status"];
             }
         }
         else{
             $response["status"] = "ERROR";
-            $response["msg"] = "No Barang List";
+            $response["msg"] = "No Employee List";
         }
         echo json_encode($response);
     }

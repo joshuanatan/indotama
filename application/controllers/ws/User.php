@@ -42,6 +42,7 @@ class User extends CI_Controller{
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["user_last_modified"];
                 $response["content"][$a]["create_date"] = $result["data"][$a]["user_create_date"];
                 $response["content"][$a]["jabatan"] = $result["data"][$a]["jabatan_nama"];
+                $response["content"][$a]["nama_employee"] = $result["data"][$a]["emp_nama"];
             }
         }
         else{
@@ -63,6 +64,7 @@ class User extends CI_Controller{
         $this->form_validation->set_rules("pass","pass","required");
         $this->form_validation->set_rules("email","email","required");
         $this->form_validation->set_rules("id_role","id_role","required");
+        $this->form_validation->set_rules("nama_employee","nama_employee","required");
         if($this->form_validation->run()){
             $this->load->model("m_user");
             $user_name = $this->input->post("name");
@@ -70,8 +72,20 @@ class User extends CI_Controller{
             $user_email = $this->input->post("email");
             $user_status = "AKTIF";
             $id_fk_role = $this->input->post("id_role");
+            $nama_employee = $this->input->post("nama_employee");
+
+            $this->load->model("m_employee");
+            $this->m_employee->set_emp_nama($nama_employee);
+            $result = $this->m_employee->detail_by_name();
+            if($result->num_rows() > 0){
+                $result = $result->result_array();
+                $id_fk_employee = $result[0]["id_pk_employee"];
+            }
+            else{
+                $id_fk_employee = $this->m_employee->short_insert();
+            }
             
-            if($this->m_user->set_insert($user_name,$user_pass,$user_email,$user_status,$id_fk_role)){
+            if($this->m_user->set_insert($user_name,$user_pass,$user_email,$user_status,$id_fk_role,$id_fk_employee)){
                 if($this->m_user->insert()){
                     $response["msg"] = "Data is recorded to database";
                 }
@@ -97,13 +111,27 @@ class User extends CI_Controller{
         $this->form_validation->set_rules("name","name","required");
         $this->form_validation->set_rules("email","email","required");
         $this->form_validation->set_rules("id_role","id_role","required");
+        $this->form_validation->set_rules("nama_employee","nama_employee","required");
         if($this->form_validation->run()){
             $this->load->model("m_user");
             $id_pk_user = $this->input->post("id");
             $user_name = $this->input->post("name");
             $user_email = $this->input->post("email");
             $id_fk_role = $this->input->post("id_role");
-            if($this->m_user->set_update($id_pk_user,$user_name,$user_email,$id_fk_role)){
+            $nama_employee = $this->input->post("nama_employee");
+            
+            $this->load->model("m_employee");
+            $this->m_employee->set_emp_nama($nama_employee);
+            $result = $this->m_employee->detail_by_name();
+            if($result->num_rows() > 0){
+                $result = $result->result_array();
+                $id_fk_employee = $result[0]["id_pk_employee"];
+            }
+            else{
+                $id_fk_employee = $this->m_employee->short_insert();
+            }
+
+            if($this->m_user->set_update($id_pk_user,$user_name,$user_email,$id_fk_role,$id_fk_employee)){
                 if($this->m_user->update()){
                     $response["msg"] = "Data is updated to database";
                 }

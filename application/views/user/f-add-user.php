@@ -13,18 +13,22 @@
             $this->load->view('_notification/register_error',$notif_data); ?>
                 <form id = "register_form" method = "POST">
                     <div class = "form-group col-lg-6">
-                        <h5>Nama User</h5>
+                        <h5>Username</h5>
                         <input type = "text" class = "form-control" required name = "name">
                     </div>
                     <div class = "form-group col-lg-6">
-                        <h5>Password</h5>
-                        <input type = "text" class = "form-control" required name = "pass">
+                        <h5>Nama Karyawan</h5>
+                        <input type = "text" list = "datalist_employee" class = "form-control" required name = "nama_employee">
                     </div>
-                    <div class = "form-group col-lg-12">
+                    <div class = "form-group col-lg-6">
+                        <h5>Password</h5>
+                        <input type = "password" class = "form-control" required name = "pass">
+                    </div>
+                    <div class = "form-group col-lg-6">
                         <h5>Email</h5>
                         <input type = "text" class = "form-control" required name = "email">
                     </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-12">
                         <h5>Role</h5> 
                         <select class = "form-control" required name = "id_role" onchange = "load_hak_akses()" id = "role_list">
                             <option>Pilih Role</option>

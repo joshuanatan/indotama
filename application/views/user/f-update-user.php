@@ -14,10 +14,14 @@
                 <form id = "update_form" method = "POST">
                     <input type = "hidden" name = "id" id = "id_edit">
                     <div class = "form-group col-lg-6">
-                        <h5>Nama User</h5>
+                        <h5>Username</h5>
                         <input type = "text" class = "form-control" required name = "name" id = "name_edit">
                     </div>
                     <div class = "form-group col-lg-6">
+                        <h5>Nama Karyawan</h5>
+                        <input type = "text" list = "datalist_employee" class = "form-control" id = "nama_employee_edit" required name = "nama_employee">
+                    </div>
+                    <div class = "form-group col-lg-12">
                         <h5>Email</h5>
                         <input type = "text" class = "form-control" required name = "email" id = "email_edit">
                     </div>
@@ -54,6 +58,7 @@
     function load_edit_content(id){
         $("#id_edit").val(content[id]["id"]);
         $("#name_edit").val(content[id]["name"]);
+        $("#nama_employee_edit").val(content[id]["nama_employee"]);
         $("#email_edit").val(content[id]["email"]);
         $('#role_list_edit').val(content[id]["id_role"]);
         load_hak_akses_edit();

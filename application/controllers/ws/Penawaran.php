@@ -41,6 +41,8 @@ class Penawaran extends CI_Controller{
                 $response["content"][$a]["subject"] = ucwords($result["data"][$a]["penawaran_subject"]);
                 $response["content"][$a]["content"] = ucwords($result["data"][$a]["penawaran_content"]);
                 $response["content"][$a]["notes"] = $result["data"][$a]["penawaran_notes"];
+                $response["content"][$a]["file_html"] = "<a target = '_blank' class = 'btn btn-primary btn-sm col-lg-12' href = '".base_url()."asset/uploads/penawaran/".$result["data"][$a]["penawaran_file"]."'>".$result["data"][$a]["penawaran_file"]."</a>";
+                $response["content"][$a]["file"] = $result["data"][$a]["penawaran_file"];
                 $response["content"][$a]["status"] = $result["data"][$a]["penawaran_status"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["penawaran_last_modified"];
                 
@@ -56,6 +58,7 @@ class Penawaran extends CI_Controller{
             "subject",
             "content",
             "notes",
+            "file_html",
             "status",
             "last_modified",
         );
@@ -76,7 +79,19 @@ class Penawaran extends CI_Controller{
             $penawaran_tgl = $this->input->post("tgl");
             $penawaran_status = "AKTIF";
             $id_fk_cabang = $this->session->id_cabang;
-            if($this->m_penawaran->set_insert($penawaran_subject,$penawaran_content,$penawaran_notes,$penawaran_refrensi,$penawaran_tgl,$penawaran_status,$id_fk_cabang)){
+
+
+            $config['upload_path'] = './asset/uploads/penawaran/';
+            $config['allowed_types'] = 'gif|jpg|png';
+
+            $this->load->library('upload', $config);
+            $penawaran_file = "noimage.jpg";
+            if($this->upload->do_upload('file')){
+                $p1 = array("upload_data"=> $this->upload->data());
+                $penawaran_file = $p1['upload_data']['file_name'];
+            }
+
+            if($this->m_penawaran->set_insert($penawaran_subject,$penawaran_content,$penawaran_notes,$penawaran_file,$penawaran_refrensi,$penawaran_tgl,$penawaran_status,$id_fk_cabang)){
                 if($this->m_penawaran->insert()){
                     $response["msg"] = "Data is recorded to database";
                 }
@@ -112,7 +127,17 @@ class Penawaran extends CI_Controller{
             $penawaran_notes = $this->input->post("notes");
             $penawaran_tgl = $this->input->post("tgl");
             
-            if($this->m_penawaran->set_update($id_pk_penawaran,$penawaran_subject,$penawaran_content,$penawaran_notes,$penawaran_refrensi,$penawaran_tgl)){
+            $config['upload_path'] = './asset/uploads/penawaran/';
+            $config['allowed_types'] = 'gif|jpg|png';
+            $this->load->library('upload', $config);
+            if($this->upload->do_upload('file')){
+                $p1 = array("upload_data"=> $this->upload->data());
+                $penawaran_file = $p1['upload_data']['file_name'];
+            }
+            else{
+                $penawaran_file = $this->input->post("file_current");
+            }
+            if($this->m_penawaran->set_update($id_pk_penawaran,$penawaran_subject,$penawaran_content,$penawaran_notes,$penawaran_file,$penawaran_refrensi,$penawaran_tgl)){
                 if($this->m_penawaran->update()){
                     $response["msg"] = "Data is updated to database";
                 }

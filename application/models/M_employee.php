@@ -188,6 +188,56 @@ class M_employee extends ci_model{
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
+    public function list_employee(){
+        $sql = "select id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,emp_create_date,emp_last_modified,mstr_toko.toko_nama, mstr_employee.id_fk_toko
+        from ".$this->tbl_name." 
+        join mstr_toko on mstr_toko.id_pk_toko = mstr_employee.id_fk_toko 
+        where emp_status = ? ";
+        $args = array(
+            "aktif"
+        );
+        return executeQuery($sql,$args);
+    }
+    public function short_insert(){
+        $data = array(
+            "emp_nama" => $this->emp_nama,
+            "emp_status" => "AKTIF",
+            "emp_create_date" => $this->emp_create_date,
+            "emp_last_modified" => $this->emp_last_modified,
+            "id_create_data" => $this->id_create_data,
+            "id_last_modified" => $this->id_last_modified,
+        );
+        return insertRow($this->tbl_name,$data);
+    }
+    public function detail_by_name(){
+        $where = array(
+            "emp_nama" => $this->emp_nama
+        );
+        $field = array(
+            "id_pk_employee",
+            "emp_nama",
+            "emp_npwp",
+            "emp_ktp",
+            "emp_hp",
+            "emp_alamat",
+            "emp_kode_pos",
+            "emp_foto_npwp",
+            "emp_foto_ktp",
+            "emp_foto_lain",
+            "emp_foto",
+            "emp_gaji",
+            "emp_startdate",
+            "emp_enddate",
+            "emp_rek",
+            "emp_gender",
+            "emp_suff",
+            "emp_status",
+            "emp_create_date",
+            "emp_last_modified",
+            "mstr_employee.id_fk_toko"
+        );
+        return selectRow($this->tbl_name,$where,$field);
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(
