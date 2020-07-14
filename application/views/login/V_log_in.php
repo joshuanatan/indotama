@@ -12,7 +12,7 @@
 
 		<div class="wrapper pa-0 ">
 			<!-- Main Content -->
-			<div class="page-wrapper pa-0 ma-0 auth-page bg-gradient">
+			<div class="page-wrapper pa-0 ma-0 auth-page" style = "background-image: url('<?php echo base_url();?>asset/src/images/login_bg.jpg');background-size:cover;">
 				<div class="container-fluid">
 					<!-- Row -->
 					<div class="table-struct full-width full-height">
@@ -21,9 +21,8 @@
 								<div class="row">
 									<div class="col-sm-12 col-xs-12">
 										<div class="sp-logo-wrap text-center">
-											<a href="index.html">
-												<span class="brand-text">INDOTAMA SYSTEM</span>
-											</a>
+											<span class="brand-text">INDOTAMA</span>
+											<p align = "center">General Suppliers/Traders in Oil & Gas Safety</p>
 										</div>
 										<?php if($this->session->msg != ""):?>
 											<div class = "alert alert-danger">
@@ -38,12 +37,13 @@
 												</div>
 												<div class="form-group">
 													<label class="pull-left control-label mb-10" for="exampleInputpwd_2">Password</label>
-													<a href="<?php echo base_url() ?>login/forget_password" class="capitalize-font txt-primary block mb-10 pull-right font-12" href="forget.php">forgot password ?</a>
-													<div class="clearfix"></div>
 													<input type="password" class="form-control" id="exampleInputpwd_2" name="user_pass" placeholder="Enter password">
 												</div>
 												<div class="form-group text-center">
-													<button type="submit" class="btn btn-primary  btn-rounded">LOG IN</button>
+													<button type="submit" class="btn btn-primary btn-sm">LOG IN</button>
+												</div>
+												<div class="form-group text-center">
+													<a href="<?php echo base_url() ?>login/forget_password" class="capitalize-font txt-primary block mb-10 font-12" href="forget.php">forgot password</a>
 												</div>
 												<p style="color:white; font-weight:bolder"><?php if(isset($message)) echo $message; ?></p>
 											</form>

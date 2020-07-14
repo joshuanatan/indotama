@@ -76,6 +76,8 @@ Project:	Grandin
 /****************************/
 /** Imports **/
 /****************************/
+
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
 @import url(https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800);
 @import url(../../../vendors/bower_components/bootstrap/dist/css/bootstrap.min.css);
 @import url(font-awesome.min.css);
@@ -102,7 +104,9 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, .error-comment, h4, h
   font-size: 100%;
   font: inherit;
   vertical-align: baseline; }
-
+.brand-text {
+  font-family: 'Abril Fatface', cursive;
+}
 strong {
   font-weight: bold; }
 
