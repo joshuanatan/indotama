@@ -35,7 +35,7 @@ if($this->session->id_warehouse):?>
         <?php if($this->session->id_warehouse):?>
         <li id = "gudang_menu_separator"></li>
         <?php endif;?>
-        <?php if($this->session->id_warehouse):?>
+        <?php if(false):?>
         <li>
             <a href="<?php echo base_url();?>warehouse/pengaturan_warehouse">
                 Pengaturan Gudang

@@ -29,11 +29,9 @@ class Menu extends CI_Controller{
 			if($result["data"]->num_rows() > 1){
 				$this->session->multiple_warehouse_access = true;
 			}
-			else{
-				$result = $result["data"]->result_array();
-				$this->session->id_warehouse = $result[0]["id_pk_warehouse"];
-				$this->session->nama_warehouse = $result[0]["warehouse_nama"];
-			}
+            $result = $result["data"]->result_array();
+            $this->session->id_warehouse = $result[0]["id_pk_warehouse"];
+            $this->session->nama_warehouse = $result[0]["warehouse_nama"];
 		}
 
 		$this->load->model("m_toko_admin");
@@ -44,11 +42,9 @@ class Menu extends CI_Controller{
 			if($result["data"]->num_rows() > 1){
 				$this->session->multiple_toko_access = true;
 			}
-			else{
-				$result = $result["data"]->result_array();
-				$this->session->id_toko = $result[0]["id_pk_toko"];
-				$this->session->nama_toko = $result[0]["toko_nama"];
-			}
+            $result = $result["data"]->result_array();
+            $this->session->id_toko = $result[0]["id_pk_toko"];
+            $this->session->nama_toko = $result[0]["toko_nama"];
 		}
 		
 		$this->load->model("m_cabang_admin");
@@ -59,14 +55,13 @@ class Menu extends CI_Controller{
 			if($result["data"]->num_rows() > 1){
 				$this->session->multiple_cabang_access = true;
 			}
-			else{
-				$result = $result["data"]->result_array();
-				$this->session->id_cabang = $result[0]["id_pk_cabang"];
-                $this->session->daerah_cabang = $result[0]["cabang_daerah"];
-                $this->session->nama_toko_cabang = $result[0]["toko_nama"];
-			}
+            $result = $result["data"]->result_array();
+            $this->session->id_cabang = $result[0]["id_pk_cabang"];
+            $this->session->daerah_cabang = $result[0]["cabang_daerah"];
+            $this->session->nama_toko_cabang = $result[0]["toko_nama"];
         }
         
+        $this->session->disp_nama_toko_cabang = $this->session->nama_toko." ".$this->session->daerah_cabang;
 		$this->load->model("m_user");
 		$this->m_user->set_id_pk_user($this->session->id_user);
 		$response["data"] = $this->m_user->menu()->result_array();

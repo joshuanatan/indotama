@@ -46,7 +46,9 @@
             <div class="user-profile text-center">
                 <img src="<?php echo base_url(); ?>asset/img/user1.png" alt="user_auth" class="user-auth-img img-circle" />
                 <div class="dropdown mt-5">
-                    <a href="#" class="dropdown-toggle pr-0 bg-transparent" data-toggle="dropdown"><?php echo ucwords($this->session->user_name);?></a>
+                    <a href="#" class="dropdown-toggle pr-0 bg-transparent"><?php echo ucwords($this->session->user_name);?></a>
+                    <br/>
+                    <a style = "font-size:13px;color:lightgrey" href="#" class="dropdown-toggle pr-0 bg-transparent"><?php echo ucwords($this->session->disp_nama_toko_cabang);?></a>
                 </div>
             </div>
         </li>
