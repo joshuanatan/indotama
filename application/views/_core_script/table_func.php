@@ -217,6 +217,7 @@
                             $("."+menu_category.toLowerCase()+"_menu_item").remove();
                             console.log("."+menu_category.toLowerCase()+"_menu_item");
                         }
+                        /* Tambahin background color di menu item, dan icon */
                         html += `
                         <li class = '${menu_category.toLowerCase()}_menu_item' style = "background-color:rgba(3, 0, 46, 0.2);;">
                             <a href="<?php echo base_url();?>${respond["data"][a]["menu_name"]}">

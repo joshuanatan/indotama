@@ -20,6 +20,7 @@
                         <h5>Controller</h5>
                         <input type = "text" class = "form-control" required name = "controller">
                     </div>
+                    <?php /*aktivasi field icon*/?>
                     <div class = "form-group">
                         <h5>Icon</h5>
                         <input type = "text" class = "form-control" required name = "icon">

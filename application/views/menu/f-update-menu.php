@@ -21,6 +21,7 @@
                         <h5>Controller</h5>
                         <input type = "text" class = "form-control" required name = "controller" id = "controller_edit">
                     </div>
+                    <?php /*aktivasi field icon*/?>
                     <div class = "form-group">
                         <h5>Icon</h5>
                         <input type = "text" class = "form-control" required name = "icon" id = "icon_edit">
