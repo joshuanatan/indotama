@@ -29,11 +29,21 @@
 												<?php echo $this->session->msg;?>
 											</div>
 										<?php endif;?>
+										<?php if($this->session->success_send != ""):?>
+											<div class = "alert alert-success">
+											<?php echo $this->session->success_send;?>
+											</div>
+										<?php endif;?>
+										<?php if($this->session->status != ""):?>
+											<div class = "alert alert-success">
+												Password succesfully changed!
+											</div>
+										<?php endif;?>
 										<div class="form-wrap mt-40">
 											<form action="<?php echo base_url(); ?>login/login_method" method="post">
 												<div class="form-group">
-													<label class="control-label mb-10" for="exampleInputEmail_2">Username</label>
-													<input type="text" name="user_name" class="form-control" id="exampleInputEmail_2" placeholder="MMSafety">
+													<label class="control-label mb-10" for="exampleInputEmail_2">Email</label>
+													<input type="text" name="user_name" class="form-control" id="exampleInputEmail_2" placeholder="johndoe@example.com">
 												</div>
 												<div class="form-group">
 													<label class="pull-left control-label mb-10" for="exampleInputpwd_2">Password</label>
