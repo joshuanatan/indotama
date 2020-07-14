@@ -26,9 +26,17 @@ if($this->session->id_cabang):?>
     </a>
     <ul id="sub_menu_cabang" class="collapse-level-1 collapse" aria-expanded="false" style="height: 0px;">
         <?php if($this->session->multiple_cabang_access):?>
-        <li>
-            <a href="<?php echo base_url();?>toko/daftar_akses_cabang"><?php #redirect ke daftar cabang yang dia boleh akses?>
-                Daftar Cabang
+            
+        <li style = "background-color:rgba(3, 0, 46, 0.2);;">
+            <a href="<?php echo base_url();?>toko/daftar_akses_cabang">
+                <div class = 'pull-left'>
+                    <div class="pull-left">
+                        <i class="md-edit mr-20"></i>
+                        <span class="right-nav-text">Daftar Cabang</span>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class = 'clearfix'></div>
             </a>
         </li>
         <?php endif;?>

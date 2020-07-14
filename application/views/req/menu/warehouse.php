@@ -26,9 +26,16 @@ if($this->session->id_warehouse):?>
     </a>
     <ul id="sub_menu_warehouse" class="collapse-level-1 collapse" aria-expanded="false" style="height: 0px;">
         <?php if($this->session->multiple_warehouse_access):?>
-        <li>
-            <a href="<?php echo base_url();?>warehouse/daftar_akses_gudang"><?php #redirect ke daftar toko yang dia boleh akses?> 
-                Daftar Gudang
+        <li style = "background-color:rgba(3, 0, 46, 0.2);;">
+            <a href="<?php echo base_url();?>warehouse/daftar_akses_gudang">
+                <div class = 'pull-left'>
+                    <div class="pull-left">
+                        <i class="md-edit mr-20"></i>
+                        <span class="right-nav-text">Daftar Gudang</span>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class = 'clearfix'></div>
             </a>
         </li>
         <?php endif;?>
