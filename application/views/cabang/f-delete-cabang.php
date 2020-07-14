@@ -16,6 +16,14 @@
                 <table class = "table table-bordered table-striped table-hover">
                     <tbody>
                         <tr>
+                            <td>Nama Cabang</td>
+                            <td id = "nama_delete"></td>
+                        </tr>
+                        <tr>
+                            <td>Kode Cabang</td>
+                            <td id = "kode_delete"></td>
+                        </tr>
+                        <tr>
                             <td>Daerah Cabang</td>
                             <td id = "daerah_delete"></td>
                         </tr>
@@ -40,6 +48,8 @@
 <script>
     function load_delete_content(id){
         $("#id_delete").val(content[id]["id"]);
+        $("#nama_delete").html(content[id]["nama"]);
+        $("#kode_delete").html(content[id]["kode"]);
         $("#daerah_delete").html(content[id]["daerah"]);
         $("#alamat_delete").html(content[id]["alamat"]);
         $("#notelp_delete").html(content[id]["notelp"]);

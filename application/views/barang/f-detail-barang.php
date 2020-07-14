@@ -6,76 +6,74 @@
                 <h4 class = "modal-title">Ubah Data <?php echo ucwords($page_title);?></h4>
             </div>
             <div class = "modal-body">
-           
-                    <input type = "hidden" name = "id" id = "d_id_edit">
                     
-                    <div class = "form-group">
-                        <h5>Kode Barang</h5>
-                        <input type = "text" class = "form-control" readonly required name = "kode" id = "d_kode_edit">
-                    </div>
-                    
-                    <div class = "form-group">
-                        <h5>Jenis Barang</h5>
-                        <input list = "datalist_barang_jenis" type = "text"  readonly required name = "id_brg_jenis" class = "form-control" id = "d_id_brg_jenis_edit">
-                    </div>
-                    
-                    <div class = "form-group">
-                        <h5>Nama Barang</h5>
-                        <input type = "text" class = "form-control" readonly required name = "nama" id = "d_nama_edit">
-                    </div>
-                    
-                    <div class = "form-group">
-                        <h5>Keterangan</h5>
-                        <input type = "text" class = "form-control" readonly required name = "keterangan" id = "d_keterangan_edit">
-                    </div>
-                    
-                    <div class = "form-group">
-                        <h5>Merk Barang</h5>
-                        <input list = "datalist_barang_merk" type = "text"  readonly required name = "id_brg_merk" class = "form-control" id = "d_id_brg_merk_edit">
-                    </div>
-                    
-                    <div class = "form-group">
-                        <h5>Minimal Stok</h5>
-                        <input type = "text" class = "form-control" readonly required name = "minimal" id = "d_minimal_edit">
-                    </div>
-                    
-                    <div class = "form-group">
-                        <h5>Satuan</h5>
-                        <input type = "text" class = "form-control" readonly required name = "satuan" id = "d_satuan_edit">
-                    </div>
-                    
-                    <div class = "form-group">
-                        <h5>Harga Satuan</h5>
-                        <input type = "text" class = "form-control" readonly required name = "harga" id = "d_harga_edit">
-                    </div>
-                    
-                    <div class = "form-group">
-                        <h5>Gambar</h5>
-                        <img width="200px" id = "d_gambar_edit" name = "gambar_current">
-                    </div>
-                    <div class = "form-group">
-                        <h5>Kombinasi Barang</h5>
-                        <input type="radio" disabled class = "d_kombinasi_barang_edit" name = "kombinasi_barang" value="TIDAK KOMBINASI" onclick = "$('#d_barang_kombinasi_container_edit').hide()">&nbsp;TIDAK KOMBINASI
-                        &nbsp;&nbsp;
-                        <input type="radio" disabled class = "d_kombinasi_barang_edit" name = "kombinasi_barang" value="KOMBINASI" onclick = "$('#d_barang_kombinasi_container_edit').show()">&nbsp;KOMBINASI
-                    </div>
-                    
-                    <table class = "table table-striped table-bordered" id = "d_barang_kombinasi_container_edit">
-                        <thead>
-                            <th>Nama Barang</th>
-                            <th>Qty (Pcs)</th>
-                        </thead>
-                        <tbody>
-                            <tr id = "d_btn_tambah_baris_barang_container_edit">
-                                <td colspan = 3>
-                                    
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class = "form-group">
-                        <button type = "button" class = "btn btn-sm btn-primary" data-dismiss = "modal">OK</button>
-                    </div>
+                <div class = "form-group col-lg-6">
+                    <h5>Kode Barang</h5>
+                    <input type = "text" class = "form-control" readonly required name = "kode" id = "d_kode_edit">
+                </div>
+                
+                <div class = "form-group col-lg-6">
+                    <h5>Nama Barang</h5>
+                    <input type = "text" class = "form-control" readonly required name = "nama" id = "d_nama_edit">
+                </div>
+                <div class = "form-group col-lg-6">
+                    <h5>Jenis Barang</h5>
+                    <input list = "datalist_barang_jenis" type = "text"  readonly required name = "id_brg_jenis" class = "form-control" id = "d_id_brg_jenis_edit">
+                </div>
+                
+                
+                <div class = "form-group col-lg-6">
+                    <h5>Merk Barang</h5>
+                    <input list = "datalist_barang_merk" type = "text"  readonly required name = "id_brg_merk" class = "form-control" id = "d_id_brg_merk_edit">
+                </div>
+                <div class = "form-group col-lg-6">
+                    <h5>Keterangan</h5>
+                    <input type = "text" class = "form-control" readonly required name = "keterangan" id = "d_keterangan_edit">
+                </div>
+                
+                
+                <div class = "form-group col-lg-6">
+                    <h5>Minimal Stok</h5>
+                    <input type = "text" class = "form-control" readonly required name = "minimal" id = "d_minimal_edit">
+                </div>
+                
+                <div class = "form-group col-lg-6">
+                    <h5>Satuan</h5>
+                    <input type = "text" class = "form-control" readonly required name = "satuan" id = "d_satuan_edit">
+                </div>
+                
+                <div class = "form-group col-lg-6">
+                    <h5>Harga Satuan</h5>
+                    <input type = "text" class = "form-control" readonly required name = "harga" id = "d_harga_edit">
+                </div>
+                
+                <div class = "form-group col-lg-12">
+                    <h5>Gambar</h5>
+                    <img width="200px" id = "d_gambar_edit" name = "gambar_current">
+                </div>
+                <div class = "form-group">
+                    <h5>Kombinasi Barang</h5>
+                    <input type="radio" disabled class = "d_kombinasi_barang_edit" name = "kombinasi_barang" value="TIDAK KOMBINASI" onclick = "$('#d_barang_kombinasi_container_edit').hide()">&nbsp;TIDAK KOMBINASI
+                    &nbsp;&nbsp;
+                    <input type="radio" disabled class = "d_kombinasi_barang_edit" name = "kombinasi_barang" value="KOMBINASI" onclick = "$('#d_barang_kombinasi_container_edit').show()">&nbsp;KOMBINASI
+                </div>
+                
+                <table class = "table table-striped table-bordered" id = "d_barang_kombinasi_container_edit">
+                    <thead>
+                        <th>Nama Barang</th>
+                        <th>Qty (Pcs)</th>
+                    </thead>
+                    <tbody>
+                        <tr id = "d_btn_tambah_baris_barang_container_edit">
+                            <td colspan = 3>
+                                
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class = "form-group">
+                    <button type = "button" class = "btn btn-sm btn-primary" data-dismiss = "modal">OK</button>
+                </div>
             </div>
         </div>
     </div>
@@ -83,7 +81,6 @@
 <script>
     var barang_kombinasi_list;
     function load_detail_content(row){
-        $("#d_id_edit").val(content[row]["id"]);
         $("#d_kode_edit").val(content[row]["kode"]);
         $("#d_nama_edit").val(content[row]["nama"]);
         $("#d_id_brg_jenis_edit").val(content[row]["jenis"]);

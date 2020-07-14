@@ -198,7 +198,6 @@ class Penjualan extends CI_Controller{
         $this->form_validation->set_rules("jenis_penjualan","jenis_penjualan","required");
         $this->form_validation->set_rules("jenis_pembayaran","jenis_pembayaran","required");
         if($this->form_validation->run()){
-            $penj_nomor = $this->input->post("nomor");
             $penj_tgl = $this->input->post("tgl");
             $penj_dateline_tgl = $this->input->post("dateline");
             $penj_jenis = $this->input->post("jenis_penjualan");
@@ -219,6 +218,14 @@ class Penjualan extends CI_Controller{
                 $id_fk_customer = $this->m_customer->short_insert();
             }
             $this->load->model("m_penjualan");
+
+            if($this->input->post("generate_pem_no") != ""){
+                $penj_nomor = $this->m_penjualan->get_penj_nomor($id_fk_cabang,"penjualan",$penj_tgl);
+            }
+            else{
+                $penj_nomor = $this->input->post("nomor");
+            }
+
             if($this->m_penjualan->set_insert($penj_nomor,$penj_tgl,$penj_dateline_tgl,$penj_jenis,$penj_tipe_pembayaran,$id_fk_customer,$id_fk_cabang,$penj_status)){
                 $id_penjualan = $this->m_penjualan->insert();
                 if($id_penjualan){

@@ -13,6 +13,14 @@
                 <form id = "update_form" method = "POST">
                     <input type = "hidden" name = "id" id = "id_edit">
                     <div class = "form-group">
+                        <h5>Nama Cabang</h5>
+                        <input type = "text" class = "form-control" required name = "nama" id = "nama_edit">
+                    </div>
+                    <div class = "form-group">
+                        <h5>Kode Cabang</h5>
+                        <input type = "text" class = "form-control" required name = "kode" id = "kode_edit">
+                    </div>
+                    <div class = "form-group">
                         <h5>Daerah Cabang</h5>
                         <input type = "text" class = "form-control" required name = "daerah" id = "daerah_edit">
                     </div>
@@ -51,6 +59,8 @@
 <script>
     function load_edit_content(id){
         $("#id_edit").val(content[id]["id"]);
+        $("#nama_edit").val(content[id]["nama"]);
+        $("#kode_edit").val(content[id]["kode"]);
         $("#daerah_edit").val(content[id]["daerah"]);
         $("#alamat_edit").val(content[id]["alamat"]);
         $("#notelp_edit").val(content[id]["notelp"]);

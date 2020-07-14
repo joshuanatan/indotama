@@ -192,11 +192,15 @@ class M_customer extends ci_model{
             "cust_hp",
             "cust_alamat",
             "cust_keterangan",
-            "cust_status",
-            "cust_create_date",
-            "cust_last_modified"   
+            "cust_no_npwp",
+            "cust_foto_npwp",
+            "cust_foto_kartu_nama",
+            "cust_badan_usaha",
+            "cust_no_rekening",
+            "cust_last_modified",
+            "cust_status"  
         );
-        return selectrow($this->tbl_name,$where,$field);
+        return selectRow($this->tbl_name,$where,$field);
     }
     public function detail_by_perusahaan(){
         $where = array(
@@ -221,7 +225,7 @@ class M_customer extends ci_model{
             "cust_create_date",
             "cust_last_modified",
         );
-        return selectrow($this->tbl_name,$where,$field);
+        return selectRow($this->tbl_name,$where,$field);
     }
     public function short_insert(){
         $data = array(
@@ -232,7 +236,7 @@ class M_customer extends ci_model{
             "id_create_data" => $this->id_create_data,
             "id_last_modified" => $this->id_last_modified
         );
-        return insertrow($this->tbl_name,$data);
+        return insertRow($this->tbl_name,$data);
     }
     public function insert(){
         if($this->check_insert()){
@@ -256,7 +260,7 @@ class M_customer extends ci_model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertrow($this->tbl_name,$data);
+            return insertRow($this->tbl_name,$data);
         }
         return false;
     }
@@ -282,7 +286,7 @@ class M_customer extends ci_model{
                 "cust_last_modified" => $this->cust_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updaterow($this->tbl_name,$data,$where);
+            updateRow($this->tbl_name,$data,$where);
             return true;
         }
         return false;
@@ -297,7 +301,7 @@ class M_customer extends ci_model{
                 "cust_last_modified" => $this->cust_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updaterow($this->tbl_name,$data,$where);
+            updateRow($this->tbl_name,$data,$where);
             return true;
         }
         return false;

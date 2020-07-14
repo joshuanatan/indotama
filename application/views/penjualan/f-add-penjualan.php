@@ -53,9 +53,13 @@ $notif_data = array(
                                         <div class = "col-lg-12">
                                             <form id = "register_form" method = "POST">
                                                 <input required type = "hidden" name = "id_cabang" value = "<?php echo $this->session->id_cabang;?>">
+                                                
+                                                <div class = "form-group">
+                                                    <input type = "checkbox" id = "penomoran_otomatis_cb" name = "generate_pem_no[]" value = 1 checked onclick = "toggle_nomor_penjualan()"> Gunakan Penomoran Otomatis
+                                                </div>
                                                 <div class = "form-group col-lg-6">
                                                     <h5>Nomor Penjualan</h5>
-                                                    <input required type = "text" class = "form-control" required name = "nomor">
+                                                    <input id = "nomor" readonly value = "-" required type = "text" class = "form-control" required name = "nomor">
                                                 </div>
                                                 <div class = "form-group col-lg-6">
                                                     <h5>Customer</h5>
@@ -263,6 +267,19 @@ $notif_data = array(
     function open_online_container(){
         $('#online_info_container').show();
         $('#marketplace').html(html_option_marketplace);
+    }
+    
+    function toggle_nomor_penjualan(){
+        if($("#penomoran_otomatis_cb").prop("checked")){
+            $("#penomoran_otomatis_cb").prop("checked",true);
+            $("#nomor").prop("readonly",true);
+            $("#nomor").val("-");
+        }
+        else{
+            $("#penomoran_otomatis_cb").prop("checked",false);
+            $("#nomor").prop("readonly",false);
+            $("#nomor").val("");
+        }
     }
 </script>
 <?php $this->load->view("_base_element/datalist_customer");?>

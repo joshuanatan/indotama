@@ -69,7 +69,7 @@
                         html += "<td colspan = "+colCount+" class = 'align-middle text-center'>No Records Found</td>";
                         html += "</tr>";
                     }
-                    $("#content_container").html(html);
+                    $(".content_container:eq(0)").html(html);
                     pagination(respond["page"]);
 
                     /*
@@ -88,12 +88,13 @@
                     html += "<tr>";
                     html += "<td colspan = "+colCount+" class = 'align-middle text-center'>No Records Found</td>";
                     html += "</tr>";
-                    $("#content_container").html(html);
+                    
+                    $(".content_container:eq(0)").html(html);
                     
                     html = "";
                     html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed"><</a></li>';
                     html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed">></a></li>';
-                    $("#pagination_container").html(html);
+                    $(".pagination_container").html(html);
                 }
             });
             function pagination(page_rules){
@@ -216,7 +217,21 @@
                             $("."+menu_category.toLowerCase()+"_menu_item").remove();
                             console.log("."+menu_category.toLowerCase()+"_menu_item");
                         }
-                        html += "<li class = '"+menu_category.toLowerCase()+"_menu_item'><a href='<?php echo base_url();?>"+respond["data"][a]["menu_name"]+"'>"+respond["data"][a]["menu_display"]+"</a></li>";
+                        /* Tambahin background color di menu item, dan icon */
+                        html += `
+                        <li class = '${menu_category.toLowerCase()}_menu_item' style = "background-color:rgba(3, 0, 46, 0.2);;">
+                            <a href="<?php echo base_url();?>${respond["data"][a]["menu_name"]}">
+                                <div class = 'pull-left'>
+                                    <div class="pull-left">
+                                        <i class="md-${respond["data"][a]["menu_icon"]} mr-20"></i>
+                                        <span class="right-nav-text">${respond["data"][a]["menu_display"]}</span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class = 'clearfix'></div>
+                            </a>
+                        </li>
+                        `;
                     }
                     $("#"+menu_category.toLowerCase()+"_menu_separator").after(html);
                 }

@@ -13,7 +13,7 @@
             $this->load->view('_notification/register_error',$notif_data); ?>
                 <form id = "register_form" method = "POST">
                     <div class = "form-group">
-                        <h5>Nama Merk</h5>
+                        <h5>Nama Jenis</h5>
                         <input type = "text" class = "form-control" required name = "nama">
                     </div>
                     <div class = "form-group">

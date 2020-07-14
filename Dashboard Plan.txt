@@ -1,0 +1,21 @@
+cabang
+========================
+penjualan bulan ini widget
+penjualan bulan lalu widget
+penjualan tahun ini widget
+penjualan tahun lalu widget
+konfirmasi retur widget
+item urgen restok widget
+
+penjualan belum selesai table
+pembelian belum selesai table
+barang custom cabang table
+grafik 3 tahun terakhir barchart
+grafik 1 tahun perbulan barchart
+grafik perbandingan tahun ini dan tahun lalu perbulan barchart
+
+toko
+=========================
+perbandingan penjualan bulan ini percabang (bar chart)
+perbandingan penjualan perbulan toko tersebut
+dashboard cabang (pilih cabang)

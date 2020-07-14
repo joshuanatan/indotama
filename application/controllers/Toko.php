@@ -128,7 +128,7 @@ class Toko extends CI_Controller {
 		$result = $result->result_array();
 		$this->session->id_toko = $result[0]["id_pk_toko"];
 		$this->session->nama_toko = $result[0]["toko_nama"];
-		redirect("toko/daftar_akses_toko");
+		redirect("toko/dashboard_toko");
 	}
 	public function activate_cabang_manajemen($id_cabang){
 		$this->load->model("m_cabang");
@@ -144,7 +144,7 @@ class Toko extends CI_Controller {
 		$result = $result->result_array();
 		$this->session->nama_toko_cabang = $result[0]["toko_nama"];
 
-		redirect("toko/daftar_akses_cabang");
+		redirect("toko/dashboard_cabang");
 	}
 	public function pengaturan_cabang(){
 		$this->load->view("cabang/v_pengaturan_cabang");
@@ -154,5 +154,12 @@ class Toko extends CI_Controller {
 	}
 	public function dashboard_cabang(){
 		$this->load->view("cabang/v_dashboard_cabang");
+	}
+	public function dashboard_cabang_toko($id_cabang){
+		$data["id_cabang"] = $id_cabang;
+		$this->load->view("cabang/v_dashboard_cabang_toko",$data);
+	}
+	public function dashboard_toko(){
+		$this->load->view("toko/v_dashboard_toko");
 	}
 }

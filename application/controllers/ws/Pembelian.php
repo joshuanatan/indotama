@@ -164,13 +164,14 @@ class Pembelian extends CI_Controller{
         $this->form_validation->set_rules("supplier","supplier","required");
         if($this->form_validation->run()){
             $this->load->model("m_pembelian");
-            $pem_pk_nomor = $this->input->post("nomor");
+
             $pem_tgl = $this->input->post("tgl");
             $pem_status = "AKTIF";
             $sup_perusahaan = $this->input->post("supplier");
             $this->load->model("m_supplier");
             $this->m_supplier->set_sup_perusahaan($sup_perusahaan);
             $result = $this->m_supplier->detail_by_perusahaan();
+
             if($result->num_rows() > 0){
                 $result = $result->result_array();
                 $id_fk_supp = $result[0]["id_pk_sup"];
@@ -181,6 +182,14 @@ class Pembelian extends CI_Controller{
                 $id_fk_supp = $this->m_supplier->short_insert();
             }
             $id_fk_cabang = $this->input->post("id_cabang");
+            
+            if($this->input->post("generate_pem_no") != ""){
+                $pem_pk_nomor = $this->m_pembelian->get_pem_pk_nomor($id_fk_cabang,"pembelian",$pem_tgl);
+            }
+            else{
+                $pem_pk_nomor = $this->input->post("nomor");
+            }
+
             if($this->m_pembelian->set_insert($pem_pk_nomor,$pem_tgl,$pem_status,$id_fk_supp,$id_fk_cabang)){
                 $id_pembelian = $this->m_pembelian->insert();
                 

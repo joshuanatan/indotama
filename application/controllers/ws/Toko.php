@@ -127,6 +127,26 @@ class Toko extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function list_cabang(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_cabang");
+        $this->m_cabang->set_id_fk_toko($this->session->id_toko);
+        $result = $this->m_cabang->list_cabang();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_cabang"];
+                $response["content"][$a]["daerah"] = $result[$a]["cabang_daerah"];
+                $response["content"][$a]["notelp"] = $result[$a]["cabang_notelp"];
+                $response["content"][$a]["alamat"] = $result[$a]["cabang_alamat"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "No Data";
+        }
+        echo json_encode($response);
+    }
     public function update(){
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("id","id","required");
@@ -308,6 +328,57 @@ class Toko extends CI_Controller{
             $this->session->unset_userdata("id_toko");
             $this->session->unset_userdata("nama_toko");
         }
+        echo json_encode($response);
+    }
+    public function dashboard(){
+        $this->load->model("m_dashboard_toko");
+        $this->m_dashboard_toko->set_id_toko($this->session->id_toko);
+        $response["status"] = "SUCCESS";
+        $response["content"] = array();
+
+        $this->load->model("m_cabang");
+        $this->m_cabang->set_id_fk_toko($this->session->id_toko);
+        $result = $this->m_cabang->list_cabang();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            $array = array();
+            $xlabel = array();
+
+            $array2 = array();
+            $xlabel2 = array();
+            for($a = 0; $a<count($result); $a++){
+                $this->load->model("m_dashboard_cabang");
+                $this->m_dashboard_cabang->set_id_cabang($result[$a]["id_pk_cabang"]);
+                $daerah_cabang = $result[$a]["cabang_daerah"];
+
+                $data = $this->m_dashboard_cabang->list_penjualan_3_tahun_terakhir();
+                $data2 = $this->m_dashboard_cabang->list_penjualan_tahun_ini_perbulan();
+                
+                $xlabel = $data["label"];
+                $array[$a]["data"] = $data["data"];
+                $array[$a]["label"] = $daerah_cabang;
+
+                $xlabel2 = $data2["label"];
+                $array2[$a]["data"] = $data2["data"];
+                $array2[$a]["label"] = $daerah_cabang;
+            }
+            $array = array(
+                "type" => "chart",
+                "title" => "Perbandingan Penjualan 3 Tahun Terakhir Antar Cabang",
+                "data" => $array,
+                "xlabel" => $xlabel
+            );
+            array_push($response["content"],$array);
+
+            $array = array(
+                "type" => "chart",
+                "title" => "Perbandingan Penjualan Tahun Ini Setiap Bulan Antar Cabang",
+                "data" => $array2,
+                "xlabel" => $xlabel2
+            );
+            array_push($response["content"],$array);
+        }
+        
         echo json_encode($response);
     }
 }

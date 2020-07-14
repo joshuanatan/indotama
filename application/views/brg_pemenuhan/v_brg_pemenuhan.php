@@ -50,7 +50,7 @@ $notif_data = array(
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
                                             <div class = "d-block">
-                                               <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" id="pemenuhan_saya" style = "margin-right:10px">Lihat Pemenuhan</button>
+                                               <a href = "<?php echo base_url();?>permintaan" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" id="pemenuhan_saya" style = "margin-right:10px">Lihat Permintaan Saya</a>
                                             </div>
                                             <br/>
                                             <br/>

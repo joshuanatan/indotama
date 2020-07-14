@@ -213,21 +213,42 @@ class M_brg_pemenuhan extends ci_model{
             $result["total_data"] = executequery($query,$args)->num_rows();
         }
         else{
-            #ini bagian warehouse harus di cek lagi querynya
-            /*
             $query = "
-            select id_pk_brg_permintaan, brg_permintaan_qty, brg_nama, brg_permintaan_notes, brg_permintaan_deadline, brg_permintaan_status,brg_image, tbl_brg_permintaan.id_fk_brg, tbl_brg_permintaan.id_fk_cabang, brg_permintaan_create_date, brg_permintaan_last_modified, sum(tbl_brg_pemenuhan.brg_pemenuhan_qty) as qty_pemenuhan, cabang_daerah from tbl_brg_permintaan join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg join mstr_cabang on mstr_cabang.id_pk_cabang =tbl_brg_permintaan.id_fk_cabang left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan where tbl_brg_permintaan.brg_permintaan_status!= ? group by id_pk_brg_permintaan ".$search_query." 
+            select id_pk_brg_permintaan, brg_permintaan_deadline, brg_permintaan_qty, brg_permintaan_status,brg_warehouse_qty,brg_permintaan_notes,brg_image,tbl_brg_permintaan.id_fk_brg as id_mstr_barang_cabang_peminta, tbl_brg_permintaan.id_fk_cabang as id_cabang_peminta, brg_warehouse_status,tbl_brg_warehouse.id_fk_brg as id_mstr_barang_cabang_penyedia, brg_permintaan_create_date,tbl_brg_warehouse.id_fk_warehouse as id_warehouse_penyedia,brg_nama, ifnull(sum(tbl_brg_pemenuhan.brg_pemenuhan_qty),0) as qty_pemenuhan,cabang_daerah,mstr_toko.toko_nama, mstr_toko.toko_kode
+            from tbl_brg_permintaan
+            inner join mstr_cabang on mstr_cabang.id_pk_cabang = tbl_brg_permintaan.id_fk_cabang
+            inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+            inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg
+            inner join tbl_brg_warehouse on tbl_brg_warehouse.id_fk_brg = mstr_barang.id_pk_brg
+            left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan and brg_pemenuhan_status != 'nonaktif'
+            where tbl_brg_warehouse.id_fk_warehouse = ?
+            and tbl_brg_warehouse.brg_warehouse_status = ?
+            and mstr_barang.brg_status = ?
+            and tbl_brg_permintaan.brg_permintaan_status != ?
+            and tbl_brg_permintaan.brg_permintaan_deadline > current_date() ".$search_query."
+            group by id_pk_brg_permintaan
             order by ".$order_by." ".$order_direction." 
             limit 20 offset ".($page-1)*$data_per_page;
             $args = array(
-                "BATAL"
+                $this->session->id_warehouse,'aktif','aktif','batal'
             );
             $result["data"] = executequery($query,$args);
             $query = "
-            select id_pk_brg_permintaan, brg_permintaan_qty,brg_image, brg_nama, brg_permintaan_notes, brg_permintaan_deadline, brg_permintaan_status, tbl_brg_permintaan.id_fk_brg, tbl_brg_permintaan.id_fk_cabang, brg_permintaan_create_date, brg_permintaan_last_modified, sum(tbl_brg_pemenuhan.brg_pemenuhan_qty) as qty_pemenuhan, cabang_daerah from tbl_brg_permintaan join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg join mstr_cabang on mstr_cabang.id_pk_cabang =tbl_brg_permintaan.id_fk_cabang left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan where tbl_brg_permintaan.brg_permintaan_status!= ? group by id_pk_brg_permintaan ".$search_query." 
+            select id_pk_brg_permintaan
+            from tbl_brg_permintaan
+            inner join mstr_cabang on mstr_cabang.id_pk_cabang = tbl_brg_permintaan.id_fk_cabang
+            inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+            inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg
+            inner join tbl_brg_warehouse on tbl_brg_warehouse.id_fk_brg = mstr_barang.id_pk_brg
+            left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan and brg_pemenuhan_status != 'nonaktif'
+            where tbl_brg_warehouse.id_fk_warehouse = ?
+            and tbl_brg_warehouse.brg_warehouse_status = ?
+            and mstr_barang.brg_status = ?
+            and tbl_brg_permintaan.brg_permintaan_status != ?
+            and tbl_brg_permintaan.brg_permintaan_deadline > current_date() ".$search_query."
+            group by id_pk_brg_permintaan
             order by ".$order_by." ".$order_direction;
             $result["total_data"] = executequery($query,$args)->num_rows();
-            */
         }
         
         return $result;

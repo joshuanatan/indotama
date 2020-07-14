@@ -11,8 +11,7 @@ class Penerimaan extends CI_Controller{
         $data["id_tempat_penerimaan"] = $this->session->id_warehouse;
         $data["type"] = "WAREHOUSE";
         
-        $this->load->model("m_pembelian");
-        $this->load->view("penerimaan/v_penerimaan",$data);
+        $this->load->view("penerimaan/v_penerimaan_warehouse",$data);
     }
     public function cabang(){
         $this->load->model("m_satuan");
@@ -21,7 +20,6 @@ class Penerimaan extends CI_Controller{
         $data["id_tempat_penerimaan"] = $this->session->id_cabang;
         $data["type"] = "CABANG";
 
-        $this->load->model("m_pembelian");
         $data["tipe_penerimaan"] = "pembelian";
         $this->load->view("penerimaan/v_penerimaan",$data);
     }

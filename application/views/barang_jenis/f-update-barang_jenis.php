@@ -13,7 +13,7 @@
                 <form id = "update_form" method = "POST">
                     <input type = "hidden" name = "id" id = "id_edit">
                     <div class = "form-group">
-                        <h5>Nama Merk</h5>
+                        <h5>Nama Jenis</h5>
                         <input type = "text" class = "form-control" required name = "nama" id = "nama_edit">
                     </div>
                     <div class = "form-group">

@@ -37,6 +37,8 @@ class Cabang extends CI_Controller{
             for($a = 0; $a<count($result["data"]); $a++){
                 
                 $response["content"][$a]["id"] = $result["data"][$a]["id_pk_cabang"];
+                $response["content"][$a]["nama"] = $result["data"][$a]["cabang_nama"];
+                $response["content"][$a]["kode"] = $result["data"][$a]["cabang_kode"];
                 $response["content"][$a]["daerah"] = $result["data"][$a]["cabang_daerah"];
                 $response["content"][$a]["notelp"] = $result["data"][$a]["cabang_notelp"];
                 $response["content"][$a]["alamat"] = $result["data"][$a]["cabang_alamat"];
@@ -53,6 +55,8 @@ class Cabang extends CI_Controller{
         }
         $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
         $response["key"] = array(
+            "nama",
+            "kode",
             "daerah",
             "notelp",
             "alamat",
@@ -64,12 +68,16 @@ class Cabang extends CI_Controller{
     public function register(){
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("id_toko","id_toko","required");
+        $this->form_validation->set_rules("nama","nama","required");
+        $this->form_validation->set_rules("kode","kode","required");
         $this->form_validation->set_rules("daerah","daerah","required");
         $this->form_validation->set_rules("alamat","alamat","required");
         $this->form_validation->set_rules("notelp","notelp","required");
         if($this->form_validation->run()){
             $this->load->model("m_cabang");
             $id_fk_toko = $this->input->post("id_toko");
+            $cabang_nama = $this->input->post("nama");
+            $cabang_kode = $this->input->post("kode");
             $cabang_daerah = $this->input->post("daerah");
             $cabang_status = "AKTIF";
             $cabang_alamat = $this->input->post("alamat");
@@ -99,7 +107,7 @@ class Cabang extends CI_Controller{
                 $cabang_pernyataan_rek = $this->upload->data("file_name");
             }
 
-            if($this->m_cabang->set_insert($cabang_daerah,$cabang_notelp,$cabang_status,$cabang_alamat,$id_fk_toko,$cabang_kop_surat,$cabang_nonpkp,$cabang_pernyataan_rek)){
+            if($this->m_cabang->set_insert($cabang_nama,$cabang_kode,$cabang_daerah,$cabang_notelp,$cabang_status,$cabang_alamat,$id_fk_toko,$cabang_kop_surat,$cabang_nonpkp,$cabang_pernyataan_rek)){
                 if($this->m_cabang->insert()){
                     $response["msg"] = "Data is recorded to database";
                 }
@@ -122,12 +130,16 @@ class Cabang extends CI_Controller{
     public function update(){
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("id","id","required");
+        $this->form_validation->set_rules("nama","nama","required");
+        $this->form_validation->set_rules("kode","kode","required");
         $this->form_validation->set_rules("daerah","daerah","required");
         $this->form_validation->set_rules("alamat","alamat","required");
         $this->form_validation->set_rules("notelp","notelp","required");
         if($this->form_validation->run()){
             $this->load->model("m_cabang");
             $id_pk_cabang = $this->input->post("id");
+            $cabang_nama = $this->input->post("nama");
+            $cabang_kode = $this->input->post("kode");
             $cabang_daerah = $this->input->post("daerah");
             $cabang_alamat = $this->input->post("alamat");
             $cabang_notelp = $this->input->post("notelp");
@@ -156,7 +168,7 @@ class Cabang extends CI_Controller{
                 $cabang_pernyataan_rek = $this->upload->data("file_name");
             }
 
-            if($this->m_cabang->set_update($id_pk_cabang,$cabang_daerah,$cabang_notelp,$cabang_alamat,$cabang_kop_surat,$cabang_nonpkp,$cabang_pernyataan_rek)){
+            if($this->m_cabang->set_update($cabang_nama,$cabang_kode,$id_pk_cabang,$cabang_daerah,$cabang_notelp,$cabang_alamat,$cabang_kop_surat,$cabang_nonpkp,$cabang_pernyataan_rek)){
                 if($this->m_cabang->update()){
                     $response["msg"] = "Data is updated to database";
                 }
@@ -300,6 +312,115 @@ class Cabang extends CI_Controller{
             $this->session->unset_userdata("id_cabang");
             $this->session->unset_userdata("daerah_cabang");
         }
+        echo json_encode($response);
+    }
+    public function dashboard($id_cabang = 0){
+        $this->load->model("m_dashboard_cabang");
+        if(!$id_cabang){
+            $id_cabang = $this->session->id_cabang;
+        }
+        $this->m_dashboard_cabang->set_id_cabang($id_cabang);
+        $response["status"] = "SUCCESS";
+        $response["content"] = array(
+            array(
+                "type" => "widget",
+                "data" => $this->m_dashboard_cabang->jumlah_penjualan_bulan_ini(),
+                "title" => "Jumlah Penjualan Bulan Ini"
+            ),
+            array(
+                "type" => "widget",
+                "data" => $this->m_dashboard_cabang->jumlah_penjualan_bulan_lalu(),
+                "title" => "Jumlah Penjualan Bulan Lalu"
+            ),
+            array(
+                "type" => "widget",
+                "data" => $this->m_dashboard_cabang->jumlah_penjualan_tahun_ini(),
+                "title" => "Jumlah Penjualan Tahun Ini"
+            ),
+            array(
+                "type" => "widget",
+                "data" => $this->m_dashboard_cabang->jumlah_penjualan_tahun_lalu(),
+                "title" => "Jumlah Penjualan Tahun Lalu"
+            ),
+            array(
+                "type" => "widget",
+                "data" => $this->m_dashboard_cabang->jumlah_konfirmasi_retur(),
+                "title" => "Jumlah Retur Dalam Konfirmasi"
+            ),
+            array(
+                "type" => "widget",
+                "data" => $this->m_dashboard_cabang->jumlah_item_urgen_restok(),
+                "title" => "Jumlah Item Butuh Restok"
+            ),
+            array(
+                "type" => "table",
+                "title" => "Daftar Item Butuh Restok",
+                "header" => array(
+                    "Nama Barang","Stok","Jumlah Minimal"
+                ),
+                "data" =>$this->m_dashboard_cabang->list_penjualan_belum_selesai(),
+            ),
+            array(
+                "type" => "table",
+                "title" => "Daftar Item Butuh Restok",
+                "header" => array(
+                    "Barang Awal","Barang Rubah","Jumlah Pindah","User","Tanggal Rubah"
+                ),
+                "data" =>$this->m_dashboard_cabang->list_barang_custom(),
+            )
+        );
+        $result = $this->m_dashboard_cabang->list_penjualan_3_tahun_terakhir();
+        $array = array(
+            "type" => "chart",
+            "title" => "Penjualan 3 Tahun Terakhir",
+            "data" => array(
+                array(
+                    "label" => "Jumlah Penjualan",
+                    "data" => $result["data"]
+                )
+            ),
+            "xlabel" => $result["label"]
+        );
+        array_push($response["content"],$array);
+        
+        $result = $this->m_dashboard_cabang->list_penjualan_tahun_ini_perbulan();
+        $array = array(
+            "type" => "chart",
+            "title" => "Penjualan Tahun Ini Setiap Bulan",
+            "data" => array(
+                array(
+                    "label" => "Jumlah Penjualan",
+                    "data" => $result["data"]
+                )
+            ),
+            "xlabel" => $result["label"]
+        );
+        array_push($response["content"],$array);
+        
+
+        $result = $this->m_dashboard_cabang->list_penjualan_tahun_ini_perbulan();
+        $result2 = $this->m_dashboard_cabang->list_penjualan_tahun_lalu_perbulan(1);
+        $result3 = $this->m_dashboard_cabang->list_penjualan_tahun_lalu_perbulan(2);
+        $array = array(
+            "type" => "chart",
+            "title" => "Penjualan Tahun Ini Setiap Bulan",
+            "data" => array(
+                array(
+                    "label" => "Jumlah Penjualan Tahun ".date("Y"),
+                    "data" => $result["data"]
+                ),
+                array(
+                    "label" => "Jumlah Penjualan Tahun ".((int)date("Y")-1),
+                    "data" => $result2["data"]
+                ),
+                array(
+                    "label" => "Jumlah Penjualan Tahun ".((int)date("Y")-2),
+                    "data" => $result3["data"]
+                )
+            ),
+            "xlabel" => $result["label"]
+        );
+        array_push($response["content"],$array);
         echo json_encode($response);
     }
 }

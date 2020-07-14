@@ -14,47 +14,45 @@
                 <form id = "update_form" method = "POST" enctype = "multipart/form-data">
                     <input type = "hidden" name = "id" id = "id_edit">
                     
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Kode Barang</h5>
                         <input type = "text" class = "form-control" required name = "kode" id = "kode_edit">
                     </div>
                     
-                    <div class = "form-group">
-                        <h5>Jenis Barang</h5>
-                        <input list = "datalist_barang_jenis" type = "text"  required name = "id_brg_jenis" class = "form-control" id = "id_brg_jenis_edit">
-                    </div>
-                    
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Nama Barang</h5>
                         <input type = "text" class = "form-control" required name = "nama" id = "nama_edit">
                     </div>
-                    
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
+                        <h5>Jenis Barang</h5>
+                        <input list = "datalist_barang_jenis" type = "text"  required name = "id_brg_jenis" class = "form-control" id = "id_brg_jenis_edit">
+                    </div>
+                    <div class = "form-group col-lg-6">
+                        <h5>Merk Barang</h5>
+                        <input list = "datalist_barang_merk" type = "text"  required name = "id_brg_merk" class = "form-control" id = "id_brg_merk_edit">
+                    </div>
+                    <div class = "form-group col-lg-6">
                         <h5>Keterangan</h5>
                         <input type = "text" class = "form-control" required name = "keterangan" id = "keterangan_edit">
                     </div>
                     
-                    <div class = "form-group">
-                        <h5>Merk Barang</h5>
-                        <input list = "datalist_barang_merk" type = "text"  required name = "id_brg_merk" class = "form-control" id = "id_brg_merk_edit">
-                    </div>
                     
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Minimal Stok</h5>
                         <input type = "text" class = "form-control" required name = "minimal" id = "minimal_edit">
                     </div>
                     
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Satuan</h5>
                         <input type = "text" class = "form-control" required name = "satuan" id = "satuan_edit">
                     </div>
                     
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Harga Satuan</h5>
                         <input type = "text" class = "form-control" required name = "harga" id = "harga_edit">
                     </div>
                     
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-12">
                         <h5>Gambar</h5>
                         <input type = "hidden" id = "gambar_edit" name = "gambar_current">
                         <input type = "file" class = "form-control" required name = "gambar">

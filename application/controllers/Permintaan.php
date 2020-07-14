@@ -16,6 +16,11 @@ class Permintaan extends CI_Controller{
         $data["type"] = "CABANG";
         $this->load->view("brg_pemenuhan/v_brg_pemenuhan",$data);
     }
+    public function lain_gudang(){
+        $data["id_tempat_penerimaan"] = $this->session->id_warehouse;
+        $data["type"] = "WAREHOUSE";
+        $this->load->view("brg_pemenuhan_warehouse/v_brg_pemenuhan",$data);
+    }
     public function warehouse(){
         $this->load->view("brg_pemenuhan/v_brg_pemenuhan");
     }

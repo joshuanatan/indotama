@@ -20,7 +20,11 @@
                         <h5>Controller</h5>
                         <input type = "text" class = "form-control" required name = "controller">
                     </div>
-                    <input type = "hidden" class = "form-control" required name = "icon" value = "-">
+                    <?php /*aktivasi field icon*/?>
+                    <div class = "form-group">
+                        <h5>Icon</h5>
+                        <input type = "text" class = "form-control" required name = "icon">
+                    </div>
                     <div class = "form-group">
                         <h5>Kategori</h5>
                         <select class = "form-control" required name = "kategori">
