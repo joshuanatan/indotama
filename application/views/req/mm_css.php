@@ -9,4 +9,5 @@
         
 <!-- Custom CSS -->
 <link href="<?php echo base_url(); ?>asset/dist/css/style.css" rel="stylesheet" type="text/css">
+<link href="<?php echo base_url(); ?>asset/dist/css/additional-style.css" rel="stylesheet" type="text/css">
 
