@@ -43,7 +43,7 @@ class Penerimaan_permintaan extends CI_Controller{
                 $response["content"][$a]["id_brg_pengiriman"] = $result["data"][$a]["id_pk_brg_pengiriman"];
                 $response["content"][$a]["qty_brg_pengiriman"] = $result["data"][$a]["brg_pengiriman_qty"];
                 $response["content"][$a]["note_brg_pengiriman"] = $result["data"][$a]["brg_pengiriman_note"];
-                $response["content"][$a]["status_brg_pemenuhan"] = $result["data"][$a]["brg_pemenuhan_status"];
+                $response["content"][$a]["status"] = $result["data"][$a]["brg_pemenuhan_status"];
                 $response["content"][$a]["tgl_pengiriman"] = $result["data"][$a]["pengiriman_tgl"];
                 $response["content"][$a]["daerah_cabang"] = $result["data"][$a]["cabang_daerah"];
                 $response["content"][$a]["nama_toko"] = $result["data"][$a]["toko_nama"];
@@ -62,7 +62,7 @@ class Penerimaan_permintaan extends CI_Controller{
             "qty_brg_pengiriman",
             "nama_toko",
             "daerah_cabang",
-            "status_brg_pemenuhan",
+            "status",
             "tgl_pengiriman",
             "tgl_penerimaan"
         );

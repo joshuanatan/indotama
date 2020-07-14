@@ -29,6 +29,7 @@
                     $("#datalist_customer").html(html);
                 }
             }
-        })
+        });
+        $("[list='datalist_customer']").after(`<br/><a href = '<?php echo base_url();?>customer' target = '_blank' class = 'btn btn-primary btn-sm'>Tambah Cepat Customer</a>`);
     }
 </script>

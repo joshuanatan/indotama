@@ -55,7 +55,7 @@ class Pemenuhan extends CI_Controller{
                         $response["content"][$a]["stok_permintaan"] = $result["data"][$a]["brg_permintaan_qty"];
                         $response["content"][$a]["notes"] = $result["data"][$a]["brg_permintaan_notes"];
                         $response["content"][$a]["deadline"] = $result["data"][$a]["brg_permintaan_deadline"];
-                        $response["content"][$a]["status_permintaan"] = $result["data"][$a]["brg_permintaan_status"];
+                        $response["content"][$a]["status"] = $result["data"][$a]["brg_permintaan_status"];
                         $response["content"][$a]["id_fk_brg"] = $result["data"][$a]["id_mstr_barang_cabang_penyedia"];
                         $response["content"][$a]["nama_barang"] = $result["data"][$a]["brg_nama"];
                         $response["content"][$a]["stok_terpenuhi"] = $result["data"][$a]["qty_pemenuhan"];
@@ -75,7 +75,7 @@ class Pemenuhan extends CI_Controller{
                         $response["content"][$a]["stok_permintaan"] = $result["data"][$a]["brg_permintaan_qty"];
                         $response["content"][$a]["notes"] = $result["data"][$a]["brg_permintaan_notes"];
                         $response["content"][$a]["deadline"] = $result["data"][$a]["brg_permintaan_deadline"];
-                        $response["content"][$a]["status_permintaan"] = $result["data"][$a]["brg_permintaan_status"];
+                        $response["content"][$a]["status"] = $result["data"][$a]["brg_permintaan_status"];
                         $response["content"][$a]["id_fk_brg"] = $result["data"][$a]["id_mstr_barang_cabang_penyedia"];
                         $response["content"][$a]["nama_barang"] = $result["data"][$a]["brg_nama"];
                         $response["content"][$a]["stok_terpenuhi"] = $result["data"][$a]["qty_pemenuhan"];
@@ -101,7 +101,7 @@ class Pemenuhan extends CI_Controller{
                 "nama_barang",
                 "stok_terpenuhi",
                 "stok_permintaan",
-                "status_permintaan"
+                "status"
             );
         }
         echo json_encode($response);

@@ -160,7 +160,7 @@ class Barang extends CI_Controller{
             $config['file_name'] = "barang_" . $brg_kode;
 
             $this->load->library('upload', $config);
-            $brg_image = "-";
+            $brg_image = "noimage.jpg";
             if($this->upload->do_upload('gambar')){
                 $p1 = array("upload_data"=> $this->upload->data());
                 $brg_image = $p1['upload_data']['file_name'];

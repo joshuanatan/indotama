@@ -52,7 +52,7 @@ class Pengiriman_permintaan extends CI_Controller{
                 $response["content"][$a]["kode_toko"] = $result["data"][$a]["toko_kode"];
                 $response["content"][$a]["logo_toko"] = $result["data"][$a]["toko_logo"];
                 $response["content"][$a]["permintaan_status_brg"] = $result["data"][$a]["brg_permintaan_status"];
-                $response["content"][$a]["pemenuhan_status_brg"] = $result["data"][$a]["brg_pemenuhan_status"];
+                $response["content"][$a]["status"] = $result["data"][$a]["brg_pemenuhan_status"];
                 $response["content"][$a]["tgl_pengiriman"] = $result["data"][$a]["pengiriman_tgl"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["pengiriman_last_modified"];
             }
@@ -66,7 +66,7 @@ class Pengiriman_permintaan extends CI_Controller{
             "pemenuhan_qty_brg",
             "nama_toko",
             "daerah_cabang",
-            "pemenuhan_status_brg",
+            "status",
             "tgl_pengiriman",
             "last_modified"
         );

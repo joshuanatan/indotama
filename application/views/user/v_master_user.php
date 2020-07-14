@@ -1,7 +1,7 @@
 <?php
-$page_title = "User";
+$page_title = "Master User";
 $breadcrumb = array(
-    "User"
+    "Master User"
 );
 $notif_data = array(
     "page_title"=>$page_title
