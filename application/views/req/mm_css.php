@@ -11,3 +11,5 @@
 <link href="<?php echo base_url(); ?>asset/dist/css/style.css" rel="stylesheet" type="text/css">
 <link href="<?php echo base_url(); ?>asset/dist/css/additional-style.css" rel="stylesheet" type="text/css">
 
+<link href="<?php echo base_url(); ?>vendors/bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.min.css" rel="stylesheet" type="text/css"/>
+

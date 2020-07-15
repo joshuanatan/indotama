@@ -64,5 +64,32 @@ class Dashboard extends CI_Controller {
 		$data['top_5_pelanggan'] = $top;
 		$this->load->view('welcome_message',$data);
 	}
+
+
+	public function view_profile(){
+		$id_user = $this->input->post("id_user");
+		$where = array(
+			"id_pk_user"=>$id_user
+		);
+		$user = selectRow("mstr_user",$where)->result_array();
+		$id_employee = get1Value("mstr_user","id_fk_employee",$where);
+
+
+		$employee = selectRow("mstr_employee",array("id_pk_employee"=>$id_employee))->result_array();
+		$data['panggilan_profile'] = $employee[0]['emp_suff'];
+		$data['nama_profile'] =$employee[0]['emp_nama'];
+		$data['foto_profile'] = base_url() . 'asset/uploads/employee/foto/'.$employee[0]['emp_foto'];
+		$data['email_profile'] = $user[0]['user_email'];
+		
+		$data['role_profile'] = get1Value("mstr_jabatan","jabatan_nama",array("id_pk_jabatan"=>$user[0]['id_fk_role']));
+		$data['gender_profile'] =$employee[0]['emp_gender'];
+		$data['toko_profile'] = get1Value("mstr_toko","toko_nama",array("id_pk_toko"=>$employee[0]['id_fk_toko']));
+
+		echo json_encode($data);
+	}
+
+	public function edit_profile_view(){
+		$this->load->view("login/V_edit_profile");
+	}
     
 }

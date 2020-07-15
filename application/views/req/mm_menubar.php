@@ -23,7 +23,7 @@
                 </a>
                 <ul class="dropdown-menu user-auth-dropdown" data-dropdown-in="flipInX" data-dropdown-out="flipOutX">
                     <li>
-                        <a href="profile.html"><i class="zmdi zmdi-account"></i><span>Profile</span></a>
+                        <a onclick="view_profile()" data-toggle = 'modal' data-target = '#view_profile'><i class="zmdi zmdi-account"></i><span>Profile</span></a>
                     </li>
                     <li>
                         <a href="<?php echo base_url() ?>login/change_password"><i class="zmdi zmdi-account"></i><span>Change Password</span></a>
@@ -59,3 +59,68 @@
         <?php $this->load->view("req/menu/warehouse");?>
     </ul>
 </div>
+<input type="hidden" name="id_user_profile" value="<?php echo $this->session->id_user ?>" id="id_user_profile">
+
+<div class = "modal fade" id = "view_profile">
+    <div class = "modal-dialog">
+        <div class = "modal-content">
+            <div class = "modal-header">
+                <h4 class = "modal-title">My Profile</h4>
+            </div>
+            <div class = "modal-body">
+                <center>
+                <img id="foto_profile" width="150px">
+                <table>
+                    <tr>
+                        <td style="padding-right:50px;">Nama</td>
+                        <td>: <span id="panggilan_profile"></span> <span id="nama_profile"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-right:50px;">Email</td>
+                        <td>: <span id="email_profile"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-right:50px;">Jabatan</td>
+                        <td>: <span id="role_profile"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding-right:50px;">Jenis Kelamin</td>
+                        <td>: <span id="gender_profile"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-right:50px;">Toko</td>
+                        <td>: <span id="toko_profile"></span></td>
+                    </tr>
+                </table>
+                <br>
+                <a href="<?php echo base_url() ?>dashboard/edit_profile_view" class = "btn btn-sm btn-primary">Edit Profile</a>
+                </center>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function view_profile(){
+        var id_user = $("#id_user_profile").val();
+        $.ajax({
+            url: "<?= base_url() ?>dashboard/view_profile",
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                id_user:id_user
+            },
+            success:function(respond){
+                $("#panggilan_profile").html(respond['panggilan_profile']);
+                $("#nama_profile").html(respond['nama_profile']);
+                $("#email_profile").html(respond['email_profile']);
+                $("#role_profile").html(respond['role_profile']);
+                $("#gender_profile").html(respond['gender_profile']);
+                $("#toko_profile").html(respond['toko_profile']);
+                $("#foto_profile").attr("src",respond['foto_profile']);
+            }
+        });
+    }
+    
+</script>
