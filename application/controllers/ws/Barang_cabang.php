@@ -40,6 +40,7 @@ class Barang_cabang extends CI_Controller{
                 $response["content"][$a]["qty"] = $result["data"][$a]["brg_cabang_qty"];
                 $response["content"][$a]["notes"] = $result["data"][$a]["brg_cabang_notes"];
                 $response["content"][$a]["last_price"] = $result["data"][$a]["brg_cabang_last_price"];
+                $response["content"][$a]["harga"] = $result["data"][$a]["brg_harga"];
                 $response["content"][$a]["status"] = $result["data"][$a]["brg_cabang_status"];
                 $response["content"][$a]["id_brg"] = $result["data"][$a]["id_fk_brg"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["brg_cabang_last_modified"];
@@ -49,6 +50,8 @@ class Barang_cabang extends CI_Controller{
                 $response["content"][$a]["minimal_brg"] = $result["data"][$a]["brg_minimal"];
                 $response["content"][$a]["satuan_brg"] = $result["data"][$a]["brg_satuan"];
                 $response["content"][$a]["image_brg"] = $result["data"][$a]["brg_image"];
+                $response["content"][$a]["jenis"] = $result["data"][$a]["brg_jenis_nama"];
+                $response["content"][$a]["merk"] = $result["data"][$a]["brg_merk_nama"];
             }
         }
         else{
