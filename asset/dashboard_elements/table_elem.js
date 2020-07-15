@@ -15,9 +15,6 @@ function populate_table_data(table_header,table_data,table_title,amt_table){
             data += "</tr>";
         }
     }
-    else{
-        data = `<tr><td style = 'text-align:center' colspan = '${table_header.length}'>No Data</td></tr>`;
-    }
 
     var template = `
         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
