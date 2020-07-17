@@ -23,7 +23,7 @@
                 </a>
                 <ul class="dropdown-menu user-auth-dropdown" data-dropdown-in="flipInX" data-dropdown-out="flipOutX">
                     <li>
-                        <a onclick="view_profile()" data-toggle = 'modal' data-target = '#view_profile'><i class="zmdi zmdi-account"></i><span>Profile</span></a>
+                        <a onclick="view_profile()" style="cursor:pointer" data-toggle = 'modal' data-target = '#view_profile'><i class="zmdi zmdi-account"></i><span>Profile</span></a>
                     </li>
                     <li>
                         <a href="<?php echo base_url() ?>login/change_password"><i class="zmdi zmdi-account"></i><span>Change Password</span></a>
@@ -94,7 +94,7 @@
                     </tr>
                 </table>
                 <br>
-                <a href="<?php echo base_url() ?>dashboard/edit_profile_view" class = "btn btn-sm btn-primary">Edit Profile</a>
+                <a href="<?php echo base_url() ?>dashboard/edit_profile_view/<?php echo $this->session->id_user ?>" class = "btn btn-sm btn-primary">Edit Profile</a>
                 </center>
                 
             </div>

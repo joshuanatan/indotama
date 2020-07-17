@@ -25,7 +25,7 @@ $notif_data = array(
             <div class="page-wrapper" style="background-color:white">
 								<div class="panel-heading">
 									<div class="pull-left">
-										<h6 class="panel-title txt-dark">Edit Profile</h6>
+										<h6 class="panel-title txt-dark" style="font-size:30px;">Edit Profile</h6>
 									</div>
 									<div class="clearfix"></div>
                                 </div>
@@ -36,32 +36,42 @@ $notif_data = array(
 										<div class="row">
 											<div class="col-md-12">
 												<div class="form-wrap">
-													<form action="#" class="form-horizontal">
+													<form action="<?php echo base_url()?>dashboard/edit_profile_method" method="post" class="form-horizontal">
 														<div class="form-body">
 															<div class="row">
+															<?php if($this->session->msg_b != ""):?>
+																<div class = "alert alert-success">
+																	<?php echo $this->session->msg_b ?>
+																</div>
+															<?php endif;?>
+															<?php if($this->session->msg_e != ""):?>
+																<div class = "alert alert-error">
+																	<?php echo $this->session->msg_e ?>
+																</div>
+															<?php endif;?>
+																<input type = "hidden" name = "id_employee" value="<?php echo $employee[0]['id_pk_employee'] ?>" id = "id_employee">
+																<input type = "hidden" name = "id_user" id = "id_user" value="<?php echo $user[0]['id_pk_user'] ?>">
+                                                                <div class="col-md-6">
+																	<div class="form-group">
+																		<label class="control-label col-md-3">Username</label>
+																		<div class="col-md-9">
+																			<input type = "text" class = "form-control" required name = "name" id = "name_edit" value="<?php echo $user[0]['user_name'] ?>">
+																		</div>
+																	</div>
+                                                                </div>
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label class="control-label col-md-3">Email</label>
+																		<div class="col-md-9">
+																			<input type = "text" class = "form-control" required name = "email" id = "email_edit"  value="<?php echo $user[0]['user_email'] ?>">
+																		</div>
+																	</div>
+                                                                </div>
 																<div class="col-md-6">
 																	<div class="form-group">
 																		<label class="control-label col-md-3">Nama Lengkap</label>
 																		<div class="col-md-9">
-																			<input type="text" class="form-control" id="emp_nama_edit" name="emp_nama" required>
-																			 
-																		</div>
-																	</div>
-                                                                </div>
-                                                                <div class="col-md-6">
-																	<div class="form-group">
-																		<label class="control-label col-md-3">NPWP</label>
-																		<div class="col-md-9">
-																			<input type="text" class="form-control" id="emp_npwp_edit" name="emp_npwp" required>
-																			 
-																		</div>
-																	</div>
-                                                                </div>
-                                                                <div class="col-md-6">
-																	<div class="form-group">
-																		<label class="control-label col-md-3">KTP</label>
-																		<div class="col-md-9">
-																			<input type="text" class="form-control" id="emp_ktp_edit" name="emp_ktp" required>
+																			<input type="text" class="form-control" id="emp_nama_edit" name="emp_nama" required  value="<?php echo $employee[0]['emp_nama'] ?>">
 																			 
 																		</div>
 																	</div>
@@ -70,7 +80,7 @@ $notif_data = array(
 																	<div class="form-group">
 																		<label class="control-label col-md-3">No HP</label>
 																		<div class="col-md-9">
-																			<input type="text" class="form-control" id="emp_hp_edit" name="emp_hp" required>
+																			<input type="text" class="form-control" id="emp_hp_edit" name="emp_hp" required  value="<?php echo $employee[0]['emp_hp'] ?>">
 																			 
 																		</div>
 																	</div>
@@ -79,7 +89,7 @@ $notif_data = array(
 																	<div class="form-group">
 																		<label class="control-label col-md-3">Alamat</label>
 																		<div class="col-md-9">
-																			<input type="text" class="form-control" id="emp_alamat_edit" name="emp_alamat" required>
+																			<input type="text" class="form-control" id="emp_alamat_edit" name="emp_alamat" required  value="<?php echo $employee[0]['emp_alamat'] ?>">
 																			 
 																		</div>
 																	</div>
@@ -88,131 +98,57 @@ $notif_data = array(
 																	<div class="form-group">
 																		<label class="control-label col-md-3">Kode Pos</label>
 																		<div class="col-md-9">
-																			<input type="text" class="form-control" id="emp_kode_pos_edit" name="emp_kode_pos" required>
-																			 
-																		</div>
-																	</div>
-                                                                </div>
-                                                                <div class="col-md-6">
-																	<div class="form-group">
-																		<label class="control-label col-md-3">Foto NPWP</label>
-																		<div class="col-md-9">
-																			<input type="file" class="form-control" id="emp_foto_npwp_edit" name="emp_foto_npwp" required>
-                        <img id="img_emp_foto_npwp_edit" width="100px">
-																			 
-																		</div>
-																	</div>
-                                                                </div>
-                                                                <div class="col-md-6">
-																	<div class="form-group">
-																		<label class="control-label col-md-3">Foto KTP</label>
-																		<div class="col-md-9">
-																			<input type="file" class="form-control" id="emp_foto_ktp_edit" name="emp_foto_ktp" required>
-                        <img id="img_emp_foto_ktp_edit" width="100px">
-																			 
-																		</div>
-																	</div>
-                                                                </div>
-                                                                <div class="col-md-6">
-																	<div class="form-group">
-																		<label class="control-label col-md-3">Foto Lain</label>
-																		<div class="col-md-9">
-																			<input type="file" class="form-control" id="emp_foto_lain_edit" name="emp_foto_lain" required>
-                        <img id="img_emp_foto_lain_edit" width="100px">
-																			 
-																		</div>
-																	</div>
-                                                                </div>
-                                                                <div class="col-md-6">
-																	<div class="form-group">
-																		<label class="control-label col-md-3">Foto</label>
-																		<div class="col-md-9">
-																			<input type="file" class="form-control" id="emp_foto_edit"  name="emp_foto" required>
-                        <span id="img_emp_foto_edit"></span>
-																			 
-																		</div>
-																	</div>
-                                                                </div>
-                                                                <div class="col-md-6">
-																	<div class="form-group">
-																		<label class="control-label col-md-3">Gaji Karyawan</label>
-																		<div class="col-md-9">
-																			<input type="number" class="form-control" id="emp_gaji_edit" name="emp_gaji" required>
-																			 
-																		</div>
-																	</div>
-                                                                </div>
-                                                                <div class="col-md-6">
-																	<div class="form-group">
-																		<label class="control-label col-md-3">Mulai Bekerja</label>
-																		<div class="col-md-9">
-																			<input type="date" class="form-control" id="emp_startdate_edit" name="emp_startdate" required>
-																			 
-																		</div>
-																	</div>
-                                                                </div>
-                                                                <div class="col-md-6">
-																	<div class="form-group">
-																		<label class="control-label col-md-3">Akhir Bekerja</label>
-																		<div class="col-md-9">
-																			 <input type="radio" name="radio_enddate" id="no_enddate_edit" value="MASIH" checked>Masih Bekerja
-                        <br><input type="radio" value="TIDAK" name="radio_enddate" id="yes_enddate_edit">Tidak bekerja sejak:
-                        <input type="date" style="display:none" class="form-control" id="emp_enddate_edit" name="emp_enddate">
-																			 
-																		</div>
-																	</div>
-                                                                </div>
-                                                                <div class="col-md-6">
-																	<div class="form-group">
-																		<label class="control-label col-md-3">Rekening Bank</label>
-																		<div class="col-md-9">
-																			<input type="text" class="form-control" id="emp_rek_edit" name="emp_rek" required>
-																			 
-																		</div>
-																	</div>
-                                                                </div>
-                                                                <div class="col-md-6">
-																	<div class="form-group">
-																		<label class="control-label col-md-3">Jenis Kelamin</label>
-																		<div class="col-md-9">
-																			<input type="radio" name="emp_gender" value="PRIA" id="pria">Pria 
-                        <input type="radio" name="emp_gender" value="WANITA" id="wanita">Wanita
-																			 
-																		</div>
-																	</div>
-                                                                </div>
-                                                                <div class="col-md-6">
-																	<div class="form-group">
-																		<label class="control-label col-md-3">Panggilan</label>
-																		<div class="col-md-9">
-																			<select id="emp_suff_edit" name="emp_suff" class="form-control">
-                            <option value="0" disabled>Pilih Panggilan</option>
-                            <option value="MR">Mr</option>
-                            <option value="MRS">Mrs</option>
-                            <option value="MS">Ms</option>
-                            <option value="BAPAK">Bpk</option>
-                            <option value="IBU">Ibu</option>
-                            <option value="NONA">Nona</option>
-                        </select>
-																			 
-																		</div>
-																	</div>
-                                                                </div>
-                                                                <div class="col-md-6">
-																	<div class="form-group">
-																		<label class="control-label col-md-3">Toko</label>
-																		<div class="col-md-9">
-																			<select class="form-control" id="id_fk_toko_edit" name="id_fk_toko">
-                            <option value="0" disabled>Pilih Toko</option>
-                            <?php for($p=0 ; $p<count($toko); $p++){ ?>
-                                <option value="<?php echo $toko[$p]['ID_PK_TOKO'] ?>"><?php echo $toko[$p]['TOKO_NAMA']?></option>
-                            <?php } ?>
-                        </select>
+																			<input type="text" class="form-control" id="emp_kode_pos_edit" name="emp_kode_pos" required  value="<?php echo $employee[0]['emp_kode_pos'] ?>">
 																			 
 																		</div>
 																	</div>
                                                                 </div>
                                                                 
+                                                                <div class="col-md-6">
+																	<div class="form-group">
+																		<label class="control-label col-md-3">Rekening Bank</label>
+																		<div class="col-md-9">
+																			<input type="text" class="form-control" id="emp_rek_edit" name="emp_rek" required  value="<?php echo $employee[0]['emp_rek'] ?>">
+																			 
+																		</div>
+																	</div>
+                                                                </div>
+                                                                <div class="col-md-3">
+																	<div class="form-group">
+																		<label style="text-align:center" class="control-label col-md-12">Jenis Kelamin</label>
+																		<div class="col-md-12">
+																			<input type="radio" name="emp_gender" value="PRIA" <?php if($employee[0]['emp_gender']=="PRIA"){echo "checked";} ?> id="pria">Pria 
+                        <input type="radio" name="emp_gender" value="WANITA" id="wanita" <?php if($employee[0]['emp_gender']=="WANITA"){echo "checked";} ?>>Wanita
+																			 
+																		</div>
+																	</div>
+                                                                </div>
+                                                                <div class="col-md-3">
+																	<div class="form-group">
+																		<label style="text-align:left" class="control-label col-md-12">Panggilan</label>
+																		<div class="col-md-12">
+																			<select id="emp_suff_edit" name="emp_suff" class="form-control">
+																				<option value="0" disabled>Pilih Panggilan</option>
+																				<option value="MR"  <?php if($employee[0]['emp_suff']=="MR"){echo "selected";} ?>>Mr</option>
+																				<option value="MRS"<?php if($employee[0]['emp_suff']=="MRS"){echo "selected";} ?>>Mrs</option>
+																				<option value="MS"<?php if($employee[0]['emp_suff']=="MS"){echo "selected";} ?>>Ms</option>
+																				<option value="BAPAK" <?php if($employee[0]['emp_suff']=="BAPAK"){echo "selected";} ?>>Bpk</option>
+																				<option value="IBU" <?php if($employee[0]['emp_suff']=="IBU"){echo "selected";} ?>>Ibu</option>
+																				<option value="NONA" <?php if($employee[0]['emp_suff']=="NONA"){echo "selected";} ?>>Nona</option>
+																			</select>
+																		</div>
+																	</div>
+                                                                </div>
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label class="control-label col-md-3">Foto</label>
+																		<div class="col-md-9">
+																			<input type="file" class="form-control" id="emp_foto_edit"  name="emp_foto" >
+                        <img src="<?php echo base_url() ?>asset/uploads/employee/foto/<?php echo $employee[0]['emp_foto'] ?>" width="100px">
+																			 
+																		</div>
+																	</div>
+                                                                </div>
 															
 														</div>
 														<div class="form-actions mt-10">
@@ -221,7 +157,7 @@ $notif_data = array(
 																	<div class="row">
 																		<div class="col-md-offset-3 col-md-9">
 																			<button type="submit" class="btn btn-success  mr-10">Submit</button>
-																			<button type="button" class="btn btn-default">Cancel</button>
+																			<a href="<?php echo base_url() ?>dashboard" class="btn btn-default">Cancel</a>
 																		</div>
 																	</div>
 																</div>
@@ -243,61 +179,3 @@ $notif_data = array(
         <?php $this->load->view('req/mm_js.php');?>
     </body>
 </html>
-<script>
-
-    function load_edit_content(id){
-        $("#id_pk_employee_edit").val(content[id]["id"]);
-        $("#emp_nama_edit").val(content[id]["nama"]);
-        $("#emp_npwp_edit").val(content[id]["npwp"]);
-        $("#emp_ktp_edit").val(content[id]["ktp"]);
-        $("#emp_hp_edit").val(content[id]["hp"]);
-        $("#emp_alamat_edit").val(content[id]["alamat"]);
-        $("#emp_kode_pos_edit").val(content[id]["kode_pos"]);
-        $("#emp_foto_edit").html(content[id]["foto"]);
-
-        var npwp = "<?php echo base_url() ?>asset/uploads/employee/npwp/" + content[id]["foto_npwp"];
-        $("#emp_foto_npwp_edit").attr("src", npwp);
-        var ktp = "<?php echo base_url() ?>asset/uploads/employee/ktp/" + content[id]["foto_ktp"];
-        $("#emp_foto_ktp_edit").attr("src", ktp);
-        var lain = "<?php echo base_url() ?>asset/uploads/employee/lain/" + content[id]["foto_lain"];
-        $("#emp_foto_lain_edit").attr("src", lain);
-
-        if(content[id]["gender"]=="PRIA"){
-            $('#pria').prop('checked', true);
-        }else{
-            $('#wanita').prop('checked', true);
-        }
-
-        if(content[id]["enddate"]==="0000-00-00 00:00:00"){
-            $('#no_enddate_edit').prop('checked', true);
-            $("#emp_enddate_edit").hide();
-            $("#emp_enddate_edit").prop('required',false);
-        }else{
-            $('#yes_enddate_edit').prop('checked', true);
-            $("#emp_enddate_edit").show();
-            $("#emp_enddate_edit").prop('required',true);
-        }
-
-        $("#emp_suff_edit").val(content[id]["suff"]);
-        $("#emp_gaji_edit").attr("value",content[id]["gaji"]);
-
-        $("#emp_kode_pos_edit").val(content[id]["kode_pos"]);
-        
-        var split_date = content[id]["startdate"].split(" ");
-        $("#emp_startdate_edit").val(split_date[0]);
-        split_date = content[id]["enddate"].split(" ");
-        $("#emp_enddate_edit").val(split_date[0]);
-        
-        $("#emp_rek_edit").val(content[id]["rek"]);
-        $("#id_fk_toko_edit").val(content[id]["id_toko"]);
-    }
-
-    $('#yes_enddate_edit').click(function() {
-        $("#emp_enddate_edit").show();
-        $("#emp_enddate_edit").prop('required',true);
-    });
-    $('#no_enddate_edit').click(function() {
-        $("#emp_enddate_edit").hide();
-        $("#emp_enddate_edit").prop('required',false);
-    });
-</script>
