@@ -23,9 +23,5 @@
             }
         });
         
-        if(button_tmbh_cepat_barang_cabang){
-            $("[list='datalist_barang_cabang']").after(`<br/><a href = '<?php echo base_url();?>toko/brg_cabang' target = '_blank'>Tambah Cepat Barang Cabang</a>`);
-            button_tmbh_cepat_barang_cabang = false;
-        }
     }
 </script>

@@ -123,19 +123,28 @@ class M_penjualan_online extends ci_model{
         return false;
     }
     public function update(){
-        if($this->check_update()){
-            $where = array(
-                "id_fk_penjualan" => $this->id_fk_penjualan
-            );
-            $data = array(
-                "penj_on_marketplace" => $this->penj_on_marketplace,
-                "penj_on_no_resi" => $this->penj_on_no_resi,
-                "penj_on_kurir" => $this->penj_on_kurir,
-                "penj_on_last_modified" => $this->penj_on_last_modified,
-                "id_last_modified" => $this->id_last_modified
-            );
-            updaterow($this->tbl_name,$data,$where);
-            return true; 
+        $where = array(
+            "id_fk_penjualan" => $this->id_fk_penjualan
+        );
+        if(isExistsInTable($this->tbl_name,$where)){
+            if($this->check_update()){
+                $where = array(
+                    "id_fk_penjualan" => $this->id_fk_penjualan
+                );
+                $data = array(
+                    "penj_on_marketplace" => $this->penj_on_marketplace,
+                    "penj_on_no_resi" => $this->penj_on_no_resi,
+                    "penj_on_kurir" => $this->penj_on_kurir,
+                    "penj_on_last_modified" => $this->penj_on_last_modified,
+                    "id_last_modified" => $this->id_last_modified
+                );
+                updaterow($this->tbl_name,$data,$where);
+                return true; 
+            }
+        }
+        else{
+            $this->penj_on_status = "AKTIF";
+            $this->insert();
         }
         return false;
     }

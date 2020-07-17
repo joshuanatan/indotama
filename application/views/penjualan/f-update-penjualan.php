@@ -68,32 +68,44 @@ $notif_data = array(
                                                     <h5>Dateline</h5>
                                                     <input type = "date" class = "form-control" required name = "dateline" value = '<?php echo explode(" ",$detail[0]["penj_dateline_tgl"])[0];?>'>
                                                 </div>
-                                                <div class = "form-group col-lg-12">
+                                                <div class = "form-group col-lg-6">
                                                     <h5>Jenis Penjualan</h5>
                                                     <input checked type="radio" name="jenis_penjualan" value="OFFLINE" onclick = "$('#online_info_container').hide()">&nbsp;OFFLINE
                                                     &nbsp;&nbsp;
                                                     <input <?php if(strtolower($detail[0]["penj_jenis"]) == "online") echo "checked";?> type="radio" name="jenis_penjualan" value="ONLINE" onclick = "$('#online_info_container').show()">&nbsp;ONLINE
                                                 </div>
-                                                <?php if(strtolower($detail[0]["penj_jenis"]) == "online" && $online):?>
-                                                <div id = "online_info_container" class = "col-lg-6">
-                                                    <div class = "form-group">
+                                                <div class = "form-group col-lg-6" style = "display:none">
+                                                    <h5>Jenis Pembayaran</h5>
+                                                    <input checked type="radio" name="jenis_pembayaran" value="FULL PAYMENT">&nbsp;FULL PAYMENT
+                                                    &nbsp;&nbsp;
+                                                    <input type="radio" <?php if(strtoupper($detail[0]["penj_tipe_pembayaran"]) == "DP") echo 'checked';?> name="jenis_pembayaran" value="DP">&nbsp;DP
+                                                    &nbsp;&nbsp;
+                                                    <input type="radio" <?php if(strtoupper($detail[0]["penj_tipe_pembayaran"]) == "TEMPO") echo 'checked';?> name="jenis_pembayaran" value="TEMPO">&nbsp;TEMPO
+                                                    &nbsp;&nbsp;
+                                                    <input type="radio" <?php if(strtoupper($detail[0]["penj_tipe_pembayaran"]) == "KEEP") echo 'checked';?> name="jenis_pembayaran" value="KEEP">&nbsp;KEEP
+                                                </div>
+                                                <div id = "online_info_container" style = "display:none">
+                                                    <div class = "clearfix"></div>
+                                                    <div class = "form-group col-lg-6">
                                                         <h5>Marketplace</h5>
-                                                        <select id = "marketplace" class = "form-control" required name = "marketplace"></select>
+                                                        <select id = "marketplace" class = "form-control" id = "marketplace" required name = "marketplace"></select>
                                                     </div>
-                                                    <div class = "form-group">
+                                                    <div class = "clearfix"></div>
+                                                    <div class = "form-group col-lg-6">
                                                         <h5>Kurir</h5>
-                                                        <input type = "text" class = "form-control" required value = "<?php echo $online[0]["penj_on_kurir"];?>" name = "kurir">
+                                                        <input type = "text" class = "form-control" id = "kurir" required value = "" name = "kurir">
                                                     </div>
-                                                    <div class = "form-group">
+                                                    <div class = "clearfix"></div>
+                                                    <div class = "form-group col-lg-6">
                                                         <h5>No Resi</h5>
-                                                        <input type = "text" class = "form-control" required value = "<?php echo $online[0]["penj_on_no_resi"];?>" name = "no_resi">
+                                                        <input type = "text" class = "form-control" id = "no_resi" required value = "" name = "no_resi">
                                                     </div>
                                                 </div>
-                                                <?php endif;?>
                                                 <div class = "form-group col-lg-12">
                                                     <h5>Custom</h5>
                                                     <button type = "button" class = "btn btn-primary btn-sm" data-toggle = "modal" data-target = "#custom_produk_modal">Custom Produk</button>
-                                                    
+                                                </div>
+                                                <div class = "form-group col-lg-12">
                                                     <h5>Produk Custom</h5>
                                                     <table class = "table table-striped table-bordered" style = "width:50%">
                                                         <thead>
@@ -113,7 +125,7 @@ $notif_data = array(
                                                     </table>
                                                 </div>
                                                 
-                                                <div class = "form-group col-lg-8">
+                                                <div class = "form-group col-lg-12">
                                                     <h5>Item Penjualan</h5>
                                                     <table class = "table table-striped table-bordered">
                                                         <thead>
@@ -132,6 +144,7 @@ $notif_data = array(
                                                                     <input type = 'hidden' id = 'id_brg_jual_edit<?php echo $a;?>' name = 'id_brg_jual_edit<?php echo $a;?>' value = "<?php echo $item[$a]["id_pk_brg_penjualan"];?>">
                                                                     <input name = 'check_edit[]' value = "<?php echo $a;?>" type = 'hidden'>
                                                                     <input type = 'text' value = "<?php echo $item[$a]["brg_nama"];?>" list = 'datalist_barang_cabang' name = 'brg_edit<?php echo $a;?>' class = 'form-control'>
+                                                                    <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm col-lg-12' target = '_blank'>Tambah Barang Cabang</a>
                                                                 </td>
                                                                 <td><input type = 'text' value = "<?php echo $item[$a]["brg_penjualan_qty_real"]." ". $item[$a]["brg_penjualan_satuan_real"];?>" name = 'brg_qty_real_edit<?php echo $a;?>' class = 'form-control'></td>
                                                                 <td><input type = 'text' value = "<?php echo $item[$a]["brg_penjualan_qty"]." ". $item[$a]["brg_penjualan_satuan"];?>" name = 'brg_qty_edit<?php echo $a;?>' class = 'form-control'></td>
@@ -147,7 +160,7 @@ $notif_data = array(
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <div class = "form-group col-lg-8">
+                                                <div class = "form-group col-lg-12">
                                                     <h5>Tambahan Penjualan</h5>
                                                     <table class = "table table-striped table-bordered">
                                                         <thead>
@@ -180,7 +193,7 @@ $notif_data = array(
                                                             </tr>
                                                             <?php endfor;?>
                                                             <tr id = "add_tambahan_jual_but_container">
-                                                                <td colspan = 6><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_tambahan_jual_row()">Tambah Barang Penjualan</button>
+                                                                <td colspan = 6><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_tambahan_jual_row()">Tambah Tambahan Penjualan</button>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -188,17 +201,7 @@ $notif_data = array(
                                                 </div>
                                                 <div class = "form-group col-lg-12">
                                                     <h5>Total Price</h5>
-                                                    <input style = "width:50%" type = "text" class = "form-control" required readonly onclick = "count_total_price()" id = "total_price">
-                                                </div>
-                                                <div class = "form-group col-lg-12">
-                                                    <h5>Jenis Pembayaran</h5>
-                                                    <input checked type="radio" name="jenis_pembayaran" value="FULL PAYMENT">&nbsp;FULL PAYMENT
-                                                    &nbsp;&nbsp;
-                                                    <input type="radio" <?php if(strtoupper($detail[0]["penj_tipe_pembayaran"]) == "DP") echo 'checked';?> name="jenis_pembayaran" value="DP">&nbsp;DP
-                                                    &nbsp;&nbsp;
-                                                    <input type="radio" <?php if(strtoupper($detail[0]["penj_tipe_pembayaran"]) == "TEMPO") echo 'checked';?> name="jenis_pembayaran" value="TEMPO">&nbsp;TEMPO
-                                                    &nbsp;&nbsp;
-                                                    <input type="radio" <?php if(strtoupper($detail[0]["penj_tipe_pembayaran"]) == "KEEP") echo 'checked';?> name="jenis_pembayaran" value="KEEP">&nbsp;KEEP
+                                                    <input type = "text" class = "form-control" required readonly onclick = "count_total_price()" id = "total_price">
                                                 </div>
                                                 <div class = "form-group col-lg-12">
                                                     <h5>Tahapan Pembayaran</h5>
@@ -262,29 +265,110 @@ $notif_data = array(
 </html>
 
 <script>
+    
     var ctrl = "penjualan";
 
     var brg_jual_row = 0;  
     function add_brg_jual_row(){
-        var html = "<tr class = 'add_brg_jual_row'><td id = 'row"+brg_jual_row+"'><input name = 'check[]' value = "+brg_jual_row+" type = 'hidden'><input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang("+brg_jual_row+")' id = 'brg"+brg_jual_row+"' name = 'brg"+brg_jual_row+"' class = 'form-control'></td><td><input name = 'brg_qty_real"+brg_jual_row+"' type = 'text' class = 'form-control'></td><td><input name = 'brg_qty"+brg_jual_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' readonly id = 'harga_barang_jual"+brg_jual_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_price"+brg_jual_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+brg_jual_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = `
+        <tr class = 'add_brg_jual_row'>
+            <td id = 'row${brg_jual_row}'>
+                <input name = 'check[]' value = ${brg_jual_row} type = 'hidden'>
+                <input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${brg_jual_row})' id = 'brg${brg_jual_row}' name = 'brg${brg_jual_row}' class = 'form-control'>
+                <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm col-lg-12' target = '_blank'>Tambah Barang Cabang</a>
+            </td>
+            <td>
+                <input name = 'brg_qty_real${brg_jual_row}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <input name = 'brg_qty${brg_jual_row}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <input type = 'text' readonly id = 'harga_barang_jual${brg_jual_row}' class = 'form-control'>
+            </td>
+            <td>
+                <input type = 'text' name = 'brg_price${brg_jual_row}' class = 'form-control'>
+            </td>
+            <td>
+                <input type = 'text' name = 'brg_notes${brg_jual_row}' class = 'form-control'>
+            </td>
+            <td>
+                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+            </td>
+        </tr>`;
         $("#add_brg_jual_but_container").before(html);
         brg_jual_row++;    
     }
     var tambahan_jual_row = 0;
     function add_tambahan_jual_row(){
-        var html = "<tr class = 'add_tambahan_jual_row'><td><input name = 'tambahan[]' value = "+tambahan_jual_row+" type = 'hidden'><input name = 'tmbhn"+tambahan_jual_row+"' type = 'text' class = 'form-control'></td><td><input name = 'tmbhn_jumlah"+tambahan_jual_row+"' type = 'text' class = 'form-control'></td><td><input name = 'tmbhn_harga"+tambahan_jual_row+"' type = 'text' class = 'form-control'></td><td><input name = 'tmbhn_notes"+tambahan_jual_row+"' type = 'text' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = `
+        <tr class = 'add_tambahan_jual_row'>
+            <td>
+                <input name = 'tambahan[]' value = ${tambahan_jual_row} type = 'hidden'>
+                <input name = 'tmbhn${tambahan_jual_row}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <input name = 'tmbhn_jumlah${tambahan_jual_row}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <input name = 'tmbhn_harga${tambahan_jual_row}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <input name = 'tmbhn_notes${tambahan_jual_row}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+            </td>
+        </tr>`;
         $("#add_tambahan_jual_but_container").before(html);
         tambahan_jual_row++;        
     }
     var pembayaran_row = 0;  
     function add_pembayaran_row(){
-        var html = "<tr class = 'add_pembayaran_row'><td id = 'row"+pembayaran_row+"'><input name = 'pembayaran[]' value = "+pembayaran_row+" type = 'hidden'><input type = 'text' name = 'pmbyrn_nama"+pembayaran_row+"' class = 'form-control'></td><td><input name = 'pmbyrn_persen"+pembayaran_row+"' type = 'text' class = 'form-control'></td><td><input onfocus = 'count_nominal_persentase('',"+pembayaran_row+")' type = 'text' name = 'pmbyrn_nominal"+pembayaran_row+"' class = 'form-control'></td><td><input type = 'text' name = 'pmbyrn_notes"+pembayaran_row+"' class = 'form-control'></td><td><input type = 'date' name = 'pmbyrn_dateline"+pembayaran_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = `
+        <tr class = 'add_pembayaran_row'>
+            <td id = 'row${pembayaran_row}'>
+                <input name = 'pembayaran[]' value = ${pembayaran_row} type = 'hidden'>
+                <input type = 'text' name = 'pmbyrn_nama${pembayaran_row}' class = 'form-control'>
+            </td>
+            <td>
+                <input name = 'pmbyrn_persen${pembayaran_row}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <input onfocus = 'count_nominal_persentase('',${pembayaran_row})' type = 'text' name = 'pmbyrn_nominal${pembayaran_row}' class = 'form-control'>
+            </td>
+            <td>
+                <input type = 'text' name = 'pmbyrn_notes${pembayaran_row}' class = 'form-control'>
+            </td>
+            <td>
+                <input type = 'date' name = 'pmbyrn_dateline${pembayaran_row}' class = 'form-control'>
+            </td>
+            <td>
+                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+            </td>
+        </tr>`;
         $("#add_pembayaran_but_container").before(html);
         pembayaran_row++;    
     }
     var custom_produk_row = 0;  
     function add_custom_produk_row(){
-        var html = "<tr class = 'add_custom_produk_row'><td><input name = 'custom[]' value = "+custom_produk_row+" type = 'hidden'><input name = 'custom_brg_awal"+custom_produk_row+"' list = 'datalist_barang_cabang' type = 'text' class = 'form-control'></td><td><input name = 'custom_brg_akhir"+custom_produk_row+"' list = 'datalist_barang_cabang' type = 'text' class = 'form-control'></td><td><input name = 'custom_brg_qty"+custom_produk_row+"' type = 'text' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = `
+        <tr class = 'add_custom_produk_row'>
+            <td>
+                <input name = 'custom[]' value = ${custom_produk_row} type = 'hidden'>
+                <input name = 'custom_brg_awal${custom_produk_row}' list = 'datalist_barang_cabang' type = 'text' class = 'form-control'>
+                <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm' target = '_blank'>Tambah Barang Cabang</a>
+            </td>
+            <td>
+                <input name = 'custom_brg_akhir${custom_produk_row}' list = 'datalist_barang_cabang' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <input name = 'custom_brg_qty${custom_produk_row}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+            </td>
+        </tr>`;
         $("#add_custom_produk_but_container").before(html);
         custom_produk_row++;    
     }
@@ -304,7 +388,13 @@ $notif_data = array(
         load_datalist_barang_cabang();
         load_datalist_marketplace();
         $('#marketplace').html(html_option_marketplace);
+        <?php
+        if($online):?>
+        $("#online_info_container").show();
         $('#marketplace').val('<?php echo $online[0]["penj_on_marketplace"];?>');
+        $("#kurir").val('<?php echo $online[0]["penj_on_kurir"];?>');
+        $("#no_resi").val('<?php echo $online[0]["penj_on_no_resi"];?>');
+        <?php endif;?>
     }
 </script>
 <div class = "modal fade" id = "custom_produk_modal">
@@ -418,7 +508,15 @@ $notif_data = array(
                 html = "";
                 if(respond["content"]){
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr><td><input type = 'hidden' name = 'brg_custom[]' value = '"+a+"'><input type = 'hidden' name = 'id_brg_custom"+a+"' value = '"+respond["content"][a]["id_brg_pindah"]+"'>"+respond["content"][a]["nama_brg_awal"]+"</td><td>"+respond["content"][a]["nama_brg_akhir"]+"</td><td>"+respond["content"][a]["qty"]+"</td></tr>";
+                        html += `
+                        <tr>
+                            <td>
+                                <input type = 'hidden' name = 'brg_custom[]' value = '${a}'>
+                                <input type = 'hidden' name = 'id_brg_custom${a}' value = '${respond["content"][a]["id_brg_pindah"]}'>${respond["content"][a]["nama_brg_awal"]}
+                            </td>
+                            <td>${respond["content"][a]["nama_brg_akhir"]}</td>
+                            <td>${respond["content"][a]["qty"]}</td>
+                        </tr>`;
                     }
                 }
                 else{
