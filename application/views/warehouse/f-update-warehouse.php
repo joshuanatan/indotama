@@ -2,7 +2,7 @@
     <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
-                <h4 class = "modal-title">Edit Warehouse</h4>
+                <h4 class = "modal-title">Ubah Data Warehouse</h4>
             </div>
             <div class = "modal-body">
             <?php 

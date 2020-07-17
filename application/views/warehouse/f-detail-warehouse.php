@@ -2,7 +2,7 @@
     <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
-                <h4 class = "modal-title">Detail Warehouse</h4>
+                <h4 class = "modal-title">Detail Data Warehouse</h4>
             </div>
             <div class = "modal-body">
                     <input type = "hidden" name = "id"  readonly id = "d_id_edit"> 

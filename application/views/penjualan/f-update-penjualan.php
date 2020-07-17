@@ -1,7 +1,7 @@
 <?php
 $page_title = "Penjualan";
 $breadcrumb = array(
-    "Penjualan","Update Penjualan",$detail[0]["penj_nomor"]
+    "Penjualan","Ubah Penjualan",$detail[0]["penj_nomor"]
 );
 $notif_data = array(
     "page_title"=>$page_title

@@ -2,7 +2,7 @@
     <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
             <div class = "modal-header">
-                <h4 class = "modal-title">Ubah Data <?php echo ucwords($page_title);?></h4>
+                <h4 class = "modal-title">Detail Data <?php echo ucwords($page_title);?></h4>
             </div>
             <div class = "modal-body">
                     <input type = "hidden" name = "id" id = "d_id_edit">

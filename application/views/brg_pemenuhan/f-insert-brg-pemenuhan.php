@@ -2,7 +2,7 @@
     <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
-                <h4 class = "modal-title">Insert Data <?php echo ucwords($page_title);?></h4>
+                <h4 class = "modal-title">Tambah Data <?php echo ucwords($page_title);?></h4>
             </div>
             <div class = "modal-body">
             <?php 
