@@ -95,11 +95,13 @@ $data = array(
 <?php $this->load->view("_base_element/datalist_barang_jenis");?>
 <?php $this->load->view("_base_element/datalist_barang_merk");?>
 <?php $this->load->view("_base_element/datalist_barang");?>
+<?php $this->load->view("_base_element/datalist_satuan");?>
 <script>
     function load_datalist(){
         load_datalist_barang_jenis();
         load_datalist_barang_merk();
         load_datalist_barang();
+        load_datalist_satuan();
     }
 </script>
 

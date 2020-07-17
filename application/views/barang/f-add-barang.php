@@ -37,15 +37,11 @@
                     </div>
                     <div class = "form-group col-lg-6">
                         <h5>Satuan</h5>
-                        <input type = "text" class = "form-control" required name = "satuan">
+                        <input type = "text" class = "form-control" required name = "satuan" list = "datalist_satuan">
                     </div>
                     <div class = "form-group col-lg-6">
                         <h5>Harga Satuan</h5>
                         <input type = "text" class = "form-control" required name = "harga">
-                    </div>
-                    <div class = "form-group col-lg-12">
-                        <h5>Gambar</h5>
-                        <input type = "file" required name = "gambar">
                     </div>
                     <div class = "form-group">
                         <h5>Kombinasi Barang</h5>
@@ -67,6 +63,10 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class = "form-group">
+                        <h5>Gambar</h5>
+                        <input type = "file" required name = "gambar">
+                    </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
                         <button type = "button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>

@@ -44,7 +44,7 @@
                     
                     <div class = "form-group col-lg-6">
                         <h5>Satuan</h5>
-                        <input type = "text" class = "form-control" required name = "satuan" id = "satuan_edit">
+                        <input type = "text" class = "form-control" required name = "satuan" id = "satuan_edit" list = "datalist_satuan">
                     </div>
                     
                     <div class = "form-group col-lg-6">
@@ -52,11 +52,6 @@
                         <input type = "text" class = "form-control" required name = "harga" id = "harga_edit">
                     </div>
                     
-                    <div class = "form-group col-lg-12">
-                        <h5>Gambar</h5>
-                        <input type = "hidden" id = "gambar_edit" name = "gambar_current">
-                        <input type = "file" class = "form-control" required name = "gambar">
-                    </div>
                     <div class = "form-group">
                         <h5>Kombinasi Barang</h5>
                         <input type="radio" class = "kombinasi_barang_edit" name = "kombinasi_barang" value="TIDAK KOMBINASI" onclick = "$('#barang_kombinasi_container_edit').hide()">&nbsp;TIDAK KOMBINASI
@@ -78,6 +73,11 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class = "form-group col-lg-12">
+                        <h5>Gambar</h5>
+                        <input type = "hidden" id = "gambar_edit" name = "gambar_current">
+                        <input type = "file" class = "form-control" required name = "gambar">
+                    </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
                         <button type = "button" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
