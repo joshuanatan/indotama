@@ -1,5 +1,6 @@
 <datalist id = 'datalist_customer'></datalist>
 <script>
+    var button_tmbh_cepat_customer = true;
     function load_datalist_customer(){
         $.ajax({
             url:"<?php echo base_url();?>ws/customer/list",
@@ -30,6 +31,9 @@
                 }
             }
         });
-        $("[list='datalist_customer']").after(`<br/><a href = '<?php echo base_url();?>customer' target = '_blank' class = 'btn btn-primary btn-sm'>Tambah Cepat Customer</a>`);
+        if(button_tmbh_cepat_customer){
+            $("[list='datalist_customer']").after(`<br/><a href = '<?php echo base_url();?>customer' target = '_blank' class = 'btn btn-primary btn-sm'>Tambah Cepat Customer</a>`);
+            button_tmbh_cepat_customer = false;
+        }
     }
 </script>
