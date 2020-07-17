@@ -296,11 +296,24 @@ class Toko extends CI_Controller{
         if($result->num_rows() > 0){
             $result = $result->result_array();
             $response["content"][0]["id"] = $result[0]["id_pk_toko"];
-            $response["content"][0]["logo"] = $result[0]["toko_logo"];
             $response["content"][0]["nama"] = $result[0]["toko_nama"];
             $response["content"][0]["kode"] = $result[0]["toko_kode"];
+            
+            if(!file_exists(FCPATH."asset/uploads/toko/logo/".$result[0]["toko_logo"])){
+                $result[0]["toko_logo"] = "-";
+            }
+            $response["content"][0]["logo"] = $result[0]["toko_logo"];
+            if(!file_exists(FCPATH."asset/uploads/toko/kop_surat/".$result[0]["toko_kop_surat"])){
+                $result[0]["toko_kop_surat"] = "-";
+            }
             $response["content"][0]["kop_surat"] = $result[0]["toko_kop_surat"];
+            if(!file_exists(FCPATH."asset/uploads/toko/nonpkp/".$result[0]["toko_nonpkp"])){
+                $result[0]["toko_nonpkp"] = "-";
+            }
             $response["content"][0]["nonpkp"] = $result[0]["toko_nonpkp"];
+            if(!file_exists(FCPATH."asset/uploads/toko/pernyataan_rek/".$result[0]["toko_pernyataan_rek"])){
+                $result[0]["toko_pernyataan_rek"] = "-";
+            }
             $response["content"][0]["pernyataan_rek"] = $result[0]["toko_pernyataan_rek"];
         }
         else{

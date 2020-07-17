@@ -58,7 +58,7 @@ $notif_data = array(
                                                 </div>
                                                 <div class = "form-group">
                                                     <h5>Logo Toko</h5>
-                                                    <a target = "_blank" id = "logo_download" class = "btn btn-primary btn-sm">Download Logo Toko</a>
+                                                    <a target = "_blank" id = "logo_download" class = "col-lg-3 btn btn-primary btn-sm">Download Logo Toko</a>
                                                     <br/>
                                                     <br/>
                                                     <input type = "hidden" class = "form-control" name = "logo_current" id = "logo_current">
@@ -66,7 +66,7 @@ $notif_data = array(
                                                 </div>
                                                 <div class = "form-group">
                                                     <h5>Kop Surat</h5>
-                                                    <a target = "_blank" id = "kop_surat_download" class = "btn btn-primary btn-sm">Download Kop Surat</a>
+                                                    <a target = "_blank" id = "kop_surat_download" class = "col-lg-3 btn btn-primary btn-sm">Download Kop Surat</a>
                                                     <br/>
                                                     <br/>
                                                     <input type = "file" class = "form-control" name = "kop_surat">
@@ -74,7 +74,7 @@ $notif_data = array(
                                                 </div>
                                                 <div class = "form-group">
                                                     <h5>Surat Non PKP</h5>
-                                                    <a target = "_blank" id = "nonpkp_download" class = "btn btn-primary btn-sm">Download Surat Non PKP</a>
+                                                    <a target = "_blank" id = "nonpkp_download" class = "col-lg-3 btn btn-primary btn-sm">Download Surat Non PKP</a>
                                                     <br/>
                                                     <br/>
                                                     <input type = "file" class = "form-control" name = "nonpkp">
@@ -82,7 +82,7 @@ $notif_data = array(
                                                 </div>
                                                 <div class = "form-group">
                                                     <h5>Surat Pernyataan Nomor Rekening</h5>
-                                                    <a target = "_blank" id = "pernyataan_rek_download" class = "btn btn-primary btn-sm">Download Surat Pernyataan Nomor Rekening</a>
+                                                    <a target = "_blank" id = "pernyataan_rek_download" class = "col-lg-3 btn btn-primary btn-sm">Download Surat Pernyataan Nomor Rekening</a>
                                                     <br/>
                                                     <br/>
                                                     <input type = "file" class = "form-control" name = "pernyataan_rek">

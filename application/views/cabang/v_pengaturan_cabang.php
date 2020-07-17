@@ -49,6 +49,14 @@ $notif_data = array(
                                             <form id = "update_form" method = "POST">
                                                 <input type = "hidden" name = "id" id = "id_edit">
                                                 <div class = "form-group">
+                                                    <h5>Nama Cabang</h5>
+                                                    <input type = "text" class = "form-control" required name = "nama" id = "nama_edit">
+                                                </div>
+                                                <div class = "form-group">
+                                                    <h5>Kode Cabang</h5>
+                                                    <input type = "text" class = "form-control" required name = "kode" id = "kode_edit">
+                                                </div>
+                                                <div class = "form-group">
                                                     <h5>Daerah Cabang</h5>
                                                     <input type = "text" class = "form-control" required name = "daerah" id = "daerah_edit">
                                                 </div>
@@ -62,7 +70,7 @@ $notif_data = array(
                                                 </div>
                                                 <div class = "form-group">
                                                     <h5>Kop Surat</h5>
-                                                    <a target = "_blank" id = "kop_surat_download" class = "btn btn-primary btn-sm">Download Kop Surat</a>
+                                                    <a target = "_blank" id = "kop_surat_download" class = "col-lg-3 btn btn-primary btn-sm">Download Kop Surat</a>
                                                     <br/>
                                                     <br/>
                                                     <input type = "file" class = "form-control" name = "kop_surat">
@@ -70,7 +78,7 @@ $notif_data = array(
                                                 </div>
                                                 <div class = "form-group">
                                                     <h5>Surat Non PKP</h5>
-                                                    <a target = "_blank" id = "nonpkp_download" class = "btn btn-primary btn-sm">Download Surat Non PKP</a>
+                                                    <a target = "_blank" id = "nonpkp_download" class = "col-lg-3 btn btn-primary btn-sm">Download Surat Non PKP</a>
                                                     <br/>
                                                     <br/>
                                                     <input type = "file" class = "form-control" name = "nonpkp">
@@ -78,7 +86,7 @@ $notif_data = array(
                                                 </div>
                                                 <div class = "form-group">
                                                     <h5>Surat Pernyataan Nomor Rekening</h5>
-                                                    <a target = "_blank" id = "pernyataan_rek_download" class = "btn btn-primary btn-sm">Download Surat Pernyataan Nomor Rekening</a>
+                                                    <a target = "_blank" id = "pernyataan_rek_download" class = "col-lg-3 btn btn-primary btn-sm">Download Surat Pernyataan Nomor Rekening</a>
                                                     <br/>
                                                     <br/>
                                                     <input type = "file" class = "form-control" name = "pernyataan_rek">
@@ -114,6 +122,8 @@ $notif_data = array(
         success:function(respond){
             if(respond["status"].toLowerCase() == "success"){
                 $("#id_edit").val(respond["content"][0]["id"]);
+                $("#nama_edit").val(respond["content"][0]["nama"]);
+                $("#kode_edit").val(respond["content"][0]["kode"]);
                 $("#daerah_edit").val(respond["content"][0]["daerah"]);
                 $("#alamat_edit").val(respond["content"][0]["alamat"]);
                 $("#notelp_edit").val(respond["content"][0]["notelp"]);

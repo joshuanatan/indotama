@@ -278,13 +278,25 @@ class Cabang extends CI_Controller{
         if($result->num_rows() > 0){
             $result = $result->result_array();
             $response["content"][0]["id"] = $result[0]["id_pk_cabang"];
+            $response["content"][0]["nama"] = $result[0]["cabang_nama"];
+            $response["content"][0]["kode"] = $result[0]["cabang_kode"];
             $response["content"][0]["daerah"] = $result[0]["cabang_daerah"];
             $response["content"][0]["notelp"] = $result[0]["cabang_notelp"];
             $response["content"][0]["alamat"] = $result[0]["cabang_alamat"];
             $response["content"][0]["status"] = $result[0]["cabang_status"];
             $response["content"][0]["last_modified"] = $result[0]["cabang_last_modified"];
+
+            if(!file_exists(FCPATH."asset/uploads/cabang/kop_surat/".$result[0]["cabang_kop_surat"])){
+                $result[0]["cabang_kop_surat"] = "-";
+            }
             $response["content"][0]["kop_surat"] = $result[0]["cabang_kop_surat"];
+            if(!file_exists(FCPATH."asset/uploads/cabang/nonpkp/".$result[0]["cabang_nonpkp"])){
+                $result[0]["cabang_nonpkp"] = "-";
+            }
             $response["content"][0]["nonpkp"] = $result[0]["cabang_nonpkp"];
+            if(!file_exists(FCPATH."asset/uploads/cabang/pernyataan_rek/".$result[0]["cabang_pernyataan_rek"])){
+                $result[0]["cabang_pernyataan_rek"] = "-";
+            }
             $response["content"][0]["pernyataan_rek"] = $result[0]["cabang_pernyataan_rek"];
         }
         else{

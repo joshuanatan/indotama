@@ -51,15 +51,15 @@ $breadcrumb = array(
                                                     </tr>
                                                     <tr>
                                                         <td style = "height:50px">Kop Surat</td>
-                                                        <td style = "height:50px"><a target = "_blank" class = "btn btn-primary btn-sm" id = "kop_surat_download">Download</a></td>
+                                                        <td style = "height:50px" id = "kop_surat_download_container"></td>
                                                     </tr>
                                                     <tr>
                                                         <td style = "height:50px">Surat Non PKP</td>
-                                                        <td style = "height:50px"><a target = "_blank" class = "btn btn-primary btn-sm" id = "nonpkp_download">Download</a></td>
+                                                        <td style = "height:50px" id = "nonpkp_download_container"></td>
                                                     </tr>
                                                     <tr>
                                                         <td style = "height:50px">Surat Pernyataan Nomor Rekening</td>
-                                                        <td style = "height:50px"><a target = "_blank" class = "btn btn-primary btn-sm" id = "pernyataan_rek_download">Download</a></td>
+                                                        <td style = "height:50px" id = "pernyataan_rek_download_container"></td>
                                                     </tr>
                                                 </table>
                                             </div>	
@@ -67,6 +67,18 @@ $breadcrumb = array(
                                     </div>
                                 </div> 
                             </div>
+                        </div>
+                        <div class = "col-lg-6">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">Home</a></li>
+                                <?php for($a = 0; $a<count($breadcrumb); $a++):?>
+                                <?php if($a+1 != count($breadcrumb)):?>
+                                <li class="breadcrumb-item"><?php echo ucwords($breadcrumb[$a]);?></a></li>
+                                <?php else:?>
+                                <li class="breadcrumb-item active"><?php echo ucwords($breadcrumb[$a]);?></li>
+                                <?php endif;?>
+                                <?php endfor;?>
+                            </ol>
                         </div>
                     </div>
                     <div class="row" id = "widget_row"></div>
@@ -105,12 +117,35 @@ $.ajax({
     dataType:"JSON",
     success:function(respond){
         if(respond["status"].toLowerCase() == "success"){
+            var html = "";
             $("#daerah_detail").html(respond["content"][0]["daerah"]);
             $("#alamat_detail").html(respond["content"][0]["alamat"]);
             $("#notelp_detail").html(respond["content"][0]["notelp"]);
-            $("#kop_surat_download").attr("href","<?php echo base_url();?>asset/uploads/cabang/kop_surat/"+respond["content"][0]["kop_surat"]);
-            $("#nonpkp_download").attr("href","<?php echo base_url();?>asset/uploads/cabang/nonpkp/"+respond["content"][0]["nonpkp"]);
-            $("#pernyataan_rek_download").attr("href","<?php echo base_url();?>asset/uploads/cabang/pernyataan_rek/"+respond["content"][0]["pernyataan_rek"]);
+
+            if(respond["content"][0]["cabang_kop_surat"] != "-"){
+                html = `<a target = "_blank" href = "<?php echo base_url();?>asset/uploads/cabang/kop_surat/${respond["content"][0]["kop_surat"]}" class = "btn     btn-primary btn-sm col-lg-12" id = "kop_surat_download">Download</a>`;
+                $("#kop_surat_download_container").html(html);
+            }
+            else{
+                $("#kop_surat_download_container").html("No Data");
+            }
+
+            if(respond["content"][0]["cabang_nonpkp"] != "-"){
+                html = `<a target = "_blank" href = "<?php echo base_url();?>asset/uploads/cabang/nonpkp/${respond["content"][0]["nonpkp"]}" class = "btn btn-primary   btn-sm col-lg-12" id = "nonpkp_download">Download</a>`;
+                $("#nonpkp_download_container").html(html);
+            }
+            else{
+                $("#nonpkp_download_container").html("No Data");
+            }
+
+            if(respond["content"][0]["cabang_pernyataan_rek"] != "-"){
+                html = `<a target = "_blank" href = "<?php echo base_url();?>asset/uploads/cabang/pernyataan_rek/${respond["content"][0]["pernyataan_rek"]}" class = "btn   btn-primary btn-sm col-lg-12" id = "pernyataan_rek_download">Download</a>`;
+                $("#pernyataan_rek_download_container").html(html);
+            }
+            else{
+                $("#pernyataan_rek_download_container").html("No Data");
+            }
+
             $("#kop_surat_current").val(respond["content"][0]["kop_surat"]);
             $("#nonpkp_current").val(respond["content"][0]["nonpkp"]);
             $("#pernyataan_rek_current").val(respond["content"][0]["pernyataan_rek"]);

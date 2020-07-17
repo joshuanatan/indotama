@@ -46,19 +46,19 @@ $breadcrumb = array(
                                                     </tr>
                                                     <tr>
                                                         <td style = "height:50px">Logo Toko</td>
-                                                        <td id = ""><a target = "_blank" class = "btn btn-primary btn-sm" id = "logo_download">Download</a></td>
+                                                        <td id = "logo_download"></td>
                                                     </tr>
                                                     <tr>
                                                         <td style = "height:50px">Kop Surat</td>
-                                                        <td style = "height:50px"><a target = "_blank" class = "btn btn-primary btn-sm" id = "kop_surat_download">Download</a></td>
+                                                        <td style = "height:50px" id = "kop_surat_download"></td>
                                                     </tr>
                                                     <tr>
                                                         <td style = "height:50px">Surat Non PKP</td>
-                                                        <td style = "height:50px"><a target = "_blank" class = "btn btn-primary btn-sm" id = "nonpkp_download">Download</a></td>
+                                                        <td style = "height:50px" id = "nonpkp_download"></td>
                                                     </tr>
                                                     <tr>
                                                         <td style = "height:50px">Surat Pernyataan Nomor Rekening</td>
-                                                        <td style = "height:50px"><a target = "_blank" class = "btn btn-primary btn-sm" id = "pernyataan_rek_download">Download</a></td>
+                                                        <td style = "height:50px" id = "pernyataan_rek_download"></td>
                                                     </tr>
                                                 </table>
                                             </div>	
@@ -132,13 +132,50 @@ $.ajax({
     dataType:"JSON",
     success:function(respond){
         if(respond["status"].toLowerCase() == "success"){
+            var html = "";
             $("#nama_edit").html(respond["content"][0]["nama"]);
             $("#kode_edit").html(respond["content"][0]["kode"]);
 
-            $("#logo_download").attr("href","<?php echo base_url();?>asset/uploads/toko/logo/"+respond["content"][0]["logo"]);
-            $("#kop_surat_download").attr("href","<?php echo base_url();?>asset/uploads/toko/kop_surat/"+respond["content"][0]["kop_surat"]);
-            $("#nonpkp_download").attr("href","<?php echo base_url();?>asset/uploads/toko/nonpkp/"+respond["content"][0]["nonpkp"]);
-            $("#pernyataan_rek_download").attr("href","<?php echo base_url();?>asset/uploads/toko/pernyataan_rek/"+respond["content"][0]["pernyataan_rek"]);
+            if(respond["content"][0]["logo"] != "-"){
+                
+                html = `<a target = "_blank" href = "<?php echo base_url();?>asset/uploads/toko/logo/${respond["content"][0]["logo"]}" class = "col-lg-12 btn btn-primary btn-sm" >Download</a>`; 
+                $("#logo_download").html(html);
+            }
+            else{
+                
+                $("#logo_download").html("No Data");
+            }
+
+            if(respond["content"][0]["kop_surat"] != "-"){
+                
+                html = `<a target = "_blank" href = "<?php echo base_url();?>asset/uploads/toko/kop_surat/${respond["content"][0]["kop_surat"]}" class = "col-lg-12 btn btn-primary btn-sm" >Download</a>`; 
+                $("#kop_surat_download").html(html);
+            }
+            else{
+                
+                $("#kop_surat_download").html("No Data");
+            }
+
+            if(respond["content"][0]["nonpkp"] != "-"){
+                
+                html = `<a target = "_blank" href = "<?php echo base_url();?>asset/uploads/toko/nonpkp/${respond["content"][0]["nonpkp"]}" class = "col-lg-12 btn btn-primary btn-sm" >Download</a>`; 
+                $("#nonpkp_download").html(html);
+            }
+            else{
+                
+                $("#nonpkp_download").html("No Data");
+            }
+
+            if(respond["content"][0]["pernyataan_rek"] != "-"){
+                
+                html = `<a target = "_blank" href = "<?php echo base_url();?>asset/uploads/toko/pernyataan_rek/${respond["content"][0]["pernyataan_rek"]}" class = "col-lg-12 btn btn-primary btn-sm" >Download</a>`; 
+                $("#pernyataan_rek_download").html(html);
+            }
+            else{
+                
+                $("#pernyataan_rek_download").html("No Data");
+            }
+
         }
     }
 });
