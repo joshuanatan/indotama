@@ -1,6 +1,7 @@
 
 <datalist id = 'datalist_barang_cabang'></datalist>
 <script>
+    var button_tmbh_cepat_barang_cabang = true;
     var url_add = "id_cabang=<?php echo $this->session->id_cabang;?>";
     var datalist_barang_cabang;
     function load_datalist_barang_cabang(){
@@ -21,5 +22,10 @@
                 }
             }
         });
+        
+        if(button_tmbh_cepat_barang_cabang){
+            $("[list='datalist_barang_cabang']").after(`<br/><a href = '<?php echo base_url();?>toko/brg_cabang' target = '_blank'>Tambah Cepat Barang Cabang</a>`);
+            button_tmbh_cepat_barang_cabang = false;
+        }
     }
 </script>

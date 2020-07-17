@@ -76,13 +76,49 @@
 <script>
     var brg_beli_row = 0;  
     function add_brg_beli_row(){
-        var html = "<tr class = 'add_brg_beli_row'><td id = 'row"+brg_beli_row+"'><input name = 'check[]' value = "+brg_beli_row+" type = 'hidden'><input onchange = 'load_harga_akhir("+brg_beli_row+")' type = 'text' list = 'datalist_barang_cabang' name = 'brg"+brg_beli_row+"' class = 'form-control' id = 'brg"+brg_beli_row+"'></td><td><input name = 'brg_qty"+brg_beli_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' id = 'brg_price"+brg_beli_row+"' name = 'brg_price"+brg_beli_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+brg_beli_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = `
+        <tr class = 'add_brg_beli_row'>
+            <td id = 'row${brg_beli_row}'>
+                <input name = 'check[]' value = ${brg_beli_row} type = 'hidden'><input onchange = 'load_harga_akhir(${brg_beli_row})' type = 'text' list = 'datalist_barang_cabang' name = 'brg${brg_beli_row}' class = 'form-control' id = 'brg${brg_beli_row}'>
+                <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm' target = '_blank'>Tambah Barang Cabang</a>
+            </td>
+            <td>
+                <input name = 'brg_qty${brg_beli_row}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <input type = 'text' id = 'brg_price${brg_beli_row}' name = 'brg_price${brg_beli_row}' class = 'form-control'>
+            </td>
+            <td>
+                <input type = 'text' name = 'brg_notes${brg_beli_row}' class = 'form-control'>
+            </td>
+            <td>
+                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+            </td>
+        </tr>`;
         $("#add_brg_beli_but_container").before(html);
         brg_beli_row++;    
     }
     var tambahan_beli_row = 0;
     function add_tambahan_beli_row(){
-        var html = "<tr class = 'add_tambahan_beli_row'><td><input name = 'tambahan[]' value = "+tambahan_beli_row+" type = 'hidden'><input name = 'tmbhn"+tambahan_beli_row+"' type = 'text' class = 'form-control'></td><td><input name = 'tmbhn_jumlah"+tambahan_beli_row+"' type = 'text' class = 'form-control'></td><td><input name = 'tmbhn_harga"+tambahan_beli_row+"' type = 'text' class = 'form-control'></td><td><input name = 'tmbhn_notes"+tambahan_beli_row+"' type = 'text' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = `
+        <tr class = 'add_tambahan_beli_row'>
+            <td>
+                <input name = 'tambahan[]' value = ${tambahan_beli_row} type = 'hidden'>
+                <input name = 'tmbhn${tambahan_beli_row}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <input name = 'tmbhn_jumlah${tambahan_beli_row}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <input name = 'tmbhn_harga${tambahan_beli_row}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <input name = 'tmbhn_notes${tambahan_beli_row}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+            </td>
+        </tr>`;
         $("#add_tambahan_beli_but_container").before(html);
         tambahan_beli_row++;        
     }
