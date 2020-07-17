@@ -13,6 +13,8 @@ class M_retur extends CI_Model{
     private $retur_status;
     private $retur_create_date;
     private $retur_last_modified;
+    private $retur_confirm_date;
+    private $id_retur_confirm;
     private $id_create_data;
     private $id_last_modified;
     private $no_control;
@@ -26,8 +28,12 @@ class M_retur extends CI_Model{
         $this->set_column("retur_tipe","Tipe Retur",false);
         $this->set_column("retur_status","Status",false);
         $this->set_column("retur_last_modified","Last Modified",false);
+        $this->set_column("retur_confirm_date","Tanggal Konfirmasi",false);
+        $this->set_column("user_konfirmasi","User Konfirmasi",false);
         $this->retur_create_date = date("y-m-d h:i:s");
         $this->retur_last_modified = date("y-m-d h:i:s");
+        $this->retur_confirm_date = date("y-m-d h:i:s");
+        $this->id_retur_confirm = $this->session->id_user;
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
         $this->bln_control = date("m");
@@ -45,6 +51,8 @@ class M_retur extends CI_Model{
             retur_status varchar(15),
             retur_create_date datetime,
             retur_last_modified datetime,
+            retur_confirm_date datetime,
+            id_retur_confirm int,
             id_create_data int,
             id_last_modified int,
             no_control int comment 'untuk tau udah nomor berapa untuk penomoran',
@@ -63,6 +71,8 @@ class M_retur extends CI_Model{
             retur_status varchar(15),
             retur_create_date datetime,
             retur_last_modified datetime,
+            retur_confirm_date datetime,
+            id_retur_confirm int,
             id_create_data int,
             id_last_modified int,
             id_log_all int
@@ -78,7 +88,7 @@ class M_retur extends CI_Model{
             set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.retur_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_retur_log(executed_function,id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_tipe,retur_status,retur_create_date,retur_last_modified,id_create_data,id_last_modified,id_log_all) values('after insert',new.id_pk_retur,new.id_fk_penjualan,new.retur_no,new.retur_tgl,new.retur_tipe,new.retur_status,new.retur_create_date,new.retur_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_retur_log(executed_function,id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_tipe,retur_status,retur_create_date,retur_last_modified,retur_confirm_date,id_retur_confirm,id_create_data,id_last_modified,id_log_all) values('after insert',new.id_pk_retur,new.id_fk_penjualan,new.retur_no,new.retur_tgl,new.retur_tipe,new.retur_status,new.retur_create_date,new.retur_last_modified,new.retur_confirm_date,new.id_retur_confirm,new.id_create_data,new.id_last_modified,@id_log_all);
 
         end$$
         delimiter ;
@@ -94,7 +104,7 @@ class M_retur extends CI_Model{
             set @log_text = concat(new.id_last_modified,' ','update data at ' , new.retur_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_retur_log(executed_function,id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_tipe,retur_status,retur_create_date,retur_last_modified,id_create_data,id_last_modified,id_log_all) values('after update',new.id_pk_retur,new.id_fk_penjualan,new.retur_no,new.retur_tgl,new.retur_tipe,new.retur_status,new.retur_create_date,new.retur_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_retur_log(executed_function,id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_tipe,retur_status,retur_create_date,retur_last_modified,retur_confirm_date,id_retur_confirm,id_create_data,id_last_modified,id_log_all) values('after update',new.id_pk_retur,new.id_fk_penjualan,new.retur_no,new.retur_tgl,new.retur_tipe,new.retur_status,new.retur_create_date,new.retur_last_modified,new.retur_confirm_date,new.id_retur_confirm,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         ";
@@ -117,13 +127,16 @@ class M_retur extends CI_Model{
                 retur_no like '%".$search_key."%' or
                 retur_tgl like '%".$search_key."%' or
                 retur_status like '%".$search_key."%' or
+                retur_confirm_date like '%".$search_key."%' or
+                user_konfirmasi like '%".$search_key."%' or
                 retur_tipe like '%".$search_key."%'
             )";
         }
         $query = "
-        select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified,penj_nomor
+        select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified,penj_nomor,ifnull(retur_confirm_date,'-') as retur_confirm_date,ifnull(user_name,'-') as user_konfirmasi
         from ".$this->tbl_name." 
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = ".$this->tbl_name.".id_fk_penjualan
+        left join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_retur_confirm
         where retur_status != ? ".$search_query."  
         order by ".$order_by." ".$order_direction." 
         limit 20 offset ".($page-1)*$data_per_page;
@@ -135,6 +148,8 @@ class M_retur extends CI_Model{
         $query = "
         select id_pk_retur
         from ".$this->tbl_name." 
+        inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = ".$this->tbl_name.".id_fk_penjualan
+        left join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_retur_confirm
         where retur_status != ? ".$search_query."  
         order by ".$order_by." ".$order_direction;
         $result["total_data"] = executequery($query,$args)->num_rows();
@@ -149,6 +164,8 @@ class M_retur extends CI_Model{
                 retur_no like '%".$search_key."%' or
                 retur_tgl like '%".$search_key."%' or
                 retur_status like '%".$search_key."%' or
+                retur_confirm_date like '%".$search_key."%' or
+                user_konfirmasi like '%".$search_key."%' or
                 retur_tipe like '%".$search_key."%'
             )";
         }
@@ -167,6 +184,7 @@ class M_retur extends CI_Model{
         $query = "
         select id_pk_retur
         from ".$this->tbl_name." 
+        inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = ".$this->tbl_name.".id_fk_penjualan
         where retur_status = ? ".$search_query."  
         order by ".$order_by." ".$order_direction;
         $result["total_data"] = executequery($query,$args)->num_rows();
@@ -174,10 +192,11 @@ class M_retur extends CI_Model{
     }
     public function detail_by_no(){
         $sql = "
-        select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified, penj_nomor, penj_tgl, penj_dateline_tgl, id_fk_customer,id_fk_cabang,cust_name,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat
+        select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified, penj_nomor, penj_tgl, penj_dateline_tgl, id_fk_customer,id_fk_cabang,cust_name,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,ifnull(retur_confirm_date,'-') as retur_confirm_date,ifnull(user_name,'-') as user_konfirmasi
         from mstr_retur
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
         inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        left join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_retur_confirm
         where retur_status = ? and retur_no = ?
         ";
         $args = array(
@@ -187,9 +206,10 @@ class M_retur extends CI_Model{
     }
     public function list($id_fk_cabang){
         $sql = "
-        select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified, penj_nomor, penj_tgl, penj_dateline_tgl, id_fk_customer,id_fk_cabang
+        select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified, penj_nomor, penj_tgl, penj_dateline_tgl, id_fk_customer,id_fk_cabang,ifnull(retur_confirm_date,'-') as retur_confirm_date,ifnull(user_name,'-') as user_konfirmasi
         from mstr_retur
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
+        left join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_retur_confirm
         where retur_status = ? and id_fk_cabang = ?
         ";
         $args = array(
@@ -200,9 +220,10 @@ class M_retur extends CI_Model{
     public function list_retur_pengiriman($id_fk_cabang){
         #list retur yang bisa tipenya barang / yang bisa masuk pengiriman
         $sql = "
-        select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified, penj_nomor, penj_tgl, penj_dateline_tgl, id_fk_customer,id_fk_cabang
+        select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified, penj_nomor, penj_tgl, penj_dateline_tgl, id_fk_customer,id_fk_cabang,ifnull(retur_confirm_date,'-') as retur_confirm_date,ifnull(user_name,'-') as user_konfirmasi
         from mstr_retur
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
+        left join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_retur_confirm
         where retur_status = ? and id_fk_cabang = ? and retur_tipe = 'barang'
         ";
         $args = array(
@@ -223,8 +244,8 @@ class M_retur extends CI_Model{
                 "retur_status" => $this->retur_status,
                 "retur_create_date" => $this->retur_create_date,
                 "retur_last_modified" => $this->retur_last_modified,
-                "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified,
+                "retur_confirm_date" => $this->retur_confirm_date,
+                "id_retur_confirm" => $this->id_retur_confirm,
                 "no_control" => $this->no_control,
                 "bln_control" => $this->bln_control,
                 "thn_control" => $this->thn_control
@@ -256,6 +277,17 @@ class M_retur extends CI_Model{
         );
         $data = array(
             "retur_status" => $this->retur_status
+        );
+        updateRow($this->tbl_name,$data,$where);
+        return true;
+    }
+    public function konfirmasi(){
+        $where = array(
+            "id_pk_retur" => $this->id_pk_retur
+        );
+        $data = array(
+            "retur_confirm_date" => $this->retur_confirm_date,
+            "id_retur_confirm" => $this->id_retur_confirm,
         );
         updateRow($this->tbl_name,$data,$where);
         return true;

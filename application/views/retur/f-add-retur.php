@@ -16,20 +16,26 @@
                     <div class = "form-group">
                         <input type = "checkbox" id = "penomoran_otomatis_cb" name = "generate_pem_no[]" value = 1 checked onclick = "toggle_nomor_retur()"> Gunakan Penomoran Otomatis
                     </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Nomor Retur</h5>
                         <input id = "nomor" readonly value = "-" type = "text" class = "form-control" required id = "no_retur" name = "no_retur">
                     </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Nomor Penjualan</h5>
                         <input type = "text" class = "form-control" list = "datalist_penjualan" required id = "no_penjualan" name = "no_penjualan">
                     </div>
-                    <div class = "form-group">
-                        <button type = "button" class = "btn btn-primary btn-sm" style = "width:20%" onclick = "load_detail_penjualan()">Load Data Barang</button>
-                    </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Tanggal Retur</h5>
                         <input type = "date" class = "form-control" required name = "tgl_retur">
+                    </div>
+                    <div class = "form-group col-lg-6">
+                        <h5>Opsi Pengembalian</h5>
+                        <input type="radio" name = "tipe_retur" checked value="UANG" onclick = "$('#barang_kembali_container').hide()">&nbsp;UANG
+                        &nbsp;&nbsp;
+                        <input type="radio" name = "tipe_retur" value="BARANG" onclick = "$('#barang_kembali_container').show()">&nbsp;BARANG
+                    </div>
+                    <div class = "form-group col-lg-12">
+                        <button type = "button" class = "btn btn-primary btn-sm" style = "width:20%" onclick = "load_detail_penjualan()">Load Data Barang</button>
                     </div>
                     <div class = "form-group">
                         <h5>Barang Retur</h5>
@@ -48,12 +54,6 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-                    <div class = "form-group">
-                        <h5>Opsi Pengembalian</h5>
-                        <input type="radio" name = "tipe_retur" checked value="UANG" onclick = "$('#barang_kembali_container').hide()">&nbsp;UANG
-                        &nbsp;&nbsp;
-                        <input type="radio" name = "tipe_retur" value="BARANG" onclick = "$('#barang_kembali_container').show()">&nbsp;BARANG
                     </div>
                     <div class = "form-group" id = "barang_kembali_container" style = "display:none">
                         <h5>Barang Kembali</h5>

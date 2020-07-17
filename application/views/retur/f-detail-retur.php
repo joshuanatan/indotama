@@ -7,18 +7,25 @@
             </div>
             <div class = "modal-body">
                 <input type = 'hidden' name = 'id' id = "d_id_edit">
-                <div class = "form-group">
+                <div class = "form-group col-lg-6">
                     <h5>Nomor Retur</h5>
                     <input readonly type = "text" class = "form-control" list = "datalist_penjualan" required id = "d_no_retur_edit" name = "no_retur">
                 </div>
-                <div class = "form-group">
+                <div class = "form-group col-lg-6">
                     <h5>Nomor Penjualan</h5>
                     <input readonly type = "text" class = "form-control" readonly required id = "d_no_penjualan_edit">
                 </div>
-                <div class = "form-group">
+                <div class = "form-group col-lg-6">
                     <h5>Tanggal Retur</h5>
                     <input readonly type = "date" class = "form-control" required id = "d_tgl_retur_edit" name = "tgl_retur">
                 </div>
+                <div class = "form-group col-lg-6">
+                    <h5>Opsi Pengembalian</h5>
+                    <input type="radio" disabled class = "d_tipe_retur_edit" name = "tipe_retur" checked value="UANG">&nbsp;UANG
+                    &nbsp;&nbsp;
+                    <input type="radio" disabled class = "d_tipe_retur_edit" name = "tipe_retur" value="BARANG">&nbsp;BARANG
+                </div>
+                <div class = "clearfix"></div>
                 <div class = "form-group">
                     <h5>Barang Retur</h5>
                     <table class = "table table-striped table-bordered">
@@ -33,12 +40,6 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                <div class = "form-group">
-                    <h5>Opsi Pengembalian</h5>
-                    <input type="radio" class = "tipe_retur_edit" name = "tipe_retur" checked value="UANG" onclick = "$('#barang_kembali_container_edit').hide()">&nbsp;UANG
-                    &nbsp;&nbsp;
-                    <input type="radio" class = "tipe_retur_edit" name = "tipe_retur" value="BARANG" onclick = "$('#barang_kembali_container_edit').show()">&nbsp;BARANG
                 </div>
                 <div class = "form-group" id = "d_barang_kembali_container_edit" style = "display:none">
                     <h5>Barang Kembali</h5>

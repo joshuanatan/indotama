@@ -13,18 +13,25 @@
             $this->load->view('_notification/update_error',$notif_data); ?>
                 <form id = "update_form" method = "POST">
                     <input type = 'hidden' name = 'id' id = "id_edit">
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Nomor Retur</h5>
                         <input type = "text" class = "form-control" list = "datalist_penjualan" required id = "no_retur_edit" name = "no_retur">
                     </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Nomor Penjualan</h5>
                         <input type = "text" class = "form-control" readonly required id = "no_penjualan_edit">
                     </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Tanggal Retur</h5>
                         <input type = "date" class = "form-control" required id = "tgl_retur_edit" name = "tgl_retur">
                     </div>
+                    <div class = "form-group col-lg-6">
+                        <h5>Opsi Pengembalian</h5>
+                        <input type="radio" class = "tipe_retur_edit" name = "tipe_retur" checked value="UANG" onclick = "$('#barang_kembali_container_edit').hide()">&nbsp;UANG
+                        &nbsp;&nbsp;
+                        <input type="radio" class = "tipe_retur_edit" name = "tipe_retur" value="BARANG" onclick = "$('#barang_kembali_container_edit').show()">&nbsp;BARANG
+                    </div>
+                    <div class = "clearfix"></div>
                     <div class = "form-group">
                         <h5>Barang Retur</h5>
                         <table class = "table table-striped table-bordered">
@@ -42,12 +49,6 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-                    <div class = "form-group">
-                        <h5>Opsi Pengembalian</h5>
-                        <input type="radio" class = "tipe_retur_edit" name = "tipe_retur" checked value="UANG" onclick = "$('#barang_kembali_container_edit').hide()">&nbsp;UANG
-                        &nbsp;&nbsp;
-                        <input type="radio" class = "tipe_retur_edit" name = "tipe_retur" value="BARANG" onclick = "$('#barang_kembali_container_edit').show()">&nbsp;BARANG
                     </div>
                     <div class = "form-group" id = "barang_kembali_container_edit" style = "display:none">
                         <h5>Barang Kembali</h5>

@@ -42,6 +42,8 @@ class Retur extends CI_Controller{
                 $response["content"][$a]["create_date"] = $result["data"][$a]["retur_create_date"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["retur_last_modified"];
                 $response["content"][$a]["nomor_penj"] = $result["data"][$a]["penj_nomor"];
+                $response["content"][$a]["confirm_date"] = $result["data"][$a]["retur_confirm_date"];
+                $response["content"][$a]["konfirmasi_user"] = $result["data"][$a]["user_konfirmasi"];
             }
         }
         else{
@@ -54,6 +56,8 @@ class Retur extends CI_Controller{
             "tipe",
             "status",
             "last_modified",
+            "confirm_date",
+            "konfirmasi_user",
         );
         echo json_encode($response);
     }
@@ -81,6 +85,8 @@ class Retur extends CI_Controller{
                 $response["content"][$a]["create_date"] = $result["data"][$a]["retur_create_date"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["retur_last_modified"];
                 $response["content"][$a]["nomor_penj"] = $result["data"][$a]["penj_nomor"];
+                $response["content"][$a]["confirm_date"] = '-';
+                $response["content"][$a]["konfirmasi_user"] = '-';
             }
         }
         else{
@@ -93,6 +99,8 @@ class Retur extends CI_Controller{
             "tipe",
             "status",
             "last_modified",
+            "confirm_date",
+            "konfirmasi_user",
         );
         echo json_encode($response);
     }
@@ -615,6 +623,7 @@ class Retur extends CI_Controller{
         $this->m_retur->set_id_pk_retur($id_retur);
         $this->m_retur->set_retur_status($status);
         if($this->m_retur->update_status()){
+            $this->m_retur->konfirmasi();
             $response["msg"] = "Data retur dikonfirmasi";
         }
         else{
