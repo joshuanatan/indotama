@@ -29,10 +29,11 @@ class Menu extends CI_Controller{
 			if($result["data"]->num_rows() > 1){
 				$this->session->multiple_warehouse_access = true;
             }
-            /*biar langsung defaultnya kepilih*/
-            $result = $result["data"]->result_array();
-            $this->session->id_warehouse = $result[0]["id_pk_warehouse"];
-            $this->session->nama_warehouse = $result[0]["warehouse_nama"];
+            else{
+				$result = $result["data"]->result_array();
+				$this->session->id_warehouse = $result[0]["id_pk_warehouse"];
+				$this->session->nama_warehouse = $result[0]["warehouse_nama"];
+			}
 		}
 
 		$this->load->model("m_toko_admin");
@@ -43,10 +44,12 @@ class Menu extends CI_Controller{
 			if($result["data"]->num_rows() > 1){
 				$this->session->multiple_toko_access = true;
             }
-            /*biar langsung defaultnya kepilih*/
-            $result = $result["data"]->result_array();
-            $this->session->id_toko = $result[0]["id_pk_toko"];
-            $this->session->nama_toko = $result[0]["toko_nama"];
+			else{
+				$result = $result["data"]->result_array();
+				$this->session->id_cabang = $result[0]["id_pk_cabang"];
+                $this->session->daerah_cabang = $result[0]["cabang_daerah"];
+                $this->session->nama_toko_cabang = $result[0]["toko_nama"];
+			}
 		}
 		
 		$this->load->model("m_cabang_admin");
@@ -58,10 +61,12 @@ class Menu extends CI_Controller{
 				$this->session->multiple_cabang_access = true;
             }
             /*biar langsung defaultnya kepilih*/
-            $result = $result["data"]->result_array();
-            $this->session->id_cabang = $result[0]["id_pk_cabang"];
-            $this->session->daerah_cabang = $result[0]["cabang_daerah"];
-            $this->session->nama_toko_cabang = $result[0]["toko_nama"];
+            if($this->session->id_cabang == ""){
+                $result = $result["data"]->result_array();
+                $this->session->id_cabang = $result[0]["id_pk_cabang"];
+                $this->session->daerah_cabang = $result[0]["cabang_daerah"];
+                $this->session->nama_toko_cabang = $result[0]["toko_nama"];
+            }
         }
         /*ini untuk tampilin di bawah profile*/
         $this->session->disp_nama_toko_cabang = $this->session->nama_toko." ".$this->session->daerah_cabang;

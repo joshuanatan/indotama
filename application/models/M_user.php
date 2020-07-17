@@ -265,17 +265,27 @@ class m_user extends ci_model{
     }
     public function login(){
         if($this->check_login()){
-            $where = array(
-                "user_name" => $this->user_name,
-                "user_status" => "AKTIF",
-                "user_pass" => $this->user_pass
+            $sql = "
+            select 
+            id_pk_user,user_name,user_email,id_fk_role,user_status,id_fk_employee,emp_gender,ifnull(emp_foto,'-') as emp_foto
+            from mstr_user
+            inner join mstr_employee on mstr_employee.id_pk_employee = mstr_user.id_fk_employee
+            where user_name = ? and user_status = ? and user_pass = ?
+            ";
+            $args = array(
+                $this->user_name,"AKTIF",$this->user_pass
             );
-            $field = array(
-                "id_pk_user","user_name","user_email","id_fk_role","user_status","id_fk_employee"
-            );
-            $result = selectrow($this->tbl_name,$where,$field);
+            $result = executeQuery($sql,$args);
             if($result->num_rows() > 0){
                 $result = $result->result_array();
+                if($result[0]["emp_foto"] == "-"){
+                    if(strtolower($result[0]["emp_gender"]) == "pria" || !$result[0]["emp_gender"]){
+                        $result[0]["emp_foto"] = "default_male.jpg";
+                    }
+                    else if(strtolower($result[0]["emp_gender"]) == "wanita"){
+                        $result[0]["emp_foto"] = "default_female.jpg";
+                    }
+                }
                 $data = array(
                     "id" => $result[0]["id_pk_user"],
                     "name" => $result[0]["user_name"],
@@ -283,6 +293,7 @@ class m_user extends ci_model{
                     "role" => $result[0]["id_fk_role"],
                     "status" => $result[0]["user_status"],
                     "id_employee" => $result[0]["id_fk_employee"],
+                    "foto" => $result[0]["emp_foto"],
                 );
                 return $data;
             }

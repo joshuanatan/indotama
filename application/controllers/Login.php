@@ -15,7 +15,6 @@ class Login extends CI_Controller {
 	}
 	public function login_method()
 	{
-        
 		$response["status"] = "SUCCESS";
 		$user_name = $this->input->post("user_name");
 		$user_pass = md5($this->input->post("user_pass"));
@@ -30,7 +29,8 @@ class Login extends CI_Controller {
 					"user_name"=>$data['name'],
 					"user_email"=>$data['email'],
 					"role"=>$data['role'],
-					"user_status"=>$data['status']
+					"user_status"=>$data['status'],
+					"foto"=>$data['foto']
 				);
 				$this->session->set_userdata($user_data);
 				redirect(md5("Dashboard"));
