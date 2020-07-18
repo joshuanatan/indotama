@@ -6,11 +6,11 @@
             </div>
             <div class = "modal-body">
                     <input type = "hidden" name = "id" id = "d_id_edit">
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Nomor Pembelian</h5>
                         <input type = "text" class = "form-control" required name = "nomor" disabled id = "d_nomor_edit">
                     </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Tanggal Pembelian</h5>
                         <input type = "date" class = "form-control" required name = "tgl" disabled id = "d_tgl_edit">
                     </div>

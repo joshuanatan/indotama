@@ -16,11 +16,11 @@
                     <div class = "form-group">
                         <input type = "checkbox" id = "penomoran_otomatis_cb" name = "generate_pem_no[]" value = 1 checked onclick = "toggle_nomor_pembelian()"> Gunakan Penomoran Otomatis
                     </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Nomor Pembelian</h5>
                         <input type = "text" id = "nomor" class = "form-control" required name = "nomor" readonly value = "-">
                     </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Tanggal Pembelian</h5>
                         <input type = "date" class = "form-control" required name = "tgl">
                     </div>
