@@ -88,22 +88,14 @@ class M_penjualan_online extends ci_model{
     }
     public function detail(){
         $sql = "
-        select id_pk_penjualan_online,penj_on_marketplace,penj_on_no_resi,penj_on_kurir,penj_on_status 
+        select id_pk_penjualan_online,marketplace_nama as penj_on_marketplace,penj_on_no_resi,penj_on_kurir,penj_on_status 
         from ".$this->tbl_name."
         inner join mstr_marketplace on mstr_marketplace.id_pk_marketplace = ".$this->tbl_name.".penj_on_marketplace
-        where id_fk_penjualan = ".$this->id_fk_penjualan."
-        ";
-        $field = array(
-            "id_pk_penjualan_online",
-            "penj_on_marketplace",
-            "penj_on_no_resi",
-            "penj_on_kurir",
-            "penj_on_status"
+        where id_fk_penjualan = ?";
+        $args = array(
+            $this->id_fk_penjualan
         );
-        $where = array(
-            "id_fk_penjualan" => $this->id_fk_penjualan
-        );
-        return selectRow($this->tbl_name,$where,$field);
+        return executeQuery($sql,$args);
     }
     public function insert(){
         if($this->check_insert()){

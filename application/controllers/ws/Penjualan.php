@@ -28,8 +28,12 @@ class Penjualan extends CI_Controller{
         $search_key = $this->input->get("searchKey");
         $data_per_page = 20;
         $id_cabang = $this->input->get("id_cabang");
+        $tipe_pembayaran = $this->input->get("tipe_pemb");
+
         $this->load->model("m_penjualan");
         $this->m_penjualan->set_id_fk_cabang($id_cabang);
+        $this->m_penjualan->set_penj_tipe_pembayaran($tipe_pembayaran);
+
         $result = $this->m_penjualan->content($page,$order_by,$order_direction,$search_key,$data_per_page);
 
         if($result["data"]->num_rows() > 0){
@@ -45,6 +49,7 @@ class Penjualan extends CI_Controller{
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["penj_last_modified"];
                 $response["content"][$a]["name_cust"] = $result["data"][$a]["cust_name"];
                 $response["content"][$a]["perusahaan_cust"] = $result["data"][$a]["cust_perusahaan"];
+                $response["content"][$a]["user_last_modified"] = $result["data"][$a]["user_last_modified"];
                 $response["content"][$a]["cust_display"] = $result["data"][$a]["cust_perusahaan"]." - ".$result["data"][$a]["cust_name"];
             }
         }
@@ -55,12 +60,11 @@ class Penjualan extends CI_Controller{
         $response["key"] = array(
             "nomor",
             "tgl",
-            "dateline_tgl",
-            "jenis",
-            "tipe_pembayaran",
             "cust_display",
+            "tipe_pembayaran",
+            "jenis",
             "status",
-            "last_modified",
+            "user_last_modified",
         );
         echo json_encode($response);
     }
@@ -80,6 +84,7 @@ class Penjualan extends CI_Controller{
                     $response["content"][$a]["qty_mu"] = $result[$a]["brg_penjualan_qty"];
                     $response["content"][$a]["satuan_mu"] = $result[$a]["brg_penjualan_satuan"];
                     $response["content"][$a]["harga"] = $result[$a]["brg_penjualan_harga"];
+                    $response["content"][$a]["harga_stok"] = $result[$a]["brg_harga"];
                     $response["content"][$a]["note"] = $result[$a]["brg_penjualan_note"];
                     $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
                     $response["content"][$a]["last_modified"] = $result[$a]["brg_penjualan_last_modified"];
@@ -125,6 +130,74 @@ class Penjualan extends CI_Controller{
         else{
             $response["status"] = "ERROR";
             $response["msg"] = "Invalid ID";
+        }
+        echo json_encode($response);
+    }
+    public function penjualan_online(){
+        
+        $response["status"] = "SUCCESS";
+        $id_penjualan = $this->input->get("id");
+        $this->load->model("m_penjualan_online");
+        $this->m_penjualan_online->set_id_fk_penjualan($id_penjualan);
+        $result = $this->m_penjualan_online->detail();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_penjualan_online"];
+                $response["content"][$a]["marketplace"] = $result[$a]["penj_on_marketplace"];
+                $response["content"][$a]["no_resi"] = $result[$a]["penj_on_no_resi"];
+                $response["content"][$a]["kurir"] = $result[$a]["penj_on_kurir"];
+                $response["content"][$a]["status"] = $result[$a]["penj_on_status"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+        }
+        echo json_encode($response);
+    }
+    public function brg_pindah_penjualan(){
+        $response["status"] = "SUCCESS";
+        $id_penjualan = $this->input->get("id");
+        $this->load->model("m_brg_pindah");
+        $this->m_brg_pindah->set_id_fk_refrensi_sumber($id_penjualan);
+        $this->m_brg_pindah->set_brg_pindah_sumber("penjualan");
+        $result = $this->m_brg_pindah->list();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_brg_pindah"];
+                $response["content"][$a]["brg_pindah_qty"] = $result[$a]["brg_pindah_qty"];
+                $response["content"][$a]["brg_pindah_status"] = $result[$a]["brg_pindah_status"];
+                $response["content"][$a]["brg_awal"] = $result[$a]["brg_awal"];
+                $response["content"][$a]["brg_akhir"] = $result[$a]["brg_akhir"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+        }
+        echo json_encode($response);
+    }
+    public function pembayaran_penjualan(){
+        $response["status"] = "SUCCESS";
+        $id_penjualan = $this->input->get("id");
+        $this->load->model("m_penjualan_pembayaran");
+        $this->m_penjualan_pembayaran->set_id_fk_penjualan($id_penjualan);
+        $result = $this->m_penjualan_pembayaran->list();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_penjualan_pembayaran"];
+                $response["content"][$a]["nama"] = $result[$a]["penjualan_pmbyrn_nama"];
+                $response["content"][$a]["persen"] = $result[$a]["penjualan_pmbyrn_persen"];
+                $response["content"][$a]["nominal"] = $result[$a]["penjualan_pmbyrn_nominal"];
+                $response["content"][$a]["notes"] = $result[$a]["penjualan_pmbyrn_notes"];
+                $response["content"][$a]["dateline"] = $result[$a]["penjualan_pmbyrn_dateline"];
+                $response["content"][$a]["status"] = $result[$a]["penjualan_pmbyrn_status"];
+                $response["content"][$a]["last_modified"] = $result[$a]["penjualan_pmbyrn_last_modified"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
         }
         echo json_encode($response);
     }
