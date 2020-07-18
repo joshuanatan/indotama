@@ -6,11 +6,11 @@
             </div>
             <div class = "modal-body">
                     <input type = "hidden" name = "id" id = "d_id_edit">
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Nomor Pembelian</h5>
                         <input readonly type = "text" class = "form-control" list = "list_pembelian" required id = "d_no_pembelian_edit">
                     </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Tanggal Penerimaan</h5>
                         <input readonly type = "date" class = "form-control" required name = "tgl_penerimaan" id = "d_tgl_penerimaan_edit">
                     </div>

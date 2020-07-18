@@ -16,16 +16,16 @@
                     <input type = 'hidden' name = 'tempat' value = '<?php echo $type;?>'>
                     <input type = 'hidden' name = 'tipe_penerimaan' value = 'retur'>
                     <input type = 'hidden' name = 'id_tempat_penerimaan' value = '<?php echo $id_tempat_penerimaan;?>'>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Nomor Retur</h5>
                         <input type = "text" class = "form-control" list = "datalist_retur" required id = "no_retur">
                     </div>
-                    <div class = "form-group">
-                        <button type = "button" class = "btn btn-primary btn-sm" style = "width:20%" onclick = "load_detail_retur()">Load Data Barang</button>
-                    </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Tanggal Penerimaan</h5>
                         <input type = "date" class = "form-control" required name = "tgl_penerimaan">
+                    </div>
+                    <div class = "form-group">
+                        <button type = "button" class = "btn btn-primary btn-sm" style = "width:20%" onclick = "load_detail_retur()">Load Data Barang</button>
                     </div>
                     <div class = "form-group">
                         <h5>Detail Retur</h5>
