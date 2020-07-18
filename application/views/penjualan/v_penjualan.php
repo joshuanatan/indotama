@@ -49,6 +49,17 @@ $notif_data = array(
                                 <div class="panel-wrapper collapse in">
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
+                                            <div class = "form-inline">
+                                                <select class = "form-control form-sm" id = "tipe_pembayaran" style = "width:20%">
+                                                    <option value = "all">Semua</option>
+                                                    <option value = "FULL PAYMENT">Full Payment</option>
+                                                    <option value = "DP">DP</option>
+                                                    <option value = "TEMPO">Tempo</option>
+                                                    <option value = "KEEP">Keep</option>
+                                                </select>
+                                                <button type = "button" onclick = "redirect_tipe_pembayaran()" class = "btn btn-primary btn-sm">Buka</button>
+                                            </div>
+                                            <br/>
                                             <div class = "d-block">
                                                 <a target = "_blank" href = "<?php echo base_url();?>penjualan/tambah" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></a>
                                             </div>
@@ -76,19 +87,15 @@ $notif_data = array(
 </html>
 <script>
     var ctrl = "penjualan";
-    var url_add = "id_cabang=<?php echo $this->session->id_cabang;?>";
-    var unautorized_button = ["edit_button","detail_button"];
+    var tipe_pemb = $("#tipe_pembayaran").val();
+    var url_add = "id_cabang=<?php echo $this->session->id_cabang;?>&tipe_pemb="+tipe_pemb;
+    var unautorized_button = ["edit_button"];
     var additional_button = [
         {
             style:'cursor:pointer;font-size:large',
             class:'text-primary md-edit',
             onclick:'redirect_edit_penjualan()'
         },
-        {
-            style:'cursor:pointer;font-size:large',
-            class:'text-success md-eye',
-            onclick:'redirect_detail_penjualan()'
-        }
     ];
 </script>
 <?php
@@ -113,9 +120,14 @@ $data = array(
             window.open("<?php echo base_url();?>penjualan/detail/"+id_penjualan,"_blank");
         });
     }
+    function redirect_tipe_pembayaran(){
+        var tipe_pemb = $("#tipe_pembayaran").val();
+        url_add = "id_cabang=<?php echo $this->session->id_cabang;?>&tipe_pemb="+tipe_pemb;
+        refresh(page);
+    }
 </script>
 <?php $this->load->view("_core_script/table_func");?>
 <?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view("penjualan/f-delete-penjualan");?>
-
+<?php $this->load->view("penjualan/f-detail-penjualan");?>
 <?php $this->load->view('_notification/notif_general'); ?>

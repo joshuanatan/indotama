@@ -25,12 +25,11 @@ class M_penjualan extends ci_model{
         parent::__construct();
         $this->set_column("penj_nomor","nomor penjualan",true);
         $this->set_column("penj_tgl","tanggal penjualan",false);
-        $this->set_column("penj_dateline_tgl","dateline",false);
-        $this->set_column("penj_jenis","jenis penjualan",false);
-        $this->set_column("tipe_pembayaran","tipe pembayaran",false);
         $this->set_column("cust_name","customer",false);
+        $this->set_column("penj_tipe_pembayaran","tipe pembayaran",false);
+        $this->set_column("penj_jenis","jenis penjualan",false);
         $this->set_column("penj_status","status",false);
-        $this->set_column("penj_last_modified","last modified",false);
+        $this->set_column("user_last_modified","User Last Modified",false);
         $this->penj_create_date = date("y-m-d h:i:s");
         $this->penj_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
@@ -161,32 +160,58 @@ class M_penjualan extends ci_model{
                 id_pk_penjualan like '%".$search_key."%' or
                 penj_nomor like '%".$search_key."%' or
                 penj_tgl like '%".$search_key."%' or
-                penj_dateline_tgl like '%".$search_key."%' or
                 penj_status like '%".$search_key."%' or
                 penj_jenis like '%".$search_key."%' or
                 penj_tipe_pembayaran like '%".$search_key."%' or
-                penj_last_modified like '%".$search_key."%'
+                user_last_modified like '%".$search_key."%'
             )";
         }
-        $query = "
-        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan
-        from ".$this->tbl_name." 
-        inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
-        where penj_status = ? and cust_status = ? and id_fk_cabang = ? ".$search_query."  
-        order by ".$order_by." ".$order_direction." 
-        limit 20 offset ".($page-1)*$data_per_page;
-        $args = array(
-            "aktif","aktif",$this->id_fk_cabang
-        );
-        $result["data"] = executequery($query,$args);
-        
-        $query = "
-        select id_pk_penjualan
-        from ".$this->tbl_name." 
-        inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
-        where penj_status = ? and cust_status = ? and id_fk_cabang = ? ".$search_query."  
-        order by ".$order_by." ".$order_direction;
-        $result["total_data"] = executequery($query,$args)->num_rows();
+        if($this->penj_tipe_pembayaran == "" || strtolower($this->penj_tipe_pembayaran) == "all"){
+            $query = "
+            select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified
+            from ".$this->tbl_name." 
+            inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
+            inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified
+            where penj_status = ? and cust_status = ? and id_fk_cabang = ? ".$search_query."  
+            order by ".$order_by." ".$order_direction." 
+            limit 20 offset ".($page-1)*$data_per_page;
+            $args = array(
+                "aktif","aktif",$this->id_fk_cabang
+            );
+            $result["data"] = executequery($query,$args);
+            
+            $query = "
+            select id_pk_penjualan
+            from ".$this->tbl_name." 
+            inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
+            inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified
+            where penj_status = ? and cust_status = ? and id_fk_cabang = ? ".$search_query."  
+            order by ".$order_by." ".$order_direction;
+            $result["total_data"] = executequery($query,$args)->num_rows();
+        }
+        else{
+            $query = "
+            select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified
+            from ".$this->tbl_name." 
+            inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
+            inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified
+            where penj_status = ? and cust_status = ? and id_fk_cabang = ? and penj_tipe_pembayaran = ? ".$search_query."  
+            order by ".$order_by." ".$order_direction." 
+            limit 20 offset ".($page-1)*$data_per_page;
+            $args = array(
+                "aktif","aktif",$this->id_fk_cabang, $this->penj_tipe_pembayaran
+            );
+            $result["data"] = executequery($query,$args);
+            
+            $query = "
+            select id_pk_penjualan
+            from ".$this->tbl_name." 
+            inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
+            inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified
+            where penj_status = ? and cust_status = ? and id_fk_cabang = ? and penj_tipe_pembayaran = ? ".$search_query."  
+            order by ".$order_by." ".$order_direction;
+            $result["total_data"] = executequery($query,$args)->num_rows();
+        }
         return $result;
     }
     public function insert(){

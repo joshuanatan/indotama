@@ -145,6 +145,16 @@ class m_toko extends ci_model{
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
+    public function list_toko(){
+        $query = "
+        select id_pk_toko,toko_logo,toko_nama,toko_kode,toko_status,toko_create_date,toko_last_modified,toko_kop_surat,toko_nonpkp,toko_pernyataan_rek
+        from ".$this->tbl_name." 
+        where toko_status = ? ";
+        $args = array(
+            "aktif"
+        );
+        return executeQuery($query,$args);
+    }
     public function detail_by_id(){
         $where = array(
             "id_pk_toko" => $this->id_pk_toko
