@@ -1,7 +1,7 @@
 <?php 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 require_once dirname(__FILE__) . '/tcpdf/tcpdf.php';
-class Pdf_oc extends TCPDF
+class Pdf_invoice_asli extends TCPDF
 {
     function __construct()
     {
@@ -12,7 +12,7 @@ class Pdf_oc extends TCPDF
     public function Header() {
         // Logo
         $image_file = base_url().'asset/img/logo.png';
-        $this->Image($image_file, 10, 8, 50, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        $this->Image($image_file, 10, 8, '', 18, 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         //$this->Image('@' . $image_file, 10, 8, 45, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         
         // Set font
@@ -28,10 +28,10 @@ class Pdf_oc extends TCPDF
     $html="
     <p>
     <hr style='width:98%;'>
-    <br><br><span style='font-size: medium'>PT LEITER INDONESIA</span><br><span style='font-size:2pt '>Ruku Prominence Alam Sutera 38F/53 Jln. Jalur Sutera Prominence, Alam Sutera, Tangerang 15143 Banten - INDONESIA<br>Tel: 021-2958-6786 &nbsp;&nbsp; Fax: 021-29490663</span>
+    <br><br><span style='font-size: medium;'>REKAP NOTA ASLI</span>
     </p>";
     $this->SetFontSize(8);
-    $this->SetTextColor(128, 179, 128);
+    $this->SetTextColor(105, 105, 105);
     //$this->writeHTML($html, false, true, false, 0);
     //$this->WriteHTML($html, true, 0, true, 0);     
     //$this->Cell(0, 27, 'Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
