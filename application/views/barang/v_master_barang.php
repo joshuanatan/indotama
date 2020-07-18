@@ -51,6 +51,7 @@ $notif_data = array(
                                         <div class = "col-lg-12">
                                             <div class = "d-block">
                                                 <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#register_modal" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
+                                                <a href = "<?php echo base_url();?>plugin/excel/barang" class = "btn btn-success btn-sm col-lg-2 col-sm-12" target = "_blank" style = "margin-right:10px">Download Excel</a>
                                             </div>
                                             <br/>
                                             <br/>

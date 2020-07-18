@@ -159,13 +159,16 @@ class m_user extends ci_model{
         return executequery($sql,$args);
     }
     public function list(){
-        $where = array(
-            "user_status" => "AKTIF"
+        $sql = "
+        select id_pk_user,user_name,user_email,user_status,id_fk_role,user_last_modified,user_create_date,jabatan_nama,id_fk_employee,emp_nama
+        from ".$this->tbl_name." 
+        inner join mstr_employee on mstr_employee.id_pk_employee = ".$this->tbl_name.".id_fk_employee
+        inner join mstr_jabatan on mstr_jabatan.id_pk_jabatan = ".$this->tbl_name.".id_fk_role
+        where user_status = ? and emp_status = ? ";
+        $args = array(
+            "AKTIF","AKTIF"
         );
-        $field = array(
-            "id_pk_user","user_name","user_email","user_status","id_fk_role","id_fk_employee","user_last_modified","user_create_date"
-        );
-        $result = selectrow($this->tbl_name,$where,$field);
+        $result = executeQuery($sql,$args);
         return $result;
     }
     public function detail_by_name(){
