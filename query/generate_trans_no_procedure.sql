@@ -74,4 +74,4 @@ begin
     set trans_no = concat(upper(@kode_cabang),"-",upper(jenis_trans),"-",@tahun,"-",lpad(@bulan,2,0),"-",lpad(@tgl,2,0),"-",lpad(@nomor,6,0));
 end$$
 delimiter ;
-call generate_trans_no(1,'retur','2020-07-11',@transno,@latest_no);select @transno,@latest_no;
+call generate_trans_no(1,'pengiriman','2020-07-11',@transno,@latest_no);select @transno,@latest_no;

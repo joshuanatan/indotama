@@ -59,6 +59,7 @@ class pengiriman extends CI_Controller{
                     $result["data"] = $result["data"]->result_array();
                     for($a = 0; $a<count($result["data"]); $a++){
                         $response["content"][$a]["id"] = $result["data"][$a]["id_pk_pengiriman"];
+                        $response["content"][$a]["no_pengiriman"] = $result["data"][$a]["pengiriman_no"];
                         $response["content"][$a]["tgl"] = $result["data"][$a]["pengiriman_tgl"];
                         $response["content"][$a]["status"] = $result["data"][$a]["pengiriman_status"];
                         $response["content"][$a]["id_penjualan"] = $result["data"][$a]["id_fk_penjualan"];
@@ -85,6 +86,7 @@ class pengiriman extends CI_Controller{
                 }
                 $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
                 $response["key"] = array(
+                    "no_pengiriman",
                     "tgl",
                     "nomor_penj",
                     "status",
@@ -98,6 +100,7 @@ class pengiriman extends CI_Controller{
                     $result["data"] = $result["data"]->result_array();
                     for($a = 0; $a<count($result["data"]); $a++){
                         $response["content"][$a]["id"] = $result["data"][$a]["id_pk_pengiriman"];
+                        $response["content"][$a]["no_pengiriman"] = $result["data"][$a]["pengiriman_no"];
                         $response["content"][$a]["tgl"] = $result["data"][$a]["pengiriman_tgl"];
                         $response["content"][$a]["status"] = $result["data"][$a]["pengiriman_status"];
                         $response["content"][$a]["tempat"] = $result["data"][$a]["pengiriman_tempat"];
@@ -117,31 +120,13 @@ class pengiriman extends CI_Controller{
                 }
                 $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
                 $response["key"] = array(
+                    "no_pengiriman",
                     "tgl",
                     "retur_no",
                     "status",
                     "last_modified",
                 );
             }
-        }
-        echo json_encode($response);
-    }
-    public function list(){
-        $response["status"] = "SUCCESS";
-        $this->load->model("m_pengiriman");
-        $result = $this->m_pengiriman->list();
-        if($result->num_rows()){
-            $result = $result->result_array();
-            for($a = 0; $a<count($result); $a++){
-                $response["content"][$a]["id"] = $result[$a]["id_pk_brg_jenis"];
-                $response["content"][$a]["nama"] = $result[$a]["brg_jenis_nama"];
-                $response["content"][$a]["status"] = $result[$a]["brg_jenis_status"];
-                $response["content"][$a]["last_modified"] = $result[$a]["brg_jenis_last_modified"];
-            }
-        }
-        else{
-            $response["status"] = "ERROR";
-            $response["msg"] = "No data is recorded in database";
         }
         echo json_encode($response);
     }
@@ -165,7 +150,10 @@ class pengiriman extends CI_Controller{
             $id_tempat_pengiriman = $this->input->post("id_tempat_pengiriman"); //id_warehouse or id_cabang
 
             $this->load->model("m_pengiriman");
-            if($this->m_pengiriman->set_insert($pengiriman_tgl,$pengiriman_status,$pengiriman_tipe,$id_fk_penjualan,$pengiriman_tempat,$id_tempat_pengiriman,$id_fk_retur)){
+            $id_fk_cabang = $this->session->id_cabang;
+            $pengiriman_no = $this->m_pengiriman->get_pengiriman_nomor($id_fk_cabang,"pengiriman",$pengiriman_tgl);
+
+            if($this->m_pengiriman->set_insert($pengiriman_no,$pengiriman_tgl,$pengiriman_status,$pengiriman_tipe,$id_fk_penjualan,$pengiriman_tempat,$id_tempat_pengiriman,$id_fk_retur)){
                 $id_pengiriman = $this->m_pengiriman->insert();
                 if($id_pengiriman){
                     $response["msg"] = "Data is recorded to database";
