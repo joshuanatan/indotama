@@ -95,6 +95,3 @@
 <script src="<?php echo base_url(); ?>asset/dist/js/lightgallery-all.js"></script>
 <script src="<?php echo base_url(); ?>asset/dist/js/froogaloop2.min.js"></script>
 <script src="<?php echo base_url(); ?>asset/dist/js/gallery-data.js"></script>
-
-<!-- Form Advance Init JavaScript -->
-<!--<script src="<?php echo base_url(); ?>asset/dist/js/form-advance-data.js"></script>-->
