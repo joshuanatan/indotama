@@ -68,7 +68,6 @@
                 <h4 class = "modal-title">My Profile</h4>
             </div>
             <div class = "modal-body">
-                <center>
                 <img id="foto_profile" width="150px">
                 <table>
                     <tr>
@@ -95,8 +94,7 @@
                 </table>
                 <br>
                 <a href="<?php echo base_url() ?>dashboard/edit_profile_view/<?php echo $this->session->id_user ?>" class = "btn btn-sm btn-primary">Edit Profile</a>
-                </center>
-                
+               
             </div>
         </div>
     </div>

@@ -88,7 +88,15 @@ $notif_data = array(
             var row = $(this).index();
             var id_cabang = content[row]["id"];
             if(confirm("Apakah anda ingin mengaktifkan cabang "+content[row]["daerah"]+" pada toko "+content[row]["toko"]+"?")){
-                window.location.replace("<?php echo base_url();?>toko/activate_cabang_manajemen/"+id_cabang);
+                $.ajax({
+                    url:"<?php echo base_url();?>toko/activate_cabang_manajemen/"+id_cabang,
+                    type:"GET",
+                    dataType:"JSON",
+                    success:function(respond){
+                        console.log(respond);
+                        window.location.replace("<?php echo base_url();?>toko/dashboard_cabang");
+                    }
+                })
             }
         });
     }
