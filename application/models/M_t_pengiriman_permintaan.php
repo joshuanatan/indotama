@@ -126,4 +126,23 @@ class M_t_pengiriman_permintaan extends ci_model{
         }
         return $result;
     }
+    
+    public function histori_tgl($tgl_pengiriman){
+        $query = "
+        select id_pk_brg_pemenuhan,brg_nama,brg_pemenuhan_qty,cabang_daerah,toko_nama,toko_kode,toko_logo,brg_permintaan_status,brg_pemenuhan_status,ifnull(pengiriman_tgl,'-') as pengiriman_tgl,ifnull(pengiriman_last_modified,'-') as pengiriman_last_modified,id_pk_pengiriman,brg_pengiriman_note 
+        from tbl_brg_permintaan
+        inner join mstr_cabang on mstr_cabang.id_pk_cabang = tbl_brg_permintaan.id_fk_cabang
+        inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+        inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg
+        inner join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan and tbl_brg_pemenuhan.id_fk_cabang = ?
+        inner join tbl_brg_pengiriman on tbl_brg_pengiriman.id_fk_brg_pemenuhan = tbl_brg_pemenuhan.id_pk_brg_pemenuhan
+        inner join mstr_pengiriman on mstr_pengiriman.id_pk_pengiriman = tbl_brg_pengiriman.id_fk_pengiriman and mstr_pengiriman.pengiriman_tipe = 'permintaan'
+        where year(pengiriman_tgl) = ? and month(pengiriman_tgl) = ? and day(pengiriman_tgl) = ?
+        ";
+        $extract_tgl = explode("-",$tgl_pengiriman); 
+        $args = array(
+            $this->session->id_cabang,$extract_tgl[0],$extract_tgl[1],$extract_tgl[2]
+        );
+        return executeQuery($query,$args);
+    }
 }

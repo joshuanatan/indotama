@@ -72,6 +72,51 @@ class Pengiriman_permintaan extends CI_Controller{
         );
         echo json_encode($response);
     }
+    public function histori_tgl(){
+        $response["status"] = "SUCCESS";
+        $response["content"] = array();
+        $tgl = $this->input->get("tgl_buat_permintaan");
+
+        $this->load->model("m_t_pengiriman_permintaan");
+
+        $result = $this->m_t_pengiriman_permintaan->histori_tgl($tgl);
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_brg_pemenuhan"];
+                $response["content"][$a]["id_pengiriman"] = $result[$a]["id_pk_pengiriman"];
+                $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
+                $response["content"][$a]["pemenuhan_qty_brg"] = $result[$a]["brg_pemenuhan_qty"];
+                $response["content"][$a]["daerah_cabang"] = $result[$a]["cabang_daerah"];
+                $response["content"][$a]["notes"] = $result[$a]["brg_pengiriman_note"];
+                $response["content"][$a]["nama_toko"] = $result[$a]["toko_nama"];
+                $response["content"][$a]["kode_toko"] = $result[$a]["toko_kode"];
+                $response["content"][$a]["logo_toko"] = $result[$a]["toko_logo"];
+                $response["content"][$a]["permintaan_status_brg"] = $result[$a]["brg_permintaan_status"];
+                $response["content"][$a]["status"] = $result[$a]["brg_pemenuhan_status"];
+                $response["content"][$a]["tgl_pengiriman"] = $result[$a]["pengiriman_tgl"];
+                $response["content"][$a]["last_modified"] = $result[$a]["pengiriman_last_modified"];
+
+                
+                if(strtolower($result[$a]["brg_permintaan_status"]) == "diterima"){
+                    $response["content"][$a]["status"] = "DITERIMA";
+                    $response["content"][$a]["status_code"] = "success";
+                }
+                else if(strtolower($result[$a]["brg_permintaan_status"]) != "nonaktif" ){
+                    $response["content"][$a]["status"] = "DIBATAL";
+                    $response["content"][$a]["status_code"] = "danger";
+                }
+                else if(strtolower($result[$a]["brg_permintaan_status"]) != "perjalanan" ){
+                    $response["content"][$a]["status"] = "DALAM PERJALANAN";
+                    $response["content"][$a]["status_code"] = "primary";
+                }
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+        }
+        echo json_encode($response);
+    }
     public function register(){
         $response["status"] = "SUCCESS";
         $pengiriman_tgl = date("Y-m-d H:i:s");
