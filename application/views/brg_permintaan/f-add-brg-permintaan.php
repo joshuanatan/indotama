@@ -15,12 +15,7 @@
                     <input type = 'hidden' name = 'id_fk_cabang' value="<?php echo $_SESSION['id_cabang'] ?>" id = 'id_fk_cabang'>
                     <div class = "form-group">
                         <h5>Nama Barang</h5>
-                        <input list="list_brg_nama" name="brg_nama" id="brg_nama" class = "form-control">
-                        <datalist id="list_brg_nama">
-                            <?php for($x=0; $x<count($barang); $x++){ ?>
-                            <option value="<?php echo $barang[$x]['brg_nama'] ?>">
-                            <?php } ?>
-                        </datalist>
+                        <input list="datalist_barang_cabang" name="brg_nama" id="brg_nama" class = "form-control">
                     </div>
                     <div class = "form-group">
                         <h5>Jumlah Barang</h5>
@@ -37,7 +32,7 @@
                     
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <button type = "button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
+                        <button type = "button" id = "permintaan_tambah_button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
                 </form>
             </div>

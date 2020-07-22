@@ -30,11 +30,11 @@ class Penerimaan_permintaan extends CI_Controller{
         $page = $this->input->get("page");
         $search_key = $this->input->get("searchKey");
         $data_per_page = 20;
-        $pengiriman_tempat = $this->input->get("type");
-        $id_tempat_pengiriman = $this->session->id_cabang;
+        $penerimaan_tempat = $this->input->get("type");
+        $id_tempat_penerimaan = $this->session->id_cabang;
         $this->load->model("m_t_penerimaan_permintaan");
-
-        $result = $this->m_t_penerimaan_permintaan->content($page,$order_by,$order_direction,$search_key,$data_per_page,$pengiriman_tempat,$id_tempat_pengiriman);
+        
+        $result = $this->m_t_penerimaan_permintaan->content($page,$order_by,$order_direction,$search_key,$data_per_page,$penerimaan_tempat,$id_tempat_penerimaan);
         if($result["data"]->num_rows() > 0){
             $result["data"] = $result["data"]->result_array();
             for($a = 0; $a<count($result["data"]); $a++){
@@ -66,6 +66,38 @@ class Penerimaan_permintaan extends CI_Controller{
             "tgl_pengiriman",
             "tgl_penerimaan"
         );
+        echo json_encode($response);
+    }
+    public function list_pengiriman_otw(){
+        #dipake di graphic perjalanan pengiriman permintaan
+        $response["status"] = "SUCCESS";
+        $response["content"] = array();
+
+        $id_tempat_pengiriman = $this->session->id_cabang;
+        $this->load->model("m_t_penerimaan_permintaan");
+
+        $result = $this->m_t_penerimaan_permintaan->content_pengiriman_otw($id_tempat_pengiriman);
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_penerimaan"];
+                $response["content"][$a]["id_brg_pemenuhan"] = $result[$a]["id_pk_brg_pemenuhan"];
+                $response["content"][$a]["id_brg_pengiriman"] = $result[$a]["id_pk_brg_pengiriman"];
+                $response["content"][$a]["qty_brg_pengiriman"] = $result[$a]["brg_pengiriman_qty"];
+                $response["content"][$a]["note_brg_pengiriman"] = $result[$a]["brg_pengiriman_note"];
+                $response["content"][$a]["status"] = $result[$a]["brg_pemenuhan_status"];
+                $response["content"][$a]["tgl_pengiriman"] = $result[$a]["pengiriman_tgl"];
+                $response["content"][$a]["daerah_cabang"] = $result[$a]["cabang_daerah"];
+                $response["content"][$a]["nama_toko"] = $result[$a]["toko_nama"];
+                $response["content"][$a]["kode_toko"] = $result[$a]["toko_kode"];
+                $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
+                $response["content"][$a]["kode_brg"] = $result[$a]["brg_kode"];
+                $response["content"][$a]["tgl_penerimaan"] = $result[$a]["penerimaan_tgl"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+        }
         echo json_encode($response);
     }
     public function register(){

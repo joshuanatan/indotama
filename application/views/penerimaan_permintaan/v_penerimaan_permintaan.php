@@ -88,7 +88,7 @@ $notif_data = array(
         $('body table').find('tr').click( function(){
             var row = $(this).index();
             
-            if(content[row]["status_brg_pemenuhan"].toLowerCase() == "diterima"){
+            if(content[row]["status"].toLowerCase() == "diterima"){
                 delete_params = "&id_brg="+content[row]["id_brg_pemenuhan"];
                 $("#id_delete").val(content[row]["id"]);
                 $("#id_brg_pengiriman_delete").val(content[row]["id_brg_pengiriman"]);
@@ -100,7 +100,7 @@ $notif_data = array(
                 $("#tgl_pengiriman_delete").html(content[row]["tgl_pengiriman"]);
                 $("#delete_modal").modal("show");
             }
-            else if(content[row]["status_brg_pemenuhan"].toLowerCase() == "perjalanan"){
+            else if(content[row]["status"].toLowerCase() == "perjalanan"){
 
                 $("#id_brg_pemenuhan").val(content[row]["id_brg_pemenuhan"]);
                 $("#id_brg_pengiriman").val(content[row]["id_brg_pengiriman"]);

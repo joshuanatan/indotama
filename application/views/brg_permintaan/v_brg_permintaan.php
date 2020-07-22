@@ -88,6 +88,12 @@ $notif_data = array(
             onclick: 'load_selesai_content()'
         }
     ];
+    function get_selesai_row(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            load_selesai_content(row);
+        });
+    }
 </script>
 <?php
 $data = array(

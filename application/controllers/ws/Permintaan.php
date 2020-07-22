@@ -65,6 +65,36 @@ class Permintaan extends CI_Controller{
         );
         echo json_encode($response);
     }
+    public function list_permintaan_aktif(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_brg_permintaan");
+        $result = $this->m_brg_permintaan->list_permintaan_aktif();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_brg_permintaan"];
+                $response["content"][$a]["qty"] = $result[$a]["brg_permintaan_qty"];
+                $response["content"][$a]["notes"] = $result[$a]["brg_permintaan_notes"];
+                $response["content"][$a]["deadline"] = $result[$a]["brg_permintaan_deadline"];
+                $response["content"][$a]["status"] = $result[$a]["brg_permintaan_status"];
+                $response["content"][$a]["id_fk_brg"] = $result[$a]["id_fk_brg"];
+                $response["content"][$a]["barang"] = $result[$a]["brg_nama"];
+                if($result[$a]["qty_pemenuhan"]==null){
+                    $response["content"][$a]["qty_pemenuhan"] = 0;
+                }else{
+                    $response["content"][$a]["qty_pemenuhan"] = $result[$a]["qty_pemenuhan"];
+                }
+                $response["content"][$a]["nama_cabang"] = $result[$a]["cabang_daerah"];
+                $response["content"][$a]["id_fk_cabang"] = $result[$a]["id_fk_cabang"];
+                $response["content"][$a]["create_date"] = $result[$a]["brg_permintaan_create_date"];
+                $response["content"][$a]["last_modified"] = $result[$a]["brg_permintaan_last_modified"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+        }
+        echo json_encode($response);
+    }
     public function list(){
         $response["status"] = "SUCCESS";
         $this->load->model("m_brg_permintaan");

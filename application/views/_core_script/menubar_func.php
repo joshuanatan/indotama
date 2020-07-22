@@ -1,5 +1,6 @@
 <script>
 /*kepaksa kepisah karena ada kebutuhan load menubar tanpa load table fun*/
+menubar();
 function menubar(){
     $.ajax({
         url:"<?php echo base_url();?>ws/menu/menubar",

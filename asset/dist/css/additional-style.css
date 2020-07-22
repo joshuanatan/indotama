@@ -26,3 +26,16 @@ table{
     
     background-color:#ffbdbd;
 }
+.timeline:before{
+    left:80%;
+}
+.timeline-container-invert:before{
+    left:20%;
+}
+.timeline > li{
+    width:80%;
+    margin-bottom:50px;
+}
+.timeline > li.timeline-inverted{
+    margin-top:0px;
+}

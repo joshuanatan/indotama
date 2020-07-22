@@ -14,7 +14,9 @@
                 if(respond["status"] == "SUCCESS"){
                     $('#notif_update_success').show(1).delay(2000).hide(1);
                     $("#update_modal").modal("hide");
-                    refresh(page);
+                    if(typeof(refresh) != "undefined"){
+                        refresh(page);
+                    }
                 }
 
                 if(respond["status"] == "ERROR"){

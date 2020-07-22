@@ -5,6 +5,12 @@ class Permintaan extends CI_Controller{
         parent::__construct();
     }
     public function index(){
+        $this->load->view("brg_permintaan/v_brg_permintaan_graphic");
+    }
+    public function histori(){
+        $this->load->view("brg_permintaan/v_brg_permintaan_histori_graphic");
+    }
+    public function data(){
         $this->load->model("m_barang");
         $result = $this->m_barang->list();
         $data["barang"] = $result->result_array();

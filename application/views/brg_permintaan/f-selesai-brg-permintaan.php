@@ -43,7 +43,7 @@
                     </table>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <button type = "button" onclick = "selesai_func()" class = "btn btn-sm btn-primary">Selesaikan</button>
+                        <button type = "button" id = "permintaan_selesai_button" onclick = "selesai_func()" class = "btn btn-sm btn-primary">Selesaikan</button>
                     </div>
                 </form>
             </div>
@@ -51,16 +51,13 @@
     </div>
 </div>
 <script>
-    function load_selesai_content(){
-        $('body table').find('tr').click( function(){
-            var row = $(this).index();
-            $("#id_pk_brg_permintaan_selesai").val(content[row]["id"]);
-            $("#brg_nama_selesai").html(content[row]["barang"]);
-            $("#brg_permintaan_qty_selesai").html(content[row]["qty"]);
-            $("#brg_pemenuhan_qty_selesai").html(content[row]["qty_pemenuhan"]);
-            $("#brg_permintaan_notes_selesai").html(content[row]["notes"]);
-            $("#brg_permintaan_status_selesai").html(content[row]["status"]);
-        });
+    function load_selesai_content(row){
+        $("#id_pk_brg_permintaan_selesai").val(content[row]["id"]);
+        $("#brg_nama_selesai").html(content[row]["barang"]);
+        $("#brg_permintaan_qty_selesai").html(content[row]["qty"]);
+        $("#brg_pemenuhan_qty_selesai").html(content[row]["qty_pemenuhan"]);
+        $("#brg_permintaan_notes_selesai").html(content[row]["notes"]);
+        $("#brg_permintaan_status_selesai").html(content[row]["status"]);
     }
 </script>
 <script>
@@ -70,6 +67,7 @@
         $.ajax({
             url:"<?php echo base_url();?>ws/"+ctrl+"/selesai",
             type:"POST",
+            async:false,
             dataType:"JSON",
             data:data,
             processData:false,
@@ -78,7 +76,16 @@
                 if(respond["status"] == "SUCCESS"){
                     $("#selesai_modal").modal("hide");
                     $("#selesai_form :input").val("");
-                    refresh(page);
+                    if(typeof(refresh) != "undefined"){
+                        /*klo format data pake table*/
+                        refresh(page);
+                        
+                    }
+                    else if(typeof(load_permintaan_barang_content) != "undefined"){
+                        /*klo format data pake graphic*/
+                        load_permintaan_barang_content();
+                        
+                    }
                     //notification
                     $('#notif_update_success').show(1).delay(2000).hide(1);
                 }

@@ -33,7 +33,7 @@ class M_t_penerimaan_permintaan extends ci_model{
     }
     public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = "",$penerimaan_tempat = "",$id_penerima = ""){
         $this->penerimaan_tempat = $penerimaan_tempat;
-        if($penerimaan_tempat == "cabang"){
+        if(strtolower($penerimaan_tempat) == "cabang"){
             $this->id_fk_cabang = $id_penerima;
         }
         $this->column_penerimaan_permintaan();
@@ -69,7 +69,7 @@ class M_t_penerimaan_permintaan extends ci_model{
             inner join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_pengiriman.id_fk_cabang #dapetin daerah cabang
             inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko #dapetin nama toko
             inner join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_pk_brg_pemenuhan = tbl_brg_pengiriman.id_fk_brg_pemenuhan #cuman untuk dapetin id_cabang_minta & id_barang
-            inner join tbl_brg_permintaan on tbl_brg_permintaan.id_pk_brg_permintaan = tbl_brg_pemenuhan.id_fk_brg_permintaan and tbl_brg_permintaan.id_fk_cabang = 1 #menentukan peminta barang yang akan jadi penerima
+            inner join tbl_brg_permintaan on tbl_brg_permintaan.id_pk_brg_permintaan = tbl_brg_pemenuhan.id_fk_brg_permintaan and tbl_brg_permintaan.id_fk_cabang = ? #menentukan peminta barang yang akan jadi penerima
             inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg #dapetin detail barang
             left join tbl_brg_penerimaan on tbl_brg_penerimaan.id_fk_brg_pengiriman = tbl_brg_pengiriman.id_pk_brg_pengiriman and tbl_brg_penerimaan.brg_penerimaan_qty > 0 #dianggap diterima apabila brgditerima > 0 (klo delete, ini ke 0 sendiri)
             left join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan and mstr_penerimaan.penerimaan_status = 'aktif' and mstr_penerimaan.penerimaan_tipe = 'permintaan' #dianggap diterima apabila status penerimaan > 0
@@ -81,7 +81,7 @@ class M_t_penerimaan_permintaan extends ci_model{
                 $this->id_fk_cabang
             );
             $result["data"] = executequery($query,$args);
-
+            //echo $this->db->last_query();
             $query = "
             select id_pk_brg_pengiriman
             from tbl_brg_pengiriman
@@ -89,7 +89,7 @@ class M_t_penerimaan_permintaan extends ci_model{
             inner join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_pengiriman.id_fk_cabang #dapetin daerah cabang
             inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko #dapetin nama toko
             inner join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_pk_brg_pemenuhan = tbl_brg_pengiriman.id_fk_brg_pemenuhan #cuman untuk dapetin id_cabang_minta & id_barang
-            inner join tbl_brg_permintaan on tbl_brg_permintaan.id_pk_brg_permintaan = tbl_brg_pemenuhan.id_fk_brg_permintaan and tbl_brg_permintaan.id_fk_cabang = 1 #menentukan peminta barang yang akan jadi penerima
+            inner join tbl_brg_permintaan on tbl_brg_permintaan.id_pk_brg_permintaan = tbl_brg_pemenuhan.id_fk_brg_permintaan and tbl_brg_permintaan.id_fk_cabang = ? #menentukan peminta barang yang akan jadi penerima
             inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg #dapetin detail barang
             left join tbl_brg_penerimaan on tbl_brg_penerimaan.id_fk_brg_pengiriman = tbl_brg_pengiriman.id_pk_brg_pengiriman and tbl_brg_penerimaan.brg_penerimaan_qty > 0 #dianggap diterima apabila brgditerima > 0 (klo delete, ini ke 0 sendiri)
             left join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan and mstr_penerimaan.penerimaan_status = 'aktif' and mstr_penerimaan.penerimaan_tipe = 'permintaan' #dianggap diterima apabila status penerimaan > 0
@@ -99,5 +99,26 @@ class M_t_penerimaan_permintaan extends ci_model{
             $result["total_data"] = executequery($query,$args)->num_rows();
         }
         return $result;
+    }
+    public function content_pengiriman_otw($id_cabang){
+        #dipake di perjalanan graphic
+        $query = "
+        select id_pk_penerimaan,id_pk_brg_pemenuhan,id_pk_brg_pengiriman,brg_pengiriman_qty,brg_pengiriman_note,brg_pemenuhan_status,pengiriman_tgl,cabang_daerah,toko_nama,toko_kode,brg_nama,brg_kode,ifnull(penerimaan_tgl,'-') as penerimaan_tgl
+        from tbl_brg_pengiriman
+        inner join mstr_pengiriman on mstr_pengiriman.id_pk_pengiriman = tbl_brg_pengiriman.id_fk_pengiriman and mstr_pengiriman.pengiriman_status = 'aktif' #harus yang jadi terkirim bukan yang dicancel
+        inner join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_pengiriman.id_fk_cabang #dapetin daerah cabang
+        inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko #dapetin nama toko
+        inner join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_pk_brg_pemenuhan = tbl_brg_pengiriman.id_fk_brg_pemenuhan #cuman untuk dapetin id_cabang_minta & id_barang
+        inner join tbl_brg_permintaan on tbl_brg_permintaan.id_pk_brg_permintaan = tbl_brg_pemenuhan.id_fk_brg_permintaan and tbl_brg_permintaan.id_fk_cabang = ? #menentukan peminta barang yang akan jadi penerima
+        inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg #dapetin detail barang
+        left join tbl_brg_penerimaan on tbl_brg_penerimaan.id_fk_brg_pengiriman = tbl_brg_pengiriman.id_pk_brg_pengiriman and tbl_brg_penerimaan.brg_penerimaan_qty > 0 #dianggap diterima apabila brgditerima > 0 (klo delete, ini ke 0 sendiri)
+        left join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan and mstr_penerimaan.penerimaan_status = 'aktif' and mstr_penerimaan.penerimaan_tipe = 'permintaan' #dianggap diterima apabila status penerimaan > 0
+        where tbl_brg_pengiriman.brg_pengiriman_qty > 0 #dianggap terkirim apabila tidak di cancel (klo cancel, qty jadi 0)
+        and brg_pemenuhan_status = 'pengiriman'
+        order by pengiriman_tgl DESC";
+        $args = array(
+            $id_cabang
+        );
+        return executeQuery($query,$args);
     }
 }

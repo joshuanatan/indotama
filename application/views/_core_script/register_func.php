@@ -15,7 +15,9 @@
                     $('#notif_register_success').show(1).delay(2000).hide(1);
                     $("#register_modal").modal("hide");
                     //$("#register_form :input").val("");
-                    refresh(page);
+                    if(typeof(refresh) != "undefined"){
+                        refresh(page);
+                    }
                     //notification
                 }
 
