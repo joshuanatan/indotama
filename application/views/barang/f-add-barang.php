@@ -33,7 +33,7 @@
                     </div>
                     <div class = "form-group col-lg-6">
                         <h5>Minimal Stok</h5>
-                        <input type = "text" class = "form-control" required name = "minimal">
+                        <input type = "text" class = "form-control nf_input" required name = "minimal">
                     </div>
                     <div class = "form-group col-lg-6">
                         <h5>Satuan</h5>
@@ -41,7 +41,7 @@
                     </div>
                     <div class = "form-group col-lg-6">
                         <h5>Harga Satuan</h5>
-                        <input type = "text" class = "form-control" required name = "harga">
+                        <input type = "text" class = "form-control nf_input" required name = "harga">
                     </div>
                     <div class = "form-group">
                         <h5>Kombinasi Barang</h5>

@@ -131,6 +131,7 @@ class Toko extends CI_Controller {
 		redirect("toko/dashboard_toko");
 	}
 	public function activate_cabang_manajemen($id_cabang){
+		$response["status"] = "SUCCESS";
 		$this->load->model("m_cabang");
 		$this->m_cabang->set_id_pk_cabang($id_cabang);
 		$result = $this->m_cabang->detail_by_id();
@@ -142,11 +143,9 @@ class Toko extends CI_Controller {
 		$result = $this->m_toko->detail_by_id();
 		$result = $result->result_array();
 		$this->session->nama_toko_cabang = $result[0]["toko_nama"];
-
-		//echo "session id_cabang baru: ".$this->session->id_cabang;
-		//echo "session daerah_cabang baru: ".$this->session->daerah_cabang;
-		//echo "session nama_toko_cabang baru: ".$this->session->nama_toko_cabang;
-		redirect("toko/dashboard_cabang");
+		$response["content"]["nama_cabang"] = $this->session->daerah_cabang;
+		$response["content"]["nama_toko"] = $this->session->nama_toko;
+		echo json_encode($response);
 	}
 	public function pengaturan_cabang(){
 		$this->load->view("cabang/v_pengaturan_cabang");

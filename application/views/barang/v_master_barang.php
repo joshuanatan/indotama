@@ -107,3 +107,6 @@ $data = array(
 </script>
 
 <?php $this->load->view('_notification/notif_general'); ?>
+
+<!-- number format -->
+<script src = "<?php echo base_url();?>asset/custom/number_formatter.js"></script>
