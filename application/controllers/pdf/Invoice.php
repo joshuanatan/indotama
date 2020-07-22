@@ -9,7 +9,7 @@ class Invoice extends CI_Controller{
     }
     public function index($id_pk_penjualan){
         $where = array(
-            "penj_nomor"=>$id_pk_penjualan
+            "id_pk_penjualan"=>$id_pk_penjualan
         );
         $data['penjualan_main'] = executeQuery("SELECT * FROM mstr_penjualan join mstr_customer on mstr_penjualan.id_fk_customer = mstr_customer.id_pk_cust join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_penjualan.id_fk_cabang join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko WHERE mstr_penjualan.id_pk_penjualan='$id_pk_penjualan'")->result_array();
 
@@ -19,7 +19,7 @@ class Invoice extends CI_Controller{
 
     public function copy($id_pk_penjualan){
         $where = array(
-            "penj_nomor"=>$id_pk_penjualan
+            "id_pk_penjualan"=>$id_pk_penjualan
         );
         $data['penjualan_main'] = executeQuery("SELECT * FROM mstr_penjualan join mstr_customer on mstr_penjualan.id_fk_customer = mstr_customer.id_pk_cust join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_penjualan.id_fk_cabang join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko WHERE mstr_penjualan.id_pk_penjualan='$id_pk_penjualan'")->result_array();
 

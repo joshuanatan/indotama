@@ -28,7 +28,7 @@ class Pdf_invoice_asli extends TCPDF
     $html="
     <p>
     <hr style='width:98%;'>
-    <br><br><span style='font-size: medium;'>REKAP NOTA ASLI</span>
+    <br><br><span style='font-size: medium;'>INVOICE - REKAP ASLI</span>
     </p>";
     $this->SetFontSize(8);
     $this->SetTextColor(105, 105, 105);
