@@ -129,7 +129,7 @@ class M_pengiriman extends ci_model{
         $this->columns = array();
         $this->set_column("pengiriman_no","nomor pengiriman",true);
         $this->set_column("pengiriman_tgl","tanggal pengiriman",false);
-        $this->set_column("pem_pk_nomor","nomor penjualan",false);
+        $this->set_column("penj_nomor","nomor penjualan",false);
         $this->set_column("pengiriman_status","status",false);
         $this->set_column("pengiriman_last_modified","last modified",false);
     }
@@ -236,6 +236,20 @@ class M_pengiriman extends ci_model{
         }
         return $result;
     }
+    public function list_pengiriman_penjualan(){
+        $query = "
+        select id_pk_pengiriman,ifnull(pengiriman_no,'-') as pengiriman_no,pengiriman_tgl,pengiriman_status,id_fk_penjualan,pengiriman_tempat,".$this->tbl_name.".id_fk_warehouse,".$this->tbl_name.".id_fk_cabang,pengiriman_last_modified,penj_nomor,cust_perusahaan, cust_name, cust_suff, cust_hp, cust_email,penj_nomor
+        from ".$this->tbl_name." 
+        inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = ".$this->tbl_name.".id_fk_penjualan
+        inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        inner join mstr_cabang on mstr_cabang.id_pk_cabang = ".$this->tbl_name.".id_fk_cabang
+        inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+        where pengiriman_status = ? and cust_status = ? and cabang_status = ? and toko_status = ? and ".$this->tbl_name.".id_fk_cabang = ? ";
+        $args = array(
+            "aktif","aktif","aktif","aktif",$this->id_fk_cabang
+        );
+        return executeQuery($query,$args);
+    }
     private function content_retur($page,$order_by,$order_direction,$search_key,$data_per_page){
 
         $search_query = "";
@@ -305,6 +319,21 @@ class M_pengiriman extends ci_model{
             order by ".$order_by." ".$order_direction;
             $result["total_data"] = executequery($query,$args)->num_rows();
         }
+        return $result;
+    }
+    public function list_pengiriman_retur(){
+        $query = "select id_pk_pengiriman,pengiriman_no,pengiriman_tgl,pengiriman_status,pengiriman_tempat,".$this->tbl_name.".id_fk_warehouse,".$this->tbl_name.".id_fk_cabang,pengiriman_last_modified,penj_nomor,cust_perusahaan, cust_name, cust_suff, cust_hp, cust_email,penj_nomor,retur_no
+        from ".$this->tbl_name."
+        inner join mstr_retur on mstr_retur.id_pk_retur = ".$this->tbl_name.".id_fk_retur 
+        inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
+        inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        inner join mstr_cabang on mstr_cabang.id_pk_cabang = ".$this->tbl_name.".id_fk_cabang
+        inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+        where pengiriman_status = ? and cust_status = ? and cabang_status = ? and toko_status = ? and ".$this->tbl_name.".id_fk_cabang = ?";
+        $args = array(
+            "aktif","aktif","aktif","aktif",$this->id_fk_cabang
+        );
+        $result = executeQuery($query,$args);
         return $result;
     }
     public function insert(){

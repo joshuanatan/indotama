@@ -49,14 +49,16 @@ class M_penjualan extends ci_model{
         return $this->columns;
     }
     public function list(){
-        $sql = "
-        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_perusahaan,cust_name from mstr_penjualan
-        inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
-        where id_fk_cabang = ? and penj_status = ?";
+        $query = "
+        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified
+        from ".$this->tbl_name." 
+        inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
+        inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified
+        where penj_status = ? and cust_status = ? and id_fk_cabang = ?";
         $args = array(
-            $this->id_fk_cabang,"AKTIF"
+            "aktif","aktif",$this->id_fk_cabang
         );
-        return executeQuery($sql,$args);
+        return executeQuery($query,$args);
     }
     public function detail_by_penj_nomor(){
         $sql = "

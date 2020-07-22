@@ -137,11 +137,11 @@ class M_retur extends CI_Model{
         from ".$this->tbl_name." 
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = ".$this->tbl_name.".id_fk_penjualan
         left join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_retur_confirm
-        where retur_status != ? ".$search_query."  
+        where id_fk_cabang = ? and retur_status != ? ".$search_query."  
         order by ".$order_by." ".$order_direction." 
         limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "nonaktif"
+            $this->session->id_cabang,"nonaktif"
         );
         $result["data"] = executequery($query,$args);
         
@@ -150,7 +150,7 @@ class M_retur extends CI_Model{
         from ".$this->tbl_name." 
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = ".$this->tbl_name.".id_fk_penjualan
         left join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_retur_confirm
-        where retur_status != ? ".$search_query."  
+        where id_fk_cabang = ? and retur_status != ? ".$search_query."  
         order by ".$order_by." ".$order_direction;
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
@@ -173,7 +173,7 @@ class M_retur extends CI_Model{
         select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified,penj_nomor
         from ".$this->tbl_name." 
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = ".$this->tbl_name.".id_fk_penjualan
-        where retur_status = ? ".$search_query."  
+        where id_fk_cabang = ? and retur_status != ? ".$search_query."  
         order by ".$order_by." ".$order_direction." 
         limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
@@ -185,7 +185,7 @@ class M_retur extends CI_Model{
         select id_pk_retur
         from ".$this->tbl_name." 
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = ".$this->tbl_name.".id_fk_penjualan
-        where retur_status = ? ".$search_query."  
+        where id_fk_cabang = ? and retur_status != ? ".$search_query."  
         order by ".$order_by." ".$order_direction;
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
@@ -201,6 +201,19 @@ class M_retur extends CI_Model{
         ";
         $args = array(
             "aktif",$this->retur_no
+        );
+        return executeQuery($sql,$args);
+    }
+    public function list_excel($id_fk_cabang){
+        $sql = "
+        select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified, penj_nomor, penj_tgl, penj_dateline_tgl, id_fk_customer,id_fk_cabang,ifnull(retur_confirm_date,'-') as retur_confirm_date,ifnull(user_name,'-') as user_konfirmasi
+        from mstr_retur
+        inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
+        left join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_retur_confirm
+        where retur_status != ? and id_fk_cabang = ?
+        ";
+        $args = array(
+            "nonaktif",$id_fk_cabang
         );
         return executeQuery($sql,$args);
     }
