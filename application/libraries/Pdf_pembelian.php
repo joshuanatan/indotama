@@ -1,7 +1,7 @@
 <?php 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 require_once dirname(__FILE__) . '/tcpdf/tcpdf.php';
-class Pdf_invoice_copy extends TCPDF
+class Pdf_pembelian extends TCPDF
 {
     function __construct()
     {
@@ -28,10 +28,10 @@ class Pdf_invoice_copy extends TCPDF
     $html="
     <p>
     <hr style='width:98%;'>
-    <br><br><span style='font-size: medium;'>INVOICE - REKAP SALINAN</span>
+    <br><br><span style='font-size: medium;'>FAKTUR PEMBELIAN</span>
     </p>";
     $this->SetFontSize(8);
-    $this->SetTextColor(255, 0, 0);
+    $this->SetTextColor(105, 105, 105);
     //$this->writeHTML($html, false, true, false, 0);
     //$this->WriteHTML($html, true, 0, true, 0);     
     //$this->Cell(0, 27, 'Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
