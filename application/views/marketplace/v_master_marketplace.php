@@ -85,12 +85,10 @@ $data = array(
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view("marketplace/f-add-marketplace",$data);?>
 <?php $this->load->view("marketplace/f-update-marketplace",$data);?>
 <?php $this->load->view("marketplace/f-delete-marketplace",$data);?>
 <?php $this->load->view("marketplace/f-detail-marketplace",$data);?>
 
 <?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("req/core_script");?>

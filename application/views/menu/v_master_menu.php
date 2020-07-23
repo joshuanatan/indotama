@@ -84,11 +84,9 @@ $data = array(
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view('menu/f-add-menu',$data);?>
 <?php $this->load->view('menu/f-update-menu',$data);?>
 <?php $this->load->view('menu/f-delete-menu',$data);?>
 
 <?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("req/core_script");?>

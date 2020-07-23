@@ -127,7 +127,7 @@ $data = array(
     }
 </script>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view("penjualan/f-delete-penjualan");?>
 <?php $this->load->view("penjualan/f-detail-penjualan");?>
 <?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("req/core_script");?>

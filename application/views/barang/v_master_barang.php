@@ -85,10 +85,6 @@ $data = array(
     "page_title" => "Master Barang"
 );
 ?>
-<?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view("barang/f-add-barang",$data);?>
 <?php $this->load->view("barang/f-update-barang",$data);?>
 <?php $this->load->view("barang/f-delete-barang",$data);?>
@@ -108,5 +104,5 @@ $data = array(
 
 <?php $this->load->view('_notification/notif_general'); ?>
 
-<!-- number format -->
-<script src = "<?php echo base_url();?>asset/custom/number_formatter.js"></script>
+<?php $this->load->view("req/core_script");?>
+<?php $this->load->view("_core_script/table_func");?>

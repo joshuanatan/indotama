@@ -100,10 +100,6 @@ $data = array(
     "page_title" => "Permintaan"
 );
 ?>
-<?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view("brg_permintaan/f-add-brg-permintaan",$data);?>
 <?php $this->load->view("brg_permintaan/f-update-brg-permintaan",$data);?>
 <?php $this->load->view("brg_permintaan/f-delete-brg-permintaan",$data);?>
@@ -111,6 +107,8 @@ $data = array(
 <?php $this->load->view("brg_permintaan/f-selesai-brg-permintaan",$data);?>
 
 <?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("req/core_script");?>
 <script>
     $("#notif_selesai_error").css("display", "none");
 </script>
+<?php $this->load->view("_core_script/table_func");?>

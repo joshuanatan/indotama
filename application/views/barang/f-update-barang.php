@@ -39,7 +39,7 @@
                     
                     <div class = "form-group col-lg-6">
                         <h5>Minimal Stok</h5>
-                        <input type = "text" class = "form-control" required name = "minimal" id = "minimal_edit">
+                        <input type = "text" class = "form-control nf-input" required name = "minimal" id = "minimal_edit">
                     </div>
                     
                     <div class = "form-group col-lg-6">
@@ -49,7 +49,7 @@
                     
                     <div class = "form-group col-lg-6">
                         <h5>Harga Satuan</h5>
-                        <input type = "text" class = "form-control" required name = "harga" id = "harga_edit">
+                        <input type = "text" class = "form-control nf-input" required name = "harga" id = "harga_edit">
                     </div>
                     
                     <div class = "form-group">

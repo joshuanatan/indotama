@@ -120,9 +120,8 @@ $data = array(
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 
 <?php $this->load->view("pengiriman_permintaan/f-add-pengiriman_permintaan",$data);?>
 <?php $this->load->view("pengiriman_permintaan/f-delete-pengiriman_permintaan",$data);?>
 <?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("req/core_script");?>

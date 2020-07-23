@@ -85,9 +85,6 @@ $data = array(
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view('cabang_admin/f-add-cabang_admin',$data);?>
 <?php $this->load->view('cabang_admin/f-update-cabang_admin',$data);?>
 <?php $this->load->view('cabang_admin/f-delete-cabang_admin',$data);?>
@@ -102,3 +99,4 @@ $data = array(
         load_datalist_user();
     }
 </script>
+<?php $this->load->view("req/core_script");?>

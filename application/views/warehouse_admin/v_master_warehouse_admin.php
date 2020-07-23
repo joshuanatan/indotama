@@ -86,9 +86,6 @@ $data = array(
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view('warehouse_admin/f-add-warehouse_admin',$data);?>
 <?php $this->load->view('warehouse_admin/f-update-warehouse_admin',$data);?>
 <?php $this->load->view('warehouse_admin/f-delete-warehouse_admin',$data);?>
@@ -129,3 +126,4 @@ $data = array(
     }
 </script>
 <?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("req/core_script");?>

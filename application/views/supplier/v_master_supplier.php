@@ -84,11 +84,9 @@ $data = array(
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view('supplier/f-add-supplier',$data);?>
 <?php $this->load->view('supplier/f-update-supplier',$data);?>
 <?php $this->load->view('supplier/f-detail-supplier',$data);?>
 <?php $this->load->view('supplier/f-delete-supplier',$data);?>
 <?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("req/core_script");?>

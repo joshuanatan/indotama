@@ -84,11 +84,9 @@ $data = array(
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view("satuan/f-add-satuan",$data);?>
 <?php $this->load->view("satuan/f-update-satuan",$data);?>
 <?php $this->load->view("satuan/f-delete-satuan",$data);?>
 
 <?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("req/core_script");?>

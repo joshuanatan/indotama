@@ -91,9 +91,6 @@ $data = array(
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view("penerimaan/f-add-penerimaan",$data);?>
 <?php $this->load->view("penerimaan/f-update-penerimaan",$data);?>
 <?php $this->load->view("penerimaan/f-detail-penerimaan",$data);?>
@@ -106,3 +103,4 @@ function load_datalist(){
 }
 </script>
 <?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("req/core_script");?>

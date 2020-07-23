@@ -86,9 +86,6 @@ $data = array(
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view('toko_admin/f-add-toko_admin',$data);?>
 <?php $this->load->view('toko_admin/f-update-toko_admin',$data);?>
 <?php $this->load->view('toko_admin/f-delete-toko_admin',$data);?>
@@ -100,3 +97,4 @@ $data = array(
         load_datalist_user();
     }
 </script>
+<?php $this->load->view("req/core_script");?>

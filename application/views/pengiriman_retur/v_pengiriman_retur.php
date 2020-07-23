@@ -96,9 +96,6 @@ $data = array(
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 
 <?php $this->load->view("pengiriman_retur/f-add-pengiriman_retur",$data);?>
 <?php $this->load->view("pengiriman_retur/f-update-pengiriman_retur",$data);?>
@@ -121,3 +118,4 @@ $data = array(
     }
 </script>
 <?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("req/core_script");?>

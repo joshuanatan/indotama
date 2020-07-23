@@ -8,12 +8,62 @@ function reformat_number(number){
     number = number.split(".").join("");
     return number; //balikin komda (,) jadi koma (.)
 }
-var input_element = document.querySelectorAll(".nf_input");
-for(var a = 0 ;a<input_element.length; a++){
-    input_element[a].oninput = function(){
-        var text = this.value;
-        text = reformat_number(text);
-        text = format_number(text);
-        this.value = text;
+function init(){
+    var input_element = document.querySelectorAll(".nf-input");
+    console.log(input_element.length);
+    for(var a = 0 ;a<input_element.length; a++){
+        
+        /*begin oninput init*/
+        input_element[a].onchange = function(){
+            var text = this.value;
+            var result = formatting_func(text);
+            this.value = result;
+        }
+        input_element[a].oninput = function(){
+            var text = this.value;
+            var result = formatting_func(text);
+            this.value = result;
+        }
     }
 }
+function formatting_func(text_in){
+    var text = "";
+
+    var space_detect = text_in.split(" ");
+    if(space_detect.length > 1){
+        for(var a = 0; a<space_detect.length; a++){
+            space_detect[a] = reformat_number(space_detect[a]);
+            space_detect[a] = format_number(space_detect[a]);
+        }
+        text = space_detect.join(" ");
+    }
+    else{
+        text = reformat_number(text_in);
+        text = format_number(text);
+    }
+    return text;
+}
+function deformatting_func(text_in){
+    var text = "";
+    var space_detect = text_in.split(" ");
+    if(space_detect.length > 1){
+        for(var a = 0; a<space_detect.length; a++){
+            space_detect[a] = reformat_number(space_detect[a]);
+        }
+        text = space_detect.join(" ");
+    }
+    else{
+        text = reformat_number(text_in);
+    }
+    return text;
+}
+function nf_reformat_all(){
+    var input_element = document.querySelectorAll(".nf-input");
+    for(var a = 0 ;a<input_element.length; a++){
+        var text = input_element[a].value;
+        var result = deformatting_func(text);
+        console.log(result);
+        input_element[a].value = result;
+    }
+}
+init();

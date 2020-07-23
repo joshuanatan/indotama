@@ -238,7 +238,6 @@ $data = array(
 <?php $this->load->view("brg_permintaan/f-delete-brg-permintaan",$data);?>
 <?php $this->load->view("penerimaan_permintaan/f-add-penerimaan_permintaan",$data);?>
 
-<?php $this->load->view("_core_script/register_func");?>
 <?php $this->load->view("brg_permintaan/f-add-brg-permintaan",$data);?>
 <script>
     document.getElementById("permintaan_tambah_button").addEventListener("click",function(){
@@ -253,3 +252,4 @@ $data = array(
 <script>
     $("#notif_selesai_error").css("display", "none");
 </script>
+<?php $this->load->view("req/core_script");?>

@@ -100,9 +100,6 @@ $data = array(
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view("penerimaan_retur/f-add-penerimaan_retur",$data);?>
 <?php $this->load->view("penerimaan_retur/f-update-penerimaan_retur",$data);?>
 <?php $this->load->view("penerimaan_retur/f-detail-penerimaan_retur",$data);?>
@@ -118,3 +115,4 @@ $data = array(
         load_datalist_satuan();
     }
 </script>
+<?php $this->load->view("req/core_script");?>

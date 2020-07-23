@@ -83,9 +83,6 @@ $data = array(
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view("retur/f-add-retur",$data);?>
 <?php $this->load->view("retur/f-update-retur",$data);?>
 <?php $this->load->view("retur/f-detail-retur",$data);?>
@@ -103,3 +100,4 @@ $data = array(
     }
 </script>   
 <?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("req/core_script");?>

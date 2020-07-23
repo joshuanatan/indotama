@@ -109,7 +109,6 @@ $notif_data = array(
     var ctrl = "toko";
 </script>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/update_func");?>
 <script>
     $.ajax({
         url:"<?php echo base_url();?>ws/toko/pengaturan",
@@ -145,3 +144,4 @@ $notif_data = array(
 
 
 <?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("req/core_script");?>

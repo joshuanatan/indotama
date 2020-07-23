@@ -80,10 +80,6 @@ $data = array(
     "cabang" => $cabang
 );
 ?>
-<?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view("brg_cabang/f-add-brg_cabang",$data);?>
 <?php $this->load->view("brg_cabang/f-update-brg_cabang",$data);?>
 <?php $this->load->view("brg_cabang/f-delete-brg_cabang",$data);?>
@@ -96,3 +92,5 @@ $data = array(
     }
 </script>
 <?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("req/core_script");?>
+<?php $this->load->view("_core_script/table_func");?>

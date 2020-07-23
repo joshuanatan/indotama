@@ -73,6 +73,7 @@ $notif_data = array(
         <?php $this->load->view('req/mm_js.php');?>
     </body>
 </html>
+<script src = "<?php echo base_url();?>asset/custom/number_formatter.js"></script>
 <script>
     var ctrl = "barang_merk";
     var url_add = "";
@@ -83,12 +84,10 @@ $data = array(
     "page_title" => "Master Merk"
 );
 ?>
-<?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view("barang_merk/f-add-barang_merk",$data);?>
 <?php $this->load->view("barang_merk/f-update-barang_merk",$data);?>
 <?php $this->load->view("barang_merk/f-delete-barang_merk",$data);?>
 
 <?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("req/core_script");?>
+<?php $this->load->view("_core_script/table_func");?>

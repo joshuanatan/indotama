@@ -33,7 +33,7 @@
                     </div>
                     <div class = "form-group col-lg-6">
                         <h5>Minimal Stok</h5>
-                        <input type = "text" class = "form-control nf_input" required name = "minimal">
+                        <input type = "text" class = "form-control nf-input" required name = "minimal">
                     </div>
                     <div class = "form-group col-lg-6">
                         <h5>Satuan</h5>
@@ -41,7 +41,7 @@
                     </div>
                     <div class = "form-group col-lg-6">
                         <h5>Harga Satuan</h5>
-                        <input type = "text" class = "form-control nf_input" required name = "harga">
+                        <input type = "text" class = "form-control nf-input" required name = "harga">
                     </div>
                     <div class = "form-group">
                         <h5>Kombinasi Barang</h5>
@@ -69,7 +69,7 @@
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <button type = "button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
+                        <button type = "button" onclick = "register_func();reset_register_form();" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
                 </form>
             </div>
@@ -82,5 +82,12 @@
         var html = "<tr><input type = 'hidden' name = 'check[]' value = '"+baris_barang_counter+"'><td><input type = 'text' class = 'form-control' list = 'datalist_barang' name = 'barang"+baris_barang_counter+"'></td><td><input type = 'text' class = 'form-control' name = 'qty"+baris_barang_counter+"'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
         $("#btn_tambah_baris_barang_container").before(html);
         baris_barang_counter++;
+    }
+
+    var default_register_form_html = $("#register_form").html();
+    function reset_register_form(){
+        console.log("masuk");
+        $("#register_form").html(default_register_form_html);
+        console.log("done");
     }
 </script>

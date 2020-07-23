@@ -94,12 +94,11 @@ $data = array(
     "type" => $type
 );
 ?>
-<?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("_core_script/register_func");?>
-<?php $this->load->view("_core_script/update_func");?>
-<?php $this->load->view("_core_script/delete_func");?>
 <?php $this->load->view("brg_pemenuhan/f-insert-brg-pemenuhan",$data);?>
 <?php $this->load->view("brg_pemenuhan/f-delete-brg-pemenuhan",$data);?>
 <?php $this->load->view("brg_pemenuhan/f-detail-brg-pemenuhan",$data);?>
 
+<?php $this->load->view("req/core_script");?>
 <?php $this->load->view('_notification/notif_general'); ?>
+
+<?php $this->load->view("_core_script/table_func");?>
