@@ -10,6 +10,10 @@ class Pengiriman extends CI_Controller{
         $this->load->view("pengiriman/v_pengiriman",$data);
     }
     public function cabang(){
+        $data["excel"] = array(
+            "ctrl_model" => "m_e_pengiriman_penjualan",
+            "excel_title" => "Daftar Pengiriman Penjualan"
+        );
         $this->load->model("m_satuan");
         $result = $this->m_satuan->list();
         $data["satuan"] = $result->result_array();
@@ -19,6 +23,10 @@ class Pengiriman extends CI_Controller{
         $this->load->view("pengiriman/v_pengiriman",$data);
     }
     public function retur(){
+        $data["excel"] = array(
+            "ctrl_model" => "m_e_pengiriman_retur",
+            "excel_title" => "Daftar Pengiriman Retur"
+        );
         $this->load->model("m_satuan");
         $result = $this->m_satuan->list();
         $data["satuan"] = $result->result_array();
@@ -29,6 +37,11 @@ class Pengiriman extends CI_Controller{
         $this->load->view("pengiriman_retur/v_pengiriman_retur",$data);
     }
     public function permintaan(){
+        $data["excel"] = array(
+            "ctrl_model" => "m_e_pengiriman_permintaan",
+            "excel_title" => "Daftar Pengiriman Permintaan"
+        );
+
         $this->load->model("m_satuan");
         $result = $this->m_satuan->list();
         $data["satuan"] = $result->result_array();
@@ -39,6 +52,7 @@ class Pengiriman extends CI_Controller{
         $this->load->view("pengiriman_permintaan/v_pengiriman_permintaan",$data);
     }
     public function permintaan_gudang(){
+
         $this->load->model("m_satuan");
         $result = $this->m_satuan->list();
         $data["satuan"] = $result->result_array();

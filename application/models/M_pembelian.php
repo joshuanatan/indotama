@@ -388,5 +388,27 @@ class M_pembelian extends ci_model{
         $this->no_control = $result[0]["@latest_no"];
         return $result[0]["@transno"];
     }
-    
+    public function data_excel(){
+        $query = "
+        select id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified,toko_nama,cabang_daerah
+        from ".$this->tbl_name." 
+        inner join mstr_supplier on mstr_supplier.id_pk_sup = ".$this->tbl_name.".id_fk_supp
+        inner join mstr_cabang on mstr_cabang.id_pk_cabang = ".$this->tbl_name.".id_fk_cabang
+        inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+        where pem_status = ? and sup_status = ? and cabang_status = ? and toko_status = ? and id_fk_cabang = ?";
+        $args = array(
+            "aktif","aktif","aktif","aktif",$this->session->id_cabang
+        );
+        return executequery($query,$args);
+    }
+    public function columns_excel(){
+        $this->columns = array();
+        $this->set_column("pem_pk_nomor","nomor pembelian",true);
+        $this->set_column("pem_tgl","tanggal pembelian",false);
+        $this->set_column("pem_status","status",false);
+        $this->set_column("sup_perusahaan","supplier",false);
+        $this->set_column("pem_last_modified","last modified",false);
+        return $this->columns;
+         
+    }
 }

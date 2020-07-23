@@ -749,61 +749,30 @@ class M_employee extends ci_model{
             return false;
         }
     }
-    public function get_id_pk_employee(){
-        return $this->id_pk_employee;
+    public function data_excel(){
+        $sql = "select id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,emp_create_date,emp_last_modified,mstr_toko.toko_nama, mstr_employee.id_fk_toko
+        from ".$this->tbl_name." 
+        join mstr_toko on mstr_toko.id_pk_toko = mstr_employee.id_fk_toko 
+        where emp_status = ? ";
+        $args = array(
+            "aktif"
+        );
+        return executeQuery($sql,$args);
     }
-    public function get_emp_nama(){
-        return $this->emp_nama;
-    }
-    public function get_emp_npwp(){
-        return $this->emp_npwp;
-    }
-    public function get_emp_ktp(){
-        return $this->emp_ktp;
-    }
-    public function get_emp_hp(){
-        return $this->emp_hp;
-    }
-    public function get_emp_alamat(){
-        return $this->emp_alamat;
-    }
-    public function get_emp_kode_pos(){
-        return $this->emp_kode_pos;
-    }
-    public function get_emp_foto_npwp(){
-        return $this->emp_foto_npwp;
-    }
-    public function get_emp_foto_ktp(){
-        return $this->emp_foto_ktp;
-    }
-    public function get_emp_foto_lain(){
-        return $this->emp_foto_lain;
-    }
-    public function get_emp_foto(){
-        return $this->emp_foto;
-    }
-    public function get_emp_gaji(){
-        return $this->emp_gaji;
-    }
-    public function get_emp_startdate(){
-        return $this->emp_startdate;
-    }
-    public function get_emp_enddate(){
-        return $this->emp_enddate;
-    }
-    public function get_emp_rek(){
-        return $this->emp_rek;
-    }
-    public function get_emp_gender(){
-        return $this->emp_gender;
-    }
-    public function get_emp_suff(){
-        return $this->emp_suff;
-    }
-    public function get_emp_status(){
-        return $this->emp_status;
-    }
-    public function get_id_fk_toko(){
-        return $this->id_fk_toko;
+    public function columns_excel(){
+        $this->columns = array();
+        $this->set_column("emp_nama","Nama",true);
+        $this->set_column("emp_npwp","NPWP",true);
+        $this->set_column("emp_ktp","KTP",true);
+        $this->set_column("emp_hp","HP",true);
+        $this->set_column("emp_alamat","Alamat",true);
+        $this->set_column("emp_kode_pos","Kode Pos",true);
+        $this->set_column("emp_gaji","Gaji",true);
+        $this->set_column("emp_startdate","Start Date",true);
+        $this->set_column("emp_enddate","End Date",true);
+        $this->set_column("emp_rek","Rekening",true);
+        $this->set_column("emp_gender","Jenis Kelamin",true);
+        $this->set_column("emp_status","Status",true);
+        return $this->columns;
     }
 }

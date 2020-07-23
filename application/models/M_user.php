@@ -99,6 +99,20 @@ class m_user extends ci_model{
             insert into mstr_user_log(executed_function,id_pk_user,user_name,user_pass,user_email,user_status,id_fk_role,id_fk_employee,user_last_modified,user_create_date,id_create_date,id_last_modified,id_log_all) values('after update',new.id_pk_user,new.user_name,new.user_pass,new.user_email,new.user_status,new.id_fk_role,new.id_fk_employee,new.user_last_modified,new.user_create_date,new.id_create_date,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
+
+        drop procedure if exists get_username;
+        delimiter $$
+        create procedure get_username(
+            in id_pk_user_in int,
+            out username varchar(100)
+        )
+        begin
+            select ifnull(user_name,"-") into username 
+            from mstr_user
+            where id_pk_user = id_pk_user_in
+            and user_status = 'aktif';
+        end $$
+        delimiter ;
         ";
         executesql($sql);
     }
@@ -479,22 +493,28 @@ class m_user extends ci_model{
             return false;
         }
     }
-    public function get_id_pk_user(){
-        return $this->id_pk_user;
+    public function data_excel(){
+        $sql = "
+        select id_pk_user,user_name,user_email,user_status,id_fk_role,user_last_modified,user_create_date,jabatan_nama,id_fk_employee,emp_nama
+        from ".$this->tbl_name." 
+        inner join mstr_employee on mstr_employee.id_pk_employee = ".$this->tbl_name.".id_fk_employee
+        inner join mstr_jabatan on mstr_jabatan.id_pk_jabatan = ".$this->tbl_name.".id_fk_role
+        where user_status = ? and emp_status = ? ";
+        $args = array(
+            "AKTIF","AKTIF"
+        );
+        $result = executeQuery($sql,$args);
+        return $result;
     }
-    public function get_user_name(){
-        return $this->user_name;
-    }
-    public function get_user_pass(){
-        return $this->user_pass;
-    }
-    public function get_user_email(){
-        return $this->user_email;
-    }
-    public function get_id_fk_role(){
-        return $this->id_fk_role;
-    }
-    public function get_user_status(){
-        return $this->user_status;
+    public function columns_excel(){
+        $this->columns = array();
+        $this->set_column("user_name","username","required");
+        $this->set_column("emp_nama","Nama Karyawan","required");
+        $this->set_column("user_email","email","required");
+        $this->set_column("jabatan_nama","role","required");
+        $this->set_column("user_status","status","required");
+        $this->set_column("jabatan_nama","Nama Role","required");
+        $this->set_column("user_last_modified","last modified","required");
+        return $this->columns;
     }
 }

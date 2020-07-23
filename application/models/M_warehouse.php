@@ -359,22 +359,25 @@ class m_warehouse extends ci_model{
         }
         return false;
     }
-    public function get_id_pk_warehouse(){
-        return $this->id_pk_warehouse;
+    public function data_excel(){
+        $query = "
+        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_last_modified
+        from ".$this->tbl_name." 
+        where warehouse_status = ?";
+        $args = array(
+            "aktif"
+        );
+        return executeQuery($query,$args);
     }
-    public function get_warehouse_nama(){
-        return $this->warehouse_nama;
-    }
-    public function get_warehouse_alamat(){
-        return $this->warehouse_alamat;
-    }
-    public function get_warehouse_notelp(){
-        return $this->warehouse_notelp;
-    }
-    public function get_warehouse_desc(){
-        return $this->warehouse_desc;
-    }
-    public function get_warehouse_status(){
-        return $this->warehouse_status;
+    public function columns_excel(){
+        $this->columns = array();
+        
+        $this->set_column("warehouse_nama","nama warehouse","required");
+        $this->set_column("warehouse_alamat","alamat","required");
+        $this->set_column("warehouse_notelp","no telpon","required");
+        $this->set_column("warehouse_desc","deskripsi","required");
+        $this->set_column("warehouse_status","status","required");
+        $this->set_column("warehouse_last_modified","last modified","required");
+        return $this->columns;
     }
 }

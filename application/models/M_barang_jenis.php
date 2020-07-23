@@ -315,4 +315,26 @@ class M_barang_jenis extends ci_model{
         }
         return false;
     }
+    public function data_excel(){
+        $where = array(
+            "brg_jenis_status" => "aktif"
+        );
+        $field = array(
+            "id_pk_brg_jenis",
+            "brg_jenis_nama",
+            "brg_jenis_status",
+            "brg_jenis_create_date",
+            "brg_jenis_last_modified",
+            "id_create_data",
+            "id_last_modified"
+        );
+        return selectrow($this->tbl_name,$where,$field);
+    }
+    public function columns_excel(){
+        $this->columns = array();
+        $this->set_column("brg_jenis_nama","jenis barang",true);
+        $this->set_column("brg_jenis_status","status",false);
+        $this->set_column("brg_jenis_last_modified","last modified",false);
+        return $this->columns;
+    }
 }

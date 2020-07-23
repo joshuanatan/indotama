@@ -484,4 +484,27 @@ class M_penjualan extends ci_model{
         $this->no_control = $result[0]["@latest_no"];
         return $result[0]["@transno"];
     }
+    public function data_excel(){
+        $query = "
+        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified
+        from ".$this->tbl_name." 
+        inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
+        inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified
+        where penj_status = ? and cust_status = ? and id_fk_cabang = ?";
+        $args = array(
+            "aktif","aktif",$this->session->id_cabang
+        );
+        return executeQuery($query,$args);
+    }
+    public function columns_excel(){
+        $this->columns = array();
+        $this->set_column("penj_nomor","nomor penjualan",true);
+        $this->set_column("penj_tgl","tanggal penjualan",false);
+        $this->set_column("cust_name","customer",false);
+        $this->set_column("penj_tipe_pembayaran","tipe pembayaran",false);
+        $this->set_column("penj_jenis","jenis penjualan",false);
+        $this->set_column("penj_status","status",false);
+        $this->set_column("user_last_modified","User Last Modified",false);
+        return $this->columns;
+    }
 }

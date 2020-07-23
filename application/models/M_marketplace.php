@@ -369,4 +369,23 @@ class M_marketplace extends ci_model{
         }
         return false;
     }
+    public function data_excel(){
+        $sql = "select id_pk_marketplace,marketplace_nama,marketplace_ket,marketplace_status,marketplace_last_modified,marketplace_biaya
+        from ".$this->tbl_name." 
+        where marketplace_status = ?  
+        order by marketplace_nama asc"; 
+        $args = array(
+            "aktif"
+        );
+        return executequery($sql,$args);
+    }
+    public function columns_excel(){
+        $this->columns = array();
+        $this->set_column("marketplace_nama","nama",false);
+        $this->set_column("marketplace_ket","keterangan",false);
+        $this->set_column("marketplace_biaya","biaya",false);
+        $this->set_column("marketplace_status","status",false);
+        $this->set_column("marketplace_last_modified","last modified",false);
+        return $this->columns;
+    }
 }

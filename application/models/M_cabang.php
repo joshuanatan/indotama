@@ -507,4 +507,31 @@ class M_cabang extends ci_model{
         }
         return false;
     }
+    
+    public function data_excel(){
+        $query = "
+        select id_pk_cabang,ifnull(cabang_nama,'-') as cabang_nama,ifnull(cabang_kode,'-') as cabang_kode,cabang_daerah,cabang_notelp,cabang_alamat,cabang_status,cabang_create_date,cabang_last_modified,cabang_kop_surat,cabang_nonpkp,cabang_pernyataan_rek,id_pk_toko,toko_logo,toko_nama,toko_kode,toko_status
+        from ".$this->tbl_name." 
+        inner join mstr_toko on mstr_toko.id_pk_toko = ".$this->tbl_name.".id_fk_toko
+        where cabang_status = ? ";
+        $args = array(
+            "aktif"
+        );
+        return executeQuery($query,$args);
+    }
+    public function columns_excel(){
+        $this->columns = array();
+        
+        $this->set_column("cabang_nama","nama cabang",true);
+        $this->set_column("cabang_kode","kode cabang",true);
+        $this->set_column("cabang_daerah","daerah",true);
+        $this->set_column("cabang_notelp","no telp",false);
+        $this->set_column("cabang_alamat","alamat",false);
+        $this->set_column("cabang_status","status",false);
+        $this->set_column("toko_logo","logo toko",true);
+        $this->set_column("toko_nama","nama toko",true);
+        $this->set_column("toko_kode","kode toko",false);
+        $this->set_column("toko_status","status toko",false);
+        return $this->columns;
+    }
 }

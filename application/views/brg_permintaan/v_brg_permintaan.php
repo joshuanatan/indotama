@@ -61,7 +61,13 @@ $notif_data = array(
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
                                             </div>
                                             <br/>
-                                            <?php $this->load->view("_base_element/table");?>
+                                            <?php
+                                                $data = array(
+                                                    "ctrl_model" => "m_brg_permintaan",
+                                                    "excel_title" => "Daftar Permintaan barang"
+                                                );
+                                            ?>
+                                            <?php $this->load->view("_base_element/table",$data);?>
                                         </div>
                                     </div>
                                 </div>

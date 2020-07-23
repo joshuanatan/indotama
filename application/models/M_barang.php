@@ -98,7 +98,9 @@ class M_barang extends ci_model{
         begin
             set @id_user = new.id_last_modified;
             set @tgl_action = new.brg_last_modified;
-            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.brg_last_modified);
+            
+            call get_username(new.id_last_modified,@username);
+            set @log_text = concat(@username,' insert data barang at ' , new.brg_last_modified,' nama barang terkait: ',new.brg_nama);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
             insert into mstr_barang_log(executed_function,
@@ -114,11 +116,23 @@ class M_barang extends ci_model{
         begin
             set @id_user = new.id_last_modified;
             set @tgl_action = new.brg_last_modified;
-            set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_last_modified);
-            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
-            
-            insert into mstr_barang_log(executed_function,
-            id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_status,brg_create_date,brg_last_modified,id_create_data,id_last_modified,id_fk_brg_jenis,id_fk_brg_merk,id_log_all) values ('after update',new.id_pk_brg,new.brg_kode,new.brg_nama,new.brg_ket,new.brg_minimal,new.brg_satuan,new.brg_image,new.brg_harga,new.brg_status,new.brg_create_date,new.brg_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_brg_jenis,new.id_fk_brg_merk,@id_log_all);
+
+            call get_username(new.id_last_modified,@username);
+
+            if new.brg_status = 'nonaktif'
+            then
+                set @log_text = concat(@username,' delete data barang at ',new.brg_last_modified ,' nama barang terkait: ',old.brg_nama);
+                call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+
+                insert into mstr_barang_log(executed_function,
+                id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_status,brg_create_date,brg_last_modified,id_create_data,id_last_modified,id_fk_brg_jenis,id_fk_brg_merk,id_log_all) values ('after delete',new.id_pk_brg,new.brg_kode,new.brg_nama,new.brg_ket,new.brg_minimal,new.brg_satuan,new.brg_image,new.brg_harga,new.brg_status,new.brg_create_date,new.brg_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_brg_jenis,new.id_fk_brg_merk,@id_log_all);
+            else
+                set @log_text = concat(@username,' update data barang at ',new.brg_last_modified ,' \nnama barang terkait: ',old.brg_nama,' nama barang baru: ',new.brg_nama);
+                call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+                
+                insert into mstr_barang_log(executed_function,
+                id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_status,brg_create_date,brg_last_modified,id_create_data,id_last_modified,id_fk_brg_jenis,id_fk_brg_merk,id_log_all) values ('after update',new.id_pk_brg,new.brg_kode,new.brg_nama,new.brg_ket,new.brg_minimal,new.brg_satuan,new.brg_image,new.brg_harga,new.brg_status,new.brg_create_date,new.brg_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_brg_jenis,new.id_fk_brg_merk,@id_log_all);
+            end if;
         end$$
         delimiter ;
         ";
@@ -445,33 +459,6 @@ class M_barang extends ci_model{
         }
         return true;
     }
-    public function get_id_pk_brg(){
-        return $this->id_pk_brg;
-    }
-    public function get_brg_kode(){
-        return $this->brg_kode;
-    }
-    public function get_brg_nama(){
-        return $this->brg_nama;
-    }
-    public function get_brg_ket(){
-        return $this->brg_ket;
-    }
-    public function get_brg_minimal(){
-        return $this->brg_minimal;
-    }
-    public function get_brg_satuan(){
-        return $this->brg_satuan;
-    }
-    public function get_brg_image(){
-        return $this->brg_image;
-    }
-    public function get_brg_harga(){
-        return $this->brg_harga;
-    }
-    public function get_brg_status(){
-        return $this->brg_status;
-    }
     public function set_id_pk_brg($id_pk_brg){
         if($id_pk_brg != ""){
             $this->id_pk_brg = $id_pk_brg;
@@ -548,5 +535,33 @@ class M_barang extends ci_model{
             return true;
         }
         return false;
+    }
+    public function data_excel(){
+        $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_last_modified,brg_merk_nama,brg_jenis_nama,group_concat(tbl_barang_ukuran.ukuran separator ',') as ukuran
+        from ".$this->tbl_name." 
+        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
+        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
+        left join tbl_barang_ukuran on tbl_barang_ukuran.id_fk_barang = ".$this->tbl_name.".id_pk_brg
+        where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ?  
+        group by id_pk_brg 
+        order by brg_nama asc"; 
+        $args = array(
+            "aktif","aktif","aktif"
+        );
+        return executequery($sql,$args);
+    }
+    public function columns_excel(){
+        $this->columns = array();
+        $this->set_column("brg_kode","kode barang",true);
+        $this->set_column("brg_jenis_nama","tipe barang",false);
+        $this->set_column("brg_nama","nama barang",false);
+        $this->set_column("brg_ket","keterangan",false);
+        $this->set_column("brg_merk_nama","merk barang",false);
+        $this->set_column("brg_minimal","jumlah minimal",false);
+        $this->set_column("brg_satuan","satuan",false);
+        $this->set_column("brg_harga","harga satuan",false);
+        $this->set_column("brg_status","status",false);
+        $this->set_column("brg_last_modified","last modified",false);
+        return $this->columns;
     }
 }

@@ -449,25 +449,26 @@ class M_brg_permintaan extends ci_model{
         }
         return false;
     }
-    public function get_id_pk_brg_permintaan(){
-        return $this->id_pk_brg_permintaan;
+    public function data_excel(){
+        $query = "
+        select id_pk_brg_permintaan, brg_permintaan_qty, brg_nama, brg_permintaan_notes, brg_permintaan_deadline, brg_permintaan_status, tbl_brg_permintaan.id_fk_brg, tbl_brg_permintaan.id_fk_cabang, brg_permintaan_create_date, brg_permintaan_last_modified, sum(tbl_brg_pemenuhan.brg_pemenuhan_qty) as brg_permintaan_pemenuhan_qty, cabang_daerah 
+        from tbl_brg_permintaan 
+        join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg and brg_status = 'aktif'
+        join mstr_cabang on mstr_cabang.id_pk_cabang =tbl_brg_permintaan.id_fk_cabang 
+        left join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan 
+        where tbl_brg_permintaan.id_fk_cabang = ? and tbl_brg_permintaan.brg_permintaan_status!='batal' group by id_pk_brg_permintaan";
+        $args = array(
+            $this->session->id_cabang
+        );
+        return executeQuery($query,$args);
     }
-    public function get_brg_permintaan_qty(){
-        return $this->brg_permintaan_qty;
-    }
-    public function get_brg_permintaan_notes(){
-        return $this->brg_permintaan_notes;
-    }
-    public function get_brg_permintaan_deadline(){
-        return $this->brg_permintaan_deadline;
-    }
-    public function get_brg_permintaan_status(){
-        return $this->brg_permintaan_status;
-    }
-    public function get_id_fk_brg(){
-        return $this->id_fk_brg;
-    }
-    public function get_id_fk_cabang(){
-        return $this->id_fk_cabang;
+    public function columns_excel(){
+        $this->columns = array();
+        $this->set_column("brg_permintaan_create_date","tanggal permintaan",true);
+        $this->set_column("brg_nama","nama barang",false);
+        $this->set_column("brg_permintaan_pemenuhan_qty","jumlah terpenuhi",false);
+        $this->set_column("brg_permintaan_qty","total permintaan",false);
+        $this->set_column("brg_permintaan_status","status permintaan",false);
+        return $this->columns;
     }
 }

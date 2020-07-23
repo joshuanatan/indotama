@@ -594,32 +594,28 @@ class M_supplier extends ci_model{
         }
         return false;
     }
-    public function get_id_pk_sup(){
-        return $this->id_pk_sup;
+    public function data_excel(){
+        $sql = "select id_pk_sup,sup_nama,sup_suff,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_last_modified
+        from ".$this->tbl_name." 
+        where sup_status = ?  
+        order by sup_perusahaan asc";
+        $args = array(
+            "aktif"
+        );
+        return executequery($sql,$args);
     }
-    public function get_sup_nama(){
-        return $this->sup_nama;
-    }
-    public function get_sup_perusahaan(){
-        return $this->sup_perusahaan;
-    }
-    public function get_sup_email(){
-        return $this->sup_email;
-    }
-    public function get_sup_telp(){
-        return $this->sup_telp;
-    }
-    public function get_sup_hp(){
-        return $this->sup_hp;
-    }
-    public function get_sup_alamat(){
-        return $this->sup_alamat;
-    }
-    public function get_sup_keterangan(){
-        return $this->sup_keterangan;
-    }
-    public function get_sup_status(){
-        return $this->sup_status;
+    public function columns_excel(){
+        $this->columns = array();
+        $this->set_column("sup_nama","pic",true);
+        $this->set_column("sup_perusahaan","supplier",false);
+        $this->set_column("sup_email","email",false);
+        $this->set_column("sup_telp","no telp",false);
+        $this->set_column("sup_hp","no hp",false);
+        $this->set_column("sup_alamat","alamat",false);
+        $this->set_column("sup_keterangan","keterangan",false);
+        $this->set_column("sup_status","status",false);
+        $this->set_column("sup_last_modified","last modified",false);
+        return $this->columns;
     }
 }
 ?>

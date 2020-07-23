@@ -634,37 +634,41 @@ class M_customer extends ci_model{
         }
         return false;
     }
-    public function get_id_pk_cust(){
-        return $this->id_pk_cust;
+    public function data_excel(){
+        $where = array(
+            "cust_status" => "aktif"
+        );
+        $field = array(
+            "id_pk_cust",
+            "cust_name",
+            "cust_suff",
+            "cust_perusahaan",
+            "cust_email",
+            "cust_telp",
+            "cust_hp",
+            "cust_alamat",
+            "cust_keterangan",
+            "cust_no_npwp",
+            "cust_foto_npwp",
+            "cust_foto_kartu_nama",
+            "cust_badan_usaha",
+            "cust_no_rekening",
+            "cust_last_modified",
+            "cust_status"  
+        );
+        return selectRow($this->tbl_name,$where,$field);
     }
-    public function get_cust_name(){
-        return $this->cust_name;
-    }
-    public function get_cust_suff(){
-        return $this->cust_suff;
-    }
-    public function get_cust_perusahaan(){
-        return $this->cust_perusahaan;
-    }
-    public function get_cust_email(){
-        return $this->cust_email;
-    }
-    public function get_cust_telp(){
-        return $this->cust_telp;
-    }
-    public function get_cust_hp(){
-        return $this->cust_hp;
-    }
-    public function get_cust_alamat(){
-        return $this->cust_alamat;
-    }
-    public function get_cust_keterangan(){
-        return $this->cust_keterangan;
-    }
-    public function get_id_fk_toko(){
-        return $this->id_fk_toko;
-    }
-    public function get_cust_status(){
-        return $this->cust_status;
+    public function columns_excel(){
+        $this->columns = array();
+        $this->set_column("cust_name","name",true);
+        $this->set_column("cust_perusahaan","perusahaan",false);
+        $this->set_column("cust_email","email",false);
+        $this->set_column("cust_telp","telp",false);
+        $this->set_column("cust_hp","hp",false);
+        $this->set_column("cust_alamat","alamat",false);
+        $this->set_column("cust_keterangan","keterangan",false);
+        $this->set_column("cust_status","status",false);
+        $this->set_column("cust_last_modified","last modified",false);
+        return $this->columns;
     }
 }

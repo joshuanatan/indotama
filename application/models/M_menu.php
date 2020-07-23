@@ -348,19 +348,23 @@ class M_menu extends ci_model{
         }
         return false;
     }
-    public function get_menu_name(){
-        return $this->menu_name;
+    public function data_excel(){
+        $where = array(
+            "menu_status" => "aktif"
+        );
+        $field = array(
+            "id_pk_menu","menu_name","menu_display","menu_icon","menu_category","menu_status","menu_last_modified"
+        );
+        return selectrow($this->tbl_name,$where,$field);
     }
-    public function get_menu_display(){
-        return $this->menu_display;
-    }
-    public function get_menu_icon(){
-        return $this->menu_icon;
-    }
-    public function get_menu_status(){
-        return $this->menu_status;
-    }
-    public function get_menu_category(){
-        return $this->menu_category;
+    public function columns_excel(){
+        $this->columns = array();
+        $this->set_column("menu_display","display",false);
+        $this->set_column("menu_name","controller function",false);
+        $this->set_column("menu_icon","icon",false);
+        $this->set_column("menu_category","kategori",false);
+        $this->set_column("menu_status","status",false);
+        $this->set_column("menu_last_modified","last modified",false);
+        return $this->columns;
     }
 }

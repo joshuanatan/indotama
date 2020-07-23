@@ -61,7 +61,13 @@ $notif_data = array(
                                                 <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-warning md-assignment-account'></i><b> - Admin Toko</b>
                                             </div>
                                             <br/>
-                                            <?php $this->load->view("_base_element/table");?>
+                                            <?php
+                                                $data = array(
+                                                    "ctrl_model" => "m_cabang",
+                                                    "excel_title" => "Daftar Toko"
+                                                );
+                                            ?>
+                                            <?php $this->load->view("_base_element/table",$data);?>
                                         </div>
                                     </div>
                                 </div>

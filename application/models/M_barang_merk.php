@@ -314,4 +314,26 @@ class M_barang_merk extends ci_model{
         }
         return false;
     }
+    public function data_excel(){
+        $where = array(
+            "brg_merk_status" => "aktif"
+        );
+        $field = array(
+            "id_pk_brg_merk",
+            "brg_merk_nama",
+            "brg_merk_status",
+            "brg_merk_create_date",
+            "brg_merk_last_modified",
+            "id_create_data",
+            "id_last_modified"
+        );
+        return selectrow($this->tbl_name,$where,$field);
+    }
+    public function columns_excel(){
+        $this->columns = array();
+        $this->set_column("brg_merk_nama","jenis barang","required");
+        $this->set_column("brg_merk_status","status","required");
+        $this->set_column("brg_merk_last_modified","last modified","required");
+        return $this->columns;
+    }
 }
