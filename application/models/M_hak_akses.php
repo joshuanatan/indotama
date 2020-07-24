@@ -133,7 +133,7 @@ class M_hak_akses extends ci_model{
     }
     public function list_role_hak_akses(){
         $sql = "
-        select id_pk_hak_akses,id_fk_jabatan,id_fk_menu,hak_akses_create_date,hak_akses_status,hak_akses_last_modified,menu_name,menu_display,menu_icon
+        select id_pk_hak_akses,id_fk_jabatan,id_fk_menu,hak_akses_create_date,hak_akses_status,hak_akses_last_modified,menu_name,menu_display,menu_icon,menu_category
         from ".$this->tbl_name."
         inner join mstr_jabatan on mstr_jabatan.id_pk_jabatan = ".$this->tbl_name.".id_fk_jabatan
         inner join mstr_menu on mstr_menu.id_pk_menu = ".$this->tbl_name.".id_fk_menu

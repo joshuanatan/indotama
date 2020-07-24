@@ -175,6 +175,7 @@ class Roles extends CI_Controller{
                     $response["content"][$a]["menu_name"] = $result[$a]["menu_name"];
                     $response["content"][$a]["menu_display"] = $result[$a]["menu_display"];
                     $response["content"][$a]["menu_icon"] = $result[$a]["menu_icon"];
+                    $response["content"][$a]["kategori"] = $result[$a]["menu_category"];
                 }
             }
             else{

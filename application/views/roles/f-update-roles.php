@@ -53,10 +53,18 @@
                 var html = "";
                 for(var a = 0; a<respond["content"].length; a++){
                     if(respond["content"][a]["status"].toUpperCase() == "NONAKTIF"){
-                        html+="<tr><td>"+respond["content"][a]["menu_display"]+"</td><td><input type = 'checkbox' value = '"+respond["content"][a]["id_menu"]+"' name = 'check[]'></td></tr>";
+                        html+=`
+                        <tr>
+                            <td>${respond["content"][a]["menu_display"]} / ${respond["content"][a]["kategori"]}</td>
+                            <td><input type = 'checkbox' value = '${respond["content"][a]["id_menu"]}' name = 'check[]'></td>
+                        </tr>`;
                     }
                     else{
-                        html+="<tr><td>"+respond["content"][a]["menu_display"]+"</td><td><input type = 'checkbox' checked value = '"+respond["content"][a]["id_menu"]+"' name = 'check[]'></td></tr>";
+                        html+=`
+                        <tr>
+                            <td>${respond["content"][a]["menu_display"]} / ${respond["content"][a]["kategori"]}</td>
+                            <td><input type = 'checkbox' checked value = '${respond["content"][a]["id_menu"]}' name = 'check[]'></td>
+                        </tr>`;
                     }
                 }
                 $("#daftar_hak_akses_container_edit").html(html);

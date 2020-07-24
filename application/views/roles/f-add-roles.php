@@ -46,7 +46,11 @@
                 var html = "";
                 if(respond["status"] == "SUCCESS"){
                     for(var a = 0; a<respond["content"].length; a++){
-                        html+="<tr><td>"+respond["content"][a]["display"]+"</td><td><input type = 'checkbox' value = '"+respond["content"][a]["id"]+"' name = 'check[]'></td></tr>";
+                        html+=`
+                        <tr>
+                            <td>${respond["content"][a]["display"]} / ${respond["content"][a]["kategori"]}</td>
+                            <td><input type = 'checkbox' value = '${respond["content"][a]["id"]}' name = 'check[]'></td>
+                        </tr>`;
                     }
                     $("#daftar_menu_container_add").html(html);
                 }
