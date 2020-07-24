@@ -35,13 +35,13 @@ class Toko extends CI_Controller{
             $result["data"] = $result["data"]->result_array();
             for($a = 0; $a<count($result["data"]); $a++){
                 $response["content"][$a]["id"] = $result["data"][$a]["id_pk_toko"];
-                if($result["data"][$a]["toko_logo"]){
-                    $response["content"][$a]["logo"] = "<img src = '".base_url()."asset/uploads/toko/logo/".$result["data"][$a]["toko_logo"]."' width = '80px'>";
+                if(file_exists(FCPATH."asset/uploads/toko/logo/".$result["data"][$a]["toko_logo"])){
+                    $response["content"][$a]["logo_file"] = $result["data"][$a]["toko_logo"];
                 }
                 else{
-                    $response["content"][$a]["logo"] = "-";
+                    $response["content"][$a]["logo_file"] = "noimage.jpg";
                 }
-                $response["content"][$a]["logo_file"] = $result["data"][$a]["toko_logo"];
+                $response["content"][$a]["logo"] = "<img src = '".base_url()."asset/uploads/toko/logo/".$response["content"][$a]["logo_file"]."' width = '80px'>";
                 $response["content"][$a]["nama"] = $result["data"][$a]["toko_nama"];
                 $response["content"][$a]["kode"] = $result["data"][$a]["toko_kode"];
                 $response["content"][$a]["status"] = $result["data"][$a]["toko_status"];
