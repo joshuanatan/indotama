@@ -85,6 +85,7 @@ $breadcrumb = array(
                     <div class="row" id = "table_row"></div>
                     <div class="row" id = "chart_row"></div>
                     <div class="row" id = "pie_row"></div>
+                    <div class="row" id = "doughnut_row"></div>
                     <?php $this->load->view('req/mm_footer.php');?>
                 </div>
             </div>
@@ -112,6 +113,7 @@ $breadcrumb = array(
 <script src= "<?php echo base_url();?>asset/dashboard_elements/table_elem.js"></script>
 <script src= "<?php echo base_url();?>asset/dashboard_elements/chart_elem.js"></script>
 <script src= "<?php echo base_url();?>asset/dashboard_elements/pie_chart_elem.js"></script>
+<script src= "<?php echo base_url();?>asset/dashboard_elements/doughnut_chart_elem.js"></script>
 <script>
 $.ajax({
     url:"<?php echo base_url();?>ws/cabang/pengaturan",
@@ -156,6 +158,7 @@ $.ajax({
 });
 var chart_content = [];
 var pie_content = [];
+var doughnut_content = [];
 $.ajax({
     url:"<?php echo base_url();?>ws/cabang/dashboard",
     type:"GET",
@@ -170,6 +173,8 @@ $.ajax({
             var amt_chart = 0;
             var html_pie = "";
             var amt_pie = 0;
+            var html_doughnut = "";
+            var amt_doughnut = 0;
             for(var a = 0; a<respond["content"].length; a++){
                 if(respond["content"][a]["type"].toLowerCase() == "widget"){
                     var widget_data = respond["content"][a]["data"];
@@ -196,11 +201,18 @@ $.ajax({
                     amt_pie++;
                     pie_content.push(respond["content"][a]);
                 }
+                else if(respond["content"][a]["type"].toLowerCase() == "doughnut"){
+                    var doughnut_title = respond["content"][a]["title"];
+                    html_doughnut += populate_doughnut_data(doughnut_title,amt_doughnut);
+                    amt_doughnut++;
+                    doughnut_content.push(respond["content"][a]);
+                }
             }
             $("#widget_row").html(html_widget);
             $("#table_row").html(html_table);
             $("#chart_row").html(html_chart);
             $("#pie_row").html(html_pie);
+            $("#doughnut_row").html(html_doughnut);
 
             /*init chart*/
             for(var a = 0; a<chart_content.length; a++){
@@ -211,6 +223,10 @@ $.ajax({
             for(var a = 0; a<pie_content.length; a++){
                 var pie_data = pie_content[a]["data"];
                 init_pie_data(pie_data,a);
+            }
+            for(var a = 0; a<doughnut_content.length; a++){
+                var doughnut_data = doughnut_content[a]["data"];
+                init_doughnut_data(doughnut_data,a);
             }
 
             /*init table*/

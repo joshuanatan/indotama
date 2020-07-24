@@ -391,6 +391,17 @@ class Cabang extends CI_Controller{
             )
         );
         array_push($response["content"],$array);
+
+        $result = $this->m_dashboard_cabang->list_penjualan_3_tahun_terakhir();
+        $array = array(
+            "type" => "doughnut",
+            "title" => "Penjualan 3 Tahun Terakhir",
+            "data" => array(
+                "label" => $result["label"],
+                "data" => $result["data"]
+            )
+        );
+        array_push($response["content"],$array);
         
         $result = $this->m_dashboard_cabang->list_penjualan_tahun_ini_perbulan();
         $array = array(
