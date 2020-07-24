@@ -2,6 +2,9 @@
 <?php
 ob_start();
     $pdf = new Pdf_surat_jalan('P', 'mm', 'A4', true, 'UTF-8', false);
+    $logo = base_url() . 'asset/uploads/toko/logo/' . $pengiriman_main[0]['toko_logo'];
+
+    $pdf->set_logo($logo);
     $pdf->SetTitle('SURAT JALAN');
     $pdf->SetTopMargin(30);
     $pdf->setFooterMargin(20);
@@ -87,10 +90,7 @@ ob_start();
     </table>
     
     ';
-$pdf->writeHTML($content);
 //echo $content;
-$pdf->SetFont('MonotypeCorsivai','', 24);
-$content = $this->session->id_user;
 $pdf->writeHTML($content); //yang keluarin html nya. Setfont nya harus diatas kontennya
 
     //$obj_pdf->SetFont(Courier','', 8); //untuk font, liat dokumentasui
