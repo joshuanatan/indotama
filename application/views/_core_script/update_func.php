@@ -1,4 +1,10 @@
 <script>
+var default_update_form_html = $("#update_form").html();
+function reset_update_form(){
+    $("#update_form").html(default_update_form_html);
+}
+</script>
+<script>
     function update_func(){
         if(typeof(nf_reformat_all) != "undefined"){
             nf_reformat_all();
@@ -19,6 +25,9 @@
                     $("#update_modal").modal("hide");
                     if(typeof(refresh) != "undefined"){
                         refresh(page);
+                    }
+                    if(typeof(reset_update_form) != "undefined"){
+                        reset_update_form();
                     }
                 }
 
