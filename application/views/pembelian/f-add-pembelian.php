@@ -80,7 +80,7 @@
         <tr class = 'add_brg_beli_row'>
             <td id = 'row${brg_beli_row}'>
                 <input name = 'check[]' value = ${brg_beli_row} type = 'hidden'><input onchange = 'load_harga_akhir(${brg_beli_row})' type = 'text' list = 'datalist_barang_cabang' name = 'brg${brg_beli_row}' class = 'form-control' id = 'brg${brg_beli_row}'>
-                <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm' target = '_blank'>Tambah Barang Cabang</a>
+                <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm col-lg-12' target = '_blank'>Tambah Barang Cabang</a>
             </td>
             <td>
                 <input name = 'brg_qty${brg_beli_row}' type = 'text' class = 'form-control nf-input'>

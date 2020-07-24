@@ -22,7 +22,7 @@
                     </div>
                     <div class = "form-group">
                         <h5>Supplier</h5>
-                        <input type = 'text' class = "form-control" list = "daftar_supplier" required name = "supplier" id = "supplier_edit">
+                        <input type = 'text' class = "form-control" list = "datalist_supplier" required name = "supplier" id = "supplier_edit">
                     </div>
                     <div class = "form-group">
                         <h5>Item Pembelian</h5>
@@ -105,7 +105,7 @@
                                 <input name = 'brg_pem_edit[]' value = ${a} type = 'hidden'>
                                 <input type = 'hidden' name = 'id_brg_pem_edit${a}' value = '${respond["content"][a]["id"]}'>
                                 <input type = 'text' list = 'datalist_barang_cabang' name = 'brg_edit${a}' value = '${respond["content"][a]["nama_brg"]}' class = 'form-control'>
-                                <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm' target = '_blank'>Tambah Barang Cabang</a>
+                                <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm col-lg-12' target = '_blank'>Tambah Barang Cabang</a>
                             </td>
                             <td>
                                 <input name = 'brg_qty_edit${a}' type = 'text' class = 'form-control nf-input' value = '${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}'>
@@ -122,7 +122,7 @@
                         </tr>`;
                     }
                     $("#add_brg_beli_but_container_edit").before(html);
-                    init_nf():
+                    init_nf();
                     is_brg_pembelian_loaded = id;
                 }
             }
@@ -134,7 +134,7 @@
             <td>
                 <input name = 'check[]' value = ${brg_beli_row} type = 'hidden'>
                 <input type = 'text' list = 'datalist_barang_cabang' name = 'brg${brg_beli_row}' class = 'form-control'>
-                <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm' target = '_blank'>Tambah Barang Cabang</a>
+                <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm col-lg-12' target = '_blank'>Tambah Barang Cabang</a>
             </td>
             <td>
                 <input name = 'brg_qty${brg_beli_row}' type = 'text' class = 'form-control nf-input'>
@@ -150,7 +150,7 @@
             </td>
         </tr>`;
         $("#add_brg_beli_but_container_edit").before(html);
-        init_nf():
+        init_nf();
         brg_beli_row++;    
     }
     function delete_brg_pembelian(row){
@@ -199,7 +199,7 @@
                         </tr>`;
                     }
                     $("#add_tambahan_beli_but_container_edit").before(html);
-                    init_nf():
+                    init_nf();
                     is_tambahan_pembelian_loaded = id;
                 }
             }
@@ -227,7 +227,7 @@
             </td>
         </tr>`;
         $("#add_tambahan_beli_but_container_edit").before(html);
-        init_nf():       
+        init_nf();       
         tambahan_beli_row++; 
     }
     function delete_tmbhn_pembelian(row){
