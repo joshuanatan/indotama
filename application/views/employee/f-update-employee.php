@@ -10,9 +10,21 @@
                 "page_title"=>$page_title
             );
             $this->load->view('_notification/update_error',$notif_data); ?>
-                <form id = "update_form" method = "POST">
+                <form id = "update_form" method = "POST" enctype = "multipart/form-data">
                     <input type="hidden" name="id_pk_employee" id="id_pk_employee_edit"> 
-                    
+                    <div class = "form-group col-lg-6">
+                        <h5>Panggilan</h5>
+                        <select id="emp_suff_edit" name="emp_suff" class="form-control">
+                            <option value="0" disabled>Pilih Panggilan</option>
+                            <option value="Tn">Tn</option>
+                            <option value="MR">Mr</option>
+                            <option value="MRS">Mrs</option>
+                            <option value="MS">Ms</option>
+                            <option value="BAPAK">Bpk</option>
+                            <option value="IBU">Ibu</option>
+                            <option value="NONA">Nona</option>
+                        </select>
+                    </div>
                     <div class = "form-group col-lg-6">
                         <h5>Nama Lengkap</h5>
                         <input type="text" class="form-control" id="emp_nama_edit" name="emp_nama" required>
@@ -34,14 +46,11 @@
                     </div>
                     
                     <div class = "form-group col-lg-6">
-                        <h5>Alamat</h5>
-                        <input type="text" class="form-control" id="emp_alamat_edit" name="emp_alamat" required>
-                    </div>
-                    
-                    <div class = "form-group col-lg-6">
                         <h5>Kode Pos</h5>
                         <input type="text" class="form-control" id="emp_kode_pos_edit" name="emp_kode_pos" required>
                     </div>
+                    
+                    
                     
                     <div class = "form-group col-lg-6">
                         <h5>Foto NPWP</h5>
@@ -66,22 +75,10 @@
                         <input type="file" class="form-control" id="emp_foto_edit"  name="emp_foto" required>
                         <span id="img_emp_foto_edit"></span>
                     </div>
-                    
+                    <div class = "clearfix"></div>
                     <div class = "form-group col-lg-6">
                         <h5>Gaji Karyawan</h5>
-                        <input type="number" class="form-control nf-input" id="emp_gaji_edit" name="emp_gaji" required>
-                    </div>
-                    
-                    <div class = "form-group col-lg-6">
-                        <h5>Mulai Bekerja</h5>
-                        <input type="date" class="form-control" id="emp_startdate_edit" name="emp_startdate" required>
-                    </div>
-                    
-                    <div class = "form-group col-lg-6">
-                        <h5>Akhir Bekerja</h5>
-                        <input type="radio" name="radio_enddate" id="no_enddate_edit" value="MASIH" checked>Masih Bekerja
-                        <br><input type="radio" value="TIDAK" name="radio_enddate" id="yes_enddate_edit">Tidak bekerja sejak:
-                        <input type="date" style="display:none" class="form-control" id="emp_enddate_edit" name="emp_enddate">
+                        <input type="text" class="form-control nf-input" id="emp_gaji_edit" name="emp_gaji" required>
                     </div>
                     
                     <div class = "form-group col-lg-6">
@@ -89,34 +86,29 @@
                         <input type="text" class="form-control" id="emp_rek_edit" name="emp_rek" required>
                     </div>
                     
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group col-lg-12">
+                        <h5>Mulai Bekerja</h5>
+                        <input type="date" class="form-control" id="emp_startdate_edit" name="emp_startdate" required>
+                    </div>
+                    
+                    <div class = "form-group col-lg-12">
+                        <h5>Akhir Bekerja</h5>
+                        <input type="radio" name="radio_enddate" id="no_enddate_edit" value="MASIH" checked>Masih Bekerja
+                        <br><input type="radio" value="TIDAK" name="radio_enddate" id="yes_enddate_edit">Tidak bekerja sejak:
+                        <input type="date" style="display:none" class="form-control" id="emp_enddate_edit" name="emp_enddate">
+                    </div>
+                    
+                    <div class = "form-group col-lg-12">
                         <h5>Jenis Kelamin</h5>
                         <input type="radio" name="emp_gender" value="PRIA" id="pria">Pria 
                         <input type="radio" name="emp_gender" value="WANITA" id="wanita">Wanita
                     </div>
                     
-                    <div class = "form-group col-lg-6">
-                        <h5>Panggilan</h5>
-                        <select id="emp_suff_edit" name="emp_suff" class="form-control">
-                            <option value="0" disabled>Pilih Panggilan</option>
-                            <option value="MR">Mr</option>
-                            <option value="MRS">Mrs</option>
-                            <option value="MS">Ms</option>
-                            <option value="BAPAK">Bpk</option>
-                            <option value="IBU">Ibu</option>
-                            <option value="NONA">Nona</option>
-                        </select>
+                    <div class = "form-group col-lg-12">
+                        <h5>Alamat</h5>
+                        <textarea class="form-control" id="emp_alamat_edit" name="emp_alamat" required></textarea>
                     </div>
-                    
-                    <div class = "form-group col-lg-6">
-                        <h5>Toko</h5>
-                        <select class="form-control" id="id_fk_toko_edit" name="id_fk_toko">
-                            <option value="0" disabled>Pilih Toko</option>
-                            <?php for($p=0 ; $p<count($toko); $p++){ ?>
-                                <option value="<?php echo $toko[$p]['ID_PK_TOKO'] ?>"><?php echo $toko[$p]['TOKO_NAMA']?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
+                    <div class = "clearfix"></div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
                         <button type = "button" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>

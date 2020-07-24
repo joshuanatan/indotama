@@ -22,7 +22,6 @@ class M_employee extends ci_model{
     private $emp_gender;
     private $emp_suff;
     private $emp_status;
-    private $id_fk_toko;
     private $emp_create_date;
     private $emp_last_modified;
     private $id_create_data;
@@ -32,8 +31,12 @@ class M_employee extends ci_model{
         parent::__construct();
         $this->set_column("emp_foto","foto","required");
         $this->set_column("emp_nama","nama","required");
-        $this->set_column("toko_nama","toko","required");
+        $this->set_column("emp_ktp","ktp","required");
+        $this->set_column("emp_npwp","npwp","required");
         $this->set_column("emp_hp","hp","required");
+        $this->set_column("emp_alamat","alamat","required");
+        $this->set_column("emp_gender","Jenis Kelamin","required");
+        $this->set_column("emp_status","Status","required");
         $this->set_column("emp_last_modified","last modified","required");
         
         $this->emp_create_date = date("y-m-d h:i:s");
@@ -63,7 +66,6 @@ class M_employee extends ci_model{
             emp_gender varchar(6),
             emp_suff varchar(10),
             emp_status varchar(15),
-            id_fk_toko int,
             emp_create_date datetime,
             emp_last_modified datetime,
             id_create_data int,
@@ -91,7 +93,6 @@ class M_employee extends ci_model{
             emp_gender varchar(6),
             emp_suff varchar(10),
             emp_status varchar(15),
-            id_fk_toko int,
             emp_create_date datetime,
             emp_last_modified datetime,
             id_create_data int,
@@ -109,7 +110,7 @@ class M_employee extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.emp_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_employee_log(executed_function,id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,id_fk_toko,emp_create_date,emp_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_employee,new.emp_nama,new.emp_npwp,new.emp_ktp,new.emp_hp,new.emp_alamat,new.emp_kode_pos,new.emp_foto_npwp,new.emp_foto_ktp,new.emp_foto_lain,new.emp_foto,new.emp_gaji,new.emp_startdate,new.emp_enddate,new.emp_rek,new.emp_gender,new.emp_suff,new.emp_status,new.id_fk_toko,new.emp_create_date,new.emp_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_employee_log(executed_function,id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,emp_create_date,emp_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_employee,new.emp_nama,new.emp_npwp,new.emp_ktp,new.emp_hp,new.emp_alamat,new.emp_kode_pos,new.emp_foto_npwp,new.emp_foto_ktp,new.emp_foto_lain,new.emp_foto,new.emp_gaji,new.emp_startdate,new.emp_enddate,new.emp_rek,new.emp_gender,new.emp_suff,new.emp_status,new.emp_create_date,new.emp_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
 
@@ -124,7 +125,7 @@ class M_employee extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at ' , new.emp_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_employee_log(executed_function,id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,id_fk_toko,emp_create_date,emp_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_employee,new.emp_nama,new.emp_npwp,new.emp_ktp,new.emp_hp,new.emp_alamat,new.emp_kode_pos,new.emp_foto_npwp,new.emp_foto_ktp,new.emp_foto_lain,new.emp_foto,new.emp_gaji,new.emp_startdate,new.emp_enddate,new.emp_rek,new.emp_gender,new.emp_suff,new.emp_status,new.id_fk_toko,new.emp_create_date,new.emp_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_employee_log(executed_function,id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,emp_create_date,emp_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_employee,new.emp_nama,new.emp_npwp,new.emp_ktp,new.emp_hp,new.emp_alamat,new.emp_kode_pos,new.emp_foto_npwp,new.emp_foto_ktp,new.emp_foto_lain,new.emp_foto,new.emp_gaji,new.emp_startdate,new.emp_enddate,new.emp_rek,new.emp_gender,new.emp_suff,new.emp_status,new.emp_create_date,new.emp_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         ";
@@ -165,13 +166,12 @@ class M_employee extends ci_model{
                 emp_gender like '%".$search_key."%' or 
                 emp_suff like '%".$search_key."%' or 
                 emp_status like '%".$search_key."%' or
-                toko_nama like '%".$search_key."%'    
                 emp_last_modified like '%".$search_key."%'    
             )";
         }
         $query = "
-        select id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,emp_create_date,emp_last_modified,mstr_toko.toko_nama, mstr_employee.id_fk_toko
-        from ".$this->tbl_name." join mstr_toko on mstr_toko.id_pk_toko = mstr_employee.id_fk_toko 
+        select id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,emp_create_date,emp_last_modified
+        from ".$this->tbl_name."  
         where emp_status = ? ".$search_query."  
         order by ".$order_by." ".$order_direction." 
         limit 20 offset ".($page-1)*$data_per_page;
@@ -189,9 +189,8 @@ class M_employee extends ci_model{
         return $result;
     }
     public function list_employee(){
-        $sql = "select id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,emp_create_date,emp_last_modified,mstr_toko.toko_nama, mstr_employee.id_fk_toko
+        $sql = "select id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,emp_create_date,emp_last_modified
         from ".$this->tbl_name." 
-        join mstr_toko on mstr_toko.id_pk_toko = mstr_employee.id_fk_toko 
         where emp_status = ? ";
         $args = array(
             "aktif"
@@ -234,7 +233,6 @@ class M_employee extends ci_model{
             "emp_status",
             "emp_create_date",
             "emp_last_modified",
-            "mstr_employee.id_fk_toko"
         );
         return selectRow($this->tbl_name,$where,$field);
     }
@@ -262,7 +260,6 @@ class M_employee extends ci_model{
                 "emp_last_modified" => $this->emp_last_modified,
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified,
-                "id_fk_toko" => $this->id_fk_toko,
             );
             return insertrow($this->tbl_name,$data);
         }
@@ -383,9 +380,6 @@ class M_employee extends ci_model{
         if($this->id_last_modified == ""){
             return false;
         }
-        if($this->id_fk_toko == ""){
-            return false;
-        }
         return true;
     }
     public function check_update(){
@@ -460,7 +454,7 @@ class M_employee extends ci_model{
         }
         return true;
     }
-    public function set_insert($emp_nama,$emp_npwp,$emp_ktp,$emp_hp,$emp_alamat,$emp_kode_pos,$emp_foto_npwp,$emp_foto_ktp,$emp_foto_lain,$emp_foto,$emp_gaji,$emp_startdate,$emp_enddate,$emp_rek,$emp_gender,$emp_suff,$emp_status,$id_fk_toko){
+    public function set_insert($emp_nama,$emp_npwp,$emp_ktp,$emp_hp,$emp_alamat,$emp_kode_pos,$emp_foto_npwp,$emp_foto_ktp,$emp_foto_lain,$emp_foto,$emp_gaji,$emp_startdate,$emp_enddate,$emp_rek,$emp_gender,$emp_suff,$emp_status){
         if(!$this->set_emp_nama($emp_nama)){
             return false;
         }
@@ -510,9 +504,6 @@ class M_employee extends ci_model{
             return false;
         }
         if(!$this->set_emp_status($emp_status)){
-            return false;
-        }
-        if(!$this->set_id_fk_toko($id_fk_toko)){
             return false;
         }
         return true;
@@ -740,19 +731,9 @@ class M_employee extends ci_model{
             return false;
         }
     }
-    public function set_id_fk_toko($id_fk_toko){
-        if($id_fk_toko != ""){
-            $this->id_fk_toko = $id_fk_toko;
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
     public function data_excel(){
-        $sql = "select id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,emp_create_date,emp_last_modified,mstr_toko.toko_nama, mstr_employee.id_fk_toko
+        $sql = "select id_pk_employee,emp_nama,emp_npwp,emp_ktp,emp_hp,emp_alamat,emp_kode_pos,emp_foto_npwp,emp_foto_ktp,emp_foto_lain,emp_foto,emp_gaji,emp_startdate,emp_enddate,emp_rek,emp_gender,emp_suff,emp_status,emp_create_date,emp_last_modified
         from ".$this->tbl_name." 
-        join mstr_toko on mstr_toko.id_pk_toko = mstr_employee.id_fk_toko 
         where emp_status = ? ";
         $args = array(
             "aktif"

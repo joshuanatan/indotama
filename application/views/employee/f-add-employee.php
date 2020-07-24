@@ -72,7 +72,7 @@
                     
                     <div class = "form-group col-lg-6">
                         <h5>Gaji Karyawan</h5>
-                        <input type="number" class="form-control nf-input" name="emp_gaji" required>
+                        <input type="text" class="form-control nf-input" name="emp_gaji" required>
                     </div>
                     
                     <div class = "form-group col-lg-6">
@@ -96,16 +96,6 @@
                         <h5>Jenis Kelamin</h5>
                         <input type="radio" name="emp_gender" value="PRIA" checked>Pria 
                         <input type="radio" name="emp_gender" value="WANITA">Wanita
-                    </div>
-                    
-                    <div class = "form-group col-lg-12">
-                        <h5>Toko</h5>
-                        <select class="form-control" name="id_fk_toko">
-                            <option value="0" disabled>Pilih Toko</option>
-                            <?php for($p=0 ; $p<count($toko); $p++){ ?>
-                                <option value="<?php echo $toko[$p]['id_pk_toko'] ?>"><?php echo $toko[$p]['toko_nama']?></option>
-                            <?php } ?>
-                        </select>
                     </div>
                     <div class = "form-group col-lg-12">
                         <h5>Alamat</h5>

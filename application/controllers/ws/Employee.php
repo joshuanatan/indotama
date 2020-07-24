@@ -44,17 +44,16 @@ class Employee extends CI_Controller{
 				$response["content"][$a]["foto_npwp"] = $result["data"][$a]["emp_foto_npwp"];
 				$response["content"][$a]["foto_ktp"] = $result["data"][$a]["emp_foto_ktp"];
 				$response["content"][$a]["foto_lain"] = $result["data"][$a]["emp_foto_lain"];
+				$response["content"][$a]["foto_file"] = $result["data"][$a]["emp_foto"];
 				$response["content"][$a]["foto"] = "<img src='". base_url() . "asset/uploads/employee/foto/". $result["data"][$a]["emp_foto"]."' width='100px'>";
-				$response["content"][$a]["gaji"] = $result["data"][$a]["emp_gaji"];
+				$response["content"][$a]["gaji"] = number_format($result["data"][$a]["emp_gaji"],0,",",".");
 				$response["content"][$a]["startdate"] = $result["data"][$a]["emp_startdate"];
 				$response["content"][$a]["enddate"] = $result["data"][$a]["emp_enddate"];
 				$response["content"][$a]["rek"] = $result["data"][$a]["emp_rek"];
 				$response["content"][$a]["gender"] = $result["data"][$a]["emp_gender"];
 				$response["content"][$a]["suff"] = $result["data"][$a]["emp_suff"];
 				$response["content"][$a]["status"] = $result["data"][$a]["emp_status"];
-				$response["content"][$a]["toko"] = $result["data"][$a]["toko_nama"];
 				$response["content"][$a]["last_modified"] = $result["data"][$a]["emp_last_modified"];
-				$response["content"][$a]["id_toko"] = $result["data"][$a]["id_fk_toko"];
             }
         }
         else{
@@ -64,8 +63,12 @@ class Employee extends CI_Controller{
         $response["key"] = array(
             "foto",
             "nama",
-            "toko",
+            "ktp",
+            "npwp",
             "hp",
+            "alamat",
+            "gender",
+            "status",
             "last_modified"
         );
         echo json_encode($response);
@@ -111,10 +114,6 @@ class Employee extends CI_Controller{
 		$this->form_validation->set_rules("emp_hp","No HP","required|numeric");
 		$this->form_validation->set_rules("emp_alamat","Alamat","required");
 		$this->form_validation->set_rules("emp_kode_pos","Kode Pos","required");
-		//$this->form_validation->set_rules("emp_foto_npwp","Foto Npwp","required");
-		//$this->form_validation->set_rules("emp_foto_ktp","Foto Ktp","required");
-		//$this->form_validation->set_rules("emp_foto_lain","Foto Lain","required");
-		//$this->form_validation->set_rules("emp_foto","Foto","required");
 		$this->form_validation->set_rules("emp_gaji","Gaji","required|numeric");
 		$this->form_validation->set_rules("emp_startdate","Mulai Bekerja","required");
 		if($this->input->post("radio_enddate")=="TIDAK"){
@@ -134,7 +133,7 @@ class Employee extends CI_Controller{
 			if ( ! $this->upload->do_upload('emp_foto_npwp')){
 				$error = array('error' => $this->upload->display_errors());
 				//print_r($error);
-				$emp_foto_npwp = "-";
+				$emp_foto_npwp = "noimage.jpg";
 			}
 			else{
 				$emp_foto_npwp = $this->upload->data('file_name');
@@ -148,7 +147,7 @@ class Employee extends CI_Controller{
 			if ( ! $this->upload->do_upload('emp_foto_ktp')){
 				$error = array('error' => $this->upload->display_errors());
 				//print_r($error);
-				$emp_foto_ktp = "-";
+				$emp_foto_ktp = "noimage.jpg";
 			}
 			else{
 				$emp_foto_ktp = $this->upload->data('file_name');
@@ -162,7 +161,7 @@ class Employee extends CI_Controller{
 			if ( ! $this->upload->do_upload('emp_foto_lain')){
 				$error = array('error' => $this->upload->display_errors());
 				//print_r($error);
-				$emp_foto_lain = "-";
+				$emp_foto_lain = "noimage.jpg";
 			}
 			else{
 				$emp_foto_lain = $this->upload->data('file_name');
@@ -176,7 +175,7 @@ class Employee extends CI_Controller{
 			if ( ! $this->upload->do_upload('emp_foto')){
 				$error = array('error' => $this->upload->display_errors());
 				//print_r($error);
-				$emp_foto = "-";
+				$emp_foto = "noimage.jpg";
 			}
 			else{
 				$emp_foto = $this->upload->data('file_name');
@@ -207,7 +206,6 @@ class Employee extends CI_Controller{
 					$emp_rek = $this->input->post("emp_rek");
 					$emp_gender = $this->input->post("emp_gender");
 					$emp_suff = $this->input->post("emp_suff");
-					$id_fk_toko = $this->input->post("id_fk_toko");
 					$emp_status = "AKTIF";
 		
 					$data=array(
@@ -232,7 +230,6 @@ class Employee extends CI_Controller{
 						"emp_last_modified" => date("Y-m-d H:i:s"),
 						"id_create_data" => $this->session->id_user,
 						"id_last_modified" => $this->session->id_user,
-						"id_fk_toko" =>$id_fk_toko 
 					);
 					insertRow("mstr_employee",$data);
 				}else{
@@ -251,10 +248,6 @@ class Employee extends CI_Controller{
 		$this->form_validation->set_rules("emp_hp","No HP","required|numeric");
 		$this->form_validation->set_rules("emp_alamat","Alamat","required");
 		$this->form_validation->set_rules("emp_kode_pos","Kode Pos","required");
-		//$this->form_validation->set_rules("emp_foto_npwp","Foto Npwp","required");
-		//$this->form_validation->set_rules("emp_foto_ktp","Foto Ktp","required");
-		//$this->form_validation->set_rules("emp_foto_lain","Foto Lain","required");
-		//$this->form_validation->set_rules("emp_foto","Foto","required");
 		$this->form_validation->set_rules("emp_gaji","Gaji","required|numeric");
 		$this->form_validation->set_rules("emp_startdate","Mulai Bekerja","required");
 		if($this->input->post("radio_enddate")=="TIDAK"){
@@ -274,7 +267,7 @@ class Employee extends CI_Controller{
 		if ( ! $this->upload->do_upload('emp_foto_npwp')){
 			$error = array('error' => $this->upload->display_errors());
 			//print_r($error);
-			$emp_foto_npwp = "-";
+			$emp_foto_npwp = "noimage.jpg";
 		}
 		else{
 			$emp_foto_npwp = $this->upload->data('file_name');
@@ -288,7 +281,7 @@ class Employee extends CI_Controller{
 		if ( ! $this->upload->do_upload('emp_foto_ktp')){
 			$error = array('error' => $this->upload->display_errors());
 			//print_r($error);
-			$emp_foto_ktp = "-";
+			$emp_foto_ktp = "noimage.jpg";
 		}
 		else{
 			$emp_foto_ktp = $this->upload->data('file_name');
@@ -302,7 +295,7 @@ class Employee extends CI_Controller{
 		if ( ! $this->upload->do_upload('emp_foto_lain')){
 			$error = array('error' => $this->upload->display_errors());
 			//print_r($error);
-			$emp_foto_lain = "-";
+			$emp_foto_lain = "noimage.jpg";
 		}
 		else{
 			$emp_foto_lain = $this->upload->data('file_name');
@@ -316,7 +309,7 @@ class Employee extends CI_Controller{
 		if ( ! $this->upload->do_upload('emp_foto')){
 			$error = array('error' => $this->upload->display_errors());
 			//print_r($error);
-			$emp_foto = "-";
+			$emp_foto = "noimage.jpg";
 		}
 		else{
 			$emp_foto = $this->upload->data('file_name');
@@ -343,7 +336,6 @@ class Employee extends CI_Controller{
 			$emp_rek = $this->input->post("emp_rek");
 			$emp_gender = $this->input->post("emp_gender");
 			$emp_suff = $this->input->post("emp_suff");
-			$id_fk_toko = $this->input->post("id_fk_toko");
 			//$emp_status = "AKTIF";
 
 			if($emp_foto_npwp!="-"){
@@ -380,7 +372,6 @@ class Employee extends CI_Controller{
 				"emp_gender"=>$emp_gender,
 				"emp_suff"=>$emp_suff,
 				"id_last_modified" => $this->session->id_user,
-				"id_fk_toko" =>$id_fk_toko 
 			);
 			$where = array(
 				"id_pk_employee"=>$this->input->post("id_pk_employee")
