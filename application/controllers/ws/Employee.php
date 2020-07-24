@@ -34,6 +34,31 @@ class Employee extends CI_Controller{
         if($result["data"]->num_rows() > 0){
             $result["data"] = $result["data"]->result_array();
             for($a = 0; $a<count($result["data"]); $a++){
+				if(file_exists(FCPATH."asset/uploads/employee/npwp/".$result["data"][$a]["emp_foto_npwp"])){
+					$response["content"][$a]["foto_npwp"] = $result["data"][$a]["emp_foto_npwp"];
+				}
+				else{
+					$response["content"][$a]["foto_npwp"] = "noimage.jpg";
+				}
+				if(file_exists(FCPATH."asset/uploads/employee/ktp/".$result["data"][$a]["emp_foto_ktp"])){
+					$response["content"][$a]["foto_ktp"] = $result["data"][$a]["emp_foto_ktp"];
+				}
+				else{
+					$response["content"][$a]["foto_ktp"] = "noimage.jpg";
+				}
+				if(file_exists(FCPATH."asset/uploads/employee/lain/".$result["data"][$a]["emp_foto_lain"])){
+					$response["content"][$a]["foto_lain"] = $result["data"][$a]["emp_foto_lain"];
+				}
+				else{
+					$response["content"][$a]["foto_lain"] = "noimage.jpg";
+				}
+				if(file_exists(FCPATH."asset/uploads/employee/foto/".$result["data"][$a]["emp_foto"])){
+					$response["content"][$a]["foto_file"] = $result["data"][$a]["emp_foto"];
+				}
+				else{
+					$response["content"][$a]["foto_file"] = "noimage.jpg";
+				}
+
 				$response["content"][$a]["id"] = $result["data"][$a]["id_pk_employee"];
 				$response["content"][$a]["nama"] = $result["data"][$a]["emp_nama"];
 				$response["content"][$a]["npwp"] = $result["data"][$a]["emp_npwp"];
@@ -41,11 +66,7 @@ class Employee extends CI_Controller{
 				$response["content"][$a]["hp"] = $result["data"][$a]["emp_hp"];
 				$response["content"][$a]["alamat"] = $result["data"][$a]["emp_alamat"];
 				$response["content"][$a]["kode_pos"] = $result["data"][$a]["emp_kode_pos"];
-				$response["content"][$a]["foto_npwp"] = $result["data"][$a]["emp_foto_npwp"];
-				$response["content"][$a]["foto_ktp"] = $result["data"][$a]["emp_foto_ktp"];
-				$response["content"][$a]["foto_lain"] = $result["data"][$a]["emp_foto_lain"];
-				$response["content"][$a]["foto_file"] = $result["data"][$a]["emp_foto"];
-				$response["content"][$a]["foto"] = "<img src='". base_url() . "asset/uploads/employee/foto/". $result["data"][$a]["emp_foto"]."' width='100px'>";
+				$response["content"][$a]["foto"] = "<img src='". base_url() . "asset/uploads/employee/foto/". $response["content"][$a]["foto_file"]."' width='100px'>";
 				$response["content"][$a]["gaji"] = number_format($result["data"][$a]["emp_gaji"],0,",",".");
 				$response["content"][$a]["startdate"] = $result["data"][$a]["emp_startdate"];
 				$response["content"][$a]["enddate"] = $result["data"][$a]["emp_enddate"];
