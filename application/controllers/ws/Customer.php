@@ -34,6 +34,20 @@ class Customer extends CI_Controller{
         if($result["data"]->num_rows() > 0){
             $result["data"] = $result["data"]->result_array();
             for($a = 0; $a<count($result["data"]); $a++){
+
+                if(file_exists(FCPATH."asset/uploads/customer/npwp/".$result["data"][$a]["cust_foto_npwp"])){
+                    $response["content"][$a]["foto_npwp"] = $result["data"][$a]["cust_foto_npwp"];
+                }
+                else{
+                    $response["content"][$a]["foto_npwp"] = "noimage.jpg";
+                }
+                if(file_exists(FCPATH."asset/uploads/customer/krt_nama/".$result["data"][$a]["cust_foto_kartu_nama"])){
+                    $response["content"][$a]["foto_kartu_nama"] = $result["data"][$a]["cust_foto_kartu_nama"];
+                }
+                else{
+                    $response["content"][$a]["foto_kartu_nama"] = "noimage.jpg";
+                }
+
                 $response["content"][$a]["id"] = $result["data"][$a]["id_pk_cust"];
                 $response["content"][$a]["name"] = $result["data"][$a]["cust_name"];
                 $response["content"][$a]["suff"] = $result["data"][$a]["cust_suff"];
@@ -45,8 +59,6 @@ class Customer extends CI_Controller{
                 $response["content"][$a]["keterangan"] = $result["data"][$a]["cust_keterangan"];
                 $response["content"][$a]["status"] = $result["data"][$a]["cust_status"];
                 $response["content"][$a]["no_npwp"] = $result["data"][$a]["cust_no_npwp"];
-                $response["content"][$a]["foto_npwp"] = $result["data"][$a]["cust_foto_npwp"];
-                $response["content"][$a]["foto_kartu_nama"] = $result["data"][$a]["cust_foto_kartu_nama"];
                 $response["content"][$a]["badan_usaha"] = $result["data"][$a]["cust_badan_usaha"];
                 $response["content"][$a]["no_rekening"] = $result["data"][$a]["cust_no_rekening"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["cust_last_modified"];
