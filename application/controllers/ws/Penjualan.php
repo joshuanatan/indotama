@@ -338,13 +338,25 @@ class Penjualan extends CI_Controller{
                             if($this->form_validation->run()){
                                 $brg_qty = $this->input->post("brg_qty".$a);
                                 $brg_qty = explode(" ",$brg_qty);
-                                $brg_penjualan_qty = $brg_qty[0];
-                                $brg_penjualan_satuan = $brg_qty[1];
+                                if(count($brg_qty) > 1){
+                                    $brg_penjualan_qty = $brg_qty[0];
+                                    $brg_penjualan_satuan = $brg_qty[1];
+                                }
+                                else{
+                                    $brg_penjualan_qty = $brg_qty[0];
+                                    $brg_penjualan_satuan = "Pcs";
+                                }
                                 
                                 $brg_qty = $this->input->post("brg_qty_real".$a);
                                 $brg_qty = explode(" ",$brg_qty);
-                                $brg_penjualan_qty_real = $brg_qty[0];
-                                $brg_penjualan_satuan_real = $brg_qty[1];
+                                if(count($brg_qty) > 1){
+                                    $brg_penjualan_qty_real = $brg_qty[0];
+                                    $brg_penjualan_satuan_real = $brg_qty[1];
+                                }
+                                else{
+                                    $brg_penjualan_qty_real = $brg_qty[0];
+                                    $brg_penjualan_satuan_real = "Pcs";
+                                }
 
                                 $brg_penjualan_harga = $this->input->post("brg_price".$a);
                                 $brg_penjualan_note = $this->input->post("brg_notes".$a);
@@ -406,8 +418,14 @@ class Penjualan extends CI_Controller{
                                 $tmbhn = $this->input->post("tmbhn".$a);
                                 $qty = $this->input->post("tmbhn_jumlah".$a);
                                 $qty = explode(" ",$qty);
-                                $tmbhn_jumlah = $qty[0];
-                                $tmbhn_satuan = $qty[1];
+                                if(count($qty) > 1){
+                                    $tmbhn_jumlah = $qty[0];
+                                    $tmbhn_satuan = $qty[1];
+                                }
+                                else{
+                                    $tmbhn_jumlah = $qty[0];
+                                    $tmbhn_satuan = "Pcs";
+                                }
                                 $tmbhn_harga = $this->input->post("tmbhn_harga".$a);
                                 $tmbhn_notes = $this->input->post("tmbhn_notes".$a);
                                 $tmbhn_status = "AKTIF";
@@ -607,13 +625,25 @@ class Penjualan extends CI_Controller{
                     if($this->form_validation->run()){
                         $brg_qty = $this->input->post("brg_qty".$a);
                         $brg_qty = explode(" ",$brg_qty);
-                        $brg_penjualan_qty = $brg_qty[0];
-                        $brg_penjualan_satuan = $brg_qty[1];
+                        if(count($brg_qty) > 1){
+                            $brg_penjualan_qty = $brg_qty[0];
+                            $brg_penjualan_satuan = $brg_qty[1];
+                        }
+                        else{
+                            $brg_penjualan_qty = $brg_qty[0];
+                            $brg_penjualan_satuan = "Pcs";
+                        }
                         
                         $brg_qty = $this->input->post("brg_qty_real".$a);
                         $brg_qty = explode(" ",$brg_qty);
-                        $brg_penjualan_qty_real = $brg_qty[0];
-                        $brg_penjualan_satuan_real = $brg_qty[1];
+                        if(count($brg_qty) > 1){
+                            $brg_penjualan_qty_real = $brg_qty[0];
+                            $brg_penjualan_satuan_real = $brg_qty[1];
+                        }
+                        else{
+                            $brg_penjualan_qty_real = $brg_qty[0];
+                            $brg_penjualan_satuan_real = "Pcs";
+                        }
 
                         $brg_penjualan_harga = $this->input->post("brg_price".$a);
                         $brg_penjualan_note = $this->input->post("brg_notes".$a);
@@ -675,13 +705,28 @@ class Penjualan extends CI_Controller{
                         $id_pk_brg_penjualan = $this->input->post("id_brg_jual_edit".$a);
                         $brg_qty = $this->input->post("brg_qty_edit".$a);
                         $brg_qty = explode(" ",$brg_qty);
-                        $brg_penjualan_qty = $brg_qty[0];
-                        $brg_penjualan_satuan = $brg_qty[1];
+                        if(count($brg_qty) > 1){
+
+                            $brg_penjualan_qty = $brg_qty[0];
+                            $brg_penjualan_satuan = $brg_qty[1];
+                        }
+                        else{
+                            $brg_penjualan_qty = $brg_qty[0];
+                            $brg_penjualan_satuan = "Pcs";
+                        }
                         
                         $brg_qty = $this->input->post("brg_qty_real_edit".$a);
                         $brg_qty = explode(" ",$brg_qty);
-                        $brg_penjualan_qty_real = $brg_qty[0];
-                        $brg_penjualan_satuan_real = $brg_qty[1];
+                        if(count($brg_qty) > 1){
+
+                            $brg_penjualan_qty_real = $brg_qty[0];
+                            $brg_penjualan_satuan_real = $brg_qty[1];
+                        }
+                        else{
+                            
+                            $brg_penjualan_qty_real = $brg_qty[0];
+                            $brg_penjualan_satuan_real = "Pcs";
+                        }
 
                         $brg_penjualan_harga = $this->input->post("brg_price_edit".$a);
                         $brg_penjualan_note = $this->input->post("brg_notes_edit".$a);
@@ -742,8 +787,14 @@ class Penjualan extends CI_Controller{
                         $tmbhn = $this->input->post("tmbhn".$a);
                         $qty = $this->input->post("tmbhn_jumlah".$a);
                         $qty = explode(" ",$qty);
-                        $tmbhn_jumlah = $qty[0];
-                        $tmbhn_satuan = $qty[1];
+                        if(count($qty) > 1){
+                            $tmbhn_jumlah = $qty[0];
+                            $tmbhn_satuan = $qty[1];
+                        }
+                        else{
+                            $tmbhn_jumlah = $qty[0];
+                            $tmbhn_satuan = "Pcs";
+                        }
                         $tmbhn_harga = $this->input->post("tmbhn_harga".$a);
                         $tmbhn_notes = $this->input->post("tmbhn_notes".$a);
                         $tmbhn_status = "AKTIF";
@@ -794,8 +845,14 @@ class Penjualan extends CI_Controller{
                         $tmbhn = $this->input->post("tmbhn_edit".$a);
                         $qty = $this->input->post("tmbhn_jumlah_edit".$a);
                         $qty = explode(" ",$qty);
-                        $tmbhn_jumlah = $qty[0];
-                        $tmbhn_satuan = $qty[1];
+                        if(count($qty) > 1){
+                            $tmbhn_jumlah = $qty[0];
+                            $tmbhn_satuan = $qty[1];
+                        }
+                        else{
+                            $tmbhn_jumlah = $qty[0];
+                            $tmbhn_satuan = "Pcs";
+                        }
                         $tmbhn_harga = $this->input->post("tmbhn_harga_edit".$a);
                         $tmbhn_notes = $this->input->post("tmbhn_notes_edit".$a);
                         

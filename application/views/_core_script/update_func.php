@@ -1,5 +1,8 @@
 <script>
     function update_func(){
+        if(typeof(nf_reformat_all) != "undefined"){
+            nf_reformat_all();
+        }
         var form = $("#update_form")[0];
         var data = new FormData(form);
         $.ajax({

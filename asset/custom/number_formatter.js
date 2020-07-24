@@ -1,16 +1,15 @@
 var thousand_separator = ".";
 function format_number(number){
-    number = number.split(",");
+    number = number.split(".");
     number[0] = number[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, thousand_separator);
     return number.join(","); //pecah perseribu
 }
 function reformat_number(number){
     number = number.split(".").join("");
-    return number; //balikin komda (,) jadi koma (.)
+    return number.split(",").join(".");
 }
 function init_nf(){
     var input_element = document.querySelectorAll(".nf-input");
-    console.log(input_element.length);
     for(var a = 0 ;a<input_element.length; a++){
         
         /*begin oninput init_nf*/
@@ -27,6 +26,7 @@ function init_nf(){
     }
 }
 function formatting_func(text_in){
+    text_in += '';
     var text = "";
 
     var space_detect = text_in.split(" ");
@@ -44,6 +44,7 @@ function formatting_func(text_in){
     return text;
 }
 function deformatting_func(text_in){
+    text_in += '';
     var text = "";
     var space_detect = text_in.split(" ");
     if(space_detect.length > 1){
@@ -62,7 +63,6 @@ function nf_reformat_all(){
     for(var a = 0 ;a<input_element.length; a++){
         var text = input_element[a].value;
         var result = deformatting_func(text);
-        console.log(result);
         input_element[a].value = result;
     }
 }

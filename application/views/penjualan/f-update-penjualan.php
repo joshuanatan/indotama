@@ -133,7 +133,8 @@ $notif_data = array(
                                                             <th>Jumlah</th>
                                                             <th>Jumlah Markup</th>
                                                             <th>Harga</th>
-                                                            <th>Harga Markup</th>
+                                                            <th>Harga Jual</th>
+                                                            <th>Harga Final</th>
                                                             <th>Notes</th>
                                                             <th>Action</th>
                                                         </thead>
@@ -146,15 +147,16 @@ $notif_data = array(
                                                                     <input type = 'text' value = "<?php echo $item[$a]["brg_nama"];?>" list = 'datalist_barang_cabang' name = 'brg_edit<?php echo $a;?>' class = 'form-control'>
                                                                     <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm col-lg-12' target = '_blank'>Tambah Barang Cabang</a>
                                                                 </td>
-                                                                <td><input type = 'text' value = "<?php echo $item[$a]["brg_penjualan_qty_real"]." ". $item[$a]["brg_penjualan_satuan_real"];?>" name = 'brg_qty_real_edit<?php echo $a;?>' class = 'form-control'></td>
-                                                                <td><input type = 'text' value = "<?php echo $item[$a]["brg_penjualan_qty"]." ". $item[$a]["brg_penjualan_satuan"];?>" name = 'brg_qty_edit<?php echo $a;?>' class = 'form-control'></td>
-                                                                <td><input type = 'text' value = "<?php echo $item[$a]["brg_harga"];?>" class = 'form-control' readonly></td>
-                                                                <td><input type = 'text' value = "<?php echo $item[$a]["brg_penjualan_harga"];?>" name = 'brg_price_edit<?php echo $a;?>' class = 'form-control'></td>
+                                                                <td><input type = 'text' value = "<?php echo number_format($item[$a]["brg_penjualan_qty_real"],2,",",".")." ". $item[$a]["brg_penjualan_satuan_real"];?>" name = 'brg_qty_real_edit<?php echo $a;?>' class = 'form-control nf-input'></td>
+                                                                <td><input type = 'text' value = "<?php echo number_format($item[$a]["brg_penjualan_qty"],2,",",".")." ". $item[$a]["brg_penjualan_satuan"];?>" name = 'brg_qty_edit<?php echo $a;?>' class = 'form-control nf-input'></td>
+                                                                <td><input type = 'text' value = "<?php echo number_format($item[$a]["brg_harga"],0,",",".");?>" class = 'form-control nf-input' readonly></td>
+                                                                <td><input type = 'text' value = "<?php echo number_format($item[$a]["brg_penjualan_harga"],0,",",".");?>" name = 'brg_price_edit<?php echo $a;?>' class = 'form-control nf-input'></td>
+                                                                <td><input readonly type = 'text' value = "<?php echo number_format($item[$a]["brg_penjualan_harga"]*$item[$a]["brg_penjualan_qty"],2,",",".");?>" id = 'harga_brg_final_edit<?php echo $a;?>' class = 'form-control'></td>
                                                                 <td><input type = 'text' value = "<?php echo $item[$a]["brg_penjualan_note"];?>" name = 'brg_notes_edit<?php echo $a;?>' class = 'form-control'></td>
                                                                 <td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_brg_penjualan(<?php echo $a;?>);'></i></td></tr>
                                                             <?php endfor;?>
                                                             <tr id = "add_brg_jual_but_container">
-                                                                <td colspan = 7><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_brg_jual_row()">Tambah Barang Penjualan</button>
+                                                                <td colspan = 8><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_brg_jual_row()">Tambah Barang Penjualan</button>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -167,6 +169,7 @@ $notif_data = array(
                                                             <th>Tambahan</th>
                                                             <th>Jumlah</th>
                                                             <th>Harga</th>
+                                                            <th>Harga Final</th>
                                                             <th>Notes</th>
                                                             <th>Action</th>
                                                         </thead>
@@ -179,10 +182,13 @@ $notif_data = array(
                                                                     <input name = 'tmbhn_edit<?php echo $a;?>' value = "<?php echo $tambahan[$a]["tmbhn"];?>" type = 'text' class = 'form-control'>
                                                                 </td>
                                                                 <td>
-                                                                    <input name = 'tmbhn_jumlah_edit<?php echo $a;?>' value = "<?php echo $tambahan[$a]["tmbhn_jumlah"]." ".$tambahan[$a]["tmbhn_satuan"];?>" type = 'text' class = 'form-control'>
+                                                                    <input name = 'tmbhn_jumlah_edit<?php echo $a;?>' value = "<?php echo number_format($tambahan[$a]["tmbhn_jumlah"],2,",",".")." ".$tambahan[$a]["tmbhn_satuan"];?>" type = 'text' class = 'form-control nf-input'>
                                                                 </td>
                                                                 <td>
-                                                                    <input name = 'tmbhn_harga_edit<?php echo $a;?>' value = "<?php echo $tambahan[$a]["tmbhn_harga"];?>" type = 'text' class = 'form-control'>
+                                                                    <input name = 'tmbhn_harga_edit<?php echo $a;?>' value = "<?php echo number_format($tambahan[$a]["tmbhn_harga"],0,",",".");?>" type = 'text' class = 'form-control nf-input'>
+                                                                </td>
+                                                                <td>
+                                                                    <input readonly value = "<?php echo number_format($tambahan[$a]["tmbhn_harga"]*$tambahan[$a]["tmbhn_jumlah"],0,",",".");?>" type = 'text' id = 'harga_tambahan_final_edit<?php echo $a;?>' class = 'form-control'>
                                                                 </td>
                                                                 <td>
                                                                     <input name = 'tmbhn_notes_edit<?php echo $a;?>' value = "<?php echo $tambahan[$a]["tmbhn_notes"];?>" type = 'text' class = 'form-control'>
@@ -226,7 +232,7 @@ $notif_data = array(
                                                                     <input value = "<?php echo $pembayaran[$a]["penjualan_pmbyrn_persen"];?>" name = 'pmbyrn_persen_edit<?php echo $a;?>' type = 'text' class = 'form-control'>
                                                                 </td>
                                                                 <td>
-                                                                    <input type = 'text' onfocus = "count_nominal_persentase('edit',<?php echo $a;?>)" value = "<?php echo $pembayaran[$a]["penjualan_pmbyrn_nominal"];?>" name = 'pmbyrn_nominal_edit<?php echo $a;?>' class = 'form-control'>
+                                                                    <input type = 'text' onfocus = "count_nominal_persentase('_edit',<?php echo $a;?>)" value = "<?php echo number_format($pembayaran[$a]["penjualan_pmbyrn_nominal"],0,",",".");?>" name = 'pmbyrn_nominal_edit<?php echo $a;?>' class = 'form-control nf-input'>
                                                                 </td>
                                                                 <td>
                                                                     <input type = 'text' value = "<?php echo $pembayaran[$a]["penjualan_pmbyrn_notes"];?>" name = 'pmbyrn_notes_edit<?php echo $a;?>' class = 'form-control'>
@@ -248,7 +254,7 @@ $notif_data = array(
                                                 </div>
                                                 <div class = "form-group col-lg-12" style = "width:50%">
                                                     <button type = "button" class = "btn btn-sm btn-danger" onclick = "close_window()">Cancel</button>
-                                                    <button type = "button" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
+                                                    <button type = "button" onclick = "update_func();location.reload();" class = "btn btn-sm btn-primary">Submit</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -290,6 +296,9 @@ $notif_data = array(
                 <input type = 'text' name = 'brg_price${brg_jual_row}' class = 'form-control nf-input'>
             </td>
             <td>
+                <input readonly type = 'text' class = 'form-control nf-input' id = 'harga_brg_final${brg_jual_row}'>
+            </td>
+            <td>
                 <input type = 'text' name = 'brg_notes${brg_jual_row}' class = 'form-control'>
             </td>
             <td>
@@ -315,6 +324,9 @@ $notif_data = array(
                 <input name = 'tmbhn_harga${tambahan_jual_row}' type = 'text' class = 'form-control nf-input'>
             </td>
             <td>
+                <input readonly type = 'text' class = 'form-control nf-input' id = 'harga_tambahan_final${tambahan_jual_row}'>
+            </td>
+            <td>
                 <input name = 'tmbhn_notes${tambahan_jual_row}' type = 'text' class = 'form-control'>
             </td>
             <td>
@@ -337,7 +349,7 @@ $notif_data = array(
                 <input name = 'pmbyrn_persen${pembayaran_row}' type = 'text' class = 'form-control'>
             </td>
             <td>
-                <input onfocus = 'count_nominal_persentase('',${pembayaran_row})' type = 'text' name = 'pmbyrn_nominal${pembayaran_row}' class = 'form-control nf-input'>
+                <input onfocus = 'count_nominal_persentase("",${pembayaran_row})' type = 'text' name = 'pmbyrn_nominal${pembayaran_row}' class = 'form-control nf-input'>
             </td>
             <td>
                 <input type = 'text' name = 'pmbyrn_notes${pembayaran_row}' class = 'form-control'>
@@ -443,59 +455,71 @@ $notif_data = array(
     function count_total_price(){
         var total = 0;
         for(var a = 0; a < brg_jual_row; a++){
-            var qty = $("input[name='brg_qty"+a+"'").val();
-            var price = $("input[name='brg_price"+a+"'").val();
+            var qty = deformatting_func($("input[name='brg_qty"+a+"']").val().split(" ")[0]);
+            var price = deformatting_func($("input[name='brg_price"+a+"']").val().split(" ")[0]);
             if(typeof(qty) == 'undefined' || typeof(price) == 'undefined' || !price || !qty){
+                $("#harga_brg_final"+a).val("0");
                 total += 0;
             }
             else{
-                total += parseFloat(qty.split(" ")[0])*parseInt(price);
+                var count_result = Math.round(parseFloat(qty.split(" ")[0])*parseInt(price));
+                $("#harga_brg_final"+a).val(formatting_func(count_result));
+                total += count_result;
             }
         }
         for(var a = 0; a < tambahan_jual_row; a++){
-            var qty = $("input[name='tmbhn_jumlah"+a+"'").val();
-            var price = $("input[name='tmbhn_harga"+a+"'").val();
+            var qty = deformatting_func($("input[name='tmbhn_jumlah"+a+"'").val().split(" ")[0]);
+            var price = deformatting_func($("input[name='tmbhn_harga"+a+"'").val().split(" ")[0]);
             if(typeof(qty) == 'undefined' || typeof(price) == 'undefined' || !price || !qty){
+                $("#harga_tambahan_final"+a).val("0");
                 total += 0;
             }
             else{
-                total += parseFloat(qty.split(" ")[0])*parseInt(price);
+                var count_result = Math.round(parseFloat(qty.split(" ")[0])*parseInt(price));
+                $("#harga_tambahan_final"+a).val(formatting_func(count_result));
+                total += count_result;
             }
         }
         var brg_jual_edit_row = $(".add_brg_jual_row_edit").length; 
         for(var a = 0; a < brg_jual_edit_row; a++){
-            var qty = $("input[name='brg_qty_edit"+a+"'").val();
-            var price = $("input[name='brg_price_edit"+a+"'").val();
+            var qty = deformatting_func($("input[name='brg_qty_edit"+a+"'").val().split(" ")[0]);
+            var price = deformatting_func($("input[name='brg_price_edit"+a+"'").val().split(" ")[0]);
             if(typeof(qty) == 'undefined' || typeof(price) == 'undefined' || !price || !qty){
+                $("#harga_brg_final_edit"+a).val("0");
                 total += 0;
             }
             else{
-                total += parseFloat(qty.split(" ")[0])*parseInt(price);
+                var count_result = Math.round(parseFloat(qty.split(" ")[0])*parseInt(price));
+                $("#harga_brg_final_edit"+a).val(formatting_func(count_result));
+                total += count_result;
             }
         }
         var tambahan_jual_edit_row = $(".add_tambahan_jual_row_edit").length;
         for(var a = 0; a < tambahan_jual_edit_row; a++){
-            var qty = $("input[name='tmbhn_jumlah_edit"+a+"'").val();
-            var price = $("input[name='tmbhn_harga_edit"+a+"'").val();
+            var qty = deformatting_func($("input[name='tmbhn_jumlah_edit"+a+"'").val().split(" ")[0]);
+            var price = deformatting_func($("input[name='tmbhn_harga_edit"+a+"'").val().split(" ")[0]);
             if(typeof(qty) == 'undefined' || typeof(price) == 'undefined' || !price || !qty){
+                $("#harga_tambahan_final_edit"+a).val("0");
                 total += 0;
             }
             else{
-                total += parseFloat(qty.split(" ")[0])*parseInt(price);
+                var count_result = Math.round(parseFloat(qty.split(" ")[0])*parseInt(price));
+                $("#harga_tambahan_final_edit"+a).val(formatting_func(count_result));
+                total += count_result;
             }
         }
-        $("#total_price").val(total);
+        $("#total_price").val(formatting_func(total));
     }
     function count_nominal_persentase(type,row){
-        var total = $("#total_price").val();
-        var persen = $("input[name='pmbyrn_persen_"+type+row+"']").val();
+        var total = deformatting_func($("#total_price").val());
+        var persen = $("input[name='pmbyrn_persen"+type+row+"']").val();
         if(typeof(persen) == 'undefined' || !persen){
             nominal = 0;
         }
         else{
-            nominal = parseFloat(persen.split("%")[0])/100*total;
+            nominal = Math.round(parseFloat(persen.split("%")[0])/100*total);
         }
-        $("input[name='pmbyrn_nominal_"+type+row+"']").val(nominal);
+        $("input[name='pmbyrn_nominal"+type+row+"']").val(formatting_func(nominal));
     }
     function register_brg_pindah(){
         var form = $("#register_brg_pindah_form")[0];
@@ -576,4 +600,5 @@ $notif_data = array(
 </script>
 
 <?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("_core_script/menubar_func");?>
 <?php $this->load->view("req/core_script");?>
