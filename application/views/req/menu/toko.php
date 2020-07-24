@@ -16,7 +16,7 @@ if($this->session->id_toko):?>
 <li>
     <a href="javascript:void(0);" data-toggle="collapse" data-target="#sub_menu_toko">    
         <div class="pull-left">
-            <i class="zmdi zmdi-shopping-basket mr-20"></i>
+            <i class="zmdi zmdi-store mr-20"></i>
             <span class="right-nav-text">Manajemen Toko</span>
         </div>
         <div class="pull-right">

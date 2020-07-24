@@ -9,7 +9,7 @@ if($this->session->id_user):
 <li>
     <a href="javascript:void(0);" data-toggle="collapse" data-target="#sub_menu_umum">    
         <div class="pull-left">
-            <i class="zmdi zmdi-landscape mr-20"></i>
+            <i class="zmdi zmdi-group mr-20"></i>
             <span class="right-nav-text">Manajemen Umum</span>
         </div>
         <div class="pull-right">

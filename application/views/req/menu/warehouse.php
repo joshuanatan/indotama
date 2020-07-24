@@ -16,7 +16,7 @@ if($this->session->id_warehouse):?>
 <li>
     <a href="javascript:void(0);" data-toggle="collapse" data-target="#sub_menu_warehouse">    
         <div class="pull-left">
-            <i class="zmdi zmdi-flag mr-20"></i>
+            <i class="zmdi zmdi-dns mr-20"></i>
             <span class="right-nav-text">Manajemen Gudang</span>
         </div>
         <div class="pull-right">
