@@ -128,7 +128,7 @@
                             <td>
                                 <div style = 'display:inline-block'>
                                     <input value = '${respond["content"][a]["qty"]}' type = 'text' class = 'form-control nf-input' style = 'width:50%; display:inline-block' name = 'qty_terima${a}'>
-                                    <select class = 'form-control' style = 'width:50%; display:inline-block' id = 'id_satuan_edit${a}' name = 'id_satuan${a}'>"+satuan_opt+"</select>
+                                    <select class = 'form-control' style = 'width:50%; display:inline-block' id = 'id_satuan_edit${a}' name = 'id_satuan${a}'>${satuan_opt}</select>
                                 </div>
                             </td>
                         </tr>`;
