@@ -79,7 +79,21 @@
                 if(respond["status"] == "SUCCESS"){
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr class = 'd_brg_retur_counter_edit'><td id = 'd_brg_retur_counter_edit"+a+"'><input readonly name = 'brg_retur_check_edit[]' value = "+a+" type = 'hidden'><input readonly type = 'hidden' id = 'id_brg_retur_edit"+a+"' name = 'id_brg_retur_edit"+a+"' value = '"+respond["content"][a]["id"]+"'><input readonly name = 'brg_retur_edit"+a+"' value = '"+respond["content"][a]["nama_brg"]+"' type = 'text' class = 'form-control' list = 'datalist_barang_cabang'></td><td>-</td><td><input readonly name = 'brg_retur_jumlah_edit"+a+"' value = '"+respond["content"][a]["qty"]+" "+respond["content"][a]["satuan"]+"' type = 'text' class = 'form-control'></td><td><input readonly name = 'brg_retur_notes_edit"+a+"' value = '"+respond["content"][a]["notes"]+"' type = 'text' class = 'form-control'></td></tr>";
+                        html += `
+                        <tr class = 'd_brg_retur_counter_edit'>
+                            <td id = 'd_brg_retur_counter_edit${a}'>
+                                <input readonly name = 'brg_retur_check_edit[]' value = ${a} type = 'hidden'>
+                                <input readonly type = 'hidden' id = 'id_brg_retur_edit${a}' name = 'id_brg_retur_edit${a}' value = '${respond["content"][a]["id"]}'>
+                                <input readonly name = 'brg_retur_edit${a}' value = '${respond["content"][a]["nama_brg"]}' type = 'text' class = 'form-control' list = 'datalist_barang_cabang'>
+                            </td>
+                            <td>-</td>
+                            <td>
+                                <input readonly name = 'brg_retur_jumlah_edit${a}' value = '${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}' type = 'text' class = 'form-control'>
+                            </td>
+                            <td>
+                                <input readonly name = 'brg_retur_notes_edit${a}' value = '${respond["content"][a]["notes"]}' type = 'text' class = 'form-control'>
+                            </td>
+                        </tr>`;
                     }
                     $("#d_add_brg_retur_but_container_edit").before(html);
                 }
@@ -100,7 +114,29 @@
                     if(respond["status"] == "SUCCESS"){
                         var html = "";
                         for(var a = 0; a<respond["content"].length; a++){
-                            html += "<tr class = 'd_brg_kembali_row_edit'><td id = 'd+brg_kembali_row_edit"+a+"'><input readonly name = 'brg_kembali_check_edit[]' value = "+a+" type = 'hidden'><input readonly type = 'hidden' id = 'd_id_brg_kembali_edit"+a+"'name = 'id_brg_kembali_edit"+a+"' value = '"+respond["content"][a]["id"]+"'><input readonly type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang("+a+")' value = '"+respond["content"][a]["nama_brg"]+"'id = 'brg"+a+"' name = 'brg_edit"+a+"' class = 'form-control'></td><td><input readonly value = '"+respond["content"][a]["qty_real"]+" "+respond["content"][a]["satuan_real"]+"' name = 'brg_qty_real_edit"+a+"' type = 'text' class = 'form-control'></td><td><input readonly value = '"+respond["content"][a]["qty"]+" "+respond["content"][a]["satuan"]+"' name = 'brg_qty_edit"+a+"' type = 'text' class = 'form-control'></td><td><input readonly value = '"+respond["content"][a]["harga_brg"]+"' type = 'text' readonly id = 'd_harga_barang_jual"+a+"' class = 'form-control'></td><td><input readonly value = '"+respond["content"][a]["harga"]+"' type = 'text' name = 'brg_price_edit"+a+"' class = 'form-control'></td><td><input readonly value = '"+respond["content"][a]["note"]+"' type = 'text' name = 'brg_notes_edit"+a+"' class = 'form-control'></td></tr>";
+                            html += `
+                            <tr class = 'd_brg_kembali_row_edit'>
+                                <td id = 'd+brg_kembali_row_edit${a}'>
+                                    <input readonly name = 'brg_kembali_check_edit[]' value = ${a} type = 'hidden'>
+                                    <input readonly type = 'hidden' id = 'd_id_brg_kembali_edit${a}'name = 'id_brg_kembali_edit${a}' value = '${respond["content"][a]["id"]}'>
+                                    <input readonly type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${a})' value = '${respond["content"][a]["nama_brg"]}'id = 'brg${a}' name = 'brg_edit${a}' class = 'form-control'>
+                                </td>
+                                <td>
+                                    <input readonly value = '${respond["content"][a]["qty_real"]} ${respond["content"][a]["satuan_real"]}' name = 'brg_qty_real_edit${a}' type = 'text' class = 'form-control'>
+                                </td>
+                                <td>
+                                    <input readonly value = '${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}' name = 'brg_qty_edit${a}' type = 'text' class = 'form-control'>
+                                </td>
+                                <td>
+                                    <input readonly value = '${respond["content"][a]["harga_brg"]}' type = 'text' readonly id = 'd_harga_barang_jual${a}' class = 'form-control'>
+                                </td>
+                                <td>
+                                    <input readonly value = '${respond["content"][a]["harga"]}' type = 'text' name = 'brg_price_edit${a}' class = 'form-control'>
+                                </td>
+                                <td>
+                                    <input readonly value = '${respond["content"][a]["note"]}' type = 'text' name = 'brg_notes_edit${a}' class = 'form-control'>
+                                </td>
+                            </tr>`;
                         }
                         $("#d_add_brg_kembali_but_container_edit").before(html);
                     }

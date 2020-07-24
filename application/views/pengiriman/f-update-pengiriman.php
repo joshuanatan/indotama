@@ -103,7 +103,28 @@
                     }
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr class = 'brg_pembelian_row'><input type = 'hidden' name = 'check[]' value = '"+a+"'><input type = 'hidden' value = '"+respond["content"][a]["id"]+"' name = 'id_brg_kirim"+a+"'><td>"+respond["content"][a]["nama_brg"]+"<br/>Notes:"+respond["content"][a]["note_brg_penjualan"]+"</td><td>"+respond["content"][a]["qty_brg_penjualan"]+" "+respond["content"][a]["satuan_brg_penjualan"]+"</td><td><input type = 'text' class = 'form-control' name = 'notes"+a+"' value = '"+respond["content"][a]["note"]+"'></td><td><div style = 'display:inline-block'><input value = '"+respond["content"][a]["qty"]+"' type = 'text' class = 'form-control' style = 'width:50%; display:inline-block' name = 'qty_kirim"+a+"'><select class = 'form-control satuan_opt' style = 'width:50%; display:inline-block' id = 'id_satuan_edit"+a+"' name = 'id_satuan"+a+"'>"+html_datalist_satuan+"</select></div></td></tr>";
+                        html += `
+                        <tr class = 'brg_pembelian_row'>
+                            <input type = 'hidden' name = 'check[]' value = '"+a+"'>
+                            <input type = 'hidden' value = '"+respond["content"][a]["id"]+"' name = 'id_brg_kirim"+a+"'>
+                            <td>
+                                "+respond["content"][a]["nama_brg"]+"<br/>
+                                Notes:"+respond["content"][a]["note_brg_penjualan"]+"
+                            </td>
+                            <td>
+                                "+respond["content"][a]["qty_brg_penjualan"]+" "+respond["content"][a]["satuan_brg_penjualan"]+"
+                            </td>
+                            <td>
+                                <input type = 'text' class = 'form-control' name = 'notes"+a+"' value = '"+respond["content"][a]["note"]+"'>
+                            </td>
+                            <td>
+                                <div style = 'display:inline-block'>
+                                    <input value = '"+respond["content"][a]["qty"]+"' type = 'text' class = 'form-control nf-input' style = 'width:50%; display:inline-block' name = 'qty_kirim"+a+"'>
+                                    <select class = 'form-control satuan_opt' style = 'width:50%; display:inline-block' id = 'id_satuan_edit"+a+"' name = 'id_satuan"+a+"'>"+html_datalist_satuan+"</select>
+                                </div>
+                            </td>
+                        </tr>`;
+                        init_nf();
                     }
                     $("#daftar_brg_beli_edit").html(html);
                     for(var a = 0; a<respond["content"].length; a++){
@@ -123,7 +144,18 @@
                     content_brg_pembelian = respond["content"];
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr class = 'tmbhn_pembelian_row'><td>"+respond["content"][a]["tmbhn"]+"</td><td>"+respond["content"][a]["jumlah"]+" "+respond["content"][a]["satuan"]+"</td><td>"+respond["content"][a]["notes"]+"</td></tr>";
+                        html += `
+                        <tr class = 'tmbhn_pembelian_row'>
+                            <td>
+                                ${respond["content"][a]["tmbhn"]}
+                            </td>
+                            <td>
+                                ${respond["content"][a]["jumlah"]} ${respond["content"][a]["satuan"]}
+                            </td>
+                            <td>
+                                ${respond["content"][a]["notes"]}
+                            </td>
+                        </tr>`;
                     }
                     $("#daftar_tambahan_beli_edit").html(html);
                 }

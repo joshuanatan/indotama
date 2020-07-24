@@ -118,7 +118,20 @@
                 success:function(respond){
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr class = 'row_brg_edit' id = 'id_brg_edit"+a+"'><input type = 'hidden' id = 'id_barang_kombinasi"+a+"' name = 'id_barang_kombinasi"+a+"' value = '"+respond["content"][a]["id"]+"'><input type = 'hidden' name = 'edit[]' value = '"+a+"'><td><input type = 'text' class = 'form-control' list = 'datalist_barang' name = 'barang_edit"+a+"' value = '"+respond["content"][a]["barang"]+"'></td><td><input type = 'text' class = 'form-control' name = 'qty_edit"+a+"' value = '"+respond["content"][a]["qty"]+"'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_barang_edit("+a+")'></i></td></tr>";
+                        html += `
+                        <tr class = 'row_brg_edit' id = 'id_brg_edit${a}'>
+                            <input type = 'hidden' id = 'id_barang_kombinasi${a}' name = 'id_barang_kombinasi${a}' value = '${respond["content"][a]["id"]}'>
+                            <input type = 'hidden' name = 'edit[]' value = '${a}'>
+                            <td>
+                                <input type = 'text' class = 'form-control' list = 'datalist_barang' name = 'barang_edit${a}' value = '${respond["content"][a]["barang"]}'>
+                            </td>
+                            <td>
+                                <input type = 'text' class = 'form-control' name = 'qty_edit${a}' value = '${respond["content"][a]["qty"]}'>
+                            </td>
+                            <td>
+                                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_barang_edit(${a})'></i>
+                            </td>
+                        </tr>`;
                     }
                     $(".row_brg_edit").remove();
                     $("#btn_tambah_baris_barang_container_edit").before(html);
@@ -128,7 +141,19 @@
     }
     var baris_barang_counter_edit = 0;
     function tambah_baris_barang_edit(){
-        var html = "<tr class = 'row_brg_edit'><input type = 'hidden' name = 'check[]' value = '"+baris_barang_counter_edit+"'><td><input type = 'text' class = 'form-control' list = 'datalist_barang' name = 'barang"+baris_barang_counter_edit+"'></td><td><input type = 'text' class = 'form-control' name = 'qty"+baris_barang_counter_edit+"'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = `
+        <tr class = 'row_brg_edit'>
+            <input type = 'hidden' name = 'check[]' value = '${baris_barang_counter_edit}'>
+            <td>
+                <input type = 'text' class = 'form-control' list = 'datalist_barang' name = 'barang${baris_barang_counter_edit}'>
+            </td>
+            <td>
+                <input type = 'text' class = 'form-control' name = 'qty${baris_barang_counter_edit}'>
+            </td>
+            <td>
+                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+            </td>
+        </tr>`;
         $("#btn_tambah_baris_barang_container_edit").before(html);
         baris_barang_counter_edit++;
     }

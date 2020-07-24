@@ -69,7 +69,7 @@
                     
                     <div class = "form-group col-lg-6">
                         <h5>Gaji Karyawan</h5>
-                        <input type="number" class="form-control" id="emp_gaji_edit" name="emp_gaji" required>
+                        <input type="number" class="form-control nf-input" id="emp_gaji_edit" name="emp_gaji" required>
                     </div>
                     
                     <div class = "form-group col-lg-6">

@@ -16,7 +16,7 @@
                     <input type = "hidden" name = "brg_skrg" id = "vbrg_skrg_insert">
                     <div class = "form-group">
                         <h5>Jumlah Pemenuhan</h5>
-                        <input type = "number" class = "form-control" name="brg_pemenuhan_qty" required id = "brg_pemenuhan_qty_insert">
+                        <input type = "text" class = "form-control nf-input" name="brg_pemenuhan_qty" required id = "brg_pemenuhan_qty_insert">
                     </div>
                     <h5>*Stok barang sekarang: <span id="brg_skrg_insert"></span><br>
                     *Stok barang seluruhnya <span id="brg_seluruh"></span><br>

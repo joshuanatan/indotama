@@ -113,12 +113,36 @@
                     content_brg_penjualan = respond["content"];
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr class = 'brg_penjualan_row'><input type = 'hidden' name = 'check[]' value = '"+a+"'><input type = 'hidden' value = '"+respond["content"][a]["id"]+"' name = 'id_brg"+a+"'><td>"+respond["content"][a]["nama_brg"]+"<br/>Notes:"+respond["content"][a]["note"]+"</td><td>"+respond["content"][a]["qty"]+" "+respond["content"][a]["satuan"]+"</td><td><input type = 'text' class = 'form-control' name = 'notes"+a+"'></td><td><div style = 'display:inline-block'><input type = 'text' class = 'form-control' style = 'width:50%; display:inline-block' name = 'qty_kirim"+a+"'><select class = 'form-control satuan_opt' style = 'width:50%; display:inline-block' name = 'id_satuan"+a+"'></select></div></td></tr>";
+                        html += `
+                        <tr class = 'brg_penjualan_row'>
+                            <input type = 'hidden' name = 'check[]' value = '${a}'>
+                            <input type = 'hidden' value = '${respond["content"][a]["id"]}' name = 'id_brg${a}'>
+                            <td>
+                                ${respond["content"][a]["nama_brg"]}<br/>
+                                Notes:${respond["content"][a]["note"]}
+                            </td>
+                            <td>
+                                ${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}
+                            </td>
+                            <td>
+                                <input type = 'text' class = 'form-control' name = 'notes${a}'>
+                            </td>
+                            <td>
+                                <div style = 'display:inline-block'>
+                                    <input type = 'text' class = 'form-control nf-input' style = 'width:50%; display:inline-block' name = 'qty_kirim${a}'>
+                                    <select class = 'form-control satuan_opt' style = 'width:50%; display:inline-block' name = 'id_satuan${a}'></select>
+                                </div>
+                            </td>
+                        </tr>`;
                     }
                     $("#daftar_brg_beli").html(html);
+                    init_nf();
                     var html_datalist_satuan = "";
                     for(var a = 0; a<datalist_satuan.length; a++){
-                        html_datalist_satuan+="<option value = '"+datalist_satuan[a]["id"]+"'>"+datalist_satuan[a]["nama"].toString().toUpperCase()+" / Rumus: "+datalist_satuan[a]["rumus"]+"</option>";
+                        html_datalist_satuan += `
+                        <option value = '${datalist_satuan[a]["id"]}'>
+                            ${datalist_satuan[a]["nama"].toString().toUpperCase()} / Rumus: ${datalist_satuan[a]["rumus"]}
+                        </option>`;
                     }
                     $(".satuan_opt").html(html_datalist_satuan);
                 }
@@ -135,7 +159,18 @@
                     content_brg_penjualan = respond["content"];
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr class = 'tmbhn_penjualan_row'><td>"+respond["content"][a]["tmbhn"]+"</td><td>"+respond["content"][a]["jumlah"]+" "+respond["content"][a]["satuan"]+"</td><td>"+respond["content"][a]["notes"]+"</td></tr>";
+                        html += `
+                        <tr class = 'tmbhn_penjualan_row'>
+                            <td>
+                                ${respond["content"][a]["tmbhn"]}
+                            </td>
+                            <td>
+                                ${respond["content"][a]["jumlah"]} ${respond["content"][a]["satuan"]}
+                            </td>
+                            <td>
+                                ${respond["content"][a]["notes"]}
+                            </td>
+                        </tr>`;
                     }
                     $("#daftar_tambahan_beli").html(html);
                 }

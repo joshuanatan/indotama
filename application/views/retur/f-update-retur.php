@@ -96,9 +96,27 @@
                 if(respond["status"] == "SUCCESS"){
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr class = 'brg_retur_counter_edit'><td id = 'brg_retur_counter_edit"+a+"'><input name = 'brg_retur_check_edit[]' value = "+a+" type = 'hidden'><input type = 'hidden' id = 'id_brg_retur_edit"+a+"' name = 'id_brg_retur_edit"+a+"' value = '"+respond["content"][a]["id"]+"'><input name = 'brg_retur_edit"+a+"' value = '"+respond["content"][a]["nama_brg"]+"' type = 'text' class = 'form-control' list = 'datalist_barang_cabang'></td><td>-</td><td><input name = 'brg_retur_jumlah_edit"+a+"' value = '"+respond["content"][a]["qty"]+" "+respond["content"][a]["satuan"]+"' type = 'text' class = 'form-control'></td><td><input name = 'brg_retur_notes_edit"+a+"' value = '"+respond["content"][a]["notes"]+"' type = 'text' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_brg_retur("+a+")'></i></td></tr>";
+                        html += `
+                        <tr class = 'brg_retur_counter_edit'>
+                            <td id = 'brg_retur_counter_edit${a}'>
+                                <input name = 'brg_retur_check_edit[]' value = ${a} type = 'hidden'>
+                                <input type = 'hidden' id = 'id_brg_retur_edit${a}' name = 'id_brg_retur_edit${a}' value = '${respond["content"][a]["id"]}'>
+                                <input name = 'brg_retur_edit${a}' value = '${respond["content"][a]["nama_brg"]}' type = 'text' class = 'form-control' list = 'datalist_barang_cabang'>
+                            </td>
+                            <td>-</td>
+                            <td>
+                                <input name = 'brg_retur_jumlah_edit${a}' value = '${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}' type = 'text' class = 'form-control nf-input'>
+                            </td>
+                            <td>
+                                <input name = 'brg_retur_notes_edit${a}' value = '${respond["content"][a]["notes"]}' type = 'text' class = 'form-control'>
+                            </td>
+                            <td>
+                                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_brg_retur(${a})'></i>
+                            </td>
+                        </tr>`;
                     }
                     $("#add_brg_retur_but_container_edit").before(html);
+                    init_nf();
                 }
             }
         });
@@ -117,9 +135,35 @@
                     if(respond["status"] == "SUCCESS"){
                         var html = "";
                         for(var a = 0; a<respond["content"].length; a++){
-                            html += "<tr class = 'brg_kembali_row_edit'><td id = 'brg_kembali_row_edit"+a+"'><input name = 'brg_kembali_check_edit[]' value = "+a+" type = 'hidden'><input type = 'hidden' id = 'id_brg_kembali_edit"+a+"'name = 'id_brg_kembali_edit"+a+"' value = '"+respond["content"][a]["id"]+"'><input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang("+a+")' value = '"+respond["content"][a]["nama_brg"]+"'id = 'brg"+a+"' name = 'brg_edit"+a+"' class = 'form-control'></td><td><input value = '"+respond["content"][a]["qty_real"]+" "+respond["content"][a]["satuan_real"]+"' name = 'brg_qty_real_edit"+a+"' type = 'text' class = 'form-control'></td><td><input value = '"+respond["content"][a]["qty"]+" "+respond["content"][a]["satuan"]+"' name = 'brg_qty_edit"+a+"' type = 'text' class = 'form-control'></td><td><input value = '"+respond["content"][a]["harga_brg"]+"' type = 'text' readonly id = 'harga_barang_jual"+a+"' class = 'form-control'></td><td><input value = '"+respond["content"][a]["harga"]+"' type = 'text' name = 'brg_price_edit"+a+"' class = 'form-control'></td><td><input value = '"+respond["content"][a]["note"]+"' type = 'text' name = 'brg_notes_edit"+a+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_brg_kembali("+a+")'></i></td></tr>";
+                            html += `
+                            <tr class = 'brg_kembali_row_edit'>
+                                <td id = 'brg_kembali_row_edit${a}'>
+                                    <input name = 'brg_kembali_check_edit[]' value = ${a} type = 'hidden'>
+                                    <input type = 'hidden' id = 'id_brg_kembali_edit${a}'name = 'id_brg_kembali_edit${a}' value = '${respond["content"][a]["id"]}'>
+                                    <input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${a})' value = '${respond["content"][a]["nama_brg"]}'id = 'brg${a}' name = 'brg_edit${a}' class = 'form-control'>
+                                </td>
+                                <td>
+                                    <input value = '${respond["content"][a]["qty_real"]} ${respond["content"][a]["satuan_real"]}' name = 'brg_qty_real_edit${a}' type = 'text' class = 'form-control nf-input'>
+                                </td>
+                                <td>
+                                    <input value = '${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}' name = 'brg_qty_edit${a}' type = 'text' class = 'form-control nf-input'>
+                                </td>
+                                <td>
+                                    <input value = '${respond["content"][a]["harga_brg"]}' type = 'text' readonly id = 'harga_barang_jual${a}' class = 'form-control nf-input'>
+                                </td>
+                                <td>
+                                    <input value = '${respond["content"][a]["harga"]}' type = 'text' name = 'brg_price_edit${a}' class = 'form-control nf-input'>
+                                </td>
+                                <td>
+                                    <input value = '${respond["content"][a]["note"]}' type = 'text' name = 'brg_notes_edit${a}' class = 'form-control'>
+                                </td>
+                                <td>
+                                    <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_brg_kembali(${a})'></i>
+                                </td>
+                            </tr>`;
                         }
                         $("#add_brg_kembali_but_container_edit").before(html);
+                        init_nf();
                     }
                 }
             });
@@ -158,13 +202,55 @@
     }
     function add_brg_retur_edit(){
         var count = $(".brg_retur_counter").length;
-        var html = "<tr class = 'brg_retur_counter'><td id = 'brg_retur_counter"+count+"'><input name = 'brg_retur_check[]' value = "+count+" type = 'hidden'><input name = 'brg_retur"+count+"' type = 'text' class = 'form-control' list = 'datalist_barang_cabang'></td><td>-</td><td><input name = 'brg_retur_jumlah"+count+"' type = 'text' class = 'form-control'></td><td><input name = 'brg_retur_notes"+count+"' type = 'text' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = `
+        <tr class = 'brg_retur_counter'>
+            <td id = 'brg_retur_counter${count}'>
+                <input name = 'brg_retur_check[]' value = ${count} type = 'hidden'>
+                <input name = 'brg_retur${count}' type = 'text' class = 'form-control' list = 'datalist_barang_cabang'>
+            </td>
+            <td>-</td>
+            <td>
+                <input name = 'brg_retur_jumlah${count}' type = 'text' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input name = 'brg_retur_notes${count}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+            </td>
+        </tr>`;
         $("#add_brg_retur_but_container_edit").before(html);
+        init_nf();
     }
     var brg_kembali_row = 0;  
     function add_brg_kembali_edit(){
-        var html = "<tr class = 'add_brg_kembali_row'><td id = 'brg_kembali_counter"+brg_kembali_row+"'><input name = 'brg_kembali_check[]' value = "+brg_kembali_row+" type = 'hidden'><input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang("+brg_kembali_row+")' id = 'brg"+brg_kembali_row+"' name = 'brg"+brg_kembali_row+"' class = 'form-control'></td><td><input name = 'brg_qty_real"+brg_kembali_row+"' type = 'text' class = 'form-control'></td><td><input name = 'brg_qty"+brg_kembali_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' readonly id = 'harga_barang_jual"+brg_kembali_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_price"+brg_kembali_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+brg_kembali_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = `
+        <tr class = 'add_brg_kembali_row'>
+            <td id = 'brg_kembali_counter${brg_kembali_row}'>
+                <input name = 'brg_kembali_check[]' value = ${brg_kembali_row} type = 'hidden'>
+                <input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${brg_kembali_row})' id = 'brg${brg_kembali_row}' name = 'brg${brg_kembali_row}' class = 'form-control'>
+            </td>
+            <td>
+                <input name = 'brg_qty_real${brg_kembali_row}' type = 'text' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input name = 'brg_qty${brg_kembali_row}' type = 'text' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input type = 'text' readonly id = 'harga_barang_jual${brg_kembali_row}' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input type = 'text' name = 'brg_price${brg_kembali_row}' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input type = 'text' name = 'brg_notes${brg_kembali_row}' class = 'form-control'>
+            </td>
+            <td>
+                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+            </td>
+        </tr>`;
         $("#add_brg_kembali_but_container_edit").before(html);
         brg_kembali_row++;    
+        init_inf();
     }
 </script>

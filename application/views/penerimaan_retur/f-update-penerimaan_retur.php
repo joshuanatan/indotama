@@ -105,9 +105,30 @@
                 if(respond["status"] == "SUCCESS"){
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr class = 'brg_pembelian_row_edit'><input type = 'hidden' name = 'check[]' value = '"+a+"'><input type = 'hidden' value = '"+respond["content"][a]["id"]+"' name = 'id_brg_terima"+a+"'><td>"+respond["content"][a]["nama_brg"]+"<br/>Notes:"+respond["content"][a]["brg_notes_retur"]+"</td><td>"+respond["content"][a]["brg_qty_retur"]+" "+respond["content"][a]["brg_satuan_retur"]+"</td><td><input type = 'text' class = 'form-control' name = 'notes"+a+"' value = '"+respond["content"][a]["note"]+"'></td><td><div style = 'display:inline-block'><input value = '"+respond["content"][a]["qty"]+"' type = 'text' class = 'form-control' style = 'width:50%; display:inline-block' name = 'qty_terima"+a+"'><select class = 'form-control' style = 'width:50%; display:inline-block' id = 'id_satuan_edit"+a+"' name = 'id_satuan"+a+"'>"+satuan_opt+"</select></div></td></tr>";
+                        html += `
+                        <tr class = 'brg_pembelian_row_edit'>
+                            <input type = 'hidden' name = 'check[]' value = '${a}'>
+                            <input type = 'hidden' value = '${respond["content"][a]["id"]}' name = 'id_brg_terima${a}'>
+                            <td>
+                                ${respond["content"][a]["nama_brg"]}<br/>
+                                Notes:${respond["content"][a]["brg_notes_retur"]}
+                            </td>
+                            <td>
+                                ${respond["content"][a]["brg_qty_retur"]} ${respond["content"][a]["brg_satuan_retur"]}
+                            </td>
+                            <td>
+                                <input type = 'text' class = 'form-control' name = 'notes${a}' value = '${respond["content"][a]["note"]}'>
+                            </td>
+                            <td>
+                                <div style = 'display:inline-block'>
+                                    <input value = '${respond["content"][a]["qty"]}' type = 'text' class = 'form-control nf-input' style = 'width:50%; display:inline-block' name = 'qty_terima${a}'>
+                                    <select class = 'form-control' style = 'width:50%; display:inline-block' id = 'id_satuan_edit${a}' name = 'id_satuan${a}'>${satuan_opt}</select>
+                                </div>
+                            </td>
+                        </tr>`;
                     }
                     $("#daftar_brg_beli_edit").html(html);
+                    init_nf();
                     for(var a = 0; a<respond["content"].length; a++){
                         $("#id_satuan_edit"+a).val(respond["content"][a]["id_satuan"]);
                     }

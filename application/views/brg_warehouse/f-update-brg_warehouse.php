@@ -18,7 +18,7 @@
                     </div>
                     <div class = "form-group">
                         <h5>Stok</h5>
-                        <input type = "text" class = "form-control" required name = "stok" id = "stok_edit">
+                        <input type = "text" class = "form-control nf-input" required name = "stok" id = "stok_edit">
                     </div>
                     <div class = "form-group">
                         <h5>Notes</h5>

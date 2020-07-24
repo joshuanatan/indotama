@@ -207,31 +207,32 @@ $notif_data = array(
     function add_brg_jual_row(){
         var html = `
         <tr class = 'add_brg_jual_row'>
-            <td id = 'row"+brg_jual_row+"'>
-                <input name = 'check[]' value = "+brg_jual_row+" type = 'hidden'>
-                <input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang("+brg_jual_row+")' id = 'brg"+brg_jual_row+"' name = 'brg"+brg_jual_row+"' class = 'form-control'>
+            <td id = 'row${brg_jual_row}'>
+                <input name = 'check[]' value = ${brg_jual_row} type = 'hidden'>
+                <input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${brg_jual_row})' id = 'brg${brg_jual_row}' name = 'brg${brg_jual_row}' class = 'form-control'>
                 <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm' target = '_blank'>Tambah Barang Cabang</a>
             </td>
             <td>
-                <input name = 'brg_qty_real"+brg_jual_row+"' type = 'text' class = 'form-control'>
+                <input name = 'brg_qty_real${brg_jual_row}' type = 'text' class = 'form-control nf-input'>
             </td>
             <td>
-                <input name = 'brg_qty"+brg_jual_row+"' type = 'text' class = 'form-control'>
+                <input name = 'brg_qty${brg_jual_row}' type = 'text' class = 'form-control nf-input'>
             </td>
             <td>
-                <input type = 'text' readonly id = 'harga_barang_jual"+brg_jual_row+"' class = 'form-control'>
+                <input type = 'text' readonly id = 'harga_barang_jual${brg_jual_row}' class = 'form-control nf-input'>
             </td>
             <td>
-                <input type = 'text' name = 'brg_price"+brg_jual_row+"' class = 'form-control'>
+                <input type = 'text' name = 'brg_price${brg_jual_row}' class = 'form-control nf-input'>
             </td>
             <td>
-                <input type = 'text' name = 'brg_notes"+brg_jual_row+"' class = 'form-control'>
+                <input type = 'text' name = 'brg_notes${brg_jual_row}' class = 'form-control'>
             </td>
             <td>
                 <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
             </td>
         </tr>`;
         $("#add_brg_jual_but_container").before(html);
+        init_nf();
         brg_jual_row++;    
     }
     var tambahan_jual_row = 0;
@@ -243,10 +244,10 @@ $notif_data = array(
                 <input name = 'tmbhn${tambahan_jual_row}' type = 'text' class = 'form-control'>
             </td>
             <td>
-                <input name = 'tmbhn_jumlah${tambahan_jual_row}' type = 'text' class = 'form-control'>
+                <input name = 'tmbhn_jumlah${tambahan_jual_row}' type = 'text' class = 'form-control nf-input'>
             </td>
             <td>
-                <input name = 'tmbhn_harga${tambahan_jual_row}' type = 'text' class = 'form-control'>
+                <input name = 'tmbhn_harga${tambahan_jual_row}' type = 'text' class = 'form-control nf-input'>
             </td>
             <td>
                 <input name = 'tmbhn_notes${tambahan_jual_row}' type = 'text' class = 'form-control'>
@@ -256,6 +257,7 @@ $notif_data = array(
             </td>
         </tr>`;
         $("#add_tambahan_jual_but_container").before(html);
+        init_nf();
         tambahan_jual_row++;        
     }
     var pembayaran_row = 0;  
@@ -270,7 +272,7 @@ $notif_data = array(
                 <input name = 'pmbyrn_persen${pembayaran_row}' type = 'text' class = 'form-control'>
             </td>
             <td>
-                <input type = 'text' onfocus = 'count_nominal_persentase(${pembayaran_row})' name = 'pmbyrn_nominal${pembayaran_row}' class = 'form-control'>
+                <input type = 'text' onfocus = 'count_nominal_persentase(${pembayaran_row})' name = 'pmbyrn_nominal${pembayaran_row}' class = 'form-control nf-input'>
             </td>
             <td>
                 <input type = 'text' name = 'pmbyrn_notes${pembayaran_row}' class = 'form-control'>
@@ -283,6 +285,7 @@ $notif_data = array(
             </td>
         </tr>`;
         $("#add_pembayaran_but_container").before(html);
+        init_nf();
         pembayaran_row++;    
     }
     var custom_produk_row = 0;  
@@ -298,13 +301,14 @@ $notif_data = array(
                 <input name = 'custom_brg_akhir${custom_produk_row}' list = 'datalist_barang_cabang' type = 'text' class = 'form-control'>
             </td>
             <td>
-                <input name = 'custom_brg_qty${custom_produk_row}' type = 'text' class = 'form-control'>
+                <input name = 'custom_brg_qty${custom_produk_row}' type = 'text' class = 'form-control nf-input'>
             </td>
             <td>
                 <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
             </td>
         </tr>`;
         $("#add_custom_produk_but_container").before(html);
+        init_nf();
         custom_produk_row++;    
     }
     function load_harga_barang(row){
@@ -414,7 +418,6 @@ $notif_data = array(
         </div>
     </div>
 </div>
-<?php $this->load->view("_core_script/register_func");?>
 <script>
     function register_brg_pindah(){
         var form = $("#register_brg_pindah_form")[0];
@@ -454,3 +457,4 @@ $notif_data = array(
 </script>
 
 <?php $this->load->view('_notification/notif_general'); ?>
+<?php $this->load->view("req/core_script");?>

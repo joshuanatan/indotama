@@ -21,7 +21,7 @@
                     </div>
                     <div class = "form-group">
                         <h5>Biaya </h5>
-                        <input type = "text" class = "form-control" required name = "biaya">
+                        <input type = "text" class = "form-control nf-input" required name = "biaya">
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>

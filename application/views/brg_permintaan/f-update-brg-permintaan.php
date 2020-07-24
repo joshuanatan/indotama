@@ -24,7 +24,7 @@
                     </div>
                     <div class = "form-group">
                         <h5>Jumlah Barang</h5>
-                        <input type = "number" class = "form-control" name="brg_permintaan_qty" required id = "brg_permintaan_qty_edit">
+                        <input type = "text" class = "form-control nf-input" name="brg_permintaan_qty" required id = "brg_permintaan_qty_edit">
                     </div>
                     <div class = "form-group">
                         <h5>Notes</h5>

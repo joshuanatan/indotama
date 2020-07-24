@@ -119,12 +119,34 @@
                     content_brg_penjualan = respond["content"];
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr class = 'brg_retur_counter'><td><input name = 'brg_retur_check[]' value = "+a+" type = 'hidden'><input readonly type = 'text' class = 'form-control' name = 'brg_retur"+a+"' value = '"+respond["content"][a]["nama_brg"]+"' ></td><td>"+respond["content"][a]["jmlh_terkirim"]+" / "+respond["content"][a]["qty_mu"]+" "+respond["content"][a]["satuan_mu"]+"</td><td><input type = 'text' class = 'form-control' name = 'brg_retur_jumlah"+a+"'></td><td><input name = 'brg_retur_notes"+a+"' type = 'text' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+                        html += `
+                        <tr class = 'brg_retur_counter'>
+                            <td>
+                                <input name = 'brg_retur_check[]' value = ${a} type = 'hidden'>
+                                <input readonly type = 'text' class = 'form-control' name = 'brg_retur${a}' value = '${respond["content"][a]["nama_brg"]}' >
+                            </td>
+                            <td>
+                                ${respond["content"][a]["jmlh_terkirim"]} / ${respond["content"][a]["qty_mu"]} ${respond["content"][a]["satuan_mu"]}
+                            </td>
+                            <td>
+                                <input type = 'text' class = 'form-control nf-input' name = 'brg_retur_jumlah${a}'>
+                            </td>
+                            <td>
+                                <input name = 'brg_retur_notes${a}' type = 'text' class = 'form-control'>
+                            </td>
+                            <td>
+                                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+                            </td>
+                        </tr>`;
                     }
                     $("#daftar_brg_retur").html(html);
+                    init_nf();
                     var html_datalist_satuan = "";
                     for(var a = 0; a<datalist_satuan.length; a++){
-                        html_datalist_satuan+="<option value = '"+datalist_satuan[a]["id"]+"'>"+datalist_satuan[a]["nama"].toString().toUpperCase()+" / Rumus: "+datalist_satuan[a]["rumus"]+"</option>";
+                        html_datalist_satuan += `
+                        <option value = '${datalist_satuan[a]["id"]}'>
+                            ${datalist_satuan[a]["nama"].toString().toUpperCase()} / Rumus: ${datalist_satuan[a]["rumus"]}
+                        </option>`;
                     }
                     $(".satuan_opt").html(html_datalist_satuan);
                 }
@@ -133,13 +155,55 @@
     }
     function add_brg_retur(){
         var count = $(".brg_retur_counter").length;
-        var html = "<tr class = 'brg_retur_counter'><td id = 'brg_retur_counter"+count+"'><input name = 'brg_retur_check[]' value = "+count+" type = 'hidden'><input name = 'brg_retur"+count+"' type = 'text' class = 'form-control' list = 'datalist_barang_cabang'></td><td>-</td><td><input name = 'brg_retur_jumlah"+count+"' type = 'text' class = 'form-control'></td><td><input name = 'brg_retur_notes"+count+"' type = 'text' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = `
+        <tr class = 'brg_retur_counter'>
+            <td id = 'brg_retur_counter${count}'>
+                <input name = 'brg_retur_check[]' value = ${count} type = 'hidden'>
+                <input name = 'brg_retur${count}' type = 'text' class = 'form-control' list = 'datalist_barang_cabang'>
+            </td>
+            <td>-</td>
+            <td>
+                <input name = 'brg_retur_jumlah${count}' type = 'text' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input name = 'brg_retur_notes${count}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+            </td>
+        </tr>`;
         $("#add_brg_retur_but_container").before(html);
+        init_nf();
     }
     var brg_kembali_row = 0;  
     function add_brg_kembali(){
-        var html = "<tr class = 'add_brg_kembali_row'><td id = 'brg_kembali_counter"+brg_kembali_row+"'><input name = 'brg_kembali_check[]' value = "+brg_kembali_row+" type = 'hidden'><input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang("+brg_kembali_row+")' id = 'brg"+brg_kembali_row+"' name = 'brg"+brg_kembali_row+"' class = 'form-control'></td><td><input name = 'brg_qty_real"+brg_kembali_row+"' type = 'text' class = 'form-control'></td><td><input name = 'brg_qty"+brg_kembali_row+"' type = 'text' class = 'form-control'></td><td><input type = 'text' readonly id = 'harga_barang_jual"+brg_kembali_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_price"+brg_kembali_row+"' class = 'form-control'></td><td><input type = 'text' name = 'brg_notes"+brg_kembali_row+"' class = 'form-control'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = `
+        <tr class = 'add_brg_kembali_row'>
+            <td id = 'brg_kembali_counter${brg_kembali_row}'>
+                <input name = 'brg_kembali_check[]' value = ${brg_kembali_row} type = 'hidden'>
+                <input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${brg_kembali_row})' id = 'brg${brg_kembali_row}' name = 'brg${brg_kembali_row}' class = 'form-control'>
+            </td>
+            <td>
+                <input name = 'brg_qty_real${brg_kembali_row}' type = 'text' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input name = 'brg_qty${brg_kembali_row}' type = 'text' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input type = 'text' readonly id = 'harga_barang_jual${brg_kembali_row}' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input type = 'text' name = 'brg_price${brg_kembali_row}' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input type = 'text' name = 'brg_notes${brg_kembali_row}' class = 'form-control'>
+            </td>
+            <td>
+                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+            </td>
+        </tr>`;
         $("#add_brg_kembali_but_container").before(html);
+        init_nf();
         brg_kembali_row++;    
     }
     

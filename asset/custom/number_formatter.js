@@ -8,12 +8,12 @@ function reformat_number(number){
     number = number.split(".").join("");
     return number; //balikin komda (,) jadi koma (.)
 }
-function init(){
+function init_nf(){
     var input_element = document.querySelectorAll(".nf-input");
     console.log(input_element.length);
     for(var a = 0 ;a<input_element.length; a++){
         
-        /*begin oninput init*/
+        /*begin oninput init_nf*/
         input_element[a].onchange = function(){
             var text = this.value;
             var result = formatting_func(text);
@@ -66,4 +66,4 @@ function nf_reformat_all(){
         input_element[a].value = result;
     }
 }
-init();
+init_nf();

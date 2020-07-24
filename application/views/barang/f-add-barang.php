@@ -79,8 +79,21 @@
 <script>
     var baris_barang_counter = 0;
     function tambah_baris_barang(){
-        var html = "<tr><input type = 'hidden' name = 'check[]' value = '"+baris_barang_counter+"'><td><input type = 'text' class = 'form-control' list = 'datalist_barang' name = 'barang"+baris_barang_counter+"'></td><td><input type = 'text' class = 'form-control' name = 'qty"+baris_barang_counter+"'></td><td><i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i></td></tr>";
+        var html = `
+        <tr>
+            <input type = 'hidden' name = 'check[]' value = '${baris_barang_counter}'>
+            <td>
+                <input type = 'text' class = 'form-control' list = 'datalist_barang' name = 'barang${baris_barang_counter}'>
+            </td>
+            <td>
+                <input type = 'text' class = 'form-control nf-input' name = 'qty${baris_barang_counter}'>
+            </td>
+            <td>
+                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+            </td>
+        </tr>`;
         $("#btn_tambah_baris_barang_container").before(html);
+        init_nf();
         baris_barang_counter++;
     }
 

@@ -109,7 +109,17 @@
                 success:function(respond){
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr class = 'row_brg_edit' id = 'd_id_brg_edit"+a+"'><input readonly type = 'hidden' id = 'd_id_barang_kombinasi"+a+"' name = 'id_barang_kombinasi"+a+"' value = '"+respond["content"][a]["id"]+"'><input readonly type = 'hidden' name = 'edit[]' value = '"+a+"'><td><input readonly type = 'text' class = 'form-control' list = 'datalist_barang' name = 'barang_edit"+a+"' value = '"+respond["content"][a]["barang"]+"'></td><td><input readonly type = 'text' class = 'form-control' name = 'qty_edit"+a+"' value = '"+respond["content"][a]["qty"]+"'></td></tr>";
+                        html += `
+                        <tr class = 'row_brg_edit' id = 'd_id_brg_edit${a}'>
+                            <input readonly type = 'hidden' id = 'd_id_barang_kombinasi${a}' name = 'id_barang_kombinasi${a}' value = '${respond["content"][a]["id"]}'>
+                            <input readonly type = 'hidden' name = 'edit[]' value = '${a}'>
+                            <td>
+                                <input readonly type = 'text' class = 'form-control' list = 'datalist_barang' name = 'barang_edit${a}' value = '${respond["content"][a]["barang"]}'>
+                            </td>
+                            <td>
+                                <input readonly type = 'text' class = 'form-control' name = 'qty_edit${a}' value = '${respond["content"][a]["qty"]}'>
+                            </td>
+                        </tr>`;
                     }
                     $(".row_brg_edit").remove();
                     $("#d_btn_tambah_baris_barang_container_edit").before(html);
@@ -119,7 +129,16 @@
     }
     var baris_barang_counter_edit = 0;
     function d_tambah_baris_barang_edit(){
-        var html = "<tr class = 'row_brg_edit'><input type = 'hidden' name = 'check[]' value = '"+baris_barang_counter_edit+"'><td><input type = 'text' class = 'form-control' list = 'datalist_barang' name = 'barang"+baris_barang_counter_edit+"'></td><td><input type = 'text' class = 'form-control' name = 'qty"+baris_barang_counter_edit+"'></td></tr>";
+        var html = `
+        <tr class = 'row_brg_edit'>
+            <input type = 'hidden' name = 'check[]' value = '${baris_barang_counter_edit}'>
+            <td>
+                <input type = 'text' class = 'form-control' list = 'datalist_barang' name = 'barang${baris_barang_counter_edit}'>
+            </td>
+            <td>
+                <input type = 'text' class = 'form-control' name = 'qty${baris_barang_counter_edit}'>
+            </td>
+        </tr>`;
         $("#d_btn_tambah_baris_barang_container_edit").before(html);
         baris_barang_counter_edit++;
     }

@@ -83,10 +83,10 @@
                 <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm' target = '_blank'>Tambah Barang Cabang</a>
             </td>
             <td>
-                <input name = 'brg_qty${brg_beli_row}' type = 'text' class = 'form-control'>
+                <input name = 'brg_qty${brg_beli_row}' type = 'text' class = 'form-control nf-input'>
             </td>
             <td>
-                <input type = 'text' id = 'brg_price${brg_beli_row}' name = 'brg_price${brg_beli_row}' class = 'form-control'>
+                <input type = 'text' id = 'brg_price${brg_beli_row}' name = 'brg_price${brg_beli_row}' class = 'form-control nf-input'>
             </td>
             <td>
                 <input type = 'text' name = 'brg_notes${brg_beli_row}' class = 'form-control'>
@@ -97,6 +97,7 @@
         </tr>`;
         $("#add_brg_beli_but_container").before(html);
         brg_beli_row++;    
+        init_nf();
     }
     var tambahan_beli_row = 0;
     function add_tambahan_beli_row(){
@@ -107,10 +108,10 @@
                 <input name = 'tmbhn${tambahan_beli_row}' type = 'text' class = 'form-control'>
             </td>
             <td>
-                <input name = 'tmbhn_jumlah${tambahan_beli_row}' type = 'text' class = 'form-control'>
+                <input name = 'tmbhn_jumlah${tambahan_beli_row}' type = 'text' class = 'form-control nf-input'>
             </td>
             <td>
-                <input name = 'tmbhn_harga${tambahan_beli_row}' type = 'text' class = 'form-control'>
+                <input name = 'tmbhn_harga${tambahan_beli_row}' type = 'text' class = 'form-control nf-input'>
             </td>
             <td>
                 <input name = 'tmbhn_notes${tambahan_beli_row}' type = 'text' class = 'form-control'>
@@ -120,7 +121,8 @@
             </td>
         </tr>`;
         $("#add_tambahan_beli_but_container").before(html);
-        tambahan_beli_row++;        
+        tambahan_beli_row++;  
+        init_nf();      
     }
     function load_harga_akhir(row){
         var nama_barang = $("#brg"+row).val();

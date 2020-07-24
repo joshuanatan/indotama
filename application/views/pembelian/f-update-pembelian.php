@@ -108,10 +108,10 @@
                                 <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm' target = '_blank'>Tambah Barang Cabang</a>
                             </td>
                             <td>
-                                <input name = 'brg_qty_edit${a}' type = 'text' class = 'form-control' value = '${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}'>
+                                <input name = 'brg_qty_edit${a}' type = 'text' class = 'form-control nf-input' value = '${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}'>
                             </td>
                             <td>
-                                <input type = 'text' name = 'brg_price_edit${a}' class = 'form-control' value = '${respond["content"][a]["harga"]}'>
+                                <input type = 'text' name = 'brg_price_edit${a}' class = 'form-control nf-input' value = '${respond["content"][a]["harga"]}'>
                             </td>
                             <td>
                                 <input type = 'text' name = 'brg_notes_edit${a}' class = 'form-control' value = '${respond["content"][a]["note"]}'>
@@ -122,6 +122,7 @@
                         </tr>`;
                     }
                     $("#add_brg_beli_but_container_edit").before(html);
+                    init_nf():
                     is_brg_pembelian_loaded = id;
                 }
             }
@@ -136,10 +137,10 @@
                 <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm' target = '_blank'>Tambah Barang Cabang</a>
             </td>
             <td>
-                <input name = 'brg_qty${brg_beli_row}' type = 'text' class = 'form-control'>
+                <input name = 'brg_qty${brg_beli_row}' type = 'text' class = 'form-control nf-input'>
             </td>
             <td>
-                <input type = 'text' name = 'brg_price${brg_beli_row}' class = 'form-control'>
+                <input type = 'text' name = 'brg_price${brg_beli_row}' class = 'form-control nf-input'>
             </td>
             <td>
                 <input type = 'text' name = 'brg_notes${brg_beli_row}' class = 'form-control'>
@@ -149,6 +150,7 @@
             </td>
         </tr>`;
         $("#add_brg_beli_but_container_edit").before(html);
+        init_nf():
         brg_beli_row++;    
     }
     function delete_brg_pembelian(row){
@@ -183,10 +185,10 @@
                                 <input value = '${respond["content"][a]["tmbhn"]}' name = 'tmbhn_edit${a}' type = 'text' class = 'form-control'>
                             </td>
                             <td>
-                                <input value = '${respond["content"][a]["jumlah"]} ${respond["content"][a]["satuan"]}' name = 'tmbhn_jumlah_edit${a}' type = 'text' class = 'form-control'>
+                                <input value = '${respond["content"][a]["jumlah"]} ${respond["content"][a]["satuan"]}' name = 'tmbhn_jumlah_edit${a}' type = 'text' class = 'form-control nf-input'>
                             </td>
                             <td>
-                                <input value = '${respond["content"][a]["harga"]}' name = 'tmbhn_harga_edit${a}' type = 'text' class = 'form-control'>
+                                <input value = '${respond["content"][a]["harga"]}' name = 'tmbhn_harga_edit${a}' type = 'text' class = 'form-control nf-input'>
                             </td>
                             <td>
                                 <input value = '${respond["content"][a]["notes"]}' name = 'tmbhn_notes_edit${a}' type = 'text' class = 'form-control'>
@@ -197,6 +199,7 @@
                         </tr>`;
                     }
                     $("#add_tambahan_beli_but_container_edit").before(html);
+                    init_nf():
                     is_tambahan_pembelian_loaded = id;
                 }
             }
@@ -211,10 +214,10 @@
                 <input name = 'tmbhn${tambahan_beli_row}' type = 'text' class = 'form-control'>
             </td>
             <td>
-                <input name = 'tmbhn_jumlah${tambahan_beli_row}' type = 'text' class = 'form-control'>
+                <input name = 'tmbhn_jumlah${tambahan_beli_row}' type = 'text' class = 'form-control nf-input'>
             </td>
             <td>
-                <input name = 'tmbhn_harga${tambahan_beli_row}' type = 'text' class = 'form-control'>
+                <input name = 'tmbhn_harga${tambahan_beli_row}' type = 'text' class = 'form-control nf-input'>
             </td>
             <td>
                 <input name = 'tmbhn_notes${tambahan_beli_row}' type = 'text' class = 'form-control'>
@@ -224,7 +227,8 @@
             </td>
         </tr>`;
         $("#add_tambahan_beli_but_container_edit").before(html);
-        tambahan_beli_row++;        
+        init_nf():       
+        tambahan_beli_row++; 
     }
     function delete_tmbhn_pembelian(row){
         var id_brg_pembelian = content_tmbhn_pembelian[row]["id"];

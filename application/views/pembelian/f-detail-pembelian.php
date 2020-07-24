@@ -85,7 +85,23 @@
                     content_brg_pembelian = respond["content"];
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr class = 'd_brg_pembelian_row_edit' id = 'd_brg_pembelian_row_edit"+a+"'><td><input disabled name = 'brg_pem_edit[]' value = "+a+" type = 'hidden'><input disabled type = 'hidden' name = 'id_brg_pem_edit"+a+"' value = '"+respond["content"][a]["id"]+"'><input disabled type = 'text' list = 'datalist_barang_cabang' name = 'brg_edit"+a+"' value = '"+respond["content"][a]["nama_brg"]+"' class = 'form-control'></td><td><input disabled name = 'brg_qty_edit"+a+"' type = 'text' class = 'form-control' value = '"+respond["content"][a]["qty"]+" "+respond["content"][a]["satuan"]+"'></td><td><input disabled type = 'text' name = 'brg_price_edit"+a+"' class = 'form-control' value = '"+respond["content"][a]["harga"]+"'></td><td><input disabled type = 'text' name = 'brg_notes_edit"+a+"' class = 'form-control' value = '"+respond["content"][a]["note"]+"'></td></tr>";
+                        html += `
+                        <tr class = 'd_brg_pembelian_row_edit' id = 'd_brg_pembelian_row_edit${a}'>
+                            <td>
+                                <input disabled name = 'brg_pem_edit[]' value = ${a} type = 'hidden'>
+                                <input disabled type = 'hidden' name = 'id_brg_pem_edit${a}' value = '${respond["content"][a]["id"]}'>
+                                <input disabled type = 'text' list = 'datalist_barang_cabang' name = 'brg_edit${a}' value = '${respond["content"][a]["nama_brg"]}' class = 'form-control'>
+                            </td>
+                            <td>
+                                <input disabled name = 'brg_qty_edit${a}' type = 'text' class = 'form-control' value = '${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}'>
+                            </td>
+                            <td>
+                                <input disabled type = 'text' name = 'brg_price_edit${a}' class = 'form-control' value = '${respond["content"][a]["harga"]}'>
+                            </td>
+                            <td>
+                                <input disabled type = 'text' name = 'brg_notes_edit${a}' class = 'form-control' value = '${respond["content"][a]["note"]}'>
+                            </td>
+                        </tr>`;
                     }
                     $("#d_add_brg_beli_but_container_edit").before(html);
                     is_brg_pembelian_loaded = id;
@@ -112,7 +128,23 @@
                     content_tmbhn_pembelian = respond["content"];
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
-                        html += "<tr class = 'tmbhn_pembelian_row_edit' id = 'd_tmbhn_pembelian_row_edit"+a+"'><td><input disabled name = 'tambahan_edit[]' value = "+a+" type = 'hidden'><input type = 'hidden' name = 'id_tmbhn_pem_edit"+a+"' value = '"+respond["content"][a]["id"]+"'><input value = '"+respond["content"][a]["tmbhn"]+"' name = 'tmbhn_edit"+a+"' type = 'text' class = 'form-control'></td><td><input disabled value = '"+respond["content"][a]["jumlah"]+" "+respond["content"][a]["satuan"]+"' name = 'tmbhn_jumlah_edit"+a+"' type = 'text' class = 'form-control'></td><td><input disabled value = '"+respond["content"][a]["harga"]+"' name = 'tmbhn_harga_edit"+a+"' type = 'text' class = 'form-control'></td><td><input disabled value = '"+respond["content"][a]["notes"]+"' name = 'tmbhn_notes_edit"+a+"' type = 'text' class = 'form-control'></td></tr>";
+                        html += `
+                        <tr class = 'tmbhn_pembelian_row_edit' id = 'd_tmbhn_pembelian_row_edit${a}'>
+                            <td>
+                                <input disabled name = 'tambahan_edit[]' value = ${a} type = 'hidden'>
+                                <input type = 'hidden' name = 'id_tmbhn_pem_edit${a}' value = '${respond["content"][a]["id"]}'>
+                                <input value = '${respond["content"][a]["tmbhn"]}' name = 'tmbhn_edit${a}' type = 'text' class = 'form-control'>
+                            </td>
+                            <td>
+                                <input disabled value = '${respond["content"][a]["jumlah"]} ${respond["content"][a]["satuan"]}' name = 'tmbhn_jumlah_edit${a}' type = 'text' class = 'form-control'>
+                            </td>
+                            <td>
+                                <input disabled value = '${respond["content"][a]["harga"]}' name = 'tmbhn_harga_edit${a}' type = 'text' class = 'form-control'>
+                            </td>
+                            <td>
+                                <input disabled value = '${respond["content"][a]["notes"]}' name = 'tmbhn_notes_edit${a}' type = 'text' class = 'form-control'>
+                            </td>
+                        </tr>`;
                     }
                     
                     $("#d_add_tambahan_beli_but_container_edit").before(html);
