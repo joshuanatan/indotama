@@ -108,6 +108,9 @@ $data = array(
                 if(respond["status"] == "SUCCESS"){
                     content = respond["content"];
                     for(var a = 0; a<content.length; a++){
+                        if(a%4 == 0){
+                            html += `<div class = 'row'>`;
+                        }
                         html += `
                         <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
                             <div class="panel panel-default card-view pa-0">
@@ -116,9 +119,11 @@ $data = array(
                                         <div class="sm-data-box">
                                             <div class="container-fluid">
                                                 <div class="row">
-                                                    <div class="col-xs-12 text-center pl-0 pr-0 data-wrap-left">
+                                                    <div class="col-xs-12 text-center pl-0 pr-0 data-wrap-left" style = "height:100%">
                                                         <div style = 'width:90%;height:90%;margin:auto'>
-                                                            <img src = "<?php echo base_url();?>asset/uploads/barang/${content[a]["image"]}" style = "width:100%;padding:20px">
+                                                            <div style = "height:20em">
+                                                                <img src = "<?php echo base_url();?>asset/uploads/barang/${content[a]["image"]}" style = "width:100%;margin:auto">
+                                                            </div>
                                                        
                                                             <table class = "table table-bordered" style = "width:100%;">
                                                                 <tr>
@@ -148,6 +153,9 @@ $data = array(
                             </div>
                         </div>
                         `;
+                        if((a+1)%4 == 0){
+                            html += `</div>`;
+                        }
                     }
                     $("#catalog_content_container").html(html);
                     pagination(respond["page"]);
