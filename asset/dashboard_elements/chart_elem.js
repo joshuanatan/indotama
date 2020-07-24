@@ -35,22 +35,31 @@ function init_chart_data(label,chart_data,count){
         'rgba(255, 159, 64, 1)',
     ];
     var datasets = [];
+    var color_control = [];
+    var color_index;
     for(var a = 0; a<chart_data.length; a++){
+        
+        do{
+            color_index = Math.floor(Math.random() * 6);
+        }
+        while(color_control.includes(color_index));
+        color_control.push(color_index);
+        
         var obj = {};
         obj.data = [];
         obj.backgroundColor = [];
         obj.borderColor = [];
         for(var b = 0; b<chart_data[a]["data"].length; b++){
             obj.data[b] = chart_data[a]["data"][b];
-            obj.backgroundColor[b] = background_color_master[b%background_color_master.length];
-            obj.borderColor[b] = border_color_master[b%border_color_master.length];
+            obj.backgroundColor[b] = background_color_master[color_index];
+            obj.borderColor[b] = border_color_master[color_index];
         }
         obj.label = chart_data[a]["label"];
         obj.borderWidth  = 1;
         datasets.push(obj);
     }
     var ctx = document.getElementById(`chart${count}`);
-    var chart = new Chart(ctx, {
+    new Chart(ctx, {
         type: 'bar',
         data: {
             labels: label,

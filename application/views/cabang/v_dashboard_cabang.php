@@ -84,6 +84,7 @@ $breadcrumb = array(
                     <div class="row" id = "widget_row"></div>
                     <div class="row" id = "table_row"></div>
                     <div class="row" id = "chart_row"></div>
+                    <div class="row" id = "pie_row"></div>
                     <?php $this->load->view('req/mm_footer.php');?>
                 </div>
             </div>
@@ -110,6 +111,7 @@ $breadcrumb = array(
 <script src= "<?php echo base_url();?>asset/dashboard_elements/widget_elem.js"></script>
 <script src= "<?php echo base_url();?>asset/dashboard_elements/table_elem.js"></script>
 <script src= "<?php echo base_url();?>asset/dashboard_elements/chart_elem.js"></script>
+<script src= "<?php echo base_url();?>asset/dashboard_elements/pie_chart_elem.js"></script>
 <script>
 $.ajax({
     url:"<?php echo base_url();?>ws/cabang/pengaturan",
@@ -153,6 +155,7 @@ $.ajax({
     }
 });
 var chart_content = [];
+var pie_content = [];
 $.ajax({
     url:"<?php echo base_url();?>ws/cabang/dashboard",
     type:"GET",
@@ -165,6 +168,8 @@ $.ajax({
             var amt_table = 0;
             var html_chart = "";
             var amt_chart = 0;
+            var html_pie = "";
+            var amt_pie = 0;
             for(var a = 0; a<respond["content"].length; a++){
                 if(respond["content"][a]["type"].toLowerCase() == "widget"){
                     var widget_data = respond["content"][a]["data"];
@@ -185,16 +190,27 @@ $.ajax({
                     amt_chart++;
                     chart_content.push(respond["content"][a]);
                 }
+                else if(respond["content"][a]["type"].toLowerCase() == "pie"){
+                    var pie_title = respond["content"][a]["title"];
+                    html_pie += populate_pie_data(pie_title,amt_pie);
+                    amt_pie++;
+                    pie_content.push(respond["content"][a]);
+                }
             }
             $("#widget_row").html(html_widget);
             $("#table_row").html(html_table);
             $("#chart_row").html(html_chart);
+            $("#pie_row").html(html_pie);
 
             /*init chart*/
             for(var a = 0; a<chart_content.length; a++){
                 var chart_data = chart_content[a]["data"];
                 var xlabel = chart_content[a]["xlabel"];
                 init_chart_data(xlabel,chart_data,a);
+            }
+            for(var a = 0; a<pie_content.length; a++){
+                var pie_data = pie_content[a]["data"];
+                init_pie_data(pie_data,a);
             }
 
             /*init table*/
