@@ -3,16 +3,19 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 require_once dirname(__FILE__) . '/tcpdf/tcpdf.php';
 class Pdf_pembelian extends TCPDF
 {
+    private $logo;
     function __construct()
     {
         parent::__construct();
     }
-
+    function set_logo($logo){
+        $this->logo = $logo;
+    }
     //Page header
     public function Header() {
         // Logo
-        $image_file = base_url().'asset/img/logo.png';
-        $this->Image($image_file, 10, 8, '', 18, 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        $image_file = $this->logo;
+        $this->Image($image_file, 10, 8, '', 18, '', '', 'T', false, 300, '', false, false, 0, false, false, false);
         //$this->Image('@' . $image_file, 10, 8, 45, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         
         // Set font
