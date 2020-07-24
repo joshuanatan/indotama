@@ -59,7 +59,7 @@
                     <textarea type = "text" class = "form-control" name = "alamat" readonly id = "alamat_detail"></textarea>
                 </div>
                 <div class = "form-group">
-                    <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
+                    <button type = "button" class = "btn btn-sm btn-primary" data-dismiss = "modal">OK</button>
                 </div>
             </div>
         </div>
