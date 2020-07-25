@@ -22,8 +22,8 @@ class M_pembelian extends ci_model{
         parent::__construct();
         $this->set_column("pem_pk_nomor","nomor pembelian",true);
         $this->set_column("pem_tgl","tanggal pembelian",false);
-        $this->set_column("pem_status","status",false);
         $this->set_column("sup_perusahaan","supplier",false);
+        $this->set_column("pem_status","status",false);
         $this->set_column("pem_last_modified","last modified",false);
         $this->pem_create_date = date("y-m-d h:i:s");
         $this->pem_last_modified = date("y-m-d h:i:s");

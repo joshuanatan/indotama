@@ -58,7 +58,7 @@
                             </thead>
                             <tbody id = "daftar_tambahan_beli_add">
                                 <tr id = "add_tambahan_beli_but_container">
-                                    <td colspan = 6><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_tambahan_beli_row()">Tambah Barang Pembelian</button>
+                                    <td colspan = 6><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_tambahan_beli_row()">Tambahan Pembelian</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -66,7 +66,7 @@
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <button type = "button" onclick = "register_func();empty_table_form()" class = "btn btn-sm btn-primary">Submit</button>
+                        <button type = "button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
                 </form>
             </div>
@@ -127,13 +127,7 @@
     function load_harga_akhir(row){
         var nama_barang = $("#brg"+row).val();
         var last_price = $("#datalist_barang_cabang option[value='"+nama_barang+"']").attr("data-lastprice");
-        $("#brg_price"+row).val(last_price);
-    }
-    function empty_table_form(){
-        var brg_beli_row = 0;  
-        var tambahan_beli_row = 0;
-        $(".add_brg_beli_row").remove();
-        $(".add_tambahan_beli_row").remove();
+        $("#brg_price"+row).val(formatting_func(last_price));
     }
     function toggle_nomor_pembelian(){
         if($("#penomoran_otomatis_cb").prop("checked")){

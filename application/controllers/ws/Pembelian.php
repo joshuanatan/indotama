@@ -50,8 +50,8 @@ class Pembelian extends CI_Controller{
         $response["key"] = array(
             "nomor",
             "tgl",
-            "status",
             "supplier",
+            "status",
             "last_modified"
         );
         echo json_encode($response);
@@ -67,9 +67,9 @@ class Pembelian extends CI_Controller{
                 $result = $result->result_array();
                 for($a = 0; $a<count($result); $a++){
                     $response["content"][$a]["id"] = $result[$a]["id_pk_brg_pembelian"];
-                    $response["content"][$a]["qty"] = $result[$a]["brg_pem_qty"];
+                    $response["content"][$a]["qty"] = number_format($result[$a]["brg_pem_qty"],0,",",".");
                     $response["content"][$a]["satuan"] = $result[$a]["brg_pem_satuan"];
-                    $response["content"][$a]["harga"] = $result[$a]["brg_pem_harga"];
+                    $response["content"][$a]["harga"] = number_format($result[$a]["brg_pem_harga"],0,",",".");
                     $response["content"][$a]["note"] = $result[$a]["brg_pem_note"];
                     $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
                     $response["content"][$a]["last_modified"] = $result[$a]["brg_pem_last_modified"];
@@ -98,9 +98,9 @@ class Pembelian extends CI_Controller{
                 for($a = 0; $a<count($result); $a++){
                     $response["content"][$a]["id"] = $result[$a]["id_pk_tmbhn"];
                     $response["content"][$a]["tmbhn"] = $result[$a]["tmbhn"];
-                    $response["content"][$a]["jumlah"] = $result[$a]["tmbhn_jumlah"];
+                    $response["content"][$a]["jumlah"] = number_format($result[$a]["tmbhn_jumlah"],2,",",".");
                     $response["content"][$a]["satuan"] = $result[$a]["tmbhn_satuan"];
-                    $response["content"][$a]["harga"] = $result[$a]["tmbhn_harga"];
+                    $response["content"][$a]["harga"] = number_format($result[$a]["tmbhn_harga"],0,",",".");
                     $response["content"][$a]["notes"] = $result[$a]["tmbhn_notes"];
                     $response["content"][$a]["status"] = $result[$a]["tmbhn_status"];
                     $response["content"][$a]["last_modified"] = $result[$a]["tmbhn_last_modified"];
@@ -184,7 +184,7 @@ class Pembelian extends CI_Controller{
             $id_fk_cabang = $this->input->post("id_cabang");
             
             if($this->input->post("generate_pem_no") != ""){
-                $pem_pk_nomor = $this->m_pembelian->get_pem_pk_nomor($id_fk_cabang,"pembelian",$pem_tgl);
+                $pem_pk_nomor = $this->m_pembelian->get_pem_nomor($id_fk_cabang,"pembelian",$pem_tgl);
             }
             else{
                 $pem_pk_nomor = $this->input->post("nomor");
@@ -207,8 +207,14 @@ class Pembelian extends CI_Controller{
                             if($this->form_validation->run()){
                                 $brg_qty = $this->input->post("brg_qty".$a);
                                 $brg_qty = explode(" ",$brg_qty);
-                                $brg_pem_qty = $brg_qty[0];
-                                $brg_pem_satuan = $brg_qty[1];
+                                if(count($brg_qty) > 1){
+                                    $brg_pem_qty = $brg_qty[0];
+                                    $brg_pem_satuan = $brg_qty[1];
+                                }
+                                else{
+                                    $brg_pem_qty = $brg_qty[0];
+                                    $brg_pem_satuan = "Pcs";
+                                }
                                 $brg_pem_harga = $this->input->post("brg_price".$a);
                                 $brg_pem_note = $this->input->post("brg_notes".$a);
                                 $brg_pem_status = "AKTIF";
@@ -273,8 +279,14 @@ class Pembelian extends CI_Controller{
                                 $tmbhn = $this->input->post("tmbhn".$a);
                                 $qty = $this->input->post("tmbhn_jumlah".$a);
                                 $qty = explode(" ",$qty);
-                                $tmbhn_jumlah = $qty[0];
-                                $tmbhn_satuan = $qty[1];
+                                if(count($qty) > 1){
+                                    $tmbhn_jumlah = $qty[0];
+                                    $tmbhn_satuan = $qty[1];
+                                }
+                                else{
+                                    $tmbhn_jumlah = $qty[0];
+                                    $tmbhn_satuan = "Pcs";
+                                }
                                 $tmbhn_harga = $this->input->post("tmbhn_harga".$a);
                                 $tmbhn_notes = $this->input->post("tmbhn_notes".$a);
                                 $tmbhn_status = "AKTIF";
@@ -366,8 +378,14 @@ class Pembelian extends CI_Controller{
                                 $id_pk_brg_pembelian = $this->input->post("id_brg_pem_edit".$a);
                                 $brg_qty = $this->input->post("brg_qty_edit".$a);
                                 $brg_qty = explode(" ",$brg_qty);
-                                $brg_pem_qty = $brg_qty[0];
-                                $brg_pem_satuan = $brg_qty[1];
+                                if(count($brg_qty) > 1){
+                                    $brg_pem_qty = $brg_qty[0];
+                                    $brg_pem_satuan = $brg_qty[1];
+                                }
+                                else{
+                                    $brg_pem_qty = $brg_qty[0];
+                                    $brg_pem_satuan = "Pcs";
+                                }
                                 $brg_pem_harga = $this->input->post("brg_price_edit".$a);
                                 $brg_pem_note = $this->input->post("brg_notes_edit".$a);
                                 $barang = $this->input->post("brg_edit".$a);
@@ -419,8 +437,14 @@ class Pembelian extends CI_Controller{
                             if($this->form_validation->run()){
                                 $brg_qty = $this->input->post("brg_qty".$a);
                                 $brg_qty = explode(" ",$brg_qty);
-                                $brg_pem_qty = $brg_qty[0];
-                                $brg_pem_satuan = $brg_qty[1];
+                                if(count($brg_qty) > 1){
+                                    $brg_pem_qty = $brg_qty[0];
+                                    $brg_pem_satuan = $brg_qty[1];
+                                }
+                                else{
+                                    $brg_pem_qty = $brg_qty[0];
+                                    $brg_pem_satuan = "Pcs";
+                                }
                                 $brg_pem_harga = $this->input->post("brg_price".$a);
                                 $brg_pem_note = $this->input->post("brg_notes".$a);
                                 $brg_pem_status = "AKTIF";
@@ -480,8 +504,14 @@ class Pembelian extends CI_Controller{
                                 $tmbhn = $this->input->post("tmbhn_edit".$a);
                                 $qty = $this->input->post("tmbhn_jumlah_edit".$a);
                                 $qty = explode(" ",$qty);
-                                $tmbhn_jumlah = $qty[0];
-                                $tmbhn_satuan = $qty[1];
+                                if(count($qty) > 1){
+                                    $tmbhn_jumlah = $qty[0];
+                                    $tmbhn_satuan = $qty[1];
+                                }
+                                else{
+                                    $tmbhn_jumlah = $qty[0];
+                                    $tmbhn_satuan = "Pcs";
+                                }
                                 $tmbhn_harga = $this->input->post("tmbhn_harga_edit".$a);
                                 $tmbhn_notes = $this->input->post("tmbhn_notes_edit".$a);
                                 
@@ -525,8 +555,14 @@ class Pembelian extends CI_Controller{
                                 $tmbhn = $this->input->post("tmbhn".$a);
                                 $qty = $this->input->post("tmbhn_jumlah".$a);
                                 $qty = explode(" ",$qty);
-                                $tmbhn_jumlah = $qty[0];
-                                $tmbhn_satuan = $qty[1];
+                                if(count($qty) > 1){
+                                    $tmbhn_jumlah = $qty[0];
+                                    $tmbhn_satuan = $qty[1];
+                                }
+                                else{
+                                    $tmbhn_jumlah = $qty[0];
+                                    $tmbhn_satuan = "Pcs";
+                                }
                                 $tmbhn_harga = $this->input->post("tmbhn_harga".$a);
                                 $tmbhn_notes = $this->input->post("tmbhn_notes".$a);
                                 $tmbhn_status = "AKTIF";

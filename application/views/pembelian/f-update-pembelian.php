@@ -88,6 +88,7 @@
     }
     var content_brg_pembelian = [];
     var is_brg_pembelian_loaded = false;
+    var brg_beli_row_edit = 0;
     function load_brg_pembelian(id){
         $.ajax({
             url:"<?php echo base_url();?>ws/pembelian/brg_pembelian?id="+id,
@@ -104,14 +105,14 @@
                             <td>
                                 <input name = 'brg_pem_edit[]' value = ${a} type = 'hidden'>
                                 <input type = 'hidden' name = 'id_brg_pem_edit${a}' value = '${respond["content"][a]["id"]}'>
-                                <input type = 'text' list = 'datalist_barang_cabang' name = 'brg_edit${a}' value = '${respond["content"][a]["nama_brg"]}' class = 'form-control'>
+                                <input id = 'brg_edit${brg_beli_row_edit}' onchange = 'load_harga_akhir_edit(${brg_beli_row_edit})' type = 'text' list = 'datalist_barang_cabang' name = 'brg_edit${a}' value = '${respond["content"][a]["nama_brg"]}' class = 'form-control'>
                                 <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm col-lg-12' target = '_blank'>Tambah Barang Cabang</a>
                             </td>
                             <td>
                                 <input name = 'brg_qty_edit${a}' type = 'text' class = 'form-control nf-input' value = '${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}'>
                             </td>
                             <td>
-                                <input type = 'text' name = 'brg_price_edit${a}' class = 'form-control nf-input' value = '${respond["content"][a]["harga"]}'>
+                                <input id = 'brg_price_edit${brg_beli_row_edit}' type = 'text' name = 'brg_price_edit${a}' class = 'form-control nf-input' value = '${respond["content"][a]["harga"]}'>
                             </td>
                             <td>
                                 <input type = 'text' name = 'brg_notes_edit${a}' class = 'form-control' value = '${respond["content"][a]["note"]}'>
@@ -120,6 +121,7 @@
                                 <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_brg_pembelian(${a});'></i>
                             </td>
                         </tr>`;
+                        brg_beli_row_edit++;
                     }
                     $("#add_brg_beli_but_container_edit").before(html);
                     init_nf();
@@ -132,18 +134,18 @@
         var html = `
         <tr class = 'brg_pembelian_row_edit_add'>
             <td>
-                <input name = 'check[]' value = ${brg_beli_row} type = 'hidden'>
-                <input type = 'text' list = 'datalist_barang_cabang' name = 'brg${brg_beli_row}' class = 'form-control'>
+                <input name = 'check[]' value = ${brg_beli_row_edit} type = 'hidden'>
+                <input id = 'brg_edit${brg_beli_row_edit}' onchange = 'load_harga_akhir_edit(${brg_beli_row_edit})' type = 'text' list = 'datalist_barang_cabang' name = 'brg${brg_beli_row_edit}' class = 'form-control'>
                 <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm col-lg-12' target = '_blank'>Tambah Barang Cabang</a>
             </td>
             <td>
-                <input name = 'brg_qty${brg_beli_row}' type = 'text' class = 'form-control nf-input'>
+                <input name = 'brg_qty${brg_beli_row_edit}' type = 'text' class = 'form-control nf-input'>
             </td>
             <td>
-                <input type = 'text' name = 'brg_price${brg_beli_row}' class = 'form-control nf-input'>
+                <input id = 'brg_price_edit${brg_beli_row_edit}' type = 'text' name = 'brg_price${brg_beli_row_edit}' class = 'form-control nf-input'>
             </td>
             <td>
-                <input type = 'text' name = 'brg_notes${brg_beli_row}' class = 'form-control'>
+                <input type = 'text' name = 'brg_notes${brg_beli_row_edit}' class = 'form-control'>
             </td>
             <td>
                 <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
@@ -151,7 +153,7 @@
         </tr>`;
         $("#add_brg_beli_but_container_edit").before(html);
         init_nf();
-        brg_beli_row++;    
+        brg_beli_row_edit++;    
     }
     function delete_brg_pembelian(row){
         var id_brg_pembelian = content_brg_pembelian[row]["id"];
@@ -240,5 +242,10 @@
                 $("#tmbhn_pembelian_row_edit"+row).remove();
             }
         });
+    }
+    function load_harga_akhir_edit(row){
+        var nama_barang = $("#brg_edit"+row).val();
+        var last_price = $("#datalist_barang_cabang option[value='"+nama_barang+"']").attr("data-lastprice");
+        $("#brg_price_edit"+row).val(formatting_func(last_price));
     }
 </script>
