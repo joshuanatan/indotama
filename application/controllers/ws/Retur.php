@@ -237,24 +237,27 @@ class Retur extends CI_Controller{
                                     if(count($brg_retur_qty) == 2){
                                         $retur_brg_qty = $brg_retur_qty[0];
                                         $retur_brg_satuan = $brg_retur_qty[1];
-
-                                        $retur_brg_status = "menunggu konfirmasi";
-                                        
-                                        if($this->m_retur_brg->set_insert($id_fk_retur,$id_fk_brg_cabang,$retur_brg_qty,$retur_brg_satuan,$retur_brg_status,$retur_brg_notes)){
-                                            if($this->m_retur_brg->insert()){
-                                                $response["statusitm"][$counter] = "SUCCESS";
-                                                $response["msgitm"][$counter] = "Item is recorded to database";
-                                            }
-                                            else{
-                                                
-                                                $response["statusitm"][$counter] = "ERROR";
-                                                $response["msgitm"][$counter] = "Insert Item function error";
-                                            }
+                                    }
+                                    else{
+                                        $retur_brg_qty = $brg_retur_qty[0];
+                                        $retur_brg_satuan = "Pcs";
+                                    }
+                                    $retur_brg_status = "menunggu konfirmasi";
+                                    
+                                    if($this->m_retur_brg->set_insert($id_fk_retur,$id_fk_brg_cabang,$retur_brg_qty,$retur_brg_satuan,$retur_brg_status,$retur_brg_notes)){
+                                        if($this->m_retur_brg->insert()){
+                                            $response["statusitm"][$counter] = "SUCCESS";
+                                            $response["msgitm"][$counter] = "Item is recorded to database";
                                         }
                                         else{
+                                            
                                             $response["statusitm"][$counter] = "ERROR";
-                                            $response["msgitm"][$counter] = "Setter Item function error";
+                                            $response["msgitm"][$counter] = "Insert Item function error";
                                         }
+                                    }
+                                    else{
+                                        $response["statusitm"][$counter] = "ERROR";
+                                        $response["msgitm"][$counter] = "Setter Item function error";
                                     }
                                 }
                             }
@@ -271,22 +274,23 @@ class Retur extends CI_Controller{
                                 if($result->num_rows() > 0){
                                     $result = $result->result_array();
                                     $id_fk_brg_cabang = $result[0]["id_pk_brg"];
-
-                                    $brg = $this->input->post("brg_qty_real".$a);
-                                    $brg = explode(" ",$brg);
-                                    $retur_kembali_qty_real = $brg[0];
-                                    $retur_kembali_satuan_real = $brg[1];
                                     
                                     $brg = $this->input->post("brg_qty".$a);
                                     $brg = explode(" ",$brg);
-                                    $retur_kembali_qty = $brg[0];
-                                    $retur_kembali_satuan = $brg[1];
+                                    if(count($brg) > 1){
+                                        $retur_kembali_qty = $brg[0];
+                                        $retur_kembali_satuan = $brg[1];
+                                    }
+                                    else{
+                                        $retur_kembali_qty = $brg[0];
+                                        $retur_kembali_satuan = "Pcs";
+                                    }
 
                                     $retur_kembali_harga = $this->input->post("brg_price".$a);
                                     $retur_kembali_note = $this->input->post("brg_notes".$a);
                                     $retur_kembali_status = "aktif";
                                     $id_fk_retur = $id_retur;
-                                    if($this->m_retur_kembali->set_insert($retur_kembali_qty_real,$retur_kembali_satuan_real,$retur_kembali_qty,$retur_kembali_satuan,$retur_kembali_harga,$retur_kembali_note,$retur_kembali_status,$id_fk_retur,$id_fk_brg_cabang)){
+                                    if($this->m_retur_kembali->set_insert($retur_kembali_qty,$retur_kembali_satuan,$retur_kembali_harga,$retur_kembali_note,$retur_kembali_status,$id_fk_retur,$id_fk_brg_cabang)){
                                         if($this->m_retur_kembali->insert()){
     
                                         }
@@ -380,15 +384,16 @@ class Retur extends CI_Controller{
                             $this->load->model("m_retur_kembali");
                             $id_pk_retur_kembali = $this->input->post("id_brg_kembali_edit".$a);
 
-                            $brg = $this->input->post("brg_qty_real_edit".$a);
-                            $brg = explode(" ",$brg);
-                            $retur_kembali_qty_real = $brg[0];
-                            $retur_kembali_satuan_real = $brg[1];
-
                             $brg = $this->input->post("brg_qty_edit".$a);
                             $brg = explode(" ",$brg);
-                            $retur_kembali_qty = $brg[0];
-                            $retur_kembali_satuan = $brg[1];
+                            if(count($brg) > 1){
+                                $retur_kembali_qty = $brg[0];
+                                $retur_kembali_satuan = $brg[1];
+                            }
+                            else{
+                                $retur_kembali_qty = $brg[0];
+                                $retur_kembali_satuan = "Pcs";
+                            }
 
                             $retur_kembali_harga = $this->input->post("brg_price_edit".$a);
                             $retur_kembali_note = $this->input->post("brg_notes_edit".$a);
@@ -401,7 +406,7 @@ class Retur extends CI_Controller{
                                 $id_fk_brg = $result[0]["id_pk_brg"];
                             }
                             
-                            if($this->m_retur_kembali->set_update($id_pk_retur_kembali,$retur_kembali_qty_real,$retur_kembali_satuan_real,$retur_kembali_qty,$retur_kembali_satuan,$retur_kembali_harga,$retur_kembali_note,$id_fk_brg)){
+                            if($this->m_retur_kembali->set_update($id_pk_retur_kembali,$retur_kembali_qty,$retur_kembali_satuan,$retur_kembali_harga,$retur_kembali_note,$id_fk_brg)){
                                 if($this->m_retur_kembali->update()){
                                     $response["statusitm"][$counter] = "SUCCESS";
                                     $response["msgitm"][$counter] = "Item is updated to database";
@@ -477,21 +482,22 @@ class Retur extends CI_Controller{
                                 $result = $result->result_array();
                                 $id_fk_brg_cabang = $result[0]["id_pk_brg"];
 
-                                $brg = $this->input->post("brg_qty_real".$a);
-                                $brg = explode(" ",$brg);
-                                $retur_kembali_qty_real = $brg[0];
-                                $retur_kembali_satuan_real = $brg[1];
-                                
                                 $brg = $this->input->post("brg_qty".$a);
                                 $brg = explode(" ",$brg);
-                                $retur_kembali_qty = $brg[0];
-                                $retur_kembali_satuan = $brg[1];
+                                if(count($brg) > 1){
+                                    $retur_kembali_qty = $brg[0];
+                                    $retur_kembali_satuan = $brg[1];
+                                }
+                                else{
+                                    $retur_kembali_qty = $brg[0];
+                                    $retur_kembali_satuan = "Pcs";
+                                }
 
                                 $retur_kembali_harga = $this->input->post("brg_price".$a);
                                 $retur_kembali_note = $this->input->post("brg_notes".$a);
                                 $retur_kembali_status = "aktif";
                                 $id_fk_retur = $id_pk_retur;
-                                if($this->m_retur_kembali->set_insert($retur_kembali_qty_real,$retur_kembali_satuan_real,$retur_kembali_qty,$retur_kembali_satuan,$retur_kembali_harga,$retur_kembali_note,$retur_kembali_status,$id_fk_retur,$id_fk_brg_cabang)){
+                                if($this->m_retur_kembali->set_insert($retur_kembali_qty,$retur_kembali_satuan,$retur_kembali_harga,$retur_kembali_note,$retur_kembali_status,$id_fk_retur,$id_fk_brg_cabang)){
                                     if($this->m_retur_kembali->insert()){
 
                                     }
@@ -577,14 +583,12 @@ class Retur extends CI_Controller{
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
                 $response["content"][$a]["id"] = $result[$a]["id_pk_retur_kembali"];
-                $response["content"][$a]["qty_real"] = $result[$a]["retur_kembali_qty_real"];
-                $response["content"][$a]["satuan_real"] = $result[$a]["retur_kembali_satuan_real"];
-                $response["content"][$a]["qty"] = $result[$a]["retur_kembali_qty"];
+                $response["content"][$a]["qty"] = number_format($result[$a]["retur_kembali_qty"],2,",",".");
                 $response["content"][$a]["satuan"] = $result[$a]["retur_kembali_satuan"];
-                $response["content"][$a]["harga"] = $result[$a]["retur_kembali_harga"];
+                $response["content"][$a]["harga"] = number_format($result[$a]["retur_kembali_harga"],0,",",".");
                 $response["content"][$a]["note"] = $result[$a]["retur_kembali_note"];
                 $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
-                $response["content"][$a]["harga_brg"] = $result[$a]["brg_harga"];
+                $response["content"][$a]["harga_brg"] = number_format($result[$a]["brg_harga"],0,",",".");
             }
         }
         else{

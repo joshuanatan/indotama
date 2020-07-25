@@ -15,7 +15,7 @@
                     <input type = 'hidden' name = 'id' id = "id_edit">
                     <div class = "form-group col-lg-6">
                         <h5>Nomor Retur</h5>
-                        <input type = "text" class = "form-control" list = "datalist_penjualan" required id = "no_retur_edit" name = "no_retur">
+                        <input type = "text" class = "form-control" list = "datalist_penjualan" required id = "no_retur_edit" name = "no_retur" readonly>
                     </div>
                     <div class = "form-group col-lg-6">
                         <h5>Nomor Penjualan</h5>
@@ -56,7 +56,6 @@
                             <thead>
                                 <th>Barang</th>
                                 <th>Jumlah</th>
-                                <th>Jumlah Markup</th>
                                 <th>Harga</th>
                                 <th>Harga Final</th>
                                 <th>Notes</th>
@@ -146,9 +145,6 @@
                                     <input name = 'brg_kembali_check_edit[]' value = ${a} type = 'hidden'>
                                     <input type = 'hidden' id = 'id_brg_kembali_edit${a}'name = 'id_brg_kembali_edit${a}' value = '${respond["content"][a]["id"]}'>
                                     <input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${a})' value = '${respond["content"][a]["nama_brg"]}'id = 'brg${a}' name = 'brg_edit${a}' class = 'form-control'>
-                                </td>
-                                <td>
-                                    <input value = '${respond["content"][a]["qty_real"]} ${respond["content"][a]["satuan_real"]}' name = 'brg_qty_real_edit${a}' type = 'text' class = 'form-control nf-input'>
                                 </td>
                                 <td>
                                     <input value = '${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}' name = 'brg_qty_edit${a}' type = 'text' class = 'form-control nf-input'>
@@ -251,9 +247,6 @@
             <td id = 'brg_kembali_counter${brg_kembali_row}'>
                 <input name = 'brg_kembali_check[]' value = ${brg_kembali_row} type = 'hidden'>
                 <input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${brg_kembali_row})' id = 'brg${brg_kembali_row}' name = 'brg${brg_kembali_row}' class = 'form-control'>
-            </td>
-            <td>
-                <input name = 'brg_qty_real${brg_kembali_row}' type = 'text' class = 'form-control nf-input'>
             </td>
             <td>
                 <input name = 'brg_qty${brg_kembali_row}' type = 'text' class = 'form-control nf-input'>

@@ -30,7 +30,7 @@ class M_retur extends CI_Model{
         $this->set_column("retur_status","Status",false);
         $this->set_column("retur_last_modified","Last Modified",false);
         $this->set_column("retur_confirm_date","Tanggal Konfirmasi",false);
-        $this->set_column("user_konfirmasi","User Konfirmasi",false);
+        $this->set_column("user_name","User Konfirmasi",false);
         $this->retur_create_date = date("y-m-d h:i:s");
         $this->retur_last_modified = date("y-m-d h:i:s");
         $this->retur_confirm_date = date("y-m-d h:i:s");
@@ -129,7 +129,7 @@ class M_retur extends CI_Model{
                 retur_tgl like '%".$search_key."%' or
                 retur_status like '%".$search_key."%' or
                 retur_confirm_date like '%".$search_key."%' or
-                user_konfirmasi like '%".$search_key."%' or
+                user_name like '%".$search_key."%' or
                 retur_tipe like '%".$search_key."%'
             )";
         }

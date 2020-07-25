@@ -47,7 +47,6 @@
                         <thead>
                             <th>Barang</th>
                             <th>Jumlah</th>
-                            <th>Jumlah Markup</th>
                             <th>Harga</th>
                             <th>Harga Final</th>
                             <th>Notes</th>
@@ -60,7 +59,7 @@
                 </div>
                 <div class = "form-group">
                     <button type = "button" class = "btn btn-sm btn-primary" data-dismiss = "modal">OK</button>
-                </div>
+                </div>  
             </div>
         </div>
     </div>
@@ -123,9 +122,6 @@
                                     <input readonly name = 'brg_kembali_check_edit[]' value = ${a} type = 'hidden'>
                                     <input readonly type = 'hidden' id = 'd_id_brg_kembali_edit${a}'name = 'id_brg_kembali_edit${a}' value = '${respond["content"][a]["id"]}'>
                                     <input readonly type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${a})' value = '${respond["content"][a]["nama_brg"]}'id = 'brg${a}' name = 'brg_edit${a}' class = 'form-control'>
-                                </td>
-                                <td>
-                                    <input readonly value = '${respond["content"][a]["qty_real"]} ${respond["content"][a]["satuan_real"]}' name = 'brg_qty_real_edit${a}' type = 'text' class = 'form-control'>
                                 </td>
                                 <td>
                                     <input readonly value = '${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}' name = 'brg_qty_edit${a}' type = 'text' class = 'form-control'>

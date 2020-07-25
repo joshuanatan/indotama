@@ -30,8 +30,6 @@ class M_retur_kembali extends ci_model{
         drop table if exists tbl_retur_kembali;
         create table tbl_retur_kembali(
             id_pk_retur_kembali int primary key auto_increment,
-            retur_kembali_qty_real double,
-            retur_kembali_satuan_real varchar(20),
             retur_kembali_qty double,
             retur_kembali_satuan varchar(20),
             retur_kembali_harga int,
@@ -49,8 +47,6 @@ class M_retur_kembali extends ci_model{
             id_pk_retur_kembali_log int primary key auto_increment,
             executed_function varchar(30),
             id_pk_retur_kembali int,
-            retur_kembali_qty_real double,
-            retur_kembali_satuan_real varchar(20),
             retur_kembali_qty double,
             retur_kembali_satuan varchar(20),
             retur_kembali_harga int,
@@ -75,7 +71,7 @@ class M_retur_kembali extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at' , new.retur_kembali_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into tbl_retur_kembali_log(executed_function,id_pk_retur_kembali,retur_kembali_qty_real,retur_kembali_satuan_real,retur_kembali_qty,retur_kembali_satuan,retur_kembali_harga,retur_kembali_note,retur_kembali_status,id_fk_retur,id_fk_brg,retur_kembali_create_date,retur_kembali_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_retur_kembali,new.retur_kembali_qty_real,new.retur_kembali_satuan_real,new.retur_kembali_qty,new.retur_kembali_satuan,new.retur_kembali_harga,new.retur_kembali_note,new.retur_kembali_status,new.id_fk_retur,new.id_fk_brg,new.retur_kembali_create_date,new.retur_kembali_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into tbl_retur_kembali_log(executed_function,id_pk_retur_kembali,retur_kembali_qty,retur_kembali_satuan,retur_kembali_harga,retur_kembali_note,retur_kembali_status,id_fk_retur,id_fk_brg,retur_kembali_create_date,retur_kembali_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_retur_kembali,new.retur_kembali_qty,new.retur_kembali_satuan,new.retur_kembali_harga,new.retur_kembali_note,new.retur_kembali_status,new.id_fk_retur,new.id_fk_brg,new.retur_kembali_create_date,new.retur_kembali_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         
@@ -90,7 +86,7 @@ class M_retur_kembali extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at' , new.retur_kembali_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into tbl_retur_kembali_log(executed_function,id_pk_retur_kembali,retur_kembali_qty_real,retur_kembali_satuan_real,retur_kembali_qty,retur_kembali_satuan,retur_kembali_harga,retur_kembali_note,retur_kembali_status,id_fk_retur,id_fk_brg,retur_kembali_create_date,retur_kembali_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_retur_kembali,new.retur_kembali_qty_real,new.retur_kembali_satuan_real,new.retur_kembali_qty,new.retur_kembali_satuan,new.retur_kembali_harga,new.retur_kembali_note,new.retur_kembali_status,new.id_fk_retur,new.id_fk_brg,new.retur_kembali_create_date,new.retur_kembali_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into tbl_retur_kembali_log(executed_function,id_pk_retur_kembali,retur_kembali_qty,retur_kembali_satuan,retur_kembali_harga,retur_kembali_note,retur_kembali_status,id_fk_retur,id_fk_brg,retur_kembali_create_date,retur_kembali_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_retur_kembali,new.retur_kembali_qty,new.retur_kembali_satuan,new.retur_kembali_harga,new.retur_kembali_note,new.retur_kembali_status,new.id_fk_retur,new.id_fk_brg,new.retur_kembali_create_date,new.retur_kembali_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;";
         executequery($sql);
@@ -100,7 +96,7 @@ class M_retur_kembali extends ci_model{
     }
     public function list(){
         $sql = "
-        select id_pk_retur_kembali,retur_kembali_qty_real,retur_kembali_satuan_real,retur_kembali_qty,retur_kembali_satuan,retur_kembali_harga,retur_kembali_note,id_fk_retur,id_fk_brg,brg_nama,brg_harga,retur_kembali_create_date,retur_kembali_last_modified
+        select id_pk_retur_kembali,retur_kembali_qty,retur_kembali_satuan,retur_kembali_harga,retur_kembali_note,id_fk_retur,id_fk_brg,brg_nama,brg_harga,retur_kembali_create_date,retur_kembali_last_modified
         from ".$this->tbl_name."
         inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_brg
         inner join mstr_retur on mstr_retur.id_pk_retur = ".$this->tbl_name.".id_fk_retur
@@ -114,8 +110,6 @@ class M_retur_kembali extends ci_model{
     public function insert(){
         if($this->check_insert()){
             $data = array(
-                "retur_kembali_qty_real" => $this->retur_kembali_qty_real,
-                "retur_kembali_satuan_real" => $this->retur_kembali_satuan_real,
                 "retur_kembali_qty" => $this->retur_kembali_qty,
                 "retur_kembali_satuan" => $this->retur_kembali_satuan,
                 "retur_kembali_harga" => $this->retur_kembali_harga,
@@ -140,8 +134,6 @@ class M_retur_kembali extends ci_model{
                 "id_pk_retur_kembali" => $this->id_pk_retur_kembali,
             );
             $data = array(
-                "retur_kembali_qty_real" => $this->retur_kembali_qty_real,
-                "retur_kembali_satuan_real" => $this->retur_kembali_satuan_real,
                 "retur_kembali_qty" => $this->retur_kembali_qty,
                 "retur_kembali_satuan" => $this->retur_kembali_satuan,
                 "retur_kembali_harga" => $this->retur_kembali_harga,
@@ -173,12 +165,6 @@ class M_retur_kembali extends ci_model{
         return false;
     }
     public function check_insert(){
-        if($this->retur_kembali_qty_real == ""){
-            return false;
-        }
-        if($this->retur_kembali_satuan_real == ""){
-            return false;
-        }
         if($this->retur_kembali_qty == ""){
             return false;
         }
@@ -219,12 +205,6 @@ class M_retur_kembali extends ci_model{
         if($this->id_pk_retur_kembali == ""){
             return false;
         }
-        if($this->retur_kembali_qty_real == ""){
-            return false;
-        }
-        if($this->retur_kembali_satuan_real == ""){
-            return false;
-        }
         if($this->retur_kembali_qty == ""){
             return false;
         }
@@ -260,14 +240,9 @@ class M_retur_kembali extends ci_model{
         }
         return true;
     }
-    public function set_insert($retur_kembali_qty_real,$retur_kembali_satuan_real,$retur_kembali_qty,$retur_kembali_satuan,$retur_kembali_harga,$retur_kembali_note,$retur_kembali_status,$id_fk_retur,$id_fk_brg){
-        if(!$this->set_retur_kembali_qty_real($retur_kembali_qty_real)){
-            return false;
-        }
+    public function set_insert($retur_kembali_qty,$retur_kembali_satuan,$retur_kembali_harga,$retur_kembali_note,$retur_kembali_status,$id_fk_retur,$id_fk_brg){
+        
         if(!$this->set_retur_kembali_qty($retur_kembali_qty)){
-            return false;
-        }
-        if(!$this->set_retur_kembali_satuan_real($retur_kembali_satuan_real)){
             return false;
         }
         if(!$this->set_retur_kembali_qty($retur_kembali_qty)){
@@ -293,14 +268,8 @@ class M_retur_kembali extends ci_model{
         }
         return true;
     }
-    public function set_update($id_pk_retur_kembali,$retur_kembali_qty_real,$retur_kembali_satuan_real,$retur_kembali_qty,$retur_kembali_satuan,$retur_kembali_harga,$retur_kembali_note,$id_fk_brg){
+    public function set_update($id_pk_retur_kembali,$retur_kembali_qty,$retur_kembali_satuan,$retur_kembali_harga,$retur_kembali_note,$id_fk_brg){
         if(!$this->set_id_pk_retur_kembali($id_pk_retur_kembali)){
-            return false;
-        }
-        if(!$this->set_retur_kembali_qty_real($retur_kembali_qty_real)){
-            return false;
-        }
-        if(!$this->set_retur_kembali_satuan_real($retur_kembali_satuan_real)){
             return false;
         }
         if(!$this->set_retur_kembali_qty($retur_kembali_qty)){
@@ -329,20 +298,6 @@ class M_retur_kembali extends ci_model{
     public function set_id_pk_retur_kembali($id_pk_retur_kembali){
         if($id_pk_retur_kembali != ""){
             $this->id_pk_retur_kembali = $id_pk_retur_kembali;
-            return true;
-        }
-        return false;
-    }
-    public function set_retur_kembali_qty_real($retur_kembali_qty_real){
-        if($retur_kembali_qty_real != ""){
-            $this->retur_kembali_qty_real = $retur_kembali_qty_real;
-            return true;
-        }
-        return false;
-    }
-    public function set_retur_kembali_satuan_real($retur_kembali_satuan_real){
-        if($retur_kembali_satuan_real != ""){
-            $this->retur_kembali_satuan_real = $retur_kembali_satuan_real;
             return true;
         }
         return false;
@@ -395,35 +350,5 @@ class M_retur_kembali extends ci_model{
             return true;
         }
         return false;
-    }
-    public function get_id_pk_retur_kembali(){
-        return $this->id_pk_retur_kembali;
-    }
-    public function get_retur_kembali_qty_real(){
-        return $this->retur_kembali_qty_real;
-    }
-    public function get_retur_kembali_satuan_real(){
-        return $this->retur_kembali_satuan_real;
-    }
-    public function get_retur_kembali_qty(){
-        return $this->retur_kembali_qty;
-    }
-    public function get_retur_kembali_satuan(){
-        return $this->retur_kembali_satuan;
-    }
-    public function get_retur_kembali_harga(){
-        return $this->retur_kembali_harga;
-    }
-    public function get_retur_kembali_note(){
-        return $this->retur_kembali_note;
-    }
-    public function get_retur_kembali_status(){
-        return $this->retur_kembali_note;
-    }
-    public function get_id_fk_retur(){
-        return $this->id_fk_retur;
-    }
-    public function get_id_fk_brg(){
-        return $this->id_fk_brg;
     }
 }
