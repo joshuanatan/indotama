@@ -118,8 +118,9 @@ $data = array(
                                                 <div class="row">
                                                     <div class="col-xs-12 text-center pl-0 pr-0 data-wrap-left">
                                                         <div style = 'width:90%;height:90%;margin:auto'>
-                                                            <img src = "<?php echo base_url();?>asset/uploads/barang/${content[a]["image_barang"]}" style = "width:100%;padding:20px">
-                                                       
+                                                            <div style = "height:20em">
+                                                                <img src = "<?php echo base_url();?>asset/uploads/barang/${content[a]["image_brg"]}" style = "width:100%;margin:auto">
+                                                            </div>
                                                             <table class = "table table-bordered" style = "width:100%;">
                                                                 <tr>
                                                                     <th>Nama Produk</th>
