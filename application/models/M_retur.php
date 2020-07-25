@@ -1,7 +1,8 @@
 <?php
 defined("BASEPATH") or exit("No Direct Script");
 date_default_timezone_set("Asia/Jakarta");
-
+#flow status: [menunggu konfirmasi] - [aktif (setelah di confirm sama atasan)]
+#JANGAN UBAH2 NAMA STATUS KARENA DI PAKE UNTUK CONSTRAINT UPDATE DATA (Reason: gabisa update data setelah dikonfirmasi)
 class M_retur extends CI_Model{
     private $tbl_name = "mstr_retur";
     private $columns = array();
@@ -173,11 +174,11 @@ class M_retur extends CI_Model{
         select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified,penj_nomor
         from ".$this->tbl_name." 
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = ".$this->tbl_name.".id_fk_penjualan
-        where id_fk_cabang = ? and retur_status != ? ".$search_query."  
+        where id_fk_cabang = ? and retur_status = ?".$search_query."  
         order by ".$order_by." ".$order_direction." 
         limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "konfirmasi"
+            $this->session->id_cabang,"menunggu konfirmasi"
         );
         $result["data"] = executequery($query,$args);
         
@@ -257,7 +258,8 @@ class M_retur extends CI_Model{
     public function update(){
         if($this->check_update()){
             $where = array(
-                "id_pk_retur" => $this->id_pk_retur
+                "id_pk_retur" => $this->id_pk_retur,
+                "retur_status" => "menunggu konfirmasi"
             );
             $data = array(
                 "retur_no" => $this->retur_no,

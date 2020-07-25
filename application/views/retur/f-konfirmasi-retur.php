@@ -20,6 +20,10 @@
                     <input readonly type = "date" class = "form-control" required id = "k_tgl_retur_edit" name = "tgl_retur">
                 </div>
                 <div class = "form-group">
+                    <h5>Jenis Pengembalian</h5>
+                    <input readonly type = "text" class = "form-control" required id = "k_jenis_pengembalian" name = "tgl_retur">
+                </div>
+                <div class = "form-group">
                     <h5>Barang Retur</h5>
                     <table class = "table table-striped table-bordered">
                         <thead>
@@ -33,12 +37,6 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                <div class = "form-group">
-                    <h5>Opsi Pengembalian</h5>
-                    <input type="radio" class = "k_tipe_retur_edit" name = "tipe_retur" checked value="UANG">&nbsp;UANG
-                    &nbsp;&nbsp;
-                    <input type="radio" class = "k_tipe_retur_edit" name = "tipe_retur" value="BARANG">&nbsp;BARANG
                 </div>
                 <div class = "form-group" id = "k_barang_kembali_container_edit" style = "display:none">
                     <h5>Barang Kembali</h5>
@@ -71,6 +69,7 @@
         $("#k_no_retur_edit").val(content[row]["no"]);
         $("#k_no_penjualan_edit").val(content[row]["nomor_penj"]);
         $("#k_tgl_retur_edit").val(content[row]["tgl"].split(" ")[0]);
+        $("#k_jenis_pengembalian").val(content[row]["tipe"]);
 
         $.ajax({
             url:"<?php echo base_url();?>ws/retur/brg_retur?id_retur="+content[row]["id"],
@@ -105,7 +104,6 @@
         });
 
         if(content[row]["tipe"] == "BARANG"){
-            $(".k_tipe_retur_edit[value='BARANG']").prop("checked",true);
             $('#k_barang_kembali_container_edit').show();
 
             $.ajax({

@@ -70,9 +70,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class = "form-group">
-                        <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <button type = "button" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
+                    <div class = "form-group" id = 'update_btn_container'>
+                        <button type = "button" id = "cancel_update_btn" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
+                        <button type = "button" id = "submit_update_btn" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
                 </form>
             </div>
@@ -89,6 +89,7 @@
         $.ajax({
             url:"<?php echo base_url();?>ws/retur/brg_retur?id_retur="+content[row]["id"],
             type:"GET",
+            async:false,
             dataType:"JSON",
             success:function(respond){
                 $(".brg_retur_counter_edit").remove();
@@ -110,8 +111,11 @@
                             <td>
                                 <input name = 'brg_retur_notes_edit${a}' value = '${respond["content"][a]["notes"]}' type = 'text' class = 'form-control'>
                             </td>
-                            <td>
-                                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_brg_retur(${a})'></i>
+                            <td>`;
+                                if(content[row]["status"].toLowerCase() == "menunggu konfirmasi"){
+                                    html += `<i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_brg_retur(${a})'></i>`;
+                                }
+                            html += `
                             </td>
                         </tr>`;
                     }
@@ -128,6 +132,7 @@
             $.ajax({
                 url:"<?php echo base_url();?>ws/retur/brg_kembali?id_retur="+content[row]["id"],
                 type:"GET",
+                async:false,
                 dataType:"JSON",
                 success:function(respond){
                     $(".brg_kembali_row_edit").remove();
@@ -157,9 +162,12 @@
                                 <td>
                                     <input value = '${respond["content"][a]["note"]}' type = 'text' name = 'brg_notes_edit${a}' class = 'form-control'>
                                 </td>
-                                <td>
-                                    <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_brg_kembali(${a})'></i>
-                                </td>
+                                <td>`;
+                                if(content[row]["status"].toLowerCase() == "menunggu konfirmasi"){
+                                    html += `<i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_brg_kembali(${a})'></i>`;
+                                }
+                                html += 
+                                `</td>
                             </tr>`;
                         }
                         $("#add_brg_kembali_but_container_edit").before(html);
@@ -172,6 +180,20 @@
             $(".tipe_retur_edit[value='UANG']").prop("checked",true);
             $('#barang_kembali_container_edit').hide();
             
+        }
+        if(content[row]["status"].toLowerCase() != "menunggu konfirmasi"){
+            $("#add_brg_retur_but_container_edit").empty();
+            $("#add_brg_kembali_but_container_edit").empty();
+            $("#submit_update_btn").remove();
+            $("#update_form input").attr("disabled",true);
+        }
+        else{
+            $("#add_brg_retur_but_container_edit").html(`<td colspan = 5><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_brg_retur_edit()">Tambah Barang Retur</button></td>`);
+            $("#add_brg_kembali_but_container_edit").html(` <td colspan = 7><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_brg_kembali_edit()">Tambah Barang Pengembalian</button></td>`);
+            $("#update_btn_container").html(`
+                        <button type = "button" id = "cancel_update_btn" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
+                        <button type = "button" id = "submit_update_btn" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>`);
+            $("#update_form input").attr("disabled",false);
         }
     }
     function delete_brg_retur(row){

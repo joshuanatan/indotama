@@ -58,6 +58,9 @@
                         </tbody>
                     </table>
                 </div>
+                <div class = "form-group">
+                    <button type = "button" class = "btn btn-sm btn-primary" data-dismiss = "modal">OK</button>
+                </div>
             </div>
         </div>
     </div>

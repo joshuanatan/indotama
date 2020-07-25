@@ -203,7 +203,7 @@ class Retur extends CI_Controller{
 
                 $retur_no = $this->input->post("no_retur");
                 $retur_tgl = $this->input->post("tgl_retur");
-                $retur_status = "konfirmasi";
+                $retur_status = "menunggu konfirmasi";
                 $retur_tipe = $this->input->post("tipe_retur");
                 
                 if($this->input->post("generate_pem_no") != ""){
@@ -238,7 +238,7 @@ class Retur extends CI_Controller{
                                         $retur_brg_qty = $brg_retur_qty[0];
                                         $retur_brg_satuan = $brg_retur_qty[1];
 
-                                        $retur_brg_status = "aktif";
+                                        $retur_brg_status = "menunggu konfirmasi";
                                         
                                         if($this->m_retur_brg->set_insert($id_fk_retur,$id_fk_brg_cabang,$retur_brg_qty,$retur_brg_satuan,$retur_brg_status,$retur_brg_notes)){
                                             if($this->m_retur_brg->insert()){
