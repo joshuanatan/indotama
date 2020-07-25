@@ -127,7 +127,14 @@ class M_barang_kombinasi extends CI_Model{
         );
         return executeQuery($sql,$args);
     }
-    private function check_double_barang($id_pk_barang_kombinasi = 0){
+    public function check_barang_in_kombinasi($id_barang_kombinasi){
+        $where = array(
+            "id_barang_kombinasi" => $id_barang_kombinasi,
+            "barang_kombinasi_status" => "aktif"
+        );
+        return isExistsInTable($this->tbl_name,$where);
+    }
+    public function check_double_barang($id_pk_barang_kombinasi = 0){
         $where = array(
             "id_pk_barang_kombinasi !=" => $id_pk_barang_kombinasi,
             "id_barang_kombinasi" => $this->id_barang_kombinasi,

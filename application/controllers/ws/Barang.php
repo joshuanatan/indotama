@@ -48,6 +48,9 @@ class Barang extends CI_Controller{
                 $response["content"][$a]["tipe"] = $result["data"][$a]["brg_tipe"];
                 $response["content"][$a]["harga"] = number_format($result["data"][$a]["brg_harga"],0,",",".");
                 $response["content"][$a]["jumlah_barang_kombinasi"] = $result["data"][$a]["jumlah_barang_kombinasi"];
+                
+                $this->load->model("m_barang_kombinasi");
+                $response["content"][$a]["dalam_kombinasi"] = $this->m_barang_kombinasi->check_barang_in_kombinasi($result["data"][$a]["id_pk_brg"]);
             }
         }
         else{

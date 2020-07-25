@@ -52,7 +52,7 @@
                         <input type = "text" class = "form-control nf-input" required name = "harga" id = "harga_edit">
                     </div>
                     
-                    <div class = "form-group">
+                    <div class = "form-group" id = "kombinasi_barang_container">
                         <h5>Kombinasi Barang</h5>
                         <input type="radio" class = "kombinasi_barang_edit" name = "tipe" value="nonkombinasi" onclick = "$('#barang_kombinasi_container_edit').hide()">&nbsp;TIDAK KOMBINASI
                         &nbsp;&nbsp;
@@ -102,7 +102,14 @@
         $("#satuan_edit").val(content[row]["satuan"]);
         $("#harga_edit").val(content[row]["harga"]);
         $("#gambar_edit").val(content[row]["image"]);
-        console.log(content[row]["tipe"].toLowerCase());
+
+        console.log(content[row]["dalam_kombinasi"]);
+        if(content[row]["dalam_kombinasi"]){
+            $("#kombinasi_barang_container").hide();
+        }
+        else{
+            $("#kombinasi_barang_container").show();
+        }
         if(!(content[row]["tipe"].toLowerCase() == "kombinasi")){
             $("#barang_kombinasi_container_edit").hide();
             $(".kombinasi_barang_edit[type='radio'][value='nonkombinasi']").prop("checked",true);
