@@ -32,15 +32,25 @@ class Barang_cabang extends CI_Controller{
         $this->load->model("m_brg_cabang");
         $this->m_brg_cabang->set_id_fk_cabang($id_cabang);
         $result = $this->m_brg_cabang->content($page,$order_by,$order_direction,$search_key,$data_per_page);
-
+        
+        
         if($result["data"]->num_rows() > 0){
             $result["data"] = $result["data"]->result_array();
             for($a = 0; $a<count($result["data"]); $a++){
+
+                $is_file_exists = file_exists(FCPATH."asset/uploads/barang/".$result["data"][$a]["brg_image"]);
+                if($is_file_exists){
+                    $response["content"][$a]["image_brg"] = $result["data"][$a]["brg_image"];
+                }
+                else{
+                    $response["content"][$a]["image_brg"] = "noimage.jpg";
+                }
+
                 $response["content"][$a]["id"] = $result["data"][$a]["id_pk_brg_cabang"];
-                $response["content"][$a]["qty"] = $result["data"][$a]["brg_cabang_qty"];
+                $response["content"][$a]["qty"] = number_format($result["data"][$a]["brg_cabang_qty"],2,",",".");;
                 $response["content"][$a]["notes"] = $result["data"][$a]["brg_cabang_notes"];
-                $response["content"][$a]["last_price"] = $result["data"][$a]["brg_cabang_last_price"];
-                $response["content"][$a]["harga"] = $result["data"][$a]["brg_harga"];
+                $response["content"][$a]["last_price"] = number_format($result["data"][$a]["brg_cabang_last_price"],0,",",".");;
+                $response["content"][$a]["harga"] = number_format($result["data"][$a]["brg_harga"],0,",",".");;
                 $response["content"][$a]["status"] = $result["data"][$a]["brg_cabang_status"];
                 $response["content"][$a]["id_brg"] = $result["data"][$a]["id_fk_brg"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["brg_cabang_last_modified"];
@@ -49,7 +59,6 @@ class Barang_cabang extends CI_Controller{
                 $response["content"][$a]["ket_brg"] = $result["data"][$a]["brg_ket"];
                 $response["content"][$a]["minimal_brg"] = $result["data"][$a]["brg_minimal"];
                 $response["content"][$a]["satuan_brg"] = $result["data"][$a]["brg_satuan"];
-                $response["content"][$a]["image_brg"] = $result["data"][$a]["brg_image"];
                 $response["content"][$a]["jenis"] = $result["data"][$a]["brg_jenis_nama"];
                 $response["content"][$a]["merk"] = $result["data"][$a]["brg_merk_nama"];
             }

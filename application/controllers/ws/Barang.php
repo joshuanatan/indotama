@@ -38,14 +38,14 @@ class Barang extends CI_Controller{
                 $response["content"][$a]["kode"] = $result["data"][$a]["brg_kode"];
                 $response["content"][$a]["nama"] = $result["data"][$a]["brg_nama"];
                 $response["content"][$a]["ket"] = $result["data"][$a]["brg_ket"];
-                $response["content"][$a]["minimal"] = $result["data"][$a]["brg_minimal"];
+                $response["content"][$a]["minimal"] = number_format($result["data"][$a]["brg_minimal"],0,",",".");
                 $response["content"][$a]["status"] = $result["data"][$a]["brg_status"];
                 $response["content"][$a]["satuan"] = $result["data"][$a]["brg_satuan"];
                 $response["content"][$a]["image"] = $result["data"][$a]["brg_image"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["brg_last_modified"];
                 $response["content"][$a]["merk"] = $result["data"][$a]["brg_merk_nama"];
                 $response["content"][$a]["jenis"] = $result["data"][$a]["brg_jenis_nama"];
-                $response["content"][$a]["harga"] = $result["data"][$a]["brg_harga"];
+                $response["content"][$a]["harga"] = number_format($result["data"][$a]["brg_harga"],0,",",".");
                 $response["content"][$a]["jumlah_barang_kombinasi"] = $result["data"][$a]["jumlah_barang_kombinasi"];
             }
         }
