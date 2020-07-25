@@ -2,6 +2,7 @@
 var default_update_form_html = $("#update_form").html();
 function reset_update_form(){
     $("#update_form").html(default_update_form_html);
+    init_nf();
 }
 </script>
 <script>
