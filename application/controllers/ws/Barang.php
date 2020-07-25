@@ -217,12 +217,12 @@ class Barang extends CI_Controller{
                 }
                 else{
                     $response["status"] = "ERROR";
-                    $response["msg"] = "Insert function is error";
+                    $response["msg"] = "Error message: Loss Session (need re-login) / Kode ganda / Nama ganda";
                 }
             }
             else{
                 $response["status"] = "ERROR";
-                $response["msg"] = "Setter function is error";
+                $response["msg"] = "Error message: Data tidak lengkap, tolong di crosscheck";
             }
         }
         else{
@@ -307,12 +307,12 @@ class Barang extends CI_Controller{
                 }
                 else{
                     $response["status"] = "ERROR";
-                    $response["msg"] = "Update function is error";
+                    $response["msg"] = "Error message: <br/>Loss Session (need re-login) / Kode ganda / Nama ganda";
                 }
             }
             else{
                 $response["status"] = "ERROR";
-                $response["msg"] = "Setter function is error";
+                $response["msg"] = "Error message: Data tidak lengkap, tolong di crosscheck";
             }
             if(strtoupper($brg_tipe) == "KOMBINASI"){
                 $kombinasi_edit = $this->input->post("edit");
@@ -338,6 +338,7 @@ class Barang extends CI_Controller{
                         $barang_kombinasi_qty = $this->input->post("qty_edit".$a);
 
                         $this->load->model("m_barang_kombinasi");
+                        $this->m_barang_kombinasi->set_id_barang_utama($id_pk_barang);
                         if($this->m_barang_kombinasi->set_update($id_pk_barang_kombinasi,$id_barang_kombinasi,$barang_kombinasi_qty)){
                             if($this->m_barang_kombinasi->update()){
                                 $response["kombinasieditmsg"][$counter] = "Data is updated to database";

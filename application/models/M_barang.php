@@ -139,7 +139,7 @@ class M_barang extends ci_model{
         end$$
         delimiter ;
         ";
-        executequery($sql);
+        executeQuery($sql);
     }
     public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
         $order_by = $this->columns[$order_by]["col_name"];
@@ -174,7 +174,7 @@ class M_barang extends ci_model{
         $args = array(
             "aktif","aktif","aktif"
         );
-        $result["data"] = executequery($query,$args);
+        $result["data"] = executeQuery($query,$args);
         //echo $this->db->last_query();
         $query = "
         select id_pk_brg
@@ -185,7 +185,7 @@ class M_barang extends ci_model{
         where brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) ".$search_query."   
         group by id_pk_brg 
         order by ".$order_by." ".$order_direction;
-        $result["total_data"] = executequery($query,$args)->num_rows();
+        $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;
     }
     public function list(){
@@ -200,28 +200,48 @@ class M_barang extends ci_model{
         $args = array(
             "aktif","aktif","aktif"
         );
-        return executequery($sql,$args);
+        return executeQuery($sql,$args);
     }
     public function detail_by_name(){
         $where = array(
-            "brg_nama" => $this->brg_nama
+            "brg_nama" => $this->brg_nama,
+            "brg_status" => "aktif"
         );
         $field = array(
             "id_pk_brg","brg_kode","brg_nama","brg_ket","brg_minimal","brg_harga","brg_status","brg_satuan","brg_image","brg_create_date","brg_last_modified","id_create_data","id_last_modified","id_fk_brg_jenis","id_fk_brg_merk","brg_tipe"
         );
         return selectrow($this->tbl_name,$where,$field);
     }
-    public function short_insert(){
-        $data = array(
-            "brg_nama" => $this->brg_nama,
-            "brg_status" => "aktif",
-            "brg_tipe" => "nonkombinasi",
-            "brg_create_date" => $this->brg_create_date,
-            "brg_last_modified" => $this->brg_last_modified,
-            "id_create_data" => $this->id_create_data,
-            "id_last_modified" => $this->id_last_modified
+    private function check_double_kode($id_pk_brg = 0){
+        $where = array(
+            "brg_kode" => $this->brg_kode,
+            "id_pk_brg != " => $id_pk_brg,
+            "brg_status" => "aktif"
         );
-        return insertrow($this->tbl_name,$data);
+        return isExistsInTable($this->tbl_name,$where);
+    }
+    private function check_double_nama($id_pk_brg = 0){
+        $where = array(
+            "brg_nama" => $this->brg_nama,
+            "id_pk_brg != " => $id_pk_brg,
+            "brg_status" => "aktif"
+        );
+        return isExistsInTable($this->tbl_name,$where);
+    }
+    public function short_insert(){
+        if($this->check_double_nama()){
+            $data = array(
+                "brg_nama" => $this->brg_nama,
+                "brg_status" => "aktif",
+                "brg_tipe" => "nonkombinasi",
+                "brg_create_date" => $this->brg_create_date,
+                "brg_last_modified" => $this->brg_last_modified,
+                "id_create_data" => $this->id_create_data,
+                "id_last_modified" => $this->id_last_modified
+            );
+            return insertRow($this->tbl_name,$data);
+        }
+        return false;
     }
     public function insert(){
         if($this->check_insert()){
@@ -242,7 +262,7 @@ class M_barang extends ci_model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertrow($this->tbl_name,$data);
+            return insertRow($this->tbl_name,$data);
         }
         else{
             return false;
@@ -251,34 +271,24 @@ class M_barang extends ci_model{
     public function update(){
         if($this->check_update()){
             $where = array(
-                "id_pk_brg !=" => $this->id_pk_brg,
-                "brg_kode" => $this->brg_kode,
-                "brg_status" => "aktif"
+                "id_pk_brg" => $this->id_pk_brg
             );
-            if(!isexistsintable($this->tbl_name,$where)){
-                $where = array(
-                    "id_pk_brg" => $this->id_pk_brg
-                );
-                $data = array(
-                    "brg_kode" => $this->brg_kode,
-                    "brg_nama" => $this->brg_nama,
-                    "brg_ket" => $this->brg_ket,
-                    "brg_minimal" => $this->brg_minimal,
-                    "brg_satuan" => $this->brg_satuan,
-                    "brg_image" => $this->brg_image,
-                    "brg_harga" => $this->brg_harga,
-                    "brg_tipe" => $this->brg_tipe,
-                    "id_fk_brg_jenis" => $this->id_fk_brg_jenis,
-                    "id_fk_brg_merk" => $this->id_fk_brg_merk,
-                    "brg_last_modified" => $this->brg_last_modified,
-                    "id_last_modified" => $this->id_last_modified
-                );
-                updaterow($this->tbl_name,$data,$where);
-                return true;
-            }
-            else{
-                return false;
-            }
+            $data = array(
+                "brg_kode" => $this->brg_kode,
+                "brg_nama" => $this->brg_nama,
+                "brg_ket" => $this->brg_ket,
+                "brg_minimal" => $this->brg_minimal,
+                "brg_satuan" => $this->brg_satuan,
+                "brg_image" => $this->brg_image,
+                "brg_harga" => $this->brg_harga,
+                "brg_tipe" => $this->brg_tipe,
+                "id_fk_brg_jenis" => $this->id_fk_brg_jenis,
+                "id_fk_brg_merk" => $this->id_fk_brg_merk,
+                "brg_last_modified" => $this->brg_last_modified,
+                "id_last_modified" => $this->id_last_modified
+            );
+            updateRow($this->tbl_name,$data,$where);
+            return true;
         }
         else{
             return false;
@@ -294,11 +304,17 @@ class M_barang extends ci_model{
                 "brg_last_modified" => $this->brg_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updaterow($this->tbl_name,$data,$where);
+            updateRow($this->tbl_name,$data,$where);
             return true;
         }
     }
     public function check_insert(){
+        if($this->check_double_kode()){
+            return false;
+        }
+        if($this->check_double_nama()){
+            return false;
+        }
         if($this->brg_kode == ""){
             return false;
         }
@@ -347,6 +363,13 @@ class M_barang extends ci_model{
         return true;
     }
     public function check_update(){
+        
+        if($this->check_double_kode($this->id_pk_brg)){
+            return false;
+        }
+        if($this->check_double_nama($this->id_pk_brg)){
+            return false;
+        }
         if($this->id_pk_brg == ""){
             return false;
         }
@@ -574,7 +597,7 @@ class M_barang extends ci_model{
         $args = array(
             "aktif","aktif","aktif"
         );
-        return executequery($sql,$args);
+        return executeQuery($sql,$args);
     }
     public function columns_excel(){
         $this->columns = array();

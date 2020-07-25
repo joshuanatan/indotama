@@ -127,35 +127,80 @@ class M_barang_kombinasi extends CI_Model{
         );
         return executeQuery($sql,$args);
     }
+    private function check_double_barang($id_pk_barang_kombinasi = 0){
+        $where = array(
+            "id_pk_barang_kombinasi !=" => $id_pk_barang_kombinasi,
+            "id_barang_kombinasi" => $this->id_barang_kombinasi,
+            "id_barang_utama" => $this->id_barang_utama,
+            "barang_kombinasi_status" => "aktif"
+        );
+        return isExistsInTable($this->tbl_name,$where);
+    }
     public function insert(){
         if($this->check_insert()){
-            $data = array(
-                "id_barang_utama" => $this->id_barang_utama,
-                "id_barang_kombinasi" => $this->id_barang_kombinasi,
-                "barang_kombinasi_qty" => $this->barang_kombinasi_qty,
-                "barang_kombinasi_status" => "aktif",
-                "barang_kombinasi_create_date" => $this->barang_kombinasi_create_date,
-                "barang_kombinasi_last_modified" => $this->barang_kombinasi_last_modified,
-                "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified
-            );
-            return insertRow($this->tbl_name,$data);
+            if($this->check_double_barang()){
+                #update jumlahnya pake yang terbaru
+                $where = array(
+                    "id_barang_utama" => $this->id_barang_utama,
+                    "id_barang_kombinasi" => $this->id_barang_kombinasi,
+                );
+                $data = array(
+                    "barang_kombinasi_qty" => $this->barang_kombinasi_qty,
+                );
+                updateRow($this->tbl_name,$data,$where);
+                return true;
+            }
+            else{
+                $data = array(
+                    "id_barang_utama" => $this->id_barang_utama,
+                    "id_barang_kombinasi" => $this->id_barang_kombinasi,
+                    "barang_kombinasi_qty" => $this->barang_kombinasi_qty,
+                    "barang_kombinasi_status" => "aktif",
+                    "barang_kombinasi_create_date" => $this->barang_kombinasi_create_date,
+                    "barang_kombinasi_last_modified" => $this->barang_kombinasi_last_modified,
+                    "id_create_data" => $this->id_create_data,
+                    "id_last_modified" => $this->id_last_modified
+                );
+                return insertRow($this->tbl_name,$data);
+            }
         }
         return false;
     }
     public function update(){
         if($this->check_update()){
-            $where = array(
-                "id_pk_barang_kombinasi" => $this->id_pk_barang_kombinasi,
-            );
-            $data = array(
-                "id_barang_kombinasi" => $this->id_barang_kombinasi,
-                "barang_kombinasi_qty" => $this->barang_kombinasi_qty,
-                "barang_kombinasi_last_modified" => $this->barang_kombinasi_last_modified,
-                "id_last_modified" => $this->id_last_modified
-            );
-            updateRow($this->tbl_name,$data,$where);
-            return true;
+            
+            if($this->check_double_barang($this->id_pk_barang_kombinasi)){
+                #update jumlahnya pake yang terbaru
+                $where = array(
+                    "id_pk_barang_kombinasi !=" => $this->id_pk_barang_kombinasi,
+                    "id_barang_utama" => $this->id_barang_utama,
+                    "id_barang_kombinasi" => $this->id_barang_kombinasi,
+                );
+                $data = array(
+                    "barang_kombinasi_qty" => $this->barang_kombinasi_qty,
+                );
+                updateRow($this->tbl_name,$data,$where);
+
+                #delete yang lagi diupdate (pindah ke barang baru)
+                $where = array(
+                    "id_pk_barang_kombinasi" => $this->id_pk_barang_kombinasi,
+                );
+                deleteRow($this->tbl_name,$where);
+                return true;
+            }
+            else{
+                $where = array(
+                    "id_pk_barang_kombinasi" => $this->id_pk_barang_kombinasi,
+                );
+                $data = array(
+                    "id_barang_kombinasi" => $this->id_barang_kombinasi,
+                    "barang_kombinasi_qty" => $this->barang_kombinasi_qty,
+                    "barang_kombinasi_last_modified" => $this->barang_kombinasi_last_modified,
+                    "id_last_modified" => $this->id_last_modified
+                );
+                updateRow($this->tbl_name,$data,$where);
+                return true;
+            }
         }
         return false;
     }
