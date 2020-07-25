@@ -102,7 +102,7 @@ $data = array(
     function load_datalist(){
         load_datalist_barang_jenis();
         load_datalist_barang_merk();
-        load_datalist_barang();
+        load_datalist_barang_nonkombinasi();
         load_datalist_satuan();
     }
 </script>

@@ -45,6 +45,7 @@ class Barang extends CI_Controller{
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["brg_last_modified"];
                 $response["content"][$a]["merk"] = $result["data"][$a]["brg_merk_nama"];
                 $response["content"][$a]["jenis"] = $result["data"][$a]["brg_jenis_nama"];
+                $response["content"][$a]["tipe"] = $result["data"][$a]["brg_tipe"];
                 $response["content"][$a]["harga"] = number_format($result["data"][$a]["brg_harga"],0,",",".");
                 $response["content"][$a]["jumlah_barang_kombinasi"] = $result["data"][$a]["jumlah_barang_kombinasi"];
             }
@@ -85,6 +86,7 @@ class Barang extends CI_Controller{
                 $response["content"][$a]["last_modified"] = $result[$a]["brg_last_modified"];
                 $response["content"][$a]["merk_nama"] = $result[$a]["brg_merk_nama"];
                 $response["content"][$a]["jenis_nama"] = $result[$a]["brg_jenis_nama"];
+                $response["content"][$a]["tipe"] = $result[$a]["brg_tipe"];
                 $response["content"][$a]["harga"] = $result[$a]["brg_harga"];
             }
         }
@@ -113,6 +115,7 @@ class Barang extends CI_Controller{
             $brg_minimal = $this->input->post("minimal");
             $brg_satuan = $this->input->post("satuan");
             $brg_harga = $this->input->post("harga");
+            $brg_tipe = $this->input->post("tipe");
             $brg_status = "AKTIF";
             
             $id_fk_brg_jenis = $this->input->post("id_brg_jenis");
@@ -165,48 +168,50 @@ class Barang extends CI_Controller{
                 $p1 = array("upload_data"=> $this->upload->data());
                 $brg_image = $p1['upload_data']['file_name'];
             }
-            if($this->m_barang->set_insert($brg_kode,$brg_nama,$brg_ket,$brg_minimal,$brg_satuan,$brg_image,$brg_status,$id_fk_brg_jenis,$id_fk_brg_merk,$brg_harga)){
+            if($this->m_barang->set_insert($brg_kode,$brg_nama,$brg_ket,$brg_minimal,$brg_satuan,$brg_image,$brg_status,$id_fk_brg_jenis,$id_fk_brg_merk,$brg_harga,$brg_tipe)){
                 $id_barang = $this->m_barang->insert();
                 if($id_barang){
                     $response["msg"] = "Data is recorded to database";
-                    $check = $this->input->post("check");
-                    if($check){
-                        $counter = 0;
-                        foreach($check as $a){
-                            $this->load->model("m_barang_kombinasi");
-                            $id_barang_utama = $id_barang;
+                    if( strtoupper($brg_tipe) == "KOMBINASI"){
+                        $check = $this->input->post("check");
+                        if($check){
+                            $counter = 0;
+                            foreach($check as $a){
+                                $this->load->model("m_barang_kombinasi");
+                                $id_barang_utama = $id_barang;
 
-                            $barang_kombinasi = $this->input->post("barang".$a);
-                            $this->load->model("m_barang");
-                            $this->m_barang->set_brg_nama($barang_kombinasi);
-                            $result = $this->m_barang->detail_by_name();
-                            if($result->num_rows() > 0){
-                                $result = $result->result_array();
-                                $id_barang_kombinasi = $result[0]["id_pk_brg"];
-                            }
-                            else{
+                                $barang_kombinasi = $this->input->post("barang".$a);
                                 $this->load->model("m_barang");
                                 $this->m_barang->set_brg_nama($barang_kombinasi);
-                                $id_barang_kombinasi = $this->m_barang->short_insert();
-                            }
-
-                            $barang_kombinasi_qty = $this->input->post("qty".$a);
-                            $barang_kombinasi_status = "aktif";
-                            if($this->m_barang_kombinasi->set_insert($id_barang_utama,$id_barang_kombinasi,$barang_kombinasi_qty,$barang_kombinasi_status)){
-                                if($this->m_barang_kombinasi->insert()){
-                                    $response["kombinasimsg"][$counter] = "Data is recorded to database";
-                                    $response["kombinasistatus"][$counter] = "SUCCESS";
+                                $result = $this->m_barang->detail_by_name();
+                                if($result->num_rows() > 0){
+                                    $result = $result->result_array();
+                                    $id_barang_kombinasi = $result[0]["id_pk_brg"];
                                 }
                                 else{
-                                    $response["kombinasimsg"][$counter] = "Insert function error";
+                                    $this->load->model("m_barang");
+                                    $this->m_barang->set_brg_nama($barang_kombinasi);
+                                    $id_barang_kombinasi = $this->m_barang->short_insert();
+                                }
+
+                                $barang_kombinasi_qty = $this->input->post("qty".$a);
+                                $barang_kombinasi_status = "aktif";
+                                if($this->m_barang_kombinasi->set_insert($id_barang_utama,$id_barang_kombinasi,$barang_kombinasi_qty,$barang_kombinasi_status)){
+                                    if($this->m_barang_kombinasi->insert()){
+                                        $response["kombinasimsg"][$counter] = "Data is recorded to database";
+                                        $response["kombinasistatus"][$counter] = "SUCCESS";
+                                    }
+                                    else{
+                                        $response["kombinasimsg"][$counter] = "Insert function error";
+                                        $response["kombinasistatus"][$counter] = "ERROR";
+                                    }
+                                }
+                                else{
+                                    $response["kombinasimsg"][$counter] = "Setter function error";
                                     $response["kombinasistatus"][$counter] = "ERROR";
                                 }
+                                $counter++;
                             }
-                            else{
-                                $response["kombinasimsg"][$counter] = "Setter function error";
-                                $response["kombinasistatus"][$counter] = "ERROR";
-                            }
-                            $counter++;
                         }
                     }
                 }
@@ -247,6 +252,7 @@ class Barang extends CI_Controller{
             $brg_minimal = $this->input->post("minimal");
             $brg_satuan = $this->input->post("satuan");
             $brg_harga = $this->input->post("harga");
+            $brg_tipe = $this->input->post("tipe");
             
             $id_fk_brg_jenis = $this->input->post("id_brg_jenis");
             $this->load->model("m_barang_jenis");
@@ -295,7 +301,7 @@ class Barang extends CI_Controller{
             if($this->upload->do_upload('gambar')){
                 $brg_image = $this->upload->data("file_name");
             }
-            if($this->m_barang->set_update($id_pk_barang,$brg_kode,$brg_nama,$brg_ket,$brg_minimal,$brg_satuan,$brg_image,$id_fk_brg_jenis,$id_fk_brg_merk,$brg_harga)){
+            if($this->m_barang->set_update($id_pk_barang,$brg_kode,$brg_nama,$brg_ket,$brg_minimal,$brg_satuan,$brg_image,$id_fk_brg_jenis,$id_fk_brg_merk,$brg_harga,$brg_tipe)){
                 if($this->m_barang->update()){
                     $response["msg"] = "Data is updated to database";
                 }
@@ -308,85 +314,87 @@ class Barang extends CI_Controller{
                 $response["status"] = "ERROR";
                 $response["msg"] = "Setter function is error";
             }
-            $kombinasi_edit = $this->input->post("edit");
-            if($kombinasi_edit){
-                $counter = 0;
-                foreach($kombinasi_edit as $a){
-                    $id_pk_barang_kombinasi = $this->input->post("id_barang_kombinasi".$a);
+            if(strtoupper($brg_tipe) == "KOMBINASI"){
+                $kombinasi_edit = $this->input->post("edit");
+                if($kombinasi_edit){
+                    $counter = 0;
+                    foreach($kombinasi_edit as $a){
+                        $id_pk_barang_kombinasi = $this->input->post("id_barang_kombinasi".$a);
 
-                    $barang_kombinasi = $this->input->post("barang_edit".$a);
-                    $this->load->model("m_barang");
-                    $this->m_barang->set_brg_nama($barang_kombinasi);
-                    $result = $this->m_barang->detail_by_name();
-                    if($result->num_rows() > 0){
-                        $result = $result->result_array();
-                        $id_barang_kombinasi = $result[0]["id_pk_brg"];
-                    }
-                    else{
+                        $barang_kombinasi = $this->input->post("barang_edit".$a);
                         $this->load->model("m_barang");
                         $this->m_barang->set_brg_nama($barang_kombinasi);
-                        $id_barang_kombinasi = $this->m_barang->short_insert();
-                    }
-
-                    $barang_kombinasi_qty = $this->input->post("qty_edit".$a);
-
-                    $this->load->model("m_barang_kombinasi");
-                    if($this->m_barang_kombinasi->set_update($id_pk_barang_kombinasi,$id_barang_kombinasi,$barang_kombinasi_qty)){
-                        if($this->m_barang_kombinasi->update()){
-                            $response["kombinasieditmsg"][$counter] = "Data is updated to database";
-                            $response["kombinasieditstatus"][$counter] = "SUCCESS";
+                        $result = $this->m_barang->detail_by_name();
+                        if($result->num_rows() > 0){
+                            $result = $result->result_array();
+                            $id_barang_kombinasi = $result[0]["id_pk_brg"];
                         }
                         else{
-                            $response["kombinasieditmsg"][$counter] = "update function error";
+                            $this->load->model("m_barang");
+                            $this->m_barang->set_brg_nama($barang_kombinasi);
+                            $id_barang_kombinasi = $this->m_barang->short_insert();
+                        }
+
+                        $barang_kombinasi_qty = $this->input->post("qty_edit".$a);
+
+                        $this->load->model("m_barang_kombinasi");
+                        if($this->m_barang_kombinasi->set_update($id_pk_barang_kombinasi,$id_barang_kombinasi,$barang_kombinasi_qty)){
+                            if($this->m_barang_kombinasi->update()){
+                                $response["kombinasieditmsg"][$counter] = "Data is updated to database";
+                                $response["kombinasieditstatus"][$counter] = "SUCCESS";
+                            }
+                            else{
+                                $response["kombinasieditmsg"][$counter] = "update function error";
+                                $response["kombinasieditstatus"][$counter] = "ERROR";
+                            }
+                        }
+                        else{
+                            $response["kombinasieditmsg"][$counter] = "Setter function error";
                             $response["kombinasieditstatus"][$counter] = "ERROR";
                         }
+                        $counter++;
                     }
-                    else{
-                        $response["kombinasieditmsg"][$counter] = "Setter function error";
-                        $response["kombinasieditstatus"][$counter] = "ERROR";
-                    }
-                    $counter++;
                 }
-            }
 
-            $check = $this->input->post("check");
-            if($check){
-                $counter = 0;
-                foreach($check as $a){
-                    $this->load->model("m_barang_kombinasi");
-                    $id_barang_utama = $id_pk_barang;
+                $check = $this->input->post("check");
+                if($check){
+                    $counter = 0;
+                    foreach($check as $a){
+                        $this->load->model("m_barang_kombinasi");
+                        $id_barang_utama = $id_pk_barang;
 
-                    $barang_kombinasi = $this->input->post("barang".$a);
-                    $this->load->model("m_barang");
-                    $this->m_barang->set_brg_nama($barang_kombinasi);
-                    $result = $this->m_barang->detail_by_name();
-                    if($result->num_rows() > 0){
-                        $result = $result->result_array();
-                        $id_barang_kombinasi = $result[0]["id_pk_brg"];
-                    }
-                    else{
+                        $barang_kombinasi = $this->input->post("barang".$a);
                         $this->load->model("m_barang");
                         $this->m_barang->set_brg_nama($barang_kombinasi);
-                        $id_barang_kombinasi = $this->m_barang->short_insert();
-                    }
-
-                    $barang_kombinasi_qty = $this->input->post("qty".$a);
-                    $barang_kombinasi_status = "aktif";
-                    if($this->m_barang_kombinasi->set_insert($id_barang_utama,$id_barang_kombinasi,$barang_kombinasi_qty,$barang_kombinasi_status)){
-                        if($this->m_barang_kombinasi->insert()){
-                            $response["kombinasimsg"][$counter] = "Data is recorded to database";
-                            $response["kombinasistatus"][$counter] = "SUCCESS";
+                        $result = $this->m_barang->detail_by_name();
+                        if($result->num_rows() > 0){
+                            $result = $result->result_array();
+                            $id_barang_kombinasi = $result[0]["id_pk_brg"];
                         }
                         else{
-                            $response["kombinasimsg"][$counter] = "Insert function error";
+                            $this->load->model("m_barang");
+                            $this->m_barang->set_brg_nama($barang_kombinasi);
+                            $id_barang_kombinasi = $this->m_barang->short_insert();
+                        }
+
+                        $barang_kombinasi_qty = $this->input->post("qty".$a);
+                        $barang_kombinasi_status = "aktif";
+                        if($this->m_barang_kombinasi->set_insert($id_barang_utama,$id_barang_kombinasi,$barang_kombinasi_qty,$barang_kombinasi_status)){
+                            if($this->m_barang_kombinasi->insert()){
+                                $response["kombinasimsg"][$counter] = "Data is recorded to database";
+                                $response["kombinasistatus"][$counter] = "SUCCESS";
+                            }
+                            else{
+                                $response["kombinasimsg"][$counter] = "Insert function error";
+                                $response["kombinasistatus"][$counter] = "ERROR";
+                            }
+                        }
+                        else{
+                            $response["kombinasimsg"][$counter] = "Setter function error";
                             $response["kombinasistatus"][$counter] = "ERROR";
                         }
+                        $counter++;
                     }
-                    else{
-                        $response["kombinasimsg"][$counter] = "Setter function error";
-                        $response["kombinasistatus"][$counter] = "ERROR";
-                    }
-                    $counter++;
                 }
             }
         }

@@ -46,31 +46,27 @@
                     <h5>Harga Satuan</h5>
                     <input type = "text" class = "form-control" readonly required name = "harga" id = "d_harga_edit">
                 </div>
-                
-                <div class = "form-group col-lg-12">
+                <div class = "form-group col-lg-6">
+                    <h5>Status Kombinasi Barang</h5>
+                    <input type = "text" class = "form-control" readonly required name = "harga" id = "d_tipe_edit">
+                </div>
+                <div class = "form-group col-lg-6">
                     <h5>Gambar</h5>
                     <img width="200px" id = "d_gambar_edit" name = "gambar_current">
                 </div>
-                <div class = "form-group">
-                    <h5>Kombinasi Barang</h5>
-                    <input type="radio" disabled class = "d_kombinasi_barang_edit" name = "kombinasi_barang" value="TIDAK KOMBINASI" onclick = "$('#d_barang_kombinasi_container_edit').hide()">&nbsp;TIDAK KOMBINASI
-                    &nbsp;&nbsp;
-                    <input type="radio" disabled class = "d_kombinasi_barang_edit" name = "kombinasi_barang" value="KOMBINASI" onclick = "$('#d_barang_kombinasi_container_edit').show()">&nbsp;KOMBINASI
+                <div  id = "d_barang_kombinasi_container_edit">
+                    <h5>Daftar Kombinasi Barang</h5>
+                    <table class = "table table-striped table-bordered">
+                        <thead>
+                            <th>Nama Barang</th>
+                            <th>Qty (Pcs)</th>
+                        </thead>
+                        <tbody>
+                            <tr id = "d_btn_tambah_baris_barang_container_edit">
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                
-                <table class = "table table-striped table-bordered" id = "d_barang_kombinasi_container_edit">
-                    <thead>
-                        <th>Nama Barang</th>
-                        <th>Qty (Pcs)</th>
-                    </thead>
-                    <tbody>
-                        <tr id = "d_btn_tambah_baris_barang_container_edit">
-                            <td colspan = 3>
-                                
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
                 <div class = "form-group">
                     <button type = "button" class = "btn btn-sm btn-primary" data-dismiss = "modal">OK</button>
                 </div>
@@ -89,19 +85,15 @@
         $("#d_minimal_edit").val(content[row]["minimal"]);
         $("#d_satuan_edit").val(content[row]["satuan"]);
         $("#d_harga_edit").val(content[row]["harga"]);
+        $("#d_tipe_edit").val(content[row]["tipe"]);
 
         $("#d_gambar_edit").attr("src","<?php echo base_url() ?>asset/uploads/barang/" + content[row]["image"]);
 
-        if(content[row]["jumlah_barang_kombinasi"] == "0"){
+        if(!(content[row]["tipe"].toLowerCase() == "kombinasi")){
             $("#d_barang_kombinasi_container_edit").hide();
-            $(".d_kombinasi_barang_edit[type='radio'][value='TIDAK KOMBINASI']").attr("checked",true);
-            $(".d_kombinasi_barang_edit[type='radio'][value='KOMBINASI']").attr("checked",false);
         }
         else{
             $("#d_barang_kombinasi_container_edit").show();
-            $(".d_kombinasi_barang_edit[type='radio'][value='KOMBINASI']").attr("checked",true);
-            $(".d_kombinasi_barang_edit[type='radio'][value='TIDAK KOMBINASI']").attr("checked",false);
-            
             $.ajax({
                 url:"<?php echo base_url();?>ws/barang/barang_kombinasi?id_barang="+content[row]["id"],
                 type:"GET",

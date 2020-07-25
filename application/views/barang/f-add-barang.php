@@ -45,9 +45,9 @@
                     </div>
                     <div class = "form-group">
                         <h5>Kombinasi Barang</h5>
-                        <input type="radio" name = "kombinasi_barang" checked value="TIDAK KOMBINASI" onclick = "$('#barang_kombinasi_container').hide()">&nbsp;TIDAK KOMBINASI
+                        <input type="radio" name = "tipe" checked value="nonkombinasi" onclick = "$('#barang_kombinasi_container').hide()">&nbsp;TIDAK KOMBINASI
                         &nbsp;&nbsp;
-                        <input type="radio" name = "kombinasi_barang" value="KOMBINASI" onclick = "$('#barang_kombinasi_container').show()">&nbsp;KOMBINASI
+                        <input type="radio" name = "tipe" value="kombinasi" onclick = "$('#barang_kombinasi_container').show()">&nbsp;KOMBINASI
                     </div>
                     <table class = "table table-striped table-bordered" id = "barang_kombinasi_container" style = "display:none">
                         <thead>
@@ -69,7 +69,7 @@
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <button type = "button" onclick = "register_func();reset_register_form();" class = "btn btn-sm btn-primary">Submit</button>
+                        <button type = "button" onclick = "register_func();" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
                 </form>
             </div>
@@ -95,12 +95,5 @@
         $("#btn_tambah_baris_barang_container").before(html);
         init_nf();
         baris_barang_counter++;
-    }
-
-    var default_register_form_html = $("#register_form").html();
-    function reset_register_form(){
-        console.log("masuk");
-        $("#register_form").html(default_register_form_html);
-        console.log("done");
     }
 </script>

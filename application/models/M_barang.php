@@ -13,6 +13,7 @@ class M_barang extends ci_model{
     private $brg_satuan;
     private $brg_image;
     private $brg_harga;
+    private $brg_tipe; /*kombinasi / nonkombinasi*/
     private $brg_create_date;
     private $brg_last_modified;
     private $id_create_data;
@@ -61,6 +62,7 @@ class M_barang extends ci_model{
             brg_satuan varchar(30),
             brg_image varchar(100),
             brg_harga int,
+            brg_tipe varchar(30),
             brg_status varchar(15),
             brg_create_date datetime,
             brg_last_modified datetime,
@@ -81,6 +83,7 @@ class M_barang extends ci_model{
             brg_satuan varchar(30),
             brg_image varchar(100),
             brg_harga int,
+            brg_tipe varchar(30),
             brg_status varchar(15),
             brg_create_date datetime,
             brg_last_modified datetime,
@@ -104,7 +107,7 @@ class M_barang extends ci_model{
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
             insert into mstr_barang_log(executed_function,
-            id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_status,brg_create_date,brg_last_modified,id_create_data,id_last_modified,id_fk_brg_jenis,id_fk_brg_merk,id_log_all) values ('after insert',new.id_pk_brg,new.brg_kode,new.brg_nama,new.brg_ket,new.brg_minimal,new.brg_satuan,new.brg_image,new.brg_harga,new.brg_status,new.brg_create_date,new.brg_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_brg_jenis,new.id_fk_brg_merk,@id_log_all);
+            id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_tipe,brg_status,brg_create_date,brg_last_modified,id_create_data,id_last_modified,id_fk_brg_jenis,id_fk_brg_merk,id_log_all) values ('after insert',new.id_pk_brg,new.brg_kode,new.brg_nama,new.brg_ket,new.brg_minimal,new.brg_satuan,new.brg_image,new.brg_harga,new.brg_tipe,new.brg_status,new.brg_create_date,new.brg_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_brg_jenis,new.id_fk_brg_merk,@id_log_all);
         end$$
         delimiter ;
         
@@ -125,13 +128,13 @@ class M_barang extends ci_model{
                 call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
 
                 insert into mstr_barang_log(executed_function,
-                id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_status,brg_create_date,brg_last_modified,id_create_data,id_last_modified,id_fk_brg_jenis,id_fk_brg_merk,id_log_all) values ('after delete',new.id_pk_brg,new.brg_kode,new.brg_nama,new.brg_ket,new.brg_minimal,new.brg_satuan,new.brg_image,new.brg_harga,new.brg_status,new.brg_create_date,new.brg_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_brg_jenis,new.id_fk_brg_merk,@id_log_all);
+                id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_tipe,brg_status,brg_create_date,brg_last_modified,id_create_data,id_last_modified,id_fk_brg_jenis,id_fk_brg_merk,id_log_all) values ('after delete',new.id_pk_brg,new.brg_kode,new.brg_nama,new.brg_ket,new.brg_minimal,new.brg_satuan,new.brg_image,new.brg_harga,new.brg_tipe,new.brg_status,new.brg_create_date,new.brg_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_brg_jenis,new.id_fk_brg_merk,@id_log_all);
             else
                 set @log_text = concat(@username,' update data barang at ',new.brg_last_modified ,' \nnama barang terkait: ',old.brg_nama,' nama barang baru: ',new.brg_nama);
                 call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
-                
+                    
                 insert into mstr_barang_log(executed_function,
-                id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_status,brg_create_date,brg_last_modified,id_create_data,id_last_modified,id_fk_brg_jenis,id_fk_brg_merk,id_log_all) values ('after update',new.id_pk_brg,new.brg_kode,new.brg_nama,new.brg_ket,new.brg_minimal,new.brg_satuan,new.brg_image,new.brg_harga,new.brg_status,new.brg_create_date,new.brg_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_brg_jenis,new.id_fk_brg_merk,@id_log_all);
+                id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_tipe,brg_status,brg_create_date,brg_last_modified,id_create_data,id_last_modified,id_fk_brg_jenis,id_fk_brg_merk,id_log_all) values ('after update',new.id_pk_brg,new.brg_kode,new.brg_nama,new.brg_ket,new.brg_minimal,new.brg_satuan,new.brg_image,new.brg_harga,new.brg_tipe,new.brg_status,new.brg_create_date,new.brg_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_brg_jenis,new.id_fk_brg_merk,@id_log_all);
             end if;
         end$$
         delimiter ;
@@ -154,11 +157,12 @@ class M_barang extends ci_model{
                 brg_harga like '%".$search_key."%' or
                 brg_merk_nama like '%".$search_key."%' or
                 brg_jenis_nama like '%".$search_key."%' or
+                brg_tipe like '%".$search_key."%' or
                 brg_last_modified like '%".$search_key."%'
             )";
         }
         $query = "
-        select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_harga,count(id_pk_barang_kombinasi) as jumlah_barang_kombinasi
+        select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_harga,brg_tipe,count(id_pk_barang_kombinasi) as jumlah_barang_kombinasi
         from ".$this->tbl_name." 
         left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
         left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
@@ -185,7 +189,7 @@ class M_barang extends ci_model{
         return $result;
     }
     public function list(){
-        $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_last_modified,brg_merk_nama,brg_jenis_nama,group_concat(tbl_barang_ukuran.ukuran separator ',') as ukuran
+        $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe,group_concat(tbl_barang_ukuran.ukuran separator ',') as ukuran
         from ".$this->tbl_name." 
         inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
         inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
@@ -203,7 +207,7 @@ class M_barang extends ci_model{
             "brg_nama" => $this->brg_nama
         );
         $field = array(
-            "id_pk_brg","brg_kode","brg_nama","brg_ket","brg_minimal","brg_harga","brg_status","brg_satuan","brg_image","brg_create_date","brg_last_modified","id_create_data","id_last_modified","id_fk_brg_jenis","id_fk_brg_merk"
+            "id_pk_brg","brg_kode","brg_nama","brg_ket","brg_minimal","brg_harga","brg_status","brg_satuan","brg_image","brg_create_date","brg_last_modified","id_create_data","id_last_modified","id_fk_brg_jenis","id_fk_brg_merk","brg_tipe"
         );
         return selectrow($this->tbl_name,$where,$field);
     }
@@ -211,6 +215,7 @@ class M_barang extends ci_model{
         $data = array(
             "brg_nama" => $this->brg_nama,
             "brg_status" => "aktif",
+            "brg_tipe" => "nonkombinasi",
             "brg_create_date" => $this->brg_create_date,
             "brg_last_modified" => $this->brg_last_modified,
             "id_create_data" => $this->id_create_data,
@@ -229,6 +234,7 @@ class M_barang extends ci_model{
                 "brg_satuan" => $this->brg_satuan,
                 "brg_image" => $this->brg_image,
                 "brg_harga" => $this->brg_harga,
+                "brg_tipe" => $this->brg_tipe,
                 "id_fk_brg_jenis" => $this->id_fk_brg_jenis,
                 "id_fk_brg_merk" => $this->id_fk_brg_merk,
                 "brg_create_date" => $this->brg_create_date,
@@ -261,6 +267,7 @@ class M_barang extends ci_model{
                     "brg_satuan" => $this->brg_satuan,
                     "brg_image" => $this->brg_image,
                     "brg_harga" => $this->brg_harga,
+                    "brg_tipe" => $this->brg_tipe,
                     "id_fk_brg_jenis" => $this->id_fk_brg_jenis,
                     "id_fk_brg_merk" => $this->id_fk_brg_merk,
                     "brg_last_modified" => $this->brg_last_modified,
@@ -319,6 +326,9 @@ class M_barang extends ci_model{
         if($this->brg_harga == ""){
             return false;
         }
+        if($this->brg_tipe == ""){
+            return false;
+        }
         if($this->id_fk_brg_merk == ""){
             return false;
         }
@@ -361,6 +371,9 @@ class M_barang extends ci_model{
         if($this->brg_harga == ""){
             return false;
         }
+        if($this->brg_tipe == ""){
+            return false;
+        }
         if($this->id_fk_brg_jenis == ""){
             return false;
         }
@@ -387,7 +400,7 @@ class M_barang extends ci_model{
         }
         return true;
     }
-    public function set_insert($brg_kode,$brg_nama,$brg_ket,$brg_minimal,$brg_satuan,$brg_image,$brg_status,$id_fk_brg_jenis,$id_fk_brg_merk,$brg_harga){
+    public function set_insert($brg_kode,$brg_nama,$brg_ket,$brg_minimal,$brg_satuan,$brg_image,$brg_status,$id_fk_brg_jenis,$id_fk_brg_merk,$brg_harga,$brg_tipe){
         if(!$this->set_brg_kode($brg_kode)){
             return false;
         }
@@ -409,6 +422,9 @@ class M_barang extends ci_model{
         if(!$this->set_brg_harga($brg_harga)){
             return false;
         }
+        if(!$this->set_brg_tipe($brg_tipe)){
+            return false;
+        }
         if(!$this->set_brg_status($brg_status)){
             return false;
         }
@@ -420,7 +436,7 @@ class M_barang extends ci_model{
         }
         return true;
     }
-    public function set_update($id_pk_brg,$brg_kode,$brg_nama,$brg_ket,$brg_minimal,$brg_satuan,$brg_image,$id_fk_brg_jenis,$id_fk_brg_merk,$brg_harga){
+    public function set_update($id_pk_brg,$brg_kode,$brg_nama,$brg_ket,$brg_minimal,$brg_satuan,$brg_image,$id_fk_brg_jenis,$id_fk_brg_merk,$brg_harga,$brg_tipe){
         if(!$this->set_id_pk_brg($id_pk_brg)){
             return false;
         }
@@ -443,6 +459,9 @@ class M_barang extends ci_model{
             return false;
         }
         if(!$this->set_brg_harga($brg_harga)){
+            return false;
+        }
+        if(!$this->set_brg_tipe($brg_tipe)){
             return false;
         }
         if(!$this->set_id_fk_brg_jenis($id_fk_brg_jenis)){
@@ -515,6 +534,13 @@ class M_barang extends ci_model{
         }
         return false;
     }
+    public function set_brg_tipe($brg_tipe){
+        if($brg_tipe != ""){
+            $this->brg_tipe = $brg_tipe;
+            return true;
+        }
+        return false;
+    }
     public function set_brg_status($brg_status){
         if($brg_status != ""){
             $this->brg_status = $brg_status;
@@ -537,7 +563,7 @@ class M_barang extends ci_model{
         return false;
     }
     public function data_excel(){
-        $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_last_modified,brg_merk_nama,brg_jenis_nama,group_concat(tbl_barang_ukuran.ukuran separator ',') as ukuran
+        $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe，group_concat(tbl_barang_ukuran.ukuran separator ',') as ukuran
         from ".$this->tbl_name." 
         inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
         inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
@@ -560,6 +586,7 @@ class M_barang extends ci_model{
         $this->set_column("brg_minimal","jumlah minimal",false);
         $this->set_column("brg_satuan","satuan",false);
         $this->set_column("brg_harga","harga satuan",false);
+        $this->set_column("brg_tipe","Tunggal / Kombinasi",false);
         $this->set_column("brg_status","status",false);
         $this->set_column("brg_last_modified","last modified",false);
         return $this->columns;

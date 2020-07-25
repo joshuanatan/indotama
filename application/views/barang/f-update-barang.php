@@ -54,9 +54,9 @@
                     
                     <div class = "form-group">
                         <h5>Kombinasi Barang</h5>
-                        <input type="radio" class = "kombinasi_barang_edit" name = "kombinasi_barang" value="TIDAK KOMBINASI" onclick = "$('#barang_kombinasi_container_edit').hide()">&nbsp;TIDAK KOMBINASI
+                        <input type="radio" class = "kombinasi_barang_edit" name = "tipe" value="nonkombinasi" onclick = "$('#barang_kombinasi_container_edit').hide()">&nbsp;TIDAK KOMBINASI
                         &nbsp;&nbsp;
-                        <input type="radio" class = "kombinasi_barang_edit" name = "kombinasi_barang" value="KOMBINASI" onclick = "$('#barang_kombinasi_container_edit').show()">&nbsp;KOMBINASI
+                        <input type="radio" class = "kombinasi_barang_edit" name = "tipe" value="kombinasi" onclick = "$('#barang_kombinasi_container_edit').show()">&nbsp;KOMBINASI
                     </div>
                     
                     <table class = "table table-striped table-bordered" id = "barang_kombinasi_container_edit">
@@ -90,6 +90,8 @@
 <script>
     var barang_kombinasi_list;
     function load_edit_content(row){
+        $(".row_brg_edit").remove();
+
         $("#id_edit").val(content[row]["id"]);
         $("#kode_edit").val(content[row]["kode"]);
         $("#nama_edit").val(content[row]["nama"]);
@@ -100,41 +102,42 @@
         $("#satuan_edit").val(content[row]["satuan"]);
         $("#harga_edit").val(content[row]["harga"]);
         $("#gambar_edit").val(content[row]["image"]);
-
-        if(content[row]["jumlah_barang_kombinasi"] == "0"){
+        console.log(content[row]["tipe"].toLowerCase());
+        if(!(content[row]["tipe"].toLowerCase() == "kombinasi")){
             $("#barang_kombinasi_container_edit").hide();
-            $(".kombinasi_barang_edit[type='radio'][value='TIDAK KOMBINASI']").prop("checked",true);
-            $(".kombinasi_barang_edit[type='radio'][value='KOMBINASI']").prop("checked",false);
+            $(".kombinasi_barang_edit[type='radio'][value='nonkombinasi']").prop("checked",true);
+            $(".kombinasi_barang_edit[type='radio'][value='kombinasi']").prop("checked",false);
         }
         else{
             $("#barang_kombinasi_container_edit").show();
-            $(".kombinasi_barang_edit[type='radio'][value='KOMBINASI']").prop("checked",true);
-            $(".kombinasi_barang_edit[type='radio'][value='TIDAK KOMBINASI']").prop("checked",false);
+            $(".kombinasi_barang_edit[type='radio'][value='kombinasi']").prop("checked",true);
+            $(".kombinasi_barang_edit[type='radio'][value='nonkombinasi']").prop("checked",false);
             
             $.ajax({
                 url:"<?php echo base_url();?>ws/barang/barang_kombinasi?id_barang="+content[row]["id"],
                 type:"GET",
                 dataType:"JSON",
                 success:function(respond){
-                    var html = "";
-                    for(var a = 0; a<respond["content"].length; a++){
-                        html += `
-                        <tr class = 'row_brg_edit' id = 'id_brg_edit${a}'>
-                            <input type = 'hidden' id = 'id_barang_kombinasi${a}' name = 'id_barang_kombinasi${a}' value = '${respond["content"][a]["id"]}'>
-                            <input type = 'hidden' name = 'edit[]' value = '${a}'>
-                            <td>
-                                <input type = 'text' class = 'form-control' list = 'datalist_barang' name = 'barang_edit${a}' value = '${respond["content"][a]["barang"]}'>
-                            </td>
-                            <td>
-                                <input type = 'text' class = 'form-control' name = 'qty_edit${a}' value = '${respond["content"][a]["qty"]}'>
-                            </td>
-                            <td>
-                                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_barang_edit(${a})'></i>
-                            </td>
-                        </tr>`;
+                    if(respond["status"].toLowerCase() == "success"){
+                        var html = "";
+                        for(var a = 0; a<respond["content"].length; a++){
+                            html += `
+                            <tr class = 'row_brg_edit' id = 'id_brg_edit${a}'>
+                                <input type = 'hidden' id = 'id_barang_kombinasi${a}' name = 'id_barang_kombinasi${a}' value = '${respond["content"][a]["id"]}'>
+                                <input type = 'hidden' name = 'edit[]' value = '${a}'>
+                                <td>
+                                    <input type = 'text' class = 'form-control' list = 'datalist_barang' name = 'barang_edit${a}' value = '${respond["content"][a]["barang"]}'>
+                                </td>
+                                <td>
+                                    <input type = 'text' class = 'form-control' name = 'qty_edit${a}' value = '${respond["content"][a]["qty"]}'>
+                                </td>
+                                <td>
+                                    <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_barang_edit(${a})'></i>
+                                </td>
+                            </tr>`;
+                        }
+                        $("#btn_tambah_baris_barang_container_edit").before(html);
                     }
-                    $(".row_brg_edit").remove();
-                    $("#btn_tambah_baris_barang_container_edit").before(html);
                 }
             });
         }
