@@ -12,7 +12,7 @@
             $this->load->view('_notification/register_error',$notif_data); ?>
                 <form id = "register_form" method = "POST" enctype = "multipart/form-data">
                     <div class = "form-group">
-                        <h5>Penawar</h5>
+                        <h5>Email</h5>
                         <input type = "text" class = "form-control" required name = "penawar">
                     </div>
                     <div class = "form-group">

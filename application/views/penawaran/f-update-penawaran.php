@@ -14,7 +14,7 @@
                 <form id = "update_form" method = "POST" enctype = "multipart/form-data">
                     <input type = "hidden" name = "id" id = "id_edit">
                     <div class = "form-group">
-                        <h5>Penawar</h5>
+                        <h5>Email</h5>
                         <input type = "text" class = "form-control" required name = "penawar" id = "penawar_edit">
                     </div>
                     <div class = "form-group">

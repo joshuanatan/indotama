@@ -20,8 +20,8 @@ class M_penawaran extends ci_model{
 
     public function __construct(){
         parent::__construct();
-        $this->set_column("penawaran_refrensi","Penawar",false);
-        $this->set_column("penawaran_tgl","Tanggal Penawaran",false);
+        $this->set_column("penawaran_refrensi","Email",false);
+        $this->set_column("penawaran_tgl","Tanggal",false);
         $this->set_column("penawaran_subject","Subjek",true);
         $this->set_column("penawaran_content","Konten",false);
         $this->set_column("penawaran_notes","Notes",false);

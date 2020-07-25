@@ -7,7 +7,7 @@
             </div>
             <div class = "modal-body">
                 <div class = "form-group">
-                    <h5>Penawar</h5>
+                    <h5>Email</h5>
                     <input type = "text" class = "form-control" required readonly id = "penawar_detail">
                 </div>
                 <div class = "form-group">
