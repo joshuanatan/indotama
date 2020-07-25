@@ -103,7 +103,7 @@
                                 <input type = 'hidden' id = 'id_brg_retur_edit${a}' name = 'id_brg_retur_edit${a}' value = '${respond["content"][a]["id"]}'>
                                 <input name = 'brg_retur_edit${a}' value = '${respond["content"][a]["nama_brg"]}' type = 'text' class = 'form-control' list = 'datalist_barang_cabang'>
                             </td>
-                            <td>-</td>
+                            <td>${respond["content"][a]["terkirim"]} ${respond["content"][a]["satuan_terkirim"]} / ${respond["content"][a]["beli"]} ${respond["content"][a]["satuan_beli"]}</td>
                             <td>
                                 <input name = 'brg_retur_jumlah_edit${a}' value = '${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}' type = 'text' class = 'form-control nf-input'>
                             </td>

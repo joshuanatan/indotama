@@ -242,7 +242,7 @@ class Retur extends CI_Controller{
                                         $retur_brg_qty = $brg_retur_qty[0];
                                         $retur_brg_satuan = "Pcs";
                                     }
-                                    $retur_brg_status = "menunggu konfirmasi";
+                                    $retur_brg_status = "aktif";
                                     
                                     if($this->m_retur_brg->set_insert($id_fk_retur,$id_fk_brg_cabang,$retur_brg_qty,$retur_brg_satuan,$retur_brg_status,$retur_brg_notes)){
                                         if($this->m_retur_brg->insert()){
@@ -559,11 +559,15 @@ class Retur extends CI_Controller{
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
                 $response["content"][$a]["id"] = $result[$a]["id_pk_retur_brg"];
-                $response["content"][$a]["qty"] = $result[$a]["retur_brg_qty"];
+                $response["content"][$a]["qty"] = number_format($result[$a]["retur_brg_qty"],2,",",".");
                 $response["content"][$a]["notes"] = $result[$a]["retur_brg_notes"];
                 $response["content"][$a]["satuan"] = $result[$a]["retur_brg_satuan"];
                 $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
                 $response["content"][$a]["status"] = $result[$a]["retur_brg_status"];
+                $response["content"][$a]["terkirim"] = $result[$a]["brg_terkirim"];
+                $response["content"][$a]["satuan_terkirim"] = $result[$a]["satuan_kirim"];
+                $response["content"][$a]["beli"] = $result[$a]["brg_beli"];
+                $response["content"][$a]["satuan_beli"] = $result[$a]["satuan_beli"];
             }
         }
         else{

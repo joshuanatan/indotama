@@ -100,10 +100,17 @@ class M_retur_brg extends CI_Model{
     }
     public function list(){
         $sql = "
-        select id_pk_retur_brg,retur_brg_qty,retur_brg_satuan,brg_nama,retur_brg_status,retur_brg_notes 
+        select ifnull(sum(tbl_brg_pengiriman.brg_pengiriman_qty),0) as brg_terkirim,sum(tbl_brg_penjualan.brg_penjualan_qty) as brg_beli,id_pk_retur_brg,ifnull(satuan_kirim.satuan_nama,'') as satuan_kirim,ifnull(brg_penjualan_satuan,'') as satuan_beli,id_pk_retur_brg,id_pk_retur_brg,retur_brg_qty,retur_brg_satuan,brg_nama,retur_brg_status,retur_brg_notes    
         from tbl_retur_brg
         inner join mstr_barang on mstr_barang.id_pk_brg = tbl_retur_brg.id_fk_brg
-        where retur_brg_status = 'aktif' and id_fk_retur = ?
+        inner join mstr_retur on mstr_retur.id_pk_retur = tbl_retur_brg.id_fk_retur
+        inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
+        inner join tbl_brg_penjualan on tbl_brg_penjualan.id_fk_penjualan = mstr_retur.id_fk_penjualan and tbl_brg_penjualan.id_fk_barang = tbl_retur_brg.id_fk_brg
+        left join mstr_pengiriman on mstr_pengiriman.id_fk_penjualan = mstr_penjualan.id_pk_penjualan
+        left join tbl_brg_pengiriman on mstr_pengiriman.id_pk_pengiriman = tbl_brg_pengiriman.id_fk_pengiriman
+        left join mstr_satuan as satuan_kirim on satuan_kirim.id_pk_satuan = tbl_brg_pengiriman.id_fk_satuan
+        where id_pk_retur = ? and retur_brg_status = 'aktif'
+        group by id_pk_retur_brg
         ";
         $args = array(
             $this->id_fk_retur
