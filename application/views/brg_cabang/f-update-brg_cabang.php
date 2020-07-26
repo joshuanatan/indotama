@@ -14,11 +14,11 @@
                     <input type = "hidden" name = "id" id = "id_edit">
                     <div class = "form-group">
                         <h5>Nama Barang</h5>
-                        <input type = 'text' class = 'form-control' list = 'daftar_barang' name = 'brg' id = "brg_edit">
+                        <input readonly type = 'text' class = 'form-control' list = 'daftar_barang' name = 'brg' id = "brg_edit">
                     </div>
                     <div class = "form-group">
                         <h5>Stok</h5>
-                        <input type = "text" class = "form-control nf-input" required name = "stok" id = "stok_edit">
+                        <input readonly type = "text" class = "form-control nf-input" required name = "stok" id = "stok_edit">
                     </div>
                     <div class = "form-group">
                         <h5>Notes</h5>

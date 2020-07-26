@@ -18,13 +18,13 @@ class M_brg_cabang extends ci_model{
 
     public function __construct(){
         parent::__construct();
-        executeQuery("call list_barang_kombinasi_cabang();");
         $this->set_column("brg_kode","kode barang","required");
         $this->set_column("brg_nama","nama barang","required");
         $this->set_column("brg_ket","keterangan","required");
         $this->set_column("brg_cabang_qty","qty","required");
         $this->set_column("brg_cabang_last_price","biaya terakhir","required");
         $this->set_column("brg_cabang_notes","notes","required");
+        $this->set_column("brg_tipe","Tipe Kombinasi","required");
         $this->set_column("brg_cabang_status","status","required");
         $this->set_column("brg_cabang_last_modified","last modified","required");
         $this->brg_cabang_create_date = date("y-m-d h:i:s");
@@ -88,8 +88,6 @@ class M_brg_cabang extends ci_model{
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
             insert into tbl_brg_cabang_log(executed_function,id_pk_brg_cabang,brg_cabang_qty,brg_cabang_last_price,brg_cabang_notes,brg_cabang_status,id_fk_brg,id_fk_cabang,brg_cabang_create_date,brg_cabang_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_cabang,new.brg_cabang_last_price,new.brg_cabang_qty,new.brg_cabang_notes,new.brg_cabang_status,new.id_fk_brg,new.id_fk_cabang,new.brg_cabang_create_date,new.brg_cabang_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
-            
-            call update_stok_kombinasi_barang_cabang(new.id_fk_brg,new.brg_cabang_qty, 0, new.id_fk_cabang);
         end$$
         delimiter ;
 
@@ -162,7 +160,7 @@ class M_brg_cabang extends ci_model{
             )";
         }
         $query = "
-        select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_last_price,brg_cabang_notes,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_jenis_nama,brg_merk_nama
+        select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_last_price,brg_cabang_notes,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_jenis_nama,brg_merk_nama,brg_tipe
         from ".$this->tbl_name." 
         inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_brg
         inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = mstr_barang.id_fk_brg_jenis
@@ -196,7 +194,7 @@ class M_brg_cabang extends ci_model{
     }
     public function list(){
         $sql = "
-        select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_last_price,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga
+        select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_last_price,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_tipe
         from ".$this->tbl_name." 
         inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_brg
         where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ? ";
@@ -207,16 +205,34 @@ class M_brg_cabang extends ci_model{
     }
     public function list_not_exists_brg_kombinasi(){
         $sql = "
-        select id_barang_kombinasi,barang_kombinasi_qty,brg_cabang_qty,barang_kombinasi_qty*brg_cabang_qty as add_qty 
-        from tbl_brg_cabang
-        right join tbl_barang_kombinasi on tbl_barang_kombinasi.id_barang_utama = tbl_brg_cabang.id_fk_brg
-        where id_fk_cabang = ? and brg_cabang_status = 'aktif'
-        and id_barang_kombinasi not in
-        (select id_fk_brg from tbl_brg_cabang where id_fk_cabang = ? and brg_cabang_status = 'aktif')
+        select id_barang_utama,id_barang_kombinasi,brg_cabang_qty,barang_kombinasi_qty*brg_cabang_qty as add_qty  
+        from tbl_brg_cabang 
+        right join (
+            select id_barang_kombinasi,barang_kombinasi_qty,id_barang_utama
+            from tbl_barang_kombinasi
+            inner join mstr_barang on mstr_barang.id_pk_brg = tbl_barang_kombinasi.id_barang_kombinasi and brg_status = 'aktif'
+            where barang_kombinasi_status = 'aktif'
+            and tbl_barang_kombinasi.id_barang_utama in (
+				/*cari yang barang tersebut adalah kombinasi. ada potensi barang tersebut awalnya kombinasi jadi punya anak, trus dinonaktifkan (berubah jadi barang nonkombinasi) tapi secara data, anggota kombinasinya masih kecatet dan aktif. Jadi harus ditambah where brg_tipe master kombinasi = 'kombinasi' untuk memastikan*/
+                select id_fk_brg from tbl_brg_cabang
+                inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_cabang.id_fk_brg
+                where brg_cabang_status = 'aktif' and brg_status = 'aktif' and brg_tipe = 'kombinasi'
+                and id_fk_cabang = ?
+            )
+            and tbl_barang_kombinasi.id_barang_kombinasi not in (
+				/*tapi yang anggotanya bukan kombinasi karena emang harusnya gaboleh kombinasi diisi kombinasi*/
+                select id_fk_brg from tbl_brg_cabang
+                inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_cabang.id_fk_brg
+                where brg_cabang_status = 'aktif' and brg_status = 'aktif' and brg_tipe = 'nonkombinasi'
+                and id_fk_cabang = ?
+            )
+        ) as a on a.id_barang_utama = tbl_brg_cabang.id_fk_brg
+        where tbl_brg_cabang.brg_cabang_status = 'aktif'
         ";
         $args = array(
             $this->id_fk_cabang, $this->id_fk_cabang
         );
+        //executeQuery($sql,$args); echo $this->db->last_query();
         return executeQuery($sql,$args);
     }
     public function insert(){
@@ -238,8 +254,7 @@ class M_brg_cabang extends ci_model{
                     "id_create_data" => $this->id_create_data,
                     "id_last_modified" => $this->id_last_modified
                 );
-                $id = insertrow($this->tbl_name,$data);
-                executeQuery("call update_stok_kombinasi_barang_cabang(".$this->id_fk_brg.",".$this->brg_cabang_qty.",0,".$this->id_fk_cabang);
+                $id = insertRow($this->tbl_name,$data);
                 return $id;
             }
             else{
@@ -248,6 +263,7 @@ class M_brg_cabang extends ci_model{
                     $this->id_fk_brg,$this->id_fk_cabang
                 );
                 executeQuery($query,$args);
+                return true;
             }
         }
         return false;
@@ -265,9 +281,9 @@ class M_brg_cabang extends ci_model{
                     "id_pk_brg_cabang" => $this->id_pk_brg_cabang   
                 );
                 $data = array(
-                    "brg_cabang_qty" => $this->brg_cabang_qty,
+                    //"brg_cabang_qty" => $this->brg_cabang_qty, //gabole update brg_qty karena gabole ngakalin stok
                     "brg_cabang_notes" => $this->brg_cabang_notes,
-                    "id_fk_brg" => $this->id_fk_brg,
+                    //"id_fk_brg" => $this->id_fk_brg, //gabole update id_fk_brg, ngerusak autoupdate ini
                     "brg_cabang_last_modified" => $this->brg_cabang_last_modified,
                     "id_last_modified" => $this->id_last_modified
                 );
@@ -280,7 +296,7 @@ class M_brg_cabang extends ci_model{
                 $result = executeQuery($query,$args);
                 $result = $result->result_array();
                 /*end store procedure*/
-                executeQuery("call update_stok_kombinasi_barang_cabang(".$this->id_fk_brg.",".$this->brg_cabang_qty.",".$result[0]["brg_cabang_qty"].",".$this->id_fk_cabang.")");
+                executeQuery("call update_stok_kombinasi_anggota_cabang(".$this->id_fk_brg.",".$this->brg_cabang_qty.",".$result[0]["brg_cabang_qty"].",".$this->id_fk_cabang.")");
                 updateRow($this->tbl_name,$data,$where);
                 return true; 
             }
@@ -475,23 +491,5 @@ class M_brg_cabang extends ci_model{
             return true;
         }
         return false;
-    }
-    public function get_id_pk_brg_cabang(){
-        return $this->id_pk_brg_cabang;
-    }
-    public function get_brg_cabang_qty(){
-        return $this->brg_cabang_qty;
-    }
-    public function get_brg_cabang_notes(){
-        return $this->brg_cabang_notes;
-    }
-    public function get_brg_cabang_status(){
-        return $this->brg_cabang_status;
-    }
-    public function get_id_fk_brg(){
-        return $this->id_fk_brg;
-    }
-    public function get_id_fk_cabang(){
-        return $this->id_fk_cabang;
     }
 }

@@ -3,7 +3,8 @@ defined("BASEPATH") or exit("no direct script");
 class Barang_cabang extends CI_Controller{
     public function __construct(){
         parent::__construct();
-        $this->update_list_barang();
+        $this->register_unregistered_anggota_kombinasi_cabang($origin = "construct");
+        $this->stock_adjustment();
     }
     public function columns(){
         $response["status"] = "SUCCESS";
@@ -57,10 +58,11 @@ class Barang_cabang extends CI_Controller{
                 $response["content"][$a]["nama_brg"] = $result["data"][$a]["brg_nama"];
                 $response["content"][$a]["kode_brg"] = $result["data"][$a]["brg_kode"];
                 $response["content"][$a]["ket_brg"] = $result["data"][$a]["brg_ket"];
-                $response["content"][$a]["minimal_brg"] = $result["data"][$a]["brg_minimal"];
+                $response["content"][$a]["minimal_brg"] = number_format($result["data"][$a]["brg_minimal"],2,",",".");
                 $response["content"][$a]["satuan_brg"] = $result["data"][$a]["brg_satuan"];
                 $response["content"][$a]["jenis"] = $result["data"][$a]["brg_jenis_nama"];
                 $response["content"][$a]["merk"] = $result["data"][$a]["brg_merk_nama"];
+                $response["content"][$a]["tipe"] = $result["data"][$a]["brg_tipe"];
             }
         }
         else{
@@ -74,6 +76,7 @@ class Barang_cabang extends CI_Controller{
             "qty",
             "last_price",
             "notes",
+            "tipe",
             "status",
             "last_modified"
         );
@@ -89,6 +92,7 @@ class Barang_cabang extends CI_Controller{
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
                 $response["content"][$a]["id"] = $result[$a]["id_pk_brg_cabang"]."";
+                $response["content"][$a]["id_brg"] = $result[$a]["id_fk_brg"]."";
                 $response["content"][$a]["qty"] = $result[$a]["brg_cabang_qty"]."";
                 $response["content"][$a]["notes"] = $result[$a]["brg_cabang_notes"]."";
                 $response["content"][$a]["last_price"] = $result[$a]["brg_cabang_last_price"]."";
@@ -102,6 +106,7 @@ class Barang_cabang extends CI_Controller{
                 $response["content"][$a]["satuan"] = $result[$a]["brg_satuan"]."";
                 $response["content"][$a]["image"] = $result[$a]["brg_image"]."";
                 $response["content"][$a]["harga"] = $result[$a]["brg_harga"]."";
+                $response["content"][$a]["tipe"] = $result["data"][$a]["brg_tipe"];
             }
         }
         else{
@@ -135,16 +140,14 @@ class Barang_cabang extends CI_Controller{
                         $id_fk_brg = $result[0]["id_pk_brg"];
 
                         $this->load->model("m_brg_cabang");
-                        $this->m_brg_cabang->set_id_fk_brg($id_fk_brg);
-                        $this->m_brg_cabang->set_id_fk_cabang($id_fk_cabang);
-                        if(!$this->m_brg_cabang->is_item_exists()){
-                            $this->m_brg_cabang->set_insert(0,"-","aktif",$id_fk_brg,$id_fk_cabang);
-                            $this->m_brg_cabang->insert();
-                        }
-
-                        $this->load->model("m_brg_cabang");
                         if($this->m_brg_cabang->set_insert($brg_cabang_qty,$brg_cabang_notes,$brg_cabang_status,$id_fk_brg,$id_fk_cabang)){
                             if($this->m_brg_cabang->insert()){
+
+                                $this->register_unregistered_anggota_kombinasi_cabang();
+
+                                #penting karena bisa jadi dia masuk sebagai kombinasi yang anggotanya sudah terdaftar sebelumnya sehingga harus diupdate menurut kedatangan kombinasi ini.
+                                executeQuery("call update_stok_kombinasi_anggota_cabang(".$id_fk_brg.",".$brg_cabang_qty.",0,".$id_fk_cabang.")");
+                                
                                 $response["itmsts"][$counter] = "SUCCESS";
                                 $response["itmmsg"][$counter] = "Data is recorded to database";
                             }
@@ -239,26 +242,34 @@ class Barang_cabang extends CI_Controller{
         }
         echo json_encode($response);
     }
-    private function update_list_barang(){
-        //select semua yang belom ada   
+    private function register_unregistered_anggota_kombinasi_cabang($origin = "insert"){
+        
+        #cari anggota kombinasi yang (belom ada) dan lakukan insert. literally do that, cari semua yang merupakan anggota kombinasi tapi belom ada di daftar barang cabang
+        #jadi klo udah ada itu ga kepanggil lagi.
+        #tujuan fungsi ini untuk memastiakn setiap barang anggota kombinasi telah terdaftar dicabang, bukan untuk stok adjustment
+
+
+        #usecases:
+            # 1. insert barang kombinasi 1 (barang1,3,5). klo  1,3,5 ga ada, select, insert
+            # 2. kalau udah ada barang kombinasi 1 terdaftar, trus daftarin kombinasi 2(2,3,5), maka hanya 2 yang keambil, 3 dan 5 belom [butuh stock adjustment]
+            # 3. kalau ada barang kombinasi 1(1,3,5) dan kombinasi 2(2,3,5), kemudian yang 5 dihapus maka hasilnya akan mengeluarkan 5,5 (untuk kombinasi 1 dan 2). fungsi akan melakukan insert pertama (insert) dan insert kedua (update) karena sudah ada dari hasil insert yang pertama
         $this->load->model("m_brg_cabang");
         $this->m_brg_cabang->set_id_fk_cabang($this->session->id_cabang);
-        $result = $this->m_brg_cabang->list_not_exists_brg_kombinasi();
-        if($result->num_rows() > 0){
-            $result = $result->result_array();
-            for($a = 0; $a<count($result); $a++){
-                /*harusnya bukan 0 tapi sejumlah kombinasi qty * mstrkombinasi qty*/
-                /*kalau misalnya ada, itu harusnya ditambahin bukan di abaikan*/
-                if($this->m_brg_cabang->set_insert($result[$a]["add_qty"],"Auto insert from item existance check","aktif",$result[$a]["id_barang_kombinasi"],$this->session->id_cabang)){
+        $result_kombinasi = $this->m_brg_cabang->list_not_exists_brg_kombinasi();
+        if($result_kombinasi->num_rows() > 0){
+            $result_kombinasi = $result_kombinasi->result_array();
+            //print_r($result_kombinasi);
+            for($b = 0; $b < count($result_kombinasi); $b++){
+                $this->load->model("m_brg_cabang");
+                if($this->m_brg_cabang->set_insert('0',"Auto insert from checking construct","aktif",$result_kombinasi[$b]["id_barang_kombinasi"],$this->session->id_cabang)){
                     if($this->m_brg_cabang->insert()){
                     }
-                    else{
-                    }
                 }
-                else{
-                }
-            }   
+            }
         }
-        //loop masuk
+    }
+    private function stock_adjustment(){
+        #update master kombinasi based on stok
+        executeQuery("call update_stok_kombinasi_master_cabang();");
     }
 }

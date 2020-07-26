@@ -15,11 +15,13 @@ where id_pk_retur = 15
 group by id_fk_brg;
 
 #final script
-select ifnull(sum(tbl_brg_pengiriman.brg_pengiriman_qty),0) as brg_terkirim,sum(tbl_brg_penjualan.brg_penjualan_qty) as brg_beli,id_pk_retur_brg from tbl_retur_brg
+select ifnull(sum(tbl_brg_pengiriman.brg_pengiriman_qty),0) as brg_terkirim,sum(tbl_brg_penjualan.brg_penjualan_qty) as brg_beli,id_pk_retur_brg,satuan_kirim.satuan_nama as satuan_kirim,ifnull(brg_penjualan_satuan,'') as satuan_beli 
+from tbl_retur_brg
 inner join mstr_retur on mstr_retur.id_pk_retur = tbl_retur_brg.id_fk_retur
 inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
 inner join tbl_brg_penjualan on tbl_brg_penjualan.id_fk_penjualan = mstr_retur.id_fk_penjualan and tbl_brg_penjualan.id_fk_barang = tbl_retur_brg.id_fk_brg
 left join mstr_pengiriman on mstr_pengiriman.id_fk_penjualan = mstr_penjualan.id_pk_penjualan
 left join tbl_brg_pengiriman on mstr_pengiriman.id_pk_pengiriman = tbl_brg_pengiriman.id_fk_pengiriman
-where id_pk_retur = 15 
-group by id_fk_brg
+left join mstr_satuan as satuan_kirim on satuan_kirim.id_pk_satuan = tbl_brg_pengiriman.id_fk_satuan
+where id_pk_retur = 15 and retur_brg_status = 'aktif'
+group by id_pk_retur_brg
