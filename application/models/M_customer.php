@@ -204,7 +204,8 @@ class M_customer extends ci_model{
     }
     public function detail_by_perusahaan(){
         $where = array(
-            "cust_perusahaan" => $this->cust_perusahaan
+            "cust_perusahaan" => $this->cust_perusahaan,
+            "cust_status" => "aktif"
         );
         $field = array(
             "id_pk_cust",

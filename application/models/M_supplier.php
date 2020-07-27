@@ -187,7 +187,8 @@ class M_supplier extends ci_model{
     }
     public function detail_by_perusahaan(){
         $where = array(
-            "sup_perusahaan" => $this->sup_perusahaan
+            "sup_perusahaan" => $this->sup_perusahaan,
+            "sup_status" => "aktif"
         );
         $field = array(
             "id_pk_sup","sup_nama","sup_no_npwp","sup_foto_npwp","sup_foto_kartu_nama","sup_badan_usaha","sup_no_rekening","sup_suff","sup_perusahaan","sup_email","sup_telp","sup_hp","sup_alamat","sup_keterangan","sup_status","sup_last_modified"

@@ -145,7 +145,8 @@ class M_marketplace extends ci_model{
     }
     public function detail_by_name(){
         $where = array(
-            "marketplace_nama" => $this->marketplace_nama
+            "marketplace_nama" => $this->marketplace_nama,
+            "marketplace_status" => "aktif"
         );
         $field = array(
             "id_pk_marketplace","marketplace_nama","marketplace_ket","marketplace_biaya","marketplace_status","marketplace_create_date","marketplace_last_modified","id_create_data","id_last_modified",

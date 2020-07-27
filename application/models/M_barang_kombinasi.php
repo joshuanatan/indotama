@@ -222,6 +222,18 @@ class M_barang_kombinasi extends CI_Model{
         }
         return false;
     }
+    public function delete_by_barang_utama(){
+        $where = array(
+            "id_barang_utama" => $this->id_barang_utama,
+        );
+        $data = array(
+            "barang_kombinasi_status" => "nonaktif",
+            "barang_kombinasi_last_modified" => $this->barang_kombinasi_last_modified,
+            "id_last_modified" => $this->id_last_modified
+        );
+        updateRow($this->tbl_name,$data,$where);
+        return true;
+    }
     public function check_insert(){
         if(!$this->id_barang_utama){
             return false;

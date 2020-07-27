@@ -243,6 +243,20 @@ class M_brg_cabang extends ci_model{
         //executeQuery($sql,$args); echo $this->db->last_query();
         return executeQuery($sql,$args);
     }
+    public function detail_by_id_barang(){
+        $this->stock_adjustment();
+        $sql = "
+        select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_last_price,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_tipe,brg_merk_nama,brg_jenis_nama
+        from ".$this->tbl_name." 
+        inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_brg
+        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = mstr_barang.id_fk_brg_jenis
+        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = mstr_barang.id_fk_brg_merk
+        where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ? and brg_jenis_status = ? and brg_merk_status = ? and id_fk_brg = ?";
+        $args = array(
+            "aktif","aktif",$this->id_fk_cabang,"aktif","aktif",$this->id_fk_brg
+        );
+        return executeQuery($sql,$args);
+    }
     public function insert(){
         if($this->check_insert()){
             $where = array(

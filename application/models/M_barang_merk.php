@@ -139,7 +139,8 @@ class M_barang_merk extends ci_model{
     }
     public function detail_by_name(){
         $where = array(
-            "brg_merk_nama" => $this->brg_merk_nama
+            "brg_merk_nama" => $this->brg_merk_nama,
+            "brg_merk_status" => "aktif"
         );
         $field = array(
             "id_pk_brg_merk",

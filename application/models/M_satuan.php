@@ -148,7 +148,8 @@ class M_satuan extends ci_model{
     }
     public function detail_by_name(){
         $where = array(
-            "satuan_nama" => $this->satuan_nama
+            "satuan_nama" => $this->satuan_nama,
+            "satuan_status" => "aktif"
         );
         $field = array(
             "id_pk_satuan",
