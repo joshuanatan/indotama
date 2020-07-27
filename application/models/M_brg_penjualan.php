@@ -100,7 +100,7 @@ class M_brg_penjualan extends ci_model{
     }
     public function list(){
         $sql = "
-        select id_pk_brg_penjualan,brg_penjualan_qty_real,brg_penjualan_satuan_real,brg_penjualan_qty,brg_penjualan_satuan,brg_penjualan_harga,brg_penjualan_note,id_fk_penjualan,id_fk_barang,brg_nama,brg_harga,brg_penjualan_create_date,brg_penjualan_last_modified, count(brg_pengiriman_qty) as jumlah_terkirim
+        select id_pk_brg_penjualan,brg_penjualan_qty_real,brg_penjualan_satuan_real,brg_penjualan_qty,brg_penjualan_satuan,brg_penjualan_harga,brg_penjualan_note,id_fk_penjualan,id_fk_barang,brg_nama,brg_harga,brg_penjualan_create_date,brg_penjualan_last_modified, ifnull(sum(brg_pengiriman_qty),0) as jumlah_terkirim
         from ".$this->tbl_name."
         inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_barang
         left join tbl_brg_pengiriman on tbl_brg_pengiriman.id_fk_brg_penjualan = tbl_brg_penjualan.id_pk_brg_penjualan and brg_pengiriman_qty > 0
