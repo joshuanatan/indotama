@@ -100,17 +100,44 @@ class M_retur_brg extends CI_Model{
     }
     public function list(){
         $sql = "
-        select ifnull(sum(tbl_brg_pengiriman.brg_pengiriman_qty),0) as brg_terkirim,sum(tbl_brg_penjualan.brg_penjualan_qty) as brg_beli,id_pk_retur_brg,ifnull(satuan_kirim.satuan_nama,'') as satuan_kirim,ifnull(brg_penjualan_satuan,'') as satuan_beli,id_pk_retur_brg,id_pk_retur_brg,retur_brg_qty,retur_brg_satuan,brg_nama,retur_brg_status,retur_brg_notes    
+        select 
+            id_pk_retur_brg,
+            retur_brg_qty,
+            retur_brg_notes,
+            retur_brg_satuan,
+            retur_brg_status,
+            brg_nama,
+            jumlah_terkirim as brg_terkirim,
+            satuan_nama as satuan_kirim,
+            brg_penjualan_qty as brg_beli,
+            brg_penjualan_satuan as satuan_beli
         from tbl_retur_brg
-        inner join mstr_barang on mstr_barang.id_pk_brg = tbl_retur_brg.id_fk_brg
-        inner join mstr_retur on mstr_retur.id_pk_retur = tbl_retur_brg.id_fk_retur
-        inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
-        inner join tbl_brg_penjualan on tbl_brg_penjualan.id_fk_penjualan = mstr_retur.id_fk_penjualan and tbl_brg_penjualan.id_fk_barang = tbl_retur_brg.id_fk_brg
-        left join mstr_pengiriman on mstr_pengiriman.id_fk_penjualan = mstr_penjualan.id_pk_penjualan
-        left join tbl_brg_pengiriman on mstr_pengiriman.id_pk_pengiriman = tbl_brg_pengiriman.id_fk_pengiriman
-        left join mstr_satuan as satuan_kirim on satuan_kirim.id_pk_satuan = tbl_brg_pengiriman.id_fk_satuan
-        where id_pk_retur = ? and retur_brg_status = 'aktif'
-        group by id_pk_retur_brg
+        inner join mstr_retur on mstr_retur.id_pk_retur= tbl_retur_brg.id_fk_retur 
+        inner join (
+            select 
+            id_pk_brg_penjualan,
+            brg_penjualan_qty_real,
+            brg_penjualan_satuan_real,
+            brg_penjualan_qty,
+            brg_penjualan_satuan,
+            brg_penjualan_harga,
+            brg_penjualan_note,
+            id_fk_penjualan,
+            id_fk_barang,
+            brg_nama,
+            brg_harga,
+            brg_penjualan_create_date,
+            brg_penjualan_last_modified, 
+            satuan_nama,
+            ifnull(sum(brg_pengiriman_qty),0) as jumlah_terkirim
+            from tbl_brg_penjualan
+            inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_penjualan.id_fk_barang
+            left join tbl_brg_pengiriman on tbl_brg_pengiriman.id_fk_brg_penjualan = tbl_brg_penjualan.id_pk_brg_penjualan and brg_pengiriman_qty > 0
+            left join mstr_satuan on mstr_satuan.id_pk_satuan = tbl_brg_pengiriman.id_fk_satuan
+            where brg_penjualan_status = 'aktif' and brg_status = 'aktif'
+            group by id_pk_brg_penjualan
+        ) as a on a.id_fk_barang = tbl_retur_brg.id_fk_brg and a.id_fk_penjualan = mstr_retur.id_fk_penjualan
+        where id_fk_retur = ?   
         ";
         $args = array(
             $this->id_fk_retur

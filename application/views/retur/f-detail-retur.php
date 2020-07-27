@@ -118,7 +118,7 @@
                         for(var a = 0; a<respond["content"].length; a++){
                             html += `
                             <tr class = 'd_brg_kembali_row_edit'>
-                                <td id = 'd+brg_kembali_row_edit${a}'>
+                                <td id = 'd_brg_kembali_row_edit${a}'>
                                     <input readonly name = 'brg_kembali_check_edit[]' value = ${a} type = 'hidden'>
                                     <input readonly type = 'hidden' id = 'd_id_brg_kembali_edit${a}'name = 'id_brg_kembali_edit${a}' value = '${respond["content"][a]["id"]}'>
                                     <input readonly type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${a})' value = '${respond["content"][a]["nama_brg"]}'id = 'brg${a}' name = 'brg_edit${a}' class = 'form-control'>
