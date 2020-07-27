@@ -145,6 +145,7 @@ class M_tambahan_pembelian extends ci_model{
             );
             $data = array(
                 "tmbhn_status" => "nonaktif", 
+                "id_fk_pembelian" => $this->id_fk_pembelian, 
                 "tmbhn_last_modified" => $this->tmbhn_last_modified, 
                 "id_last_modified" => $this->id_last_modified, 
             );
@@ -273,8 +274,11 @@ class M_tambahan_pembelian extends ci_model{
         }
         return true;
     }
-    public function set_delete($id_pk_tmbhn){
+    public function set_delete($id_pk_tmbhn,$id_fk_pembelian){
         if(!$this->set_id_pk_tmbhn($id_pk_tmbhn)){
+            return false;
+        }
+        if(!$this->set_id_fk_pembelian($id_fk_pembelian)){
             return false;
         }
         return true;

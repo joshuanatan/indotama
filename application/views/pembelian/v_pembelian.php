@@ -83,6 +83,22 @@ $notif_data = array(
 <script>
     var ctrl = "pembelian";
     var url_add = "id_cabang=<?php echo $this->session->id_cabang;?>";
+    var additional_button = [
+        {
+            class:"text-secondary md-check",
+            onclick:"open_konfirmasi_selesai_modal()",
+            style:"cursor:pointer"
+        }
+    ]
+</script>
+<script>
+    function open_konfirmasi_selesai_modal(){
+        $("body table").find("tr").click(function(){
+            var row = $(this).index();
+            load_selesai_content(row);
+            $("#selesai_modal").modal("show");
+        })
+    }
 </script>
 <?php
 $data = array(
@@ -95,6 +111,7 @@ $data = array(
 <?php $this->load->view("pembelian/f-update-pembelian",$data);?>
 <?php $this->load->view("pembelian/f-delete-pembelian",$data);?>
 <?php $this->load->view("pembelian/f-detail-pembelian",$data);?>
+<?php $this->load->view("pembelian/f-selesai-pembelian",$data);?>
 
 <?php $this->load->view("_base_element/datalist_supplier");?>
 <?php $this->load->view("_base_element/datalist_barang_cabang");?>

@@ -62,7 +62,7 @@
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <button type = "button" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
+                        <button type = "button" id = "update_btn" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
                 </form>
             </div>
@@ -85,6 +85,21 @@
         }
         load_brg_pembelian(content[row]["id"]);
         load_tambahan_pembelian(content[row]["id"]);
+
+        if(content[row]["status"].toLowerCase() == "selesai"){
+            $("#update_modal input").attr("disabled",true);
+            $("#add_tambahan_beli_but_container_edit").hide();
+            $("#add_brg_beli_but_container_edit").hide();
+            $(".btn-delete-barang-update").remove();
+            $(".btn-delete-tambahan-update").remove();
+            $("#update_btn").hide();
+        }
+        else{
+            $("#update_modal input").attr("disabled",false);
+            $("#add_tambahan_beli_but_container_edit").show();
+            $("#add_brg_beli_but_container_edit").show();
+            $("#update_btn").show();
+        }
     }
     var content_brg_pembelian = [];
     var is_brg_pembelian_loaded = false;
@@ -93,6 +108,7 @@
         $.ajax({
             url:"<?php echo base_url();?>ws/pembelian/brg_pembelian?id="+id,
             type:"GET",
+            async:false,
             dataType:"JSON",
             success:function(respond){
                 $(".brg_pembelian_row_edit").remove();
@@ -118,7 +134,7 @@
                                 <input type = 'text' name = 'brg_notes_edit${a}' class = 'form-control' value = '${respond["content"][a]["note"]}'>
                             </td>
                             <td>
-                                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_brg_pembelian(${a});'></i>
+                                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete btn-delete-barang-update' onclick = 'delete_brg_pembelian(${a});'></i>
                             </td>
                         </tr>`;
                         brg_beli_row_edit++;
@@ -157,12 +173,15 @@
     }
     function delete_brg_pembelian(row){
         var id_brg_pembelian = content_brg_pembelian[row]["id"];
+        var id_pembelian = $("#id_edit").val();
         $.ajax({
-            url:"<?php echo base_url();?>ws/pembelian/remove_brg_pembelian?id="+id_brg_pembelian,
+            url:"<?php echo base_url();?>ws/pembelian/remove_brg_pembelian?id="+id_brg_pembelian+"&id_pembelian="+id_pembelian,
             type:"DELETE",
             dataType:"JSON",
-            success:function(){
-                $("#brg_pembelian_row_edit"+row).remove();
+            success:function(respond){
+                if(respond["status"].toLowerCase() == "success"){
+                    $("#brg_pembelian_row_edit"+row).remove();
+                }
             }
         });
     }
@@ -172,6 +191,7 @@
         $.ajax({
             url:"<?php echo base_url();?>ws/pembelian/tmbhn_pembelian?id="+id,
             type:"GET",
+            async:false,
             dataType:"JSON",
             success:function(respond){
                 $(".tmbhn_pembelian_row_edit").remove();
@@ -196,7 +216,7 @@
                                 <input value = '${respond["content"][a]["notes"]}' name = 'tmbhn_notes_edit${a}' type = 'text' class = 'form-control'>
                             </td>
                             <td>
-                                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_tmbhn_pembelian(${a});'></i>
+                                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete btn-delete-tambahan-update' onclick = 'delete_tmbhn_pembelian(${a});'></i>
                             </td>
                         </tr>`;
                     }
@@ -233,13 +253,16 @@
         tambahan_beli_row++; 
     }
     function delete_tmbhn_pembelian(row){
-        var id_brg_pembelian = content_tmbhn_pembelian[row]["id"];
+        var tmbhn_pembelian = content_tmbhn_pembelian[row]["id"];
+        var id_pembelian = $("#id_edit").val();
         $.ajax({
-            url:"<?php echo base_url();?>ws/pembelian/remove_tmbhn_pembelian?id="+id_brg_pembelian,
+            url:"<?php echo base_url();?>ws/pembelian/remove_tmbhn_pembelian?id="+tmbhn_pembelian+"&id_pembelian="+id_pembelian,
             type:"DELETE",
             dataType:"JSON",
-            success:function(){
-                $("#tmbhn_pembelian_row_edit"+row).remove();
+            success:function(respond){
+                if(respond["status"].toLowerCase() == "success"){
+                    $("#tmbhn_pembelian_row_edit"+row).remove();
+                }
             }
         });
     }

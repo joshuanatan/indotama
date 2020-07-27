@@ -177,6 +177,19 @@ class M_pembelian extends ci_model{
         );
         return executequery($sql,$args);
     }
+    public function detail_by_id(){
+        $sql = "
+        select id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified,cabang_daerah,cabang_notelp,cabang_alamat,toko_nama
+        from ".$this->tbl_name." 
+        inner join mstr_supplier on mstr_supplier.id_pk_sup = ".$this->tbl_name.".id_fk_supp
+        inner join mstr_cabang on mstr_cabang.id_pk_cabang = ".$this->tbl_name.".id_fk_cabang
+        inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+        where pem_status = ? and sup_status = ? and cabang_status = ? and toko_status = ? and id_pk_pembelian = ?";
+        $args = array(
+            "aktif","aktif","aktif","aktif",$this->id_pk_pembelian
+        );
+        return executequery($sql,$args);
+    }
     public function insert(){
         if($this->check_insert()){
             $data = array(
@@ -211,7 +224,24 @@ class M_pembelian extends ci_model{
                 "pem_last_modified" => $this->pem_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updaterow($this->tbl_name,$data,$where);
+            updateRow($this->tbl_name,$data,$where);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public function update_status(){
+        if($this->check_update_status()){
+            $where = array(
+                "id_pk_pembelian" => $this->id_pk_pembelian,
+            );
+            $data = array(
+                "pem_status" => $this->pem_status,
+                "pem_last_modified" => $this->pem_last_modified,
+                "id_last_modified" => $this->id_last_modified
+            );
+            updateRow($this->tbl_name,$data,$where);
             return true;
         }
         else{
@@ -228,7 +258,7 @@ class M_pembelian extends ci_model{
                 "pem_last_modified" => $this->pem_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updaterow($this->tbl_name,$data,$where);
+            updateRow($this->tbl_name,$data,$where);
             return true;
         }
         else{
@@ -298,6 +328,21 @@ class M_pembelian extends ci_model{
         }
         else return true;
     }
+    public function check_update_status(){
+        if($this->id_pk_pembelian == ""){
+            return false;
+        }
+        if($this->pem_last_modified == ""){
+            return false;
+        }
+        if($this->pem_status == ""){
+            return false;
+        }
+        if($this->id_last_modified == ""){
+            return false;
+        }
+        else return true;
+    }
     public function set_insert($pem_pk_nomor,$pem_tgl,$pem_status,$id_fk_supp,$id_fk_cabang){
         if(!$this->set_pem_pk_nomor($pem_pk_nomor)){
             return false;
@@ -333,6 +378,15 @@ class M_pembelian extends ci_model{
     }
     public function set_delete($id_pk_pembelian){
         if(!$this->set_id_pk_pembelian($id_pk_pembelian)){
+            return false;
+        }
+        return true;
+    }
+    public function set_update_status($id_pk_pembelian,$status){
+        if(!$this->set_id_pk_pembelian($id_pk_pembelian)){
+            return false;
+        }
+        if(!$this->set_pem_status($status)){
             return false;
         }
         return true;

@@ -154,6 +154,7 @@ class M_brg_pembelian extends ci_model{
             );
             $data = array(
                 "brg_pem_status" => "nonaktif",
+                "id_fk_pembelian" => $this->id_fk_pembelian,
                 "brg_pem_last_modified" => $this->brg_pem_last_modified,
                 "id_last_modified" => $this->id_last_modified,
             );
@@ -283,8 +284,11 @@ class M_brg_pembelian extends ci_model{
         }
         return true;
     }
-    public function set_delete($id_pk_brg_pembelian){
+    public function set_delete($id_pk_brg_pembelian,$id_fk_pembelian){
         if($this->set_id_pk_brg_pembelian($id_pk_brg_pembelian)){
+            return false;
+        }
+        if($this->set_id_fk_pembelian($id_fk_pembelian)){
             return false;
         }
         return true;

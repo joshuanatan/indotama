@@ -60,6 +60,7 @@ class Pembelian extends CI_Controller{
         $response["status"] = "SUCCESS";
         $id_pembelian = $this->input->get("id");
         if($id_pembelian != "" && is_numeric($id_pembelian)){
+            
             $this->load->model("m_brg_pembelian");
             $this->m_brg_pembelian->set_id_fk_pembelian($id_pembelian);
             $result = $this->m_brg_pembelian->list();
@@ -67,7 +68,7 @@ class Pembelian extends CI_Controller{
                 $result = $result->result_array();
                 for($a = 0; $a<count($result); $a++){
                     $response["content"][$a]["id"] = $result[$a]["id_pk_brg_pembelian"];
-                    $response["content"][$a]["qty"] = number_format($result[$a]["brg_pem_qty"],0,",",".");
+                    $response["content"][$a]["qty"] = number_format($result[$a]["brg_pem_qty"],2,",",".");
                     $response["content"][$a]["satuan"] = $result[$a]["brg_pem_satuan"];
                     $response["content"][$a]["harga"] = number_format($result[$a]["brg_pem_harga"],0,",",".");
                     $response["content"][$a]["note"] = $result[$a]["brg_pem_note"];
@@ -90,6 +91,7 @@ class Pembelian extends CI_Controller{
         $response["status"] = "SUCCESS";
         $id_pembelian = $this->input->get("id");
         if($id_pembelian != "" && is_numeric($id_pembelian)){
+            
             $this->load->model("m_tambahan_pembelian");
             $this->m_tambahan_pembelian->set_id_fk_pembelian($id_pembelian);
             $result = $this->m_tambahan_pembelian->list();
@@ -120,9 +122,17 @@ class Pembelian extends CI_Controller{
     public function remove_brg_pembelian(){
         $response["status"] = "SUCCESS";
         $id_brg_pembelian = $this->input->get("id");
+        $id_pembelian = $this->input->get("id_pembelian");
         if($id_brg_pembelian != "" && is_numeric($id_brg_pembelian)){
+            if(!$this->is_allow_to_update($id_pembelian)){
+                $response["status"] = "ERROR";
+                $response["msg"] = "Data tidak bisa diupdate";
+                echo json_encode($response);
+                return 0;
+            }
+
             $this->load->model("m_brg_pembelian");
-            $this->m_brg_pembelian->set_delete($id_brg_pembelian);
+            $this->m_brg_pembelian->set_delete($id_brg_pembelian,$id_pembelian);
             if($this->m_brg_pembelian->delete()){
                 $response["msg"] = "Data is deleted from database";
             }
@@ -139,10 +149,17 @@ class Pembelian extends CI_Controller{
     }
     public function remove_tmbhn_pembelian(){
         $response["status"] = "SUCCESS";
-        $id_brg_pembelian = $this->input->get("id");
-        if($id_brg_pembelian != "" && is_numeric($id_brg_pembelian)){
+        $id_tmbhn_pembelian = $this->input->get("id");
+        $id_pembelian = $this->input->get("id_pembelian");
+        if($id_tmbhn_pembelian != "" && is_numeric($id_tmbhn_pembelian)){
+            if(!$this->is_allow_to_update($id_pembelian)){
+                $response["status"] = "ERROR";
+                $response["msg"] = "Data tidak bisa dihapus";
+                echo json_encode($response);
+                return 0;
+            }
             $this->load->model("m_tambahan_pembelian");
-            $this->m_tambahan_pembelian->set_delete($id_brg_pembelian);
+            $this->m_tambahan_pembelian->set_delete($id_tmbhn_pembelian,$id_pembelian);
             if($this->m_tambahan_pembelian->delete()){
                 $response["msg"] = "Data is deleted from database";
             }
@@ -344,6 +361,13 @@ class Pembelian extends CI_Controller{
         if($this->form_validation->run()){
             $this->load->model("m_pembelian");
             $id_pk_pembelian = $this->input->post("id");
+            if(!$this->is_allow_to_update($id_pk_pembelian)){
+                $response["status"] = "ERROR";
+                $response["msg"] = "Data tidak bisa diupdate";
+                echo json_encode($response);
+                return 0;
+            }
+
             $pem_pk_nomor = $this->input->post("nomor");
             $pem_tgl = $this->input->post("tgl");
             
@@ -611,10 +635,43 @@ class Pembelian extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function selesai(){
+        $response["status"] = "SUCCESS";
+        $id_pk_pembelian = $this->input->get("id");
+        if($id_pk_pembelian != "" && is_numeric($id_pk_pembelian)){
+            $this->load->model("m_pembelian");
+            if($this->m_pembelian->set_update_status($id_pk_pembelian,"selesai")){
+                if($this->m_pembelian->update_status()){
+                    $response["msg"] = "Data is updated to database";
+                }
+                else{
+                    $response["status"] = "ERROR";
+                    $response["msg"] = "Update status function error";
+                }
+            }
+            else{
+                $response["status"] = "ERROR";
+                $response["msg"] = "Setter function error";
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "Invalid ID Supplier";
+        }
+        echo json_encode($response);
+    }
     public function delete(){
         $response["status"] = "SUCCESS";
         $id_pk_pembelian = $this->input->get("id");
         if($id_pk_pembelian != "" && is_numeric($id_pk_pembelian)){
+
+            if(!$this->is_allow_to_update($id_pk_pembelian)){
+                $response["status"] = "ERROR";
+                $response["msg"] = "Data tidak bisa diupdate";
+                echo json_encode($response);
+                return 0;
+            }
+
             $this->load->model("m_pembelian");
             if($this->m_pembelian->set_delete($id_pk_pembelian)){
                 if($this->m_pembelian->delete()){
@@ -686,5 +743,17 @@ class Pembelian extends CI_Controller{
             $response["msg"] = "No Data";
         }
         echo json_encode($response);
+    }
+    private function is_allow_to_update($id_pk_pembelian){
+        $this->load->model("m_pembelian");
+        $this->m_pembelian->set_id_pk_pembelian($id_pk_pembelian);
+        $result = $this->m_pembelian->detail_by_id();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            if(strtolower($result[0]["pem_status"]) != "aktif"){
+                return false;
+            }
+            return true;
+        }
     }
 }
