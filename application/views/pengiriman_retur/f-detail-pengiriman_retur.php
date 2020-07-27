@@ -5,60 +5,61 @@
                 <h4 class = "modal-title">Detail Data <?php echo ucwords($page_title);?></h4>
             </div>
             <div class = "modal-body">
-                    <input type = "hidden" name = "id" id = "d_id_edit">
-                    <div class = "form-group">
-                        <h5>Nomor Penjualan</h5>
-                        <input type = "text" class = "form-control" readonly id = "d_no_penjualan_edit">
-                    </div>
-                    <div class = "form-group">
-                        <h5>Tanggal Pengiriman</h5>
-                        <input disabled type = "date" class = "form-control" required name = "tgl_pengiriman" id = "d_tgl_pengiriman_edit">
-                    </div>
-                    <div class = "form-group">
-                        <h5>Detail Penjualan</h5>
-                        <table class = "table table-striped table-bordered">
-                            <tr>
-                                <th>Perusahaan Customer</th>
-                                <td id = "d_perusahaan_cust_edit"></td>    
-                            </tr>
-                            <tr>
-                                <th>Contact Person</th>
-                                <td id = "d_cp_cust_edit"></td>    
-                            </tr>
-                            <tr>
-                                <th>Email / No HP</th>
-                                <td id = "d_contact_cust_edit"></td>    
-                            </tr>
-                        </table>
-                    </div>
-                    <div class = "form-group">
-                        <h5>Item Penjualan</h5>
-                        <table class = "table table-striped table-bordered">
-                            <thead>
-                                <th>Barang</th>
-                                <th>Jumlah</th>
-                                <th>Notes</th>
-                                <th style = "width:30%">Pengiriman</th>
-                            </thead>
-                            <tbody id = "d_daftar_brg_beli_edit">
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class = "form-group">
-                        <h5>Tambahan Penjualan</h5>
-                        <table class = "table table-striped table-bordered">
-                            <thead>
-                                <th>Tambahan</th>
-                                <th>Jumlah</th>
-                                <th>Notes</th>
-                            </thead>
-                            <tbody id = "d_daftar_tambahan_beli_edit">
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class = "form-group">
-                        <button type = "button" class = "btn btn-sm btn-primary" data-dismiss = "modal">OK</button>
-                    </div>
+            <?php 
+            $notif_data = array(
+                "page_title"=>$page_title
+            );
+            ?>
+                <input type = "hidden" name = "id" id = "d_id_edit">
+                <div class = "form-group">
+                    <h5>Nomor Retur</h5>
+                    <input type = "text" class = "form-control" list = "datalist_retur_pengiriman" required id = "d_no_retur_edit" readonly>
+                </div>
+                <div class = "form-group">
+                    <h5>Tanggal Penerimaan</h5>
+                    <input type = "date" class = "form-control" required name = "tgl_pengiriman" id = "d_tgl_penerimaan_edit" readonly>
+                </div>
+                <div class = "form-group">
+                    <h5>Detail Retur</h5>
+                    <table class = "table table-striped table-bordered">
+                        <tr>
+                            <th>No Penjualan</th>
+                            <td id = "d_nomor_penjualan_edit"></td>    
+                        </tr>
+                        <tr>
+                            <th>Tanggal Penjualan</th>
+                            <td id = "d_tgl_penjualan_edit"></td>    
+                        </tr>
+                        <tr>
+                            <th>Customer</th>
+                            <td id = "d_customer_edit"></td>    
+                        </tr>
+                        <tr>
+                            <th>Kontak</th>
+                            <td id = "d_contact_edit"></td>    
+                        </tr>
+                        <tr>
+                            <th>Alamat</th>
+                            <td id = "d_alamat_edit"></td>    
+                        </tr>
+                    </table>
+                </div>
+                <div class = "form-group">
+                    <h5>Item Retur</h5>
+                    <table class = "table table-striped table-bordered">
+                        <thead>
+                            <th>Barang</th>
+                            <th>Jumlah</th>
+                            <th>Notes</th>
+                            <th style = "width:30%">Penerimaan</th>
+                        </thead>
+                        <tbody id = "d_daftar_brg_beli_edit">
+                        </tbody>
+                    </table>
+                </div>
+                <div class = "form-group">
+                    <button type = "button" class = "btn btn-sm btn-primary" data-dismiss = "modal">OK</button>
+                </div>
             </div>
         </div>
     </div>
@@ -67,85 +68,66 @@
     function load_detail_content(row){
         var satuan_opt = "";
         $("#d_id_edit").val(content[row]["id"]);
-        $("#d_no_penjualan_edit").val(content[row]["nomor_penj"]);
+        $("#d_no_retur_edit").val(content[row]["retur_no"]);
         var tgl = content[row]["tgl"].split(" ");
-        $("#d_tgl_pengiriman_edit").val(tgl[0]);
-        $("#d_perusahaan_cust_edit").html(content[row]["perusahaan_cust"]);
-        content[row]["suff_cust"] == 'null' ? content[row]["suff_cust"] = content[row]["suff_cust"]: content[row]["suff_cust"] = "-";
-        content[row]["name_cust"] == 'null' ? content[row]["name_cust"] = content[row]["name_cust"]: content[row]["name_cust"] = "-";
-        content[row]["email_cust"] == 'null' ? content[row]["email_cust"] = content[row]["email_cust"]: content[row]["email_cust"] = "-";
-        content[row]["hp_cust"] == 'null' ? content[row]["hp_cust"] = content[row]["hp_cust"]: content[row]["hp_cust"] = "-";
-        $("#d_cp_cust_edit").html(content[row]["suff_cust"]+ ". "+content[row]["name_cust"]);
-        $("#d_contact_cust_edit").html(content[row]["email_cust"]+ " / "+content[row]["hp_cust"]);
+        $("#d_tgl_penerimaan_edit").val(tgl[0]);
 
+        var no_retur = $("#d_no_retur_edit").val();
         $.ajax({
-            url:"<?php echo base_url();?>ws/pengiriman/brg_pengiriman?id="+content[row]["id"],
+            url:"<?php echo base_url();?>ws/retur/detail/"+no_retur,
             type:"GET",
             async:false,
             dataType:"JSON",
             success:function(respond){
-                $(".d_brg_pembelian_row").remove();
                 if(respond["status"] == "SUCCESS"){
-                    var html_datalist_satuan = "";
-                    for(var a = 0; a<datalist_satuan.length; a++){
-                        html_datalist_satuan+="<option value = '"+datalist_satuan[a]["id"]+"'>"+datalist_satuan[a]["nama"].toString().toUpperCase()+" / Rumus: "+datalist_satuan[a]["rumus"]+"</option>";
-                    }
+                    detail_retur = respond["content"];
+                    $("#d_nomor_penjualan_edit").html(respond["content"][0]["nomor_penj"]);
+                    $("#d_tgl_penjualan_edit").html(respond["content"][0]["tgl_penj"]);
+                    $("#d_customer_edit").html(respond["content"][0]["perusahaan_cust"]+" ("+respond["content"][0]["suff_cust"]+" "+respond["content"][0]["name_cust"]+")");
+                    $("#d_contact_edit").html(respond["content"][0]["email_cust"]+" / "+respond["content"][0]["telp_cust"]+" / "+respond["content"][0]["hp_cust"]);
+                    $("#d_alamat_edit").html(respond["content"][0]["alamat_cust"]);
+                }
+            }
+        });
+        var satuan_opt = "";
+        <?php for($a = 0; $a<count($satuan); $a++):?>
+            satuan_opt += "<option value = '<?php echo $satuan[$a]["id_pk_satuan"];?>'><?php echo $satuan[$a]["satuan_nama"]." - ".$satuan[$a]["satuan_rumus"];?></option>";
+        <?php endfor;?>
+        $.ajax({
+            url:"<?php echo base_url();?>ws/pengiriman/brg_pengiriman_retur?id="+content[row]["id"],
+            type:"GET",
+            async:false,
+            dataType:"JSON",
+            success:function(respond){
+                $(".brg_pembelian_row_edit").remove();
+                if(respond["status"] == "SUCCESS"){
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
                         html += `
-                        <tr class = 'd_brg_pembelian_row'>
-                            <input disabled type = 'hidden' name = 'check[]' value = '${a}'>
-                            <input disabled type = 'hidden' value = '${respond["content"][a]["id"]}' name = 'id_brg_kirim${a}'>
+                        <tr class = 'brg_pembelian_row_edit'>
+                            <input type = 'hidden' name = 'check[]' value = '${a}'>
+                            <input type = 'hidden' value = '${respond["content"][a]["id"]}' name = 'id_brg_kirim${a}'>
                             <td>
                                 ${respond["content"][a]["nama_brg"]}<br/>
-                                Notes:${respond["content"][a]["note_brg_penjualan"]}
+                                Notes:${respond["content"][a]["brg_notes_retur"]}
                             </td>
                             <td>
-                                ${respond["content"][a]["qty_brg_penjualan"]} ${respond["content"][a]["satuan_brg_penjualan"]}
+                                ${respond["content"][a]["brg_qty_retur"]} ${respond["content"][a]["brg_satuan_retur"]}
                             </td>
-                            <td>
-                                <input disabled type = 'text' class = 'form-control' name = 'notes${a}' value = '${respond["content"][a]["note"]}'>
+                            <td>${respond["content"][a]["note"]}
                             </td>
                             <td>
                                 <div style = 'display:inline-block'>
                                     <input disabled value = '${respond["content"][a]["qty"]}' type = 'text' class = 'form-control' style = 'width:50%; display:inline-block' name = 'qty_kirim${a}'>
-                                    <select disabled class = 'form-control satuan_opt' style = 'width:50%; display:inline-block' id = 'd_id_satuan_edit${a}' name = 'id_satuan${a}'>${html_datalist_satuan}</select>
+                                    <select disabled class = 'form-control' style = 'width:50%; display:inline-block' id = 'd_id_satuan_edit${a}' name = 'id_satuan${a}'>${satuan_opt}</select>
                                 </div>
                             </td>
                         </tr>`;
                     }
                     $("#d_daftar_brg_beli_edit").html(html);
                     for(var a = 0; a<respond["content"].length; a++){
-                        $("#id_satuan_edit"+a).val(respond["content"][a]["id_satuan"]);
+                        $("#d_id_satuan_edit"+a).val(respond["content"][a]["id_satuan"]);
                     }
-                }
-            }
-        });
-        $.ajax({
-            url:"<?php echo base_url();?>ws/pembelian/tmbhn_pembelian?id="+content[row]["id"],
-            type:"GET",
-            async:false,
-            dataType:"JSON",
-            success:function(respond){
-                $(".d_tmbhn_pembelian_row").remove();
-                if(respond["status"] == "SUCCESS"){
-                    content_brg_pembelian = respond["content"];
-                    var html = "";
-                    for(var a = 0; a<respond["content"].length; a++){
-                        html += `
-                        <tr class = 'd_tmbhn_pembelian_row'>
-                            <td>
-                                ${respond["content"][a]["tmbhn"]}
-                            </td>
-                            <td>
-                                ${respond["content"][a]["jumlah"]} ${respond["content"][a]["satuan"]}
-                            </td>
-                            <td>
-                                ${respond["content"][a]["notes"]}
-                            </td>
-                        </tr>`;
-                    }
-                    $("#d_daftar_tambahan_beli_edit").html(html);
                 }
             }
         });

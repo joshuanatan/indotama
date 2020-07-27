@@ -330,15 +330,15 @@ class pengiriman extends CI_Controller{
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
                 $response["content"][$a]["id"] = $result[$a]["id_pk_brg_pengiriman"];
-                $response["content"][$a]["qty"] = $result[$a]["brg_pengiriman_qty"];
+                $response["content"][$a]["qty"] = number_format($result[$a]["brg_pengiriman_qty"],2,",",".");
                 $response["content"][$a]["note"] = $result[$a]["brg_pengiriman_note"];
                 $response["content"][$a]["id_pengiriman"] = $result[$a]["id_fk_pengiriman"];
                 $response["content"][$a]["id_brg_penjualan"] = $result[$a]["id_fk_brg_penjualan"];
                 $response["content"][$a]["id_satuan"] = $result[$a]["id_fk_satuan"];
                 $response["content"][$a]["last_modified"] = $result[$a]["brg_pengiriman_last_modified"];
-                $response["content"][$a]["qty_brg_penjualan"] = $result[$a]["brg_penjualan_qty"];
+                $response["content"][$a]["qty_brg_penjualan"] = number_format($result[$a]["brg_penjualan_qty"],2,",",".");
                 $response["content"][$a]["satuan_brg_penjualan"] = $result[$a]["brg_penjualan_satuan"];
-                $response["content"][$a]["harga_brg_penjualan"] = $result[$a]["brg_penjualan_harga"];
+                $response["content"][$a]["harga_brg_penjualan"] = number_format($result[$a]["brg_penjualan_harga"],0,",",".");
                 $response["content"][$a]["note_brg_penjualan"] = $result[$a]["brg_penjualan_note"];
                 $response["content"][$a]["status_brg_penjualan"] = $result[$a]["brg_penjualan_status"];
                 $response["content"][$a]["satuan"] = $result[$a]["satuan_nama"];
@@ -361,13 +361,13 @@ class pengiriman extends CI_Controller{
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
                 $response["content"][$a]["id"] = $result[$a]["id_pk_brg_pengiriman"];
-                $response["content"][$a]["qty"] = $result[$a]["brg_pengiriman_qty"];
+                $response["content"][$a]["qty"] = number_format($result[$a]["brg_pengiriman_qty"],"2",",",".");
                 $response["content"][$a]["note"] = $result[$a]["brg_pengiriman_note"];
                 $response["content"][$a]["id_pengiriman"] = $result[$a]["id_fk_pengiriman"];
                 $response["content"][$a]["id_satuan"] = $result[$a]["id_fk_satuan"];
                 $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
                 $response["content"][$a]["satuan"] = $result[$a]["satuan_nama"];
-                $response["content"][$a]["brg_qty_retur"] = $result[$a]["retur_kembali_qty"];
+                $response["content"][$a]["brg_qty_retur"] = number_format($result[$a]["retur_kembali_qty"],"2",",",".");
                 $response["content"][$a]["brg_satuan_retur"] = $result[$a]["retur_kembali_satuan"];
                 $response["content"][$a]["brg_notes_retur"] = $result[$a]["retur_kembali_note"];
             }
