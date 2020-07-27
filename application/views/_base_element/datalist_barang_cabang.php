@@ -18,7 +18,7 @@
                     for(var a = 0; a<respond["content"].length; a++){
                         html_datalist_barang_cabang += `
                         <option data-baseprice = '${respond['content'][a]["harga"]}' value = '${respond['content'][a]["nama"]}' data-lastprice = '${respond["content"][a]["last_price"]}'>
-                            Kode Barang: ${respond["content"][a]["kode"].toUpperCase()} / Jenis: ${respond["content"][a]["jenis"]} / Merk: ${respond["content"][a]["merk"]} / Satuan: ${respond["content"][a]["satuan"].toUpperCase()}
+                            Kode Barang: ${respond["content"][a]["kode"].toUpperCase()} / Jenis: ${respond["content"][a]["jenis"]} / Merk: ${respond["content"][a]["merk"]} / Stok: ${respond["content"][a]["qty"]}
                         </option>`;
                     }
                     $("#datalist_barang_cabang").html(html_datalist_barang_cabang);
