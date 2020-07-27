@@ -82,6 +82,13 @@ $notif_data = array(
 </html>
 <script>
     var ctrl = "retur";
+    var additional_button = [
+        {
+            class:"text-secondary md-check",
+            onclick:"open_konfirmasi_selesai_modal()",
+            style:"cursor:pointer"
+        }
+    ]
 </script>
 <?php
 $data = array(
@@ -93,6 +100,7 @@ $data = array(
 <?php $this->load->view("retur/f-update-retur",$data);?>
 <?php $this->load->view("retur/f-detail-retur",$data);?>
 <?php $this->load->view("retur/f-delete-retur",$data);?>
+<?php $this->load->view("retur/f-selesai-retur",$data);?>
 
 
 <?php $this->load->view("_base_element/datalist_penjualan");?>
@@ -107,3 +115,16 @@ $data = array(
 </script>   
 <?php $this->load->view('_notification/notif_general'); ?>
 <?php $this->load->view("req/core_script");?>
+<script>
+    function open_konfirmasi_selesai_modal(){
+        $("body table").find("tr").click(function(){
+            var row = $(this).index();
+            $(this).find(".action_column").click(function(){
+                $(this).find("i.text-secondary.md-check").click(function()  {
+                    load_selesai_content(row);
+                    $("#selesai_modal").modal("show");
+                })
+            })
+        })
+    }
+</script>

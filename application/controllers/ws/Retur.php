@@ -653,4 +653,19 @@ class Retur extends CI_Controller{
         }            
         echo json_encode($response);
     }
+    public function selesai(){
+        $response["status"] = "SUCCESS";
+        $id = $this->input->get("id");
+        if($id != "" && is_numeric($id)){
+            $this->load->model("m_retur");
+            $this->m_retur->set_id_pk_retur($id);
+            $this->m_retur->set_retur_status("selesai");
+            $this->m_retur->update_status();
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "Invalid ID Supplier";
+        }
+        echo json_encode($response);
+    }
 }
