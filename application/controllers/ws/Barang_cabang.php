@@ -99,14 +99,16 @@ class Barang_cabang extends CI_Controller{
                 $response["content"][$a]["status"] = $result[$a]["brg_cabang_status"]."";
                 $response["content"][$a]["id_brg"] = $result[$a]["id_fk_brg"]."";
                 $response["content"][$a]["last_modified"] = $result[$a]["brg_cabang_last_modified"]."";
-                $response["content"][$a]["nama"] = $result[$a]["brg_nama"]."";
+                $response["content"][$a]["nama"] = ucwords($result[$a]["brg_nama"]."");
                 $response["content"][$a]["kode"] = $result[$a]["brg_kode"]."";
                 $response["content"][$a]["ket"] = $result[$a]["brg_ket"]."";
                 $response["content"][$a]["minimal"] = $result[$a]["brg_minimal"]."";
                 $response["content"][$a]["satuan"] = $result[$a]["brg_satuan"]."";
                 $response["content"][$a]["image"] = $result[$a]["brg_image"]."";
                 $response["content"][$a]["harga"] = $result[$a]["brg_harga"]."";
-                $response["content"][$a]["tipe"] = $result["data"][$a]["brg_tipe"];
+                $response["content"][$a]["merk"] = $result[$a]["brg_merk_nama"];
+                $response["content"][$a]["jenis"] = $result[$a]["brg_jenis_nama"];
+                $response["content"][$a]["tipe"] = $result[$a]["brg_tipe"];
             }
         }
         else{
