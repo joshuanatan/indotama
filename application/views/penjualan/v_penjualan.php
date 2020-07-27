@@ -102,6 +102,11 @@ $notif_data = array(
             class:'text-primary md-edit',
             onclick:'redirect_edit_penjualan()'
         },
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-secondary md-check',
+            onclick:'open_selesai_modal()'
+        },
     ];
 </script>
 <?php
@@ -112,18 +117,25 @@ $data = array(
 
 <script>
     function redirect_edit_penjualan(){
+        var is_clicked = true;
         $('body table').find('tr').click( function(){
             var row = $(this).index();
             var id_penjualan = content[row]["id"];
-            window.open("<?php echo base_url();?>penjualan/update/"+id_penjualan,"_blank");
-        });
-    }
-
-    function redirect_detail_penjualan(){
-        $('body table').find('tr').click( function(){
-            var row = $(this).index();
-            var id_penjualan = content[row]["id"];
-            window.open("<?php echo base_url();?>penjualan/detail/"+id_penjualan,"_blank");
+            $(this).find('.action_column').click( function(){
+                $(this).find("i.text-primary.md-edit").click(function(event){
+                    console.log($(this));
+                    if(content[row]["status"].toLowerCase() == "aktif"){
+                        if(is_clicked){
+                            window.open("<?php echo base_url();?>penjualan/update/"+id_penjualan,"_blank");
+                            is_clicked = false;
+                        }
+                    }
+                    else{
+                        alert("Data tidak dapat diubah lagi");
+                    }
+                })
+            })
+            
         });
     }
     function redirect_tipe_pembayaran(){
@@ -131,9 +143,17 @@ $data = array(
         url_add = "id_cabang=<?php echo $this->session->id_cabang;?>&tipe_pemb="+tipe_pemb;
         refresh(page);
     }
+    function open_selesai_modal(){
+        $("body table").find("tr").click(function(){
+            var row = $(this).index();
+            load_selesai_content(row);
+            $("#selesai_modal").modal("show");
+        });
+    }
 </script>
 <?php $this->load->view("_core_script/table_func");?>
 <?php $this->load->view("penjualan/f-delete-penjualan");?>
 <?php $this->load->view("penjualan/f-detail-penjualan");?>
+<?php $this->load->view("penjualan/f-selesai-penjualan");?>
 <?php $this->load->view('_notification/notif_general'); ?>
 <?php $this->load->view("req/core_script");?>

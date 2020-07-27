@@ -557,6 +557,13 @@ class Penjualan extends CI_Controller{
         $this->form_validation->set_rules("jenis_pembayaran","jenis_pembayaran","required");
         if($this->form_validation->run()){
             $id_penjualan = $this->input->post("id_penjualan");
+            if($this->is_allow_to_update($id_penjualan)){
+                $response["status"] = "ERROR";
+                $response["msg"] = " Data tidak dapat diubah";
+                echo json_encode($response);
+                return 0;
+            }
+
             $penj_nomor = $this->input->post("nomor");
             $penj_tgl = $this->input->post("tgl");
             $penj_dateline_tgl = $this->input->post("dateline");
@@ -999,6 +1006,14 @@ class Penjualan extends CI_Controller{
         $response["status"] = "SUCCESS";
         $id_pk_penjualan = $this->input->get("id");
         if($id_pk_penjualan != "" && is_numeric($id_pk_penjualan)){
+            
+            if($this->is_allow_to_update($id_pk_penjualan)){
+                $response["status"] = "ERROR";
+                $response["msg"] = " Data tidak dapat diubah";
+                echo json_encode($response);
+                return 0;
+            }
+
             $this->load->model("m_penjualan");
             if($this->m_penjualan->set_delete($id_pk_penjualan)){
                 if($this->m_penjualan->delete()){
@@ -1085,5 +1100,32 @@ class Penjualan extends CI_Controller{
         }
         echo json_encode($response);
 
+    }
+    public function selesai(){
+        $response["status"] = "SUCCESS";
+        $id_pk_penjualan = $this->input->get("id");
+        if($id_pk_penjualan != "" && is_numeric($id_pk_penjualan)){
+            $this->load->model("m_penjualan");
+            $this->m_penjualan->set_id_pk_penjualan($id_pk_penjualan);
+            $this->m_penjualan->set_penj_status("selesai");
+            $this->m_penjualan->update_status();
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "Invalid ID Supplier";
+        }
+        echo json_encode($response);
+    }
+    private function is_allow_to_update($id_pk_penjualan){
+        $this->load->model("m_penjualan");
+        $this->m_penjualan->set_id_pk_penjualan($id_pk_penjualan);
+        $result = $this->m_penjualan->detail_by_id();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            if(strtolower($result[0]["penj_status"]) != "aktif"){
+                return false;
+            }
+            return true;
+        }
     }
 }

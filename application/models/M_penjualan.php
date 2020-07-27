@@ -54,9 +54,9 @@ class M_penjualan extends ci_model{
         from ".$this->tbl_name." 
         inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
         inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified
-        where penj_status = ? and cust_status = ? and id_fk_cabang = ?";
+        where penj_status != ? and id_fk_cabang = ?";
         $args = array(
-            "aktif","aktif",$this->id_fk_cabang
+            "nonaktif",$this->id_fk_cabang
         );
         return executeQuery($query,$args);
     }
@@ -65,9 +65,20 @@ class M_penjualan extends ci_model{
         select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_perusahaan,cust_name,cust_suff,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan 
         from mstr_penjualan
         inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
-        where penj_nomor = ?";
+        where penj_nomor = ? and penj_status != ?";
         $args = array(
-            $this->penj_nomor
+            $this->penj_nomor,"nonaktif"
+        );
+        return executeQuery($sql,$args);
+    }
+    public function detail_by_id(){
+        $sql = "
+        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_perusahaan,cust_name,cust_suff,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan 
+        from mstr_penjualan
+        inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        where id_pk_penjualan = ? and penj_status != ?";
+        $args = array(
+            $this->id_pk_penjualan,"nonaktif"
         );
         return executeQuery($sql,$args);
     }
@@ -174,20 +185,19 @@ class M_penjualan extends ci_model{
             from ".$this->tbl_name." 
             inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
             inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified
-            where penj_status = ? and cust_status = ? and id_fk_cabang = ? ".$search_query."  
+            where penj_status != ? and id_fk_cabang = ? ".$search_query."  
             order by ".$order_by." ".$order_direction." 
             limit 20 offset ".($page-1)*$data_per_page;
             $args = array(
-                "aktif","aktif",$this->id_fk_cabang
+                "nonaktif",$this->id_fk_cabang
             );
             $result["data"] = executequery($query,$args);
-            
             $query = "
             select id_pk_penjualan
             from ".$this->tbl_name." 
             inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
             inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified
-            where penj_status = ? and cust_status = ? and id_fk_cabang = ? ".$search_query."  
+            where penj_status != ? and id_fk_cabang = ? ".$search_query."  
             order by ".$order_by." ".$order_direction;
             $result["total_data"] = executequery($query,$args)->num_rows();
         }
@@ -197,11 +207,11 @@ class M_penjualan extends ci_model{
             from ".$this->tbl_name." 
             inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
             inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified
-            where penj_status = ? and cust_status = ? and id_fk_cabang = ? and penj_tipe_pembayaran = ? ".$search_query."  
+            where penj_status != ? and id_fk_cabang = ? and penj_tipe_pembayaran = ? ".$search_query."  
             order by ".$order_by." ".$order_direction." 
             limit 20 offset ".($page-1)*$data_per_page;
             $args = array(
-                "aktif","aktif",$this->id_fk_cabang, $this->penj_tipe_pembayaran
+                "nonaktif",$this->id_fk_cabang, $this->penj_tipe_pembayaran
             );
             $result["data"] = executequery($query,$args);
             
@@ -210,7 +220,7 @@ class M_penjualan extends ci_model{
             from ".$this->tbl_name." 
             inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
             inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified
-            where penj_status = ? and cust_status = ? and id_fk_cabang = ? and penj_tipe_pembayaran = ? ".$search_query."  
+            where penj_status != ? and id_fk_cabang = ? and penj_tipe_pembayaran = ? ".$search_query."  
             order by ".$order_by." ".$order_direction;
             $result["total_data"] = executequery($query,$args)->num_rows();
         }
@@ -258,6 +268,18 @@ class M_penjualan extends ci_model{
             return true;
         }
         return false;
+    }
+    public function update_status(){
+        $where = array(  
+            "id_pk_penjualan" => $this->id_pk_penjualan
+        );
+        $data = array(
+            "penj_status" => $this->penj_status,
+            "penj_last_modified" => $this->penj_last_modified,
+            "id_last_modified" => $this->id_last_modified
+        );
+        updaterow($this->tbl_name,$data,$where);
+        return true;
     }
     public function delete(){
         if($this->check_delete()){
@@ -490,9 +512,9 @@ class M_penjualan extends ci_model{
         from ".$this->tbl_name." 
         inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
         inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified
-        where penj_status = ? and cust_status = ? and id_fk_cabang = ?";
+        where penj_status != ? and id_fk_cabang = ?";
         $args = array(
-            "aktif","aktif",$this->session->id_cabang
+            "nonaktif",$this->session->id_cabang
         );
         return executeQuery($query,$args);
     }

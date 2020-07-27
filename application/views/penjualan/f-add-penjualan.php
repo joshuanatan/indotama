@@ -433,6 +433,7 @@ $notif_data = array(
     </div>
 </div>
 <script>
+    var brg_custom_base_html = $("#daftar_custom_produk_add").html();
     function register_brg_pindah(){
         nf_reformat_all();
         var form = $("#register_brg_pindah_form")[0];
@@ -460,10 +461,9 @@ $notif_data = array(
                         </tr>`;
                     }
                 }
-                else{
-                    html = "<tr><td colspan = 3 class = 'align-middle text-center'>No Records Found</td></tr>";
-                }
                 $("#daftar_brg_custom_container").append(html);
+                $("#daftar_custom_produk_add").html(brg_custom_base_html);
+                $("#custom_produk_modal").modal("hide");
             },
             error:function(){
             }
@@ -472,5 +472,5 @@ $notif_data = array(
 </script>
 
 <?php $this->load->view('_notification/notif_general'); ?>
-<?php $this->load->view("_core_script/nenubar_func");?>
+<?php $this->load->view("_core_script/menubar_func");?>
 <?php $this->load->view("req/core_script");?>
