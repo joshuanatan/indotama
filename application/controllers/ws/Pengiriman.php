@@ -160,25 +160,38 @@ class pengiriman extends CI_Controller{
 
                     $check = $this->input->post("check");
                     if($check != ""){
-                        $counter = 0;
+                        $counter = -1;
                         foreach($check as $a){
+                            $counter++;
                             $this->form_validation->reset_validation();
                             $this->form_validation->set_rules("id_brg".$a,"id_brg","required");
-                            $this->form_validation->set_rules("notes".$a,"notes","required");
                             $this->form_validation->set_rules("qty_kirim".$a,"qty_kirim","required");
                             $this->form_validation->set_rules("id_satuan".$a,"id_satuan","required");
                             if($this->form_validation->run()){
                                 $brg_pengiriman_qty = $this->input->post("qty_kirim".$a);
                                 $brg_pengiriman_note = $this->input->post("notes".$a);
+                                if(!$brg_pengiriman_note){
+                                    $brg_pengiriman_note = "-";
+                                }
                                 $id_fk_pengiriman = $id_pengiriman;
                                 
                                 $id_fk_brg_penjualan = "";
                                 $id_fk_brg_retur = "";
                                 if($this->input->post("tipe_pengiriman") == "retur"){
                                     $id_fk_brg_retur = $this->input->post("id_brg".$a);
+                                    if(!$this->check_stok("retur",$id_fk_brg_retur,$brg_pengiriman_qty)){
+                                        $response["statusitm"][$counter] = "ERROR";
+                                        $response["msgitm"][$counter] = "Stok tidak mencukupi";
+                                        continue;
+                                    }
                                 }
                                 else if($this->input->post("tipe_pengiriman") == "penjualan"){
                                     $id_fk_brg_penjualan = $this->input->post("id_brg".$a);
+                                    if(!$this->check_stok("penjualan",$id_fk_brg_penjualan,$brg_pengiriman_qty)){
+                                        $response["statusitm"][$counter] = "ERROR";
+                                        $response["msgitm"][$counter] = "Stok tidak mencukupi";
+                                        continue;
+                                    }
                                 }
                                 $tipe_pengiriman = $this->input->post("tipe_pengiriman");
                                 $id_fk_satuan = $this->input->post("id_satuan".$a);
@@ -334,7 +347,7 @@ class pengiriman extends CI_Controller{
         }
         else{
             $response["status"] = "ERROR";
-            $response["msg"] = "TIDAK ADA BARANG PENERIMAAN";
+            $response["msg"] = "TIDAK ADA BARANG PENGIRIMAN";
         }
         echo json_encode($response);
     }
@@ -364,5 +377,31 @@ class pengiriman extends CI_Controller{
             $response["msg"] = "TIDAK ADA BARANG PENERIMAAN";
         }
         echo json_encode($response);
+    }
+    private function check_stok($tipe,$id_brg,$request_qty){
+        if(strtolower($tipe) == "penjualan"){
+            $sql = "select id_fk_barang,brg_cabang_qty from tbl_brg_penjualan
+            inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_brg_penjualan.id_fk_barang
+            where id_pk_brg_penjualan = ?
+            and tbl_brg_cabang.id_fk_cabang = ?
+            and brg_cabang_qty >= ".$request_qty;
+        }
+        else if(strtolower($tipe) == "retur"){
+            $sql = "select tbl_brg_cabang.id_fk_brg,brg_cabang_qty from tbl_retur_kembali
+            inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_retur_kembali.id_fk_brg
+            where id_pk_retur_kembali = ?
+            and tbl_brg_cabang.id_fk_cabang = ?
+            and brg_cabang_qty >= ".$request_qty;
+        }
+        $args = array(
+            $id_brg,$this->session->id_cabang
+        );
+        $result = executeQuery($sql,$args);
+        if($result->num_rows() > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
