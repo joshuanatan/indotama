@@ -32,6 +32,10 @@ class M_brg_cabang extends ci_model{
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
+    private function stock_adjustment(){
+        #update master kombinasi based on stok
+        executeQuery("call update_stok_kombinasi_master_cabang();");
+    }
     public function columns(){
         return $this->columns;
     }
@@ -140,6 +144,7 @@ class M_brg_cabang extends ci_model{
         executeQuery($sql);
     }
     public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
+        $this->stock_adjustment();
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
@@ -193,13 +198,16 @@ class M_brg_cabang extends ci_model{
         return isExistsInTable($this->tbl_name,$where);
     }
     public function list(){
+        $this->stock_adjustment();
         $sql = "
-        select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_last_price,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_tipe
+        select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_last_price,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_tipe,brg_merk_nama,brg_jenis_nama
         from ".$this->tbl_name." 
         inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_brg
-        where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ? ";
+        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = mstr_barang.id_fk_brg_jenis
+        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = mstr_barang.id_fk_brg_merk
+        where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ? and brg_jenis_status = ? and brg_merk_status = ?";
         $args = array(
-            "aktif","aktif",$this->id_fk_cabang
+            "aktif","aktif",$this->id_fk_cabang,"aktif","aktif"
         );
         return executeQuery($sql,$args);
     }
