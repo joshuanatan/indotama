@@ -189,7 +189,7 @@ class M_barang extends ci_model{
         return $result;
     }
     public function list(){
-        $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe,group_concat(tbl_barang_ukuran.ukuran separator ',') as ukuran
+        $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe
         from ".$this->tbl_name." 
         inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
         inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
@@ -203,14 +203,34 @@ class M_barang extends ci_model{
         return executeQuery($sql,$args);
     }
     public function detail_by_name(){
-        $where = array(
-            "brg_nama" => $this->brg_nama,
-            "brg_status" => "aktif"
+        
+        $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe
+        from ".$this->tbl_name." 
+        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
+        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
+        left join tbl_barang_ukuran on tbl_barang_ukuran.id_fk_barang = ".$this->tbl_name.".id_pk_brg
+        where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ? and brg_nama = ?
+        group by id_pk_brg 
+        order by brg_nama asc"; 
+        $args = array(
+            "aktif","aktif","aktif",$this->brg_nama
         );
-        $field = array(
-            "id_pk_brg","brg_kode","brg_nama","brg_ket","brg_minimal","brg_harga","brg_status","brg_satuan","brg_image","brg_create_date","brg_last_modified","id_create_data","id_last_modified","id_fk_brg_jenis","id_fk_brg_merk","brg_tipe"
+        return executeQuery($sql,$args);
+    }
+    public function detail_by_id(){
+        
+        $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe
+        from ".$this->tbl_name." 
+        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
+        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
+        left join tbl_barang_ukuran on tbl_barang_ukuran.id_fk_barang = ".$this->tbl_name.".id_pk_brg
+        where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ? and id_pk_brg = ?
+        group by id_pk_brg 
+        order by brg_nama asc"; 
+        $args = array(
+            "aktif","aktif","aktif",$this->id_pk_brg
         );
-        return selectrow($this->tbl_name,$where,$field);
+        return executeQuery($sql,$args);
     }
     private function check_double_kode($id_pk_brg = 0){
         $where = array(
@@ -586,7 +606,7 @@ class M_barang extends ci_model{
         return false;
     }
     public function data_excel(){
-        $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe，group_concat(tbl_barang_ukuran.ukuran separator ',') as ukuran
+        $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe
         from ".$this->tbl_name." 
         inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
         inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk

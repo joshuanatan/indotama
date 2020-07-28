@@ -27,7 +27,24 @@ class Barang_pindah extends CI_Controller{
                 $flag = true;
                 if($result->num_rows() > 0){ 
                     $result = $result->result_array();
-                    $id_brg_awal = $result[0]["id_pk_brg"];;
+                    $id_brg_awal = $result[0]["id_pk_brg"];
+
+                    $this->load->model("m_brg_cabang");
+                    $this->m_brg_cabang->set_id_fk_brg($id_brg_awal);
+                    $this->m_brg_cabang->set_id_fk_cabang($this->session->id_cabang);
+                    $result = $this->m_brg_cabang->detail_by_id_barang();
+                    if($result->num_rows() > 0){
+                        $result = $result->result_array();
+                        $stok = $result[0]["brg_cabang_qty"];
+                        if($stok < $brg_pindah_qty){
+                            $response["brgpindahsts"] = "ERROR";
+                            $response["brgpindahmsg"] = "Barang dipindahkan dibawah stok";
+                            continue;
+                        }
+                    }
+                    else{
+                        $flag = false;
+                    }
                 }
                 else $flag = false;
                 

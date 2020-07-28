@@ -190,7 +190,8 @@ class m_user extends ci_model{
             "id_pk_user","user_name","user_pass","user_email","user_status","id_fk_employee"
         );
         $where = array(
-            "user_name" => $this->user_name
+            "user_name" => $this->user_name,
+            "user_status" => "aktif"
         );
         return selectrow($this->tbl_name,$where,$field);
     }
@@ -295,7 +296,8 @@ class m_user extends ci_model{
             $result = executeQuery($sql,$args);
             if($result->num_rows() > 0){
                 $result = $result->result_array();
-                if($result[0]["emp_foto"] == "-"){
+                $file_exists = file_exists(FCPATH."asset/images/employee/foto/".$result[0]["emp_foto"]);
+                if(!$file_exists){
                     if(strtolower($result[0]["emp_gender"]) == "pria" || !$result[0]["emp_gender"]){
                         $result[0]["emp_foto"] = "default_male.jpg";
                     }

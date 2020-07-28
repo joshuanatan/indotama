@@ -17,7 +17,7 @@ class M_brg_warehouse extends ci_model{
 
     public function __construct(){
         parent::__construct();
-        executeQuery("call list_barang_kombinasi_warehouse();");
+        executeQuery("call update_stok_kombinasi_master_warehouse();");
         $this->set_column("brg_kode","kode barang","required");
         $this->set_column("brg_nama","nama barang","required");
         $this->set_column("brg_ket","keterangan","required");
@@ -85,7 +85,6 @@ class M_brg_warehouse extends ci_model{
             
             insert into tbl_brg_warehouse_log(executed_function,id_pk_brg_warehouse,brg_warehouse_qty,brg_warehouse_notes,brg_warehouse_status,id_fk_brg,id_fk_warehouse,brg_warehouse_create_date,brg_warehouse_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_warehouse,new.brg_warehouse_qty,new.brg_warehouse_notes,new.brg_warehouse_status,new.id_fk_brg,new.id_fk_warehouse,new.brg_warehouse_create_date,new.brg_warehouse_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
             
-            call update_stok_kombinasi_barang_warehouse(new.id_fk_brg,new.brg_warehouse_qty, 0, new.id_fk_warehouse);
         end$$
         delimiter ;
 
@@ -208,7 +207,7 @@ class M_brg_warehouse extends ci_model{
                     "id_create_data" => $this->id_create_data,
                     "id_last_modified" => $this->id_last_modified
                 );
-                executeQuery("call update_stok_kombinasi_barang_cabang(".$this->id_fk_brg.",".$this->brg_warehouse_qty.",0,".$this->id_fk_warehouse);
+                executeQuery("call update_stok_kombinasi_anggota_warehouse(".$this->id_fk_brg.",".$this->brg_warehouse_qty.",0,".$this->id_fk_warehouse);
                 return insertrow($this->tbl_name,$data);
             }
             else{
@@ -242,7 +241,7 @@ class M_brg_warehouse extends ci_model{
             $result = executeQuery($query,$args);
             $result = $result->result_array();
             /*end store procedure*/
-            executeQuery("call update_stok_kombinasi_barang_warehouse(".$this->id_fk_brg.",".$this->brg_warehouse_qty.",".$result[0]["brg_warehouse_qty"].",".$this->id_fk_warehouse.")");
+            executeQuery("call update_stok_kombinasi_anggota_warehouse(".$this->id_fk_brg.",".$this->brg_warehouse_qty.",".$result[0]["brg_warehouse_qty"].",".$this->id_fk_warehouse.")");
 
             updateRow($this->tbl_name,$data,$where);
             return true; 

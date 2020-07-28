@@ -125,7 +125,8 @@ class M_barang_jenis extends ci_model{
     }
     public function detail_by_name(){
         $where = array(
-            "brg_jenis_nama" => $this->brg_jenis_nama
+            "brg_jenis_nama" => $this->brg_jenis_nama,
+            "brg_jenis_status" => "aktif",
         );
         $field = array(
             "id_pk_brg_jenis",

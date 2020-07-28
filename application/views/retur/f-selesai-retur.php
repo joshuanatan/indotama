@@ -1,23 +1,23 @@
 
-<div class = "modal fade" id = "detail_modal">
+<div class = "modal fade" id = "selesai_modal">
     <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
             <div class = "modal-header">
-                <h4 class = "modal-title">Detail Data <?php echo ucwords($page_title);?></h4>
+                <h4 class = "modal-title">Konfirmasi Selesai <?php echo ucwords($page_title);?></h4>
             </div>
             <div class = "modal-body">
-                <input type = 'hidden' name = 'id' id = "d_id_edit">
+                <input type = 'hidden' name = 'id' id = "s_id_edit">
                 <div class = "form-group col-lg-6">
                     <h5>Nomor Retur</h5>
-                    <input readonly type = "text" class = "form-control" list = "datalist_penjualan" required id = "d_no_retur_edit" name = "no_retur">
+                    <input readonly type = "text" class = "form-control" list = "datalist_penjualan" required id = "s_no_retur_edit" name = "no_retur">
                 </div>
                 <div class = "form-group col-lg-6">
                     <h5>Nomor Penjualan</h5>
-                    <input readonly type = "text" class = "form-control" readonly required id = "d_no_penjualan_edit">
+                    <input readonly type = "text" class = "form-control" readonly required id = "s_no_penjualan_edit">
                 </div>
                 <div class = "form-group col-lg-6">
                     <h5>Tanggal Retur</h5>
-                    <input readonly type = "date" class = "form-control" required id = "d_tgl_retur_edit" name = "tgl_retur">
+                    <input readonly type = "date" class = "form-control" required id = "s_tgl_retur_edit" name = "tgl_retur">
                 </div>
                 <div class = "form-group col-lg-6">
                     <h5>Opsi Pengembalian</h5>
@@ -35,13 +35,13 @@
                             <th>Jumlah Kembali</th>
                             <th>Notes</th>
                         </thead>
-                        <tbody id = "d_daftar_brg_retur">
-                            <tr id = "d_add_brg_retur_but_container_edit">
+                        <tbody id = "s_daftar_brg_retur">
+                            <tr id = "s_add_brg_retur_but_container_edit">
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class = "form-group" id = "d_barang_kembali_container_edit" style = "display:none">
+                <div class = "form-group" id = "s_barang_kembali_container_edit" style = "display:none">
                     <h5>Barang Kembali</h5>
                     <table class = "table table-striped table-bordered">
                         <thead>
@@ -51,39 +51,39 @@
                             <th>Harga Final</th>
                             <th>Notes</th>
                         </thead>
-                        <tbody id = "d_daftar_brg_kembali">
-                            <tr id = "d_add_brg_kembali_but_container_edit">
+                        <tbody id = "s_daftar_brg_kembali">
+                            <tr id = "s_add_brg_kembali_but_container_edit">
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class = "form-group">
-                    <button type = "button" class = "btn btn-sm btn-primary" data-dismiss = "modal">OK</button>
+                    <button type = "button" class = "btn btn-sm btn-primary" onclick = "selesai_retur()">Selesai Retur</button>
                 </div>  
             </div>
         </div>
     </div>
 </div> 
 <script>
-    function load_detail_content(row){
-        $("#d_id_edit").val(content[row]["id"]);
-        $("#d_no_retur_edit").val(content[row]["no"]);
-        $("#d_no_penjualan_edit").val(content[row]["nomor_penj"]);
-        $("#d_tgl_retur_edit").val(content[row]["tgl"].split(" ")[0]);
+    function load_selesai_content(row){
+        $("#s_id_edit").val(content[row]["id"]);
+        $("#s_no_retur_edit").val(content[row]["no"]);
+        $("#s_no_penjualan_edit").val(content[row]["nomor_penj"]);
+        $("#s_tgl_retur_edit").val(content[row]["tgl"].split(" ")[0]);
 
         $.ajax({
             url:"<?php echo base_url();?>ws/retur/brg_retur?id_retur="+content[row]["id"],
             type:"GET",
             dataType:"JSON",
             success:function(respond){
-                $(".d_brg_retur_counter_edit").remove();
-                $(".d_brg_retur_counter").remove();
+                $(".s_brg_retur_counter_edit").remove();
+                $(".s_brg_retur_counter").remove();
                 if(respond["status"] == "SUCCESS"){
                     var html = "";
                     for(var a = 0; a<respond["content"].length; a++){
                         html += `
-                        <tr class = 'd_brg_retur_counter_edit'>
-                            <td id = 'd_brg_retur_counter_edit${a}'>
+                        <tr class = 's_brg_retur_counter_edit'>
+                            <td id = 's_brg_retur_counter_edit${a}'>
                                 <input readonly name = 'brg_retur_check_edit[]' value = ${a} type = 'hidden'>
                                 <input readonly type = 'hidden' id = 'id_brg_retur_edit${a}' name = 'id_brg_retur_edit${a}' value = '${respond["content"][a]["id"]}'>
                                 <input readonly name = 'brg_retur_edit${a}' value = '${respond["content"][a]["nama_brg"]}' type = 'text' class = 'form-control' list = 'datalist_barang_cabang'>
@@ -97,37 +97,37 @@
                             </td>
                         </tr>`;
                     }
-                    $("#d_add_brg_retur_but_container_edit").before(html);
+                    $("#s_add_brg_retur_but_container_edit").before(html);
                 }
             }
         });
 
-        if(content[row]["tipe"] == "BARANG"){
-            $(".d_tipe_retur_edit[value='BARANG']").prop("checked",true);
-            $('#d_barang_kembali_container_edit').show();
+        if(content[row]["tipe"].toLowerCase() == "barang"){
+            $(".s_tipe_retur_edit[value='BARANG']").prop("checked",true);
+            $('#s_barang_kembali_container_edit').show();
 
             $.ajax({
                 url:"<?php echo base_url();?>ws/retur/brg_kembali?id_retur="+content[row]["id"],
                 type:"GET",
                 dataType:"JSON",
                 success:function(respond){
-                    $(".d_brg_kembali_row_edit").remove();
-                    $(".d_add_brg_kembali_row").remove();
+                    $(".s_brg_kembali_row_edit").remove();
+                    $(".s_add_brg_kembali_row").remove();
                     if(respond["status"] == "SUCCESS"){
                         var html = "";
                         for(var a = 0; a<respond["content"].length; a++){
                             html += `
-                            <tr class = 'd_brg_kembali_row_edit'>
-                                <td id = 'd_brg_kembali_row_edit${a}'>
+                            <tr class = 's_brg_kembali_row_edit'>
+                                <td id = 's_brg_kembali_row_edit${a}'>
                                     <input readonly name = 'brg_kembali_check_edit[]' value = ${a} type = 'hidden'>
-                                    <input readonly type = 'hidden' id = 'd_id_brg_kembali_edit${a}'name = 'id_brg_kembali_edit${a}' value = '${respond["content"][a]["id"]}'>
+                                    <input readonly type = 'hidden' id = 's_id_brg_kembali_edit${a}'name = 'id_brg_kembali_edit${a}' value = '${respond["content"][a]["id"]}'>
                                     <input readonly type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${a})' value = '${respond["content"][a]["nama_brg"]}'id = 'brg${a}' name = 'brg_edit${a}' class = 'form-control'>
                                 </td>
                                 <td>
                                     <input readonly value = '${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}' name = 'brg_qty_edit${a}' type = 'text' class = 'form-control'>
                                 </td>
                                 <td>
-                                    <input readonly value = '${respond["content"][a]["harga_brg"]}' type = 'text' readonly id = 'd_harga_barang_jual${a}' class = 'form-control'>
+                                    <input readonly value = '${respond["content"][a]["harga_brg"]}' type = 'text' readonly id = 's_harga_barang_jual${a}' class = 'form-control'>
                                 </td>
                                 <td>
                                     <input readonly value = '${respond["content"][a]["harga"]}' type = 'text' name = 'brg_price_edit${a}' class = 'form-control'>
@@ -137,15 +137,33 @@
                                 </td>
                             </tr>`;
                         }
-                        $("#d_add_brg_kembali_but_container_edit").before(html);
+                        $("#s_add_brg_kembali_but_container_edit").before(html);
                     }
                 }
             });
         }
         else if(content[row]["tipe"] == "UANG"){
-            $(".d_tipe_retur_edit[value='UANG']").prop("checked",true);
-            $('#d_barang_kembali_container_edit').hide();
+            $(".s_tipe_retur_edit[value='UANG']").prop("checked",true);
+            $('#s_barang_kembali_container_edit').hide();
             
         }
+    }
+</script>
+<script>
+    function selesai_retur(){
+        var id = $("#s_id_edit").val();
+        $.ajax({
+            url:"<?php echo base_url();?>ws/retur/selesai?id="+id,
+            type:"GET",
+            dataType:"JSON",
+            success:function(respond){
+                if(respond["status"].toLowerCase() == "success"){
+                    $("#selesai_modal").modal("hide");
+                    if(typeof(refresh) != "undefined"){
+                        refresh(page);
+                    }
+                }
+            }
+        })
     }
 </script>

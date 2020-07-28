@@ -42,7 +42,7 @@
                 </table>
                 <div class = "form-group">
                     <button type = "button" class = "btn btn-sm btn-primary" data-dismiss = "modal">Cancel</button>
-                    <button type = "button" onclick = "delete_func()" class = "btn btn-sm btn-danger">Delete</button>
+                    <button type = "button" id = "delete_penjualan_button" onclick = "delete_func()" class = "btn btn-sm btn-danger">Delete</button>
                 </div>
             </div>
         </div>
@@ -57,5 +57,11 @@
         $("#jenis_delete").html(content[id]["jenis"]);
         $("#pembayaran_delete").html(content[id]["tipe_pembayaran"]);
         $("#customer_delete").html(content[id]["perusahaan_cust"]+" - "+content[id]["name_cust"]);
+        if(content[id]["status"].toLowerCase() == "aktif"){
+            $("#delete_penjualan_button").show();
+        }
+        else{
+            $("#delete_penjualan_button").hide();
+        }
     }
 </script>

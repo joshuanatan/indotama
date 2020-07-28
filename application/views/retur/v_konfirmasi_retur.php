@@ -96,8 +96,12 @@ $data = array(
         
         $('body table').find('tr').click(function(){
             var row = $(this).index();
-            load_konfirmasi_content(row);
-            $("#konfirmasi_modal").modal("show");
+            $(this).find('.action_column').click( function(){
+                $(this).find("i.text-primary.md-check").click(function(event){
+                    load_konfirmasi_content(row);
+                    $("#konfirmasi_modal").modal("show");
+                })
+            })
         });
     }
 </script>

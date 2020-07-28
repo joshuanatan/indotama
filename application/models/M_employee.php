@@ -210,7 +210,8 @@ class M_employee extends ci_model{
     }
     public function detail_by_name(){
         $where = array(
-            "emp_nama" => $this->emp_nama
+            "emp_nama" => $this->emp_nama,
+            "emp_status" => "aktif"
         );
         $field = array(
             "id_pk_employee",

@@ -117,7 +117,7 @@
                             <input type = 'hidden' value = '${respond["content"][a]["id"]}' name = 'id_brg${a}'>
                             <td>
                                 ${respond["content"][a]["nama_brg"]}<br/>
-                                Notes:${respond["content"][a]["notes"]}
+                                Notes:${respond["content"][a]["note"]}
                             </td>
                             <td>
                                 ${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}

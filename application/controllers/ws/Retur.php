@@ -355,8 +355,14 @@ class Retur extends CI_Controller{
 
                             $brg = $this->input->post("brg_retur_jumlah_edit".$a);
                             $brg = explode(" ",$brg);
-                            $retur_brg_qty = $brg[0]; 
-                            $retur_brg_satuan = $brg[1];
+                            if(count($brg) > 1){
+                                $retur_brg_qty = $brg[0]; 
+                                $retur_brg_satuan = $brg[1];
+                            }
+                            else{
+                                $retur_brg_qty = $brg[0]; 
+                                $retur_brg_satuan = "Pcs";
+                            }
                             
                             if($this->m_retur_brg->set_update($id_pk_retur_brg,$id_fk_brg,$retur_brg_qty,$retur_brg_satuan,$retur_brg_notes)){
                                 if($this->m_retur_brg->update()){
@@ -444,8 +450,14 @@ class Retur extends CI_Controller{
 
                                 $brg_retur_qty = $this->input->post("brg_retur_jumlah".$a);
                                 $brg_retur_qty = explode(" ",$brg_retur_qty);
-                                $retur_brg_qty = $brg_retur_qty[0];
-                                $retur_brg_satuan = $brg_retur_qty[1];
+                                if(count($brg_retur_qty) > 1){
+                                    $retur_brg_qty = $brg_retur_qty[0];
+                                    $retur_brg_satuan = $brg_retur_qty[1];
+                                }
+                                else{
+                                    $retur_brg_qty = $brg_retur_qty[0];
+                                    $retur_brg_satuan = "Pcs";
+                                }
 
                                 $retur_brg_status = "aktif";
                                 
@@ -639,6 +651,21 @@ class Retur extends CI_Controller{
             $response["msg"] = "Error updating status";
 
         }            
+        echo json_encode($response);
+    }
+    public function selesai(){
+        $response["status"] = "SUCCESS";
+        $id = $this->input->get("id");
+        if($id != "" && is_numeric($id)){
+            $this->load->model("m_retur");
+            $this->m_retur->set_id_pk_retur($id);
+            $this->m_retur->set_retur_status("selesai");
+            $this->m_retur->update_status();
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "Invalid ID Supplier";
+        }
         echo json_encode($response);
     }
 }
