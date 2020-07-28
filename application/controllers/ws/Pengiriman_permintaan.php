@@ -46,7 +46,7 @@ class Pengiriman_permintaan extends CI_Controller{
                 $response["content"][$a]["id"] = $result["data"][$a]["id_pk_brg_pemenuhan"];
                 $response["content"][$a]["id_pengiriman"] = $result["data"][$a]["id_pk_pengiriman"];
                 $response["content"][$a]["nama_brg"] = $result["data"][$a]["brg_nama"];
-                $response["content"][$a]["pemenuhan_qty_brg"] = $result["data"][$a]["brg_pemenuhan_qty"];
+                $response["content"][$a]["pemenuhan_qty_brg"] = number_format($result["data"][$a]["brg_pemenuhan_qty"],2,",",".");
                 $response["content"][$a]["daerah_cabang"] = $result["data"][$a]["cabang_daerah"];
                 $response["content"][$a]["nama_toko"] = $result["data"][$a]["toko_nama"];
                 $response["content"][$a]["kode_toko"] = $result["data"][$a]["toko_kode"];
@@ -86,29 +86,34 @@ class Pengiriman_permintaan extends CI_Controller{
                 $response["content"][$a]["id"] = $result[$a]["id_pk_brg_pemenuhan"];
                 $response["content"][$a]["id_pengiriman"] = $result[$a]["id_pk_pengiriman"];
                 $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
-                $response["content"][$a]["pemenuhan_qty_brg"] = $result[$a]["brg_pemenuhan_qty"];
+                $response["content"][$a]["pemenuhan_qty_brg"] = number_format($result[$a]["brg_pemenuhan_qty"],"2",",",".");
                 $response["content"][$a]["daerah_cabang"] = $result[$a]["cabang_daerah"];
                 $response["content"][$a]["notes"] = $result[$a]["brg_pengiriman_note"];
                 $response["content"][$a]["nama_toko"] = $result[$a]["toko_nama"];
                 $response["content"][$a]["kode_toko"] = $result[$a]["toko_kode"];
                 $response["content"][$a]["logo_toko"] = $result[$a]["toko_logo"];
                 $response["content"][$a]["permintaan_status_brg"] = $result[$a]["brg_permintaan_status"];
-                $response["content"][$a]["status"] = $result[$a]["brg_pemenuhan_status"];
+                $response["content"][$a]["status_brg_pemenuhan"] = $result[$a]["brg_pemenuhan_status"];
                 $response["content"][$a]["tgl_pengiriman"] = $result[$a]["pengiriman_tgl"];
                 $response["content"][$a]["last_modified"] = $result[$a]["pengiriman_last_modified"];
 
-                
-                if(strtolower($result[$a]["brg_permintaan_status"]) == "diterima"){
-                    $response["content"][$a]["status"] = "DITERIMA";
-                    $response["content"][$a]["status_code"] = "success";
-                }
-                else if(strtolower($result[$a]["brg_permintaan_status"]) != "nonaktif" ){
-                    $response["content"][$a]["status"] = "DIBATAL";
-                    $response["content"][$a]["status_code"] = "danger";
-                }
-                else if(strtolower($result[$a]["brg_permintaan_status"]) != "perjalanan" ){
-                    $response["content"][$a]["status"] = "DALAM PERJALANAN";
-                    $response["content"][$a]["status_code"] = "primary";
+                switch(strtolower($result[$a]["brg_pemenuhan_status"])){
+                    case "aktif":
+                        $response["content"][$a]["status"] = "MENUNGGU PENGIRIMAN";
+                        $response["content"][$a]["status_code"] = "warning";
+                    break;
+                    case "diterima":
+                        $response["content"][$a]["status"] = "DITERIMA";
+                        $response["content"][$a]["status_code"] = "success";
+                    break;
+                    case "nonaktif":
+                        $response["content"][$a]["status"] = "DIBATALKAN";
+                        $response["content"][$a]["status_code"] = "danger";
+                    break;
+                    case "perjalanan":
+                        $response["content"][$a]["status"] = "DALAM PERJALANAN";
+                        $response["content"][$a]["status_code"] = "default";
+                    break;
                 }
             }
         }
@@ -126,7 +131,11 @@ class Pengiriman_permintaan extends CI_Controller{
         $id_tempat_pengiriman = $this->input->post("id_tempat_pengiriman");
         
         $this->load->model("m_pengiriman");
-        if($this->m_pengiriman->set_insert($pengiriman_tgl,$pengiriman_status,$pengiriman_tipe,"",$pengiriman_tempat,$id_tempat_pengiriman,"")){
+        
+        $id_fk_cabang = $this->session->id_cabang;
+        $pengiriman_no = $this->m_pengiriman->get_pengiriman_nomor($id_fk_cabang,"pengiriman",$pengiriman_tgl);
+
+        if($this->m_pengiriman->set_insert($pengiriman_no,$pengiriman_tgl,$pengiriman_status,$pengiriman_tipe,"",$pengiriman_tempat,$id_tempat_pengiriman,"")){
             $id_pengiriman = $this->m_pengiriman->insert();
             if($id_pengiriman){
                 $this->load->model("m_brg_pengiriman");

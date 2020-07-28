@@ -35,7 +35,7 @@ class Permintaan extends CI_Controller{
             $result["data"] = $result["data"]->result_array();
             for($a = 0; $a<count($result["data"]); $a++){
                 $response["content"][$a]["id"] = $result["data"][$a]["id_pk_brg_permintaan"];
-                $response["content"][$a]["qty"] = $result["data"][$a]["brg_permintaan_qty"];
+                $response["content"][$a]["qty"] = number_format($result["data"][$a]["brg_permintaan_qty"],2,",",".");
                 $response["content"][$a]["notes"] = $result["data"][$a]["brg_permintaan_notes"];
                 $response["content"][$a]["deadline"] = $result["data"][$a]["brg_permintaan_deadline"];
                 $response["content"][$a]["status"] = $result["data"][$a]["brg_permintaan_status"];
@@ -44,7 +44,7 @@ class Permintaan extends CI_Controller{
                 if($result["data"][$a]["qty_pemenuhan"]==null){
                     $response["content"][$a]["qty_pemenuhan"] = 0;
                 }else{
-                    $response["content"][$a]["qty_pemenuhan"] = $result["data"][$a]["qty_pemenuhan"];
+                    $response["content"][$a]["qty_pemenuhan"] = number_format($result["data"][$a]["qty_pemenuhan"],2,",",".");
                 }
                 $response["content"][$a]["nama_cabang"] = $result["data"][$a]["cabang_daerah"];
                 $response["content"][$a]["id_fk_cabang"] = $result["data"][$a]["id_fk_cabang"];
@@ -73,7 +73,7 @@ class Permintaan extends CI_Controller{
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
                 $response["content"][$a]["id"] = $result[$a]["id_pk_brg_permintaan"];
-                $response["content"][$a]["qty"] = $result[$a]["brg_permintaan_qty"];
+                $response["content"][$a]["qty"] = number_format($result[$a]["brg_permintaan_qty"],2,",",".");
                 $response["content"][$a]["notes"] = $result[$a]["brg_permintaan_notes"];
                 $response["content"][$a]["deadline"] = $result[$a]["brg_permintaan_deadline"];
                 $response["content"][$a]["status"] = $result[$a]["brg_permintaan_status"];
@@ -82,7 +82,7 @@ class Permintaan extends CI_Controller{
                 if($result[$a]["qty_pemenuhan"]==null){
                     $response["content"][$a]["qty_pemenuhan"] = 0;
                 }else{
-                    $response["content"][$a]["qty_pemenuhan"] = $result[$a]["qty_pemenuhan"];
+                    $response["content"][$a]["qty_pemenuhan"] = number_format($result[$a]["qty_pemenuhan"],2,",",".");
                 }
                 $response["content"][$a]["nama_cabang"] = $result[$a]["cabang_daerah"];
                 $response["content"][$a]["id_fk_cabang"] = $result[$a]["id_fk_cabang"];
@@ -104,7 +104,7 @@ class Permintaan extends CI_Controller{
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
                 $response["content"][$a]["id"] = $result[$a]["id_pk_brg_permintaan"];
-                $response["content"][$a]["qty"] = $result[$a]["brg_permintaan_qty"];
+                $response["content"][$a]["qty"] = number_format($result[$a]["brg_permintaan_qty"],2,",",".");
                 $response["content"][$a]["notes"] = $result[$a]["brg_permintaan_notes"];
                 $response["content"][$a]["deadline"] = $result[$a]["brg_permintaan_deadline"];
                 $response["content"][$a]["id_fk_brg"] = $result[$a]["id_fk_brg"];
@@ -112,7 +112,7 @@ class Permintaan extends CI_Controller{
                 if($result[$a]["qty_pemenuhan"]==null){
                     $response["content"][$a]["qty_pemenuhan"] = 0;
                 }else{
-                    $response["content"][$a]["qty_pemenuhan"] = $result[$a]["qty_pemenuhan"];
+                    $response["content"][$a]["qty_pemenuhan"] = number_format($result[$a]["qty_pemenuhan"],2,",",".");
                 }
                 $response["content"][$a]["nama_cabang"] = $result[$a]["cabang_daerah"];
                 $response["content"][$a]["id_fk_cabang"] = $result[$a]["id_fk_cabang"];
@@ -177,7 +177,7 @@ class Permintaan extends CI_Controller{
                 $brg_permintaan_qty = $this->input->post("brg_permintaan_qty");
                 $brg_permintaan_notes = $this->input->post("brg_permintaan_notes");
                 $brg_permintaan_deadline = $this->input->post("brg_permintaan_deadline");
-                $brg_permintaan_status = "BELUM";
+                $brg_permintaan_status = "aktif";
                 $id_fk_brg = $id_barang;
                 $id_fk_cabang = $this->session->id_cabang;
                 if($this->m_brg_permintaan->set_insert($brg_permintaan_qty,$brg_permintaan_notes,$brg_permintaan_deadline,$brg_permintaan_status,$id_fk_brg,$id_fk_cabang)){

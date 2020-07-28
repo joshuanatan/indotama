@@ -1,5 +1,6 @@
 <?php
 $page_title = "Dashboard Cabang";
+$this->session->id_user;
 $breadcrumb = array(
     "Cabang","Dashboard"
 );

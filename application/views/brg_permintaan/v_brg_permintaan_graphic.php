@@ -23,7 +23,10 @@ $notif_data = array(
             <?php $this->load->view('req/mm_menubar.php');?>
 
             <div class="page-wrapper">
-                <div class = "col-lg-12">
+                <div class = "col-lg-2">
+                    <a href = "<?php echo base_url();?>permintaan/histori" class = "btn btn-primary btn-sm" style = "marign-left:10px;margin-top:20px;margin-bottom:20px">Histori</a>
+                </div>
+                <div class = "col-lg-10">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">Home</a></li>
                         <?php for($a = 0; $a<count($breadcrumb); $a++):?>
@@ -47,6 +50,7 @@ $notif_data = array(
                                 </div>
                                 <div class="panel-wrapper collapse in">
                                     <div class="panel-body">
+                                        <a href = "<?php echo base_url();?>penerimaan/permintaan" target = "_blank" data-toggle = "modal" class = "btn btn-primary btn-sm">Tabel Penerimaan Permintaan</a>
                                         <div class = "col-lg-12" id = "incoming_delivery_container">
                                         </div>
                                     </div>
@@ -63,7 +67,8 @@ $notif_data = array(
                                 </div>
                                 <div class="panel-wrapper collapse in">
                                     <div class="panel-body">
-                                        <button type = "button" data-toggle = "modal" data-target = "#register_modal" class = "btn btn-primary btn-sm">Tambah Permintaan Barang</button>
+                                        <button type = "button" data-toggle = "modal" data-target = "#register_modal" target = "_blank" class = "btn btn-primary btn-sm">Tambah Permintaan</button>
+                                        <a href = "<?php echo base_url();?>permintaan/data" class = "btn btn-primary btn-sm">Daftar Permintaan</a>
                                         <div class = "col-lg-12" id = "permintaan_barang_container">
                                         </div>
                                     </div>
@@ -79,7 +84,7 @@ $notif_data = array(
     </body>
 </html>
 <script>
-    var ctrl = "";
+    var ctrl = "permintaan";
 </script>
 <?php $this->load->view("_core_script/menubar_func");?>
 <script>
@@ -236,13 +241,13 @@ $data = array(
 </script>
 <?php $this->load->view("brg_permintaan/f-selesai-brg-permintaan",$data);?>
 <?php $this->load->view("brg_permintaan/f-delete-brg-permintaan",$data);?>
-<?php $this->load->view("penerimaan_permintaan/f-add-penerimaan_permintaan",$data);?>
-
 <?php $this->load->view("brg_permintaan/f-add-brg-permintaan",$data);?>
 <script>
+    /*tambahin event handler untuk add permintaan button untuk refresh disini*/
     document.getElementById("permintaan_tambah_button").addEventListener("click",function(){
         load_permintaan_barang_content();
     });
+    /*tambahin event handler untuk add penerimaan permintaan button untuk refresh disini*/
     document.getElementById("penerimaan_permintaan_tambah_button").addEventListener("click",function(){
         laod_incoming_delivery_content();
     });

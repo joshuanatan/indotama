@@ -81,7 +81,7 @@ $notif_data = array(
     var additional_button = [
         {
             data_toggle:'modal',
-            data_target:'#modal_insert',
+            data_target:'#register_modal',
             style:'cursor:pointer;font-size:large',
             class:'text-success md-plus',
             onclick: 'load_edit_content()'

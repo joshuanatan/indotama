@@ -135,9 +135,9 @@ class M_t_pengiriman_permintaan extends ci_model{
         inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
         inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg
         inner join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_fk_brg_permintaan = tbl_brg_permintaan.id_pk_brg_permintaan and tbl_brg_pemenuhan.id_fk_cabang = ?
-        inner join tbl_brg_pengiriman on tbl_brg_pengiriman.id_fk_brg_pemenuhan = tbl_brg_pemenuhan.id_pk_brg_pemenuhan
+        inner join tbl_brg_pengiriman on tbl_brg_pengiriman.id_fk_brg_pemenuhan = tbl_brg_pemenuhan.id_pk_brg_pemenuhan and brg_pengiriman_qty > 0
         inner join mstr_pengiriman on mstr_pengiriman.id_pk_pengiriman = tbl_brg_pengiriman.id_fk_pengiriman and mstr_pengiriman.pengiriman_tipe = 'permintaan'
-        where year(pengiriman_tgl) = ? and month(pengiriman_tgl) = ? and day(pengiriman_tgl) = ?
+        where year(pengiriman_tgl) = ? and month(pengiriman_tgl) = ? and day(pengiriman_tgl) = ? and brg_pemenuhan_status != 'nonaktif'
         ";
         $extract_tgl = explode("-",$tgl_pengiriman); 
         $args = array(

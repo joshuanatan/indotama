@@ -91,10 +91,10 @@ $notif_data = array(
             data_target:'#selesai_modal',
             style:'cursor:pointer;font-size:large',
             class:'text-success md-check',
-            onclick: 'load_selesai_content()'
+            onclick: 'open_konfirmasi_selesai_modal()'
         }
     ];
-    function get_selesai_row(){
+    function open_konfirmasi_selesai_modal(){
         $('body table').find('tr').click( function(){
             var row = $(this).index();
             load_selesai_content(row);

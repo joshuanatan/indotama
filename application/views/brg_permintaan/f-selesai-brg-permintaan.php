@@ -1,5 +1,5 @@
 <div class = "modal fade" id = "selesai_modal">
-    <div class = "modal-dialog modal-lg">
+    <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
                 <h4 class = "modal-title">Selesaikan <?php echo ucwords($page_title);?></h4>
@@ -52,6 +52,7 @@
 </div>
 <script>
     function load_selesai_content(row){
+        console.log(row);
         $("#id_pk_brg_permintaan_selesai").val(content[row]["id"]);
         $("#brg_nama_selesai").html(content[row]["barang"]);
         $("#brg_permintaan_qty_selesai").html(content[row]["qty"]);

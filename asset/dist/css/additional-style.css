@@ -39,3 +39,9 @@ table{
 .timeline > li.timeline-inverted{
     margin-top:0px;
 }
+.btn.btn-sm{
+    padding:.25rem .5rem;
+    font-size:.875rem;
+    line-height:1.5;
+    border-radius:.2rem;
+}

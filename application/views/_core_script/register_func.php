@@ -3,6 +3,9 @@
 var default_register_form_html = $("#register_form").html();
 function reset_register_form(){
     $("#register_form").html(default_register_form_html);
+    if(typeof(init_nf) != "undefined"){
+        init_nf();
+    }
 }
 </script>
 <script>

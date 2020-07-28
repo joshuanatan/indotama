@@ -487,5 +487,18 @@ class Barang extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function jmlh_brg_total(){
+        $sql = "
+        select id_pk_brg,brg_nama,brg_kode,ifnull(sum(jmlh_brg),0) as jmlh_brg from mstr_barang 
+        left join (
+        select sum(brg_cabang_qty) as jmlh_brg,id_fk_brg from tbl_brg_cabang where brg_cabang_status = 'aktif' group by id_fk_brg
+        union
+        select sum(brg_warehouse_qty) as jmlh_brg,id_fk_brg from tbl_brg_warehouse where brg_warehouse_status = 'aktif' group by id_fk_brg
+        ) as a on a.id_fk_brg = mstr_barang.id_pk_brg where brg_status = 'aktif' and id_pk_brg = ? group by id_pk_brg";
+        $args = array(
+            $this->id_pk_brg
+        );
+        return executeQuery($sql,$args);
+    }
 }
 ?>

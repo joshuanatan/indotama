@@ -1,5 +1,5 @@
 <div class = "modal fade" id = "update_modal">
-    <div class = "modal-dialog modal-lg">
+    <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
                 <h4 class = "modal-title">Ubah Data <?php echo ucwords($page_title);?></h4>
@@ -23,7 +23,7 @@
                         </datalist>
                     </div>
                     <div class = "form-group">
-                        <h5>Jumlah Barang</h5>
+                        <h5>Jumlah Barang (Pcs)</h5>
                         <input type = "text" class = "form-control nf-input" name="brg_permintaan_qty" required id = "brg_permintaan_qty_edit">
                     </div>
                     <div class = "form-group">
@@ -36,7 +36,7 @@
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <button type = "button" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
+                        <button type = "button" id = "update-permintaan-button" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
                 </form>
             </div>
@@ -45,6 +45,26 @@
 </div>
 <script>
     function load_edit_content(row){
+        if(content[row]["status"].toLowerCase() != "aktif"){
+            $("#id_edit").attr("disabled",true);
+            $("#brg_permintaan_qty_edit").attr("disabled",true);
+            $("#brg_permintaan_notes_edit").attr("disabled",true);
+            $("#brg_permintaan_deadline_edit").attr("disabled",true);
+            $("#brg_permintaan_status_edit").attr("disabled",true);
+            $("#brg_nama_edit").attr("disabled",true);
+            $("#cabang_daerah_edit").attr("disabled",true);
+            $("#update-permintaan-button").hide();
+        }
+        else{
+            $("#id_edit").attr("disabled",false);
+            $("#brg_permintaan_qty_edit").attr("disabled",false);
+            $("#brg_permintaan_notes_edit").attr("disabled",false);
+            $("#brg_permintaan_deadline_edit").attr("disabled",false);
+            $("#brg_permintaan_status_edit").attr("disabled",false);
+            $("#brg_nama_edit").attr("disabled",false);
+            $("#cabang_daerah_edit").attr("disabled",false);
+            $("#update-permintaan-button").show();
+        }
         $("#id_edit").val(content[row]["id"]);
         $("#brg_permintaan_qty_edit").val(content[row]["qty"]);
         $("#brg_permintaan_notes_edit").val(content[row]["notes"]);

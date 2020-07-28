@@ -16,7 +16,7 @@
                     <input type = 'hidden' name = 'type' value = '<?php echo $type;?>'>
                     <input type = 'hidden' name = 'tipe_pengiriman' value = '<?php echo $tipe_pengiriman;?>'>
                     <input type = 'hidden' name = 'id_tempat_pengiriman' value = '<?php echo $id_tempat_pengiriman;?>'>
-                    <input type = 'hidden' name = 'brg_pengiriman_qty' id = 'brg_pengiriman_qty'>
+                    <input type = 'hidden' class = 'nf-input' name = 'brg_pengiriman_qty' id = 'brg_pengiriman_qty'>
                     <table class = "table table-striped table-bordered">
                         <tr>
                             <th>Nama Barang</th>

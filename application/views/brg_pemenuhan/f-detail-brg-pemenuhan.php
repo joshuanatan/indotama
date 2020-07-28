@@ -33,11 +33,21 @@
             type:"GET",
             dataType:"JSON",
             success:function(respond){
+                
+                $("#pemberian_list_container").html(`<tr><td colspan = 4>No Data</td></tr>`);
                 if(respond["status"] == "SUCCESS"){
                     pemenuhan_detail_content = respond["content"];
                     var html = "";
                     for(var a = 0; a < respond["content"].length; a++){
-                        html += "<tr id = 'pemenuhan_list"+a+"'><td>"+respond["content"][a]["last_modified"]+"</td><td>"+respond["content"][a]["qty"]+"</td><td>"+respond["content"][a]["status"]+"</td><td><i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'delete_button text-danger md-delete' onclick = 'hapus_pemberian("+a+")'></i></td></tr>";
+                        html += `
+                        <tr id = 'pemenuhan_list${a}'>
+                            <td>${respond["content"][a]["last_modified"]}</td>
+                            <td>${respond["content"][a]["qty"]} Pcs</td>
+                            <td>${respond["content"][a]["status"]}</td>
+                            <td>
+                                <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'delete_button text-danger md-delete' onclick = 'hapus_pemberian(${a})'></i>
+                            </td>
+                        </tr>`;
                     }
                     $("#pemberian_list_container").html(html);
                 }

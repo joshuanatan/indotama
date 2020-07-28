@@ -1,5 +1,5 @@
 <div class = "modal fade" id = "detail_modal">
-    <div class = "modal-dialog modal-lg">
+    <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
                 <h4 class = "modal-title">Detail Data <?php echo ucwords($page_title);?></h4>
@@ -18,7 +18,7 @@
                     </div>
                     <div class = "form-group">
                         <h5>Jumlah Barang</h5>
-                        <input type = "number" class = "form-control" name="brg_permintaan_qty" required  disabled id = "d_brg_permintaan_qty_edit">
+                        <input type = "text" class = "form-control" name="brg_permintaan_qty" required  disabled id = "d_brg_permintaan_qty_edit">
                     </div>
                     <div class = "form-group">
                         <h5>Notes</h5>
@@ -29,7 +29,7 @@
                         <input type = "date" class = "form-control" name="brg_permintaan_deadline" required  disabled id = "d_brg_permintaan_deadline_edit">
                     </div>
                     <div class = "form-group">
-                        <button type = "button" class = "btn btn-sm btn-success" data-dismiss = "modal">OK</button>
+                        <button type = "button" class = "btn btn-sm btn-primary" data-dismiss = "modal">OK</button>
                     </div>
                 </form>
             </div>
@@ -39,7 +39,7 @@
 <script>
     function load_detail_content(row){
         $("#d_id_edit").val(content[row]["id"]);
-        $("#d_brg_permintaan_qty_edit").val(content[row]["qty"]);
+        $("#d_brg_permintaan_qty_edit").val(content[row]["qty"] + " Pcs");
         $("#d_brg_permintaan_notes_edit").val(content[row]["notes"]);
         $("#d_brg_permintaan_deadline_edit").val(content[row]["deadline"]);
         $("#d_brg_permintaan_status_edit").val(content[row]["status"]);

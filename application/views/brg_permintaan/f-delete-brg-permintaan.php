@@ -19,11 +19,11 @@
                             <td id = "brg_nama_delete"></td>    
                         </tr>
                         <tr>
-                            <td>Qty Permintaan</td>
+                            <td>Jumlah Permintaan (Pcs)</td>
                             <td id = "brg_permintaan_qty_delete"></td>
                         </tr>
                         <tr>
-                            <td>Qty Pemenuhan</td>
+                            <td>Jumlah Terpenuhi (Pcs)</td>
                             <td id = "brg_pemenuhan_qty_delete"></td>
                         </tr>
                         <tr>
@@ -37,8 +37,8 @@
                     </tbody>
                 </table>
                 <div class = "form-group">
-                    <button type = "button" class = "btn btn-sm btn-primary" data-dismiss = "modal">Cancel</button>
-                    <button type = "button" onclick = "delete_func()" class = "btn btn-sm btn-danger">Delete</button>
+                    <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
+                    <button type = "button" id = "delete-permintaan-button" onclick = "delete_func()" class = "btn btn-sm btn-primary">Delete</button>
                 </div>
             </div>
         </div>
@@ -46,6 +46,12 @@
 </div>
 <script>
     function load_delete_content(row){
+        if(content[row]["status"].toLowerCase() != "aktif"){
+            $("#delete-permintaan-button").hide();
+        }
+        else{
+            $("#delete-permintaan-button").show();
+        }
         $("#id_delete").val(content[row]["id"]);
         $("#brg_nama_delete").html(content[row]["barang"]);
         $("#brg_permintaan_qty_delete").html(content[row]["qty"]);

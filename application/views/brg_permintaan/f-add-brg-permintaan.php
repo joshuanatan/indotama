@@ -1,6 +1,6 @@
 
 <div class = "modal fade" id = "register_modal">
-    <div class = "modal-dialog modal-lg">
+    <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
                 <h4 class = "modal-title">Tambah Data <?php echo ucwords($page_title);?></h4>
@@ -18,7 +18,7 @@
                         <input list="datalist_barang_cabang" name="brg_nama" id="brg_nama" class = "form-control">
                     </div>
                     <div class = "form-group">
-                        <h5>Jumlah Barang</h5>
+                        <h5>Jumlah Barang (Pcs)</h5>
                         <input type = "text" class = "form-control nf-input" name="brg_permintaan_qty" required id = "brg_permintaan_qty">
                     </div>
                     <div class = "form-group">
