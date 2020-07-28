@@ -51,9 +51,7 @@ $notif_data = array(
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
                                             <div class = "align-middle text-center d-block">
-                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-success md-eye"></i><b> - Details </b>
-                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
-                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "md-truck"></i><b> - Kirim Barang </b>
                                             </div>
                                             <br/>
                                             <?php $this->load->view("_base_element/table",$excel);?>
@@ -79,10 +77,22 @@ $notif_data = array(
             class:"md-truck",
             style:"cursor:pointer",
             onclick:"open_kirim_barang_modal()"
+        },
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-info md-print',
+            onclick:'redirect_print_pdf()'
         }
     ]
 </script>
 <script>
+    function redirect_print_pdf(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_pengiriman = content[row]["id"];
+            window.open("<?php echo base_url();?>pdf/surat_jalan/permintaan/"+id_pengiriman,"_blank");
+        });
+    }
     var delete_params = "";
     function open_kirim_barang_modal(){
         $('body table').find('tr').click( function(){

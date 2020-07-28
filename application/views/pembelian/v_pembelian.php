@@ -58,6 +58,8 @@ $notif_data = array(
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-success md-eye"></i><b> - Details </b>
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-secondary md-check"></i><b> - Done </b>
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-info md-print"></i><b> - Pdf </b>
                                             </div>
                                             <br/>
                                             <?php
@@ -88,10 +90,22 @@ $notif_data = array(
             class:"text-secondary md-check",
             onclick:"open_konfirmasi_selesai_modal()",
             style:"cursor:pointer"
+        },
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-info md-print',
+            onclick:'redirect_print_pdf()'
         }
     ]
 </script>
 <script>
+    function redirect_print_pdf(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_pembelian = content[row]["id"];
+            window.open("<?php echo base_url();?>pdf/pembelian/index/"+id_pembelian,"_blank");
+        });
+    }
     function open_konfirmasi_selesai_modal(){
         $("body table").find("tr").click(function(){
             var row = $(this).index();
