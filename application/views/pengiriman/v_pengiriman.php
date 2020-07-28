@@ -86,6 +86,20 @@ $notif_data = array(
 <script>
     var ctrl = "pengiriman";
     var url_add = "type=<?php echo $type;?>";
+    var additional_button = [
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-info md-print',
+            onclick:'redirect_print_pdf()'
+        }
+    ];
+    function redirect_print_pdf(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_pengiriman = content[row]["id"];
+            window.open("<?php echo base_url();?>pdf/surat_jalan/index/"+id_pengiriman,"_blank");
+        });
+    }
 </script>
 <?php
 $data = array(

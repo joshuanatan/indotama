@@ -82,6 +82,13 @@ $notif_data = array(
 </html>
 <script>
     var ctrl = "retur";
+    var additional_button = [
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-info md-print',
+            onclick:'redirect_print_pdf()'
+        }
+    ];
 </script>
 <?php
 $data = array(
@@ -99,6 +106,13 @@ $data = array(
 <?php $this->load->view("_base_element/datalist_satuan");?>
 <?php $this->load->view("_base_element/datalist_barang_cabang");?>
 <script>
+    function redirect_print_pdf(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_retur = content[row]["id"];
+            window.open("<?php echo base_url();?>pdf/retur/index/"+id_retur,"_blank");
+        });
+    }
     function load_datalist(){
         load_datalist_penjualan();
         load_datalist_satuan();

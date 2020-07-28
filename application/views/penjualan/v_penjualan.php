@@ -69,6 +69,8 @@ $notif_data = array(
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-success md-eye"></i><b> - Details </b>
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-info md-print"></i><b> - Invoice </b>
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-default md-print"></i><b> - Invoice Copy </b>
                                             </div>
                                             <br/>
                                             <?php
@@ -102,6 +104,16 @@ $notif_data = array(
             class:'text-primary md-edit',
             onclick:'redirect_edit_penjualan()'
         },
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-info md-print',
+            onclick:'redirect_print_pdf()'
+        },
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-default md-print',
+            onclick:'redirect_print_pdf_copy()'
+        },
     ];
 </script>
 <?php
@@ -111,6 +123,20 @@ $data = array(
 ?>
 
 <script>
+    function redirect_print_pdf(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_penjualan = content[row]["id"];
+            window.open("<?php echo base_url();?>pdf/invoice/index/"+id_penjualan,"_blank");
+        });
+    }
+    function redirect_print_pdf_copy(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_penjualan = content[row]["id"];
+            window.open("<?php echo base_url();?>pdf/invoice/copy/"+id_penjualan,"_blank");
+        });
+    }
     function redirect_edit_penjualan(){
         $('body table').find('tr').click( function(){
             var row = $(this).index();
