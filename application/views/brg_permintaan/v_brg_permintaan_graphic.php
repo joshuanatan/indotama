@@ -89,7 +89,7 @@ $notif_data = array(
 <?php $this->load->view("_core_script/menubar_func");?>
 <script>
     load_permintaan_barang_content();
-    laod_incoming_delivery_content();
+    load_incoming_delivery_content();
     var content_permintaan;
     var content_id;
     var content;
@@ -161,7 +161,7 @@ $notif_data = array(
         load_delete_content(row);
         $('#delete_modal').modal('show');
     }
-    function laod_incoming_delivery_content(){
+    function load_incoming_delivery_content(){
         $.ajax({
             url:"<?php echo base_url();?>ws/penerimaan_permintaan/list_pengiriman_otw?type=cabang",
             type:"GET",
@@ -216,15 +216,15 @@ $notif_data = array(
     function konfirmasi_terima(row){
         ctrl = "penerimaan_permintaan";
         content = content_id;
-        $("#id_brg_pemenuhan").val(content[row]["id_brg_pemenuhan"]);
-        $("#id_brg_pengiriman").val(content[row]["id_brg_pengiriman"]);
-        $("#brg_pengiriman_qty").html(content[row]["qty_brg_pengiriman"]+" Pcs");
-        $("#brg_penerimaan_qty").val(content[row]["qty_brg_pengiriman"]);
-        $("#brg_nama").html(content[row]["nama_brg"]);
-        $("#toko").html(content[row]["nama_toko"]);
-        $("#cabang").html(content[row]["daerah_cabang"]);
-        $("#tgl_pengiriman").html(content[row]["tgl_pengiriman"]);
-        $("#register_modal").modal("show");
+        $("#p_id_brg_pemenuhan").val(content[row]["id_brg_pemenuhan"]);
+        $("#p_id_brg_pengiriman").val(content[row]["id_brg_pengiriman"]);
+        $("#p_brg_pengiriman_qty").html(content[row]["qty_brg_pengiriman"]+" Pcs");
+        $("#p_brg_penerimaan_qty").val(content[row]["qty_brg_pengiriman"]);
+        $("#p_brg_nama").html(content[row]["nama_brg"]);
+        $("#p_toko").html(content[row]["nama_toko"]);
+        $("#p_cabang").html(content[row]["daerah_cabang"]);
+        $("#p_tgl_pengiriman").html(content[row]["tgl_pengiriman"]);
+        $("#p_register_penerimaan_permintaan_modal").modal("show");
     }
 </script>
 <?php
@@ -242,6 +242,7 @@ $data = array(
 <?php $this->load->view("brg_permintaan/f-selesai-brg-permintaan",$data);?>
 <?php $this->load->view("brg_permintaan/f-delete-brg-permintaan",$data);?>
 <?php $this->load->view("brg_permintaan/f-add-brg-permintaan",$data);?>
+<?php $this->load->view("brg_permintaan/p-add-penerimaan-permintaan");?>
 <script>
     /*tambahin event handler untuk add permintaan button untuk refresh disini*/
     document.getElementById("permintaan_tambah_button").addEventListener("click",function(){
@@ -249,7 +250,7 @@ $data = array(
     });
     /*tambahin event handler untuk add penerimaan permintaan button untuk refresh disini*/
     document.getElementById("penerimaan_permintaan_tambah_button").addEventListener("click",function(){
-        laod_incoming_delivery_content();
+        load_incoming_delivery_content();
     });
 </script>
 

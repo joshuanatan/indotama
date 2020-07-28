@@ -114,11 +114,12 @@ class M_t_penerimaan_permintaan extends ci_model{
         left join tbl_brg_penerimaan on tbl_brg_penerimaan.id_fk_brg_pengiriman = tbl_brg_pengiriman.id_pk_brg_pengiriman and tbl_brg_penerimaan.brg_penerimaan_qty > 0 #dianggap diterima apabila brgditerima > 0 (klo delete, ini ke 0 sendiri)
         left join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan and mstr_penerimaan.penerimaan_status = 'aktif' and mstr_penerimaan.penerimaan_tipe = 'permintaan' #dianggap diterima apabila status penerimaan > 0
         where tbl_brg_pengiriman.brg_pengiriman_qty > 0 #dianggap terkirim apabila tidak di cancel (klo cancel, qty jadi 0)
-        and brg_pemenuhan_status = 'pengiriman'
+        and brg_pemenuhan_status = 'perjalanan'
         order by pengiriman_tgl DESC";
         $args = array(
             $id_cabang
         );
+        //executeQuery($query,$args); echo $this->db->last_query();
         return executeQuery($query,$args);
     }
 }

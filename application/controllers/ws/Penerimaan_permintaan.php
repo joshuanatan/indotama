@@ -84,7 +84,7 @@ class Penerimaan_permintaan extends CI_Controller{
                 $response["content"][$a]["id"] = $result[$a]["id_pk_penerimaan"];
                 $response["content"][$a]["id_brg_pemenuhan"] = $result[$a]["id_pk_brg_pemenuhan"];
                 $response["content"][$a]["id_brg_pengiriman"] = $result[$a]["id_pk_brg_pengiriman"];
-                $response["content"][$a]["qty_brg_pengiriman"] = $result[$a]["brg_pengiriman_qty"];
+                $response["content"][$a]["qty_brg_pengiriman"] = number_format($result[$a]["brg_pengiriman_qty"],2,",",".");
                 $response["content"][$a]["note_brg_pengiriman"] = $result[$a]["brg_pengiriman_note"];
                 $response["content"][$a]["status"] = $result[$a]["brg_pemenuhan_status"];
                 $response["content"][$a]["tgl_pengiriman"] = $result[$a]["pengiriman_tgl"];

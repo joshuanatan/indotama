@@ -9,11 +9,11 @@ function reset_register_form(){
 }
 </script>
 <script>
-    function register_func(){
+    function register_func(id_register_form = "register_form",id_register_modal = "register_modal"){
         if(typeof(nf_reformat_all) != "undefined"){
             nf_reformat_all();
         }
-        var form = $("#register_form")[0];
+        var form = $(`#${id_register_form}`)[0];
         var data = new FormData(form);
         $.ajax({
             url:"<?php echo base_url();?>ws/"+ctrl+"/register",
@@ -26,7 +26,7 @@ function reset_register_form(){
             success:function(respond){
                 if(respond["status"] == "SUCCESS"){
                     $('#notif_register_success').show(1).delay(2000).hide(1);
-                    $("#register_modal").modal("hide");
+                    $(`#${id_register_modal}`).modal("hide");
                     $(".form-reset").val("");
                     if(typeof(refresh) != "undefined"){
                         refresh(page);
