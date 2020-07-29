@@ -1,4 +1,4 @@
-<div class = "modal fade" id = "modal_insert">
+<div class = "modal fade" id = "register_modal">
     <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
@@ -19,7 +19,6 @@
                         <input type = "text" class = "form-control nf-input" name="brg_pemenuhan_qty" required id = "brg_pemenuhan_qty_insert">
                     </div>
                     <h5>*Stok warehouse sekarang: <span id="brg_skrg_insert"></span><br>
-                    *Stok barang seluruhnya <span id="brg_seluruh"></span><br>
                     </h5>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>

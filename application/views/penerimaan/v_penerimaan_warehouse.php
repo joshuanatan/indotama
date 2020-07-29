@@ -99,7 +99,7 @@ $data = array(
 <?php $this->load->view("_base_element/datalist_pembelian");?>
 <script>
 function load_datalist(){
-    load_datalist_pembelian();
+    load_datalist_pembelian_all();
 }
 </script>
 <?php $this->load->view('_notification/notif_general'); ?>

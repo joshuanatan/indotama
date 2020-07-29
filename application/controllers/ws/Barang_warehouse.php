@@ -3,7 +3,8 @@ defined("BASEPATH") or exit("no direct script");
 class Barang_warehouse extends CI_Controller{
     public function __construct(){
         parent::__construct();
-        $this->update_list_barang();
+        $this->register_unregistered_anggota_kombinasi_warehouse($origin = "construct");
+        $this->stock_adjustment();
     }
     public function columns(){
         $response["status"] = "SUCCESS";
@@ -37,7 +38,7 @@ class Barang_warehouse extends CI_Controller{
             $result["data"] = $result["data"]->result_array();
             for($a = 0; $a<count($result["data"]); $a++){
                 $response["content"][$a]["id"] = $result["data"][$a]["id_pk_brg_warehouse"];
-                $response["content"][$a]["qty"] = $result["data"][$a]["brg_warehouse_qty"];
+                $response["content"][$a]["qty"] = number_format($result["data"][$a]["brg_warehouse_qty"],2,",",".");
                 $response["content"][$a]["notes"] = $result["data"][$a]["brg_warehouse_notes"];
                 $response["content"][$a]["status"] = $result["data"][$a]["brg_warehouse_status"];
                 $response["content"][$a]["id_brg"] = $result["data"][$a]["id_fk_brg"];
@@ -48,6 +49,7 @@ class Barang_warehouse extends CI_Controller{
                 $response["content"][$a]["minimal_brg"] = $result["data"][$a]["brg_minimal"];
                 $response["content"][$a]["satuan_brg"] = $result["data"][$a]["brg_satuan"];
                 $response["content"][$a]["image_brg"] = $result["data"][$a]["brg_image"];
+                $response["content"][$a]["tipe"] = $result["data"][$a]["brg_tipe"];
             }
         }
         else{
@@ -60,6 +62,7 @@ class Barang_warehouse extends CI_Controller{
             "ket_brg",
             "qty",
             "notes",
+            "tipe",
             "status",
             "last_modified"
         );
@@ -188,26 +191,34 @@ class Barang_warehouse extends CI_Controller{
         }
         echo json_encode($response);
     }
-    private function update_list_barang(){
-        //select semua yang belom ada   
+    private function register_unregistered_anggota_kombinasi_warehouse($origin = "insert"){
+        
+        #cari anggota kombinasi yang (belom ada) dan lakukan insert. literally do that, cari semua yang merupakan anggota kombinasi tapi belom ada di daftar barang warehouse
+        #jadi klo udah ada itu ga kepanggil lagi.
+        #tujuan fungsi ini untuk memastiakn setiap barang anggota kombinasi telah terdaftar diwarehouse, bukan untuk stok adjustment
+
+
+        #usecases:
+            # 1. insert barang kombinasi 1 (barang1,3,5). klo  1,3,5 ga ada, select, insert
+            # 2. kalau udah ada barang kombinasi 1 terdaftar, trus daftarin kombinasi 2(2,3,5), maka hanya 2 yang keambil, 3 dan 5 belom [butuh stock adjustment]
+            # 3. kalau ada barang kombinasi 1(1,3,5) dan kombinasi 2(2,3,5), kemudian yang 5 dihapus maka hasilnya akan mengeluarkan 5,5 (untuk kombinasi 1 dan 2). fungsi akan melakukan insert pertama (insert) dan insert kedua (update) karena sudah ada dari hasil insert yang pertama
         $this->load->model("m_brg_warehouse");
         $this->m_brg_warehouse->set_id_fk_warehouse($this->session->id_warehouse);
-        $result = $this->m_brg_warehouse->list_not_exists_brg_kombinasi();
-        if($result->num_rows() > 0){
-            $result = $result->result_array();
-            for($a = 0; $a<count($result); $a++){
-                /*harusnya bukan 0 tapi sejumlah kombinasi qty * mstrkombinasi qty*/
-                /*kalau misalnya ada, itu harusnya ditambahin bukan di abaikan*/
-                if($this->m_brg_warehouse->set_insert($result[$a]["add_qty"],"Auto insert from item existance check","aktif",$result[$a]["id_barang_kombinasi"],$this->session->id_warehouse)){
+        $result_kombinasi = $this->m_brg_warehouse->list_not_exists_brg_kombinasi();
+        if($result_kombinasi->num_rows() > 0){
+            $result_kombinasi = $result_kombinasi->result_array();
+            //print_r($result_kombinasi);
+            for($b = 0; $b < count($result_kombinasi); $b++){
+                $this->load->model("m_brg_warehouse");
+                if($this->m_brg_warehouse->set_insert('0',"Auto insert from checking construct","aktif",$result_kombinasi[$b]["id_barang_kombinasi"],$this->session->id_warehouse)){
                     if($this->m_brg_warehouse->insert()){
                     }
-                    else{
-                    }
                 }
-                else{
-                }
-            }   
+            }
         }
-        //loop masuk
+    }
+    private function stock_adjustment(){
+        #update master kombinasi based on stok
+        executeQuery("call update_stok_kombinasi_master_warehouse();");
     }
 }

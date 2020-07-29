@@ -75,15 +75,29 @@ class M_t_penerimaan_permintaan extends ci_model{
             left join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan and mstr_penerimaan.penerimaan_status = 'aktif' and mstr_penerimaan.penerimaan_tipe = 'permintaan' #dianggap diterima apabila status penerimaan > 0
             where tbl_brg_pengiriman.brg_pengiriman_qty > 0 #dianggap terkirim apabila tidak di cancel (klo cancel, qty jadi 0)
             ".$search_query."
+            union
+            
+            select id_pk_penerimaan,id_pk_brg_pemenuhan,id_pk_brg_pengiriman,brg_pengiriman_qty,brg_pengiriman_note,brg_pemenuhan_status,pengiriman_tgl,warehouse_alamat as cabang_daerah,warehouse_nama as toko_nama, '-' as toko_kode,brg_nama,brg_kode,
+            ifnull(penerimaan_tgl,'-') as penerimaan_tgl
+            from tbl_brg_pengiriman
+            inner join mstr_pengiriman on mstr_pengiriman.id_pk_pengiriman = tbl_brg_pengiriman.id_fk_pengiriman and mstr_pengiriman.pengiriman_status = 'aktif' #harus yang jadi terkirim bukan yang dicancel
+            inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = mstr_pengiriman.id_fk_warehouse
+            inner join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_pk_brg_pemenuhan = tbl_brg_pengiriman.id_fk_brg_pemenuhan #cuman untuk dapetin id_cabang_minta & id_barang
+            inner join tbl_brg_permintaan on tbl_brg_permintaan.id_pk_brg_permintaan = tbl_brg_pemenuhan.id_fk_brg_permintaan and tbl_brg_permintaan.id_fk_cabang = ? #menentukan peminta barang yang akan jadi penerima
+            inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg #dapetin detail barang
+            left join tbl_brg_penerimaan on tbl_brg_penerimaan.id_fk_brg_pengiriman = tbl_brg_pengiriman.id_pk_brg_pengiriman and tbl_brg_penerimaan.brg_penerimaan_qty > 0 #dianggap diterima apabila brgditerima > 0 (klo delete, ini ke 0 sendiri)
+            left join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan and mstr_penerimaan.penerimaan_status = 'aktif' and mstr_penerimaan.penerimaan_tipe = 'permintaan' #dianggap diterima apabila status penerimaan > 0
+            where tbl_brg_pengiriman.brg_pengiriman_qty > 0 #dianggap terkirim apabila tidak di cancel (klo cancel, qty jadi 0)
+            ".$search_query."
             order by ".$order_by." ".$order_direction." 
             limit 20 offset ".($page-1)*$data_per_page;
             $args = array(
-                $this->id_fk_cabang
+                $this->id_fk_cabang,$this->id_fk_cabang
             );
             $result["data"] = executequery($query,$args);
             //echo $this->db->last_query();
             $query = "
-            select id_pk_brg_pengiriman
+            select id_pk_penerimaan
             from tbl_brg_pengiriman
             inner join mstr_pengiriman on mstr_pengiriman.id_pk_pengiriman = tbl_brg_pengiriman.id_fk_pengiriman and mstr_pengiriman.pengiriman_status = 'aktif' #harus yang jadi terkirim bukan yang dicancel
             inner join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_pengiriman.id_fk_cabang #dapetin daerah cabang
@@ -95,7 +109,18 @@ class M_t_penerimaan_permintaan extends ci_model{
             left join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan and mstr_penerimaan.penerimaan_status = 'aktif' and mstr_penerimaan.penerimaan_tipe = 'permintaan' #dianggap diterima apabila status penerimaan > 0
             where tbl_brg_pengiriman.brg_pengiriman_qty > 0 #dianggap terkirim apabila tidak di cancel (klo cancel, qty jadi 0)
             ".$search_query."
-            order by ".$order_by." ".$order_direction; 
+            union
+            select id_pk_penerimaan
+            from tbl_brg_pengiriman
+            inner join mstr_pengiriman on mstr_pengiriman.id_pk_pengiriman = tbl_brg_pengiriman.id_fk_pengiriman and mstr_pengiriman.pengiriman_status = 'aktif' #harus yang jadi terkirim bukan yang dicancel
+            inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = mstr_pengiriman.id_fk_warehouse
+            inner join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_pk_brg_pemenuhan = tbl_brg_pengiriman.id_fk_brg_pemenuhan #cuman untuk dapetin id_cabang_minta & id_barang
+            inner join tbl_brg_permintaan on tbl_brg_permintaan.id_pk_brg_permintaan = tbl_brg_pemenuhan.id_fk_brg_permintaan and tbl_brg_permintaan.id_fk_cabang = ? #menentukan peminta barang yang akan jadi penerima
+            inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg #dapetin detail barang
+            left join tbl_brg_penerimaan on tbl_brg_penerimaan.id_fk_brg_pengiriman = tbl_brg_pengiriman.id_pk_brg_pengiriman and tbl_brg_penerimaan.brg_penerimaan_qty > 0 #dianggap diterima apabila brgditerima > 0 (klo delete, ini ke 0 sendiri)
+            left join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan and mstr_penerimaan.penerimaan_status = 'aktif' and mstr_penerimaan.penerimaan_tipe = 'permintaan' #dianggap diterima apabila status penerimaan > 0
+            where tbl_brg_pengiriman.brg_pengiriman_qty > 0 #dianggap terkirim apabila tidak di cancel (klo cancel, qty jadi 0)
+            ".$search_query;
             $result["total_data"] = executequery($query,$args)->num_rows();
         }
         return $result;
@@ -115,9 +140,21 @@ class M_t_penerimaan_permintaan extends ci_model{
         left join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan and mstr_penerimaan.penerimaan_status = 'aktif' and mstr_penerimaan.penerimaan_tipe = 'permintaan' #dianggap diterima apabila status penerimaan > 0
         where tbl_brg_pengiriman.brg_pengiriman_qty > 0 #dianggap terkirim apabila tidak di cancel (klo cancel, qty jadi 0)
         and brg_pemenuhan_status = 'perjalanan'
+        union
+        select id_pk_penerimaan,id_pk_brg_pemenuhan,id_pk_brg_pengiriman,brg_pengiriman_qty,brg_pengiriman_note,brg_pemenuhan_status,pengiriman_tgl,warehouse_alamat as cabang_daerah,warehouse_nama as toko_nama,'-' as toko_kode,brg_nama,brg_kode,ifnull(penerimaan_tgl,'-') as penerimaan_tgl
+        from tbl_brg_pengiriman
+        inner join mstr_pengiriman on mstr_pengiriman.id_pk_pengiriman = tbl_brg_pengiriman.id_fk_pengiriman and mstr_pengiriman.pengiriman_status = 'aktif' #harus yang jadi terkirim bukan yang dicancel
+        inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = mstr_pengiriman.id_fk_warehouse
+        inner join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_pk_brg_pemenuhan = tbl_brg_pengiriman.id_fk_brg_pemenuhan #cuman untuk dapetin id_cabang_minta & id_barang
+        inner join tbl_brg_permintaan on tbl_brg_permintaan.id_pk_brg_permintaan = tbl_brg_pemenuhan.id_fk_brg_permintaan and tbl_brg_permintaan.id_fk_cabang = ? #menentukan peminta barang yang akan jadi penerima
+        inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_permintaan.id_fk_brg #dapetin detail barang
+        left join tbl_brg_penerimaan on tbl_brg_penerimaan.id_fk_brg_pengiriman = tbl_brg_pengiriman.id_pk_brg_pengiriman and tbl_brg_penerimaan.brg_penerimaan_qty > 0 #dianggap diterima apabila brgditerima > 0 (klo delete, ini ke 0 sendiri)
+        left join mstr_penerimaan on mstr_penerimaan.id_pk_penerimaan = tbl_brg_penerimaan.id_fk_penerimaan and mstr_penerimaan.penerimaan_status = 'aktif' and mstr_penerimaan.penerimaan_tipe = 'permintaan' #dianggap diterima apabila status penerimaan > 0
+        where tbl_brg_pengiriman.brg_pengiriman_qty > 0 #dianggap terkirim apabila tidak di cancel (klo cancel, qty jadi 0)
+        and brg_pemenuhan_status = 'perjalanan'
         order by pengiriman_tgl DESC";
         $args = array(
-            $id_cabang
+            $id_cabang,$id_cabang
         );
         //executeQuery($query,$args); echo $this->db->last_query();
         return executeQuery($query,$args);

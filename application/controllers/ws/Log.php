@@ -36,7 +36,7 @@ class Log extends CI_Controller{
             for($a = 0; $a<count($result["data"]); $a++){
                 $response["content"][$a]["id"] = $result["data"][$a]["id_log_all"];
                 $response["content"][$a]["date"] = $result["data"][$a]["log_date"];
-                $response["content"][$a]["msg"] = $result["data"][$a]["log"];
+                $response["content"][$a]["msg"] = nl2br($result["data"][$a]["log"]);
                 $response["content"][$a]["user"] = $result["data"][$a]["user_name"];
             }
         }

@@ -62,6 +62,7 @@
             success:function(respond){
                 $("#pemenuhan_list"+row).remove();
                 refresh(page);
+                $("#detail_modal").modal("hide");
             }
         })
     }

@@ -17,18 +17,22 @@ class M_brg_warehouse extends ci_model{
 
     public function __construct(){
         parent::__construct();
-        executeQuery("call update_stok_kombinasi_master_warehouse();");
         $this->set_column("brg_kode","kode barang","required");
         $this->set_column("brg_nama","nama barang","required");
         $this->set_column("brg_ket","keterangan","required");
         $this->set_column("brg_warehouse_qty","qty","required");
         $this->set_column("brg_warehouse_notes","notes","required");
+        $this->set_column("brg_tipe","Tipe Kombinasi","required");
         $this->set_column("brg_warehouse_status","status","required");
         $this->set_column("brg_warehouse_last_modified","last modified","required");
         $this->brg_warehouse_create_date = date("y-m-d h:i:s");
         $this->brg_warehouse_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
+    }
+    private function stock_adjustment(){
+        #update master kombinasi based on stok
+        executeQuery("call update_stok_kombinasi_master_warehouse();");
     }
     public function columns(){
         return $this->columns;
@@ -134,6 +138,7 @@ class M_brg_warehouse extends ci_model{
         executequery($sql);
     }
     public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
+        $this->stock_adjustment();
         $order_by = $this->columns[$order_by]["col_name"];
         $search_query = "";
         if($search_key != ""){
@@ -154,7 +159,7 @@ class M_brg_warehouse extends ci_model{
             )";
         }
         $query = "
-        select id_pk_brg_warehouse,brg_warehouse_qty,brg_warehouse_notes,brg_warehouse_status,id_fk_brg,brg_warehouse_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image
+        select id_pk_brg_warehouse,brg_warehouse_qty,brg_warehouse_notes,brg_warehouse_status,id_fk_brg,brg_warehouse_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image,brg_tipe
         from ".$this->tbl_name." 
         inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_brg
         where brg_warehouse_status = ? and brg_status = ? and id_fk_warehouse = ? ".$search_query."  
@@ -176,12 +181,29 @@ class M_brg_warehouse extends ci_model{
     }
     public function list_not_exists_brg_kombinasi(){
         $sql = "
-        select id_barang_kombinasi,barang_kombinasi_qty,brg_warehouse_qty,barang_kombinasi_qty*brg_warehouse_qty as add_qty 
-        from tbl_brg_warehouse
-        right join tbl_barang_kombinasi on tbl_barang_kombinasi.id_barang_utama = tbl_brg_warehouse.id_fk_brg
-        where id_fk_warehouse = ? and brg_warehouse_status = 'aktif'
-        and id_barang_kombinasi not in
-        (select id_fk_brg from tbl_brg_warehouse where id_fk_warehouse = ? and brg_warehouse_status = 'aktif')
+        select id_barang_utama,id_barang_kombinasi,brg_warehouse_qty,barang_kombinasi_qty*brg_warehouse_qty as add_qty  
+        from tbl_brg_warehouse 
+        right join (
+            select id_barang_kombinasi,barang_kombinasi_qty,id_barang_utama
+            from tbl_barang_kombinasi
+            inner join mstr_barang on mstr_barang.id_pk_brg = tbl_barang_kombinasi.id_barang_kombinasi and brg_status = 'aktif'
+            where barang_kombinasi_status = 'aktif'
+            and tbl_barang_kombinasi.id_barang_utama in (
+				/*cari yang barang tersebut adalah kombinasi. ada potensi barang tersebut awalnya kombinasi jadi punya anak, trus dinonaktifkan (berubah jadi barang nonkombinasi) tapi secara data, anggota kombinasinya masih kecatet dan aktif. Jadi harus ditambah where brg_tipe master kombinasi = 'kombinasi' untuk memastikan*/
+                select id_fk_brg from tbl_brg_warehouse
+                inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_warehouse.id_fk_brg
+                where brg_warehouse_status = 'aktif' and brg_status = 'aktif' and brg_tipe = 'kombinasi'
+                and id_fk_warehouse = ?
+            )
+            and tbl_barang_kombinasi.id_barang_kombinasi not in (
+				/*tapi yang anggotanya bukan kombinasi karena emang harusnya gaboleh kombinasi diisi kombinasi*/
+                select id_fk_brg from tbl_brg_warehouse
+                inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_warehouse.id_fk_brg
+                where brg_warehouse_status = 'aktif' and brg_status = 'aktif' and brg_tipe = 'nonkombinasi'
+                and id_fk_warehouse = ?
+            )
+        ) as a on a.id_barang_utama = tbl_brg_warehouse.id_fk_brg
+        where tbl_brg_warehouse.brg_warehouse_status = 'aktif'
         ";
         $args = array(
             $this->id_fk_warehouse, $this->id_fk_warehouse
@@ -207,7 +229,6 @@ class M_brg_warehouse extends ci_model{
                     "id_create_data" => $this->id_create_data,
                     "id_last_modified" => $this->id_last_modified
                 );
-                executeQuery("call update_stok_kombinasi_anggota_warehouse(".$this->id_fk_brg.",".$this->brg_warehouse_qty.",0,".$this->id_fk_warehouse);
                 return insertrow($this->tbl_name,$data);
             }
             else{
@@ -216,6 +237,7 @@ class M_brg_warehouse extends ci_model{
                     $this->id_fk_brg,$this->id_fk_warehouse
                 );
                 executeQuery($query,$args);
+                return true;
             }
         }
         return false;

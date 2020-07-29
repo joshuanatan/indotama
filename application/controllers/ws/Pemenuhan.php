@@ -78,6 +78,13 @@ class Pemenuhan extends CI_Controller{
                 }
                 else if(strtolower($type) == "warehouse" && $this->session->id_warehouse){
                     for($a = 0; $a<count($result["data"]); $a++){
+                        
+                        if(file_exists(FCPATH."asset/uploads/barang/".$result["data"][$a]["brg_image"])){
+                            $response["content"][$a]["image"] = $result["data"][$a]["brg_image"];
+                        }
+                        else{
+                            $response["content"][$a]["image"] = "noimage.jpg";
+                        }
                         $response["content"][$a]["id"] = $result["data"][$a]["id_pk_brg_permintaan"];
                         $response["content"][$a]["stok_permintaan"] =  number_format($result["data"][$a]["brg_permintaan_qty"],2,",",".");
                         $response["content"][$a]["notes"] = $result["data"][$a]["brg_permintaan_notes"];
@@ -91,7 +98,7 @@ class Pemenuhan extends CI_Controller{
                         $response["content"][$a]["toko"] = $result["data"][$a]["toko_nama"]." ".$result["data"][$a]["cabang_daerah"];
                         $response["content"][$a]["id_fk_warehouse"] = $result["data"][$a]["id_warehouse_penyedia"];
                         $response["content"][$a]["tgl_permintaan"] = $result["data"][$a]["brg_permintaan_create_date"];
-                        $response["content"][$a]["gambar_barang"] = "<img width='100px' src='" .$result["data"][$a]["brg_image"] . "'>";
+                        $response["content"][$a]["gambar_barang"] = "<img width='100px' src='".base_url()."asset/uploads/barang/".$response["content"][$a]["image"]. "'>";
                         $response["content"][$a]["jml_brg_warehouse"] =  number_format($result["data"][$a]["brg_warehouse_qty"],2,",",".");
                         
                     }
@@ -280,7 +287,7 @@ class Pemenuhan extends CI_Controller{
             for($a = 0; $a<count($result); $a++){
                 $response["content"][$a]["id"] = $result[$a]["id_pk_brg_pemenuhan"];
                 $response["content"][$a]["last_modified"] = $result[$a]["brg_pemenuhan_last_modified"];
-                $response["content"][$a]["qty"] = $result[$a]["brg_pemenuhan_qty"];
+                $response["content"][$a]["qty"] = number_format($result[$a]["brg_pemenuhan_qty"],2,",",".");;
                 $response["content"][$a]["status"] = $result[$a]["brg_pemenuhan_status"];
             }
         }

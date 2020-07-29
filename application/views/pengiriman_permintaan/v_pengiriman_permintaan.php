@@ -54,7 +54,7 @@ $notif_data = array(
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "md-truck"></i><b> - Kirim Barang </b>
                                             </div>
                                             <br/>
-                                            <?php $this->load->view("_base_element/table",$excel);?>
+                                            <?php if(isset($excel)) $this->load->view("_base_element/table",$excel); else $this->load->view("_base_element/table")?>
                                         </div>
                                     </div>
                                 </div>
