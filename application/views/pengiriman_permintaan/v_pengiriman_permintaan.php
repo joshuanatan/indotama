@@ -52,6 +52,7 @@ $notif_data = array(
                                         <div class = "col-lg-12">
                                             <div class = "align-middle text-center d-block">
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "md-truck"></i><b> - Kirim Barang </b>
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-info md-print"></i><b> - Print Surat Jalan </b>
                                             </div>
                                             <br/>
                                             <?php if(isset($excel)) $this->load->view("_base_element/table",$excel); else $this->load->view("_base_element/table")?>
