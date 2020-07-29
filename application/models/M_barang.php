@@ -102,8 +102,7 @@ class M_barang extends ci_model{
             set @id_user = new.id_last_modified;
             set @tgl_action = new.brg_last_modified;
             
-            call get_username(new.id_last_modified,@username);
-            set @log_text = concat(@username,' insert data barang at ' , new.brg_last_modified,' nama barang terkait: ',new.brg_nama);
+            set @log_text = concat(@id_user,' insert data barang at ' , new.brg_last_modified,' nama barang terkait: ',new.brg_nama);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
             insert into mstr_barang_log(executed_function,
@@ -120,17 +119,15 @@ class M_barang extends ci_model{
             set @id_user = new.id_last_modified;
             set @tgl_action = new.brg_last_modified;
 
-            call get_username(new.id_last_modified,@username);
-
             if new.brg_status = 'nonaktif'
             then
-                set @log_text = concat(@username,' delete data barang at ',new.brg_last_modified ,' nama barang terkait: ',old.brg_nama);
+                set @log_text = concat(@id_user,' delete data barang at ',new.brg_last_modified ,' nama barang terkait: ',old.brg_nama);
                 call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
 
                 insert into mstr_barang_log(executed_function,
                 id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_tipe,brg_status,brg_create_date,brg_last_modified,id_create_data,id_last_modified,id_fk_brg_jenis,id_fk_brg_merk,id_log_all) values ('after delete',new.id_pk_brg,new.brg_kode,new.brg_nama,new.brg_ket,new.brg_minimal,new.brg_satuan,new.brg_image,new.brg_harga,new.brg_tipe,new.brg_status,new.brg_create_date,new.brg_last_modified,new.id_create_data,new.id_last_modified,new.id_fk_brg_jenis,new.id_fk_brg_merk,@id_log_all);
             else
-                set @log_text = concat(@username,' update data barang at ',new.brg_last_modified ,' \nnama barang terkait: ',old.brg_nama,' nama barang baru: ',new.brg_nama);
+                set @log_text = concat(@id_user,' update data barang at ',new.brg_last_modified ,' \nnama barang terkait: ',old.brg_nama,' nama barang baru: ',new.brg_nama);
                 call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
                     
                 insert into mstr_barang_log(executed_function,
