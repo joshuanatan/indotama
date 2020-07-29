@@ -101,7 +101,7 @@ class M_penjualan_pembayaran extends CI_Model{
     public function list(){
         $where = array(
             "id_fk_penjualan" => $this->id_fk_penjualan,
-            "penjualan_pmbyrn_status" => "aktif"
+            "penjualan_pmbyrn_status !=" => "nonaktif"
         );
         $field = array(
             "id_pk_penjualan_pembayaran",
@@ -375,5 +375,15 @@ class M_penjualan_pembayaran extends CI_Model{
     }
     public function get_penjualan_pmbyrn_status(){
         return $this->penjualan_pmbyrn_status;
+    }
+    public function get_nominal_pembayaran(){
+        $sql = "select sum(penjualan_pmbyrn_nominal) as total_pembayaran from tbl_penjualan_pembayaran
+        where penjualan_pmbyrn_status = 'aktif' and id_fk_penjualan = ?";
+        $args = array(
+            $this->id_fk_penjualan
+        );
+        $result = executeQuery($sql,$args);
+        $result = $result->result_array();
+        return $result[0]["total_pembayaran"];
     }
 }

@@ -427,4 +427,17 @@ class M_brg_penjualan extends ci_model{
     public function get_id_fk_barang(){
         return $this->id_fk_barang;
     }
+    public function get_nominal_brg_penjualan(){
+        /*ambil dari sum(qty*harga)*/
+        $sql = "select sum(brg_penjualan_qty*brg_penjualan_harga) as nominal_penjualan
+        from tbl_brg_penjualan 
+        where brg_penjualan_status = 'aktif' 
+        and id_fk_penjualan = ?";
+        $args = array(
+            $this->id_fk_penjualan
+        );
+        $result = executeQuery($sql,$args);
+        $result = $result->result_array();
+        return $result[0]["nominal_penjualan"];
+    }
 }

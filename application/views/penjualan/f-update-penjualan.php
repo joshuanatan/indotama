@@ -207,7 +207,7 @@ $notif_data = array(
                                                 </div>
                                                 <div class = "form-group col-lg-12">
                                                     <h5>Total Price</h5>
-                                                    <input type = "text" class = "form-control" required readonly onclick = "count_total_price()" id = "total_price">
+                                                    <input type = "text" class = "form-control" required readonly onclick = "count_total_price()" value = "<?php echo number_format($detail[0]["penj_nominal"],0,",",".");?>" id = "total_price">
                                                 </div>
                                                 <div class = "form-group col-lg-12">
                                                     <h5>Tahapan Pembayaran</h5>

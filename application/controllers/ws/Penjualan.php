@@ -51,6 +51,13 @@ class Penjualan extends CI_Controller{
                 $response["content"][$a]["perusahaan_cust"] = $result["data"][$a]["cust_perusahaan"];
                 $response["content"][$a]["user_last_modified"] = $result["data"][$a]["user_last_modified"];
                 $response["content"][$a]["cust_display"] = $result["data"][$a]["cust_perusahaan"]." - ".$result["data"][$a]["cust_name"];
+
+                if(strtolower($result["data"][$a]["status_pembayaran"]) == "lunas"){
+                    $response["content"][$a]["status_pembayaran"] = "<span class='badge badge-success align-top' id = 'orderDirection'>".strtoupper("lunas")."</span>";
+                }
+                else{
+                    $response["content"][$a]["status_pembayaran"] = "<span class='badge badge-danger align-top' id = 'orderDirection'>".strtoupper("Belum lunas")."</span>";
+                }
             }
         }
         else{
@@ -64,6 +71,7 @@ class Penjualan extends CI_Controller{
             "tipe_pembayaran",
             "jenis",
             "status",
+            "status_pembayaran",
             "user_last_modified",
         );
         echo json_encode($response);
@@ -302,6 +310,7 @@ class Penjualan extends CI_Controller{
             if($this->m_penjualan->set_insert($penj_nomor,$penj_tgl,$penj_dateline_tgl,$penj_jenis,$penj_tipe_pembayaran,$id_fk_customer,$id_fk_cabang,$penj_status)){
                 $id_penjualan = $this->m_penjualan->insert();
                 if($id_penjualan){
+                    $nominal_penjualan = 0;
                     if(strtolower($penj_jenis) == "online"){
                         $penj_on_marketplace = $this->input->post("marketplace");
                         $penj_on_no_resi = $this->input->post("no_resi");
@@ -362,6 +371,7 @@ class Penjualan extends CI_Controller{
                                 $brg_penjualan_note = $this->input->post("brg_notes".$a);
                                 $brg_penjualan_status = "AKTIF";
                                 $id_fk_penjualan = $id_penjualan;
+
                                 $barang = $this->input->post("brg".$a);
                                 $this->load->model("m_barang");
                                 $this->m_barang->set_brg_nama($barang);
@@ -399,6 +409,9 @@ class Penjualan extends CI_Controller{
                             }
                             $counter++;
                         }
+                        $this->load->model("m_brg_penjualan");
+                        $this->m_brg_penjualan->set_id_fk_penjualan($id_penjualan);
+                        $nominal_penjualan += $this->m_brg_penjualan->get_nominal_brg_penjualan();
                     }
                     else{
                         $response["itmsts"] = "ERROR";
@@ -456,12 +469,16 @@ class Penjualan extends CI_Controller{
                             }
                             $counter++;
                         }
+                        $this->load->model("m_tambahan_penjualan");
+                        $this->m_tambahan_penjualan->set_id_fk_penjualan($id_penjualan);
+                        $nominal_penjualan += $this->m_tambahan_penjualan->get_nominal_tambahan();
                     }
                     else{
                         $response["tmbhnsts"] = "ERROR";
                         $response["tmbhnmsg"] = "No Checks on Tambahan";
                     }
-                    
+
+                    $nominal_pembayaran = 0;
                     $pembayaran = $this->input->post("pembayaran");
                     if($pembayaran != ""){
                         $counter = 0;
@@ -512,6 +529,10 @@ class Penjualan extends CI_Controller{
                         $response["pmbyrnsts"] = "ERROR";
                         $response["pmbyrnmsg"] = "No Checks on Pembayaran";
                     }
+                    
+                    $this->load->model("m_penjualan_pembayaran");
+                    $this->m_penjualan_pembayaran->set_id_fk_penjualan($id_penjualan);
+                    $nominal_pembayaran += $this->m_penjualan_pembayaran->get_nominal_pembayaran();
 
                     $brg_custom = $this->input->post("brg_custom");
                     if($brg_custom != ""){
@@ -528,6 +549,11 @@ class Penjualan extends CI_Controller{
                             $counter++;
                         }
                     }
+
+                    $this->load->model("m_penjualan");
+                    $this->m_penjualan->set_id_pk_penjualan($id_penjualan);
+                    $this->m_penjualan->update_nominal($nominal_penjualan);
+                    $this->m_penjualan->update_nominal_byr($nominal_pembayaran);
                 }
                 else{
                     $response["status"] = "ERROR";
@@ -557,7 +583,7 @@ class Penjualan extends CI_Controller{
         $this->form_validation->set_rules("jenis_pembayaran","jenis_pembayaran","required");
         if($this->form_validation->run()){
             $id_penjualan = $this->input->post("id_penjualan");
-            if($this->is_allow_to_update($id_penjualan)){
+            if(!$this->is_allow_to_update($id_penjualan)){
                 $response["status"] = "ERROR";
                 $response["msg"] = " Data tidak dapat diubah";
                 echo json_encode($response);
@@ -620,6 +646,7 @@ class Penjualan extends CI_Controller{
                 }
             }
             
+            $nominal_penjualan = 0;
             $check = $this->input->post("check");
             if($check != ""){
                 $counter = 0;
@@ -780,7 +807,10 @@ class Penjualan extends CI_Controller{
                 $response["itmsts"] = "ERROR";
                 $response["itmmsg"] = "No Checks on Item";
             }
-            
+            $this->load->model("m_brg_penjualan");
+            $this->m_brg_penjualan->set_id_fk_penjualan($id_penjualan);
+            $nominal_penjualan += $this->m_brg_penjualan->get_nominal_brg_penjualan();
+
             $tambahan = $this->input->post("tambahan");
             if($tambahan != ""){
                 $counter = 0;
@@ -893,7 +923,11 @@ class Penjualan extends CI_Controller{
                 $response["tmbhnsts"] = "ERROR";
                 $response["tmbhnmsg"] = "No Checks on Tambahan";
             }
-            
+            $this->load->model("m_tambahan_penjualan");
+            $this->m_tambahan_penjualan->set_id_fk_penjualan($id_penjualan);
+            $nominal_penjualan += $this->m_tambahan_penjualan->get_nominal_tambahan();
+
+            $nominal_pembayaran = 0;
             $pembayaran = $this->input->post("pembayaran");
             if($pembayaran != ""){
                 $counter = 0;
@@ -995,6 +1029,15 @@ class Penjualan extends CI_Controller{
                 $response["pmbyrnsts"] = "ERROR";
                 $response["pmbyrnmsg"] = "No Checks on Pembayaran";
             }
+            
+            $this->load->model("m_penjualan_pembayaran");
+            $this->m_penjualan_pembayaran->set_id_fk_penjualan($id_penjualan);
+            $nominal_pembayaran += $this->m_penjualan_pembayaran->get_nominal_pembayaran();
+            
+            $this->load->model("m_penjualan");
+            $this->m_penjualan->set_id_pk_penjualan($id_penjualan);
+            $this->m_penjualan->update_nominal($nominal_penjualan);
+            $this->m_penjualan->update_nominal_byr($nominal_pembayaran);
         }
         else{
             $response["status"] = "ERROR";
@@ -1122,10 +1165,10 @@ class Penjualan extends CI_Controller{
         $result = $this->m_penjualan->detail_by_id();
         if($result->num_rows() > 0){
             $result = $result->result_array();
-            if(strtolower($result[0]["penj_status"]) != "aktif"){
-                return false;
+            if(strtolower($result[0]["penj_status"]) == "aktif"){
+                return true;
             }
-            return true;
+            return false;
         }
     }
 }

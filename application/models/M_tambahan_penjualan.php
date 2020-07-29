@@ -360,4 +360,15 @@ class M_tambahan_penjualan extends ci_model{
     public function get_id_fk_penjualan(){
         return $this->id_fk_penjualan;
     }
+    public function get_nominal_tambahan(){
+        $sql = "select sum(tmbhn_jumlah*tmbhn_harga) as nominal_tambahan 
+        from tbl_tambahan_penjualan
+        where tmbhn_status = 'aktif' and id_fk_penjualan = ?";
+        $args = array(
+            $this->id_fk_penjualan
+        );
+        $result = executeQuery($sql,$args);
+        $result = $result->result_array();
+        return $result[0]["nominal_tambahan"];
+    }
 }

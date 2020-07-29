@@ -6,6 +6,8 @@ class M_penjualan extends ci_model{
     private $columns = array();
     private $id_pk_penjualan;
     private $penj_nomor;
+    private $penj_nominal;
+    private $penj_nominal_byr;
     private $penj_tgl;
     private $penj_dateline_tgl;/*supaya tau pas pengiriman mana yang urgent*/
     private $penj_status;
@@ -29,6 +31,7 @@ class M_penjualan extends ci_model{
         $this->set_column("penj_tipe_pembayaran","tipe pembayaran",false);
         $this->set_column("penj_jenis","jenis penjualan",false);
         $this->set_column("penj_status","status",false);
+        $this->set_column("penj_status","status pembayaran",false);
         $this->set_column("user_last_modified","User Last Modified",false);
         $this->penj_create_date = date("y-m-d h:i:s");
         $this->penj_last_modified = date("y-m-d h:i:s");
@@ -50,7 +53,7 @@ class M_penjualan extends ci_model{
     }
     public function list(){
         $query = "
-        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified
+        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified,penj_nominal,penj_nominal_byr
         from ".$this->tbl_name." 
         inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
         inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified
@@ -62,7 +65,7 @@ class M_penjualan extends ci_model{
     }
     public function detail_by_penj_nomor(){
         $sql = "
-        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_perusahaan,cust_name,cust_suff,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan 
+        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_perusahaan,cust_name,cust_suff,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan ,penj_nominal,penj_nominal_byr
         from mstr_penjualan
         inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
         where penj_nomor = ? and penj_status != ?";
@@ -73,7 +76,7 @@ class M_penjualan extends ci_model{
     }
     public function detail_by_id(){
         $sql = "
-        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_perusahaan,cust_name,cust_suff,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan 
+        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_perusahaan,cust_name,cust_suff,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,penj_nominal,penj_nominal_byr
         from mstr_penjualan
         inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
         where id_pk_penjualan = ? and penj_status != ?";
@@ -84,7 +87,7 @@ class M_penjualan extends ci_model{
     }
     public function detail_by_id_pk_penjualan(){
         $sql = "
-        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_perusahaan,cust_name,cust_suff,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan 
+        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_perusahaan,cust_name,cust_suff,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,penj_nominal,penj_nominal_byr
         from mstr_penjualan
         inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
         where id_pk_penjualan = ?";
@@ -99,6 +102,8 @@ class M_penjualan extends ci_model{
         create table mstr_penjualan(
             id_pk_penjualan int primary key auto_increment,
             penj_nomor varchar(100),
+            penj_nominal bigint,
+            penj_nominal_byr bigint,
             penj_tgl datetime,
             penj_dateline_tgl datetime,
             penj_jenis varchar(50),
@@ -120,6 +125,8 @@ class M_penjualan extends ci_model{
             executed_function varchar(30),
             id_pk_penjualan int,
             penj_nomor varchar(100),
+            penj_nominal bigint,
+            penj_nominal_byr bigint,
             penj_tgl datetime,
             penj_dateline_tgl datetime,
             penj_jenis varchar(50),
@@ -144,7 +151,7 @@ class M_penjualan extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at' , new.penj_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_penjualan_log(executed_function,id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_jenis,penj_tipe_pembayaran,penj_status,id_fk_customer,id_fk_cabang,penj_create_date,penj_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_penjualan,new.penj_nomor,new.penj_tgl,new.penj_dateline_tgl,new.penj_jenis,new.penj_tipe_pembayaran,new.penj_status,new.id_fk_customer,new.id_fk_cabang,new.penj_create_date,new.penj_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_penjualan_log(executed_function,id_pk_penjualan,penj_nomor,penj_nominal,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_jenis,penj_tipe_pembayaran,penj_status,id_fk_customer,id_fk_cabang,penj_create_date,penj_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_penjualan,new.penj_nomor,new.penj_nominal,new.penj_nominal_byr,new.penj_tgl,new.penj_dateline_tgl,new.penj_jenis,new.penj_tipe_pembayaran,new.penj_status,new.id_fk_customer,new.id_fk_cabang,new.penj_create_date,new.penj_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         
@@ -159,7 +166,7 @@ class M_penjualan extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at' , new.penj_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_penjualan_log(executed_function,id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_jenis,penj_tipe_pembayaran,penj_status,id_fk_customer,id_fk_cabang,penj_create_date,penj_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_penjualan,new.penj_nomor,new.penj_tgl,new.penj_dateline_tgl,new.penj_jenis,new.penj_tipe_pembayaran,new.penj_status,new.id_fk_customer,new.id_fk_cabang,new.penj_create_date,new.penj_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_penjualan_log(executed_function,id_pk_penjualan,penj_nomor,penj_nominal,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_jenis,penj_tipe_pembayaran,penj_status,id_fk_customer,id_fk_cabang,penj_create_date,penj_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_penjualan,new.penj_nomor,new.penj_nominal,new.penj_nominal_byr,new.penj_tgl,new.penj_dateline_tgl,new.penj_jenis,new.penj_tipe_pembayaran,new.penj_status,new.id_fk_customer,new.id_fk_cabang,new.penj_create_date,new.penj_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;";
         executequery($sql);
@@ -181,7 +188,7 @@ class M_penjualan extends ci_model{
         }
         if($this->penj_tipe_pembayaran == "" || strtolower($this->penj_tipe_pembayaran) == "all"){
             $query = "
-            select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified
+            select id_pk_penjualan,penj_nomor,penj_nominal,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified,if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran
             from ".$this->tbl_name." 
             inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
             inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified
@@ -203,7 +210,7 @@ class M_penjualan extends ci_model{
         }
         else{
             $query = "
-            select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified
+            select id_pk_penjualan,penj_nomor,penj_nominal,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified,if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran
             from ".$this->tbl_name." 
             inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
             inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified
@@ -257,6 +264,8 @@ class M_penjualan extends ci_model{
             $data = array(
                 "penj_nomor" => $this->penj_nomor,
                 "penj_jenis" => $this->penj_jenis,
+                "penj_nominal" => 0,
+                "penj_nominal_byr" => 0,
                 "penj_dateline_tgl" => $this->penj_dateline_tgl,
                 "penj_tgl" => $this->penj_tgl,
                 "penj_tipe_pembayaran" => $this->penj_tipe_pembayaran,
@@ -275,6 +284,30 @@ class M_penjualan extends ci_model{
         );
         $data = array(
             "penj_status" => $this->penj_status,
+            "penj_last_modified" => $this->penj_last_modified,
+            "id_last_modified" => $this->id_last_modified
+        );
+        updaterow($this->tbl_name,$data,$where);
+        return true;
+    }
+    public function update_nominal($penj_nominal){
+        $where = array(  
+            "id_pk_penjualan" => $this->id_pk_penjualan
+        );
+        $data = array(
+            "penj_nominal" => $penj_nominal,
+            "penj_last_modified" => $this->penj_last_modified,
+            "id_last_modified" => $this->id_last_modified
+        );
+        updaterow($this->tbl_name,$data,$where);
+        return true;
+    }
+    public function update_nominal_byr($penj_nominal_byr){
+        $where = array(  
+            "id_pk_penjualan" => $this->id_pk_penjualan
+        );
+        $data = array(
+            "penj_nominal_byr" => $penj_nominal_byr,
             "penj_last_modified" => $this->penj_last_modified,
             "id_last_modified" => $this->id_last_modified
         );
@@ -337,6 +370,9 @@ class M_penjualan extends ci_model{
     }
     public function check_update(){
         if($this->id_pk_penjualan == ""){
+            return false;
+        }
+        if($this->penj_nomor == ""){
             return false;
         }
         if($this->penj_nomor == ""){
@@ -444,6 +480,20 @@ class M_penjualan extends ci_model{
     public function set_penj_nomor($penj_nomor){
         if($penj_nomor != ""){
             $this->penj_nomor = $penj_nomor;
+            return true;
+        }
+        return false;
+    }
+    public function set_penj_nominal($penj_nominal){
+        if($penj_nominal != ""){
+            $this->penj_nominal = $penj_nominal;
+            return true;
+        }
+        return false;
+    }
+    public function set_penj_nominal_byr($penj_nominal_byr){
+        if($penj_nominal_byr != ""){
+            $this->penj_nominal_byr = $penj_nominal_byr;
             return true;
         }
         return false;
