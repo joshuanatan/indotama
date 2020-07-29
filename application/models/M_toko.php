@@ -11,6 +11,7 @@ class m_toko extends ci_model{
     private $toko_kop_surat;
     private $toko_nonpkp;
     private $toko_pernyataan_rek;
+    private $toko_ttd;
 
     private $toko_kode;
     private $toko_status;
@@ -52,6 +53,7 @@ class m_toko extends ci_model{
             toko_kop_surat varchar(100),
             toko_nonpkp varchar(100),
             toko_pernyataan_rek varchar(100),
+            toko_ttd varchar(100),
             toko_kode varchar(20),
             toko_status varchar(15),
             toko_create_date datetime,
@@ -69,6 +71,7 @@ class m_toko extends ci_model{
             toko_kop_surat varchar(100),
             toko_nonpkp varchar(100),
             toko_pernyataan_rek varchar(100),
+            toko_ttd varchar(100),
             toko_kode varchar(20),
             toko_status varchar(15),
             toko_create_date datetime,
@@ -88,7 +91,7 @@ class m_toko extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','insert data at ' , new.toko_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_toko_log(executed_function,id_pk_toko,toko_logo,toko_nama,toko_kop_surat,toko_nonpkp,toko_pernyataan_rek,toko_kode,toko_status,toko_create_date,toko_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_toko,new.toko_logo,new.toko_nama,toko_kop_surat,toko_nonpkp,toko_pernyataan_rek,new.toko_kode,new.toko_status,new.toko_create_date,new.toko_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_toko_log(executed_function,id_pk_toko,toko_logo,toko_nama,toko_kop_surat,toko_nonpkp,toko_pernyataan_rek,toko_ttd,toko_kode,toko_status,toko_create_date,toko_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_toko,new.toko_logo,new.toko_nama,toko_kop_surat,toko_nonpkp,toko_pernyataan_rek,new.toko_ttd,new.toko_kode,new.toko_status,new.toko_create_date,new.toko_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
         
@@ -103,7 +106,7 @@ class m_toko extends ci_model{
             set @log_text = concat(new.id_last_modified,' ','update data at ' , new.toko_last_modified);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
-            insert into mstr_toko_log(executed_function,id_pk_toko,toko_logo,toko_nama,toko_kop_surat,toko_nonpkp,toko_pernyataan_rek,toko_kode,toko_status,toko_create_date,toko_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_toko,new.toko_logo,new.toko_nama,toko_kop_surat,toko_nonpkp,toko_pernyataan_rek,new.toko_kode,new.toko_status,new.toko_create_date,new.toko_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_toko_log(executed_function,id_pk_toko,toko_logo,toko_nama,toko_kop_surat,toko_nonpkp,toko_pernyataan_rek,toko_ttd,toko_kode,toko_status,toko_create_date,toko_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_toko,new.toko_logo,new.toko_nama,toko_kop_surat,toko_nonpkp,toko_pernyataan_rek,new.toko_ttd,new.toko_kode,new.toko_status,new.toko_create_date,new.toko_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;";
         executequery($sql);
@@ -123,11 +126,12 @@ class m_toko extends ci_model{
                 toko_kop_surat like '%".$search_key."%' or
                 toko_nonpkp like '%".$search_key."%' or
                 toko_pernyataan_rek like '%".$search_key."%' or
+                toko_ttd like '%".$search_key."%' or
                 toko_last_modified like '%".$search_key."%'
             )";
         }
         $query = "
-        select id_pk_toko,toko_logo,toko_nama,toko_kode,toko_status,toko_create_date,toko_last_modified,toko_kop_surat,toko_nonpkp,toko_pernyataan_rek
+        select id_pk_toko,toko_logo,toko_nama,toko_kode,toko_status,toko_create_date,toko_last_modified,toko_kop_surat,toko_nonpkp,toko_pernyataan_rek,ifnull(toko_ttd,'-') as toko_ttd
         from ".$this->tbl_name." 
         where toko_status = ? ".$search_query."  
         order by ".$order_by." ".$order_direction." 
@@ -147,7 +151,7 @@ class m_toko extends ci_model{
     }
     public function list_toko(){
         $query = "
-        select id_pk_toko,toko_logo,toko_nama,toko_kode,toko_status,toko_create_date,toko_last_modified,toko_kop_surat,toko_nonpkp,toko_pernyataan_rek
+        select id_pk_toko,toko_logo,toko_nama,toko_kode,toko_status,toko_create_date,toko_last_modified,toko_kop_surat,toko_nonpkp,toko_pernyataan_rek,ifnull(toko_ttd,'-') as toko_ttd
         from ".$this->tbl_name." 
         where toko_status = ? ";
         $args = array(
@@ -160,7 +164,7 @@ class m_toko extends ci_model{
             "id_pk_toko" => $this->id_pk_toko
         );
         $field = array(
-            "id_pk_toko","toko_logo","toko_nama","toko_kode","toko_status","toko_create_date","toko_last_modified","id_create_data","id_last_modified","toko_kop_surat","toko_nonpkp","toko_pernyataan_rek"
+            "id_pk_toko","toko_logo","toko_nama","toko_kode","toko_status","toko_create_date","toko_last_modified","id_create_data","id_last_modified","toko_kop_surat","toko_nonpkp","toko_pernyataan_rek","ifnull(toko_ttd,'-') as toko_ttd"
         );
         return selectrow($this->tbl_name,$where,$field);
     }
@@ -172,6 +176,7 @@ class m_toko extends ci_model{
                 "toko_kop_surat" => $this->toko_kop_surat, 
                 "toko_nonpkp" => $this->toko_nonpkp, 
                 "toko_pernyataan_rek" => $this->toko_pernyataan_rek, 
+                "toko_ttd" => $this->toko_ttd, 
                 "toko_kode" => $this->toko_kode, 
                 "toko_status" => $this->toko_status, 
                 "toko_create_date" => $this->toko_create_date, 
@@ -194,6 +199,7 @@ class m_toko extends ci_model{
                 "toko_kop_surat" => $this->toko_kop_surat, 
                 "toko_nonpkp" => $this->toko_nonpkp, 
                 "toko_pernyataan_rek" => $this->toko_pernyataan_rek, 
+                "toko_ttd" => $this->toko_ttd, 
                 "toko_kode" => $this->toko_kode, 
                 "toko_last_modified" => $this->toko_last_modified, 
                 "id_last_modified" => $this->id_last_modified, 
@@ -234,6 +240,9 @@ class m_toko extends ci_model{
         if($this->toko_pernyataan_rek == ""){
             return false;
         }
+        if($this->toko_ttd == ""){
+            return false;
+        }
         if($this->toko_kode == ""){
             return false;
         }
@@ -270,6 +279,9 @@ class m_toko extends ci_model{
         if($this->toko_pernyataan_rek == ""){
             return false;
         }
+        if($this->toko_ttd == ""){
+            return false;
+        }
         if($this->toko_kode == ""){
             return false;
         }
@@ -293,7 +305,7 @@ class m_toko extends ci_model{
         }
         return true;
     }
-    public function set_insert($toko_logo,$toko_nama,$toko_kode,$toko_status,$toko_kop_surat,$toko_nonpkp,$toko_pernyataan_rek){
+    public function set_insert($toko_logo,$toko_nama,$toko_kode,$toko_status,$toko_kop_surat,$toko_nonpkp,$toko_pernyataan_rek,$toko_ttd){
         if(!$this->set_toko_logo($toko_logo)){
             return false;
         }
@@ -309,6 +321,9 @@ class m_toko extends ci_model{
         if(!$this->set_toko_pernyataan_rek($toko_pernyataan_rek)){
             return false;
         }
+        if(!$this->set_toko_ttd($toko_ttd)){
+            return false;
+        }
         if(!$this->set_toko_kode($toko_kode)){
             return false;
         }
@@ -317,7 +332,7 @@ class m_toko extends ci_model{
         }
         return true;
     }
-    public function set_update($id_pk_toko,$toko_logo,$toko_nama,$toko_kode,$toko_kop_surat,$toko_nonpkp,$toko_pernyataan_rek){
+    public function set_update($id_pk_toko,$toko_logo,$toko_nama,$toko_kode,$toko_kop_surat,$toko_nonpkp,$toko_pernyataan_rek,$toko_ttd){
         if(!$this->set_id_pk_toko($id_pk_toko)){
             return false;
         }
@@ -334,6 +349,9 @@ class m_toko extends ci_model{
             return false;
         }
         if(!$this->set_toko_pernyataan_rek($toko_pernyataan_rek)){
+            return false;
+        }
+        if(!$this->set_toko_ttd($toko_ttd)){
             return false;
         }
         if(!$this->set_toko_kode($toko_kode)){
@@ -346,21 +364,6 @@ class m_toko extends ci_model{
             return false;
         }
         return true;
-    }
-    public function get_id_pk_toko(){
-        return $this->id_pk_toko;
-    }
-    public function get_toko_logo(){
-        return $this->toko_logo;
-    }
-    public function get_toko_nama(){
-        return $this->toko_nama;
-    }
-    public function get_toko_kode(){
-        return $this->toko_kode;
-    }
-    public function get_toko_status(){
-        return $this->toko_status;
     }
     public function set_id_pk_toko($id_pk_toko){
         if($id_pk_toko != ""){
@@ -400,6 +403,13 @@ class m_toko extends ci_model{
     public function set_toko_pernyataan_rek($toko_pernyataan_rek){
         if($toko_pernyataan_rek != ""){
             $this->toko_pernyataan_rek = $toko_pernyataan_rek;
+            return true;
+        }
+        return false;
+    }
+    public function set_toko_ttd($toko_ttd){
+        if($toko_ttd != ""){
+            $this->toko_ttd = $toko_ttd;
             return true;
         }
         return false;

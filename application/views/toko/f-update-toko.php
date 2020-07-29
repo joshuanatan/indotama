@@ -42,6 +42,11 @@
                         <input type = "hidden" name = "pernyataan_rek_current" id = "pernyataan_rek_edit">
                     </div>
                     <div class = "form-group">
+                        <h5>Tanda Tangan Digital</h5>
+                        <input type = "file" class = "form-control" name = "ttd">
+                        <input type = "hidden" name = "ttd_current" id = "ttd_edit">
+                    </div>
+                    <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
                         <button type = "button" onclick = "update_func()" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
@@ -60,5 +65,6 @@
         $("#kop_surat_edit").val(content[id]["kop_surat"]);
         $("#nonpkp_edit").val(content[id]["nonpkp"]);
         $("#pernyataan_rek_edit").val(content[id]["pernyataan_rek"]);
+        $("#ttd_edit").val(content[id]["ttd"]);
     }
 </script>

@@ -60,6 +60,10 @@ $breadcrumb = array(
                                                         <td style = "height:50px">Surat Pernyataan Nomor Rekening</td>
                                                         <td style = "height:50px" id = "pernyataan_rek_download"></td>
                                                     </tr>
+                                                    <tr>
+                                                        <td style = "height:50px">Tanda Tangan Digital</td>
+                                                        <td style = "height:50px" id = "ttd_download"></td>
+                                                    </tr>
                                                 </table>
                                             </div>	
                                         </div>
@@ -174,6 +178,16 @@ $.ajax({
             else{
                 
                 $("#pernyataan_rek_download").html("No Data");
+            }
+            
+            if(respond["content"][0]["ttd"] != "-"){
+                
+                html = `<a target = "_blank" href = "<?php echo base_url();?>asset/uploads/toko/ttd/${respond["content"][0]["ttd"]}" class = "col-lg-12 btn btn-primary btn-sm" >Download</a>`; 
+                $("#ttd_download").html(html);
+            }
+            else{
+                
+                $("#ttd_download").html("No Data");
             }
 
         }

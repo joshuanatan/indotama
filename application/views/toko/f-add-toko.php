@@ -37,6 +37,10 @@
                         <input type = "file" class = "form-control" name = "pernyataan_rek">
                     </div>
                     <div class = "form-group">
+                        <h5>Tanda Tangan Digital</h5>
+                        <input type = "file" class = "form-control" name = "ttd">
+                    </div>
+                    <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
                         <button type = "button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
                     </div>

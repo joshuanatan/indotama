@@ -41,6 +41,31 @@ class Toko extends CI_Controller{
                 else{
                     $response["content"][$a]["logo_file"] = "noimage.jpg";
                 }
+                if(file_exists(FCPATH."asset/uploads/toko/kop_surat/".$result["data"][$a]["toko_kop_surat"]) && $result["data"][$a]["toko_kop_surat"] != "" && $result["data"][$a]["toko_kop_surat"] && $result["data"][$a]["toko_kop_surat"] != "-"){
+                    $response["content"][$a]["kop_surat"] = $result["data"][$a]["toko_kop_surat"];
+                }
+                else{
+                    $response["content"][$a]["kop_surat"] = "noimage.jpg";
+                }
+                if(file_exists(FCPATH."asset/uploads/toko/nonpkp/".$result["data"][$a]["toko_nonpkp"]) && $result["data"][$a]["toko_nonpkp"] != "" && $result["data"][$a]["toko_nonpkp"] && $result["data"][$a]["toko_nonpkp"] != "-"){
+                    $response["content"][$a]["nonpkp"] = $result["data"][$a]["toko_nonpkp"];
+                }
+                else{
+                    $response["content"][$a]["nonpkp"] = "noimage.jpg";
+                }
+                if(file_exists(FCPATH."asset/uploads/toko/pernyataan_rek/".$result["data"][$a]["toko_pernyataan_rek"]) && $result["data"][$a]["toko_pernyataan_rek"] != "" && $result["data"][$a]["toko_pernyataan_rek"] && $result["data"][$a]["toko_pernyataan_rek"] != "-"){
+                    $response["content"][$a]["pernyataan_rek"] = $result["data"][$a]["toko_pernyataan_rek"];
+                }
+                else{
+                    $response["content"][$a]["pernyataan_rek"] = "noimage.jpg";
+                }
+                if(file_exists(FCPATH."asset/uploads/toko/ttd/".$result["data"][$a]["toko_ttd"]) && $result["data"][$a]["toko_ttd"] != "" && $result["data"][$a]["toko_ttd"] && $result["data"][$a]["toko_ttd"] != "-"){
+                    $response["content"][$a]["ttd"] = $result["data"][$a]["toko_ttd"];
+                }
+                else{
+                    $response["content"][$a]["ttd"] = "noimage.jpg";
+                }
+                
                 $response["content"][$a]["logo"] = "<img src = '".base_url()."asset/uploads/toko/logo/".$response["content"][$a]["logo_file"]."' width = '80px'>";
                 $response["content"][$a]["nama"] = $result["data"][$a]["toko_nama"];
                 $response["content"][$a]["kode"] = $result["data"][$a]["toko_kode"];
@@ -50,6 +75,7 @@ class Toko extends CI_Controller{
                 $response["content"][$a]["kop_surat"] = $result["data"][$a]["toko_kop_surat"];
                 $response["content"][$a]["nonpkp"] = $result["data"][$a]["toko_nonpkp"];
                 $response["content"][$a]["pernyataan_rek"] = $result["data"][$a]["toko_pernyataan_rek"];
+                $response["content"][$a]["ttd"] = $result["data"][$a]["toko_ttd"];
             }
         }
         else{
@@ -107,7 +133,15 @@ class Toko extends CI_Controller{
                 $toko_pernyataan_rek = $this->upload->data("file_name");
             }
 
-            if($this->m_toko->set_insert($toko_logo,$toko_nama,$toko_kode,$toko_status,$toko_kop_surat,$toko_nonpkp,$toko_pernyataan_rek)){
+            $config['upload_path'] = './asset/uploads/toko/ttd/';
+            $config['allowed_types'] = '*';
+            $this->upload->initialize($config);
+            $toko_ttd = "noimage.jpg";
+            if($this->upload->do_upload('ttd')){
+                $toko_ttd = $this->upload->data("file_name");
+            }
+
+            if($this->m_toko->set_insert($toko_logo,$toko_nama,$toko_kode,$toko_status,$toko_kop_surat,$toko_nonpkp,$toko_pernyataan_rek,$toko_ttd)){
                 if($this->m_toko->insert()){
                     $response["msg"] = "Data is recorded to database";
                 }
@@ -190,7 +224,14 @@ class Toko extends CI_Controller{
                 $toko_pernyataan_rek = $this->upload->data("file_name");
             }
 
-            if($this->m_toko->set_update($id_pk_toko,$toko_logo,$toko_nama,$toko_kode,$toko_kop_surat,$toko_nonpkp,$toko_pernyataan_rek)){
+            $config['upload_path'] = './asset/uploads/toko/ttd/';
+            $config['allowed_types'] = '*';
+            $this->upload->initialize($config);
+            $toko_ttd = $this->input->post("ttd_current");
+            if($this->upload->do_upload('ttd')){
+                $toko_ttd = $this->upload->data("file_name");
+            }
+            if($this->m_toko->set_update($id_pk_toko,$toko_logo,$toko_nama,$toko_kode,$toko_kop_surat,$toko_nonpkp,$toko_pernyataan_rek,$toko_ttd)){
                 if($this->m_toko->update()){
                     $response["msg"] = "Data is updated to database";
                 }
@@ -315,6 +356,10 @@ class Toko extends CI_Controller{
                 $result[0]["toko_pernyataan_rek"] = "-";
             }
             $response["content"][0]["pernyataan_rek"] = $result[0]["toko_pernyataan_rek"];
+            if(!file_exists(FCPATH."asset/uploads/toko/ttd/".$result[0]["toko_ttd"])){
+                $result[0]["toko_ttd"] = "-";
+            }
+            $response["content"][0]["ttd"] = $result[0]["toko_ttd"];
         }
         else{
             $response["status"] = "ERROR";
