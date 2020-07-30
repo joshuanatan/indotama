@@ -243,16 +243,7 @@ $data = array(
 <?php $this->load->view("brg_permintaan/f-delete-brg-permintaan",$data);?>
 <?php $this->load->view("brg_permintaan/f-add-brg-permintaan",$data);?>
 <?php $this->load->view("brg_permintaan/p-add-penerimaan-permintaan");?>
-<script>
-    /*tambahin event handler untuk add permintaan button untuk refresh disini*/
-    document.getElementById("permintaan_tambah_button").addEventListener("click",function(){
-        load_permintaan_barang_content();
-    });
-    /*tambahin event handler untuk add penerimaan permintaan button untuk refresh disini*/
-    document.getElementById("penerimaan_permintaan_tambah_button").addEventListener("click",function(){
-        load_incoming_delivery_content();
-    });
-</script>
+
 
 <?php $this->load->view('_notification/notif_general'); ?>
 <script>

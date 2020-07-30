@@ -10,7 +10,7 @@ class M_dashboard_cabang extends CI_Model{
     public function jumlah_penjualan_bulan_ini(){
         $sql = "
         select count(id_pk_penjualan) as jumlah_penjualan from mstr_penjualan 
-        where penj_status = 'aktif'
+        where penj_status != 'nonaktif'
         and id_fk_cabang = ?
         and month(penj_tgl) = month(CURRENT_DATE)
         and year(penj_tgl) = year(CURRENT_DATE)";
@@ -24,7 +24,7 @@ class M_dashboard_cabang extends CI_Model{
     public function jumlah_penjualan_bulan_lalu(){
         $sql = "
         select count(id_pk_penjualan) as jumlah_penjualan from mstr_penjualan 
-        where penj_status = 'aktif'
+        where penj_status != 'nonaktif'
         and id_fk_cabang = ?
         and month(penj_tgl) = month(CURRENT_DATE - INTERVAL 1 MONTH)
         and year(penj_tgl) = year(CURRENT_DATE - INTERVAL 1 MONTH)";
@@ -39,7 +39,7 @@ class M_dashboard_cabang extends CI_Model{
     public function jumlah_penjualan_tahun_ini(){
         $sql = "
         select count(id_pk_penjualan) as jumlah_penjualan from mstr_penjualan 
-        where penj_status = 'aktif'
+        where penj_status != 'nonaktif'
         and id_fk_cabang = ?
         and year(penj_tgl) = year(CURRENT_DATE)";
         $args = array(
@@ -52,7 +52,7 @@ class M_dashboard_cabang extends CI_Model{
     public function jumlah_penjualan_tahun_lalu(){
         $sql = "
         select count(id_pk_penjualan) as jumlah_penjualan from mstr_penjualan 
-        where penj_status = 'aktif'
+        where penj_status != 'nonaktif'
         and id_fk_cabang = ?
         and year(penj_tgl) = year(CURRENT_DATE - INTERVAL 1 MONTH)";
         $args = array(
@@ -68,7 +68,7 @@ class M_dashboard_cabang extends CI_Model{
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
         where retur_status = 'konfirmasi'
         and id_fk_cabang = ?
-        and mstr_penjualan.penj_status = 'aktif'";
+        and mstr_penjualan.penj_status != 'nonaktif'";
         $args = array(
             $this->id_cabang
         );
@@ -147,7 +147,7 @@ class M_dashboard_cabang extends CI_Model{
     public function list_penjualan_3_tahun_terakhir(){
         $sql = "
         select year(penj_tgl) as tahun,count(id_pk_penjualan) as jmlh_penjualan from mstr_penjualan
-        where penj_status = 'aktif'
+        where penj_status != 'nonaktif'
         and id_fk_cabang = ?
         group by year(penj_tgl) 
         order by tahun DESC
@@ -169,7 +169,7 @@ class M_dashboard_cabang extends CI_Model{
     public function list_penjualan_tahun_ini_perbulan(){
         $sql = "
         select month(penj_tgl) as bulan,count(id_pk_penjualan) as jmlh_penjualan from mstr_penjualan
-        where penj_status = 'aktif'
+        where penj_status != 'nonaktif'
         and id_fk_cabang = ?
         and year(penj_tgl) = year(CURRENT_DATE)
         group by month(penj_tgl) 
@@ -197,7 +197,7 @@ class M_dashboard_cabang extends CI_Model{
     public function list_penjualan_tahun_lalu_perbulan($tahun){
         $sql = "
         select month(penj_tgl) as bulan,count(id_pk_penjualan) as jmlh_penjualan from mstr_penjualan
-        where penj_status = 'aktif'
+        where penj_status != 'nonaktif'
         and id_fk_cabang = ?
         and year(penj_tgl) = year(CURRENT_DATE - interval ".$tahun." year)
         group by month(penj_tgl) 
