@@ -39,3 +39,12 @@
         </div>
     </div>
 </div>
+<script>
+if(typeof(load_permintaan_barang_content) != "undefined"){
+    /*dipake di v_brg_permintaan_graphic*/
+    /*tambahin event handler untuk add permintaan button untuk refresh disini*/
+    document.getElementById("permintaan_tambah_button").addEventListener("click",function(){
+        load_permintaan_barang_content();
+    });
+}
+</script>

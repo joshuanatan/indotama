@@ -51,8 +51,13 @@ class Pemenuhan extends CI_Controller{
                 if(strtolower($type) == "cabang" && $this->session->id_warehouse){
                     for($a = 0; $a<count($result["data"]); $a++){
 
-                        if(file_exists(FCPATH."asset/uploads/barang/".$result["data"][$a]["brg_image"])){
-                            $response["content"][$a]["image"] = $result["data"][$a]["brg_image"];
+                        if($result["data"][$a]["brg_image"]){
+                            if(file_exists(FCPATH."asset/uploads/barang/".$result["data"][$a]["brg_image"])){
+                                $response["content"][$a]["image"] = $result["data"][$a]["brg_image"];
+                            }
+                            else{
+                                $response["content"][$a]["image"] = "noimage.jpg";
+                            }
                         }
                         else{
                             $response["content"][$a]["image"] = "noimage.jpg";
@@ -79,8 +84,13 @@ class Pemenuhan extends CI_Controller{
                 else if(strtolower($type) == "warehouse" && $this->session->id_warehouse){
                     for($a = 0; $a<count($result["data"]); $a++){
                         
-                        if(file_exists(FCPATH."asset/uploads/barang/".$result["data"][$a]["brg_image"])){
-                            $response["content"][$a]["image"] = $result["data"][$a]["brg_image"];
+                        if($result["data"][$a]["brg_image"]){
+                            if(file_exists(FCPATH."asset/uploads/barang/".$result["data"][$a]["brg_image"])){
+                                $response["content"][$a]["image"] = $result["data"][$a]["brg_image"];
+                            }
+                            else{
+                                $response["content"][$a]["image"] = "noimage.jpg";
+                            }
                         }
                         else{
                             $response["content"][$a]["image"] = "noimage.jpg";
