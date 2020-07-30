@@ -1,12 +1,9 @@
 
 <?php
 ob_start();
-    $pdf = new Pdf_surat_jalan('P', 'mm', 'A4', true, 'UTF-8', false);
-    $logo = base_url() . 'asset/uploads/toko/logo/' . $pengiriman_main_dari[0]['toko_logo'];
-
-    $pdf->set_logo($logo);
+    $pdf = new Pdf_surat_jalan_gudang('P', 'mm', 'A4', true, 'UTF-8', false);
     $pdf->SetTitle('SURAT JALAN');
-    $pdf->SetTopMargin(30);
+    $pdf->SetTopMargin(15);
     $pdf->setFooterMargin(20);
     $pdf->SetAutoPageBreak(true,22);
     $pdf->SetAuthor('Author');
@@ -39,9 +36,9 @@ ob_start();
     <table>
         <tr>
             <td>
-                '.$pengiriman_main_dari[0]['cabang_nama'].'<br>
-                '.$pengiriman_main_dari[0]['cabang_alamat'].'<br>
-                Phone: '.$pengiriman_main_dari[0]['cabang_notelp'].'<br>
+                '.$pengiriman_main_dari[0]['warehouse_nama'].'<br>
+                '.$pengiriman_main_dari[0]['warehouse_alamat'].'<br>
+                Phone: '.$pengiriman_main_dari[0]['warehouse_notelp'].'<br>
             </td>
             <td style="text-align:right">
                 Jakarta, '.date("d M Y", strtotime($pengiriman_main_dari[0]['pengiriman_tgl'])).'<br>

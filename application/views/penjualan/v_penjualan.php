@@ -108,6 +108,10 @@ $notif_data = array(
             style:'cursor:pointer;font-size:large',
             class:'text-info md-print',
             onclick:'redirect_print_pdf()'
+        },{
+            style:'cursor:pointer;font-size:large',
+            class:'text-copy md-print',
+            onclick:'redirect_print_pdf_copy()'
         },
         {
             style:'cursor:pointer;font-size:large',
