@@ -386,7 +386,7 @@ class M_dashboard_general extends CI_Model{
     public function nominal_penjualan_tipe($tahun = "", $bulan = "", $tipe){
 
         if($tahun && $bulan){
-            $sql = "select sum(id_pk_penjualan) as nominal
+            $sql = "select sum(penj_nominal) as nominal
             from mstr_penjualan
             where penj_status != 'nonaktif' 
             and year(penj_tgl) = ?
@@ -400,7 +400,7 @@ class M_dashboard_general extends CI_Model{
         }
 
         else if($tahun && !$bulan){
-            $sql = "select sum(id_pk_penjualan) as nominal
+            $sql = "select sum(penj_nominal) as nominal
             from mstr_penjualan
             where penj_status != 'nonaktif' 
             and year(penj_tgl) = ?
@@ -413,7 +413,7 @@ class M_dashboard_general extends CI_Model{
         }
 
         else if(!$tahun && $bulan){
-            $sql = "select sum(id_pk_penjualan) as nominal
+            $sql = "select sum(penj_nominal) as nominal
             from mstr_penjualan
             where penj_status != 'nonaktif' 
             and year(penj_tgl) = ?
