@@ -330,7 +330,7 @@ class M_dashboard_general extends CI_Model{
         for($a = 0; $a<count($result); $a++){
             $respond[$a] = array(
                 $result[$a]["penj_nomor"],
-                $result[$a]["penj_nominal"],
+                number_format($result[$a]["penj_nominal"]),
                 $result[$a]["penj_dateline_tgl"],
                 $result[$a]["penj_jenis"],
                 $result[$a]["toko_nama"]." ".$result[$a]["cabang_nama"]."/".$result[$a]["cabang_daerah"]

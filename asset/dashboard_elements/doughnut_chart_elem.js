@@ -40,17 +40,12 @@ function init_doughnut_data(doughnut_data,count){
     var backgroundColor = [];
     var borderColor = [];
 
+    console.log(doughnut_data);
     for(var a = 0; a<doughnut_data["data"].length; a++){
-        do{
-            color_index = Math.floor(Math.random() * 6);
-        }
-        while(color_control.includes(color_index));
-        color_control.push(color_index);
-        
-        backgroundColor[a] = background_color_master[color_index];
-        borderColor[a] = border_color_master[color_index];
+        backgroundColor[a] = background_color_master[a%6];
+        borderColor[a] = border_color_master[a%6];
     }
-
+    
     label = doughnut_data["label"];
     datasets.push(
         {
@@ -59,7 +54,6 @@ function init_doughnut_data(doughnut_data,count){
             hoverBackgroundColor:borderColor
         }
     );
-    console.log(label);
     var ctx = document.getElementById(`doughnut${count}`);
     new Chart(ctx, {
         type: 'doughnut',
@@ -90,6 +84,7 @@ function init_doughnut_data(doughnut_data,count){
             }
         }
     });
+    
 }
 
 
