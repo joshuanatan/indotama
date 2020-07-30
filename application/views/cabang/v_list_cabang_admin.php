@@ -84,20 +84,18 @@ $notif_data = array(
 <?php $this->load->view("_core_script/table_func");?>
 <script>
     function activate_cabang_manajemen(){
-        $('body table').find('tr').click( function(){
+        var is_not_clicked = true;
+        $("body table").find("tr").click(function(){
             var row = $(this).index();
             var id_cabang = content[row]["id"];
-            if(confirm("Apakah anda ingin mengaktifkan cabang "+content[row]["daerah"]+" pada toko "+content[row]["toko"]+"?")){
-                $.ajax({
-                    url:"<?php echo base_url();?>toko/activate_cabang_manajemen/"+id_cabang,
-                    type:"GET",
-                    dataType:"JSON",
-                    success:function(respond){
-                        console.log(respond);
-                        window.location.replace("<?php echo base_url();?>toko/dashboard_cabang");
+            $(this).find('.action_column').click( function(){
+                $(this).find("i.md-wrench").click(function(){
+                    if(confirm(`Anda yakin ingin mengaktifkan cabang ${content[row]["daerah"]} pada toko ${content[row]["toko"]}?`)){
+                        window.location.href = "<?php echo base_url();?>toko/activate_cabang_manajemen/"+id_cabang;
+                    
                     }
-                })
-            }
+                });
+            });
         });
     }
 </script>
