@@ -150,9 +150,7 @@ class Toko extends CI_Controller {
 		$result = $this->m_toko->detail_by_id();
 		$result = $result->result_array();
 		$this->session->nama_toko_cabang = $result[0]["toko_nama"];
-		$response["content"]["nama_cabang"] = $this->session->daerah_cabang;
-		$response["content"]["nama_toko"] = $this->session->nama_toko;
-		echo json_encode($response);
+		redirect("toko/dashboard_cabang");
 	}
 	public function pengaturan_cabang(){
 		$this->load->view("cabang/v_pengaturan_cabang");
