@@ -89,7 +89,7 @@ $notif_data = array(
             var row = $(this).index();
             var id_toko = content[row]["id"];
             if(confirm("Apakah anda ingin mengaktifkan toko "+content[row]["nama"]+"?")){
-                window.location.replace("<?php echo base_url();?>toko/activate_toko_manajemen/"+id_toko);
+                window.location.href = "<?php echo base_url();?>toko/activate_toko_manajemen/"+id_toko;
             }
         });
     }
