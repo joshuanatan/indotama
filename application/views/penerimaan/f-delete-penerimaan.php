@@ -67,7 +67,7 @@
         $("#id_delete").val(content[row]["id"]);
         $("#nomor_delete").html(content[row]["pem_pk_nomor"]);
         var tgl = content[row]["tgl"].split(" ");
-        $("#tgl_penerimaan_delete").html(tgl[0]);
+        $("#tgl_delete").html(tgl[0]);
 
         $.ajax({
             url:"<?php echo base_url();?>ws/pembelian/detail/"+content[row]["pem_pk_nomor"],

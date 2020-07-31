@@ -148,6 +148,7 @@ class M_penjualan_pembayaran extends CI_Model{
                 "penjualan_pmbyrn_notes" => $this->penjualan_pmbyrn_notes,
                 "penjualan_pmbyrn_dateline" => $this->penjualan_pmbyrn_dateline,
                 "penjualan_pmbyrn_last_modified" => $this->penjualan_pmbyrn_last_modified,
+                "penjualan_pmbyrn_status" => $this->penjualan_pmbyrn_status,
                 "id_last_modified" => $this->id_last_modified
             );
             updateRow($this->tbl_name,$data,$where);
@@ -269,7 +270,7 @@ class M_penjualan_pembayaran extends CI_Model{
         }
         return true;
     }
-    public function set_update($id_pk_penjualan_pembayaran,$penjualan_pmbyrn_nama,$penjualan_pmbyrn_persen,$penjualan_pmbyrn_nominal,$penjualan_pmbyrn_notes,$penjualan_pmbyrn_dateline){
+    public function set_update($id_pk_penjualan_pembayaran,$penjualan_pmbyrn_nama,$penjualan_pmbyrn_persen,$penjualan_pmbyrn_nominal,$penjualan_pmbyrn_notes,$penjualan_pmbyrn_dateline,$penjualan_pmbyrn_status){
         if(!$this->set_id_pk_penjualan_pembayaran($id_pk_penjualan_pembayaran)){
             return false;
         }
@@ -286,6 +287,9 @@ class M_penjualan_pembayaran extends CI_Model{
             return false;
         }
         if(!$this->set_penjualan_pmbyrn_dateline($penjualan_pmbyrn_dateline)){
+            return false;
+        }
+        if(!$this->set_penjualan_pmbyrn_status($penjualan_pmbyrn_status)){
             return false;
         }
         return true;

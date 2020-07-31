@@ -5,6 +5,9 @@ function reset_update_form(){
     if(typeof(init_nf) != "undefined"){
         init_nf();
     }
+    if(typeof(emp_edit_form_script_init) != "undefined"){
+        emp_edit_form_script_init();
+    }
 }
 </script>
 <script>

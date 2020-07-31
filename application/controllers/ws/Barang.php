@@ -417,13 +417,9 @@ class Barang extends CI_Controller{
                 if($this->m_barang->delete()){
                     $response["msg"] = "Data is deleted from database";
 
-                    $result = $this->m_barang->detail_by_id();
-                    $result = $result->result_array();
-                    if(strtolower($result[0]["brg_tipe"]) == "kombinasi"){
-                        $this->load->model("m_barang_kombinasi");
-                        $this->m_barang_kombinasi->set_id_barang_utama($id_pk_barang);
-                        $this->m_barang_kombinasi->delete_by_barang_utama();
-                    }
+                    $this->load->model("m_barang_kombinasi");
+                    $this->m_barang_kombinasi->set_id_barang_utama($id_pk_barang);
+                    $this->m_barang_kombinasi->delete_by_barang_utama();
                 }
                 else{
                     $response["status"] = "ERROR";

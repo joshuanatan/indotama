@@ -96,17 +96,43 @@ $notif_data = array(
 </script>
 <script>
     function redirect_print_pdf(){
+        var is_opened = false;
         $('body table').find('tr').click( function(){
             var row = $(this).index();
             var id_pengiriman = content[row]["id_pengiriman"];
-            window.open("<?php echo base_url();?>pdf/surat_jalan/permintaan/"+id_pengiriman,"_blank");
+            $(this).find(".action_column").click(function(){
+                $(this).find("i.text-info.md-print").click(function(){
+                    if(!is_opened){
+                        if(content[row]["status"].toLowerCase() != "aktif"){
+                            window.open("<?php echo base_url();?>pdf/surat_jalan/permintaan/"+id_pengiriman,"_blank");
+                            is_opened = true;
+                        }
+                        else{
+                            alert("Surat jalan tidak dapat dicetak karena barang belum dikirim");
+                        }
+                    }
+                });
+            });
         });
     }
     function redirect_print_pdf_warehouse(){
+        var is_opened = false;
         $('body table').find('tr').click( function(){
             var row = $(this).index();
             var id_pengiriman = content[row]["id_pengiriman"];
-            window.open("<?php echo base_url();?>pdf/surat_jalan/permintaan_gudang/"+id_pengiriman,"_blank");
+            $(this).find(".action_column").click(function(){
+                $(this).find("i.text-info.md-print").click(function(){
+                    if(!is_opened){
+                        if(content[row]["status"].toLowerCase() != "aktif"){
+                            window.open("<?php echo base_url();?>pdf/surat_jalan/permintaan_gudang/"+id_pengiriman,"_blank");
+                            is_opened = true;
+                        }
+                        else{
+                            alert("Surat jalan tidak dapat dicetak karena barang belum dikirim");
+                        }
+                    }
+                });
+            });
         });
     }
     var delete_params = "";

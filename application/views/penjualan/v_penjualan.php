@@ -115,8 +115,6 @@ $notif_data = array(
         },
         {
             style:'cursor:pointer;font-size:large',
-            class:'text-default md-print',
-            onclick:'redirect_print_pdf_copy()',
             class:'text-secondary md-check',
             onclick:'open_selesai_modal()'
         },
@@ -130,21 +128,37 @@ $data = array(
 
 <script>
     function redirect_print_pdf(){
+        var is_opened = false;
         $('body table').find('tr').click( function(){
             var row = $(this).index();
             var id_penjualan = content[row]["id"];
-            window.open("<?php echo base_url();?>pdf/invoice/index/"+id_penjualan,"_blank");
+            $(this).find(".action_column").click(function(){
+                $(this).find("i.text-info.md-print").click(function(){
+                    if(!is_opened){
+                        window.open("<?php echo base_url();?>pdf/invoice/index/"+id_penjualan,"_blank");
+                        is_opened = true;
+                    }
+                })
+            })
         });
     }
     function redirect_print_pdf_copy(){
+        var is_opened = false;
         $('body table').find('tr').click( function(){
             var row = $(this).index();
             var id_penjualan = content[row]["id"];
-            window.open("<?php echo base_url();?>pdf/invoice/copy/"+id_penjualan,"_blank");
+            $(this).find(".action_column").click(function(){
+                $(this).find("i.text-copy.md-print").click(function(){
+                    if(!is_opened){
+                        window.open("<?php echo base_url();?>pdf/invoice/copy/"+id_penjualan,"_blank");
+                        is_opened = true;
+                    }
+                })
+            })
         });
     }
     function redirect_edit_penjualan(){
-        var is_clicked = true;
+        var is_opened = false;
         $('body table').find('tr').click( function(){
             var row = $(this).index();
             var id_penjualan = content[row]["id"];
@@ -152,9 +166,9 @@ $data = array(
                 $(this).find("i.text-primary.md-edit").click(function(){
                     console.log($(this));
                     if(content[row]["status"].toLowerCase() == "aktif"){
-                        if(is_clicked){
+                        if(!is_opened){
                             window.open("<?php echo base_url();?>penjualan/update/"+id_penjualan,"_blank");
-                            is_clicked = false;
+                            is_opened = true;
                         }
                     }
                     else{
@@ -171,10 +185,18 @@ $data = array(
         refresh(page);
     }
     function open_selesai_modal(){
+        var is_opened = false;
         $("body table").find("tr").click(function(){
             var row = $(this).index();
-            load_selesai_content(row);
-            $("#selesai_modal").modal("show");
+            $(this).find(".action_column").click(function(){
+                $(this).find("i.text-secondary.md-check").click(function(){
+                    if(!is_opened){
+                        load_selesai_content(row);
+                        $("#selesai_modal").modal("show");
+                        is_opened = true;
+                    }
+                });
+            })
         });
     }
 </script>

@@ -165,13 +165,16 @@
         $("#emp_rek_edit").val(content[id]["rek"]);
         $("#id_fk_toko_edit").val(content[id]["id_toko"]);
     }
-
-    $('#yes_enddate_edit').click(function() {
-        $("#emp_enddate_edit").show();
-        $("#emp_enddate_edit").prop('required',true);
-    });
-    $('#no_enddate_edit').click(function() {
-        $("#emp_enddate_edit").hide();
-        $("#emp_enddate_edit").prop('required',false);
-    });
+    
+    emp_edit_form_script_init();
+    function emp_edit_form_script_init(){
+        $('#yes_enddate_edit').click(function() {
+            $("#emp_enddate_edit").show();
+            $("#emp_enddate_edit").prop('required',true);
+        });
+        $('#no_enddate_edit').click(function() {
+            $("#emp_enddate_edit").hide();
+            $("#emp_enddate_edit").prop('required',false);
+        });
+    }
 </script>
