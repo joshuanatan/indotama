@@ -79,10 +79,6 @@
                             <td>Panggilan</td>
                             <td id = "emp_suff_delete"></td>
                         </tr>
-                        <tr>
-                            <td>Toko</td>
-                            <td id = "id_fk_toko_delete"></td>
-                        </tr>
                         
                     </tbody>
                 </table>

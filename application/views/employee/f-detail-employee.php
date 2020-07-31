@@ -105,6 +105,8 @@
         $("#d_emp_foto_edit").html(content[id]["foto"]);
         $("#d_emp_gender").val(content[id]["gender"]);
 
+        var foto = "<?php echo base_url() ?>asset/uploads/employee/foto/" + content[id]["foto"];
+        $("#d_emp_foto_foto_edit").attr("src", foto);
         var npwp = "<?php echo base_url() ?>asset/uploads/employee/npwp/" + content[id]["foto_npwp"];
         $("#d_emp_foto_npwp_edit").attr("src", npwp);
         var ktp = "<?php echo base_url() ?>asset/uploads/employee/ktp/" + content[id]["foto_ktp"];
@@ -123,7 +125,6 @@
             $('#d_yes_enddate_edit').prop('checked', true);
             $("#d_emp_enddate_edit").show();
             $("#d_emp_enddate_edit").prop('required',true);
-            //jeen masukin content[id]["enddate"] ke #emp_enddate_edit
         }
 
         $("#d_emp_suff_edit").val(content[id]["suff"]);
@@ -131,7 +132,6 @@
 
         $("#d_emp_kode_pos_edit").val(content[id]["kode_pos"]);
         
-        //jeen masukin content[id]["startdate"] ke #emp_startdate_edit
         var split_date = content[id]["startdate"].split(" ");
         $("#d_emp_startdate_edit").val(split_date[0]);
         split_date = content[id]["enddate"].split(" ");

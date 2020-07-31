@@ -153,7 +153,7 @@
         }
 
         $("#emp_suff_edit").val(content[id]["suff"]);
-        $("#emp_gaji_edit").attr("value",content[id]["gaji"]);
+        $("#emp_gaji_edit").val(content[id]["gaji"]);
 
         $("#emp_kode_pos_edit").val(content[id]["kode_pos"]);
         
