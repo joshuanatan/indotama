@@ -170,7 +170,7 @@
                                         <th>Persentase</th>
                                         <th>Jumlah</th>
                                         <th>Notes</th>
-                                        <th>Dateline Pembayaran</th>
+                                        <th>Tanggal Bayar</th>
                                         <th>Status Pembayaran</th>
                                     </thead>
                                     <tbody id = "daftar_pembayaran_detail">

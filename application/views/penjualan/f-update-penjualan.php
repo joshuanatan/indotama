@@ -217,7 +217,7 @@ $notif_data = array(
                                                             <th>Persentase</th>
                                                             <th>Jumlah</th>
                                                             <th>Notes</th>
-                                                            <th>Dateline Bayar</th>
+                                                            <th>Tanggal Bayar</th>
                                                             <th>Action</th>
                                                         </thead>
                                                         <tbody id = "daftar_pembayaran_add">
