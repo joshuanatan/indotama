@@ -34,10 +34,12 @@ class Log extends CI_Controller{
         if($result["data"]->num_rows() > 0){
             $result["data"] = $result["data"]->result_array();
             for($a = 0; $a<count($result["data"]); $a++){
-                $response["content"][$a]["id"] = $result["data"][$a]["id_log_all"];
-                $response["content"][$a]["date"] = $result["data"][$a]["log_date"];
-                $response["content"][$a]["msg"] = nl2br($result["data"][$a]["log"]);
+                $response["content"][$a]["id"] = $result["data"][$a]["id_pk_log_all"];
+                $response["content"][$a]["date"] = $result["data"][$a]["log_all_tgl"];
                 $response["content"][$a]["user"] = $result["data"][$a]["user_name"];
+                $response["content"][$a]["msg"] = nl2br($result["data"][$a]["log_all_msg"]);
+                $response["content"][$a]["data"] = str_replace("][","]<br/>[",$result["data"][$a]["log_all_data_changes"]);
+                $response["content"][$a]["it"] = nl2br($result["data"][$a]["log_all_it"]);
             }
         }
         else{
@@ -47,8 +49,9 @@ class Log extends CI_Controller{
         $response["key"] = array(
             "id",
             "date",
+            "user",
             "msg",
-            "user"
+            "it"
         );
         echo json_encode($response);
     }

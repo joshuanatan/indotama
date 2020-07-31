@@ -64,5 +64,7 @@ $notif_data = array(
 <script>
     var ctrl = "log";
     var url_add = "";
+    var unautorized_button = ["edit_button","delete_button"];
 </script>
+<?php $this->load->view("log/f-detail-log");?>
 <?php $this->load->view("_core_script/table_func");?>
