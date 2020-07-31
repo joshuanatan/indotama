@@ -3,9 +3,13 @@
 var default_register_form_html = $("#register_form").html();
 function reset_register_form(){
     $("#register_form").html(default_register_form_html);
+    /*bagian ini diperlukan untuk initiate script supaya enable formnya*/
     if(typeof(init_nf) != "undefined"){
         init_nf();
     }
+    if(typeof(emp_add_form_script_init) != "undefined"){
+        emp_add_form_script_init();
+    } 
 }
 </script>
 <script>
