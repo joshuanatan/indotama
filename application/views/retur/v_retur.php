@@ -58,6 +58,8 @@ $notif_data = array(
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-success md-eye"></i><b> - Details </b>
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-info md-print"></i><b> - Print Surat Jalan </b>
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-success md-check"></i><b> - Selesai Retur </b>
                                             </div>
                                             <br/>
                                             <?php

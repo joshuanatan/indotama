@@ -56,8 +56,11 @@ $notif_data = array(
                                             <br/>
                                             <br/>
                                             <div class = "align-middle text-center d-block">
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-success md-eye"></i><b> - Details </b>
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-success md-store"></i><b> - Stok Cabang </b>
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-warning md-assignment-account"></i><b> - Admin Cabang </b>
                                             </div>
                                             <br/>
                                             <?php $this->load->view("_base_element/table");?>
