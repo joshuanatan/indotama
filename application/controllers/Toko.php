@@ -135,7 +135,7 @@ class Toko extends CI_Controller {
 		$result = $result->result_array();
 		$this->session->id_toko = $result[0]["id_pk_toko"];
 		$this->session->nama_toko = $result[0]["toko_nama"];
-		redirect("toko/dashboard_toko");
+		redirect("toko/daftar_akses_toko");
 	}
 	public function activate_cabang_manajemen($id_cabang){
 		$response["status"] = "SUCCESS";
