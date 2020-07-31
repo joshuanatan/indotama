@@ -167,19 +167,20 @@ $notif_data = array(
                                                     <input type = "text" class = "form-control" required readonly onclick = "count_total_price()" id = "total_price">
                                                 </div>
                                                 <div class = "form-group col-lg-12">
-                                                    <h5>Tahapan Pembayaran</h5>
+                                                    <h5>Pembayaran Penjualan</h5>
                                                     <table class = "table table-striped table-bordered">
                                                         <thead>
                                                             <th>Pembayaran #</th>
                                                             <th>Persentase</th>
                                                             <th>Jumlah</th>
                                                             <th>Notes</th>
+                                                            <th>Status Bayar</th>
                                                             <th>Tanggal Bayar</th>
                                                             <th>Action</th>
                                                         </thead>
                                                         <tbody id = "daftar_pembayaran_add">
                                                             <tr id = "add_pembayaran_but_container">
-                                                                <td colspan = 6><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_pembayaran_row()">Tambah Tahap Pembayaran</button>
+                                                                <td colspan = 7><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_pembayaran_row()">Tambah Pembayaran Penjualan</button>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -284,6 +285,12 @@ $notif_data = array(
             </td>
             <td>
                 <input type = 'text' name = 'pmbyrn_notes${pembayaran_row}' class = 'form-control'>
+            </td>
+            <td>
+                <select name = 'pmbyrn_status${pembayaran_row}' class = 'form-control'>
+                    <option value = 'aktif'>LUNAS</option>
+                    <option value = 'belum lunas'>BELUM LUNAS</option>
+                </select>
             </td>
             <td>
                 <input type = 'date' name = 'pmbyrn_dateline${pembayaran_row}' class = 'form-control'>
