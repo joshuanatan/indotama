@@ -100,17 +100,29 @@ $notif_data = array(
 </script>
 <script>
     function redirect_print_pdf(){
+        var is_opened = false;
         $('body table').find('tr').click( function(){
             var row = $(this).index();
             var id_pembelian = content[row]["id"];
-            window.open("<?php echo base_url();?>pdf/pembelian/index/"+id_pembelian,"_blank");
+            $(this).find(".action_column").click(function(){
+                $(this).find("i.text-info.md-print").click(function(){
+                    if(!is_opened){
+                        window.open("<?php echo base_url();?>pdf/pembelian/index/"+id_pembelian,"_blank");
+                        is_opened = true;
+                    }
+                });
+            })
         });
     }
     function open_konfirmasi_selesai_modal(){
         $("body table").find("tr").click(function(){
             var row = $(this).index();
-            load_selesai_content(row);
-            $("#selesai_modal").modal("show");
+            $(this).find(".action_column").click(function(){
+                $(this).find("i.text-secondary.md-check").click(function(){
+                    load_selesai_content(row);
+                    $("#selesai_modal").modal("show");
+                })
+            })
         })
     }
 </script>
