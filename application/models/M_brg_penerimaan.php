@@ -75,6 +75,30 @@ class M_brg_penerimaan extends ci_model{
             
             insert into tbl_brg_penerimaan_log(executed_function,id_pk_brg_penerimaan,brg_penerimaan_qty,brg_penerimaan_note,id_fk_penerimaan,id_fk_brg_pembelian,id_fk_brg_retur,id_fk_brg_pengiriman,id_fk_satuan,brg_penerimaan_create_date,brg_penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_penerimaan,new.brg_penerimaan_qty,new.brg_penerimaan_note,new.id_fk_penerimaan,new.id_fk_brg_pembelian,new.id_fk_brg_retur,new.id_fk_brg_pengiriman,new.id_fk_satuan,new.brg_penerimaan_create_date,new.brg_penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
 
+        end$$
+        delimiter ;
+
+        drop trigger if exists trg_after_update_brg_penerimaan;
+        delimiter $$
+        create trigger trg_after_update_brg_penerimaan
+        after update on tbl_brg_penerimaan
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_penerimaan_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_penerimaan_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_penerimaan_log(executed_function,id_pk_brg_penerimaan,brg_penerimaan_qty,brg_penerimaan_note,id_fk_penerimaan,id_fk_brg_pembelian,id_fk_brg_retur,id_fk_brg_pengiriman,id_fk_satuan,brg_penerimaan_create_date,brg_penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_penerimaan,new.brg_penerimaan_qty,new.brg_penerimaan_note,new.id_fk_penerimaan,new.id_fk_brg_pembelian,new.id_fk_brg_retur,new.id_fk_brg_pengiriman,new.id_fk_satuan,new.brg_penerimaan_create_date,new.brg_penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+
+        end$$
+        delimiter ;
+
+        delimiter $$
+        create trigger trg_update_brg_cabang_after_insert_brg_penerimaan
+        after insert on tbl_brg_penerimaan
+        for each row
+        begin
             set @id_cabang = 0;
             set @id_barang = 0;
             set @id_warehouse = 0;
@@ -114,23 +138,14 @@ class M_brg_penerimaan extends ci_model{
             elseif @id_cabang is not null then 
             call update_stok_barang_cabang(@id_barang,@id_cabang,@brg_penerimaan_qty,@id_satuan_terima,0,0);
             end if;
-
-        end$$
+        end $$
         delimiter ;
 
-        drop trigger if exists trg_after_update_brg_penerimaan;
         delimiter $$
-        create trigger trg_after_update_brg_penerimaan
+        create trigger trg_update_brg_cabang_after_update_brg_penerimaan
         after update on tbl_brg_penerimaan
         for each row
         begin
-            set @id_user = new.id_last_modified;
-            set @tgl_action = new.brg_penerimaan_last_modified;
-            set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_penerimaan_last_modified);
-            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
-            
-            insert into tbl_brg_penerimaan_log(executed_function,id_pk_brg_penerimaan,brg_penerimaan_qty,brg_penerimaan_note,id_fk_penerimaan,id_fk_brg_pembelian,id_fk_brg_retur,id_fk_brg_pengiriman,id_fk_satuan,brg_penerimaan_create_date,brg_penerimaan_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_penerimaan,new.brg_penerimaan_qty,new.brg_penerimaan_note,new.id_fk_penerimaan,new.id_fk_brg_pembelian,new.id_fk_brg_retur,new.id_fk_brg_pengiriman,new.id_fk_satuan,new.brg_penerimaan_create_date,new.brg_penerimaan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
-
             set @id_cabang = 0;
             set @id_barang = 0;
             set @id_warehouse = 0;
@@ -173,7 +188,7 @@ class M_brg_penerimaan extends ci_model{
             call update_stok_barang_cabang(@id_barang,@id_cabang,@brg_penerimaan_qty,@id_satuan_terima,@brg_keluar_qty,@id_satuan_keluar);
             end if;
 
-        end$$
+        end $$
         delimiter ;
         ";
     }

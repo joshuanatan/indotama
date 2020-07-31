@@ -59,10 +59,6 @@ class M_roles extends ci_model{
             
             insert into mstr_jabatan_log(executed_function,id_pk_jabatan,jabatan_nama,jabatan_status,jabatan_create_date,jabatan_last_modified,id_create_data,id_last_modified,id_log_all) values('after insert',new.id_pk_jabatan,new.jabatan_nama,new.jabatan_status,new.jabatan_create_date,new.jabatan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
 
-            /* insert new jabatan to all hak akses*/
-            set @id_jabatan = new.id_pk_jabatan;
-            insert into tbl_hak_akses(id_fk_jabatan,id_fk_menu,hak_akses_status,hak_akses_create_date,hak_akses_last_modified,id_create_data,id_last_modified)
-            select @id_jabatan,id_pk_menu,'nonaktif',@tgl_action,@tgl_action,@id_user,@id_user from mstr_menu;
         end$$
         delimiter ;
         
@@ -80,6 +76,17 @@ class M_roles extends ci_model{
             insert into mstr_jabatan_log(executed_function,id_pk_jabatan,jabatan_nama,jabatan_status,jabatan_create_date,jabatan_last_modified,id_create_data,id_last_modified,id_log_all) values('after update',new.id_pk_jabatan,new.jabatan_nama,new.jabatan_status,new.jabatan_create_date,new.jabatan_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;
+
+        delimiter $$
+        create trigger trg_insert_new_jabatan_to_all_hak_akses
+        after insert on mstr_jabatan
+        for each row
+        begin
+            /* insert new jabatan to all hak akses*/
+            set @id_jabatan = new.id_pk_jabatan;
+            insert into tbl_hak_akses(id_fk_jabatan,id_fk_menu,hak_akses_status,hak_akses_create_date,hak_akses_last_modified,id_create_data,id_last_modified)
+            select @id_jabatan,id_pk_menu,'nonaktif',@tgl_action,@tgl_action,@id_user,@id_user from mstr_menu;
+        end $$
         ";
         executequery($sql);
     }

@@ -66,21 +66,22 @@ class M_brg_pindah extends CI_Model{
         after insert on tbl_brg_pindah
         for each row
         begin
-            set @id_user = new.id_last_modified;
-            set @tgl_action = new.brg_pindah_last_modified;
-            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.brg_pindah_last_modified);
-            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
-            
             insert into tbl_brg_pindah_log(executed_function,id_pk_brg_pindah,brg_pindah_sumber,id_fk_refrensi_sumber,id_brg_awal,id_brg_tujuan,id_fk_cabang,brg_pindah_qty,brg_pindah_status,brg_pindah_create_date,brg_pindah_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_pindah,new.brg_pindah_sumber,new.id_fk_refrensi_sumber,new.id_brg_awal,new.id_brg_tujuan,new.id_fk_cabang,new.brg_pindah_qty,new.brg_pindah_status,new.brg_pindah_create_date,new.brg_pindah_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            
+        end$$
+        delimiter ;
 
+        delimiter $$
+        create trigger trg_update_brg_cabang_after_insert_brg_pindah
+        after insert on tbl_brg_pindah
+        for each row
+        begin
             /*update barang cabang*/
             select id_pk_satuan into @id_satuan from mstr_satuan where mstr_satuan.satuan_rumus = 1;            
             call update_stok_barang_cabang(new.id_brg_awal,new.id_fk_cabang,0,0,new.brg_pindah_qty,@id_satuan);
             call update_stok_barang_cabang(new.id_brg_tujuan,new.id_fk_cabang,new.brg_pindah_qty,@id_satuan,0,0);
-            
-        end$$
-        delimiter ;
-        
+        end $$
+
         drop trigger if exists trg_after_update_brg_pindah;
         delimiter $$
         create trigger trg_after_update_brg_pindah

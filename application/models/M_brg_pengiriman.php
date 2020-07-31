@@ -75,6 +75,31 @@ class M_brg_pengiriman extends ci_model{
             
             insert into tbl_brg_pengiriman_log(executed_function,id_pk_brg_pengiriman,brg_pengiriman_qty,brg_pengiriman_note,id_fk_pengiriman,id_fk_brg_penjualan,id_fk_brg_retur_kembali,id_fk_brg_pemenuhan,id_fk_satuan,brg_pengiriman_create_date,brg_pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_brg_pengiriman,new.brg_pengiriman_qty,new.brg_pengiriman_note,new.id_fk_pengiriman,new.id_fk_brg_penjualan,new.id_fk_brg_retur_kembali,new.id_fk_brg_pemenuhan,new.id_fk_satuan,new.brg_pengiriman_create_date,new.brg_pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
             
+        end$$
+        delimiter ;
+
+        drop trigger if exists trg_after_update_brg_pengiriman;
+        delimiter $$
+        create trigger trg_after_update_brg_pengiriman
+        after update on tbl_brg_pengiriman
+        for each row
+        begin
+            set @id_user = new.id_last_modified;
+            set @tgl_action = new.brg_pengiriman_last_modified;
+            set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_pengiriman_last_modified);
+            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
+            
+            insert into tbl_brg_pengiriman_log(executed_function,id_pk_brg_pengiriman,brg_pengiriman_qty,brg_pengiriman_note,id_fk_pengiriman,id_fk_brg_penjualan,id_fk_brg_retur_kembali,id_fk_brg_pemenuhan,id_fk_satuan,brg_pengiriman_create_date,brg_pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_pengiriman,new.brg_pengiriman_qty,new.brg_pengiriman_note,new.id_fk_pengiriman,new.id_fk_brg_penjualan,new.id_fk_brg_retur_kembali,new.id_fk_brg_pemenuhan,new.id_fk_satuan,new.brg_pengiriman_create_date,new.brg_pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            
+        end$$
+        delimiter ;
+
+
+        delimiter $$
+        create trigger trg_update_brg_cabang_after_insert_brg_pengiriman
+        after insert on tbl_brg_pengiriman
+        for each row
+        begin
             set @id_cabang = 0;
             set @id_barang = 0;
             set @id_warehouse = 0;
@@ -116,22 +141,14 @@ class M_brg_pengiriman extends ci_model{
             elseif @id_cabang is not null then 
             call update_stok_barang_cabang(@id_barang,@id_cabang,0,0,@brg_pengiriman_qty,@id_satuan_kirim);
             end if;
-        end$$
-        delimiter ;
+        end $$
 
-        drop trigger if exists trg_after_update_brg_pengiriman;
+
         delimiter $$
-        create trigger trg_after_update_brg_pengiriman
+        create trigger trg_update_brg_cabang_after_update_brg_pengiriman
         after update on tbl_brg_pengiriman
         for each row
         begin
-            set @id_user = new.id_last_modified;
-            set @tgl_action = new.brg_pengiriman_last_modified;
-            set @log_text = concat(new.id_last_modified,' ','update data at' , new.brg_pengiriman_last_modified);
-            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
-            
-            insert into tbl_brg_pengiriman_log(executed_function,id_pk_brg_pengiriman,brg_pengiriman_qty,brg_pengiriman_note,id_fk_pengiriman,id_fk_brg_penjualan,id_fk_brg_retur_kembali,id_fk_brg_pemenuhan,id_fk_satuan,brg_pengiriman_create_date,brg_pengiriman_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_pengiriman,new.brg_pengiriman_qty,new.brg_pengiriman_note,new.id_fk_pengiriman,new.id_fk_brg_penjualan,new.id_fk_brg_retur_kembali,new.id_fk_brg_pemenuhan,new.id_fk_satuan,new.brg_pengiriman_create_date,new.brg_pengiriman_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
-            
             set @id_cabang = 0;
             set @id_barang = 0;
             set @id_warehouse = 0;
@@ -173,9 +190,7 @@ class M_brg_pengiriman extends ci_model{
             elseif @id_cabang is not null then 
             call update_stok_barang_cabang(@id_barang,@id_cabang,@brg_keluar_qty,@id_satuan_keluar,@brg_pengiriman_qty,@id_satuan_terima);
             end if;
-        end$$
-        delimiter ;
-        ";
+        end $$";
     }
     public function list(){
         $query = "

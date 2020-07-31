@@ -82,10 +82,6 @@ class M_menu extends ci_model{
             
             insert into mstr_menu_log(executed_function,id_pk_menu,menu_name,menu_display,menu_icon,menu_category,menu_status,menu_create_date,menu_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_menu,new.menu_name,new.menu_display,new.menu_icon,new.menu_category,new.menu_status,new.menu_create_date,new.menu_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
             
-            /* insert new menu to all hak akses*/
-            set @id_menu = new.id_pk_menu;
-            insert into tbl_hak_akses(id_fk_jabatan,id_fk_menu,hak_akses_status,hak_akses_create_date,hak_akses_last_modified,id_create_data,id_last_modified)
-            select id_pk_jabatan,@id_menu,'nonaktif',@tgl_action,@tgl_action,@id_user,@id_user from mstr_jabatan;
         end$$
         delimiter ;
         
@@ -102,7 +98,18 @@ class M_menu extends ci_model{
             
             insert into mstr_menu_log(executed_function,id_pk_menu,menu_name,menu_display,menu_icon,menu_category,menu_status,menu_create_date,menu_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_menu,new.menu_name,new.menu_display,new.menu_icon,new.menu_category,new.menu_status,new.menu_create_date,new.menu_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
-        delimiter ;";
+        delimiter ;
+        
+        delimiter $$
+        create trigger trg_insert_new_menu_to_all_hak_akses
+        after insert on mstr_menu
+        for each row
+        begin
+            /* insert new menu to all hak akses*/
+            set @id_menu = new.id_pk_menu;
+            insert into tbl_hak_akses(id_fk_jabatan,id_fk_menu,hak_akses_status,hak_akses_create_date,hak_akses_last_modified,id_create_data,id_last_modified)
+            select id_pk_jabatan,@id_menu,'nonaktif',@tgl_action,@tgl_action,@id_user,@id_user from mstr_jabatan;
+        end $$";
         executequery($sql);
     }
     public function list(){
