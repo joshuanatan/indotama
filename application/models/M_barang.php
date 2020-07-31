@@ -102,7 +102,7 @@ class M_barang extends ci_model{
             set @id_user = new.id_last_modified;
             set @tgl_action = new.brg_last_modified;
             
-            set @log_text = concat(@id_user,' insert data barang at ' , new.brg_last_modified,' nama barang terkait: ',new.brg_nama);
+            set @log_text = concat(@id_user,' menambah data barang pada pukul ' , new.brg_last_modified,' nama barang terkait: ',new.brg_nama);
             call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
             
             insert into mstr_barang_log(executed_function,
@@ -190,7 +190,6 @@ class M_barang extends ci_model{
         from ".$this->tbl_name." 
         inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
         inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
-        left join tbl_barang_ukuran on tbl_barang_ukuran.id_fk_barang = ".$this->tbl_name.".id_pk_brg
         where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ?  
         group by id_pk_brg 
         order by brg_nama asc"; 
@@ -205,7 +204,6 @@ class M_barang extends ci_model{
         from ".$this->tbl_name." 
         inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
         inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
-        left join tbl_barang_ukuran on tbl_barang_ukuran.id_fk_barang = ".$this->tbl_name.".id_pk_brg
         where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ? and brg_nama = ?
         group by id_pk_brg 
         order by brg_nama asc"; 
@@ -220,7 +218,6 @@ class M_barang extends ci_model{
         from ".$this->tbl_name." 
         inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
         inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
-        left join tbl_barang_ukuran on tbl_barang_ukuran.id_fk_barang = ".$this->tbl_name.".id_pk_brg
         where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ? and id_pk_brg = ?
         group by id_pk_brg 
         order by brg_nama asc"; 
@@ -607,7 +604,6 @@ class M_barang extends ci_model{
         from ".$this->tbl_name." 
         inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
         inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
-        left join tbl_barang_ukuran on tbl_barang_ukuran.id_fk_barang = ".$this->tbl_name.".id_pk_brg
         where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ?  
         group by id_pk_brg 
         order by brg_nama asc"; 
