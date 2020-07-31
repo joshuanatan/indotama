@@ -186,9 +186,10 @@ class M_marketplace extends ci_model{
         if($this->check_update()){
             $where = array(
                 "id_pk_marketplace !=" => $this->id_pk_marketplace,
+                "marketplace_nama" => $this->marketplace_nama,
                 "marketplace_status" => "aktif"
             );
-            if(!isexistsintable($this->tbl_name,$where)){
+            if(!isExistsInTable($this->tbl_name,$where)){
                 $where = array(
                     "id_pk_marketplace" => $this->id_pk_marketplace
                 );
@@ -199,7 +200,7 @@ class M_marketplace extends ci_model{
                     "marketplace_last_modified" => $this->marketplace_last_modified,
                     "id_last_modified" => $this->id_last_modified
                 );
-                updaterow($this->tbl_name,$data,$where);
+                updateRow($this->tbl_name,$data,$where);
                 return true;
             }
             else{
@@ -220,7 +221,7 @@ class M_marketplace extends ci_model{
                 "marketplace_last_modified" => $this->marketplace_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
-            updaterow($this->tbl_name,$data,$where);
+            updateRow($this->tbl_name,$data,$where);
             return true;
         }
     }
