@@ -79,19 +79,34 @@ $notif_data = array(
             style:"cursor:pointer",
             onclick:"open_kirim_barang_modal()"
         },
+        <?php if($type=="warehouse"){ ?>
+            {
+            class:"text-info md-print",
+            style:"cursor:pointer",
+            onclick:"redirect_print_pdf_warehouse()"
+        },
+        <?php }else{ ?>
         {
             style:'cursor:pointer;font-size:large',
             class:'text-info md-print',
             onclick:'redirect_print_pdf()'
         }
+    <?php } ?>
     ]
 </script>
 <script>
     function redirect_print_pdf(){
         $('body table').find('tr').click( function(){
             var row = $(this).index();
-            var id_pengiriman = content[row]["id"];
+            var id_pengiriman = content[row]["id_pengiriman"];
             window.open("<?php echo base_url();?>pdf/surat_jalan/permintaan/"+id_pengiriman,"_blank");
+        });
+    }
+    function redirect_print_pdf_warehouse(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_pengiriman = content[row]["id_pengiriman"];
+            window.open("<?php echo base_url();?>pdf/surat_jalan/permintaan_gudang/"+id_pengiriman,"_blank");
         });
     }
     var delete_params = "";
