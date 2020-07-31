@@ -113,10 +113,18 @@ $data = array(
 <?php $this->load->view("_base_element/datalist_barang_cabang");?>
 <script>
     function redirect_print_pdf(){
+        var is_opened = false;
         $('body table').find('tr').click( function(){
             var row = $(this).index();
             var id_retur = content[row]["id"];
-            window.open("<?php echo base_url();?>pdf/retur/index/"+id_retur,"_blank");
+            $(this).find(".action_column").click(function(){
+                $(this).find("i.text-info.md-print").click(function()  {
+                    if(!is_opened){
+                        window.open("<?php echo base_url();?>pdf/retur/index/"+id_retur,"_blank");
+                        is_opened = true;
+                    }
+                })
+            })
         });
     }
     function load_datalist(){
