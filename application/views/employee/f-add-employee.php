@@ -112,6 +112,9 @@
 </div>
 
 <script>
+emp_add_form_script_init();
+function emp_add_form_script_init(){
+
     $('#yes_enddate').click(function() {
         $("#emp_enddate").show();
         $("#emp_enddate").prop('required',true);
@@ -120,4 +123,5 @@
         $("#emp_enddate").hide();
         $("#emp_enddate").prop('required',false);
     });
+}
 </script>
