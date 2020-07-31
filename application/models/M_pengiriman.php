@@ -33,8 +33,6 @@ class M_pengiriman extends ci_model{
         $this->pengiriman_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
-        $this->bln_control = date("m");
-        $this->thn_control = date("Y");
     }
     public function install(){
         $sql = "
@@ -351,8 +349,8 @@ class M_pengiriman extends ci_model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified,
                 "no_control" => $this->no_control,
-                "bln_control" => $this->bln_control,
-                "thn_control" => $this->thn_control
+                "bln_control" => explode("-",$this->pengiriman_tgl)[1],
+                "thn_control" => explode("-",$this->pengiriman_tgl)[0]
             );
             if(strtolower($this->pengiriman_tempat) == "warehouse"){
                 $data["id_fk_warehouse"] = $this->id_fk_warehouse;

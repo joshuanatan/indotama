@@ -37,8 +37,6 @@ class M_retur extends CI_Model{
         $this->id_retur_confirm = $this->session->id_user;
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
-        $this->bln_control = date("m");
-        $this->thn_control = date("Y");
     }
     public function install(){
         $sql = "
@@ -243,13 +241,13 @@ class M_retur extends CI_Model{
                 "retur_tgl" => $this->retur_tgl,
                 "retur_tipe" => $this->retur_tipe,
                 "retur_status" => $this->retur_status,
+                "id_create_data" => $this->id_create_data,
+                "id_last_modified" => $this->id_last_modified,
                 "retur_create_date" => $this->retur_create_date,
                 "retur_last_modified" => $this->retur_last_modified,
-                "retur_confirm_date" => $this->retur_confirm_date,
-                "id_retur_confirm" => $this->id_retur_confirm,
                 "no_control" => $this->no_control,
-                "bln_control" => $this->bln_control,
-                "thn_control" => $this->thn_control
+                "bln_control" => explode("-",$this->retur_tgl)[1],
+                "thn_control" => explode("-",$this->retur_tgl)[0]
             );
             return insertRow($this->tbl_name,$data);
         }

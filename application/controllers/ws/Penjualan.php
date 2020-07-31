@@ -200,7 +200,7 @@ class Penjualan extends CI_Controller{
                 $response["content"][$a]["nominal"] = $result[$a]["penjualan_pmbyrn_nominal"];
                 $response["content"][$a]["notes"] = $result[$a]["penjualan_pmbyrn_notes"];
                 $response["content"][$a]["dateline"] = $result[$a]["penjualan_pmbyrn_dateline"];
-                $response["content"][$a]["status"] = $result[$a]["penjualan_pmbyrn_status"];
+                $response["content"][$a]["status"] = strtoupper($result[$a]["penjualan_pmbyrn_status"]);
                 $response["content"][$a]["last_modified"] = $result[$a]["penjualan_pmbyrn_last_modified"];
             }
         }
@@ -497,7 +497,7 @@ class Penjualan extends CI_Controller{
                                 $penjualan_pmbyrn_nominal = $this->input->post("pmbyrn_nominal".$a);
                                 $penjualan_pmbyrn_notes = $this->input->post("pmbyrn_notes".$a);
                                 $penjualan_pmbyrn_dateline = $this->input->post("pmbyrn_dateline".$a);
-                                $penjualan_pmbyrn_status = "AKTIF";
+                                $penjualan_pmbyrn_status = $this->input->post("pmbyrn_status".$a);
                                 
                                 $this->load->model("m_penjualan_pembayaran");
                                 if($this->m_penjualan_pembayaran->set_insert($id_fk_penjualan,$penjualan_pmbyrn_nama,$penjualan_pmbyrn_persen,$penjualan_pmbyrn_nominal,$penjualan_pmbyrn_notes,$penjualan_pmbyrn_dateline,$penjualan_pmbyrn_status)){
@@ -946,7 +946,7 @@ class Penjualan extends CI_Controller{
                         $penjualan_pmbyrn_nominal = $this->input->post("pmbyrn_nominal".$a);
                         $penjualan_pmbyrn_notes = $this->input->post("pmbyrn_notes".$a);
                         $penjualan_pmbyrn_dateline = $this->input->post("pmbyrn_dateline".$a);
-                        $penjualan_pmbyrn_status = "AKTIF";
+                        $penjualan_pmbyrn_status = $this->input->post("pmbyrn_status".$a);
                         
                         $this->load->model("m_penjualan_pembayaran");
                         if($this->m_penjualan_pembayaran->set_insert($id_fk_penjualan,$penjualan_pmbyrn_nama,$penjualan_pmbyrn_persen,$penjualan_pmbyrn_nominal,$penjualan_pmbyrn_notes,$penjualan_pmbyrn_dateline,$penjualan_pmbyrn_status)){
@@ -998,9 +998,10 @@ class Penjualan extends CI_Controller{
                         $penjualan_pmbyrn_nominal = $this->input->post("pmbyrn_nominal_edit".$a);
                         $penjualan_pmbyrn_notes = $this->input->post("pmbyrn_notes_edit".$a);
                         $penjualan_pmbyrn_dateline = $this->input->post("pmbyrn_dateline_edit".$a);
+                        $penjualan_pmbyrn_status = $this->input->post("pmbyrn_status_edit".$a);
                         
                         $this->load->model("m_penjualan_pembayaran");
-                        if($this->m_penjualan_pembayaran->set_update($id_pk_penjualan_pembayaran,$penjualan_pmbyrn_nama,$penjualan_pmbyrn_persen,$penjualan_pmbyrn_nominal,$penjualan_pmbyrn_notes,$penjualan_pmbyrn_dateline)){
+                        if($this->m_penjualan_pembayaran->set_update($id_pk_penjualan_pembayaran,$penjualan_pmbyrn_nama,$penjualan_pmbyrn_persen,$penjualan_pmbyrn_nominal,$penjualan_pmbyrn_notes,$penjualan_pmbyrn_dateline,$penjualan_pmbyrn_status)){
                             if($this->m_penjualan_pembayaran->update()){
                                 $response["pmbyrnsts"][$counter] = "SUCCESS";
                                 $response["pmbyrnmsg"][$counter] = "Data is updated to database";

@@ -29,8 +29,6 @@ class M_pembelian extends ci_model{
         $this->pem_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
-        $this->bln_control = date("m");
-        $this->thn_control = date("Y");
     }
     private function set_column($col_name,$col_disp,$order_by){
         $array = array(
@@ -203,8 +201,8 @@ class M_pembelian extends ci_model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified,
                 "no_control" => $this->no_control,
-                "bln_control" => $this->bln_control,
-                "thn_control" => $this->thn_control
+                "bln_control" => explode("-",$this->pem_tgl)[1],
+                "thn_control" => explode("-",$this->pem_tgl)[0]
             );
             return insertrow($this->tbl_name,$data);
         }

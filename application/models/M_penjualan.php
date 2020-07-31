@@ -25,7 +25,7 @@ class M_penjualan extends ci_model{
 
     public function __construct(){
         parent::__construct();
-        $this->set_column("penj_nomor","nomor penjualan",true);
+        $this->set_column("id_pk_penjualan","nomor penjualan",true);
         $this->set_column("penj_tgl","tanggal penjualan",false);
         $this->set_column("cust_name","customer",false);
         $this->set_column("penj_tipe_pembayaran","tipe pembayaran",false);
@@ -37,8 +37,6 @@ class M_penjualan extends ci_model{
         $this->penj_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
-        $this->bln_control = date("m");
-        $this->thn_control = date("Y");
     }
     private function set_column($col_name,$col_disp,$order_by){
         $array = array(
@@ -249,8 +247,8 @@ class M_penjualan extends ci_model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified,
                 "no_control" => $this->no_control,
-                "bln_control" => $this->bln_control,
-                "thn_control" => $this->thn_control
+                "bln_control" => explode("-",$this->penj_tgl)[1],
+                "thn_control" => explode("-",$this->penj_tgl)[0]
             );
             return insertrow($this->tbl_name,$data);
         }
