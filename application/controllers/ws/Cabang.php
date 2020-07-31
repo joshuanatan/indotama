@@ -423,7 +423,7 @@ class Cabang extends CI_Controller{
         $result3 = $this->m_dashboard_cabang->list_penjualan_tahun_lalu_perbulan(2);
         $array = array(
             "type" => "chart",
-            "title" => "Penjualan Tahun Ini Setiap Bulan",
+            "title" => "Penjualan 3 Tahun Terakhir Setiap Bulan",
             "data" => array(
                 array(
                     "label" => "Jumlah Penjualan Tahun ".date("Y"),
