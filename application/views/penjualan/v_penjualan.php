@@ -145,7 +145,7 @@ $data = array(
             var row = $(this).index();
             var id_penjualan = content[row]["id"];
             $(this).find('.action_column').click( function(){
-                $(this).find("i.text-primary.md-edit").click(function(event){
+                $(this).find("i.text-primary.md-edit").click(function(){
                     console.log($(this));
                     if(content[row]["status"].toLowerCase() == "aktif"){
                         if(is_clicked){
