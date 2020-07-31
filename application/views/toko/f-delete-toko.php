@@ -11,7 +11,7 @@
                 "page_title"=>$page_title
             );
             $this->load->view('_notification/delete_error',$notif_data); ?>
-                <input type = "hidden" id = "id_delete">
+                <input type = "hidden" name = "id" id = "id_delete">
                 <h4 align = "center">Apakah anda yakin akan menghapus data di bawah ini?</h4>
                 <table class = "table table-bordered table-striped table-hover">
                     <tbody>
@@ -35,7 +35,7 @@
 </div>
 <script>
     function load_delete_content(id){
-        $("#id_delete").html(content[id]["id"]);
+        $("#id_delete").val(content[id]["id"]);
         $("#nama_delete").html(content[id]["nama"]);
         $("#kode_delete").html(content[id]["kode"]);
     }
