@@ -48,6 +48,7 @@ class Penjualan extends CI_Controller{
                 $response["content"][$a]["tipe_pembayaran"] = $result["data"][$a]["penj_tipe_pembayaran"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["penj_last_modified"];
                 $response["content"][$a]["name_cust"] = $result["data"][$a]["cust_name"];
+                $response["content"][$a]["email_cust"] = $result["data"][$a]["cust_email"];
                 $response["content"][$a]["perusahaan_cust"] = $result["data"][$a]["cust_perusahaan"];
                 $response["content"][$a]["user_last_modified"] = $result["data"][$a]["user_last_modified"];
                 $response["content"][$a]["cust_display"] = $result["data"][$a]["cust_perusahaan"]." - ".$result["data"][$a]["cust_name"];

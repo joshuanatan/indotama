@@ -58,6 +58,7 @@ $notif_data = array(
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-success md-eye"></i><b> - Details </b>   
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-info md-email"></i><b> - Email </b>
                                             </div>
                                             <br/>
                                             <?php $this->load->view("_base_element/table");?>
@@ -78,6 +79,30 @@ $notif_data = array(
 <script>
     var ctrl = "penawaran";
     var url_add = "";
+    var additional_button = [
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-info md-email',
+            onclick:'redirect_mailto()'
+        }
+    ];
+    function redirect_mailto(){
+        var is_opened = false;
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var email = content[row]["refrensi"];
+            var subject = content[row]["subject"];
+            var body = content[row]["content"];
+            $(this).find(".action_column").click(function(){
+                $(this).find("i.text-info.md-email").click(function(){
+                    if(!is_opened){
+                        window.open("mailto:"+email+"?subject=" + subject+"&body="+body,"_blank");
+                        is_opened = true;
+                    }
+                })
+            })
+        });
+    }
 </script>
 <?php
 $data = array(

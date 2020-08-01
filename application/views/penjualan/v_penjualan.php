@@ -71,6 +71,7 @@ $notif_data = array(
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-info md-print"></i><b> - Invoice </b>
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-default md-print"></i><b> - Invoice Copy </b>
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-warning md-email"></i><b> - Email </b>
                                             </div>
                                             <br/>
                                             <?php
@@ -118,6 +119,11 @@ $notif_data = array(
             class:'text-secondary md-check',
             onclick:'open_selesai_modal()'
         },
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-info md-email',
+            onclick:'redirect_mailto()'
+        }
     ];
 </script>
 <?php
@@ -127,6 +133,21 @@ $data = array(
 ?>
 
 <script>
+    function redirect_mailto(){
+        var is_opened = false;
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var email = content[row]["email_cust"];
+            $(this).find(".action_column").click(function(){
+                $(this).find("i.text-info.md-email").click(function(){
+                    if(!is_opened){
+                        window.open("mailto:"+email,"_blank");
+                        is_opened = true;
+                    }
+                })
+            })
+        });
+    }
     function redirect_print_pdf(){
         var is_opened = false;
         $('body table').find('tr').click( function(){
