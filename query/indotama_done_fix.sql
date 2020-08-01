@@ -26,7 +26,7 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `generate_trans_no` (IN `id_cabang_in` INT, IN `jenis_trans` VARCHAR(15), IN `custom_tgl` VARCHAR(20), OUT `trans_no` VARCHAR(100), OUT `latest_no` INT)  begin
+CREATE PROCEDURE `generate_trans_no` (IN `id_cabang_in` INT, IN `jenis_trans` VARCHAR(15), IN `custom_tgl` VARCHAR(20), OUT `trans_no` VARCHAR(100), OUT `latest_no` INT)  begin
 	set @nomor = 0;
     if custom_tgl = "-"
     then
@@ -93,7 +93,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `generate_trans_no` (IN `id_cabang_i
     set trans_no = concat(upper(@kode_cabang),"-",upper(jenis_trans),"-",@tahun,"-",lpad(@bulan,2,0),"-",lpad(@tgl,2,0),"-",lpad(@nomor,6,0));
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_minimal_rasio_anggota_kombinasi_cabang` (IN `id_barang_utama_in` INT, IN `id_fk_cabang_in` INT, OUT `new_stok_in` DOUBLE)  begin
+CREATE PROCEDURE `get_minimal_rasio_anggota_kombinasi_cabang` (IN `id_barang_utama_in` INT, IN `id_fk_cabang_in` INT, OUT `new_stok_in` DOUBLE)  begin
 
 	/*ambil rasio [stok cabang / rumusan kombinasi] terkecil dari setiap anggota kombinasi pada master kombinasi tertentu*/
 	select floor(min(rasio_stok)) into new_stok_in
@@ -111,7 +111,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_minimal_rasio_anggota_kombinasi
 		order by id_fk_cabang,id_barang_utama;
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_minimal_rasio_anggota_kombinasi_warehouse` (IN `id_barang_utama_in` INT, IN `id_fk_warehouse_in` INT, OUT `new_stok_in` DOUBLE)  begin
+CREATE PROCEDURE `get_minimal_rasio_anggota_kombinasi_warehouse` (IN `id_barang_utama_in` INT, IN `id_fk_warehouse_in` INT, OUT `new_stok_in` DOUBLE)  begin
 	select floor(min(rasio_stok)) into new_stok_in
 	from (
 		select id_fk_warehouse,id_barang_utama,id_fk_brg,
@@ -127,14 +127,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_minimal_rasio_anggota_kombinasi
 	order by id_fk_warehouse,id_barang_utama;
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_username` (IN `id_pk_user_in` INT, OUT `username` VARCHAR(100))  begin
+CREATE PROCEDURE `get_username` (IN `id_pk_user_in` INT, OUT `username` VARCHAR(100))  begin
 	select ifnull(user_name,"-") into username 
     from mstr_user
     where id_pk_user = id_pk_user_in
     and user_status = 'aktif';
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_log_all` (IN `id_user` INT, IN `log_msg` VARCHAR(1000), IN `log_data_changes` VARCHAR(1000), IN `log_data_it` VARCHAR(1000))  begin
+CREATE PROCEDURE `insert_log_all` (IN `id_user` INT, IN `log_msg` VARCHAR(1000), IN `log_data_changes` VARCHAR(1000), IN `log_data_it` VARCHAR(1000))  begin
 	insert into log_all(
 		log_all_msg,
         log_all_data_changes,
@@ -151,7 +151,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_log_all` (IN `id_user` INT, 
 	);
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ubah_satuan_barang` (IN `id_satuan_in` INT, INOUT `brg_qty` DOUBLE)  begin
+CREATE PROCEDURE `ubah_satuan_barang` (IN `id_satuan_in` INT, INOUT `brg_qty` DOUBLE)  begin
             declare conversion_exp varchar(20);
             select satuan_rumus 
             into conversion_exp
@@ -162,7 +162,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `ubah_satuan_barang` (IN `id_satuan_
             
         end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `update_stok_barang_cabang` (IN `id_barang` INT, IN `id_cabang` INT, IN `barang_masuk` DOUBLE, IN `id_satuan_masuk` INT, IN `barang_keluar` DOUBLE, IN `id_satuan_keluar` INT)  begin
+CREATE PROCEDURE `update_stok_barang_cabang` (IN `id_barang` INT, IN `id_cabang` INT, IN `barang_masuk` DOUBLE, IN `id_satuan_masuk` INT, IN `barang_keluar` DOUBLE, IN `id_satuan_keluar` INT)  begin
             /*
             the logic is
             barang_masuk = n, barang_keluar = 0 [insert new data]
@@ -183,7 +183,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `update_stok_barang_cabang` (IN `id_
 
         end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `update_stok_barang_warehouse` (IN `id_barang` INT, IN `id_warehouse` INT, IN `barang_masuk` DOUBLE, IN `id_satuan_masuk` INT, IN `barang_keluar` DOUBLE, IN `id_satuan_keluar` INT)  begin
+CREATE PROCEDURE `update_stok_barang_warehouse` (IN `id_barang` INT, IN `id_warehouse` INT, IN `barang_masuk` DOUBLE, IN `id_satuan_masuk` INT, IN `barang_keluar` DOUBLE, IN `id_satuan_keluar` INT)  begin
             /*
             the logic is
             barang_masuk = n, barang_keluar = 0 [insert new data]
@@ -202,7 +202,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `update_stok_barang_warehouse` (IN `
             call update_stok_kombinasi_anggota_warehouse(id_barang,barang_masuk, barang_keluar, id_warehouse);
         end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `update_stok_kombinasi_anggota_cabang` (IN `id_barang_utama_in` INT, IN `qty_brg_masuk_in` DOUBLE, IN `qty_brg_keluar_in` DOUBLE, IN `id_cabang_in` INT)  begin
+CREATE PROCEDURE `update_stok_kombinasi_anggota_cabang` (IN `id_barang_utama_in` INT, IN `qty_brg_masuk_in` DOUBLE, IN `qty_brg_keluar_in` DOUBLE, IN `id_cabang_in` INT)  begin
 /*
 update anggota kombinasi dari master kombinasi
 */
@@ -213,7 +213,7 @@ update anggota kombinasi dari master kombinasi
 	where id_barang_utama = id_barang_utama_in and id_fk_cabang = id_cabang_in and barang_kombinasi_status = 'aktif' and brg_utama_ctrl.brg_tipe = 'kombinasi';
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `update_stok_kombinasi_anggota_warehouse` (IN `id_barang_utama_in` INT, IN `qty_brg_masuk_in` DOUBLE, IN `qty_brg_keluar_in` DOUBLE, IN `id_warehouse_in` INT)  begin
+CREATE PROCEDURE `update_stok_kombinasi_anggota_warehouse` (IN `id_barang_utama_in` INT, IN `qty_brg_masuk_in` DOUBLE, IN `qty_brg_keluar_in` DOUBLE, IN `id_warehouse_in` INT)  begin
             update tbl_barang_kombinasi
     inner join mstr_barang as brg_utama_ctrl on brg_utama_ctrl.id_pk_brg = tbl_barang_kombinasi.id_barang_utama
             inner join tbl_brg_warehouse on tbl_brg_warehouse.id_fk_brg = tbl_barang_kombinasi.id_barang_kombinasi
@@ -221,7 +221,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `update_stok_kombinasi_anggota_wareh
             where id_barang_utama = id_barang_utama_in and id_fk_warehouse = id_warehouse_in and barang_kombinasi_status = 'aktif' and brg_utama_ctrl.brg_tipe = 'kombinasi';
         end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `update_stok_kombinasi_master_cabang` ()  begin
+CREATE PROCEDURE `update_stok_kombinasi_master_cabang` ()  begin
 /*
 update stok master kombinasi dengan rasio [jumlah stok / rumusan] anggota kombinasi terkecil
 #related function
@@ -265,7 +265,7 @@ mstr_kombinasi_loop:LOOP
 END LOOP mstr_kombinasi_loop;
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `update_stok_kombinasi_master_warehouse` ()  begin
+CREATE PROCEDURE `update_stok_kombinasi_master_warehouse` ()  begin
 
 declare finished int default 0;
 declare id_barang_utama_var int default 0;
@@ -9005,49 +9005,6 @@ CREATE TABLE `tbl_warehouse_admin_log` (
 
 -- --------------------------------------------------------
 
---
--- Stand-in structure for view `v_brg_cabang_aktif`
--- (See below for the actual view)
---
-CREATE TABLE `v_brg_cabang_aktif` (
-`id_pk_brg_cabang` int(11)
-,`brg_cabang_qty` int(11)
-,`brg_cabang_status` varchar(15)
-,`brg_cabang_last_price` int(11)
-,`id_fk_brg` int(11)
-,`id_fk_cabang` int(11)
-,`brg_nama` varchar(100)
-);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `v_brg_kombinasi_final`
--- (See below for the actual view)
---
-CREATE TABLE `v_brg_kombinasi_final` (
-`id_pk_barang_kombinasi` int(11)
-,`id_barang_utama` int(11)
-,`id_barang_kombinasi` int(11)
-,`barang_kombinasi_qty` double
-,`barang_kombinasi_status` varchar(15)
-);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `v_brg_warehouse_aktif`
--- (See below for the actual view)
---
-CREATE TABLE `v_brg_warehouse_aktif` (
-`id_pk_brg_warehouse` int(11)
-,`brg_warehouse_qty` int(11)
-,`brg_warehouse_status` varchar(15)
-,`id_fk_brg` int(11)
-,`id_fk_warehouse` int(11)
-,`brg_nama` varchar(100)
-);
-
 -- --------------------------------------------------------
 
 --
@@ -9055,7 +9012,7 @@ CREATE TABLE `v_brg_warehouse_aktif` (
 --
 DROP TABLE IF EXISTS `v_brg_cabang_aktif`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_brg_cabang_aktif`  AS  select `tbl_brg_cabang`.`id_pk_brg_cabang` AS `id_pk_brg_cabang`,`tbl_brg_cabang`.`brg_cabang_qty` AS `brg_cabang_qty`,`tbl_brg_cabang`.`brg_cabang_status` AS `brg_cabang_status`,`tbl_brg_cabang`.`brg_cabang_last_price` AS `brg_cabang_last_price`,`tbl_brg_cabang`.`id_fk_brg` AS `id_fk_brg`,`tbl_brg_cabang`.`id_fk_cabang` AS `id_fk_cabang`,`mstr_barang`.`brg_nama` AS `brg_nama` from (`tbl_brg_cabang` join `mstr_barang` on(`mstr_barang`.`id_pk_brg` = `tbl_brg_cabang`.`id_fk_brg`)) where `tbl_brg_cabang`.`brg_cabang_status` = 'aktif' and `mstr_barang`.`brg_status` = 'aktif' order by `tbl_brg_cabang`.`id_fk_brg`,`tbl_brg_cabang`.`id_fk_cabang` ;
+CREATE VIEW `v_brg_cabang_aktif`  AS  select `tbl_brg_cabang`.`id_pk_brg_cabang` AS `id_pk_brg_cabang`,`tbl_brg_cabang`.`brg_cabang_qty` AS `brg_cabang_qty`,`tbl_brg_cabang`.`brg_cabang_status` AS `brg_cabang_status`,`tbl_brg_cabang`.`brg_cabang_last_price` AS `brg_cabang_last_price`,`tbl_brg_cabang`.`id_fk_brg` AS `id_fk_brg`,`tbl_brg_cabang`.`id_fk_cabang` AS `id_fk_cabang`,`mstr_barang`.`brg_nama` AS `brg_nama` from (`tbl_brg_cabang` join `mstr_barang` on(`mstr_barang`.`id_pk_brg` = `tbl_brg_cabang`.`id_fk_brg`)) where `tbl_brg_cabang`.`brg_cabang_status` = 'aktif' and `mstr_barang`.`brg_status` = 'aktif' order by `tbl_brg_cabang`.`id_fk_brg`,`tbl_brg_cabang`.`id_fk_cabang` ;
 
 -- --------------------------------------------------------
 
@@ -9064,7 +9021,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_brg_kombinasi_final`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_brg_kombinasi_final`  AS  select `tbl_barang_kombinasi`.`id_pk_barang_kombinasi` AS `id_pk_barang_kombinasi`,`tbl_barang_kombinasi`.`id_barang_utama` AS `id_barang_utama`,`tbl_barang_kombinasi`.`id_barang_kombinasi` AS `id_barang_kombinasi`,sum(`tbl_barang_kombinasi`.`barang_kombinasi_qty`) AS `barang_kombinasi_qty`,`tbl_barang_kombinasi`.`barang_kombinasi_status` AS `barang_kombinasi_status` from (`tbl_barang_kombinasi` join `mstr_barang` on(`mstr_barang`.`id_pk_brg` = `tbl_barang_kombinasi`.`id_barang_kombinasi`)) where `tbl_barang_kombinasi`.`barang_kombinasi_status` = 'aktif' and `mstr_barang`.`brg_status` = 'aktif' group by `tbl_barang_kombinasi`.`id_barang_utama`,`tbl_barang_kombinasi`.`id_barang_kombinasi` ;
+CREATE VIEW `v_brg_kombinasi_final`  AS  select `tbl_barang_kombinasi`.`id_pk_barang_kombinasi` AS `id_pk_barang_kombinasi`,`tbl_barang_kombinasi`.`id_barang_utama` AS `id_barang_utama`,`tbl_barang_kombinasi`.`id_barang_kombinasi` AS `id_barang_kombinasi`,sum(`tbl_barang_kombinasi`.`barang_kombinasi_qty`) AS `barang_kombinasi_qty`,`tbl_barang_kombinasi`.`barang_kombinasi_status` AS `barang_kombinasi_status` from (`tbl_barang_kombinasi` join `mstr_barang` on(`mstr_barang`.`id_pk_brg` = `tbl_barang_kombinasi`.`id_barang_kombinasi`)) where `tbl_barang_kombinasi`.`barang_kombinasi_status` = 'aktif' and `mstr_barang`.`brg_status` = 'aktif' group by `tbl_barang_kombinasi`.`id_barang_utama`,`tbl_barang_kombinasi`.`id_barang_kombinasi` ;
 
 -- --------------------------------------------------------
 
@@ -9073,7 +9030,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_brg_warehouse_aktif`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_brg_warehouse_aktif`  AS  select `tbl_brg_warehouse`.`id_pk_brg_warehouse` AS `id_pk_brg_warehouse`,`tbl_brg_warehouse`.`brg_warehouse_qty` AS `brg_warehouse_qty`,`tbl_brg_warehouse`.`brg_warehouse_status` AS `brg_warehouse_status`,`tbl_brg_warehouse`.`id_fk_brg` AS `id_fk_brg`,`tbl_brg_warehouse`.`id_fk_warehouse` AS `id_fk_warehouse`,`mstr_barang`.`brg_nama` AS `brg_nama` from (`tbl_brg_warehouse` join `mstr_barang` on(`mstr_barang`.`id_pk_brg` = `tbl_brg_warehouse`.`id_fk_brg`)) where `tbl_brg_warehouse`.`brg_warehouse_status` = 'aktif' and `mstr_barang`.`brg_status` = 'aktif' order by `tbl_brg_warehouse`.`id_fk_brg`,`tbl_brg_warehouse`.`id_fk_warehouse` ;
+CREATE VIEW `v_brg_warehouse_aktif`  AS  select `tbl_brg_warehouse`.`id_pk_brg_warehouse` AS `id_pk_brg_warehouse`,`tbl_brg_warehouse`.`brg_warehouse_qty` AS `brg_warehouse_qty`,`tbl_brg_warehouse`.`brg_warehouse_status` AS `brg_warehouse_status`,`tbl_brg_warehouse`.`id_fk_brg` AS `id_fk_brg`,`tbl_brg_warehouse`.`id_fk_warehouse` AS `id_fk_warehouse`,`mstr_barang`.`brg_nama` AS `brg_nama` from (`tbl_brg_warehouse` join `mstr_barang` on(`mstr_barang`.`id_pk_brg` = `tbl_brg_warehouse`.`id_fk_brg`)) where `tbl_brg_warehouse`.`brg_warehouse_status` = 'aktif' and `mstr_barang`.`brg_status` = 'aktif' order by `tbl_brg_warehouse`.`id_fk_brg`,`tbl_brg_warehouse`.`id_fk_warehouse` ;
 
 --
 -- Indexes for dumped tables
