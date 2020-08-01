@@ -72,7 +72,7 @@ ob_start();
             $no = $x+1;
             $content=$content . '
             <tr>
-                <td>'.$pembelian_barang[$x]['brg_kode'].'</td>
+                <td  style="text-align:center" >'.$pembelian_barang[$x]['brg_kode'].'</td>
                 <td>'.$pembelian_barang[$x]['brg_nama'].'</td>    
                 <td style="text-align:center">'.$pembelian_barang[$x]['brg_pem_qty'].' </td> 
                 <td style="text-align:center">'.$pembelian_barang[$x]['brg_pem_satuan'].'</td>
@@ -82,10 +82,27 @@ ob_start();
                 $total = $total + ($pembelian_barang[$x]['brg_pem_harga']*$pembelian_barang[$x]['brg_pem_qty']);
             }
 
+            if(count($pembelian_brg_tambahan)>0){
+                $total2=0;
+                for($y=0; $y<count($pembelian_brg_tambahan); $y++){
+                    $no++;
+                    $content=$content . '
+                    <tr>
+                        <td style="text-align:center">-</td>
+                        <td>'.$pembelian_brg_tambahan[$y]['tmbhn'].'</td>    
+                        <td style="text-align:center">'.$pembelian_brg_tambahan[$y]['tmbhn_jumlah'].'</td> 
+                        <td style="text-align:center">'.$pembelian_brg_tambahan[$y]['tmbhn_satuan'].'</td> 
+                        <td style="text-align:right">Rp. '.number_format($pembelian_brg_tambahan[$y]['tmbhn_harga']).'</td>
+                        <td style="text-align:right">Rp. '.number_format($pembelian_brg_tambahan[$y]['tmbhn_harga']*$pembelian_brg_tambahan[$y]['tmbhn_jumlah']).'</td>
+                    </tr>';
+
+                    $total2 = $total2 + ($pembelian_brg_tambahan[$y]['tmbhn_harga']*$pembelian_brg_tambahan[$y]['tmbhn_jumlah']);
+                }
+            }
 
             $content=$content . '<tr>
                 <td colspan="5" style="font-weight:bold; text-align:right;line-height:15px">TOTAL</td>
-                <td style="font-weight:bold; text-align:right;line-height:15px">Rp. '.number_format($total).'</td>
+                <td style="font-weight:bold; text-align:right;line-height:15px">Rp. '.number_format($total+$total2).'</td>
             </tr>
         </table>
             

@@ -60,7 +60,7 @@ ob_start();
         </tr>
         <tr>
             <td>Nama</td>
-            <td>: '.$retur_main[0]['cust_name'].'</td>
+            <td>: '.$retur_main[0]['cust_suff'].' '.$retur_main[0]['cust_name'].' ['.$retur_main[0]['cust_perusahaan'].']</td>
         </tr>
         <tr>
             <td>Alamat</td>
@@ -87,10 +87,8 @@ ob_start();
         <table class="tabel">
             <tr>
                 <td class="judul" style="width:30px;">No</td>
-                <td class="judul" style="width:250px;">Produk</td>
-                <td class="judul" style="width:40px;text-align:center">Qty</td>
-                <td class="judul">Harga</td>
-                <td class="judul">Total</td>
+                <td class="judul" style="width:400px;">Produk</td>
+                <td class="judul" style="width:100px;text-align:center">Qty</td>
             </tr>
             ';
             $total=0;
@@ -100,18 +98,12 @@ ob_start();
             <tr>
                 <td style="text-align:center">'.$no.'</td>
                 <td>'.$retur_barang[$x]['brg_nama'].'</td>    
-                <td style="text-align:center">'.$retur_barang[$x]['brg_penjualan_qty'].' '.$retur_barang[$x]['brg_penjualan_satuan'].'</td> 
-                <td style="text-align:right">Rp. '.number_format($retur_barang[$x]['brg_penjualan_harga']).'</td>
-                <td style="text-align:right">Rp. '.number_format($retur_barang[$x]['brg_penjualan_harga']*$retur_barang[$x]['brg_penjualan_qty']).'</td>
+                <td style="text-align:center">'.$retur_barang[$x]['retur_brg_qty'].' '.$retur_barang[$x]['retur_brg_satuan'].'</td> 
             </tr>';
-                $total = $total + ($retur_barang[$x]['brg_penjualan_harga']*$retur_barang[$x]['brg_penjualan_qty']);
             }
 
 
-            $content=$content . '<tr>
-                <td colspan="4" style="font-weight:bold; text-align:right;line-height:15px">TOTAL</td>
-                <td style="font-weight:bold; text-align:right;line-height:15px">Rp. '.number_format($total).'</td>
-            </tr>
+            $content=$content . '
         </table>
             <tr>
                 <td></td>
