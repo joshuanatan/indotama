@@ -1,4 +1,5 @@
 <?php
+$active_jmlh_markup = false;
 $page_title = "Penjualan";
 $breadcrumb = array(
     "Penjualan","Tambah Penjualan"
@@ -127,9 +128,11 @@ $notif_data = array(
                                                     <table class = "table table-striped table-bordered">
                                                         <thead>
                                                             <th>Barang</th>
+                                                            <?php if($active_jmlh_markup):?>
                                                             <th>Jumlah</th>
-                                                            <th>Jumlah Markup</th>
-                                                            <th>Harga</th>
+                                                            <?php endif;?>
+                                                            <th>Jumlah</th>
+                                                            <th>Harga Toko</th>
                                                             <th>Harga Jual</th>
                                                             <th>Harga Final</th>
                                                             <th>Notes</th>
@@ -137,7 +140,10 @@ $notif_data = array(
                                                         </thead>
                                                         <tbody id = "daftar_brg_jual_add">
                                                             <tr id = "add_brg_jual_but_container">
+                                                                <?php if($active_jmlh_markup):?>
                                                                 <td colspan = 8><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_brg_jual_row()">Tambah Barang Penjualan</button>
+                                                                <?php endif;?>
+                                                                <td colspan = 7><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_brg_jual_row()">Tambah Barang Penjualan</button>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -208,6 +214,7 @@ $notif_data = array(
 
     var brg_jual_row = 0;  
     function add_brg_jual_row(){
+        <?php if($active_jmlh_markup):?>
         var html = `
         <tr class = 'add_brg_jual_row'>
             <td id = 'row${brg_jual_row}'>
@@ -218,6 +225,34 @@ $notif_data = array(
             <td>
                 <input name = 'brg_qty_real${brg_jual_row}' type = 'text' class = 'form-control nf-input'>
             </td>
+            <td>
+                <input name = 'brg_qty${brg_jual_row}' type = 'text' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input type = 'text' readonly id = 'harga_barang_jual${brg_jual_row}' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input type = 'text' name = 'brg_price${brg_jual_row}' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input readonly type = 'text' class = 'form-control nf-input' id = 'harga_brg_final${brg_jual_row}'>
+            </td>
+            <td>
+                <input type = 'text' name = 'brg_notes${brg_jual_row}' class = 'form-control'>
+            </td>
+            <td>
+                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+            </td>
+        </tr>`;
+        <?php endif;?>
+        var html = `
+        <tr class = 'add_brg_jual_row'>
+            <td id = 'row${brg_jual_row}'>
+                <input name = 'check[]' value = ${brg_jual_row} type = 'hidden'>
+                <input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${brg_jual_row})' id = 'brg${brg_jual_row}' name = 'brg${brg_jual_row}' class = 'form-control'>
+                <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm col-lg-12' target = '_blank'>Tambah Barang Cabang</a>
+            </td>
+            <input name = 'brg_qty_real${brg_jual_row}' type = 'hidden' value = "0" class = 'form-control nf-input'>
             <td>
                 <input name = 'brg_qty${brg_jual_row}' type = 'text' class = 'form-control nf-input'>
             </td>
