@@ -19,7 +19,7 @@ class Permintaan extends CI_Controller{
     }
     public function data(){
         $this->load->model("m_barang");
-        $result = $this->m_barang->list();
+        $result = $this->m_barang->list_data();
         $data["barang"] = $result->result_array();
         
         $this->load->view("brg_permintaan/v_brg_permintaan",$data);

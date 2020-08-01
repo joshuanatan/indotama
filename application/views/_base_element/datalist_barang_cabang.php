@@ -6,7 +6,7 @@
     var datalist_barang_cabang;
     function load_datalist_barang_cabang(){
         $.ajax({
-            url:"<?php echo base_url();?>ws/barang_cabang/list?"+url_add,
+            url:"<?php echo base_url();?>ws/barang_cabang/list_data?"+url_add,
             type:"GET",
             dataType:"JSON",
             async:false,

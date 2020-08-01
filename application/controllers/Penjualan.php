@@ -34,22 +34,22 @@ class Penjualan extends CI_Controller{
         $this->load->model("m_brg_pindah");
         $this->m_brg_pindah->set_id_fk_refrensi_sumber($id_penjualan);
         $this->m_brg_pindah->set_brg_pindah_sumber("penjualan");
-        $result = $this->m_brg_pindah->list();
+        $result = $this->m_brg_pindah->list_data();
         $data["brg_custom"] = $result->result_array();
 
         $this->load->model("m_brg_penjualan");
         $this->m_brg_penjualan->set_id_fk_penjualan($id_penjualan);
-        $result = $this->m_brg_penjualan->list();
+        $result = $this->m_brg_penjualan->list_data();
         $data["item"] = $result->result_array();
 
         $this->load->model("m_tambahan_penjualan");
         $this->m_tambahan_penjualan->set_id_fk_penjualan($id_penjualan);
-        $result = $this->m_tambahan_penjualan->list();
+        $result = $this->m_tambahan_penjualan->list_data();
         $data["tambahan"] = $result->result_array();
         
         $this->load->model("m_penjualan_pembayaran");
         $this->m_penjualan_pembayaran->set_id_fk_penjualan($id_penjualan);
-        $result = $this->m_penjualan_pembayaran->list();
+        $result = $this->m_penjualan_pembayaran->list_data();
         $data["pembayaran"] = $result->result_array();
 
         $data["id_penjualan"] = $id_penjualan;
@@ -73,22 +73,22 @@ class Penjualan extends CI_Controller{
         $this->load->model("m_brg_pindah");
         $this->m_brg_pindah->set_id_fk_refrensi_sumber($id_penjualan);
         $this->m_brg_pindah->set_brg_pindah_sumber("penjualan");
-        $result = $this->m_brg_pindah->list();
+        $result = $this->m_brg_pindah->list_data();
         $data["brg_custom"] = $result->result_array();
 
         $this->load->model("m_brg_penjualan");
         $this->m_brg_penjualan->set_id_fk_penjualan($id_penjualan);
-        $result = $this->m_brg_penjualan->list();
+        $result = $this->m_brg_penjualan->list_data();
         $data["item"] = $result->result_array();
 
         $this->load->model("m_tambahan_penjualan");
         $this->m_tambahan_penjualan->set_id_fk_penjualan($id_penjualan);
-        $result = $this->m_tambahan_penjualan->list();
+        $result = $this->m_tambahan_penjualan->list_data();
         $data["tambahan"] = $result->result_array();
         
         $this->load->model("m_penjualan_pembayaran");
         $this->m_penjualan_pembayaran->set_id_fk_penjualan($id_penjualan);
-        $result = $this->m_penjualan_pembayaran->list();
+        $result = $this->m_penjualan_pembayaran->list_data();
         $data["pembayaran"] = $result->result_array();
 
         $data["id_penjualan"] = $id_penjualan;

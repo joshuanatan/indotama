@@ -4,7 +4,7 @@
     var html_option_marketplace = "";
     function load_datalist_marketplace(){
         $.ajax({
-            url:"<?php echo base_url();?>ws/marketplace/list",
+            url:"<?php echo base_url();?>ws/marketplace/list_data",
             type:"GET",
             dataType:"JSON",
             async:false,

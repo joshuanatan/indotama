@@ -163,7 +163,7 @@ class M_satuan extends ci_model{
         );
         return selectrow($this->tbl_name,$where,$field);
     }
-    public function list(){
+    public function list_data(){
         $where = array(
             "satuan_status" => "aktif"
         );

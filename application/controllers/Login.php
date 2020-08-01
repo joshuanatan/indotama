@@ -209,7 +209,7 @@ class Login extends CI_Controller {
 	}
 	private function register_user(){
 		$this->load->model("m_user");
-		$result = $this->m_user->list();
+		$result = $this->m_user->list_data();
 		if($result->num_rows() == 0){
 			$data = array(
                 "user_name" => "admin",

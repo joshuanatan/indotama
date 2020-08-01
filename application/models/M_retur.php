@@ -203,7 +203,7 @@ class M_retur extends CI_Model{
         );
         return executeQuery($sql,$args);
     }
-    public function list($id_fk_cabang){
+    public function list_data($id_fk_cabang){
         $sql = "
         select id_pk_retur,id_fk_penjualan,retur_no,retur_tgl,retur_status,retur_tipe,retur_create_date,retur_last_modified, penj_nomor, penj_tgl, penj_dateline_tgl, id_fk_customer,id_fk_cabang,ifnull(retur_confirm_date,'-') as retur_confirm_date,ifnull(user_name,'-') as user_konfirmasi
         from mstr_retur

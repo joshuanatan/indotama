@@ -4,7 +4,7 @@
     var datalist_satuan;
     function load_datalist_satuan(){
         $.ajax({
-            url:"<?php echo base_url();?>ws/satuan/list",
+            url:"<?php echo base_url();?>ws/satuan/list_data",
             type:"GET",
             dataType:"JSON",
             async:false,

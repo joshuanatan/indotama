@@ -177,10 +177,10 @@ class User extends CI_Controller{
         }
         echo json_encode($response);
     }
-    public function list(){
+    public function list_data(){
         $response["status"] = "SUCCESS";
         $this->load->model("m_user");
-        $result = $this->m_user->list();
+        $result = $this->m_user->list_data();
         if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){

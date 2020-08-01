@@ -51,10 +51,10 @@ class Barang_merk extends CI_Controller{
         );
         echo json_encode($response);
     }
-    public function list(){
+    public function list_data(){
         $response["status"] = "SUCCESS";
         $this->load->model("m_barang_merk");
-        $result = $this->m_barang_merk->list();
+        $result = $this->m_barang_merk->list_data();
         if($result->num_rows()){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){

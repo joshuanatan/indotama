@@ -145,7 +145,7 @@ class Pengiriman_permintaan extends CI_Controller{
                 $id_fk_brg_pemenuhan = $this->input->post("id");
                 
                 $this->load->model("m_satuan");
-                $result = $this->m_satuan->list();
+                $result = $this->m_satuan->list_data();
                 if($result->num_rows() > 0){
                     $result = $result->result_array();
                     $where = array(

@@ -139,7 +139,7 @@ class M_barang_jenis extends ci_model{
         );
         return selectrow($this->tbl_name,$where,$field);
     }
-    public function list(){
+    public function list_data(){
         $where = array(
             "brg_jenis_status" => "aktif"
         );

@@ -4,7 +4,7 @@
     var datalist_retur_pengiriman;
     function load_datalist_retur_pengiriman(){
         $.ajax({
-            url:"<?php echo base_url();?>ws/retur/list_pengiriman?id_cabang=<?php echo $this->session->id_cabang;?>",
+            url:"<?php echo base_url();?>ws/retur/list_data_pengiriman?id_cabang=<?php echo $this->session->id_cabang;?>",
             type:"GET",
             dataType:"JSON",
             async:false,

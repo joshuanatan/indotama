@@ -4,7 +4,7 @@
     var button_tmbh_cepat_supplier = true;
     function load_datalist_supplier(){
         $.ajax({
-            url:"<?php echo base_url();?>ws/supplier/list",
+            url:"<?php echo base_url();?>ws/supplier/list_data",
             type:"GET",
             dataType:"JSON",
             async:false,

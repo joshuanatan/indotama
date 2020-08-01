@@ -172,7 +172,7 @@ class m_user extends ci_model{
         );
         return executequery($sql,$args);
     }
-    public function list(){
+    public function list_data(){
         $sql = "
         select id_pk_user,user_name,user_email,user_status,id_fk_role,user_last_modified,user_create_date,jabatan_nama,id_fk_employee,emp_nama
         from ".$this->tbl_name." 

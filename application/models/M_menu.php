@@ -112,7 +112,7 @@ class M_menu extends ci_model{
         end $$";
         executequery($sql);
     }
-    public function list(){
+    public function list_data(){
         $where = array(
             "menu_status" => "aktif"
         );

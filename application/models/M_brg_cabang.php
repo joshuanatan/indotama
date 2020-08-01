@@ -197,7 +197,7 @@ class M_brg_cabang extends ci_model{
         );
         return isExistsInTable($this->tbl_name,$where);
     }
-    public function list(){
+    public function list_data(){
         $this->stock_adjustment();
         $sql = "
         select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_last_price,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_tipe,brg_merk_nama,brg_jenis_nama

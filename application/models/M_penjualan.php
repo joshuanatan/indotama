@@ -49,7 +49,7 @@ class M_penjualan extends ci_model{
     public function columns(){
         return $this->columns;
     }
-    public function list(){
+    public function list_data(){
         $query = "
         select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified,penj_nominal,penj_nominal_byr
         from ".$this->tbl_name." 

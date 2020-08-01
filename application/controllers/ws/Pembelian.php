@@ -63,7 +63,7 @@ class Pembelian extends CI_Controller{
             
             $this->load->model("m_brg_pembelian");
             $this->m_brg_pembelian->set_id_fk_pembelian($id_pembelian);
-            $result = $this->m_brg_pembelian->list();
+            $result = $this->m_brg_pembelian->list_data();
             if($result->num_rows() > 0){
                 $result = $result->result_array();
                 for($a = 0; $a<count($result); $a++){
@@ -94,7 +94,7 @@ class Pembelian extends CI_Controller{
             
             $this->load->model("m_tambahan_pembelian");
             $this->m_tambahan_pembelian->set_id_fk_pembelian($id_pembelian);
-            $result = $this->m_tambahan_pembelian->list();
+            $result = $this->m_tambahan_pembelian->list_data();
             if($result->num_rows() > 0){
                 $result = $result->result_array();
                 for($a = 0; $a<count($result); $a++){
@@ -724,7 +724,7 @@ class Pembelian extends CI_Controller{
         $response["status"] = "SUCCESS";
         $this->load->model("m_pembelian");
         $this->m_pembelian->set_id_fk_cabang($this->session->id_cabang);
-        $result = $this->m_pembelian->list();
+        $result = $this->m_pembelian->list_data();
         if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
@@ -747,7 +747,7 @@ class Pembelian extends CI_Controller{
     public function list_pembelian_all(){
         $response["status"] = "SUCCESS";
         $this->load->model("m_pembelian");
-        $result = $this->m_pembelian->list();
+        $result = $this->m_pembelian->list_data();
         if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){

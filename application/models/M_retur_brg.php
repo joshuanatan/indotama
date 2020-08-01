@@ -98,7 +98,7 @@ class M_retur_brg extends CI_Model{
         );
         $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
     }
-    public function list(){
+    public function list_data(){
         $sql = "
         select 
             id_pk_retur_brg,

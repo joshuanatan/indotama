@@ -144,7 +144,7 @@ class M_pembelian extends ci_model{
     public function columns(){
         return $this->columns;
     }
-    public function list(){
+    public function list_data(){
         $query = "
         select id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified,toko_nama,cabang_daerah
         from ".$this->tbl_name." 

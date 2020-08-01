@@ -91,7 +91,7 @@ class M_tambahan_penjualan extends ci_model{
         delimiter ;";
         executequery($sql);
     }
-    public function list(){
+    public function list_data(){
         $sql = "
         select id_pk_tmbhn,tmbhn,tmbhn_jumlah,tmbhn_satuan,tmbhn_harga,tmbhn_notes,tmbhn_status,tmbhn_last_modified
         from ".$this->tbl_name."

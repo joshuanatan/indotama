@@ -133,7 +133,7 @@ class M_marketplace extends ci_model{
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
-    public function list(){
+    public function list_data(){
         $sql = "select id_pk_marketplace,marketplace_nama,marketplace_ket,marketplace_status,marketplace_last_modified,marketplace_biaya
         from ".$this->tbl_name." 
         where marketplace_status = ?  
