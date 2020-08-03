@@ -3,7 +3,7 @@
 <script>
     function load_datalist_user(){
         $.ajax({
-            url:"<?php echo base_url();?>ws/user/list",
+            url:"<?php echo base_url();?>ws/user/list_data",
             type:"GET",
             dataType:"JSON",
             success:function(respond){

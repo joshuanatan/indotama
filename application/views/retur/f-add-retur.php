@@ -13,14 +13,14 @@
             $this->load->view('_notification/register_error',$notif_data); ?>
                 <form id = "register_form" method = "POST">
                 
-                    <div class = "form-group">
-                        <input type = "checkbox" id = "penomoran_otomatis_cb" name = "generate_pem_no[]" value = 1 checked onclick = "toggle_nomor_retur()"> Gunakan Penomoran Otomatis
-                    </div>
+                    <input type = "hidden" id = "penomoran_otomatis_cb" name = "generate_pem_no[]" value = 1 checked onclick = "toggle_nomor_retur()"> 
+                    <!--
                     <div class = "form-group col-lg-6">
                         <h5>Nomor Retur</h5>
                         <input id = "nomor" readonly value = "-" type = "text" class = "form-control" required id = "no_retur" name = "no_retur">
                     </div>
-                    <div class = "form-group col-lg-6">
+                    -->
+                    <div class = "form-group col-lg-12">
                         <h5>Nomor Penjualan</h5>
                         <input type = "text" class = "form-control" list = "datalist_penjualan" required id = "no_penjualan" name = "no_penjualan">
                     </div>

@@ -192,7 +192,7 @@ class M_brg_penerimaan extends ci_model{
         delimiter ;
         ";
     }
-    public function list(){
+    public function list_data(){
         $query = "
         select id_pk_brg_penerimaan,brg_penerimaan_qty,brg_penerimaan_note,id_fk_penerimaan,id_fk_brg_pembelian,id_fk_satuan,brg_penerimaan_create_date,brg_penerimaan_last_modified,brg_pem_qty,brg_pem_satuan,brg_pem_harga,brg_pem_note,brg_nama,satuan_nama
         from ".$this->tbl_name."

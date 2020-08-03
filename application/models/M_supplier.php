@@ -175,7 +175,7 @@ class M_supplier extends ci_model{
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
-    public function list(){
+    public function list_data(){
         $sql = "select id_pk_sup,sup_nama,sup_suff,sup_perusahaan,sup_email,sup_telp,sup_hp,sup_alamat,sup_keterangan,sup_status,sup_last_modified
         from ".$this->tbl_name." 
         where sup_status = ?  

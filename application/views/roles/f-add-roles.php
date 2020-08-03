@@ -39,7 +39,7 @@
 <script>
     function load_list_menu(){
         $.ajax({
-            url:"<?php echo base_url();?>ws/menu/list",
+            url:"<?php echo base_url();?>ws/menu/list_data",
             type:"GET",
             dataType:"JSON",
             success:function(respond){

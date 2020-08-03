@@ -104,12 +104,12 @@ class Retur extends CI_Controller{
         );
         echo json_encode($response);
     }
-    public function list(){
+    public function list_data(){
         $response["status"] = "SUCCESS";
         $id_cabang = $this->input->get("id_cabang");
         
         $this->load->model("m_retur");
-        $result = $this->m_retur->list($id_cabang);
+        $result = $this->m_retur->list_data($id_cabang);
         if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
@@ -205,13 +205,8 @@ class Retur extends CI_Controller{
                 $retur_tgl = $this->input->post("tgl_retur");
                 $retur_status = "menunggu konfirmasi";
                 $retur_tipe = $this->input->post("tipe_retur");
+                $retur_no = $this->m_retur->get_retur_nomor($this->session->id_cabang,"retur",$retur_tgl);
                 
-                if($this->input->post("generate_pem_no") != ""){
-                    $retur_no = $this->m_retur->get_retur_nomor($this->session->id_cabang,"retur",$retur_tgl);
-                }
-                else{
-                    $retur_no = $this->input->post("no_retur");
-                }
                 if($this->m_retur->set_insert($id_fk_penjualan,$retur_no,$retur_tgl,$retur_status,$retur_tipe)){
                     $id_retur = $this->m_retur->insert();
                     if($id_retur){
@@ -566,7 +561,7 @@ class Retur extends CI_Controller{
 
         $this->load->model("m_retur_brg");
         $this->m_retur_brg->set_id_fk_retur($id_retur);
-        $result = $this->m_retur_brg->list();
+        $result = $this->m_retur_brg->list_data();
         if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
@@ -594,7 +589,7 @@ class Retur extends CI_Controller{
 
         $this->load->model("m_retur_kembali");
         $this->m_retur_kembali->set_id_fk_retur($id_retur);
-        $result = $this->m_retur_kembali->list();
+        $result = $this->m_retur_kembali->list_data();
         if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){

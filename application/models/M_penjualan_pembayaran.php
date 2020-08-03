@@ -98,7 +98,7 @@ class M_penjualan_pembayaran extends CI_Model{
         delimiter ;
         ";
     }
-    public function list(){
+    public function list_data(){
         $where = array(
             "id_fk_penjualan" => $this->id_fk_penjualan,
             "penjualan_pmbyrn_status !=" => "nonaktif"

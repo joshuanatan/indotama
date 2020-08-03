@@ -94,7 +94,7 @@ class M_retur_kembali extends ci_model{
     public function columns(){
         return $this->columns;
     }
-    public function list(){
+    public function list_data(){
         $sql = "
         select id_pk_retur_kembali,retur_kembali_qty,retur_kembali_satuan,retur_kembali_harga,retur_kembali_note,id_fk_retur,id_fk_brg,brg_nama,brg_harga,retur_kembali_create_date,retur_kembali_last_modified
         from ".$this->tbl_name."

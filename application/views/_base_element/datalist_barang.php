@@ -3,7 +3,7 @@
 <script>
     function load_datalist_barang(){
         $.ajax({
-            url:"<?php echo base_url();?>ws/barang/list",
+            url:"<?php echo base_url();?>ws/barang/list_data",
             type:"GET",
             dataType:"JSON",
             async:false,
@@ -20,7 +20,7 @@
     }
     function load_datalist_barang_nonkombinasi(){
         $.ajax({
-            url:"<?php echo base_url();?>ws/barang/list",
+            url:"<?php echo base_url();?>ws/barang/list_data",
             type:"GET",
             dataType:"JSON",
             async:false,

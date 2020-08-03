@@ -3,7 +3,7 @@
     var button_tmbh_cepat_customer = true;
     function load_datalist_customer(){
         $.ajax({
-            url:"<?php echo base_url();?>ws/customer/list",
+            url:"<?php echo base_url();?>ws/customer/list_data",
             type:"GET",
             dataType:"JSON",
             success:function(respond){

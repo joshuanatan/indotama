@@ -35,19 +35,28 @@ class Customer extends CI_Controller{
             $result["data"] = $result["data"]->result_array();
             for($a = 0; $a<count($result["data"]); $a++){
 
-                if(file_exists(FCPATH."asset/uploads/customer/npwp/".$result["data"][$a]["cust_foto_npwp"])){
-                    $response["content"][$a]["foto_npwp"] = $result["data"][$a]["cust_foto_npwp"];
+                if($result["data"][$a]["cust_foto_npwp"]){
+                    if(file_exists(FCPATH."asset/uploads/customer/npwp/".$result["data"][$a]["cust_foto_npwp"])){
+                        $response["content"][$a]["foto_npwp"] = $result["data"][$a]["cust_foto_npwp"];
+                    }
+                    else{
+                        $response["content"][$a]["foto_npwp"] = "noimage.jpg";
+                    }
                 }
                 else{
                     $response["content"][$a]["foto_npwp"] = "noimage.jpg";
                 }
-                if(file_exists(FCPATH."asset/uploads/customer/krt_nama/".$result["data"][$a]["cust_foto_kartu_nama"])){
-                    $response["content"][$a]["foto_kartu_nama"] = $result["data"][$a]["cust_foto_kartu_nama"];
+                if($result["data"][$a]["cust_foto_kartu_nama"]){
+                    if(file_exists(FCPATH."asset/uploads/customer/krt_nama/".$result["data"][$a]["cust_foto_kartu_nama"])){
+                        $response["content"][$a]["foto_kartu_nama"] = $result["data"][$a]["cust_foto_kartu_nama"];
+                    }
+                    else{
+                        $response["content"][$a]["foto_kartu_nama"] = "noimage.jpg";
+                    }
                 }
                 else{
                     $response["content"][$a]["foto_kartu_nama"] = "noimage.jpg";
                 }
-
                 $response["content"][$a]["id"] = $result["data"][$a]["id_pk_cust"];
                 $response["content"][$a]["name"] = $result["data"][$a]["cust_name"];
                 $response["content"][$a]["suff"] = $result["data"][$a]["cust_suff"];
@@ -81,10 +90,10 @@ class Customer extends CI_Controller{
         );
         echo json_encode($response);
     }
-    public function list(){
+    public function list_data(){
         $response["status"] = "SUCCESS";
         $this->load->model("m_customer");
-        $result = $this->m_customer->list();
+        $result = $this->m_customer->list_data();
         if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){

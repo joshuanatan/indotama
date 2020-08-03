@@ -71,10 +71,10 @@ class Barang extends CI_Controller{
         );
         echo json_encode($response);
     }
-    public function list(){
+    public function list_data(){
         $response["status"] = "SUCCESS";
         $this->load->model("m_barang");
-        $result = $this->m_barang->list();
+        $result = $this->m_barang->list_data();
         if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
@@ -442,7 +442,7 @@ class Barang extends CI_Controller{
         if($id_barang){
             $this->load->model("m_barang_kombinasi");
             $this->m_barang_kombinasi->set_id_barang_utama($id_barang);
-            $result = $this->m_barang_kombinasi->list();
+            $result = $this->m_barang_kombinasi->list_data();
             if($result->num_rows() > 0){
                 $response["status"] = "success";
                 $result = $result->result_array();

@@ -63,7 +63,7 @@ class Pembelian extends CI_Controller{
             
             $this->load->model("m_brg_pembelian");
             $this->m_brg_pembelian->set_id_fk_pembelian($id_pembelian);
-            $result = $this->m_brg_pembelian->list();
+            $result = $this->m_brg_pembelian->list_data();
             if($result->num_rows() > 0){
                 $result = $result->result_array();
                 for($a = 0; $a<count($result); $a++){
@@ -94,7 +94,7 @@ class Pembelian extends CI_Controller{
             
             $this->load->model("m_tambahan_pembelian");
             $this->m_tambahan_pembelian->set_id_fk_pembelian($id_pembelian);
-            $result = $this->m_tambahan_pembelian->list();
+            $result = $this->m_tambahan_pembelian->list_data();
             if($result->num_rows() > 0){
                 $result = $result->result_array();
                 for($a = 0; $a<count($result); $a++){
@@ -176,7 +176,7 @@ class Pembelian extends CI_Controller{
     }
     public function register(){
         $response["status"] = "SUCCESS";
-        $this->form_validation->set_rules("nomor","nomor","required");
+        //$this->form_validation->set_rules("nomor","nomor","required");
         $this->form_validation->set_rules("tgl","tgl","required");
         $this->form_validation->set_rules("supplier","supplier","required");
         if($this->form_validation->run()){
@@ -199,13 +199,7 @@ class Pembelian extends CI_Controller{
                 $id_fk_supp = $this->m_supplier->short_insert();
             }
             $id_fk_cabang = $this->input->post("id_cabang");
-            
-            if($this->input->post("generate_pem_no") != ""){
-                $pem_pk_nomor = $this->m_pembelian->get_pem_nomor($id_fk_cabang,"pembelian",$pem_tgl);
-            }
-            else{
-                $pem_pk_nomor = $this->input->post("nomor");
-            }
+            $pem_pk_nomor = $this->m_pembelian->get_pem_nomor($id_fk_cabang,"pembelian",$pem_tgl);
 
             if($this->m_pembelian->set_insert($pem_pk_nomor,$pem_tgl,$pem_status,$id_fk_supp,$id_fk_cabang)){
                 $id_pembelian = $this->m_pembelian->insert();
@@ -724,7 +718,7 @@ class Pembelian extends CI_Controller{
         $response["status"] = "SUCCESS";
         $this->load->model("m_pembelian");
         $this->m_pembelian->set_id_fk_cabang($this->session->id_cabang);
-        $result = $this->m_pembelian->list();
+        $result = $this->m_pembelian->list_data();
         if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){
@@ -747,7 +741,7 @@ class Pembelian extends CI_Controller{
     public function list_pembelian_all(){
         $response["status"] = "SUCCESS";
         $this->load->model("m_pembelian");
-        $result = $this->m_pembelian->list();
+        $result = $this->m_pembelian->list_data();
         if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){

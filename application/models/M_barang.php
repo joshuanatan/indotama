@@ -185,7 +185,7 @@ class M_barang extends ci_model{
         $result["total_data"] = executeQuery($query,$args)->num_rows();
         return $result;
     }
-    public function list(){
+    public function list_data(){
         $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe
         from ".$this->tbl_name." 
         inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis

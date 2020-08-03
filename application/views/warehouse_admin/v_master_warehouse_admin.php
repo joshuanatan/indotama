@@ -94,7 +94,7 @@ $data = array(
 <script>
     window.onload = function(){
         $.ajax({
-            url:"<?php echo base_url();?>ws/user/list",
+            url:"<?php echo base_url();?>ws/user/list_data",
             type:"GET",
             dataType:"JSON",
             success:function(respond){
@@ -110,7 +110,7 @@ $data = array(
     }
     window.onfocus = function(){
         $.ajax({
-            url:"<?php echo base_url();?>ws/user/list",
+            url:"<?php echo base_url();?>ws/user/list_data",
             type:"GET",
             dataType:"JSON",
             success:function(respond){

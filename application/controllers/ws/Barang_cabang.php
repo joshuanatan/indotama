@@ -82,12 +82,12 @@ class Barang_cabang extends CI_Controller{
         );
         echo json_encode($response);
     }
-    public function list(){
+    public function list_data(){
         $response["status"] = "SUCCESS";
         $id_cabang = $this->input->get("id_cabang");
         $this->load->model("m_brg_cabang");
         $this->m_brg_cabang->set_id_fk_cabang($id_cabang);
-        $result = $this->m_brg_cabang->list();
+        $result = $this->m_brg_cabang->list_data();
         if($result->num_rows() > 0 ){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){

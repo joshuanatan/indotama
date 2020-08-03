@@ -111,7 +111,7 @@ class M_barang_kombinasi extends CI_Model{
         end//
         delimiter ;";
     }
-    public function list(){
+    public function list_data(){
         $sql = "
         select id_pk_barang_kombinasi,id_barang_utama,id_barang_kombinasi,barang_kombinasi_qty, brg_kombinasi.brg_nama
         from ".$this->tbl_name."

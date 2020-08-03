@@ -13,7 +13,7 @@ class User extends CI_Controller{
     }
     public function index(){
         $this->load->model("m_roles");
-        $data["roles"] = $this->m_roles->list()->result_array();
+        $data["roles"] = $this->m_roles->list_data()->result_array();
         $this->load->view("user/v_master_user",$data);
 	}
 }

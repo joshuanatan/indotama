@@ -325,7 +325,7 @@ class pengiriman extends CI_Controller{
         $id_pengiriman = $this->input->get("id");
         $this->load->model("m_brg_pengiriman");
         $this->m_brg_pengiriman->set_id_fk_pengiriman($id_pengiriman);
-        $result = $this->m_brg_pengiriman->list();
+        $result = $this->m_brg_pengiriman->list_data();
         if($result->num_rows() > 0){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){

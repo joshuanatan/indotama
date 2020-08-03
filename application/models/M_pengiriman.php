@@ -24,7 +24,7 @@ class M_pengiriman extends ci_model{
 
     public function __construct(){
         parent::__construct();
-        $this->set_column("pengiriman_no","nomor pengiriman",true);
+        $this->set_column("id_pk_pengiriman","nomor pengiriman",true);
         $this->set_column("pengiriman_tgl","tanggal pengiriman",false);
         $this->set_column("penj_nomor","nomor penjualan",false);
         $this->set_column("pengiriman_status","status",false);

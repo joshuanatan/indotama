@@ -3,7 +3,7 @@
 <script>
     function load_datalist_penjualan(){
         $.ajax({
-            url:"<?php echo base_url();?>ws/penjualan/list?id_cabang=<?php echo $this->session->id_cabang;?>",
+            url:"<?php echo base_url();?>ws/penjualan/list_data?id_cabang=<?php echo $this->session->id_cabang;?>",
             type:"GET",
             dataType:"JSON",
             async:false,

@@ -93,7 +93,7 @@ class M_brg_pembelian extends ci_model{
     public function columns(){
         return $this->columns;
     }
-    public function list(){
+    public function list_data(){
         $sql = "
         select id_pk_brg_pembelian,brg_pem_qty,brg_pem_satuan,brg_pem_harga,brg_pem_note,id_fk_pembelian,id_fk_barang,brg_nama,brg_pem_create_date,brg_pem_last_modified
         from ".$this->tbl_name."

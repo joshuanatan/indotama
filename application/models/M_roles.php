@@ -129,7 +129,7 @@ class M_roles extends ci_model{
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
-    public function list(){
+    public function list_data(){
         $where = array(
             "jabatan_status" => "aktif"
         );

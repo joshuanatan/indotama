@@ -192,7 +192,7 @@ class M_brg_pengiriman extends ci_model{
             end if;
         end $$";
     }
-    public function list(){
+    public function list_data(){
         $query = "
         select id_pk_brg_pengiriman,brg_pengiriman_qty,brg_pengiriman_note,id_fk_pengiriman,id_fk_brg_penjualan,id_fk_satuan,brg_pengiriman_create_date,brg_pengiriman_last_modified,brg_penjualan_qty,brg_penjualan_satuan,brg_penjualan_harga,brg_penjualan_note,brg_penjualan_status,satuan_nama,brg_nama,brg_kode,brg_minimal,brg_satuan
         from ".$this->tbl_name."

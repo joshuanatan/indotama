@@ -21,9 +21,7 @@
                 </div>
                 <div class = "form-group col-lg-6">
                     <h5>Opsi Pengembalian</h5>
-                    <input type="radio" disabled class = "d_tipe_retur_edit" name = "tipe_retur" checked value="UANG">&nbsp;UANG
-                    &nbsp;&nbsp;
-                    <input type="radio" disabled class = "d_tipe_retur_edit" name = "tipe_retur" value="BARANG">&nbsp;BARANG
+                    <input readonly type = "text" class = "form-control" required id = "d_tipe_retur_edit">
                 </div>
                 <div class = "clearfix"></div>
                 <div class = "form-group">
@@ -70,6 +68,7 @@
         $("#d_no_retur_edit").val(content[row]["no"]);
         $("#d_no_penjualan_edit").val(content[row]["nomor_penj"]);
         $("#d_tgl_retur_edit").val(content[row]["tgl"].split(" ")[0]);
+        $("#d_tipe_retur_edit").val(content[row]["tipe"]);
 
         $.ajax({
             url:"<?php echo base_url();?>ws/retur/brg_retur?id_retur="+content[row]["id"],
@@ -102,7 +101,7 @@
             }
         });
 
-        if(content[row]["tipe"] == "BARANG"){
+        if(content[row]["tipe"].toUpperCase() == "BARANG"){
             $(".d_tipe_retur_edit[value='BARANG']").prop("checked",true);
             $('#d_barang_kembali_container_edit').show();
 
@@ -142,7 +141,7 @@
                 }
             });
         }
-        else if(content[row]["tipe"] == "UANG"){
+        else if(content[row]["tipe"].toUpperCase() == "UANG"){
             $(".d_tipe_retur_edit[value='UANG']").prop("checked",true);
             $('#d_barang_kembali_container_edit').hide();
             

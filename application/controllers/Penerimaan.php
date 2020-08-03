@@ -13,7 +13,7 @@ class Penerimaan extends CI_Controller{
     }
     public function gudang(){
         $this->load->model("m_satuan");
-        $result = $this->m_satuan->list();
+        $result = $this->m_satuan->list_data();
         $data["satuan"] = $result->result_array();
         $data["id_tempat_penerimaan"] = $this->session->id_warehouse;
         $data["type"] = "WAREHOUSE";
@@ -22,7 +22,7 @@ class Penerimaan extends CI_Controller{
     }
     public function cabang(){
         $this->load->model("m_satuan");
-        $result = $this->m_satuan->list();
+        $result = $this->m_satuan->list_data();
         $data["satuan"] = $result->result_array();
         $data["id_tempat_penerimaan"] = $this->session->id_cabang;
         $data["type"] = "CABANG";
@@ -35,7 +35,7 @@ class Penerimaan extends CI_Controller{
     } 
     public function retur(){
         $this->load->model("m_satuan");
-        $result = $this->m_satuan->list();
+        $result = $this->m_satuan->list_data();
         $data["satuan"] = $result->result_array();
         
         $data["id_tempat_penerimaan"] = $this->session->id_cabang;
@@ -47,7 +47,7 @@ class Penerimaan extends CI_Controller{
     }
     public function permintaan(){
         $this->load->model("m_satuan");
-        $result = $this->m_satuan->list();
+        $result = $this->m_satuan->list_data();
         $data["satuan"] = $result->result_array();
         
         $data["id_tempat_penerimaan"] = $this->session->id_cabang;

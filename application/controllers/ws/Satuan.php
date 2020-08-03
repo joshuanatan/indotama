@@ -53,10 +53,10 @@ class Satuan extends CI_Controller{
         );
         echo json_encode($response);
     }
-    public function list(){
+    public function list_data(){
         $response["status"] = "SUCCESS";
         $this->load->model("m_satuan");
-        $result = $this->m_satuan->list();
+        $result = $this->m_satuan->list_data();
         if($result->num_rows()){
             $result = $result->result_array();
             for($a = 0; $a<count($result); $a++){

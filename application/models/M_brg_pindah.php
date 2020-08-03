@@ -110,7 +110,7 @@ class M_brg_pindah extends CI_Model{
     public function columns(){
         return $this->columns;
     }
-    public function list(){
+    public function list_data(){
         $sql = "
         select id_pk_brg_pindah,brg_pindah_sumber,id_fk_refrensi_sumber,id_brg_awal,id_brg_tujuan,brg_pindah_qty,brg_pindah_status,brg_awal.brg_nama as brg_awal, brg_akhir.brg_nama as brg_akhir from tbl_brg_pindah
         inner join mstr_barang as brg_awal on brg_awal.id_pk_brg = tbl_brg_pindah.id_brg_awal 

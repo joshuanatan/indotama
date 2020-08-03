@@ -143,8 +143,13 @@ $data = array(
             var row = $(this).index();
             $(this).find(".action_column").click(function(){
                 $(this).find("i.text-secondary.md-check").click(function()  {
-                    load_selesai_content(row);
-                    $("#selesai_modal").modal("show");
+                    if(content[row]["status"].toLowerCase() != "aktif"){
+                        alert("Data retur sedang menunggu konfirmasi");
+                    }
+                    else{
+                        load_selesai_content(row);
+                        $("#selesai_modal").modal("show");
+                    }
                 })
             })
         })

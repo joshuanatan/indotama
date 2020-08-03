@@ -22,7 +22,7 @@ class Pengiriman extends CI_Controller{
             "excel_title" => "Daftar Pengiriman Penjualan"
         );
         $this->load->model("m_satuan");
-        $result = $this->m_satuan->list();
+        $result = $this->m_satuan->list_data();
         $data["satuan"] = $result->result_array();
         $data["type"] = "cabang";
         $data["id_tempat_pengiriman"] = $this->session->id_cabang; 
@@ -35,7 +35,7 @@ class Pengiriman extends CI_Controller{
             "excel_title" => "Daftar Pengiriman Retur"
         );
         $this->load->model("m_satuan");
-        $result = $this->m_satuan->list();
+        $result = $this->m_satuan->list_data();
         $data["satuan"] = $result->result_array();
         
         $data["id_tempat_pengiriman"] = $this->session->id_cabang;
@@ -50,7 +50,7 @@ class Pengiriman extends CI_Controller{
         );
 
         $this->load->model("m_satuan");
-        $result = $this->m_satuan->list();
+        $result = $this->m_satuan->list_data();
         $data["satuan"] = $result->result_array();
         
         $data["id_tempat_pengiriman"] = $this->session->id_cabang;
@@ -61,7 +61,7 @@ class Pengiriman extends CI_Controller{
     public function permintaan_gudang(){
 
         $this->load->model("m_satuan");
-        $result = $this->m_satuan->list();
+        $result = $this->m_satuan->list_data();
         $data["satuan"] = $result->result_array();
         
         $data["id_tempat_pengiriman"] = $this->session->id_warehouse;

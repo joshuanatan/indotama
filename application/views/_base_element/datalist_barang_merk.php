@@ -4,7 +4,7 @@
     var datalist_barang_merk;
     function load_datalist_barang_merk(){
         $.ajax({
-            url:"<?php echo base_url();?>ws/barang_merk/list",
+            url:"<?php echo base_url();?>ws/barang_merk/list_data",
             type:"GET",
             async:false,
             dataType:"JSON",
