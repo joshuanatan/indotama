@@ -29,6 +29,11 @@
 												<?php echo $this->session->msg;?>
 											</div>
 										<?php endif;?>
+										<?php if($this->session->eror_send != ""):?>
+											<div class = "alert alert-danger">
+											<?php echo $this->session->eror_send;?>
+											</div>
+										<?php endif;?>
 										<?php if($this->session->success_send != ""):?>
 											<div class = "alert alert-success">
 											<?php echo $this->session->success_send;?>

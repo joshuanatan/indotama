@@ -107,6 +107,7 @@ class Login extends CI_Controller {
 			else{
 				$response["status"] = "ERROR";
 				$response["msg"] = "User tidak ditemukan!";
+				$this->session->set_flashdata("eror_send",$response['msg']);
 			}
 		}
 		else{
