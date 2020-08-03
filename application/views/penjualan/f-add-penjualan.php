@@ -54,15 +54,17 @@ $notif_data = array(
                                         <div class = "col-lg-12">
                                             <form id = "register_form" method = "POST">
                                                 <input required type = "hidden" name = "id_cabang" value = "<?php echo $this->session->id_cabang;?>">
+                                                <input type = "hidden" id = "penomoran_otomatis_cb" name = "generate_pem_no[]" value = 1 checked onclick = "toggle_nomor_penjualan()">
                                                 
+                                                <!--
                                                 <div class = "form-group">
-                                                    <input type = "checkbox" id = "penomoran_otomatis_cb" name = "generate_pem_no[]" value = 1 checked onclick = "toggle_nomor_penjualan()"> Gunakan Penomoran Otomatis
                                                 </div>
                                                 <div class = "form-group col-lg-6">
                                                     <h5>Nomor Penjualan</h5>
                                                     <input id = "nomor" readonly value = "-" required type = "text" class = "form-control" required name = "nomor">
                                                 </div>
-                                                <div class = "form-group col-lg-6">
+                                                -->
+                                                <div class = "form-group col-lg-12">
                                                     <h5>Customer</h5>
                                                     <input required type = 'text' class = "form-control" list = "datalist_customer" required name = "customer">
                                                 </div>

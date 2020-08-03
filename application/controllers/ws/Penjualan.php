@@ -272,7 +272,6 @@ class Penjualan extends CI_Controller{
     public function register(){
         $response["status"] = "SUCCESS";
         
-        $this->form_validation->set_rules("nomor","nomor","required");
         $this->form_validation->set_rules("tgl","tgl","required");
         $this->form_validation->set_rules("dateline","dateline","required");
         $this->form_validation->set_rules("customer","customer","required");
@@ -299,13 +298,7 @@ class Penjualan extends CI_Controller{
                 $id_fk_customer = $this->m_customer->short_insert();
             }
             $this->load->model("m_penjualan");
-
-            if($this->input->post("generate_pem_no") != ""){
-                $penj_nomor = $this->m_penjualan->get_penj_nomor($id_fk_cabang,"penjualan",$penj_tgl);
-            }
-            else{
-                $penj_nomor = $this->input->post("nomor");
-            }
+            $penj_nomor = $this->m_penjualan->get_penj_nomor($id_fk_cabang,"penjualan",$penj_tgl);
 
             if($this->m_penjualan->set_insert($penj_nomor,$penj_tgl,$penj_dateline_tgl,$penj_jenis,$penj_tipe_pembayaran,$id_fk_customer,$id_fk_cabang,$penj_status)){
                 $id_penjualan = $this->m_penjualan->insert();
@@ -1051,7 +1044,7 @@ class Penjualan extends CI_Controller{
         $id_pk_penjualan = $this->input->get("id");
         if($id_pk_penjualan != "" && is_numeric($id_pk_penjualan)){
             
-            if($this->is_allow_to_update($id_pk_penjualan)){
+            if(!$this->is_allow_to_update($id_pk_penjualan)){
                 $response["status"] = "ERROR";
                 $response["msg"] = " Data tidak dapat diubah";
                 echo json_encode($response);

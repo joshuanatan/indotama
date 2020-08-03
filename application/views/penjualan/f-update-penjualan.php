@@ -55,7 +55,7 @@ $notif_data = array(
                                                 <input type = "hidden" name = "id_penjualan" value = "<?php echo $detail[0]["id_pk_penjualan"];?>">
                                                 <div class = "form-group col-lg-6">
                                                     <h5>Nomor Penjualan</h5>
-                                                    <input type = "text" class = "form-control" required name = "nomor" value = "<?php echo $detail[0]["penj_nomor"];?>">
+                                                    <input readonly type = "text" class = "form-control" required name = "nomor" value = "<?php echo $detail[0]["penj_nomor"];?>">
                                                 </div>
                                                 <div class = "form-group col-lg-6">
                                                     <h5>Customer</h5>
