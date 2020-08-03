@@ -107,8 +107,8 @@ class M_retur_brg extends CI_Model{
             retur_brg_satuan,
             retur_brg_status,
             brg_nama,
-            jumlah_terkirim as brg_terkirim,
-            satuan_nama as satuan_kirim,
+            ifnull(jumlah_terkirim,0) as brg_terkirim,
+            ifnull(satuan_nama,' ') as satuan_kirim,
             brg_penjualan_qty as brg_beli,
             brg_penjualan_satuan as satuan_beli
         from tbl_retur_brg
