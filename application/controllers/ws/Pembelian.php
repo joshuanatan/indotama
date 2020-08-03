@@ -176,7 +176,7 @@ class Pembelian extends CI_Controller{
     }
     public function register(){
         $response["status"] = "SUCCESS";
-        $this->form_validation->set_rules("nomor","nomor","required");
+        //$this->form_validation->set_rules("nomor","nomor","required");
         $this->form_validation->set_rules("tgl","tgl","required");
         $this->form_validation->set_rules("supplier","supplier","required");
         if($this->form_validation->run()){
@@ -199,13 +199,7 @@ class Pembelian extends CI_Controller{
                 $id_fk_supp = $this->m_supplier->short_insert();
             }
             $id_fk_cabang = $this->input->post("id_cabang");
-            
-            if($this->input->post("generate_pem_no") != ""){
-                $pem_pk_nomor = $this->m_pembelian->get_pem_nomor($id_fk_cabang,"pembelian",$pem_tgl);
-            }
-            else{
-                $pem_pk_nomor = $this->input->post("nomor");
-            }
+            $pem_pk_nomor = $this->m_pembelian->get_pem_nomor($id_fk_cabang,"pembelian",$pem_tgl);
 
             if($this->m_pembelian->set_insert($pem_pk_nomor,$pem_tgl,$pem_status,$id_fk_supp,$id_fk_cabang)){
                 $id_pembelian = $this->m_pembelian->insert();

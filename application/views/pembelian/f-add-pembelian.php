@@ -13,21 +13,24 @@
             $this->load->view('_notification/register_error',$notif_data); ?>
                 <form id = "register_form" method = "POST">
                     <input type = "hidden" name = "id_cabang" value = "<?php echo $this->session->id_cabang;?>">
+                    <input type = "hidden" id = "penomoran_otomatis_cb" name = "generate_pem_no[]" value = 1 checked onclick = "toggle_nomor_pembelian()"><!-- Gunakan Penomoran Otomatis-->
+                    <!--
                     <div class = "form-group">
-                        <input type = "checkbox" id = "penomoran_otomatis_cb" name = "generate_pem_no[]" value = 1 checked onclick = "toggle_nomor_pembelian()"> Gunakan Penomoran Otomatis
                     </div>
                     <div class = "form-group col-lg-6">
                         <h5>Nomor Pembelian</h5>
                         <input type = "text" id = "nomor" class = "form-control" required name = "nomor" readonly value = "-">
                     </div>
+                    -->
                     <div class = "form-group col-lg-6">
                         <h5>Tanggal Pembelian</h5>
                         <input type = "date" class = "form-control" required name = "tgl">
                     </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-lg-6">
                         <h5>Supplier</h5>
                         <input type = 'text' class = "form-control" list = "datalist_supplier" required name = "supplier">
                     </div>
+                    <div class = "clearfix"></div>
                     <div class = "form-group">
                         <h5>Item Pembelian</h5>
                         <table class = "table table-striped table-bordered">

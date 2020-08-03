@@ -20,7 +20,7 @@ class M_pembelian extends ci_model{
 
     public function __construct(){
         parent::__construct();
-        $this->set_column("pem_pk_nomor","nomor pembelian",true);
+        $this->set_column("id_pk_pembelian","nomor pembelian",true);
         $this->set_column("pem_tgl","tanggal pembelian",false);
         $this->set_column("sup_perusahaan","supplier",false);
         $this->set_column("pem_status","status",false);
