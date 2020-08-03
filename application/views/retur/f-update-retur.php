@@ -124,7 +124,7 @@
             }
         });
 
-        if(content[row]["tipe"] == "BARANG"){
+        if(content[row]["tipe"].toUpperCase() == "BARANG"){
             $(".tipe_retur_edit[value='BARANG']").prop("checked",true);
             $('#barang_kembali_container_edit').show();
 
@@ -172,7 +172,7 @@
                 }
             });
         }
-        else if(content[row]["tipe"] == "UANG"){
+        else if(content[row]["tipe"].toUpperCase() == "UANG"){
             $(".tipe_retur_edit[value='UANG']").prop("checked",true);
             $('#barang_kembali_container_edit').hide();
             

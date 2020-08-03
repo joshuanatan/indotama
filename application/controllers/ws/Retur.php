@@ -205,13 +205,8 @@ class Retur extends CI_Controller{
                 $retur_tgl = $this->input->post("tgl_retur");
                 $retur_status = "menunggu konfirmasi";
                 $retur_tipe = $this->input->post("tipe_retur");
+                $retur_no = $this->m_retur->get_retur_nomor($this->session->id_cabang,"retur",$retur_tgl);
                 
-                if($this->input->post("generate_pem_no") != ""){
-                    $retur_no = $this->m_retur->get_retur_nomor($this->session->id_cabang,"retur",$retur_tgl);
-                }
-                else{
-                    $retur_no = $this->input->post("no_retur");
-                }
                 if($this->m_retur->set_insert($id_fk_penjualan,$retur_no,$retur_tgl,$retur_status,$retur_tipe)){
                     $id_retur = $this->m_retur->insert();
                     if($id_retur){
