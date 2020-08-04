@@ -25,16 +25,31 @@
 											<p align = "center">General Suppliers/Traders in Oil & Gas Safety</p>
 										</div>
 										<?php if($this->session->msg != ""):?>
+											<br>
 											<div class = "alert alert-danger">
 												<?php echo $this->session->msg;?>
 											</div>
 										<?php endif;?>
+										<?php if($this->session->eror_send != ""):?>
+											<br>
+											<div class = "alert alert-danger">
+											<?php echo $this->session->eror_send;?>
+											</div>
+										<?php endif;?>
+										<?php if($this->session->gagals_login != ""):?>
+											<br>
+											<div class = "alert alert-danger">
+											<?php echo $this->session->gagals_login;?>
+											</div>
+										<?php endif;?>
 										<?php if($this->session->success_send != ""):?>
+											<br>
 											<div class = "alert alert-success">
 											<?php echo $this->session->success_send;?>
 											</div>
 										<?php endif;?>
 										<?php if($this->session->status != ""):?>
+											<br>
 											<div class = "alert alert-success">
 												Password succesfully changed!
 											</div>

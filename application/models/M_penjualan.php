@@ -186,7 +186,7 @@ class M_penjualan extends ci_model{
         }
         if($this->penj_tipe_pembayaran == "" || strtolower($this->penj_tipe_pembayaran) == "all"){
             $query = "
-            select id_pk_penjualan,penj_nomor,penj_nominal,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified,if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran
+            select cust_email,id_pk_penjualan,penj_nomor,penj_nominal,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified,if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran
             from ".$this->tbl_name." 
             inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
             inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified
@@ -208,7 +208,7 @@ class M_penjualan extends ci_model{
         }
         else{
             $query = "
-            select id_pk_penjualan,penj_nomor,penj_nominal,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified,if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran
+            select cust_email,id_pk_penjualan,penj_nomor,penj_nominal,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified,if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran
             from ".$this->tbl_name." 
             inner join mstr_customer on mstr_customer.id_pk_cust = ".$this->tbl_name.".id_fk_customer
             inner join mstr_user on mstr_user.id_pk_user = ".$this->tbl_name.".id_last_modified

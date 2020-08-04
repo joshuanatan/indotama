@@ -38,11 +38,14 @@ class Login extends CI_Controller {
 			else{
 				$response["status"] = "ERROR";
 				$response["msg"] = "Login function is error!";
+				$response["msg"] = "Login gagal! Cek kembali username dan password Anda";
+				$this->session->set_flashdata("gagals_login",$response['msg']);
 			}
 		}
 		else{
 			$response["status"] = "ERROR";
-			$response["msg"] = "Setter function is error";
+			$response["msg"] = "Login gagal! Cek kembali username dan password Anda";
+			$this->session->set_flashdata("gagals_login",$response['msg']);
 			
 		}
 		redirect(md5("Login"));
@@ -100,13 +103,14 @@ class Login extends CI_Controller {
 					$this->session->set_flashdata("msg",$response['msg']);
 				} 
 				else {
-					$response["msg"] = "Cek email Anda dan ikuti instruksi selanjutnya untuk melakukan reset password!";
+					$response["msg"] = "Email terkirim! Cek email Anda dan ikuti instruksi selanjutnya untuk melakukan reset password!";
 					$this->session->set_flashdata("success_send",$response['msg']);
 				}
 			}
 			else{
 				$response["status"] = "ERROR";
-				$response["msg"] = "User tidak ditemukan!";
+				$response["msg"] = "Email tidak terdaftar dalam sistem!";
+				$this->session->set_flashdata("eror_send",$response['msg']);
 			}
 		}
 		else{
