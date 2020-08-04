@@ -61,7 +61,6 @@
                             <thead>
                                 <th>Barang</th>
                                 <th>Jumlah</th>
-                                <th>Jumlah Markup</th>
                                 <th>Harga</th>
                                 <th>Harga Final</th>
                                 <th>Notes</th>
@@ -69,7 +68,7 @@
                             </thead>
                             <tbody id = "daftar_brg_kembali">
                                 <tr id = "add_brg_kembali_but_container">
-                                    <td colspan = 7><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_brg_kembali()">Tambah Barang Pengembalian</button>
+                                    <td colspan = 6><button type = "button" class = "btn btn-primary btn-sm col-lg-12" onclick = "add_brg_kembali()">Tambah Barang Pengembalian</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -183,9 +182,7 @@
                 <input name = 'brg_kembali_check[]' value = ${brg_kembali_row} type = 'hidden'>
                 <input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${brg_kembali_row})' id = 'brg${brg_kembali_row}' name = 'brg${brg_kembali_row}' class = 'form-control'>
             </td>
-            <td>
-                <input name = 'brg_qty_real${brg_kembali_row}' type = 'text' class = 'form-control nf-input'>
-            </td>
+            <input name = 'brg_qty_real${brg_kembali_row}' value = '0' type = 'hidden' class = 'form-control nf-input'>
             <td>
                 <input name = 'brg_qty${brg_kembali_row}' type = 'text' class = 'form-control nf-input'>
             </td>
