@@ -42,10 +42,6 @@
                             <td>Satuan</td>
                             <td id = "satuan_delete"></td>
                         </tr>
-                        <tr>
-                            <td>Ukuran</td>
-                            <td id = "ukuran_delete"></td>
-                        </tr>
                     </tbody>
                 </table>
                 <div class = "form-group">
@@ -66,7 +62,6 @@
         $("#merk_delete").html(content[row]["merk"]);
         $("#minimal_delete").html(content[row]["minimal"]);
         $("#satuan_delete").html(content[row]["satuan"]);
-        $("#ukuran_delete").val(content[row]["ukuran"]);
     }
     function delete_func(){
         var id = $("#id_delete").val();
