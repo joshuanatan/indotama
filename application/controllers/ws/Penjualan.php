@@ -87,10 +87,8 @@ class Penjualan extends CI_Controller{
                 $result = $result->result_array();
                 for($a = 0; $a<count($result); $a++){
                     $response["content"][$a]["id"] = $result[$a]["id_pk_brg_penjualan"];
-                    $response["content"][$a]["qty"] = $result[$a]["brg_penjualan_qty_real"];
-                    $response["content"][$a]["satuan"] = $result[$a]["brg_penjualan_satuan_real"];
-                    $response["content"][$a]["qty_mu"] = $result[$a]["brg_penjualan_qty"];
-                    $response["content"][$a]["satuan_mu"] = $result[$a]["brg_penjualan_satuan"];
+                    $response["content"][$a]["qty"] = $result[$a]["brg_penjualan_qty"];
+                    $response["content"][$a]["satuan"] = $result[$a]["brg_penjualan_satuan"];
                     $response["content"][$a]["harga"] = $result[$a]["brg_penjualan_harga"];
                     $response["content"][$a]["harga_stok"] = $result[$a]["brg_harga"];
                     $response["content"][$a]["note"] = $result[$a]["brg_penjualan_note"];

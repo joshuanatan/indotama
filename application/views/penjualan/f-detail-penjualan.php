@@ -224,26 +224,15 @@ $active_jmlh_markup = false;?>
                 var html = "";
                 if(respond["status"].toLowerCase() == "success"){
                     for(var a = 0; a<respond["content"].length; a++){
-                        <?php if($active_jmlh_markup):?>
                         html += `
                         <tr>
                             <td>${respond["content"][a]["nama_brg"]}</td>
                             <td>${formatting_func(respond["content"][a]["qty"])} ${respond["content"][a]["satuan"]}</td>
-                            <td>${formatting_func(respond["content"][a]["qty_mu"])} ${respond["content"][a]["satuan_mu"]}</td>
                             <td>${formatting_func(respond["content"][a]["harga_stok"])}</td>
                             <td>${formatting_func(respond["content"][a]["harga"])}</td>
                             <td>${respond["content"][a]["note"]}</td>
                         </tr>`;
-                        <?php endif;?>
-                        html += `
-                        <tr>
-                            <td>${respond["content"][a]["nama_brg"]}</td>
-                            <td>${formatting_func(respond["content"][a]["qty_mu"])} ${respond["content"][a]["satuan_mu"]}</td>
-                            <td>${formatting_func(respond["content"][a]["harga_stok"])}</td>
-                            <td>${formatting_func(respond["content"][a]["harga"])}</td>
-                            <td>${respond["content"][a]["note"]}</td>
-                        </tr>`;
-                        total += respond["content"][a]["qty_mu"]*respond["content"][a]["harga"];
+                        total += respond["content"][a]["qty"]*respond["content"][a]["harga"];
                     }
                     $("#daftar_brg_jual_detail").html(html);
                 }

@@ -126,7 +126,7 @@
                                 <input readonly type = 'text' class = 'form-control' name = 'brg_retur${a}' value = '${respond["content"][a]["nama_brg"]}' >
                             </td>
                             <td>
-                                ${respond["content"][a]["jmlh_terkirim"]} / ${respond["content"][a]["qty_mu"]} ${respond["content"][a]["satuan_mu"]}
+                                ${respond["content"][a]["jmlh_terkirim"]} / ${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}
                             </td>
                             <td>
                                 <input type = 'text' class = 'form-control nf-input' name = 'brg_retur_jumlah${a}'>

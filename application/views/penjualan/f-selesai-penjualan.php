@@ -116,7 +116,6 @@
                                     <thead>
                                         <th>Barang</th>
                                         <th>Jumlah</th>
-                                        <th>Jumlah Markup</th>
                                         <th>Harga</th>
                                         <th>Harga Markup</th>
                                         <th>Notes</th>
@@ -226,12 +225,11 @@
                         <tr>
                             <td>${respond["content"][a]["nama_brg"]}</td>
                             <td>${formatting_func(respond["content"][a]["qty"])} ${respond["content"][a]["satuan"]}</td>
-                            <td>${formatting_func(respond["content"][a]["qty_mu"])} ${respond["content"][a]["satuan_mu"]}</td>
                             <td>${formatting_func(respond["content"][a]["harga_stok"])}</td>
                             <td>${formatting_func(respond["content"][a]["harga"])}</td>
                             <td>${respond["content"][a]["note"]}</td>
                         </tr>`;
-                        s_total += respond["content"][a]["qty_mu"]*respond["content"][a]["harga"];
+                        s_total += respond["content"][a]["qty"]*respond["content"][a]["harga"];
                     }
                     $("#s_daftar_brg_jual_detail").html(html);
                 }
