@@ -95,7 +95,7 @@ $notif_data = array(
     var content;
     function load_permintaan_barang_content(){
         $.ajax({
-            url:"<?php echo base_url();?>ws/permintaan/list_data_permintaan_aktif",
+            url:"<?php echo base_url();?>ws/permintaan/list_permintaan_aktif",
             type:"GET",
             dataType:"JSON",
             success:function(respond){
@@ -163,7 +163,7 @@ $notif_data = array(
     }
     function load_incoming_delivery_content(){
         $.ajax({
-            url:"<?php echo base_url();?>ws/penerimaan_permintaan/list_data_pengiriman_otw?type=cabang",
+            url:"<?php echo base_url();?>ws/penerimaan_permintaan/list_pengiriman_otw?type=cabang",
             type:"GET",
             dataType:"JSON",
             success:function(respond){

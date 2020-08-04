@@ -29,7 +29,7 @@
     var pemenuhan_detail_content;
     function load_detail_content(row){
         $.ajax({
-            url:"<?php echo base_url();?>ws/pemenuhan/list_data_pemenuhan?id_brg_permintaan="+content[row]["id"],
+            url:"<?php echo base_url();?>ws/pemenuhan/list_pemenuhan?id_brg_permintaan="+content[row]["id"],
             type:"GET",
             dataType:"JSON",
             success:function(respond){

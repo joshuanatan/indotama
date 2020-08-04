@@ -194,7 +194,7 @@ $.ajax({
     }
 });
 $.ajax({
-    url:"<?php echo base_url();?>ws/toko/list_data_cabang",
+    url:"<?php echo base_url();?>ws/toko/list_cabang",
     type:"GET",
     dataType:"JSON",
     success:function(respond){

@@ -4,7 +4,7 @@
 function load_datalist_pembelian(){
     /*percabang*/
     $.ajax({
-        url:"<?php echo base_url();?>ws/pembelian/list_data_pembelian",
+        url:"<?php echo base_url();?>ws/pembelian/list_pembelian",
         type:"GET",
         dataType:"JSON",
         success:function(respond){
@@ -20,7 +20,7 @@ function load_datalist_pembelian(){
 }
 function load_datalist_pembelian_all(){
     $.ajax({
-        url:"<?php echo base_url();?>ws/pembelian/list_data_pembelian_all",
+        url:"<?php echo base_url();?>ws/pembelian/list_pembelian_all",
         type:"GET",
         dataType:"JSON",
         success:function(respond){
