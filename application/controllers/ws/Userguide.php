@@ -9,6 +9,16 @@ class Userguide extends CI_Controller{
     private function menu(){
         $array = array(
             array(
+                "name" => "Toko",
+                "link" => "toko",
+                "type" => "single"
+            ),
+            array(
+                "name" => "Cabang",
+                "link" => "cabang",
+                "type" => "single"
+            ),
+            array(
                 "name" => "Stok",
                 "link" => "stok",
                 "type" => "single"
@@ -87,6 +97,42 @@ class Userguide extends CI_Controller{
     }
     private function guides(){
         $array = array(
+            array(
+                "id" => "toko",
+                "title" => "Manajemen Toko",
+                "desc" => "Bagian ini ditujukan untuk mengganti toko apabila user memiliki akses pada lebih dari satu toko. 
+                <br/>
+                <br/>
+                User dapat membuka pada menu <strong>Manajemen Toko $this->separator Daftar Toko</strong>",
+                "content" => array(
+                    array(
+                        "title" => "Manajemen Stok Toko",
+                        "images" => array(
+                            base_url()."asset/userguide/uploads/manajemen-toko/home.png",
+                            base_url()."asset/userguide/uploads/manajemen-toko/active.png"
+                        ),
+                        "explanation" => "User dapat mengaktifkan toko yang diinginkan dengan menekan button pada kolom <i>action</i>"
+                    )
+                )
+            ),
+            array(
+                "id" => "cabang",
+                "title" => "Manajemen Cabang",
+                "desc" => "Bagian ini ditujukan untuk mengganti toko apabila user memiliki akses pada lebih dari satu cabang. 
+                <br/>
+                <br/>
+                User dapat membuka pada menu <strong>Manajemen Cabang $this->separator Daftar Cabang</strong>",
+                "content" => array(
+                    array(
+                        "title" => "Manajemen Stok Cabang",
+                        "images" => array(
+                            base_url()."asset/userguide/uploads/manajemen-cabang/home.png",
+                            base_url()."asset/userguide/uploads/manajemen-cabang/active.png"
+                        ),
+                        "explanation" => "User dapat mengaktifkan cabang yang diinginkan dengan menekan button pada kolom <i>action</i>"
+                    )
+                )
+            ),
             array(
                 "id" => "stok",
                 "title" => "Stok",

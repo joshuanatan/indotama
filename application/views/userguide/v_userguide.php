@@ -9,7 +9,7 @@
         <meta name="author" content="">
         <meta name="keywords" content="">
 
-        <title>Item Name | Documentation by Author Name</title>
+        <title>Indotama MMSafety | User Guide</title>
 
         <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 
