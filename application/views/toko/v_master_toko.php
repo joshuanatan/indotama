@@ -82,8 +82,6 @@ $notif_data = array(
     </body>
 </html>
 <script>
-    var ctrl = "toko";
-    var url_add = "";
     var unautorized_button = ["detail_button"];
     var additional_button = [
         {
@@ -103,26 +101,93 @@ $data = array(
     "page_title" => "Master Toko"
 );
 ?>
-<?php $this->load->view("_core_script/table_func");?>
 <?php $this->load->view('toko/f-add-toko',$data);?>
 <?php $this->load->view('toko/f-update-toko',$data);?>
 <?php $this->load->view('toko/f-delete-toko',$data);?>
 
-<script>
-    function redirect_cabang(){
-        $('#table_container').find('tr').click( function(){
-            var row = $(this).index();
-            var id_toko = content[row]["id"];
-            window.location.replace("<?php echo base_url();?>toko/cabang/"+id_toko);
-        });
-    }
-    function redirect_admin_toko(){
-        $('#table_container').find('tr').click( function(){
-            var row = $(this).index();
-            var id_toko = content[row]["id"];
-            window.location.replace("<?php echo base_url();?>toko/admin/"+id_toko);
-        });
-    }
-</script>
 <?php $this->load->view('_notification/notif_general'); ?>
 <?php $this->load->view("req/core_script");?>
+<script>
+    var ctrl = "toko";
+    var contentCtrl = "content";
+    var tblHeaderCtrl = "columns";
+    var colCount = 6; //ragu either 1/0
+    var orderBy = 0;
+    var orderDirection = "ASC";
+    var searchKey = "";
+    var page = 1;
+    var url_add = "";
+
+    refresh();
+    function refresh(req_page = 1) {
+        page = req_page;
+        $.ajax({
+            url: "<?php echo base_url();?>ws/"+ctrl+"/"+contentCtrl+"?orderBy="+orderBy+"&orderDirection="+orderDirection+"&page="+page+"&searchKey="+searchKey+"&"+url_add,
+            type: "GET",
+            dataType: "JSON",
+            success: function(respond) {
+                if(respond["status"] == "SUCCESS"){
+                    content = respond["content"];
+                    var html = "";
+                    for(var a = 0; a<respond["content"].length; a++){
+                        var html_status = "";
+                        switch(respond["content"][a]["status"].toLowerCase()){
+                            case "aktif":
+                            html_status += `<td class = 'align-middle text-center'><span class="badge badge-success align-top" id = "orderDirection">${respond["content"][a]["status"].toUpperCase()}</span></td>`;
+                            break;
+                            case "konfirmasi":
+                            html_status += `<td class = 'align-middle text-center'><span class="badge badge-primary align-top" id = "orderDirection">${respond["content"][a]["status"].toUpperCase()}</span></td>`;
+                            break;
+                            case "selesai":
+                            html_status += `<td class = 'align-middle text-center'><span class="badge badge-primary align-top" id = "orderDirection">${respond["content"][a]["status"].toUpperCase()}</span></td>`;
+                            break;
+                            case "diterima":
+                            html_status += `<td class = 'align-middle text-center'><span class="badge badge-primary align-top" id = "orderDirection">${respond["content"][a]["status"].toUpperCase()}</span></td>`;
+                            break;
+                            default:
+                            html_status += `<td class = 'align-middle text-center'><span class="badge badge-danger align-top" id = "orderDirection">${respond["content"][a]["status"].toUpperCase()}</span></td>`;
+                            break;
+                        }
+                        html += `
+                            <tr>
+                                <td>${respond["content"][a]["logo"]}</td>
+                                <td>${respond["content"][a]["nama"]}</td>
+                                <td>${respond["content"][a]["kode"]}</td>
+                                ${html_status}
+                                <td>${respond["content"][a]["last_modified"]}</td>
+                                <td>
+                                    <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content(${a})'></i>  
+                                    <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'delete_button text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content(${a})'></i>
+                                    <a href = "<?php echo base_url();?>toko/cabang/${respond["content"][a]["id"]}" style = 'cursor:pointer;font-size:large' class = 'text-success md-store'></a>
+                                    <a href = "<?php echo base_url();?>toko/admin/${respond["content"][a]["id"]}" style = 'cursor:pointer;font-size:large' class = 'text-warning md-assignment-account'></a>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                }
+                else{
+                    html += "<tr>";
+                    html += "<td colspan = "+colCount+" class = 'align-middle text-center'>No Records Found</td>";
+                    html += "</tr>";
+                }
+                $("#content_container").html(html);
+                pagination(respond["page"]);
+            },
+            error: function(){
+                var html = "";
+                html += "<tr>";
+                html += "<td colspan = "+colCount+" class = 'align-middle text-center'>No Records Found</td>";
+                html += "</tr>";
+                
+                $("#content_container").html(html);
+                
+                html = "";
+                html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed"><</a></li>';
+                html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed">></a></li>';
+                $("#pagination_container").html(html);
+            }
+        });
+    }
+    
+</script>
+<?php $this->load->view("_core_script/core");?>

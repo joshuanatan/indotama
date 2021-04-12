@@ -92,7 +92,7 @@ class M_barang_jenis extends ci_model{
         executequery($sql);
     }
     public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = "",$search_category = ""){
-        $order_by = $this->columns[$order_by]["col_name"];
+        $order_by = $this->columns[$order_by]["col_name"]; #brg_jenis_nama
         $search_query = "";
         if($search_key != ""){
             $search_query .= "and
