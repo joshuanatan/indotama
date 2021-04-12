@@ -312,7 +312,7 @@ DELIMITER ;
 --
 
 CREATE TABLE `log_all` (
-  `id_pk_log_all` int(11) NOT NULL,
+  `id_pk_log_all` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `log_all_msg` varchar(300) DEFAULT NULL,
   `log_all_data_changes` varchar(1000) DEFAULT NULL,
   `log_all_it` varchar(300) DEFAULT NULL COMMENT 'IT refrence',
