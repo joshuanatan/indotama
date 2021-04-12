@@ -39,6 +39,7 @@ class Warehouse extends CI_Controller{
                 $response["content"][$a]["alamat"] = $result["data"][$a]["warehouse_alamat"];
                 $response["content"][$a]["notelp"] = $result["data"][$a]["warehouse_notelp"];
                 $response["content"][$a]["desc"] = $result["data"][$a]["warehouse_desc"];
+                $response["content"][$a]["cabang"] = $result["data"][$a]["id_fk_cabang"];
                 $response["content"][$a]["status"] = $result["data"][$a]["warehouse_status"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["warehouse_last_modified"];
             }
@@ -52,6 +53,7 @@ class Warehouse extends CI_Controller{
             "alamat",
             "notelp",
             "desc",
+            "cabang",
             "status",
             "last_modified"
         );

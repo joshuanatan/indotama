@@ -105,6 +105,22 @@ $data = array(
 <?php $this->load->view("cabang/f-delete-cabang",$data);?>
 
 <script>
+    var additional_button = [
+        {
+            style:'cursor:pointer;font-size:large',
+            class:'text-primary md-store',
+            onclick:'redirect_warehouse()'
+        }
+    ];
+
+    function redirect_warehouse(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_cabang = content[row]["id"];
+            window.open("<?php echo base_url();?>toko/warehouse/"+id_cabang);
+        });
+    }
+
     function open_list_barang(){
         $('body table').find('tr').click( function(){
             var row = $(this).index();

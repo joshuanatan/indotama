@@ -28,10 +28,10 @@
 <script src="<?php echo base_url(); ?>vendors/bower_components/jquery.counterup/jquery.counterup.min.js"></script>
 
 <!-- Sparkline JavaScript -->
-<script src="<?php echo base_url(); ?>vendors/jquery.sparkline/dist/jquery.sparkline.min.js"></script>
+<!--<script src="<?php echo base_url(); ?>vendors/jquery.sparkline/dist/jquery.sparkline.min.js"></script>
 <script
     src="<?php echo base_url(); ?>vendors/bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js">
-</script>
+</script>-->
 
 <!-- ChartJS JavaScript -->
 <script src="<?php echo base_url(); ?>vendors/chart.js/Chart.min.js"></script>

@@ -109,6 +109,11 @@ class Toko extends CI_Controller {
 		
 		$this->load->view('brg_cabang/v_brg_cabang',$data);
 	}
+
+	public function warehouse($id_cabang_page =""){
+		
+	}
+
 	public function brg_cabang_toko($id_cabang_page = ""){
 		if($id_cabang_page == ""){
 			$id_cabang_page = $this->session->id_cabang;
