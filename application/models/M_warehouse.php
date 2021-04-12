@@ -9,6 +9,7 @@ class m_warehouse extends ci_model{
     private $warehouse_alamat;
     private $warehouse_notelp;
     private $warehouse_desc;
+    private $id_fk_cabang;
     private $warehouse_status;
     private $warehouse_create_date;
     private $warehouse_last_modified;
@@ -21,6 +22,7 @@ class m_warehouse extends ci_model{
         $this->set_column("warehouse_alamat","alamat","required");
         $this->set_column("warehouse_notelp","no telpon","required");
         $this->set_column("warehouse_desc","deskripsi","required");
+        $this->set_column("id_fk_cabang","cabang","required");
         $this->set_column("warehouse_status","status","required");
         $this->set_column("warehouse_last_modified","last modified","required");
         $this->warehouse_create_date = date("y-m-d h:i:s");
@@ -48,6 +50,7 @@ class m_warehouse extends ci_model{
             warehouse_alamat varchar(200),
             warehouse_notelp varchar(30),
             warehouse_desc varchar(150),
+            id_fk_cabang int,
             warehouse_status varchar(15),
             warehouse_create_date datetime,
             warehouse_last_modified datetime,
@@ -63,6 +66,7 @@ class m_warehouse extends ci_model{
             warehouse_alamat varchar(200),
             warehouse_notelp varchar(30),
             warehouse_desc varchar(150),
+            id_fk_cabang int,
             warehouse_status varchar(15),
             warehouse_create_date datetime,
             warehouse_last_modified datetime,
@@ -76,12 +80,13 @@ class m_warehouse extends ci_model{
         after insert on mstr_warehouse
         for each row
         begin
-            set @id_user = new.id_last_modified;
-            set @tgl_action = new.warehouse_last_modified;
-            set @log_text = concat(new.id_last_modified,' ','insert data at' , new.warehouse_last_modified);
-            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
-            
-            insert into mstr_warehouse_log(executed_function,id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_create_date,warehouse_last_modified,id_create_data,id_last_modified,id_log_all) values ('after insert',new.id_pk_warehouse,new.warehouse_nama,new.warehouse_alamat,new.warehouse_notelp,new.warehouse_desc,new.warehouse_status,new.warehouse_create_date,new.warehouse_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_warehouse_log(executed_function,id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,id_fk_cabang,warehouse_status,warehouse_create_date,warehouse_last_modified,id_create_data,id_last_modified) values ('after insert',new.id_pk_warehouse,new.warehouse_nama,new.warehouse_alamat,new.warehouse_notelp,new.warehouse_desc,new.id_fk_cabang, new.warehouse_status,new.warehouse_create_date,new.warehouse_last_modified,new.id_create_data,new.id_last_modified);
+
+            select last_insert_id() into @last_id;
+            set @log_msg = concat('Data baru ditambahkan pada tabel mstr_warehouse. Waktu penambahan: ',now());
+            set @log_it = concat('Refrensi log table mstr_warehouse_log dengan id_pk_warehouse_log ',@last_id);
+            set @log_data = concat('','[id_pk_warehouse: ',new.id_pk_warehouse,']','[warehouse_nama: ',new.warehouse_nama,']','[warehouse_alamat: ',new.warehouse_alamat,']','[warehouse_notelp: ',new.warehouse_notelp,']','[warehouse_desc: ',new.warehouse_desc,']','[id_fk_cabang: ',new.id_fk_cabang,']','[warehouse_status: ',new.warehouse_status,']','[warehouse_create_date: ',new.warehouse_create_date,']','[warehouse_last_modified: ',new.warehouse_last_modified,']','[id_create_data: ',new.id_create_data,']','[id_last_modified: ',new.id_last_modified,']');
+            call insert_log_all(new.id_last_modified,@log_msg,@log_data,@log_it);
         end$$
         delimiter ;
 
@@ -91,12 +96,13 @@ class m_warehouse extends ci_model{
         after update on mstr_warehouse
         for each row
         begin
-            set @id_user = new.id_last_modified;
-            set @tgl_action = new.warehouse_last_modified;
-            set @log_text = concat(new.id_last_modified,' ','update data at' , new.warehouse_last_modified);
-            call insert_log_all(@id_user,@tgl_action,@log_text,@id_log_all);
-            
-            insert into mstr_warehouse_log(executed_function,id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_create_date,warehouse_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_warehouse,new.warehouse_nama,new.warehouse_alamat,new.warehouse_notelp,new.warehouse_desc,new.warehouse_status,new.warehouse_create_date,new.warehouse_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
+            insert into mstr_warehouse_log(executed_function,id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,id_fk_cabang,warehouse_status,warehouse_create_date,warehouse_last_modified,id_create_data,id_last_modified) values ('after update',new.id_pk_warehouse,new.warehouse_nama,new.warehouse_alamat,new.warehouse_notelp,new.warehouse_desc,new.id_fk_cabang,new.warehouse_status,new.warehouse_create_date,new.warehouse_last_modified,new.id_create_data,new.id_last_modified);
+
+            select last_insert_id() into @last_id;
+            set @log_msg = concat('Data diubah pada tabel mstr_warehouse. Waktu perubahan: ',now());
+            set @log_it = concat('Refrensi log table mstr_warehouse_log dengan id_pk_warehouse_log ',@last_id);
+            set @log_data = concat('','[id_pk_warehouse: ',old.id_pk_warehouse,' => ',new.id_pk_warehouse,']','[warehouse_nama: ',old.warehouse_nama,' => ',new.warehouse_nama,']','[warehouse_alamat: ',old.warehouse_alamat,' => ',new.warehouse_alamat,']','[warehouse_notelp: ',old.warehouse_notelp,' => ',new.warehouse_notelp,']','[warehouse_desc: ',old.warehouse_desc,' => ',new.warehouse_desc,']','[id_fk_cabang: ',old.id_fk_cabang,' => ',new.id_fk_cabang,']','[warehouse_status: ',old.warehouse_status,' => ',new.warehouse_status,']','[warehouse_create_date: ',old.warehouse_create_date,' => ',new.warehouse_create_date,']','[warehouse_last_modified: ',old.warehouse_last_modified,' => ',new.warehouse_last_modified,']','[id_create_data: ',old.id_create_data,' => ',new.id_create_data,']','[id_last_modified: ',old.id_last_modified,' => ',new.id_last_modified,']');
+            call insert_log_all(new.id_last_modified,@log_msg,@log_data,@log_it);
         end$$
         delimiter ;
         ";
@@ -112,12 +118,13 @@ class m_warehouse extends ci_model{
                 warehouse_alamat like '%".$search_key."%' or 
                 warehouse_notelp like '%".$search_key."%' or 
                 warehouse_desc like '%".$search_key."%' or 
+                id_fk_cabang like '%".$search_key."%' or 
                 warehouse_status like '%".$search_key."%' or 
                 warehouse_last_modified like '%".$search_key."%'
             )";
         }
         $query = "
-        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_last_modified
+        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,id_fk_cabang,warehouse_status,warehouse_last_modified
         from ".$this->tbl_name." 
         where warehouse_status = ? ".$search_query."  
         order by ".$order_by." ".$order_direction." 
@@ -137,7 +144,7 @@ class m_warehouse extends ci_model{
     }
     public function list_warehouse(){
         $query = "
-        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_last_modified
+        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,id_fk_cabang,warehouse_status,warehouse_last_modified
         from ".$this->tbl_name." 
         where warehouse_status = ?";
         $args = array(
@@ -152,6 +159,7 @@ class m_warehouse extends ci_model{
             "warehouse_alamat",
             "warehouse_notelp",
             "warehouse_desc",
+            "id_fk_cabang",
             "warehouse_status",
             "warehouse_last_modified"
         );
@@ -167,6 +175,7 @@ class m_warehouse extends ci_model{
                 "warehouse_alamat" => $this->warehouse_alamat,
                 "warehouse_notelp" => $this->warehouse_notelp,
                 "warehouse_desc" => $this->warehouse_desc,
+                "id_fk_cabang" => $this->id_fk_cabang,
                 "warehouse_status" => $this->warehouse_status,
                 "warehouse_create_date" => $this->warehouse_create_date,
                 "warehouse_last_modified" => $this->warehouse_last_modified,
@@ -187,6 +196,7 @@ class m_warehouse extends ci_model{
                 "warehouse_alamat" => $this->warehouse_alamat,
                 "warehouse_notelp" => $this->warehouse_notelp,
                 "warehouse_desc" => $this->warehouse_desc,
+                "id_fk_cabang" => $this->id_fk_cabang,
                 "warehouse_last_modified" => $this->warehouse_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
@@ -223,6 +233,9 @@ class m_warehouse extends ci_model{
         if($this->warehouse_desc == ""){
             return false;
         }
+        if($this->id_fk_cabang == ""){
+            return false;
+        }
         if($this->warehouse_status == ""){
             return false;
         }
@@ -256,6 +269,9 @@ class m_warehouse extends ci_model{
         if($this->warehouse_desc == ""){
             return false;
         }
+        if($this->id_fk_cabang == ""){
+            return false;
+        }
         if($this->warehouse_last_modified == ""){
             return false;
         }
@@ -276,7 +292,7 @@ class m_warehouse extends ci_model{
         }
         return true;
     }
-    public function set_insert($warehouse_nama,$warehouse_alamat,$warehouse_notelp,$warehouse_desc,$warehouse_status){
+    public function set_insert($warehouse_nama,$warehouse_alamat,$warehouse_notelp,$warehouse_desc,$id_fk_cabang,$warehouse_status){
         if(!$this->set_warehouse_nama($warehouse_nama)){
             return false;
         }
@@ -289,12 +305,15 @@ class m_warehouse extends ci_model{
         if(!$this->set_warehouse_desc($warehouse_desc)){
             return false;
         }
+        if(!$this->set_id_fk_cabang($id_fk_cabang)){
+            return false;
+        }
         if(!$this->set_warehouse_status($warehouse_status)){
             return false;
         }
         return true;
     }
-    public function set_update($id_pk_warehouse,$warehouse_nama,$warehouse_alamat,$warehouse_notelp,$warehouse_desc){
+    public function set_update($id_pk_warehouse,$warehouse_nama,$warehouse_alamat,$warehouse_notelp,$warehouse_desc,$id_fk_cabang){
         if(!$this->set_id_pk_warehouse($id_pk_warehouse)){
             return false;
         }
@@ -308,6 +327,9 @@ class m_warehouse extends ci_model{
             return false;
         }
         if(!$this->set_warehouse_desc($warehouse_desc)){
+            return false;
+        }
+        if(!$this->set_id_fk_cabang($id_fk_cabang)){
             return false;
         }
         return true;
@@ -352,6 +374,13 @@ class m_warehouse extends ci_model{
         }
         return false;
     }
+    public function set_id_fk_cabang($id_fk_cabang){
+        if($id_fk_cabang != ""){
+            $this->id_fk_cabang = $id_fk_cabang;
+            return true;
+        }
+        return false;
+    }
     public function set_warehouse_status($warehouse_status){
         if($warehouse_status != ""){
             $this->warehouse_status = $warehouse_status;
@@ -376,6 +405,7 @@ class m_warehouse extends ci_model{
         $this->set_column("warehouse_alamat","alamat","required");
         $this->set_column("warehouse_notelp","no telpon","required");
         $this->set_column("warehouse_desc","deskripsi","required");
+        $this->set_column("id_fk_cabang","cabang","required");
         $this->set_column("warehouse_status","status","required");
         $this->set_column("warehouse_last_modified","last modified","required");
         return $this->columns;
