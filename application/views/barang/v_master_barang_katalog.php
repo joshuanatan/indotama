@@ -98,6 +98,7 @@ $data = array(
         refresh(1);
     });
     function refresh(req_page = 1) {
+        page = req_page;
         $.ajax({
             url: "<?php echo base_url();?>ws/barang/content?orderBy=0&orderDirection=ASC&page="+page+"&searchKey="+searchKey,
             type: "GET",
