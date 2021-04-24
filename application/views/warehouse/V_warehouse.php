@@ -82,28 +82,11 @@ $notif_data = array(
         <?php $this->load->view('req/mm_js.php');?>
     </body>
 </html>
-<script>
-    var ctrl = "warehouse";
-    var url_add = "";
-    var additional_button = [
-        {
-            style:'cursor:pointer;font-size:large',
-            class:'text-success md-store',
-            onclick:'redirect_brg_warehouse()'
-        },
-        {
-            style:'cursor:pointer;font-size:large',
-            class:'text-warning md-assignment-account',
-            onclick:'redirect_admin_cabang()'
-        }
-    ];
-</script>
 <?php 
 $data = array(
     "page_title" => "Warehouse"
 );
 ?>
-<?php $this->load->view("_core_script/table_func");?>
 <?php $this->load->view('warehouse/f-add-warehouse',$data);?>
 <?php $this->load->view('warehouse/f-update-warehouse',$data);?>
 <?php $this->load->view('warehouse/f-detail-warehouse',$data);?>
@@ -127,3 +110,93 @@ $data = array(
 </script>
 <?php $this->load->view('_notification/notif_general'); ?>
 <?php $this->load->view("req/core_script");?>
+
+<script>
+    var ctrl = "warehouse";
+    var contentCtrl = "content";
+    var tblHeaderCtrl = "columns";
+    var colCount = 8; //ragu either 1/0
+    var orderBy = 0;
+    var orderDirection = "ASC";
+    var searchKey = "";
+    var page = 1;
+    var url_add = "";
+
+    refresh();
+    function refresh(req_page = 1) {
+        page = req_page;
+        $.ajax({
+            url: "<?php echo base_url();?>ws/"+ctrl+"/"+contentCtrl+"?orderBy="+orderBy+"&orderDirection="+orderDirection+"&page="+page+"&searchKey="+searchKey+"&"+url_add,
+            type: "GET",
+            dataType: "JSON",
+            success: function(respond) {
+                if(respond["status"] == "SUCCESS"){
+                    content = respond["content"];
+                    var html = "";
+                    for(var a = 0; a<respond["content"].length; a++){
+                        var html_status = "";
+                        switch(respond["content"][a]["status"].toLowerCase()){
+                            case "aktif":
+                            html_status += `<td class = 'align-middle text-center'><span class="badge badge-success align-top" id = "orderDirection">${respond["content"][a]["status"].toUpperCase()}</span></td>`;
+                            break;
+                            case "konfirmasi":
+                            html_status += `<td class = 'align-middle text-center'><span class="badge badge-primary align-top" id = "orderDirection">${respond["content"][a]["status"].toUpperCase()}</span></td>`;
+                            break;
+                            case "selesai":
+                            html_status += `<td class = 'align-middle text-center'><span class="badge badge-primary align-top" id = "orderDirection">${respond["content"][a]["status"].toUpperCase()}</span></td>`;
+                            break;
+                            case "diterima":
+                            html_status += `<td class = 'align-middle text-center'><span class="badge badge-primary align-top" id = "orderDirection">${respond["content"][a]["status"].toUpperCase()}</span></td>`;
+                            break;
+                            default:
+                            html_status += `<td class = 'align-middle text-center'><span class="badge badge-danger align-top" id = "orderDirection">${respond["content"][a]["status"].toUpperCase()}</span></td>`;
+                            break;
+                        }
+                        html += `
+                            <tr>
+                                <td>${respond["content"][a]["nama"]}</td>
+                                <td>${respond["content"][a]["alamat"]}</td>
+                                <td>${respond["content"][a]["notelp"]}</td>
+                                <td>${respond["content"][a]["desc"]}</td>
+                                <td>${respond["content"][a]["nama_cabang"]}</td>
+                                ${html_status}
+                                <td>${respond["content"][a]["last_modified"]}</td>
+                                <td>
+                                    <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'detail_button text-success md-eye' data-target = '#detail_modal' onclick = 'load_detail_content(${a})'></i>
+                                    <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content(${a})'></i>  
+                                    <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'delete_button text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content(${a})'></i>
+
+                                    <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'delete_button text-success md-store' data-target = '#delete_modal' onclick = 'redirect_brg_warehouse(${a})'></i>
+                                    <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'delete_button text-warning md-assignment-account' data-target = '#delete_modal' onclick = 'redirect_admin_cabang(${a})'></i>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                }
+                else{
+                    html += "<tr>";
+                    html += "<td colspan = "+colCount+" class = 'align-middle text-center'>No Records Found</td>";
+                    html += "</tr>";
+                }
+                $("#content_container").html(html);
+                pagination(respond["page"]);
+            },
+            error: function(){
+                var html = "";
+                html += "<tr>";
+                html += "<td colspan = "+colCount+" class = 'align-middle text-center'>No Records Found</td>";
+                html += "</tr>";
+                
+                $("#content_container").html(html);
+                
+                html = "";
+                html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed"><</a></li>';
+                html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed">></a></li>';
+                $("#pagination_container").html(html);
+            }
+        });
+    }
+    
+</script>
+
+<?php $this->load->view("_core_script/core");?>

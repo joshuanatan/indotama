@@ -32,6 +32,7 @@
                         <h5>Deskripsi</h5>
                         <input type="text" class="form-control" name="warehouse_desc" id = "warehouse_desc_edit" required>
                     </div>
+
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
                         <button type = "button" onclick = "update_func();" class = "btn btn-sm btn-primary">Submit</button>

@@ -114,6 +114,7 @@ class m_warehouse extends ci_model{
         if($search_key != ""){
             $search_query .= "and
             ( 
+                cabang_nama like '%".$search_key."%' or 
                 warehouse_nama like '%".$search_key."%' or 
                 warehouse_alamat like '%".$search_key."%' or 
                 warehouse_notelp like '%".$search_key."%' or 
@@ -124,9 +125,8 @@ class m_warehouse extends ci_model{
             )";
         }
         $query = "
-        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,id_fk_cabang,warehouse_status,warehouse_last_modified
-        from ".$this->tbl_name." 
-        where warehouse_status = ? ".$search_query."  
+        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,id_fk_cabang,warehouse_status,warehouse_last_modified, cabang_nama
+        from ".$this->tbl_name." LEFT join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_warehouse.id_fk_cabang where warehouse_status = ? ".$search_query."  
         order by ".$order_by." ".$order_direction." 
         limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
@@ -196,7 +196,6 @@ class m_warehouse extends ci_model{
                 "warehouse_alamat" => $this->warehouse_alamat,
                 "warehouse_notelp" => $this->warehouse_notelp,
                 "warehouse_desc" => $this->warehouse_desc,
-                "id_fk_cabang" => $this->id_fk_cabang,
                 "warehouse_last_modified" => $this->warehouse_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
@@ -269,9 +268,6 @@ class m_warehouse extends ci_model{
         if($this->warehouse_desc == ""){
             return false;
         }
-        if($this->id_fk_cabang == ""){
-            return false;
-        }
         if($this->warehouse_last_modified == ""){
             return false;
         }
@@ -313,7 +309,7 @@ class m_warehouse extends ci_model{
         }
         return true;
     }
-    public function set_update($id_pk_warehouse,$warehouse_nama,$warehouse_alamat,$warehouse_notelp,$warehouse_desc,$id_fk_cabang){
+    public function set_update($id_pk_warehouse,$warehouse_nama,$warehouse_alamat,$warehouse_notelp,$warehouse_desc){
         if(!$this->set_id_pk_warehouse($id_pk_warehouse)){
             return false;
         }
@@ -327,9 +323,6 @@ class m_warehouse extends ci_model{
             return false;
         }
         if(!$this->set_warehouse_desc($warehouse_desc)){
-            return false;
-        }
-        if(!$this->set_id_fk_cabang($id_fk_cabang)){
             return false;
         }
         return true;

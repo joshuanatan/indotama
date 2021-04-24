@@ -30,16 +30,23 @@ class Warehouse extends CI_Controller{
         
         $this->load->model("m_warehouse");
         $result = $this->m_warehouse->content($page,$order_by,$order_direction,$search_key,$data_per_page);
-
         if($result["data"]->num_rows() > 0){
             $result["data"] = $result["data"]->result_array();
             for($a = 0; $a<count($result["data"]); $a++){
                 $response["content"][$a]["id"] = $result["data"][$a]["id_pk_warehouse"];
                 $response["content"][$a]["nama"] = $result["data"][$a]["warehouse_nama"];
+                $nama_cabang="";
+                if($result["data"][$a]["cabang_nama"]==""){
+                    $nama_cabang="-not registered-";
+                    $response["content"][$a]["nama_cabang"] = $nama_cabang;
+                }
+                else{
+                    $nama_cabang=$result["data"][$a]["cabang_nama"];
+                    $response["content"][$a]["nama_cabang"] = $nama_cabang;
+                }
                 $response["content"][$a]["alamat"] = $result["data"][$a]["warehouse_alamat"];
                 $response["content"][$a]["notelp"] = $result["data"][$a]["warehouse_notelp"];
                 $response["content"][$a]["desc"] = $result["data"][$a]["warehouse_desc"];
-                $response["content"][$a]["cabang"] = $result["data"][$a]["id_fk_cabang"];
                 $response["content"][$a]["status"] = $result["data"][$a]["warehouse_status"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["warehouse_last_modified"];
             }
@@ -53,7 +60,7 @@ class Warehouse extends CI_Controller{
             "alamat",
             "notelp",
             "desc",
-            "cabang",
+            "nama_cabang",
             "status",
             "last_modified"
         );
@@ -71,8 +78,9 @@ class Warehouse extends CI_Controller{
             $warehouse_alamat = $this->input->post("warehouse_alamat");
             $warehouse_notelp = $this->input->post("warehouse_notelp");
             $warehouse_desc = $this->input->post("warehouse_desc");
+            $id_fk_cabang = "-1";
             $warehouse_status = "AKTIF";
-            if($this->m_warehouse->set_insert($warehouse_nama,$warehouse_alamat,$warehouse_notelp,$warehouse_desc,$warehouse_status)){
+            if($this->m_warehouse->set_insert($warehouse_nama,$warehouse_alamat,$warehouse_notelp,$warehouse_desc,$id_fk_cabang,$warehouse_status)){
                 if($this->m_warehouse->insert()){
                     $response["msg"] = "Data is recorded to database";
                 }
