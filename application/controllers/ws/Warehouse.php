@@ -18,6 +18,20 @@ class Warehouse extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function columns_warehouse_cabang(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_warehouse");
+        $colums_warehouse_cabang = $this->m_warehouse->columns_warehouse_cabang();
+        if(count($colums_warehouse_cabang) > 0){
+            for($a = 0; $a<count($colums_warehouse_cabang); $a++){
+                $response["content"][$a]["col_name"] = $colums_warehouse_cabang[$a]["col_disp"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+        }
+        echo json_encode($response);
+    }
     public function content(){
         $response["status"] = "SUCCESS";
         $response["content"] = array();
@@ -66,6 +80,48 @@ class Warehouse extends CI_Controller{
         );
         echo json_encode($response);
     }
+
+    public function content_warehouse_cabang(){
+        $response["status"] = "SUCCESS";
+        $response["content"] = array();
+
+        $order_by = $this->input->get("orderBy");
+        $order_direction = $this->input->get("orderDirection");
+        $page = $this->input->get("page");
+        $search_key = $this->input->get("searchKey");
+        $data_per_page = 20;
+        $id_cabang = $this->input->get("id_cabang");
+        
+        $this->load->model("m_warehouse");
+        $result = $this->m_warehouse->content_warehouse_cabang($page,$order_by,$order_direction,$search_key,$data_per_page,$id_cabang);
+        if($result["data"]->num_rows() > 0){
+            $result["data"] = $result["data"]->result_array();
+            for($a = 0; $a<count($result["data"]); $a++){
+                $response["content"][$a]["id"] = $result["data"][$a]["id_pk_warehouse"];
+                $response["content"][$a]["nama"] = $result["data"][$a]["warehouse_nama"];
+                $response["content"][$a]["alamat"] = $result["data"][$a]["warehouse_alamat"];
+                $response["content"][$a]["notelp"] = $result["data"][$a]["warehouse_notelp"];
+                $response["content"][$a]["nama_cabang"] = $result["data"][$a]["cabang_nama"];
+                $response["content"][$a]["desc"] = $result["data"][$a]["warehouse_desc"];
+                $response["content"][$a]["status"] = $result["data"][$a]["warehouse_status"];
+                $response["content"][$a]["last_modified"] = $result["data"][$a]["warehouse_last_modified"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+        }
+        $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
+        $response["key"] = array(
+            "nama",
+            "alamat",
+            "notelp",
+            "desc",
+            "status",
+            "last_modified"
+        );
+        echo json_encode($response);
+    }
+
     public function register(){
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("warehouse_nama","Nama Warehouse","required");
@@ -78,9 +134,37 @@ class Warehouse extends CI_Controller{
             $warehouse_alamat = $this->input->post("warehouse_alamat");
             $warehouse_notelp = $this->input->post("warehouse_notelp");
             $warehouse_desc = $this->input->post("warehouse_desc");
-            $id_fk_cabang = "-1";
+            if($this->input->post("warehouse_cabang") != ""){
+                $nama_cabang = $this->input->post("warehouse_cabang");
+                $where = array(
+                    "cabang_nama"=>$nama_cabang
+                );
+                if(isExistsInTable("mstr_cabang",$where)){
+                    $id_cabang = get1Value("mstr_cabang","id_pk_cabang",$where);
+                }else{
+                    $dataa = array(
+                        "cabang_nama"=>$nama_cabang,
+                        "cabang_kode"=>"-",
+                        "cabang_daerah"=>"-",
+                        "cabang_kop_surat"=>"-",
+                        "cabang_nonpkp"=>"-",
+                        "cabang_pernyataan_rek"=>"-",
+                        "cabang_notelp"=>"-",
+                        "cabang_alamat"=>"-",
+                        "cabang_status"=>"-",
+                        "cabang_create_date"=>date("Y-m-d h:i:s"),
+                        "cabang_last_modified"=>date("Y-m-d h:i:s"),
+                        "id_create_data"=>$this->session->id_user,
+                        "id_last_modified"=>$this->session->id_user,
+                        "id_fk_toko"=>0
+                    );
+                    $id_cabang = insertRow("mstr_cabang",$dataa);
+                }
+            }else{
+                $id_cabang = "-1";
+            }
             $warehouse_status = "AKTIF";
-            if($this->m_warehouse->set_insert($warehouse_nama,$warehouse_alamat,$warehouse_notelp,$warehouse_desc,$id_fk_cabang,$warehouse_status)){
+            if($this->m_warehouse->set_insert($warehouse_nama,$warehouse_alamat,$warehouse_notelp,$warehouse_desc,$id_cabang,$warehouse_status)){
                 if($this->m_warehouse->insert()){
                     $response["msg"] = "Data is recorded to database";
                 }
@@ -114,7 +198,41 @@ class Warehouse extends CI_Controller{
             $warehouse_alamat = $this->input->post("warehouse_alamat");
             $warehouse_notelp = $this->input->post("warehouse_notelp");
             $warehouse_desc = $this->input->post("warehouse_desc");
-            if($this->m_warehouse->set_update($id_pk_warehouse,$warehouse_nama,$warehouse_alamat,$warehouse_notelp,$warehouse_desc)){
+
+
+            if($this->input->post("warehouse_cabang") != ""){
+                $nama_cabang = $this->input->post("warehouse_cabang");
+                $where = array(
+                    "cabang_nama"=>$nama_cabang
+                );
+                if(isExistsInTable("mstr_cabang",$where)){
+                    $id_cabang = get1Value("mstr_cabang","id_pk_cabang",$where);
+                }else{
+                    $dataa = array(
+                        "cabang_nama"=>$nama_cabang,
+                        "cabang_kode"=>"-",
+                        "cabang_daerah"=>"-",
+                        "cabang_kop_surat"=>"-",
+                        "cabang_nonpkp"=>"-",
+                        "cabang_pernyataan_rek"=>"-",
+                        "cabang_notelp"=>"-",
+                        "cabang_alamat"=>"-",
+                        "cabang_status"=>"-",
+                        "cabang_create_date"=>date("Y-m-d h:i:s"),
+                        "cabang_last_modified"=>date("Y-m-d h:i:s"),
+                        "id_create_data"=>$this->session->id_user,
+                        "id_last_modified"=>$this->session->id_user,
+                        "id_fk_toko"=>0
+                    );
+                    $id_cabang = insertRow("mstr_cabang",$dataa);
+                }
+            }else{
+                $id_cabang = "-1";
+            }
+
+
+
+            if($this->m_warehouse->set_update($id_pk_warehouse,$warehouse_nama,$warehouse_alamat,$warehouse_notelp,$warehouse_desc,$id_cabang)){
                 if($this->m_warehouse->update()){
                     $response["msg"] = "Data is updated to database";
                 }

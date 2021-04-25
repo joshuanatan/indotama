@@ -443,4 +443,35 @@ class Cabang extends CI_Controller{
         array_push($response["content"],$array);
         echo json_encode($response);
     }
+
+    public function list_cabang(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_cabang");
+        $result = $this->m_cabang->list_all_cabang();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_cabang"];
+                $response["content"][$a]["name"] = $result[$a]["cabang_nama"];
+                $response["content"][$a]["kode"] = $result[$a]["cabang_kode"];
+                $response["content"][$a]["daerah"] = $result[$a]["cabang_daerah"];
+                $response["content"][$a]["kopsurat"] = $result[$a]["cabang_kop_surat"];
+                $response["content"][$a]["nonpkp"] = $result[$a]["cabang_nonpkp"];
+                $response["content"][$a]["pernyataanrek"] = $result[$a]["cabang_pernyataan_rek"];
+                $response["content"][$a]["telp"] = $result[$a]["cabang_notelp"];
+                $response["content"][$a]["alamat"] = $result[$a]["cabang_alamat"];
+                $response["content"][$a]["status"] = $result[$a]["cabang_status"];
+                $response["content"][$a]["createdate"] = $result[$a]["cabang_create_date"];
+                $response["content"][$a]["lastmodified"] = $result[$a]["cabang_last_modified"];
+                $response["content"][$a]["idcreated"] = $result[$a]["id_create_data"];
+                $response["content"][$a]["idlastmodified"] = $result[$a]["id_last_modified"];
+                $response["content"][$a]["idtoko"] = $result[$a]["id_fk_toko"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "No Customer List";
+        }
+        echo json_encode($response);
+    }
 }

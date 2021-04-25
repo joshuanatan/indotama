@@ -4,6 +4,7 @@ date_default_timezone_set("asia/jakarta");
 class m_warehouse extends ci_model{
     private $tbl_name = "mstr_warehouse";
     private $columns = array();
+    private $columns_warehouse_cabang = array();
     private $id_pk_warehouse;
     private $warehouse_nama;
     private $warehouse_alamat;
@@ -25,6 +26,16 @@ class m_warehouse extends ci_model{
         $this->set_column("id_fk_cabang","cabang","required");
         $this->set_column("warehouse_status","status","required");
         $this->set_column("warehouse_last_modified","last modified","required");
+
+        $this->set_column_warehouse_cabang("warehouse_nama","nama warehouse","required");
+        $this->set_column_warehouse_cabang("warehouse_alamat","alamat","required");
+        $this->set_column_warehouse_cabang("warehouse_notelp","no telpon","required");
+        $this->set_column_warehouse_cabang("warehouse_desc","deskripsi","required");
+        $this->set_column_warehouse_cabang("warehouse_status","status","required");
+        $this->set_column_warehouse_cabang("warehouse_last_modified","last modified","required");
+
+
+
         $this->warehouse_create_date = date("y-m-d h:i:s");
         $this->warehouse_last_modified = date("y-m-d h:i:s");
         $this->id_create_data = $this->session->id_user;
@@ -38,8 +49,20 @@ class m_warehouse extends ci_model{
         );
         $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
     }
+
+    private function set_column_warehouse_cabang($col_name,$col_disp,$order_by){
+        $array = array(
+            "col_name" => $col_name,
+            "col_disp" => $col_disp,
+            "order_by" => $order_by
+        );
+        $this->columns_warehouse_cabang[count($this->columns_warehouse_cabang)] = $array; //terpaksa karena array merge gabisa.
+    }
     public function columns(){
         return $this->columns;
+    }
+    public function columns_warehouse_cabang(){
+        return $this->columns_warehouse_cabang;
     }
     public function install(){
         $sql = "
@@ -142,6 +165,41 @@ class m_warehouse extends ci_model{
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
+    public function content_warehouse_cabang($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = "",$id_cabang){
+        $order_by = $this->columns[$order_by]["col_name"];
+        $search_query = "";
+        if($search_key != ""){
+            $search_query .= "and
+            (  
+                warehouse_nama like '%".$search_key."%' or 
+                warehouse_alamat like '%".$search_key."%' or 
+                warehouse_notelp like '%".$search_key."%' or 
+                warehouse_desc like '%".$search_key."%' or 
+                warehouse_status like '%".$search_key."%' or 
+                warehouse_last_modified like '%".$search_key."%'
+            )";
+        }
+        $query = "
+        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,id_fk_cabang,warehouse_status,warehouse_last_modified, cabang_nama
+        from ".$this->tbl_name." LEFT join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_warehouse.id_fk_cabang where id_fk_cabang= ? and warehouse_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction." 
+        limit 20 offset ".($page-1)*$data_per_page;
+        $args = array(
+            $id_cabang,"aktif"
+        );
+        $result["data"] = executequery($query,$args);
+        
+        $query = "
+        select id_pk_warehouse
+        from ".$this->tbl_name." 
+        where warehouse_status = ? ".$search_query." 
+        order by ".$order_by." ".$order_direction;
+        $args = array(
+            "aktif"
+        );
+        $result["total_data"] = executequery($query,$args)->num_rows();
+        return $result;
+    }
     public function list_warehouse(){
         $query = "
         select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,id_fk_cabang,warehouse_status,warehouse_last_modified
@@ -196,6 +254,7 @@ class m_warehouse extends ci_model{
                 "warehouse_alamat" => $this->warehouse_alamat,
                 "warehouse_notelp" => $this->warehouse_notelp,
                 "warehouse_desc" => $this->warehouse_desc,
+                "id_fk_cabang" => $this->id_fk_cabang,
                 "warehouse_last_modified" => $this->warehouse_last_modified,
                 "id_last_modified" => $this->id_last_modified
             );
@@ -309,7 +368,7 @@ class m_warehouse extends ci_model{
         }
         return true;
     }
-    public function set_update($id_pk_warehouse,$warehouse_nama,$warehouse_alamat,$warehouse_notelp,$warehouse_desc){
+    public function set_update($id_pk_warehouse,$warehouse_nama,$warehouse_alamat,$warehouse_notelp,$warehouse_desc,$id_fk_cabang){
         if(!$this->set_id_pk_warehouse($id_pk_warehouse)){
             return false;
         }
@@ -323,6 +382,9 @@ class m_warehouse extends ci_model{
             return false;
         }
         if(!$this->set_warehouse_desc($warehouse_desc)){
+            return false;
+        }
+        if(!$this->set_id_fk_cabang($id_fk_cabang)){
             return false;
         }
         return true;

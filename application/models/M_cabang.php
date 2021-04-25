@@ -534,4 +534,29 @@ class M_cabang extends ci_model{
         $this->set_column("toko_status","status toko",false);
         return $this->columns;
     }
+
+    public function list_all_cabang(){
+        $query = "
+        select id_pk_cabang,
+        cabang_nama,
+        cabang_kode,
+        cabang_daerah,
+        cabang_kop_surat,
+        cabang_nonpkp,
+        cabang_pernyataan_rek,
+        cabang_notelp,
+        cabang_alamat,
+        cabang_status,
+        cabang_create_date,
+        cabang_last_modified,
+        id_create_data,
+        id_last_modified,
+        id_fk_toko
+        from ".$this->tbl_name." 
+        where cabang_status = ? ";
+        $args = array(
+            "aktif"
+        );
+        return executeQuery($query,$args);
+    }
 }

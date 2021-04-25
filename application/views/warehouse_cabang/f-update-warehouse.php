@@ -32,11 +32,7 @@
                         <h5>Deskripsi</h5>
                         <input type="text" class="form-control" name="warehouse_desc" id = "warehouse_desc_edit" required>
                     </div>
-
-                    <div class = "form-group col-lg-6">
-                        <h5>Cabang</h5>
-                        <input type="text" list="datalist_cabang" class="form-control" name="warehouse_cabang" id = "warehouse_nama_cabang" required>
-                    </div>
+                    <input type="hidden" class="form-control" name="warehouse_cabang" value="<?php echo $cabang[0]['id_pk_cabang'] ?>" required>
 
                     <div class = "form-group col-lg-12">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>

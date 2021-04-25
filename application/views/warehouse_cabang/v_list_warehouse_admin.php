@@ -1,7 +1,7 @@
 <?php
-$page_title = "Barang Gudang";
+$page_title = "Warehouse";
 $breadcrumb = array(
-    "Master","Nama Gudang: <b>".$warehouse[0]["warehouse_nama"]."</b>","Stok"
+    "Warehouse"
 );
 $notif_data = array(
     "page_title"=>$page_title
@@ -32,7 +32,7 @@ $notif_data = array(
                             <div class="panel panel-default card-view">
                                 <div class="panel-heading bg-gradient">
                                     <div class="pull-left">
-                                        <h6 class="panel-title txt-light"><?php echo ucwords($page_title);?> <?php echo $warehouse[0]["warehouse_nama"];?></h6>
+                                        <h6 class="panel-title txt-light"><?php echo ucwords($page_title);?></h6>
                                     </div>
                                     <div class="clearfix"></div>
                                     <ol class="breadcrumb">
@@ -49,15 +49,8 @@ $notif_data = array(
                                 <div class="panel-wrapper collapse in">
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
-                                            <div class = "d-block">
-                                            
-                                                <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#register_modal" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
-                                            </div>
-                                            <br/>
-                                            <br/>
                                             <div class = "align-middle text-center d-block">
-                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
-                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "md-wrench"></i><b> - Aktivasi Gudang untuk Manajemen </b>   
                                             </div>
                                             <br/>
                                             <?php $this->load->view("_base_element/table");?>
@@ -75,28 +68,31 @@ $notif_data = array(
     </body>
 </html>
 <script>
-    var ctrl = "barang_warehouse";
-    var url_add = "id_warehouse=<?php echo $warehouse[0]["id_pk_warehouse"];?>";
-    //var unautorized_button = ["detail_button"];
+    var ctrl = "warehouse";
+    var url_add = "";
+    var custom_contentCtrl = "list_gudang_admin";
+    var unautorized_button = ["edit_button","delete_button","detail_button"];
+    var additional_button = [
+        {
+            class:"md-wrench",
+            style:"cursor:pointer",
+            onclick:"activate_warehouse_manajemen()"
+        }
+    ];
 </script>
-
-<?php
+<?php 
 $data = array(
-    "page_title" => "Daftar Barang Warehouse",
-    "warehouse" => $warehouse
+    "page_title" => "Warehouse"
 );
 ?>
 <?php $this->load->view("_core_script/table_func");?>
-<?php $this->load->view("brg_warehouse/f-add-brg_warehouse",$data);?>
-<?php $this->load->view("brg_warehouse/f-update-brg_warehouse",$data);?>
-<?php $this->load->view("brg_warehouse/f-delete-brg_warehouse",$data);?>
-<?php $this->load->view("brg_warehouse/f-detail-brg_warehouse",$data);?>
-
-<?php $this->load->view("_base_element/datalist_barang");?>
 <script>
-    function load_datalist(){
-        load_datalist_barang();
+    function activate_warehouse_manajemen(){
+        $('body table').find('tr').click( function(){
+            var row = $(this).index();
+            var id_warehouse = content[row]["id"];
+            window.location.replace("<?php echo base_url();?>warehouse/activate_warehouse_manajemen/"+id_warehouse);
+        });
     }
 </script>
 <?php $this->load->view('_notification/notif_general'); ?>
-<?php $this->load->view("req/core_script");?>

@@ -25,10 +25,6 @@
                         <h5>Deskripsi</h5>
                         <input type="text" class="form-control" name="warehouse_desc" readonly id = "d_warehouse_desc_edit" required>
                     </div>
-                    <div class = "form-group col-lg-6">
-                        <h5>Cabang</h5>
-                        <input type="text" class="form-control" name="warehouse_cabang" readonly id = "d_warehouse_nama_cabang" required>
-                    </div>
                     
                     <div class="clearfix"></div>
                     <div class = "form-group col-lg-12">

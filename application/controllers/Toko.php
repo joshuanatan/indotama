@@ -111,7 +111,28 @@ class Toko extends CI_Controller {
 	}
 
 	public function warehouse($id_cabang_page =""){
+		if($id_cabang_page == ""){
+			$id_cabang_page = $this->session->id_cabang;
+		}
+		$data["id_cabang_page"] = $id_cabang_page;
+
+		$this->load->model("m_cabang");
+		$this->m_cabang->set_id_pk_cabang($id_cabang_page);
+		$result = $this->m_cabang->detail_by_id();
+		$data["cabang"] = $result->result_array();
 		
+		/*$this->load->model("m_toko");
+		$this->m_toko->set_id_pk_toko($data["cabang"][0]["id_fk_toko"]);
+		$result = $this->m_toko->detail_by_id();
+		$data["toko"] = $result->result_array();*/
+
+		$this->load->model("m_warehouse");
+		$this->m_warehouse->set_id_fk_cabang($id_cabang_page);
+		$result = $this->m_warehouse->detail_by_id();
+		$data["warehouse"] = $result->result_array();
+
+		
+		$this->load->view('warehouse_cabang/v_warehouse_cabang',$data);
 	}
 
 	public function brg_cabang_toko($id_cabang_page = ""){

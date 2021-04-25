@@ -32,7 +32,7 @@ $notif_data = array(
                             <div class="panel panel-default card-view">
                                 <div class="panel-heading bg-gradient">
                                     <div class="pull-left">
-                                        <h6 class="panel-title txt-light"><?php echo ucwords($page_title);?></h6>
+                                        <h6 class="panel-title txt-light"><?php echo ucwords($page_title);?> - Cabang "<?= $cabang[0]['cabang_nama']?>"</h6>
                                     </div>
                                     <div class="clearfix"></div>
                                     <ol class="breadcrumb">
@@ -87,24 +87,24 @@ $data = array(
     "page_title" => "Warehouse"
 );
 ?>
-<?php $this->load->view('warehouse/f-add-warehouse',$data);?>
-<?php $this->load->view('warehouse/f-update-warehouse',$data);?>
-<?php $this->load->view('warehouse/f-detail-warehouse',$data);?>
-<?php $this->load->view('warehouse/f-delete-warehouse',$data);?>
+<?php $this->load->view('warehouse_cabang/f-add-warehouse',$data);?>
+<?php $this->load->view('warehouse_cabang/f-update-warehouse',$data);?>
+<?php $this->load->view('warehouse_cabang/f-detail-warehouse',$data);?>
+<?php $this->load->view('warehouse_cabang/f-delete-warehouse',$data);?>
 
 <script>
     function redirect_brg_warehouse(){
         $('table').find('tr').click( function(){
             var row = $(this).index();
             var id_warehouse = content[row]["id"];
-            window.location.replace("<?php echo base_url();?>warehouse/brg_warehouse/"+id_warehouse);
+            window.location.href = "<?php echo base_url();?>warehouse/brg_warehouse/"+id_warehouse;
         });
     }
     function redirect_admin_cabang(){
         $('body table').find('tr').click( function(){
             var row = $(this).index();
             var id_cabang = content[row]["id"];
-            window.location.replace("<?php echo base_url();?>warehouse/admin/"+id_cabang);
+            window.location.href= "<?php echo base_url();?>warehouse/admin/"+id_cabang;
         });
     }
 </script>
@@ -114,15 +114,18 @@ $data = array(
 
 <script>
     load_datalist_cabang_all();
+
+
+
     var ctrl = "warehouse";
-    var contentCtrl = "content";
-    var tblHeaderCtrl = "columns";
-    var colCount = 8; //ragu either 1/0
+    var contentCtrl = "content_warehouse_cabang";
+    var tblHeaderCtrl = "columns_warehouse_cabang";
+    var colCount = 6; //ragu either 1/0
     var orderBy = 0;
     var orderDirection = "ASC";
     var searchKey = "";
     var page = 1;
-    var url_add = "";
+    var url_add = "id_cabang=<?php echo $cabang[0]["id_pk_cabang"];?>";
 
     refresh();
     function refresh(req_page = 1) {
@@ -160,7 +163,6 @@ $data = array(
                                 <td>${respond["content"][a]["alamat"]}</td>
                                 <td>${respond["content"][a]["notelp"]}</td>
                                 <td>${respond["content"][a]["desc"]}</td>
-                                <td>${respond["content"][a]["nama_cabang"]}</td>
                                 ${html_status}
                                 <td>${respond["content"][a]["last_modified"]}</td>
                                 <td>

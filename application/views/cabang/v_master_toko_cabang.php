@@ -58,6 +58,7 @@ $notif_data = array(
                                             <div class = "align-middle text-center d-block">
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-store"></i><b> - Gudang </b> 
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-success md-store"></i><b> - Stok Cabang </b>   
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-warning md-assignment-account"></i><b> - Admin Cabang</b>
                                             </div>
@@ -83,6 +84,11 @@ $notif_data = array(
     var additional_button = [
         {
             style:'cursor:pointer;font-size:large',
+            class:'text-primary md-store',
+            onclick:'redirect_warehouse()'
+        },
+        {
+            style:'cursor:pointer;font-size:large',
             class:'text-success md-store',
             onclick:'open_list_barang()'
         },
@@ -105,14 +111,6 @@ $data = array(
 <?php $this->load->view("cabang/f-delete-cabang",$data);?>
 
 <script>
-    var additional_button = [
-        {
-            style:'cursor:pointer;font-size:large',
-            class:'text-primary md-store',
-            onclick:'redirect_warehouse()'
-        }
-    ];
-
     function redirect_warehouse(){
         $('body table').find('tr').click( function(){
             var row = $(this).index();
