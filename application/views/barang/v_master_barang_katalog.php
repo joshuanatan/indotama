@@ -132,8 +132,16 @@ $data = array(
                                                                     <td>${content[a]["nama"]}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th>Harga</th>
+                                                                    <th>Harga Satuan</th>
                                                                     <td>${content[a]["harga"]}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Harga Toko</th>
+                                                                    <td>${content[a]["harga_toko"]}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Harga Grosir</th>
+                                                                    <td>${content[a]["harga_grosir"]}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th>Jenis Barang</th>

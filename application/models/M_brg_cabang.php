@@ -165,12 +165,12 @@ class M_brg_cabang extends ci_model{
             )";
         }
         $query = "
-        select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_last_price,brg_cabang_notes,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_jenis_nama,brg_merk_nama,brg_tipe
+        select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_last_price,brg_cabang_notes,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_harga_toko,brg_harga_grosir,brg_jenis_nama,brg_merk_nama,brg_tipe
         from ".$this->tbl_name." 
         inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_brg
         inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = mstr_barang.id_fk_brg_jenis
         inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = mstr_barang.id_fk_brg_merk
-        where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ? and brg_jenis_status = ? and brg_merk_status = ? ".$search_query."  
+        where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ? and brg_jenis_status = ? and brg_merk_status = ? and id_pk_brg_jenis !=0 ".$search_query."  
         order by ".$order_by." ".$order_direction." 
         limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
@@ -184,7 +184,7 @@ class M_brg_cabang extends ci_model{
         inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_brg
         inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = mstr_barang.id_fk_brg_jenis
         inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = mstr_barang.id_fk_brg_merk
-        where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ? and brg_jenis_status = ? and brg_merk_status = ?".$search_query."  
+        where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ? and brg_jenis_status = ? and brg_merk_status = ? and id_pk_brg_jenis !=0 ".$search_query."  
         order by ".$order_by." ".$order_direction;
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
@@ -206,6 +206,20 @@ class M_brg_cabang extends ci_model{
         inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = mstr_barang.id_fk_brg_jenis
         inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = mstr_barang.id_fk_brg_merk
         where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ? and brg_jenis_status = ? and brg_merk_status = ?";
+        $args = array(
+            "aktif","aktif",$this->id_fk_cabang,"aktif","aktif"
+        );
+        return executeQuery($sql,$args);
+    }
+    public function list_data_jualan(){
+        $this->stock_adjustment();
+        $sql = "
+        select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_notes,brg_cabang_last_price,brg_harga_toko, brg_harga_grosir,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_tipe,brg_merk_nama,brg_jenis_nama
+        from ".$this->tbl_name." 
+        inner join mstr_barang on mstr_barang.id_pk_brg = ".$this->tbl_name.".id_fk_brg
+        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = mstr_barang.id_fk_brg_jenis
+        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = mstr_barang.id_fk_brg_merk
+        where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ? and brg_jenis_status = ? and brg_merk_status = ? and id_pk_brg_jenis != 0 ";
         $args = array(
             "aktif","aktif",$this->id_fk_cabang,"aktif","aktif"
         );

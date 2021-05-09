@@ -134,7 +134,9 @@ $notif_data = array(
                                                             <th>Jumlah</th>
                                                             <?php endif;?>
                                                             <th>Jumlah</th>
+                                                            <th>Harga Satuan</th>
                                                             <th>Harga Toko</th>
+                                                            <th>Harga Grosir</th>
                                                             <th>Harga Jual</th>
                                                             <th>Harga Final</th>
                                                             <th>Notes</th>
@@ -221,7 +223,7 @@ $notif_data = array(
         <tr class = 'add_brg_jual_row'>
             <td id = 'row${brg_jual_row}'>
                 <input name = 'check[]' value = ${brg_jual_row} type = 'hidden'>
-                <input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${brg_jual_row})' id = 'brg${brg_jual_row}' name = 'brg${brg_jual_row}' class = 'form-control'>
+                <input type = 'text' list = 'datalist_barang_cabang_jualan' onchange = 'load_harga_barang(${brg_jual_row})' id = 'brg${brg_jual_row}' name = 'brg${brg_jual_row}' class = 'form-control'>
                 <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm col-lg-12' target = '_blank'>Tambah Barang Cabang</a>
             </td>
             <td>
@@ -232,6 +234,12 @@ $notif_data = array(
             </td>
             <td>
                 <input type = 'text' readonly id = 'harga_barang_jual${brg_jual_row}' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input type = 'text' readonly id = 'harga_barang_toko${brg_jual_row}' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input type = 'text' readonly id = 'harga_barang_grosir${brg_jual_row}' class = 'form-control nf-input'>
             </td>
             <td>
                 <input type = 'text' name = 'brg_price${brg_jual_row}' class = 'form-control nf-input'>
@@ -251,7 +259,7 @@ $notif_data = array(
         <tr class = 'add_brg_jual_row'>
             <td id = 'row${brg_jual_row}'>
                 <input name = 'check[]' value = ${brg_jual_row} type = 'hidden'>
-                <input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${brg_jual_row})' id = 'brg${brg_jual_row}' name = 'brg${brg_jual_row}' class = 'form-control'>
+                <input type = 'text' list = 'datalist_barang_cabang_jualan' onchange = 'load_harga_barang(${brg_jual_row})' id = 'brg${brg_jual_row}' name = 'brg${brg_jual_row}' class = 'form-control'>
                 <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm col-lg-12' target = '_blank'>Tambah Barang Cabang</a>
             </td>
             <input name = 'brg_qty_real${brg_jual_row}' type = 'hidden' value = "0" class = 'form-control nf-input'>
@@ -260,6 +268,12 @@ $notif_data = array(
             </td>
             <td>
                 <input type = 'text' readonly id = 'harga_barang_jual${brg_jual_row}' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input type = 'text' readonly id = 'harga_barang_toko${brg_jual_row}' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input type = 'text' readonly id = 'harga_barang_grosir${brg_jual_row}' class = 'form-control nf-input'>
             </td>
             <td>
                 <input type = 'text' name = 'brg_price${brg_jual_row}' class = 'form-control nf-input'>
@@ -346,11 +360,11 @@ $notif_data = array(
         <tr class = 'add_custom_produk_row'>
             <td>
                 <input name = 'custom[]' value = ${custom_produk_row} type = 'hidden'>
-                <input name = 'custom_brg_awal${custom_produk_row}' list = 'datalist_barang_cabang' type = 'text' class = 'form-control'>
+                <input name = 'custom_brg_awal${custom_produk_row}' list = 'datalist_barang_cabang_jualan' type = 'text' class = 'form-control'>
                 <a href = '<?php echo base_url();?>toko/brg_cabang' class = 'btn btn-primary btn-sm' target = '_blank'>Tambah Barang Cabang</a>
             </td>
             <td>
-                <input name = 'custom_brg_akhir${custom_produk_row}' list = 'datalist_barang_cabang' type = 'text' class = 'form-control'>
+                <input name = 'custom_brg_akhir${custom_produk_row}' list = 'datalist_barang_cabang_jualan' type = 'text' class = 'form-control'>
             </td>
             <td>
                 <input name = 'custom_brg_qty${custom_produk_row}' type = 'text' class = 'form-control nf-input'>
@@ -365,8 +379,12 @@ $notif_data = array(
     }
     function load_harga_barang(row){
         var nama_barang = $("#brg"+row).val();
-        var hrg_brg_dsr = $("#datalist_barang_cabang option[value='"+nama_barang+"']").attr("data-baseprice");
+        var hrg_brg_dsr = $("#datalist_barang_cabang_jualan option[value='"+nama_barang+"']").attr("data-baseprice");
+        var hrg_brgtoko = $("#datalist_barang_cabang_jualan option[value='"+nama_barang+"']").attr("data-hargatoko");
+        var hrg_brggrosir = $("#datalist_barang_cabang_jualan option[value='"+nama_barang+"']").attr("data-hargagrosir");
         $("#harga_barang_jual"+row).val(hrg_brg_dsr);
+        $("#harga_barang_toko"+row).val(hrg_brgtoko);
+        $("#harga_barang_grosir"+row).val(hrg_brggrosir);
     }
     function count_total_price(){
         var total = 0;
@@ -428,13 +446,13 @@ $notif_data = array(
     }
 </script>
 <?php $this->load->view("_base_element/datalist_customer");?>
-<?php $this->load->view("_base_element/datalist_barang_cabang");?>
+<?php $this->load->view("_base_element/datalist_barang_cabang_jualan");?>
 <?php $this->load->view("_base_element/datalist_marketplace");?>
 <script>
     load_datalist();
     function load_datalist(){
         load_datalist_customer();
-        load_datalist_barang_cabang();
+        load_datalist_barang_cabang_jualan();
         load_datalist_marketplace();
     }
 </script>

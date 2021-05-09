@@ -51,6 +51,15 @@
                         <h5>Harga Satuan</h5>
                         <input type = "text" class = "form-control nf-input" required name = "harga" id = "harga_edit">
                     </div>
+
+                    <div class = "form-group col-lg-6">
+                        <h5>Harga Toko</h5>
+                        <input type = "text" class = "form-control nf-input" required name = "harga_toko" id = "harga_toko_edit">
+                    </div>
+                    <div class = "form-group col-lg-6">
+                        <h5>Harga Grosir</h5>
+                        <input type = "text" class = "form-control nf-input" required name = "harga_grosir" id = "harga_grosir_edit">
+                    </div>
                     
                     <div class = "form-group" id = "kombinasi_barang_container">
                         <h5>Kombinasi Barang</h5>
@@ -101,6 +110,8 @@
         $("#minimal_edit").val(content[row]["minimal"]);
         $("#satuan_edit").val(content[row]["satuan"]);
         $("#harga_edit").val(content[row]["harga"]);
+        $("#harga_toko_edit").val(content[row]["harga_toko"]);
+        $("#harga_grosir_edit").val(content[row]["harga_grosir"]);
         $("#gambar_edit").val(content[row]["image"]);
 
         console.log(content[row]["dalam_kombinasi"]);

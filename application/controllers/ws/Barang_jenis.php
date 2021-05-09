@@ -70,6 +70,25 @@ class Barang_jenis extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function list_data_jualan(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_barang_jenis");
+        $result = $this->m_barang_jenis->list_data_jualan();
+        if($result->num_rows()){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_brg_jenis"];
+                $response["content"][$a]["nama"] = $result[$a]["brg_jenis_nama"];
+                $response["content"][$a]["status"] = $result[$a]["brg_jenis_status"];
+                $response["content"][$a]["last_modified"] = $result[$a]["brg_jenis_last_modified"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "No data is recorded in database";
+        }
+        echo json_encode($response);
+    }
     public function register(){
         $response["status"] = "SUCCESS";
         $this->form_validation->set_rules("nama","nama","required");
@@ -149,5 +168,9 @@ class Barang_jenis extends CI_Controller{
             $response["msg"] = "Invalid ID Supplier";
         }
         echo json_encode($response);
+    }
+
+    public function daftar_jenis_barang($id_jenis){
+        
     }
 }

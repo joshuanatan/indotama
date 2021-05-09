@@ -2,7 +2,7 @@
     <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
-                <h4 class = "modal-title">Tambah Data <?php echo ucwords($page_title);?></h4>
+                <h4 class = "modal-title">Tambah Data <?php echo ucwords($page_title);?> Jual</h4>
             </div>
             <div class = "modal-body">
             <?php 
@@ -21,7 +21,7 @@
                     </div>
                     <div class = "form-group col-lg-6">
                         <h5>Jenis Barang</h5>
-                        <input list = "datalist_barang_jenis" type = "text"  required name = "id_brg_jenis" class = "form-control">
+                        <input id="tambah_id_brg_jenis_btn" list = "datalist_barang_jenis_jualan" type = "text"  required name = "id_brg_jenis" class = "form-control">
                     </div>
                     <div class = "form-group col-lg-6">
                         <h5>Merk Barang</h5>
@@ -42,6 +42,14 @@
                     <div class = "form-group col-lg-6">
                         <h5>Harga Satuan</h5>
                         <input type = "text" class = "form-control nf-input" required name = "harga">
+                    </div>
+                    <div class = "form-group col-lg-6">
+                        <h5>Harga Toko</h5>
+                        <input type = "text" class = "form-control nf-input" required name = "harga_toko">
+                    </div>
+                    <div class = "form-group col-lg-6">
+                        <h5>Harga Grosir</h5>
+                        <input type = "text" class = "form-control nf-input" required name = "harga_grosir">
                     </div>
                     <div class = "form-group">
                         <h5>Kombinasi Barang</h5>

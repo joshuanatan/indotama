@@ -48,10 +48,12 @@ class Barang_cabang extends CI_Controller{
                 }
 
                 $response["content"][$a]["id"] = $result["data"][$a]["id_pk_brg_cabang"];
-                $response["content"][$a]["qty"] = number_format($result["data"][$a]["brg_cabang_qty"],2,",",".");;
+                $response["content"][$a]["qty"] = number_format($result["data"][$a]["brg_cabang_qty"],2,",",".");
                 $response["content"][$a]["notes"] = $result["data"][$a]["brg_cabang_notes"];
                 $response["content"][$a]["last_price"] = number_format($result["data"][$a]["brg_cabang_last_price"],0,",",".");;
-                $response["content"][$a]["harga"] = number_format($result["data"][$a]["brg_harga"],0,",",".");;
+                $response["content"][$a]["harga"] = number_format($result["data"][$a]["brg_harga"],0,",",".");
+                $response["content"][$a]["harga_toko"] = number_format($result["data"][$a]["brg_harga_toko"],0,",",".");
+                $response["content"][$a]["harga_grosir"] = number_format($result["data"][$a]["brg_harga_grosir"],0,",",".");
                 $response["content"][$a]["status"] = $result["data"][$a]["brg_cabang_status"];
                 $response["content"][$a]["id_brg"] = $result["data"][$a]["id_fk_brg"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["brg_cabang_last_modified"];
@@ -75,6 +77,8 @@ class Barang_cabang extends CI_Controller{
             "ket_brg",
             "qty",
             "last_price",
+            "harga_toko",
+            "harga_grosir",
             "notes",
             "tipe",
             "status",
@@ -106,6 +110,43 @@ class Barang_cabang extends CI_Controller{
                 $response["content"][$a]["satuan"] = $result[$a]["brg_satuan"]."";
                 $response["content"][$a]["image"] = $result[$a]["brg_image"]."";
                 $response["content"][$a]["harga"] = number_format($result[$a]["brg_harga"],0,",",".");
+                $response["content"][$a]["merk"] = $result[$a]["brg_merk_nama"];
+                $response["content"][$a]["jenis"] = $result[$a]["brg_jenis_nama"];
+                $response["content"][$a]["tipe"] = $result[$a]["brg_tipe"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "Tidak ada barang cabang";
+        }
+        echo json_encode($response);
+    }
+    public function list_data_jualan(){
+        $response["status"] = "SUCCESS";
+        $id_cabang = $this->input->get("id_cabang");
+        $this->load->model("m_brg_cabang");
+        $this->m_brg_cabang->set_id_fk_cabang($id_cabang);
+        $result = $this->m_brg_cabang->list_data_jualan();
+        if($result->num_rows() > 0 ){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_brg_cabang"]."";
+                $response["content"][$a]["id_brg"] = $result[$a]["id_fk_brg"]."";
+                $response["content"][$a]["qty"] = number_format($result[$a]["brg_cabang_qty"],2,",",".");
+                $response["content"][$a]["notes"] = $result[$a]["brg_cabang_notes"]."";
+                $response["content"][$a]["last_price"] = number_format($result[$a]["brg_cabang_last_price"],0,",",".");
+                $response["content"][$a]["status"] = $result[$a]["brg_cabang_status"]."";
+                $response["content"][$a]["id_brg"] = $result[$a]["id_fk_brg"]."";
+                $response["content"][$a]["last_modified"] = $result[$a]["brg_cabang_last_modified"]."";
+                $response["content"][$a]["nama"] = ucwords($result[$a]["brg_nama"]."");
+                $response["content"][$a]["kode"] = $result[$a]["brg_kode"]."";
+                $response["content"][$a]["ket"] = $result[$a]["brg_ket"]."";
+                $response["content"][$a]["minimal"] = number_format($result[$a]["brg_minimal"],2,",",".");
+                $response["content"][$a]["satuan"] = $result[$a]["brg_satuan"]."";
+                $response["content"][$a]["image"] = $result[$a]["brg_image"]."";
+                $response["content"][$a]["harga"] = number_format($result[$a]["brg_harga"],0,",",".");
+                $response["content"][$a]["harga_toko"] = number_format($result[$a]["brg_harga_toko"],0,",",".");
+                $response["content"][$a]["harga_grosir"] = number_format($result[$a]["brg_harga_grosir"],0,",",".");
                 $response["content"][$a]["merk"] = $result[$a]["brg_merk_nama"];
                 $response["content"][$a]["jenis"] = $result[$a]["brg_jenis_nama"];
                 $response["content"][$a]["tipe"] = $result[$a]["brg_tipe"];

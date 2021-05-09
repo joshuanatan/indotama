@@ -158,7 +158,7 @@
         <tr class = 'brg_retur_counter'>
             <td id = 'brg_retur_counter${count}'>
                 <input name = 'brg_retur_check[]' value = ${count} type = 'hidden'>
-                <input name = 'brg_retur${count}' type = 'text' class = 'form-control' list = 'datalist_barang_cabang'>
+                <input name = 'brg_retur${count}' type = 'text' class = 'form-control' list = 'datalist_barang_cabang_jualan'>
             </td>
             <td>-</td>
             <td>
@@ -180,7 +180,7 @@
         <tr class = 'add_brg_kembali_row'>
             <td id = 'brg_kembali_counter${brg_kembali_row}'>
                 <input name = 'brg_kembali_check[]' value = ${brg_kembali_row} type = 'hidden'>
-                <input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${brg_kembali_row})' id = 'brg${brg_kembali_row}' name = 'brg${brg_kembali_row}' class = 'form-control'>
+                <input type = 'text' list = 'datalist_barang_cabang_jualan' onchange = 'load_harga_barang(${brg_kembali_row})' id = 'brg${brg_kembali_row}' name = 'brg${brg_kembali_row}' class = 'form-control'>
             </td>
             <input name = 'brg_qty_real${brg_kembali_row}' value = '0' type = 'hidden' class = 'form-control nf-input'>
             <td>

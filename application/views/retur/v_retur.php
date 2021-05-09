@@ -111,7 +111,7 @@ $data = array(
 
 <?php $this->load->view("_base_element/datalist_penjualan");?>
 <?php $this->load->view("_base_element/datalist_satuan");?>
-<?php $this->load->view("_base_element/datalist_barang_cabang");?>
+<?php $this->load->view("_base_element/datalist_barang_cabang_jualan");?>
 <script>
     function redirect_print_pdf(){
         var is_opened = false;
@@ -133,7 +133,7 @@ $data = array(
     function load_datalist(){
         load_datalist_penjualan();
         load_datalist_satuan();
-        load_datalist_barang_cabang();
+        load_datalist_barang_cabang_jualan();
     }
 </script>   
 <?php $this->load->view('_notification/notif_general'); ?>

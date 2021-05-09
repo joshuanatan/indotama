@@ -47,6 +47,14 @@
                     <input type = "text" class = "form-control" readonly required name = "harga" id = "d_harga_edit">
                 </div>
                 <div class = "form-group col-lg-6">
+                    <h5>Harga Toko</h5>
+                    <input type = "text" class = "form-control" readonly required name = "harga_toko" id = "d_harga_toko_edit">
+                </div>
+                <div class = "form-group col-lg-6">
+                    <h5>Harga Grosir</h5>
+                    <input type = "text" class = "form-control" readonly required name = "harga_grosir" id = "d_harga_grosir_edit">
+                </div>
+                <div class = "form-group col-lg-6">
                     <h5>Status Kombinasi Barang</h5>
                     <input type = "text" class = "form-control" readonly required name = "harga" id = "d_tipe_edit">
                 </div>
@@ -85,6 +93,8 @@
         $("#d_minimal_edit").val(content[row]["minimal"]);
         $("#d_satuan_edit").val(content[row]["satuan"]);
         $("#d_harga_edit").val(content[row]["harga"]);
+        $("#d_harga_toko_edit").val(content[row]["harga_toko"]);
+        $("#d_harga_grosir_edit").val(content[row]["harga_grosir"]);
         $("#d_tipe_edit").val(content[row]["tipe"]);
 
         $("#d_gambar_edit").attr("src","<?php echo base_url() ?>asset/uploads/barang/" + content[row]["image"]);

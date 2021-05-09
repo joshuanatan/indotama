@@ -12,7 +12,11 @@ class Barang extends CI_Controller{
         }
     }
     public function index(){
-        $this->load->view("barang/v_master_barang");
+        $where = array(
+            "brg_jenis_status"=>"aktif"
+        );
+        $data['daftar_jenis_barang'] = selectRow("mstr_barang_jenis",$where)->result_array();
+        $this->load->view("barang/v_master_barang",$data);
     }
     public function katalog(){
         $this->load->view("barang/v_master_barang_katalog");

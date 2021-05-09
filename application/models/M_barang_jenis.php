@@ -107,18 +107,18 @@ class M_barang_jenis extends ci_model{
         $query = "
         select id_pk_brg_jenis,brg_jenis_nama,brg_jenis_status,brg_jenis_last_modified,id_last_modified
         from ".$this->tbl_name." 
-        where brg_jenis_status = ? ".$search_query."  
+        where brg_jenis_status = ? ".$search_query." and id_pk_brg_jenis != ?  
         order by ".$order_by." ".$order_direction." 
         limit 20 offset ".($page-1)*$data_per_page;
         $args = array(
-            "aktif"
+            "aktif","0"
         );
         $result["data"] = executequery($query,$args);
         
         $query = "
         select id_pk_brg_jenis
         from ".$this->tbl_name." 
-        where brg_jenis_status = ? ".$search_query."  
+        where brg_jenis_status = ? ".$search_query." and id_pk_brg_jenis != ? 
         order by ".$order_by." ".$order_direction;
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
@@ -142,6 +142,22 @@ class M_barang_jenis extends ci_model{
     public function list_data(){
         $where = array(
             "brg_jenis_status" => "aktif"
+        );
+        $field = array(
+            "id_pk_brg_jenis",
+            "brg_jenis_nama",
+            "brg_jenis_status",
+            "brg_jenis_create_date",
+            "brg_jenis_last_modified",
+            "id_create_data",
+            "id_last_modified"
+        );
+        return selectrow($this->tbl_name,$where,$field);
+    }
+    public function list_data_jualan(){
+        $where = array(
+            "brg_jenis_status" => "aktif",
+            "id_pk_brg_jenis != " => "0"
         );
         $field = array(
             "id_pk_brg_jenis",

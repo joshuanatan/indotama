@@ -101,7 +101,7 @@
                             <td id = 'brg_retur_counter_edit${a}'>
                                 <input name = 'brg_retur_check_edit[]' value = ${a} type = 'hidden'>
                                 <input type = 'hidden' id = 'id_brg_retur_edit${a}' name = 'id_brg_retur_edit${a}' value = '${respond["content"][a]["id"]}'>
-                                <input name = 'brg_retur_edit${a}' value = '${respond["content"][a]["nama_brg"]}' type = 'text' class = 'form-control' list = 'datalist_barang_cabang'>
+                                <input name = 'brg_retur_edit${a}' value = '${respond["content"][a]["nama_brg"]}' type = 'text' class = 'form-control' list = 'datalist_barang_cabang_jualan'>
                             </td>
                             <td>${respond["content"][a]["terkirim"]} ${respond["content"][a]["satuan_terkirim"]} / ${respond["content"][a]["beli"]} ${respond["content"][a]["satuan_beli"]}</td>
                             <td>
@@ -144,7 +144,7 @@
                                 <td id = 'brg_kembali_row_edit${a}'>
                                     <input name = 'brg_kembali_check_edit[]' value = ${a} type = 'hidden'>
                                     <input type = 'hidden' id = 'id_brg_kembali_edit${a}'name = 'id_brg_kembali_edit${a}' value = '${respond["content"][a]["id"]}'>
-                                    <input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${a})' value = '${respond["content"][a]["nama_brg"]}'id = 'brg${a}' name = 'brg_edit${a}' class = 'form-control'>
+                                    <input type = 'text' list = 'datalist_barang_cabang_jualan' onchange = 'load_harga_barang(${a})' value = '${respond["content"][a]["nama_brg"]}'id = 'brg${a}' name = 'brg_edit${a}' class = 'form-control'>
                                 </td>
                                 <td>
                                     <input value = '${respond["content"][a]["qty"]} ${respond["content"][a]["satuan"]}' name = 'brg_qty_edit${a}' type = 'text' class = 'form-control nf-input'>
@@ -224,7 +224,7 @@
         <tr class = 'brg_retur_counter'>
             <td id = 'brg_retur_counter${count}'>
                 <input name = 'brg_retur_check[]' value = ${count} type = 'hidden'>
-                <input name = 'brg_retur${count}' type = 'text' class = 'form-control' list = 'datalist_barang_cabang'>
+                <input name = 'brg_retur${count}' type = 'text' class = 'form-control' list = 'datalist_barang_cabang_jualan'>
             </td>
             <td>-</td>
             <td>
@@ -246,7 +246,7 @@
         <tr class = 'add_brg_kembali_row'>
             <td id = 'brg_kembali_counter${brg_kembali_row}'>
                 <input name = 'brg_kembali_check[]' value = ${brg_kembali_row} type = 'hidden'>
-                <input type = 'text' list = 'datalist_barang_cabang' onchange = 'load_harga_barang(${brg_kembali_row})' id = 'brg${brg_kembali_row}' name = 'brg${brg_kembali_row}' class = 'form-control'>
+                <input type = 'text' list = 'datalist_barang_cabang_jualan' onchange = 'load_harga_barang(${brg_kembali_row})' id = 'brg${brg_kembali_row}' name = 'brg${brg_kembali_row}' class = 'form-control'>
             </td>
             <td>
                 <input name = 'brg_qty${brg_kembali_row}' type = 'text' class = 'form-control nf-input'>
