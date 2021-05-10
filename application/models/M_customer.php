@@ -161,8 +161,8 @@ class M_customer extends ci_model{
             )";
         }
         $query = "
-        select id_pk_cust,cust_name,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,cust_no_npwp,cust_foto_npwp,cust_foto_kartu_nama,cust_badan_usaha,cust_no_rekening,cust_last_modified,cust_status
-        from ".$this->tbl_name." 
+        select id_pk_cust,cust_name,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,cust_no_npwp,cust_foto_npwp,cust_foto_kartu_nama,cust_badan_usaha,id_fk_toko,cust_no_rekening,cust_last_modified,cust_status,toko_nama
+        from ".$this->tbl_name." join mstr_toko on mstr_toko.id_pk_toko = mstr_customer.id_fk_toko
         where cust_status = ? ".$search_query."  
         order by ".$order_by." ".$order_direction." 
         limit 20 offset ".($page-1)*$data_per_page;

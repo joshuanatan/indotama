@@ -91,7 +91,12 @@
                     </div>
                     <div class = "form-group col-lg-6">
                         <h5>Toko</h5>
-                        <input type="text" class="form-control" name="toko_nama" id = "cust_toko_nama_edit" required list="datalist_toko">
+                        <input type="hidden" id="cust_toko_nama_edit">
+                        <select id="id_fk_toko_edit" name="id_fk_toko" class="form-control">
+                            <?php for($p=0; $p<count($toko_dropdown); $p++){?>
+                            <option value="<?php echo $toko_dropdown[$p]['id_pk_toko'] ?>"><?php echo $toko_dropdown[$p]['toko_nama'] ?></option>
+                            <?php } ?>
+                        </select>
                     </div>
                     <br><br>
                     <div class = "form-group col-lg-12">
@@ -121,5 +126,7 @@
         $("#cust_krt_nama_edit").val(content[id]["foto_kartu_nama"]);
         $("#cust_alamat_edit").val(content[id]["alamat"]);
         $("#cust_toko_nama_edit").val(content[id]["nama_toko"]);
+
+        $("#id_fk_toko_edit").val(content[id]["id_toko"])
     }
 </script>

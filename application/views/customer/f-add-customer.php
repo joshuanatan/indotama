@@ -85,9 +85,13 @@
                         <h5>Alamat</h5>
                         <textarea class="form-control" name="cust_alamat" required></textarea>
                     </div>
-                    <div class = "form-group col-lg-6">
+                    <div class = "form-group col-lg-12yy">
                         <h5>Toko</h5>
-                        <input type="text" class="form-control" name="id_fk_toko" required list="datalist_toko">
+                        <select name="id_fk_toko" class="form-control">
+                            <?php for($p=0; $p<count($toko_dropdown); $p++){?>
+                            <option value="<?php echo $toko_dropdown[$p]['id_pk_toko'] ?>"><?php echo $toko_dropdown[$p]['toko_nama'] ?></option>
+                            <?php } ?>
+                        </select>
                     </div>
                     <br><br>
                     <div class = "form-group">

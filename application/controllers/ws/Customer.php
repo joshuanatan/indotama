@@ -71,6 +71,8 @@ class Customer extends CI_Controller{
                 $response["content"][$a]["badan_usaha"] = $result["data"][$a]["cust_badan_usaha"];
                 $response["content"][$a]["no_rekening"] = $result["data"][$a]["cust_no_rekening"];
                 $response["content"][$a]["last_modified"] = $result["data"][$a]["cust_last_modified"];
+                $response["content"][$a]["id_toko"] = $result["data"][$a]["id_fk_toko"];
+                $response["content"][$a]["nama_toko"] = $result["data"][$a]["toko_nama"];
             }
         }
         else{
@@ -282,7 +284,7 @@ class Customer extends CI_Controller{
         $this->form_validation->set_rules("cust_telp","Telepon","required");
         $this->form_validation->set_rules("cust_hp","No HP","required");
         $this->form_validation->set_rules("cust_alamat","Alamat","required");
-        $this->form_validation->set_rules("toko_nama","Toko","required");
+        $this->form_validation->set_rules("id_fk_toko","Toko","required");
         $this->form_validation->set_rules("cust_keterangan","Keterangan","required");
         
         if($this->form_validation->run()){
@@ -320,15 +322,8 @@ class Customer extends CI_Controller{
             $cust_telp = $this->input->post("cust_telp");
             $cust_hp = $this->input->post("cust_hp");
             $cust_alamat = $this->input->post("cust_alamat");
-            $nama_toko = $this->input->post("toko_nama");
+            $id_fk_toko = $this->input->post("id_fk_toko");
 
-            $cekk_toko = selectRow("mstr_toko",array("toko_nama"=>$nama_toko))->result_array();
-            if(count($cekk_toko)==0){
-                //insert toko
-                //ambil id nya
-            }else{
-                //ambil id nya
-            }
 
             $cust_keterangan = $this->input->post("cust_keterangan");
 

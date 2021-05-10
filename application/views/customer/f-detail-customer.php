@@ -91,6 +91,7 @@
         $("#cust_badan_usaha_detail").val(content[id]["badan_usaha"]);
         $("#cust_perusahaan_detail").val(content[id]["perusahaan"]);
         $("#cust_email_detail").val(content[id]["email"]);
+        $("#cust_nama_toko").val(content[id]["nama_toko"]);
         $("#cust_telp_detail").val(content[id]["telp"]);
         $("#cust_hp_detail").val(content[id]["hp"]);
         $("#cust_keterangan_detail").val(content[id]["keterangan"]);

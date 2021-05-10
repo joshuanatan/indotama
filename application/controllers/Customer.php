@@ -14,7 +14,8 @@ class Customer extends CI_Controller {
     }
 	public function index()
 	{
-		$this->load->view('customer/v_customer');
+        $data['toko_dropdown'] = selectRow("mstr_toko",array("toko_status"=>"aktif"))->result_array();
+		$this->load->view('customer/v_customer',$data);
 	}
 
     public function toko()

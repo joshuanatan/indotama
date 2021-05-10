@@ -90,6 +90,8 @@ $data = array(
 <?php $this->load->view('customer/f-detail-customer',$data);?>
 <?php $this->load->view('customer/f-delete-customer',$data);?>
 
+<?php $this->load->view('_base_element/datalist_toko',$data);?>
+
 <?php $this->load->view('_notification/notif_general'); ?>
 <?php $this->load->view("req/core_script");?>
 
@@ -105,6 +107,7 @@ $data = array(
     var url_add = "";
 
     refresh();
+    load_datalist_toko();
     function refresh(req_page = 1) {
         page = req_page;
         $.ajax({
