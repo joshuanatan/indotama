@@ -90,6 +90,82 @@ class Customer extends CI_Controller{
         );
         echo json_encode($response);
     }
+    public function content_cust_toko(){
+        $response["status"] = "SUCCESS";
+        $response["content"] = array();
+
+        $order_by = $this->input->get("orderBy");
+        $order_direction = $this->input->get("orderDirection");
+        $page = $this->input->get("page");
+        $id_toko = $this->input->get("id_toko");
+        $search_key = $this->input->get("searchKey");
+        $data_per_page = 20;
+        
+        $this->load->model("m_customer");
+        $result = $this->m_customer->content_cust_toko($page,$order_by,$order_direction,$search_key,$data_per_page,$id_toko);
+
+        if($result["data"]->num_rows() > 0){
+            $result["data"] = $result["data"]->result_array();
+            for($a = 0; $a<count($result["data"]); $a++){
+
+                if($result["data"][$a]["cust_foto_npwp"]){
+                    if(file_exists(FCPATH."asset/uploads/customer/npwp/".$result["data"][$a]["cust_foto_npwp"])){
+                        $response["content"][$a]["foto_npwp"] = $result["data"][$a]["cust_foto_npwp"];
+                    }
+                    else{
+                        $response["content"][$a]["foto_npwp"] = "noimage.jpg";
+                    }
+                }
+                else{
+                    $response["content"][$a]["foto_npwp"] = "noimage.jpg";
+                }
+                if($result["data"][$a]["cust_foto_kartu_nama"]){
+                    if(file_exists(FCPATH."asset/uploads/customer/krt_nama/".$result["data"][$a]["cust_foto_kartu_nama"])){
+                        $response["content"][$a]["foto_kartu_nama"] = $result["data"][$a]["cust_foto_kartu_nama"];
+                    }
+                    else{
+                        $response["content"][$a]["foto_kartu_nama"] = "noimage.jpg";
+                    }
+                }
+                else{
+                    $response["content"][$a]["foto_kartu_nama"] = "noimage.jpg";
+                }
+                $response["content"][$a]["id"] = $result["data"][$a]["id_pk_cust"];
+                $response["content"][$a]["name"] = $result["data"][$a]["cust_name"];
+                $response["content"][$a]["suff"] = $result["data"][$a]["cust_suff"];
+                $response["content"][$a]["perusahaan"] = $result["data"][$a]["cust_perusahaan"];
+                $response["content"][$a]["email"] = $result["data"][$a]["cust_email"];
+                $response["content"][$a]["telp"] = $result["data"][$a]["cust_telp"];
+                $response["content"][$a]["hp"] = $result["data"][$a]["cust_hp"];
+                $response["content"][$a]["alamat"] = $result["data"][$a]["cust_alamat"];
+                $response["content"][$a]["keterangan"] = $result["data"][$a]["cust_keterangan"];
+                $response["content"][$a]["status"] = $result["data"][$a]["cust_status"];
+                $response["content"][$a]["no_npwp"] = $result["data"][$a]["cust_no_npwp"];
+                $response["content"][$a]["badan_usaha"] = $result["data"][$a]["cust_badan_usaha"];
+                $response["content"][$a]["no_rekening"] = $result["data"][$a]["cust_no_rekening"];
+                $response["content"][$a]["last_modified"] = $result["data"][$a]["cust_last_modified"];
+                $response["content"][$a]["id_toko"] = $result["data"][$a]["id_fk_toko"];
+                $response["content"][$a]["nama_toko"] = $result["data"][$a]["toko_nama"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+        }
+        $response["page"] = $this->pagination->generate_pagination_rules($page,$result["total_data"],$data_per_page);
+        $response["key"] = array(
+            "name",
+            "perusahaan",
+            "email",
+            "telp",
+            "hp",
+            "alamat",
+            "id_toko",
+            "keterangan",
+            "status",
+            "last_modified"
+        );
+        echo json_encode($response);
+    }
     public function list_data(){
         $response["status"] = "SUCCESS";
         $this->load->model("m_customer");
@@ -130,6 +206,7 @@ class Customer extends CI_Controller{
         $this->form_validation->set_rules("cust_telp","Telepon","required");
         $this->form_validation->set_rules("cust_hp","No HP","required");
         $this->form_validation->set_rules("cust_alamat","Alamat","required");
+        $this->form_validation->set_rules("id_fk_toko","Toko","required");
         $this->form_validation->set_rules("cust_keterangan","Keterangan","required");
         $this->form_validation->set_rules("cust_badan_usaha","cust_badan_usaha","required");
         $this->form_validation->set_rules("cust_npwp","cust_npwp","required");
@@ -172,10 +249,11 @@ class Customer extends CI_Controller{
             $cust_telp = $this->input->post("cust_telp");
             $cust_hp = $this->input->post("cust_hp");
             $cust_alamat = $this->input->post("cust_alamat");
+            $id_fk_toko = $this->input->post("id_fk_toko");
             $cust_keterangan = $this->input->post("cust_keterangan");
             $cust_status = "AKTIF";
 
-            if($this->m_customer->set_insert($cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_status,$cust_no_npwp,$cust_foto_npwp,$cust_foto_kartu_nama,$cust_badan_usaha,$cust_no_rekening)){
+            if($this->m_customer->set_insert($cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_status,$cust_no_npwp,$cust_foto_npwp,$cust_foto_kartu_nama,$cust_badan_usaha,$cust_no_rekening,$id_fk_toko)){
                 if($this->m_customer->insert()){
                     $response["msg"] = "Data is recorded to database";
                 }
@@ -204,6 +282,7 @@ class Customer extends CI_Controller{
         $this->form_validation->set_rules("cust_telp","Telepon","required");
         $this->form_validation->set_rules("cust_hp","No HP","required");
         $this->form_validation->set_rules("cust_alamat","Alamat","required");
+        $this->form_validation->set_rules("toko_nama","Toko","required");
         $this->form_validation->set_rules("cust_keterangan","Keterangan","required");
         
         if($this->form_validation->run()){
@@ -241,10 +320,20 @@ class Customer extends CI_Controller{
             $cust_telp = $this->input->post("cust_telp");
             $cust_hp = $this->input->post("cust_hp");
             $cust_alamat = $this->input->post("cust_alamat");
+            $nama_toko = $this->input->post("toko_nama");
+
+            $cekk_toko = selectRow("mstr_toko",array("toko_nama"=>$nama_toko))->result_array();
+            if(count($cekk_toko)==0){
+                //insert toko
+                //ambil id nya
+            }else{
+                //ambil id nya
+            }
+
             $cust_keterangan = $this->input->post("cust_keterangan");
 
             $this->load->model("m_customer");
-            if($this->m_customer->set_update($id_pk_cust,$cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_no_npwp,$cust_foto_npwp,$cust_foto_kartu_nama,$cust_badan_usaha,$cust_no_rekening)){
+            if($this->m_customer->set_update($id_pk_cust,$cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_no_npwp,$cust_foto_npwp,$cust_foto_kartu_nama,$cust_badan_usaha,$cust_no_rekening,$id_fk_toko)){
                 if($this->m_customer->update()){
                     $response["msg"] = "Data is updated to database";
                 }

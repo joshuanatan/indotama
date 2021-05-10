@@ -40,6 +40,10 @@
                             <td id = "alamat_delete"></td>
                         </tr>
                         <tr>
+                            <td>Toko</td>
+                            <td id = "toko_delete"></td>
+                        </tr>
+                        <tr>
                             <td>Keterangan</td>
                             <td id = "keterangan_delete"></td>
                         </tr>
@@ -63,5 +67,6 @@
         $("#hp_delete").html(content[id]["hp"]);
         $("#alamat_delete").html(content[id]["alamat"]);
         $("#keterangan_delete").html(content[id]["keterangan"]);
+        $("#toko_delete").html(content[id]["nama_toko"]);
     }
 </script>

@@ -1,11 +1,11 @@
 
-<div class = "modal fade" id = "register_modal">
+<div class = "modal fade" id = "register_modal_cust_toko">
     <div class = "modal-dialog">
         <div class = "modal-content">
             <div class = "modal-header">
                 <h4 class = "modal-title">Tambah Data <?php echo ucwords($page_title);?></h4>
             </div>
-            <div class = "modal-body">
+            <div class = "modal-body" style="display:flex">
             <?php 
             $notif_data = array(
                 "page_title"=>$page_title
@@ -85,12 +85,8 @@
                         <h5>Alamat</h5>
                         <textarea class="form-control" name="cust_alamat" required></textarea>
                     </div>
-                    <div class = "form-group col-lg-6">
-                        <h5>Toko</h5>
-                        <input type="text" class="form-control" name="id_fk_toko" required list="datalist_toko">
-                    </div>
-                    <br><br>
-                    <div class = "form-group">
+                    <input type="hidden" class="form-control" name="id_fk_toko" value=<?php echo $toko[0]['id_pk_toko'] ?> required>
+                    <div class = "form-group col-lg-12">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
                         <button type = "button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
                     </div>

@@ -1,7 +1,7 @@
 <?php
-$page_title = "Menu";
+$page_title = "Master Customer Toko " . $toko[0]['toko_nama'];
 $breadcrumb = array(
-    "Menu"
+    "Master","Customer Toko " . $toko[0]['toko_nama']
 );
 $notif_data = array(
     "page_title"=>$page_title
@@ -49,20 +49,21 @@ $notif_data = array(
                                 <div class="panel-wrapper collapse in">
                                     <div class="panel-body">
                                         <div class = "col-lg-12">
-                                            <div class = "d-block">
-                                                <button type = "button" class = "btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle = "modal" data-target = "#register_modal" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
+                                            <div>
+                                                <button type = "button" class = "btn btn-primary btn-sm" data-toggle = "modal" data-target = "#register_modal_cust_toko" style = "margin-right:10px">Tambah <?php echo ucwords($page_title);?></button>
                                             </div>
                                             <br/>
                                             <br/>
                                             <div class = "align-middle text-center d-block">
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-success md-eye"></i><b> - Details </b>
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-primary md-edit"></i><b> - Edit </b>   
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-danger md-delete"></i><b> - Delete </b>
                                             </div>
                                             <br/>
                                             <?php
                                                 $data = array(
-                                                    "ctrl_model" => "m_menu",
-                                                    "excel_title" => "Daftar Menu"
+                                                    "ctrl_model" => "m_customer",
+                                                    "excel_title" => "Daftar Customer Toko " . $toko[0]['toko_nama']
                                                 );
                                             ?>
                                             <?php $this->load->view("_base_element/table",$data);?>
@@ -79,34 +80,33 @@ $notif_data = array(
         <?php $this->load->view('req/mm_js.php');?>
     </body>
 </html>
-<script>
-    var ctrl = "menu";
-    var url_add = "";
-    var unautorized_button = ["detail_button"];
-</script>
 <?php 
 $data = array(
-    "page_title" => "Master Menu"
+    "page_title" => "Master Customer"
 );
 ?>
-<?php $this->load->view('menu/f-add-menu',$data);?>
-<?php $this->load->view('menu/f-update-menu',$data);?>
-<?php $this->load->view('menu/f-delete-menu',$data);?>
+<?php $this->load->view('customer/f-add-customer-toko',$data);?>
+<?php $this->load->view('customer/f-update-customer-toko',$data);?>
+<?php $this->load->view('customer/f-detail-customer-toko',$data);?>
+<?php $this->load->view('customer/f-delete-customer',$data);?>
+
+<?php $this->load->view('_base_element/datalist_toko',$data);?>
 
 <?php $this->load->view('_notification/notif_general'); ?>
 <?php $this->load->view("req/core_script");?>
 
 <script>
-    var ctrl = "menu";
-    var contentCtrl = "content";
+    var ctrl = "customer";
+    var contentCtrl = "content_cust_toko";
     var tblHeaderCtrl = "columns";
-    var colCount = 7; //ragu either 1/0
+    var colCount = 10; //ragu either 1/0
     var orderBy = 0;
     var orderDirection = "ASC";
     var searchKey = "";
     var page = 1;
-    var url_add = "";
+    var url_add = "id_toko=" + <?php echo $toko[0]['id_pk_toko']; ?>;
 
+    load_datalist_toko();
     refresh();
     function refresh(req_page = 1) {
         page = req_page;
@@ -139,13 +139,17 @@ $data = array(
                         }
                         html += `
                             <tr>
-                                <td>${respond["content"][a]["display"]}</td>
-                                <td>${respond["content"][a]["controller"]}</td>
-                                <td>${respond["content"][a]["icon"]}</td>
-                                <td>${respond["content"][a]["kategori"]}</td>
+                                <td>${respond["content"][a]["name"]}</td>
+                                <td>${respond["content"][a]["perusahaan"]}</td>
+                                <td>${respond["content"][a]["email"]}</td>
+                                <td>${respond["content"][a]["telp"]}</td>
+                                <td>${respond["content"][a]["hp"]}</td>
+                                <td>${respond["content"][a]["alamat"]}</td>
+                                <td>${respond["content"][a]["keterangan"]}</td>
                                 ${html_status}
                                 <td>${respond["content"][a]["last_modified"]}</td>
                                 <td>
+                                    <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'detail_button text-success md-eye' data-target = '#detail_modal' onclick = 'load_detail_content(${a})'></i>
                                     <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content(${a})'></i>  
                                     <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'delete_button text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content(${a})'></i>
                                 </td>

@@ -277,6 +277,32 @@ class Toko extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function list_data(){
+        $response["status"] = "SUCCESS";
+        $this->load->model("m_toko");
+        $result = $this->m_toko->list_toko();
+        if($result->num_rows() > 0){
+            $result = $result->result_array();
+            for($a = 0; $a<count($result); $a++){
+                $response["content"][$a]["id"] = $result[$a]["id_pk_toko"];
+                $response["content"][$a]["logo"] = $result[$a]["toko_logo"];
+                $response["content"][$a]["nama"] = $result[$a]["toko_nama"];
+                $response["content"][$a]["kode"] = $result[$a]["toko_kode"];
+                $response["content"][$a]["status"] = $result[$a]["toko_status"];
+                $response["content"][$a]["create_date"] = $result[$a]["toko_create_date"];
+                $response["content"][$a]["kop_surat"] = $result[$a]["toko_kop_surat"];
+                $response["content"][$a]["nonpkp"] = $result[$a]["toko_nonpkp"];
+                $response["content"][$a]["pernyataan_rek"] = $result[$a]["toko_pernyataan_rek"];
+                $response["content"][$a]["ttd"] = $result[$a]["toko_ttd"];
+                $response["content"][$a]["last_modified"] = $result[$a]["toko_last_modified"];
+            }
+        }
+        else{
+            $response["status"] = "ERROR";
+            $response["msg"] = "No Toko List";
+        }
+        echo json_encode($response);
+    }
     public function list_toko_admin(){
         $response["status"] = "SUCCESS";
         $response["content"] = array();

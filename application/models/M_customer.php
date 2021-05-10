@@ -20,6 +20,7 @@ class M_customer extends ci_model{
     private $cust_telp;
     private $cust_hp;
     private $cust_alamat;
+    private $id_fk_toko;
     private $cust_keterangan;
     private $cust_status;
     private $cust_create_date;
@@ -178,6 +179,50 @@ class M_customer extends ci_model{
         $result["total_data"] = executequery($query,$args)->num_rows();
         return $result;
     }
+    public function content_cust_toko($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = "",$id_toko){
+        $order_by = $this->columns[$order_by]["col_name"];
+        $search_query = "";
+        if($search_key != ""){
+            $search_query .= "and
+            ( 
+                id_pk_cust like '%".$search_key."%' or
+                cust_name like '%".$search_key."%' or
+                cust_perusahaan like '%".$search_key."%' or
+                cust_email like '%".$search_key."%' or
+                cust_telp like '%".$search_key."%' or
+                cust_hp like '%".$search_key."%' or
+                cust_alamat like '%".$search_key."%' or
+                cust_keterangan like '%".$search_key."%' or
+                cust_status like '%".$search_key."%' or
+                cust_no_npwp like '%".$search_key."%' or
+                cust_foto_npwp like '%".$search_key."%' or
+                cust_foto_kartu_nama like '%".$search_key."%' or
+                cust_badan_usaha like '%".$search_key."%' or
+                cust_no_rekening like '%".$search_key."%' or
+                id_fk_toko like '%".$search_key."%' or
+                cust_last_modified like '%".$search_key."%'
+                
+            )";
+        }
+        $query = "
+        select id_pk_cust,cust_name,cust_suff,cust_perusahaan,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,cust_no_npwp,cust_foto_npwp,cust_foto_kartu_nama,cust_badan_usaha,cust_no_rekening,cust_last_modified,cust_status,id_fk_toko,toko_nama,toko_kode
+        from ".$this->tbl_name." join mstr_toko on mstr_toko.id_pk_toko = mstr_customer.id_fk_toko
+        where id_fk_toko = ? and cust_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction." 
+        limit 20 offset ".($page-1)*$data_per_page;
+        $args = array(
+            $id_toko,"aktif"
+        );
+        $result["data"] = executequery($query,$args);
+        
+        $query = "
+        select id_pk_cust
+        from ".$this->tbl_name." join mstr_toko on mstr_toko.id_pk_toko = mstr_customer.id_fk_toko
+        where id_fk_toko = ? and cust_status = ? ".$search_query."  
+        order by ".$order_by." ".$order_direction;
+        $result["total_data"] = executequery($query,$args)->num_rows();
+        return $result;
+    }
     public function list_data(){
         $where = array(
             "cust_status" => "aktif"
@@ -254,6 +299,7 @@ class M_customer extends ci_model{
                 "cust_telp" => $this->cust_telp,
                 "cust_hp" => $this->cust_hp,
                 "cust_alamat" => $this->cust_alamat,
+                "id_fk_toko" => $this->id_fk_toko,
                 "cust_keterangan" => $this->cust_keterangan,
                 "cust_status" => $this->cust_status,
                 "cust_create_date" => $this->cust_create_date,
@@ -283,6 +329,7 @@ class M_customer extends ci_model{
                 "cust_telp" => $this->cust_telp,
                 "cust_hp" => $this->cust_hp,
                 "cust_alamat" => $this->cust_alamat,
+                "id_fk_toko" => $this->id_fk_toko,
                 "cust_keterangan" => $this->cust_keterangan,
                 "cust_last_modified" => $this->cust_last_modified,
                 "id_last_modified" => $this->id_last_modified
@@ -342,6 +389,9 @@ class M_customer extends ci_model{
             return false;
         }
         if($this->cust_alamat == ""){
+            return false;
+        }
+        if($this->id_fk_toko == ""){
             return false;
         }
         if($this->cust_keterangan == ""){
@@ -404,6 +454,9 @@ class M_customer extends ci_model{
         if($this->cust_alamat == ""){
             return false;
         }
+        if($this->id_fk_toko == ""){
+            return false;
+        }
         if($this->cust_keterangan == ""){
             return false;
         }
@@ -427,7 +480,7 @@ class M_customer extends ci_model{
         }
         return true;
     }
-    public function set_insert($cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_status,$cust_no_npwp,$cust_foto_npwp,$cust_foto_kartu_nama,$cust_badan_usaha,$cust_no_rekening){
+    public function set_insert($cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_status,$cust_no_npwp,$cust_foto_npwp,$cust_foto_kartu_nama,$cust_badan_usaha,$cust_no_rekening,$id_fk_toko){
         if(!$this->set_cust_name($cust_name)){
             return false;
         }
@@ -464,6 +517,9 @@ class M_customer extends ci_model{
         if(!$this->set_cust_alamat($cust_alamat)){
             return false;
         }
+        if(!$this->set_id_fk_toko($id_fk_toko)){
+            return false;
+        }
         if(!$this->set_cust_keterangan($cust_keterangan)){
             return false;
         }
@@ -472,7 +528,7 @@ class M_customer extends ci_model{
         }
         return true;
     }
-    public function set_update($id_pk_cust,$cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_no_npwp,$cust_foto_npwp,$cust_foto_kartu_nama,$cust_badan_usaha,$cust_no_rekening){
+    public function set_update($id_pk_cust,$cust_name,$cust_suff,$cust_perusahaan,$cust_email,$cust_telp,$cust_hp,$cust_alamat,$cust_keterangan,$cust_no_npwp,$cust_foto_npwp,$cust_foto_kartu_nama,$cust_badan_usaha,$cust_no_rekening,$id_fk_toko){
         if(!$this->set_id_pk_cust($id_pk_cust)){
             return false;
         }
@@ -510,6 +566,9 @@ class M_customer extends ci_model{
             return false;
         }
         if(!$this->set_cust_alamat($cust_alamat)){
+            return false;
+        }
+        if(!$this->set_id_fk_toko($id_fk_toko)){
             return false;
         }
         if(!$this->set_cust_keterangan($cust_keterangan)){
@@ -614,16 +673,16 @@ class M_customer extends ci_model{
         }
         return false;
     }
-    public function set_cust_keterangan($cust_keterangan){
-        if($cust_keterangan != ""){
-            $this->cust_keterangan = $cust_keterangan;
+    public function set_id_fk_toko($id_fk_toko){
+        if($id_fk_toko != ""){
+            $this->id_fk_toko = $id_fk_toko;
             return true;
         }
         return false;
     }
-    public function set_id_fk_toko($id_fk_toko){
-        if($id_fk_toko != ""){
-            $this->id_fk_toko = $id_fk_toko;
+    public function set_cust_keterangan($cust_keterangan){
+        if($cust_keterangan != ""){
+            $this->cust_keterangan = $cust_keterangan;
             return true;
         }
         return false;
@@ -657,6 +716,7 @@ class M_customer extends ci_model{
             "cust_last_modified",
             "cust_status"  
         );
+
         return selectRow($this->tbl_name,$where,$field);
     }
     public function columns_excel(){

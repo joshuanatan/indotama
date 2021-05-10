@@ -49,7 +49,10 @@
                     <h5>Keterangan</h5>
                     <input type="text" class="form-control" id = "cust_keterangan_detail" disabled>
                 </div>
-                
+                <div class = "form-group col-lg-6">
+                    <h5>Nomor Rekening</h5>
+                    <input type="text" class="form-control" id = "cust_rek_detail" disabled value = "-">
+                </div>
                 <div class = "form-group col-lg-6">
                     <h5>Nomor NPWP</h5>
                     <input type="text" class="form-control" id = "cust_npwp_detail" disabled>
@@ -59,14 +62,12 @@
                     <img id = "cust_foto_npwp_detail" style = "width:100%">
                 </div>
                 <div class = "form-group col-lg-6">
-                    <h5>Nomor Rekening</h5>
-                    <input type="text" class="form-control" id = "cust_rek_detail" disabled value = "-">
-                </div>
-                <div class = "form-group col-lg-6">
                     <h5>Foto Kartu Nama</h5>
                     <img id = "cust_krt_nama_detail" style = "width:100%">
                 </div>
-                <div class = "form-group col-lg-12">
+                
+                
+                <div class = "form-group col-lg-6">
                     <h5>Alamat</h5>
                     <textarea class="form-control" id = "cust_alamat_detail" disabled></textarea>
                 </div>
@@ -109,5 +110,6 @@
             $("#cust_krt_nama_detail").attr("src","<?php echo base_url();?>asset/uploads/customer/krt_nama/noimage.jpg");
         }
         $("#cust_alamat_detail").val(content[id]["alamat"]);
+        $("#cust_nama_toko").val(content[id]["nama_toko"]);
     }
 </script>

@@ -72,6 +72,7 @@ $notif_data = array(
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-info md-print"></i><b> - Invoice </b>
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-default md-print"></i><b> - Invoice Copy </b>
                                                 <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-warning md-email"></i><b> - Email </b>
+                                                <i style = "cursor:pointer;font-size:large;margin-left:10px" class = "text-secondary md-check"></i><b> - Selesai </b>
                                             </div>
                                             <br/>
                                             <?php
@@ -121,7 +122,7 @@ $notif_data = array(
         },
         {
             style:'cursor:pointer;font-size:large',
-            class:'text-info md-email',
+            class:'text-warning md-email',
             onclick:'redirect_mailto()'
         }
     ];
