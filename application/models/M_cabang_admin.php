@@ -158,7 +158,7 @@ class M_cabang_admin extends ci_model{
             )";
         }
         $query = "
-        select id_pk_cabang,toko_nama,cabang_daerah,cabang_notelp,cabang_alamat,cabang_status,cabang_create_date,cabang_last_modified
+        select id_pk_cabang,toko_nama,cabang_daerah,cabang_notelp,cabang_alamat,cabang_status,cabang_create_date,cabang_last_modified,id_pk_toko
         from ".$this->tbl_name." 
         inner join mstr_cabang on mstr_cabang.id_pk_cabang = ".$this->tbl_name.".id_fk_cabang
         inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko

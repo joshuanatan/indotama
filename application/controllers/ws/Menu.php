@@ -62,6 +62,7 @@ class Menu extends CI_Controller{
             /*biar langsung defaultnya kepilih*/
             if($this->session->id_cabang == ""){
                 $result = $result["data"]->result_array();
+                $this->session->id_toko = $result[0]["id_pk_toko"];
                 $this->session->id_cabang = $result[0]["id_pk_cabang"];
                 $this->session->daerah_cabang = $result[0]["cabang_daerah"];
                 $this->session->nama_toko_cabang = $result[0]["toko_nama"];
