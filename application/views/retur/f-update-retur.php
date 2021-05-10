@@ -266,6 +266,6 @@
         </tr>`;
         $("#add_brg_kembali_but_container_edit").before(html);
         brg_kembali_row++;    
-        init_inf();
+        init_nf();
     }
 </script>

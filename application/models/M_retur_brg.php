@@ -137,7 +137,7 @@ class M_retur_brg extends CI_Model{
             where brg_penjualan_status = 'aktif' and brg_status = 'aktif'
             group by id_pk_brg_penjualan
         ) as a on a.id_fk_barang = tbl_retur_brg.id_fk_brg and a.id_fk_penjualan = mstr_retur.id_fk_penjualan
-        where id_fk_retur = ?   
+        where id_fk_retur = ? and retur_brg_status = 'aktif'
         ";
         $args = array(
             $this->id_fk_retur

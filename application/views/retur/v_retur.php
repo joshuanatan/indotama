@@ -159,6 +159,7 @@ $data = array(
 
 
 
+<script src = "<?php echo base_url();?>asset/custom/number_formatter.js"></script>
 <script>
     var ctrl = "retur";
     var contentCtrl = "content";
@@ -242,5 +243,16 @@ $data = array(
         });
     }
     
+</script>
+<script>
+    function load_harga_barang(row){
+        var nama_barang = $("#brg"+row).val();
+        var hrg_brg_dsr = $("#datalist_barang_cabang_jualan option[value='"+nama_barang+"']").attr("data-baseprice");
+        var hrg_brgtoko = $("#datalist_barang_cabang_jualan option[value='"+nama_barang+"']").attr("data-hargatoko");
+        var hrg_brggrosir = $("#datalist_barang_cabang_jualan option[value='"+nama_barang+"']").attr("data-hargagrosir");
+        $("#harga_barang_jual"+row).val(hrg_brg_dsr);
+        $("#harga_barang_toko"+row).val(hrg_brgtoko);
+        $("#harga_barang_grosir"+row).val(hrg_brggrosir);
+    }
 </script>
 <?php $this->load->view("_core_script/core");?>
