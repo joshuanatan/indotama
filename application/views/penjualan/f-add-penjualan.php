@@ -29,6 +29,10 @@ $notif_data = array(
             <?php $this->load->view('_notification/register_error',$notif_data); ?>
             <?php $this->load->view('_notification/update_error',$notif_data); ?>
             <?php $this->load->view('_notification/delete_error',$notif_data); ?>
+            <div class="alert alert-success alert-dismissable col-lg-5 pull-right position-fixed" id="notif_register_success_cust" style="position: fixed; top:30%;right:5%;z-index:100">
+                <i class="zmdi zmdi-check pr-15 pull-left"></i><p class="pull-left">Register <?php echo ucwords($page_title) ?> berhasil!</p> 
+                <div class="clearfix"></div>
+            </div>
                 <div class="container-fluid">
                     <div class="row mt-20">
                         <div class="col-lg-12 col-sm-12">
@@ -66,7 +70,7 @@ $notif_data = array(
                                                 -->
                                                 <div class = "form-group col-lg-12">
                                                     <h5>Customer</h5>
-                                                    <input required type = 'text' class = "form-control" list = "datalist_customer" required name = "customer">
+                                                    <input required type = 'text' class = "form-control" list = "datalist_customer_toko" required name = "customer">
                                                 </div>
                                                 <div class = "form-group col-lg-6">
                                                     <h5>Tanggal Penjualan</h5>
@@ -445,13 +449,14 @@ $notif_data = array(
         }
     }
 </script>
-<?php $this->load->view("_base_element/datalist_customer");?>
+<?php $this->load->view("_base_element/datalist_customer_toko");?>
 <?php $this->load->view("_base_element/datalist_barang_cabang_jualan");?>
 <?php $this->load->view("_base_element/datalist_marketplace");?>
 <script>
     load_datalist();
     function load_datalist(){
         load_datalist_customer();
+        // load_datalist_customer_toko();
         load_datalist_barang_cabang_jualan();
         load_datalist_marketplace();
     }
@@ -532,7 +537,9 @@ $notif_data = array(
         });
     }
 </script>
-
+<?php $this->load->view('penjualan/f-add-customer-toko'); ?>
 <?php $this->load->view('_notification/notif_general'); ?>
 <?php $this->load->view("_core_script/menubar_func");?>
 <?php $this->load->view("req/core_script");?>
+
+
