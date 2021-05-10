@@ -732,4 +732,11 @@ class M_customer extends ci_model{
         $this->set_column("cust_last_modified","last modified",false);
         return $this->columns;
     }
+    public function list_data_cust_toko($id_toko){
+        $sql = "select id_pk_cust, cust_name, cust_suff, cust_perusahaan, cust_email, cust_telp, cust_hp, cust_alamat, cust_keterangan, cust_no_npwp, cust_foto_npwp, cust_foto_kartu_nama, cust_badan_usaha, cust_no_rekening, cust_last_modified, cust_status from mstr_customer where cust_status = 'aktif' and id_fk_toko = ?";
+        $args = array(
+            $id_toko
+        );
+        return executeQuery($sql, $args);
+    }
 }

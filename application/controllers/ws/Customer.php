@@ -199,36 +199,40 @@ class Customer extends CI_Controller{
         }
         echo json_encode($response);
     }
-    public function list_data_cust_toko(){
-        $response["status"] = "SUCCESS";
-        $this->load->model("m_customer");
-        $result = $this->m_customer->list_data_cust_toko();
-        if($result->num_rows()> 0){
-            $result = $result->result_array();
-            for($a = 0; $a<count($result); $a++){
-                $response["content"][$a]["id"] = $result[$a]["id_pk_cust"];
-                $response["content"][$a]["name"] = $result[$a]["cust_name"];
-                $response["content"][$a]["suff"] = $result[$a]["cust_suff"];
-                $response["content"][$a]["perusahaan"] = $result[$a]["cust_perusahaan"];
-                $response["content"][$a]["email"] = $result[$a]["cust_email"];
-                $response["content"][$a]["telp"] = $result[$a]["cust_telp"];
-                $response["content"][$a]["hp"] = $result[$a]["cust_hp"];
-                $response["content"][$a]["alamat"] = $result[$a]["cust_alamat"];
-                $response["content"][$a]["keterangan"] = $result[$a]["cust_keterangan"];
-                $response["content"][$a]["status"] = $result[$a]["cust_status"];
-                $response["content"][$a]["last_modified"] = $result[$a]["cust_last_modified"];
-                $response["content"][$a]["no_npwp"] = $result[$a]["cust_no_npwp"];
-                $response["content"][$a]["foto_npwp"] = $result[$a]["cust_foto_npwp"];
-                $response["content"][$a]["foto_kartu_nama"] = $result[$a]["cust_foto_kartu_nama"];
-                $response["content"][$a]["badan_usaha"] = $result[$a]["cust_badan_usaha"];
-                $response["content"][$a]["no_rekening"] = $result[$a]["cust_no_rekening"];
-                $response["content"][$a]["id_toko"] = $result["data"][$a]["id_fk_toko"];
-                $response["content"][$a]["nama_toko"] = $result["data"][$a]["toko_nama"];
+    public function list_data_cust_toko($id_toko = 0){
+        if($id_toko){
+            $response["status"] = "SUCCESS";
+            $this->load->model("m_customer");
+            $result = $this->m_customer->list_data_cust_toko($id_toko);
+            if($result->num_rows()> 0){
+                $result = $result->result_array();
+                for($a = 0; $a<count($result); $a++){
+                    $response["content"][$a]["id"] = $result[$a]["id_pk_cust"];
+                    $response["content"][$a]["name"] = $result[$a]["cust_name"];
+                    $response["content"][$a]["suff"] = $result[$a]["cust_suff"];
+                    $response["content"][$a]["perusahaan"] = $result[$a]["cust_perusahaan"];
+                    $response["content"][$a]["email"] = $result[$a]["cust_email"];
+                    $response["content"][$a]["telp"] = $result[$a]["cust_telp"];
+                    $response["content"][$a]["hp"] = $result[$a]["cust_hp"];
+                    $response["content"][$a]["alamat"] = $result[$a]["cust_alamat"];
+                    $response["content"][$a]["keterangan"] = $result[$a]["cust_keterangan"];
+                    $response["content"][$a]["status"] = $result[$a]["cust_status"];
+                    $response["content"][$a]["last_modified"] = $result[$a]["cust_last_modified"];
+                    $response["content"][$a]["no_npwp"] = $result[$a]["cust_no_npwp"];
+                    $response["content"][$a]["foto_npwp"] = $result[$a]["cust_foto_npwp"];
+                    $response["content"][$a]["foto_kartu_nama"] = $result[$a]["cust_foto_kartu_nama"];
+                    $response["content"][$a]["badan_usaha"] = $result[$a]["cust_badan_usaha"];
+                    $response["content"][$a]["no_rekening"] = $result[$a]["cust_no_rekening"];
+                }
+            }
+            else{
+                $response["status"] = "ERROR";
+                $response["msg"] = "No Customer List";
             }
         }
         else{
             $response["status"] = "ERROR";
-            $response["msg"] = "No Customer List";
+            $response["msg"] = "No ID Toko is provided";
         }
         echo json_encode($response);
     }
