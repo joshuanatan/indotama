@@ -23,18 +23,26 @@ class M_penjualan extends ci_model
   private $no_control;
   private $bln_control;
   private $thn_control;
-
+  /*
+    drop view if exists v_penjualan;
+    create view v_penjualan as select cust_email,id_pk_penjualan,penj_nomor,penj_nominal,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified,if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran
+    from mstr_penjualan
+    inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+    inner join mstr_user on mstr_user.id_pk_user = mstr_penjualan.id_last_modified
+    inner join tbl_penjualan_pembayaran on tbl_penjualan_pembayaran.id_fk_penjualan = mstr_penjualan.id_pk_penjualan where tbl_penjualan_pembayaran.penjualan_pmbyrn_status != "nonaktif"
+    group by id_pk_penjualan
+  */
   public function __construct()
   {
     parent::__construct();
-    $this->set_column("id_pk_penjualan", "nomor penjualan", true);
+    $this->set_column("penj_nomor", "nomor penjualan", true);
+    $this->set_column("penj_nominal", "nominal penjualan", false);
     $this->set_column("penj_tgl", "tanggal penjualan", false);
-    $this->set_column("cust_name", "customer", false);
-    $this->set_column("penj_tipe_pembayaran", "tipe pembayaran", false);
+    $this->set_column("cust_perusahaan", "customer", false);
     $this->set_column("penj_jenis", "jenis penjualan", false);
     $this->set_column("penj_status", "status", false);
-    $this->set_column("penj_status", "status pembayaran", false);
-    $this->set_column("user_last_modified", "User Last Modified", false);
+    $this->set_column("status_pembayaran", "status pembayaran", false);
+    $this->set_column("selisih_tanggal", "durasi jatuh tempo", false);
     $this->penj_create_date = date("y-m-d h:i:s");
     $this->penj_last_modified = date("y-m-d h:i:s");
     $this->id_create_data = $this->session->id_user;
@@ -57,9 +65,9 @@ class M_penjualan extends ci_model
   {
     $query = "
         select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified,penj_nominal,penj_nominal_byr
-        from " . $this->tbl_name . " 
-        inner join mstr_customer on mstr_customer.id_pk_cust = " . $this->tbl_name . ".id_fk_customer
-        inner join mstr_user on mstr_user.id_pk_user = " . $this->tbl_name . ".id_last_modified
+        from mstr_penjualan 
+        inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        inner join mstr_user on mstr_user.id_pk_user = mstr_penjualan.id_last_modified
         where penj_status != ? and id_fk_cabang = ?";
     $args = array(
       "nonaktif", $this->id_fk_cabang
@@ -184,60 +192,71 @@ class M_penjualan extends ci_model
     $search_query = "";
     if ($search_key != "") {
       $search_query .= "and
-            ( 
-                id_pk_penjualan like '%" . $search_key . "%' or
-                penj_nomor like '%" . $search_key . "%' or
-                penj_tgl like '%" . $search_key . "%' or
-                penj_status like '%" . $search_key . "%' or
-                penj_jenis like '%" . $search_key . "%' or
-                penj_tipe_pembayaran like '%" . $search_key . "%' or
-                user_last_modified like '%" . $search_key . "%'
-            )";
+      ( 
+          id_pk_penjualan like '%" . $search_key . "%' or
+          penj_nomor like '%" . $search_key . "%' or
+          penj_tgl like '%" . $search_key . "%' or
+          penj_status like '%" . $search_key . "%' or
+          penj_jenis like '%" . $search_key . "%' or
+          penj_tipe_pembayaran like '%" . $search_key . "%' or
+          user_last_modified like '%" . $search_key . "%'
+      )";
     }
     if ($this->penj_tipe_pembayaran == "" || strtolower($this->penj_tipe_pembayaran) == "all") {
       $query = "
-            select cust_email,id_pk_penjualan,penj_nomor,penj_nominal,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified,if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran
-            from " . $this->tbl_name . " 
-            inner join mstr_customer on mstr_customer.id_pk_cust = " . $this->tbl_name . ".id_fk_customer
-            inner join mstr_user on mstr_user.id_pk_user = " . $this->tbl_name . ".id_last_modified
-            where penj_status != ? and id_fk_cabang = ? " . $search_query . "  
-            order by " . $order_by . " " . $order_direction . " 
-            limit 20 offset " . ($page - 1) * $data_per_page;
+        select * from (
+          select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
+          from mstr_penjualan
+          inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+          inner join tbl_penjualan_pembayaran on tbl_penjualan_pembayaran.id_fk_penjualan = mstr_penjualan.id_pk_penjualan where tbl_penjualan_pembayaran.penjualan_pmbyrn_status != 'nonaktif'
+          group by id_pk_penjualan
+        ) as a 
+        where id_fk_cabang = ? " . $search_query . "  
+        order by " . $order_by . " " . $order_direction . " 
+        limit 20 offset " . ($page - 1) * $data_per_page;
       $args = array(
-        "nonaktif", $this->id_fk_cabang
+        $this->id_fk_cabang
       );
       $result["data"] = executequery($query, $args);
       $query = "
-            select id_pk_penjualan
-            from " . $this->tbl_name . " 
-            inner join mstr_customer on mstr_customer.id_pk_cust = " . $this->tbl_name . ".id_fk_customer
-            inner join mstr_user on mstr_user.id_pk_user = " . $this->tbl_name . ".id_last_modified
-            where penj_status != ? and id_fk_cabang = ? " . $search_query . "  
-            order by " . $order_by . " " . $order_direction;
+      select * from (
+        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
+        from mstr_penjualan
+        inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        inner join tbl_penjualan_pembayaran on tbl_penjualan_pembayaran.id_fk_penjualan = mstr_penjualan.id_pk_penjualan where tbl_penjualan_pembayaran.penjualan_pmbyrn_status != 'nonaktif'
+        group by id_pk_penjualan
+      ) as a 
+      where id_fk_cabang = ? " . $search_query;
       $result["total_data"] = executequery($query, $args)->num_rows();
     } else {
       $query = "
-            select cust_email,id_pk_penjualan,penj_nomor,penj_nominal,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified,if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran
-            from " . $this->tbl_name . " 
-            inner join mstr_customer on mstr_customer.id_pk_cust = " . $this->tbl_name . ".id_fk_customer
-            inner join mstr_user on mstr_user.id_pk_user = " . $this->tbl_name . ".id_last_modified
-            where penj_status != ? and id_fk_cabang = ? and penj_tipe_pembayaran = ? " . $search_query . "  
-            order by " . $order_by . " " . $order_direction . " 
-            limit 20 offset " . ($page - 1) * $data_per_page;
+      select * from (
+        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
+        from mstr_penjualan
+        inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        inner join tbl_penjualan_pembayaran on tbl_penjualan_pembayaran.id_fk_penjualan = mstr_penjualan.id_pk_penjualan where tbl_penjualan_pembayaran.penjualan_pmbyrn_status != 'nonaktif'
+        group by id_pk_penjualan
+      ) as a 
+      where id_fk_cabang = ? and list_jenis_pembayaran like '%".$this->penj_tipe_pembayaran."%'" . $search_query . "  
+      order by " . $order_by . " " . $order_direction . " 
+      limit 20 offset " . ($page - 1) * $data_per_page;
       $args = array(
-        "nonaktif", $this->id_fk_cabang, $this->penj_tipe_pembayaran
+        $this->id_fk_cabang, 
       );
       $result["data"] = executequery($query, $args);
 
       $query = "
-            select id_pk_penjualan
-            from " . $this->tbl_name . " 
-            inner join mstr_customer on mstr_customer.id_pk_cust = " . $this->tbl_name . ".id_fk_customer
-            inner join mstr_user on mstr_user.id_pk_user = " . $this->tbl_name . ".id_last_modified
-            where penj_status != ? and id_fk_cabang = ? and penj_tipe_pembayaran = ? " . $search_query . "  
-            order by " . $order_by . " " . $order_direction;
+      select * from (
+        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
+        from mstr_penjualan
+        inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        inner join tbl_penjualan_pembayaran on tbl_penjualan_pembayaran.id_fk_penjualan = mstr_penjualan.id_pk_penjualan where tbl_penjualan_pembayaran.penjualan_pmbyrn_status != 'nonaktif'
+        group by id_pk_penjualan
+      ) as a 
+      where id_fk_cabang = ? and list_jenis_pembayaran like '%".$this->penj_tipe_pembayaran."%'" . $search_query;
       $result["total_data"] = executequery($query, $args)->num_rows();
     }
+    #echo $this->db->last_query();
     return $result;
   }
   public function insert()
@@ -591,9 +610,9 @@ class M_penjualan extends ci_model
   {
     $query = "
         select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified
-        from " . $this->tbl_name . " 
-        inner join mstr_customer on mstr_customer.id_pk_cust = " . $this->tbl_name . ".id_fk_customer
-        inner join mstr_user on mstr_user.id_pk_user = " . $this->tbl_name . ".id_last_modified
+        from mstr_penjualan 
+        inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        inner join mstr_user on mstr_user.id_pk_user = mstr_penjualan.id_last_modified
         where penj_status != ? and id_fk_cabang = ?";
     $args = array(
       "nonaktif", $this->session->id_cabang

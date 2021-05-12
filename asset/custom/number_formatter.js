@@ -5,6 +5,7 @@ function format_number(number = false) {
     number[0] = number[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, thousand_separator);
     return number.join(","); //pecah perseribu
   }
+  return 0;
 }
 function reformat_number(number) {
   number = number.split(".").join("");
