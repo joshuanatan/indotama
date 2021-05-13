@@ -143,12 +143,15 @@ $notif_data = array(
               case "lunas":
                 html_status_pembayaran += `<td class = 'align-middle text-center'><span class="badge badge-success align-top">${respond["content"][a]["status_pembayaran"].toUpperCase()}</span></td>`;
                 break;
+              case "lebih bayar":
+                html_status_pembayaran += `<td class = 'align-middle text-center'><span class="badge badge-light align-top">${respond["content"][a]["status_pembayaran"].toUpperCase()}</span></td>`;
+                break;
               default:
                 html_status_pembayaran += `<td class = 'align-middle text-center'><span class="badge badge-danger align-top">${respond["content"][a]["status_pembayaran"].toUpperCase()}</span></td>`;
                 break;
             }
             var html_durasi_pembayaran = "";
-            if(respond["content"][a]["status_pembayaran"].toLowerCase() == "lunas" || respond["content"][a]["penj_status"] == "selesai"){
+            if(respond["content"][a]["status_pembayaran"].toLowerCase() != "belum lunas" ||  respond["content"][a]["penj_status"] == "selesai"){
               html_durasi_pembayaran += `<td class = 'align-middle text-center'>-</td>`;
             } 
             else{

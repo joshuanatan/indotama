@@ -25,7 +25,7 @@ class M_penjualan extends ci_model
   private $thn_control;
   /*
     drop view if exists v_penjualan;
-    create view v_penjualan as select cust_email,id_pk_penjualan,penj_nomor,penj_nominal,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified,if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas','Belum Lunash'),if(penj_nominal = penj_nominal_byr,'Lunas','Belum Lunas')) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran
+    create view v_penjualan as select cust_email,id_pk_penjualan,penj_nomor,penj_nominal,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified,if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas',if(cast(penj_nominal*1.1 as unsigned) > penj_nominal_byr,'Belum Lunas','Lebih Bayar')),if(penj_nominal = penj_nominal_byr,'Lunas',if(penj_nominal > penj_nominal_byr,'Belum Lunas','Lebih Bayar'))) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran
     from mstr_penjualan
     inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
     inner join mstr_user on mstr_user.id_pk_user = mstr_penjualan.id_last_modified
@@ -90,7 +90,7 @@ class M_penjualan extends ci_model
   {
     $query = "
       select * from (
-        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas','Belum Lunash'),if(penj_nominal = penj_nominal_byr,'Lunas','Belum Lunas')) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal, penj_on_marketplace, penj_on_no_resi, penj_on_kurir
+        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas',if(cast(penj_nominal*1.1 as unsigned) > penj_nominal_byr,'Belum Lunas','Lebih Bayar')),if(penj_nominal = penj_nominal_byr,'Lunas',if(penj_nominal > penj_nominal_byr,'Belum Lunas','Lebih Bayar'))) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal, penj_on_marketplace, penj_on_no_resi, penj_on_kurir
         from mstr_penjualan
         inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
         inner join tbl_penjualan_pembayaran on tbl_penjualan_pembayaran.id_fk_penjualan = mstr_penjualan.id_pk_penjualan where tbl_penjualan_pembayaran.
@@ -216,7 +216,7 @@ class M_penjualan extends ci_model
     if ($this->penj_tipe_pembayaran == "" || strtolower($this->penj_tipe_pembayaran) == "all") {
       $query = "
         select * from (
-          select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas','Belum Lunash'),if(penj_nominal = penj_nominal_byr,'Lunas','Belum Lunas')) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
+          select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas',if(cast(penj_nominal*1.1 as unsigned) > penj_nominal_byr,'Belum Lunas','Lebih Bayar')),if(penj_nominal = penj_nominal_byr,'Lunas',if(penj_nominal > penj_nominal_byr,'Belum Lunas','Lebih Bayar'))) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
           from mstr_penjualan
           inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
           inner join tbl_penjualan_online on tbl_penjualan_online.id_fk_penjualan = mstr_penjualan.id_pk_penjualan 
@@ -232,7 +232,7 @@ class M_penjualan extends ci_model
       $result["data"] = executequery($query, $args);
       $query = "
       select * from (
-        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas','Belum Lunash'),if(penj_nominal = penj_nominal_byr,'Lunas','Belum Lunas')) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
+        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas',if(cast(penj_nominal*1.1 as unsigned) > penj_nominal_byr,'Belum Lunas','Lebih Bayar')),if(penj_nominal = penj_nominal_byr,'Lunas',if(penj_nominal > penj_nominal_byr,'Belum Lunas','Lebih Bayar'))) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
         from mstr_penjualan
         inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
         inner join tbl_penjualan_online on tbl_penjualan_online.id_fk_penjualan = mstr_penjualan.id_pk_penjualan 
@@ -244,7 +244,7 @@ class M_penjualan extends ci_model
     } else {
       $query = "
       select * from (
-        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas','Belum Lunash'),if(penj_nominal = penj_nominal_byr,'Lunas','Belum Lunas')) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
+        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas',if(cast(penj_nominal*1.1 as unsigned) > penj_nominal_byr,'Belum Lunas','Lebih Bayar')),if(penj_nominal = penj_nominal_byr,'Lunas',if(penj_nominal > penj_nominal_byr,'Belum Lunas','Lebih Bayar'))) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
         from mstr_penjualan
         inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
         inner join tbl_penjualan_online on tbl_penjualan_online.id_fk_penjualan = mstr_penjualan.id_pk_penjualan 
@@ -261,7 +261,7 @@ class M_penjualan extends ci_model
 
       $query = "
       select * from (
-        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas','Belum Lunash'),if(penj_nominal = penj_nominal_byr,'Lunas','Belum Lunas')) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
+        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas',if(cast(penj_nominal*1.1 as unsigned) > penj_nominal_byr,'Belum Lunas','Lebih Bayar')),if(penj_nominal = penj_nominal_byr,'Lunas',if(penj_nominal > penj_nominal_byr,'Belum Lunas','Lebih Bayar'))) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
         from mstr_penjualan
         inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
         inner join tbl_penjualan_online on tbl_penjualan_online.id_fk_penjualan = mstr_penjualan.id_pk_penjualan 
