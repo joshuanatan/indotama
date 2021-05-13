@@ -207,7 +207,10 @@ class M_penjualan extends ci_model
           penj_status like '%" . $search_key . "%' or
           penj_jenis like '%" . $search_key . "%' or
           penj_tipe_pembayaran like '%" . $search_key . "%' or
-          user_last_modified like '%" . $search_key . "%'
+          selisih_tanggal like '%" . $search_key . "%' or
+          list_jenis_pembayaran like '%" . $search_key . "%' or
+          status_pembayaran like '%" . $search_key . "%' or
+          penj_nominal like '%" . $search_key . "%'
       )";
     }
     if ($this->penj_tipe_pembayaran == "" || strtolower($this->penj_tipe_pembayaran) == "all") {
