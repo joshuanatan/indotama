@@ -213,6 +213,7 @@ class Penjualan extends CI_Controller
       $this->load->model("m_brg_penjualan");
       $this->m_brg_penjualan->set_delete($id_pk_brg_penjualan);
       if ($this->m_brg_penjualan->delete()) {
+        $response["status"] = true;
         $response["msg"] = "Data is deleted from database";
       } else {
         $response["status"] = "ERROR";
@@ -232,6 +233,7 @@ class Penjualan extends CI_Controller
       $this->load->model("m_tambahan_penjualan");
       $this->m_tambahan_penjualan->set_delete($id_pk_tmbhn);
       if ($this->m_tambahan_penjualan->delete()) {
+        $response["status"] = true;
         $response["msg"] = "Data is deleted from database";
       } else {
         $response["status"] = "ERROR";
@@ -251,6 +253,7 @@ class Penjualan extends CI_Controller
       $this->load->model("m_penjualan_pembayaran");
       $this->m_penjualan_pembayaran->set_delete($id_pk_penjualan_pembayaran);
       if ($this->m_penjualan_pembayaran->delete()) {
+        $response["status"] = true;
         $response["msg"] = "Data is deleted from database";
       } else {
         $response["status"] = "ERROR";

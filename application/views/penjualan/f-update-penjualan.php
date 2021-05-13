@@ -206,7 +206,7 @@ $notif_data = array(
 
   function add_brg_jual_row() {
     var html = `
-      <tr class = 'add_brg_jual_row'>
+      <tr class = 'add_brg_jual_row brg_jual_row'>
         <td id = 'row${brg_jual_row}'>
           <input name = 'check[]' value = ${brg_jual_row} type = 'hidden'>
           <input type = 'text' list = 'datalist_barang_cabang_jualan' onchange = 'load_harga_barang(${brg_jual_row})' id = 'brg${brg_jual_row}' name = 'brg${brg_jual_row}' class = 'form-control'>
@@ -252,7 +252,7 @@ $notif_data = array(
 
   function add_tambahan_jual_row() {
     var html = `
-        <tr class = 'add_tambahan_jual_row'>
+        <tr class = 'add_tambahan_jual_row tambahan_jual_row'>
             <td>
                 <input name = 'tambahan[]' value = ${tambahan_jual_row} type = 'hidden'>
                 <input name = 'tmbhn${tambahan_jual_row}' type = 'text' class = 'form-control'>
@@ -372,6 +372,8 @@ $notif_data = array(
   var total_price_global = 0;
   function count_total_price() {
     var total = 0;
+    var brg_jual_row = $(".brg_jual_row").length; 
+    var tambahan_jual_row = $(".tambahan_jual_row").length; 
     for (var a = 0; a < brg_jual_row; a++) {
       var qty = deformatting_func($("input[name='brg_qty" + a + "']").val().split(" ")[0]);
       var price = deformatting_func($("input[name='brg_price" + a + "']").val().split(" ")[0]);
@@ -451,9 +453,10 @@ $notif_data = array(
 </script>
 <script>
   function close_window() {
-    if (confirm("Close Window?")) {
-      close();
+    if (confirm("Apakah anda akan menyimpan perubahan? (jika ada)")) {
+      update_func();
     }
+    close();
   }
 </script>
 <div class="modal fade" id="custom_produk_modal">
@@ -556,9 +559,9 @@ function load_edit_content(){
   var html = "";
   for(var a = 0; a<content["item"].length; a++){
     html += `
-      <tr class = 'add_brg_jual_row'>
+      <tr class = 'edit_brg_jual_row brg_jual_row' id = "edit_brg_jual_row${brg_jual_row}">
         <input name = 'edit_check[]' value = ${brg_jual_row} type = 'hidden'>
-        <input type = "hidden" value = "${content["item"][a]["id_pk_brg_penjualan"]}" name = "id_pk_brg_penjualan${brg_jual_row}">
+        <input type = "hidden" value = "${content["item"][a]["id_pk_brg_penjualan"]}" id = "id_pk_brg_penjualan${brg_jual_row}" name = "id_pk_brg_penjualan${brg_jual_row}">
         <td id = 'row${brg_jual_row}'>
           <input type = 'text' list = 'datalist_barang_cabang_jualan' onchange = 'load_harga_barang(${brg_jual_row})' id = 'brg${brg_jual_row}' name = 'brg${brg_jual_row}' class = 'form-control' value = "${content["item"][a]["brg_nama"]}">
           <a href = '<?php echo base_url(); ?>toko/brg_cabang' class = 'btn btn-primary btn-sm col-lg-12' target = '_blank'>Tambah Barang Cabang</a>
@@ -593,7 +596,7 @@ function load_edit_content(){
           <input type = 'text' name = 'brg_notes${brg_jual_row}' class = 'form-control' value = "${content["item"][a]["brg_penjualan_note"]}">
         </td>
         <td>
-          <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_brg_penjualan()'></i>
+          <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_brg_penjualan(${brg_jual_row})'></i>
         </td>
       </tr>`;
     brg_jual_row++;
@@ -602,11 +605,11 @@ function load_edit_content(){
   var html = "";
   for(var a = 0; a<content["tambahan"].length; a++){
     html += `
-      <tr class = 'add_tambahan_jual_row'>
+      <tr class = 'edit_tambahan_jual_row tambahan_jual_row' id = "edit_tambahan_jual_row${tambahan_jual_row}">
         <td>
           <input name = 'edit_tambahan[]' value = ${tambahan_jual_row} type = 'hidden'>
-          <input type = "hidden" name = "id_pk_tmbhn${tambahan_jual_row}" value = "${content["tambahan"][a]["id_pk_tmbhn"]}">
-          <input name = 'tmbhn${tambahan_jual_row}' type = 'text' class = 'form-control' value = "${content["tambahan"][a]["tmbhn"]}">
+          <input type = "hidden" id = "id_pk_tmbhn${tambahan_jual_row}" name = "id_pk_tmbhn${tambahan_jual_row}" value = "${content["tambahan"][a]["id_pk_tmbhn"]}">
+          <input name = 'tmbhn${tambahan_jual_row}' id = 'tmbhn${tambahan_jual_row}' type = 'text' class = 'form-control' value = "${content["tambahan"][a]["tmbhn"]}">
         </td>
         <td>
           <input name = 'tmbhn_jumlah${tambahan_jual_row}' type = 'text' class = 'form-control nf-input' value = "${format_number(content["tambahan"][a]["tmbhn_jumlah"])} ${format_number(content["tambahan"][a]["tmbhn_satuan"])}">
@@ -621,7 +624,7 @@ function load_edit_content(){
           <input name = 'tmbhn_notes${tambahan_jual_row}' type = 'text' class = 'form-control' value = "${content["tambahan"][a]["tmbhn_notes"]}">
         </td>
         <td>
-          <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_tambahan()'></i>
+          <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_tambahan(${tambahan_jual_row})'></i>
         </td>
       </tr>`;
     tambahan_jual_row++;
@@ -631,7 +634,7 @@ function load_edit_content(){
   var html = "";
   for(var a = 0; a<content["pembayaran"].length; a++){
     html = `
-      <tr class = 'add_pembayaran_row'>
+      <tr class = 'edit_pembayaran_row' id = "edit_pembayaran_row${pembayaran_row}">
         <input name = 'edit_pembayaran[]' value = ${pembayaran_row} type = 'hidden'>
         <input type = "hidden" id = "id_pk_penjualan_pembayaran${pembayaran_row}" name = "id_pk_penjualan_pembayaran${pembayaran_row}">
         <td id = 'row${pembayaran_row}'>
@@ -669,7 +672,7 @@ function load_edit_content(){
           <input type = 'date' name = 'pmbyrn_dateline${pembayaran_row}' id = 'pmbyrn_dateline${pembayaran_row}' class = 'form-control'>
         </td>
         <td>
-          <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_pembayaran()'></i>
+          <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_pembayaran(${pembayaran_row})'></i>
         </td>
       </tr>`;
     pembayaran_row++;
@@ -684,5 +687,59 @@ function load_edit_content(){
     $(`#pmbyrn_dateline${a}`).val(content["pembayaran"][a]["penjualan_pmbyrn_dateline"].split(" ")[0]);
   }
   
+}
+function delete_brg_penjualan(row){
+  var id_pk_brg_penjualan = $(`#id_pk_brg_penjualan${row}`).val();
+  var brg = $(`#brg${row}`).val();
+  if(confirm(`Apakah anda yakin akan menghapus data ${brg}?`)){
+    $.ajax({
+      url:`<?php echo base_url();?>ws/penjualan/remove_brg_penjualan?id=${id_pk_brg_penjualan}`,
+      type:"DELETE",
+      dataType:"JSON",
+      success:function(respond){
+        if(respond["status"]){
+          alert("Data barang penjualan telah dihapus");
+          $(`#edit_brg_jual_row${row}`).remove();
+          count_total_price();
+        }
+      }
+    })
+  }
+}
+function delete_tambahan(row){
+  var id_pk_tmbhn = $(`#id_pk_tmbhn${row}`).val();
+  var tmbhn = $(`#tmbhn${row}`).val();
+  if(confirm(`Apakah anda yakin akan menghapus data ${tmbhn}?`)){
+    $.ajax({
+      url:`<?php echo base_url();?>ws/penjualan/remove_tmbhn_penjualan?id=${id_pk_tmbhn}`,
+      type:"DELETE",
+      dataType:"JSON",
+      success:function(respond){
+        if(respond["status"]){
+          alert("Data tambahan penjualan telah dihapus");
+          $(`#edit_tambahan_jual_row${row}`).remove();
+          count_total_price();
+        }
+      }
+    })
+  }
+}
+function delete_pembayaran(row){
+  var id_pk_penjualan_pembayaran = $(`#id_pk_penjualan_pembayaran${row}`).val();
+  var pmbyrn_nama = $(`#pmbyrn_nama${row}`).val();
+  if(confirm(`Apakah anda yakin akan menghapus data ${pmbyrn_nama}?`)){
+    $.ajax({
+      url:`<?php echo base_url();?>ws/penjualan/remove_pembayaran_penjualan?id=${id_pk_penjualan_pembayaran}`,
+      type:"DELETE",
+      dataType:"JSON",
+      success:function(respond){
+        if(respond["status"]){
+          alert("Data pembayaran penjualan telah dihapus");
+          $(`#edit_pembayaran_row${row}`).remove();
+          count_total_price();
+        }
+      }
+    })
+  }
 }
 </script>
