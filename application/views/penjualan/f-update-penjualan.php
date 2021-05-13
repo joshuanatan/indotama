@@ -1,8 +1,7 @@
 <?php
-$active_jmlh_markup = false;
 $page_title = "Penjualan";
 $breadcrumb = array(
-  "Penjualan", "Ubah Penjualan", $detail[0]["penj_nomor"]
+  "Penjualan", "Tambah Penjualan"
 );
 $notif_data = array(
   "page_title" => $page_title
@@ -11,267 +10,180 @@ $notif_data = array(
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <?php $this->load->view('req/mm_css.php'); ?>
-</head>
+  <head>
+    <?php $this->load->view('req/mm_css.php'); ?>
+  </head>
 
-<body>
-  <div class="preloader-it">
-    <div class="la-anim-1"></div>
-  </div>
-  <div class="wrapper theme-1-active pimary-color-pink">
-    <?php $this->load->view('req/mm_menubar.php'); ?>
-    <div class="page-wrapper">
-      <?php $this->load->view('_notification/register_success', $notif_data); ?>
-      <?php $this->load->view('_notification/update_success', $notif_data); ?>
-      <?php $this->load->view('_notification/delete_success', $notif_data); ?>
-      <?php $this->load->view('_notification/register_error', $notif_data); ?>
-      <?php $this->load->view('_notification/update_error', $notif_data); ?>
-      <?php $this->load->view('_notification/delete_error', $notif_data); ?>
-      <div class="container-fluid">
-        <div class="row mt-20">
-          <div class="col-lg-12 col-sm-12">
-            <div class="panel panel-default card-view">
-              <div class="panel-heading bg-gradient">
-                <div class="pull-left">
-                  <h6 class="panel-title txt-light"><?php echo ucwords($page_title); ?></h6>
+  <body>
+    <div class="preloader-it">
+      <div class="la-anim-1"></div>
+    </div>
+    <div class="wrapper theme-1-active pimary-color-pink">
+      <?php $this->load->view('req/mm_menubar.php'); ?>
+      <div class="page-wrapper">
+        <?php $this->load->view('_notification/register_success', $notif_data); ?>
+        <?php $this->load->view('_notification/register_error', $notif_data); ?>
+        <div class="alert alert-success alert-dismissable col-lg-5 pull-right position-fixed" id="notif_register_success_cust" style="position: fixed; top:30%;right:5%;z-index:100">
+          <i class="zmdi zmdi-check pr-15 pull-left"></i>
+          <p class="pull-left">Register <?php echo ucwords($page_title) ?> berhasil!</p>
+          <div class="clearfix"></div>
+        </div>
+        <div class="container-fluid">
+          <div class="row mt-20">
+            <div class="col-lg-12 col-sm-12">
+              <div class="panel panel-default card-view">
+                <div class="panel-heading bg-gradient">
+                  <div class="pull-left">
+                    <h6 class="panel-title txt-light"><?php echo ucwords($page_title); ?></h6>
+                  </div>
+                  <div class="clearfix"></div>
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Home</a></li>
+                    <?php for ($a = 0; $a < count($breadcrumb); $a++) : ?>
+                      <?php if ($a + 1 != count($breadcrumb)) : ?>
+                        <li class="breadcrumb-item"><?php echo ucwords($breadcrumb[$a]); ?></a></li>
+                      <?php else : ?>
+                        <li class="breadcrumb-item active"><?php echo ucwords($breadcrumb[$a]); ?></li>
+                      <?php endif; ?>
+                    <?php endfor; ?>
+                  </ol>
                 </div>
-                <div class="clearfix"></div>
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item">Home</a></li>
-                  <?php for ($a = 0; $a < count($breadcrumb); $a++) : ?>
-                    <?php if ($a + 1 != count($breadcrumb)) : ?>
-                      <li class="breadcrumb-item"><?php echo ucwords($breadcrumb[$a]); ?></a></li>
-                    <?php else : ?>
-                      <li class="breadcrumb-item active"><?php echo ucwords($breadcrumb[$a]); ?></li>
-                    <?php endif; ?>
-                  <?php endfor; ?>
-                </ol>
-              </div>
-              <div class="panel-wrapper collapse in">
-                <div class="panel-body" style="background-color:white">
-                  <div class="col-lg-12">
-                    <form id="update_form" method="POST">
-                      <input type="hidden" name="id_penjualan" value="<?php echo $detail[0]["id_pk_penjualan"]; ?>">
-                      <div class="form-group col-lg-6">
-                        <h5>Nomor Penjualan</h5>
-                        <input readonly type="text" class="form-control" required name="nomor" value="<?php echo $detail[0]["penj_nomor"]; ?>">
-                      </div>
-                      <div class="form-group col-lg-6">
-                        <h5>Customer</h5>
-                        <input type='text' class="form-control" list="datalist_customer" required name="customer" value="<?php echo $detail[0]["cust_perusahaan"]; ?>">
-                      </div>
-                      <div class="form-group col-lg-6">
-                        <h5>Tanggal Penjualan</h5>
-                        <input type="date" class="form-control" required name="tgl" value='<?php echo explode(" ", $detail[0]["penj_tgl"])[0]; ?>'>
-                      </div>
-                      <div class="form-group col-lg-6">
-                        <h5>Dateline</h5>
-                        <input type="date" class="form-control" required name="dateline" value='<?php echo explode(" ", $detail[0]["penj_dateline_tgl"])[0]; ?>'>
-                      </div>
-                      <div class="form-group col-lg-6">
-                        <h5>Jenis Penjualan</h5>
-                        <input checked type="radio" name="jenis_penjualan" value="OFFLINE" onclick="$('#online_info_container').hide()">&nbsp;OFFLINE
-                        &nbsp;&nbsp;
-                        <input <?php if (strtolower($detail[0]["penj_jenis"]) == "online") echo "checked"; ?> type="radio" name="jenis_penjualan" value="ONLINE" onclick="$('#online_info_container').show()">&nbsp;ONLINE
-                      </div>
-                      <div class="form-group col-lg-6" style="display:none">
-                        <h5>Jenis Pembayaran</h5>
-                        <input checked type="radio" name="jenis_pembayaran" value="FULL PAYMENT">&nbsp;FULL PAYMENT
-                        &nbsp;&nbsp;
-                        <input type="radio" <?php if (strtoupper($detail[0]["penj_tipe_pembayaran"]) == "DP") echo 'checked'; ?> name="jenis_pembayaran" value="DP">&nbsp;DP
-                        &nbsp;&nbsp;
-                        <input type="radio" <?php if (strtoupper($detail[0]["penj_tipe_pembayaran"]) == "TEMPO") echo 'checked'; ?> name="jenis_pembayaran" value="TEMPO">&nbsp;TEMPO
-                        &nbsp;&nbsp;
-                        <input type="radio" <?php if (strtoupper($detail[0]["penj_tipe_pembayaran"]) == "KEEP") echo 'checked'; ?> name="jenis_pembayaran" value="KEEP">&nbsp;KEEP
-                      </div>
-                      <div id="online_info_container" style="display:none">
-                        <div class="clearfix"></div>
-                        <div class="form-group col-lg-6">
-                          <h5>Marketplace</h5>
-                          <select id="marketplace" class="form-control" id="marketplace" required name="marketplace"></select>
+                <div class="panel-wrapper collapse in">
+                  <div class="panel-body">
+                    <div class="col-lg-12">
+                      <form id="update_form" method="POST">
+                        <input type = "hidden" required name = "id_pk_penjualan" id = "id_pk_penjualan">
+                        <div class="form-group col-lg-12">
+                          <h5>Nomor Penjualan</h5>
+                          <input required type='text' class="form-control" required name="no_penjualan" id = "no_penjualan">
                         </div>
-                        <div class="clearfix"></div>
+                        <div class="form-group col-lg-12">
+                          <h5>Customer</h5>
+                          <input required type='text' class="form-control" list="datalist_customer_toko" required name="customer" id = "customer">
+                        </div>
+                        <div class="form-group col-lg-6">
+                          <h5>Tanggal Penjualan</h5>
+                          <input required type="date" class="form-control" required name="tgl" id = "tgl">
+                        </div>
+                        <div class="form-group col-lg-6">
+                          <h5>Dateline</h5>
+                          <input required type="date" class="form-control" required name="dateline" id = "dateline">
+                        </div>
                         <div class="form-group col-lg-6">
                           <h5>Kurir</h5>
-                          <input type="text" class="form-control" id="kurir" required value="" name="kurir">
+                          <input type required="text" class="form-control" required name="kurir" id = "kurir">
                         </div>
-                        <div class="clearfix"></div>
                         <div class="form-group col-lg-6">
                           <h5>No Resi</h5>
-                          <input type="text" class="form-control" id="no_resi" required value="" name="no_resi">
+                          <input type required="text" class="form-control" required name="no_resi" id = "no_resi">
                         </div>
-                      </div>
-                      <div class="form-group col-lg-12">
-                        <h5>Custom</h5>
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#custom_produk_modal">Custom Produk</button>
-                      </div>
-                      <div class="form-group col-lg-12">
-                        <h5>Produk Custom</h5>
-                        <table class="table table-striped table-bordered" style="width:50%">
-                          <thead>
-                            <th>Barang Awal</th>
-                            <th>Barang Pindah</th>
-                            <th>Jumlah</th>
-                          </thead>
-                          <tbody id="daftar_brg_custom_container">
-                            <?php for ($a = 0; $a < count($brg_custom); $a++) : ?>
-                              <tr>
-                                <td><?php echo $brg_custom[$a]["brg_awal"]; ?></td>
-                                <td><?php echo $brg_custom[$a]["brg_akhir"]; ?></td>
-                                <td><?php echo $brg_custom[$a]["brg_pindah_qty"]; ?></td>
-                              </tr>
-                            <?php endfor; ?>
-                          </tbody>
-                        </table>
-                      </div>
+                        <div class="form-group col-lg-6">
+                          <h5>Jenis Penjualan</h5>
+                          <input checked type="radio" name="jenis_penjualan" value="OFFLINE" onclick="$('#online_info_container').hide()">&nbsp;OFFLINE
+                          &nbsp;&nbsp;
+                          <input type="radio" name="jenis_penjualan" value="ONLINE" onclick="open_online_container()">&nbsp;ONLINE
+                        </div>
+                        <div id="online_info_container" style="display:none">
+                          <div class="form-group col-lg-6">
+                            <h5>Marketplace</h5>
+                            <select required class="form-control" required name="marketplace" id="marketplace"></select>
+                          </div>
+                        </div>
+                        <div class="form-group col-lg-12">
+                          <h5>Custom</h5>
+                          <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#custom_produk_modal">Custom Produk</button>
+                        </div>
+                        <div class="form-group col-lg-12">
+                          <h5>Produk Custom</h5>
+                          <table class="table table-striped table-bordered" style="width:50%">
+                            <thead>
+                              <th>Barang Awal</th>
+                              <th>Barang Pindah</th>
+                              <th>Jumlah</th>
+                            </thead>
+                            <tbody id="daftar_brg_custom_container">
+                            </tbody>
+                          </table>
+                        </div>
 
-                      <div class="form-group col-lg-12">
-                        <h5>Item Penjualan</h5>
-                        <table class="table table-striped table-bordered">
-                          <thead>
-                            <th>Barang</th>
-                            <th>Jumlah</th>
-                            <?php if ($active_jmlh_markup) : ?>
-                              <th>Jumlah Markup</th>
-                            <?php endif; ?>
-                            <th>Harga</th>
-                            <th>Harga Jual</th>
-                            <th>Harga Final</th>
-                            <th>Notes</th>
-                            <th>Action</th>
-                          </thead>
-                          <tbody id="daftar_brg_jual_add">
-                            <?php for ($a = 0; $a < count($item); $a++) : ?>
-                              <tr class='add_brg_jual_row_edit' id="add_brg_jual_row_edit<?php echo $a; ?>">
-                                <td id='row<?php echo $a; ?>'>
-                                  <input type='hidden' id='id_brg_jual_edit<?php echo $a; ?>' name='id_brg_jual_edit<?php echo $a; ?>' value="<?php echo $item[$a]["id_pk_brg_penjualan"]; ?>">
-                                  <input name='check_edit[]' value="<?php echo $a; ?>" type='hidden'>
-                                  <input type='text' value="<?php echo $item[$a]["brg_nama"]; ?>" list='datalist_barang_cabang_jualan' name='brg_edit<?php echo $a; ?>' class='form-control'>
-                                  <a href='<?php echo base_url(); ?>toko/brg_cabang' class='btn btn-primary btn-sm col-lg-12' target='_blank'>Tambah Barang Cabang</a>
-                                </td>
-                                <?php if ($active_jmlh_markup) : ?>
-                                  <td><input type='text' value="<?php echo number_format($item[$a]["brg_penjualan_qty_real"], 2, ",", ".") . " " . $item[$a]["brg_penjualan_satuan_real"]; ?>" name='brg_qty_real_edit<?php echo $a; ?>' class='form-control nf-input'></td>
-                                <?php else : ?>
-                                  <input type='hidden' value="0" name='brg_qty_real_edit<?php echo $a; ?>'>
-                                <?php endif; ?>
-                                <td><input type='text' value="<?php echo number_format($item[$a]["brg_penjualan_qty"], 2, ",", ".") . " " . $item[$a]["brg_penjualan_satuan"]; ?>" name='brg_qty_edit<?php echo $a; ?>' class='form-control nf-input'></td>
-                                <td><input type='text' value="<?php echo number_format($item[$a]["brg_harga"], 0, ",", "."); ?>" class='form-control nf-input' readonly></td>
-                                <td><input type='text' value="<?php echo number_format($item[$a]["brg_penjualan_harga"], 0, ",", "."); ?>" name='brg_price_edit<?php echo $a; ?>' class='form-control nf-input'></td>
-                                <td><input readonly type='text' value="<?php echo number_format($item[$a]["brg_penjualan_harga"] * $item[$a]["brg_penjualan_qty"], 2, ",", "."); ?>" id='harga_brg_final_edit<?php echo $a; ?>' class='form-control'></td>
-                                <td><input type='text' value="<?php echo $item[$a]["brg_penjualan_note"]; ?>" name='brg_notes_edit<?php echo $a; ?>' class='form-control'></td>
-                                <td><i style='cursor:pointer;font-size:large;margin-left:10px' class='text-danger md-delete' onclick='delete_brg_penjualan(<?php echo $a; ?>);'></i></td>
-                              </tr>
-                            <?php endfor; ?>
-                            <tr id="add_brg_jual_but_container">
-                              <td colspan=8><button type="button" class="btn btn-primary btn-sm col-lg-12" onclick="add_brg_jual_row()">Tambah Barang Penjualan</button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div class="form-group col-lg-12">
-                        <h5>Tambahan Penjualan</h5>
-                        <table class="table table-striped table-bordered">
-                          <thead>
-                            <th>Tambahan</th>
-                            <th>Jumlah</th>
-                            <th>Harga</th>
-                            <th>Harga Final</th>
-                            <th>Notes</th>
-                            <th>Action</th>
-                          </thead>
-                          <tbody id="daftar_tambahan_jual_add">
-                            <?php for ($a = 0; $a < count($tambahan); $a++) : ?>
-                              <tr class='add_tambahan_jual_row_edit' id="add_tambahan_jual_row_edit<?php echo $a; ?>">
-                                <td>
-                                  <input name='tambahan_edit[]' value='<?php echo $a; ?>' type='hidden'>
-                                  <input id='id_tmbhn_edit<?php echo $a; ?>' name='id_tmbhn_edit<?php echo $a; ?>' value='<?php echo $tambahan[$a]["id_pk_tmbhn"]; ?>' type='hidden'>
-                                  <input name='tmbhn_edit<?php echo $a; ?>' value="<?php echo $tambahan[$a]["tmbhn"]; ?>" type='text' class='form-control'>
-                                </td>
-                                <td>
-                                  <input name='tmbhn_jumlah_edit<?php echo $a; ?>' value="<?php echo number_format($tambahan[$a]["tmbhn_jumlah"], 2, ",", ".") . " " . $tambahan[$a]["tmbhn_satuan"]; ?>" type='text' class='form-control nf-input'>
-                                </td>
-                                <td>
-                                  <input name='tmbhn_harga_edit<?php echo $a; ?>' value="<?php echo number_format($tambahan[$a]["tmbhn_harga"], 0, ",", "."); ?>" type='text' class='form-control nf-input'>
-                                </td>
-                                <td>
-                                  <input readonly value="<?php echo number_format($tambahan[$a]["tmbhn_harga"] * $tambahan[$a]["tmbhn_jumlah"], 0, ",", "."); ?>" type='text' id='harga_tambahan_final_edit<?php echo $a; ?>' class='form-control'>
-                                </td>
-                                <td>
-                                  <input name='tmbhn_notes_edit<?php echo $a; ?>' value="<?php echo $tambahan[$a]["tmbhn_notes"]; ?>" type='text' class='form-control'>
-                                </td>
-                                <td>
-                                  <i style='cursor:pointer;font-size:large;margin-left:10px' class='text-danger md-delete' onclick='delete_tmbhn_penjualan(<?php echo $a; ?>);'></i>
-                                </td>
-                              </tr>
-                            <?php endfor; ?>
-                            <tr id="add_tambahan_jual_but_container">
-                              <td colspan=6><button type="button" class="btn btn-primary btn-sm col-lg-12" onclick="add_tambahan_jual_row()">Tambah Tambahan Penjualan</button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div class="form-group col-lg-12">
-                        <h5>Total Price</h5>
-                        <input type="text" class="form-control" required readonly onclick="count_total_price()" value="<?php echo number_format($detail[0]["penj_nominal"], 0, ",", "."); ?>" id="total_price">
-                      </div>
-                      <div class="form-group col-lg-12">
-                        <h5>Pembayaran Penjualan</h5>
-                        <table class="table table-striped table-bordered">
-                          <thead>
-                            <th>Pembayaran #</th>
-                            <th>Persentase</th>
-                            <th>Jumlah</th>
-                            <th>Notes</th>
-                            <th>Status Bayar</th>
-                            <th>Tanggal Bayar</th>
-                            <th>Action</th>
-                          </thead>
-                          <tbody id="daftar_pembayaran_add">
-                            <?php for ($a = 0; $a < count($pembayaran); $a++) : ?>
-                              <tr class='add_pembayaran_row_edit' id="add_pembayaran_row_edit<?php echo $a; ?>">
-                                <td id='row<?php echo $a; ?>'>
-                                  <input name='pembayaran_edit[]' value=<?php echo $a; ?> type='hidden'>
-                                  <input id='id_pembayaran_edit<?php echo $a; ?>' name='id_pembayaran_edit<?php echo $a; ?>' value=<?php echo $pembayaran[$a]["id_pk_penjualan_pembayaran"]; ?> type='hidden'>
-                                  <input type='text' value="<?php echo $pembayaran[$a]["penjualan_pmbyrn_nama"]; ?>" name='pmbyrn_nama_edit<?php echo $a; ?>' class='form-control'>
-                                </td>
-                                <td>
-                                  <input value="<?php echo $pembayaran[$a]["penjualan_pmbyrn_persen"]; ?>" name='pmbyrn_persen_edit<?php echo $a; ?>' type='text' class='form-control'>
-                                </td>
-                                <td>
-                                  <input type='text' onfocus="count_nominal_persentase('_edit',<?php echo $a; ?>)" value="<?php echo number_format($pembayaran[$a]["penjualan_pmbyrn_nominal"], 0, ",", "."); ?>" name='pmbyrn_nominal_edit<?php echo $a; ?>' class='form-control nf-input'>
-                                </td>
-                                <td>
-                                  <input type='text' value="<?php echo $pembayaran[$a]["penjualan_pmbyrn_notes"]; ?>" name='pmbyrn_notes_edit<?php echo $a; ?>' class='form-control'>
-                                </td>
-                                <td>
-                                  <select name='pmbyrn_status_edit<?php echo $a; ?>' class='form-control'>
-                                    <option value='AKTIF'>LUNAS</option>
-                                    <option value='BELUM LUNAS' <?php if (strtoupper($pembayaran[$a]["penjualan_pmbyrn_status"]) == "BELUM LUNAS") echo "selected"; ?>>BELUM LUNAS</option>
-                                  </select>
-                                </td>
-                                <td>
-                                  <input type='date' value="<?php echo explode(" ", $pembayaran[$a]["penjualan_pmbyrn_dateline"])[0]; ?>" name='pmbyrn_dateline_edit<?php echo $a; ?>' class='form-control'>
-                                </td>
-                                <td>
-                                  <i style='cursor:pointer;font-size:large;margin-left:10px' class='text-danger md-delete' onclick='delete_pembayaran_penjualan(<?php echo $a; ?>);'></i>
-                                </td>
-                              </tr>
-                            <?php endfor; ?>
-                            <tr id="add_pembayaran_but_container">
-                              <td colspan=7><button type="button" class="btn btn-primary btn-sm col-lg-12" onclick="add_pembayaran_row()">Tambah Pembayaran</button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div class="form-group col-lg-12" style="width:50%">
-                        <button type="button" class="btn btn-sm btn-danger" onclick="close_window()">Cancel</button>
-                        <button type="button" onclick="update_func();location.reload();" class="btn btn-sm btn-primary">Submit</button>
-                      </div>
-                    </form>
+                        <div class="form-group col-lg-12">
+                          <h5>Item Penjualan</h5>
+                          <div class = "table-responsive">
+                            <table class="table table-striped table-bordered">
+                              <thead>
+                                <th>Barang</th>
+                                <th>Jumlah</th>
+                                <th style = "width:20%">Daftar Harga</th>
+                                <th>Harga Jual</th>
+                                <th>Harga Final</th>
+                                <th>Notes</th>
+                                <th>Action</th>
+                              </thead>
+                              <tbody id="daftar_brg_jual_add">
+                                <tr id="add_brg_jual_but_container">
+                                  <td colspan=7><button type="button" class="btn btn-primary btn-sm col-lg-12" onclick="add_brg_jual_row()">Tambah Barang Penjualan</button>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div class="form-group col-lg-12">
+                          <h5>Tambahan Penjualan</h5>
+                          <div class = "table-responsive">
+                            <table class="table table-striped table-bordered">
+                              <thead>
+                                <th>Tambahan</th>
+                                <th>Jumlah</th>
+                                <th>Harga</th>
+                                <th>Harga Final</th>
+                                <th>Notes</th>
+                                <th>Action</th>
+                              </thead>
+                              <tbody id="daftar_tambahan_jual_add">
+                                <tr id="add_tambahan_jual_but_container">
+                                  <td colspan=7><button type="button" class="btn btn-primary btn-sm col-lg-12" onclick="add_tambahan_jual_row()">Tambah Barang Penjualan</button>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div class="form-group col-lg-12">
+                          <input type = "checkbox" name = "ppn_check[]" id = "ppn_check" onclick = "toggle_ppn()"> PPN
+                        </div>
+                        <div class="form-group col-lg-12">
+                          <h5>Total Price</h5>
+                          <input type="text" class="form-control" required readonly onclick="count_total_price()" id="total_price">
+                        </div>
+                        <div class="form-group col-lg-12">
+                          <h5>Pembayaran Penjualan</h5>
+                          <div class = "table-responsive">
+                            <table class="table table-striped table-bordered">
+                              <thead>
+                                <th>Jenis Pembayaran</th>
+                                <th>Metode Pembyaran</th>
+                                <th>Jumlah</th>
+                                <th>Notes</th>
+                                <th>Status Bayar</th>
+                                <th>Tanggal Bayar/Tanggal Jatuh Tempo</th>
+                                <th>Action</th>
+                              </thead>
+                              <tbody id="daftar_pembayaran_add">
+                                <tr id="add_pembayaran_but_container">
+                                  <td colspan=7><button type="button" class="btn btn-primary btn-sm col-lg-12" onclick="add_pembayaran_row()">Tambah Pembayaran Penjualan</button>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div class="form-group col-lg-12" style="width:50%">
+                          <button type="button" class="btn btn-sm btn-danger" onclick="close_window()">Cancel</button>
+                          <button type="button" onclick="count_total_price();update_func();location.reload()" class="btn btn-sm btn-primary">Submit</button>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -280,49 +192,19 @@ $notif_data = array(
         </div>
       </div>
     </div>
-  </div>
-  <?php $this->load->view('req/mm_js.php'); ?>
-</body>
+    <?php $this->load->view('req/mm_js.php'); ?>
+  </body>
 
 </html>
-
 <script>
   var ctrl = "penjualan";
 
   var brg_jual_row = 0;
+  var tambahan_jual_row = 0;
+  var pembayaran_row = 0;
+  var custom_produk_row = 0;
 
   function add_brg_jual_row() {
-    <?php if ($active_jmlh_markup) : ?>
-      var html = `
-        <tr class = 'add_brg_jual_row'>
-          <td id = 'row${brg_jual_row}'>
-            <input name = 'check[]' value = ${brg_jual_row} type = 'hidden'>
-            <input type = 'text' list = 'datalist_barang_cabang_jualan' onchange = 'load_harga_barang(${brg_jual_row})' id = 'brg${brg_jual_row}' name = 'brg${brg_jual_row}' class = 'form-control'>
-            <a href = '<?php echo base_url(); ?>toko/brg_cabang' class = 'btn btn-primary btn-sm col-lg-12' target = '_blank'>Tambah Barang Cabang</a>
-          </td>
-          <td>
-            <input name = 'brg_qty_real${brg_jual_row}' type = 'text' class = 'form-control nf-input'>
-          </td>
-          <td>
-            <input name = 'brg_qty${brg_jual_row}' type = 'text' class = 'form-control nf-input'>
-          </td>
-          <td>
-            <input type = 'text' readonly id = 'harga_barang_jual${brg_jual_row}' class = 'form-control nf-input'>
-          </td>
-          <td>
-            <input type = 'text' name = 'brg_price${brg_jual_row}' class = 'form-control nf-input'>
-          </td>
-          <td>
-            <input readonly type = 'text' class = 'form-control nf-input' id = 'harga_brg_final${brg_jual_row}'>
-          </td>
-          <td>
-            <input type = 'text' name = 'brg_notes${brg_jual_row}' class = 'form-control'>
-          </td>
-          <td>
-            <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
-          </td>
-        </tr>`;
-    <?php endif; ?>
     var html = `
       <tr class = 'add_brg_jual_row'>
         <td id = 'row${brg_jual_row}'>
@@ -330,15 +212,28 @@ $notif_data = array(
           <input type = 'text' list = 'datalist_barang_cabang_jualan' onchange = 'load_harga_barang(${brg_jual_row})' id = 'brg${brg_jual_row}' name = 'brg${brg_jual_row}' class = 'form-control'>
           <a href = '<?php echo base_url(); ?>toko/brg_cabang' class = 'btn btn-primary btn-sm col-lg-12' target = '_blank'>Tambah Barang Cabang</a>
         </td>
-          <input name = 'brg_qty_real${brg_jual_row}' type = 'hidden' value = "0" class = 'form-control nf-input'>
+        <input name = 'brg_qty_real${brg_jual_row}' type = 'hidden' value = "0" class = 'form-control nf-input'>
         <td>
           <input name = 'brg_qty${brg_jual_row}' type = 'text' class = 'form-control nf-input'>
         </td>
         <td>
-          <input type = 'text' readonly id = 'harga_barang_jual${brg_jual_row}' class = 'form-control nf-input'>
+          <table>
+            <tr>
+              <td>Harga Satuan</td>
+              <td style = "padding:0px 5px" id = 'harga_barang_jual${brg_jual_row}'></td>
+            </tr>
+            <tr>
+              <td>Harga Toko</td>
+              <td style = "padding:0px 5px" id = 'harga_barang_toko${brg_jual_row}'></td>
+            </tr>
+            <tr>
+              <td>Harga Grosir</td>
+              <td style = "padding:0px 5px" id = 'harga_barang_grosir${brg_jual_row}'></td>
+            </tr>
+          </table>
         </td>
         <td>
-          <input type = 'text' name = 'brg_price${brg_jual_row}' class = 'form-control nf-input'>
+          <input type = 'text' name = 'brg_price${brg_jual_row}' id = 'brg_price${brg_jual_row}' class = 'form-control nf-input'>
         </td>
         <td>
           <input readonly type = 'text' class = 'form-control nf-input' id = 'harga_brg_final${brg_jual_row}'>
@@ -354,90 +249,100 @@ $notif_data = array(
     init_nf();
     brg_jual_row++;
   }
-  var tambahan_jual_row = 0;
 
   function add_tambahan_jual_row() {
     var html = `
-      <tr class = 'add_tambahan_jual_row'>
-        <td>
-          <input name = 'tambahan[]' value = ${tambahan_jual_row} type = 'hidden'>
-          <input name = 'tmbhn${tambahan_jual_row}' type = 'text' class = 'form-control'>
-        </td>
-        <td>
-          <input name = 'tmbhn_jumlah${tambahan_jual_row}' type = 'text' class = 'form-control nf-input'>
-        </td>
-        <td>
-          <input name = 'tmbhn_harga${tambahan_jual_row}' type = 'text' class = 'form-control nf-input'>
-        </td>
-        <td>
-          <input readonly type = 'text' class = 'form-control nf-input' id = 'harga_tambahan_final${tambahan_jual_row}'>
-        </td>
-        <td>
-          <input name = 'tmbhn_notes${tambahan_jual_row}' type = 'text' class = 'form-control'>
-        </td>
-        <td>
-          <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
-        </td>
-      </tr>`;
+        <tr class = 'add_tambahan_jual_row'>
+            <td>
+                <input name = 'tambahan[]' value = ${tambahan_jual_row} type = 'hidden'>
+                <input name = 'tmbhn${tambahan_jual_row}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <input name = 'tmbhn_jumlah${tambahan_jual_row}' type = 'text' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input name = 'tmbhn_harga${tambahan_jual_row}' type = 'text' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <input readonly type = 'text' class = 'form-control nf-input' id = 'harga_tambahan_final${tambahan_jual_row}'>
+            </td>
+            <td>
+                <input name = 'tmbhn_notes${tambahan_jual_row}' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+            </td>
+        </tr>`;
     $("#add_tambahan_jual_but_container").before(html);
     init_nf();
     tambahan_jual_row++;
   }
-  var pembayaran_row = 0;
 
   function add_pembayaran_row() {
     var html = `
-      <tr class = 'add_pembayaran_row'>
-        <td id = 'row${pembayaran_row}'>
+        <tr class = 'add_pembayaran_row'>
           <input name = 'pembayaran[]' value = ${pembayaran_row} type = 'hidden'>
-          <input type = 'text' name = 'pmbyrn_nama${pembayaran_row}' class = 'form-control'>
-        </td>
-        <td>
-          <input name = 'pmbyrn_persen${pembayaran_row}' type = 'text' class = 'form-control'>
-        </td>
-        <td>
-          <input onfocus = 'count_nominal_persentase("",${pembayaran_row})' type = 'text' name = 'pmbyrn_nominal${pembayaran_row}' class = 'form-control nf-input'>
-        </td>
-        <td>
-          <input type = 'text' name = 'pmbyrn_notes${pembayaran_row}' class = 'form-control'>
-        </td>
-        <td>
-          <select name = 'pmbyrn_status${pembayaran_row}' class = 'form-control'>
-            <option value = 'aktif'>LUNAS</option>
-            <option value = 'belum lunas'>BELUM LUNAS</option>
-          </select>
-        </td>
-        <td>
-          <input type = 'date' name = 'pmbyrn_dateline${pembayaran_row}' class = 'form-control'>
-        </td>
-        <td>
-          <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
-        </td>
-      </tr>`;
+          <td id = 'row${pembayaran_row}'>
+            <select name = 'pmbyrn_nama${pembayaran_row}' class = 'form-control'>
+              <option value = "Down Payment 1">Down Payment 1</option>
+              <option value = "Down Payment 2">Down Payment 2</option>
+              <option value = "Down Payment 3">Down Payment 3</option>
+              <option value = "Full Payment">Full Payment</option>
+              <option value = "Tempo">Tempo</option>
+              <option value = "Keep">Keep</option>
+            </select>
+          </td>
+          <td>
+            <select name = 'pmbyrn_persen${pembayaran_row}' class = 'form-control'>
+              <option value = "Cash">Cash</option>
+              <option value = "Debit">Debit</option>
+              <option value = "Transfer">Transfer</option>
+              <option value = "Kartu Kredit">Kartu Kredit</option>
+              <option value = "Tarik Tunai">Tarik Tunai</option>
+            </select>
+          </td>
+          <td>
+              <input type = 'text' name = 'pmbyrn_nominal${pembayaran_row}' class = 'form-control nf-input'>
+          </td>
+          <td>
+              <input type = 'text' name = 'pmbyrn_notes${pembayaran_row}' class = 'form-control'>
+          </td>
+          <td>
+              <select name = 'pmbyrn_status${pembayaran_row}' class = 'form-control'>
+                  <option value = 'aktif'>LUNAS</option>
+                  <option value = 'belum lunas'>BELUM LUNAS</option>
+              </select>
+          </td>
+          <td>
+              <input type = 'date' name = 'pmbyrn_dateline${pembayaran_row}' class = 'form-control'>
+          </td>
+          <td>
+              <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+          </td>
+        </tr>`;
     $("#add_pembayaran_but_container").before(html);
     init_nf();
     pembayaran_row++;
   }
-  var custom_produk_row = 0;
 
   function add_custom_produk_row() {
     var html = `
-      <tr class = 'add_custom_produk_row'>
-        <td>
-          <input name = 'custom[]' value = ${custom_produk_row} type = 'hidden'>
-          <input name = 'custom_brg_awal${custom_produk_row}' list = 'datalist_barang_cabang_jualan' type = 'text' class = 'form-control'>
-          <a href = '<?php echo base_url(); ?>toko/brg_cabang' class = 'btn btn-primary btn-sm' target = '_blank'>Tambah Barang Cabang</a>
-        </td>
-        <td>
-          <input name = 'custom_brg_akhir${custom_produk_row}' list = 'datalist_barang_cabang_jualan' type = 'text' class = 'form-control'>
-        </td>
-        <td>
-          <input name = 'custom_brg_qty${custom_produk_row}' type = 'text' class = 'form-control nf-input'>
-        </td>
-        <td>
-          <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
-        </td>
-      </tr>`;
+        <tr class = 'add_custom_produk_row'>
+            <td>
+                <input name = 'custom[]' value = ${custom_produk_row} type = 'hidden'>
+                <input name = 'custom_brg_awal${custom_produk_row}' list = 'datalist_barang_cabang_jualan' type = 'text' class = 'form-control'>
+                <a href = '<?php echo base_url(); ?>toko/brg_cabang' class = 'btn btn-primary btn-sm' target = '_blank'>Tambah Barang Cabang</a>
+            </td>
+            <td>
+                <input name = 'custom_brg_akhir${custom_produk_row}' list = 'datalist_barang_cabang_jualan' type = 'text' class = 'form-control'>
+            </td>
+            <td>
+                <input name = 'custom_brg_qty${custom_produk_row}' type = 'text' class = 'form-control nf-input'>
+            </td>
+            <td>
+                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+            </td>
+        </tr>`;
     $("#add_custom_produk_but_container").before(html);
     init_nf();
     custom_produk_row++;
@@ -446,10 +351,92 @@ $notif_data = array(
   function load_harga_barang(row) {
     var nama_barang = $("#brg" + row).val();
     var hrg_brg_dsr = $("#datalist_barang_cabang_jualan option[value='" + nama_barang + "']").attr("data-baseprice");
-    $("#harga_barang_jual" + row).val(hrg_brg_dsr);
+    var hrg_brgtoko = $("#datalist_barang_cabang_jualan option[value='" + nama_barang + "']").attr("data-hargatoko");
+    var hrg_brggrosir = $("#datalist_barang_cabang_jualan option[value='" + nama_barang + "']").attr("data-hargagrosir");
+    var id_brg = $("#datalist_barang_cabang_jualan option[value='" + nama_barang + "']").attr("data-idpkbarang");
+    $("#harga_barang_jual" + row).text(`Rp. ${format_number(hrg_brg_dsr)}`);
+    $("#harga_barang_toko" + row).text(`Rp. ${format_number(hrg_brgtoko)}`);
+    $("#harga_barang_grosir" + row).text(`Rp. ${format_number(hrg_brggrosir)}`);
+
+    $.ajax({
+      url:`<?php echo base_url();?>ws/barang_cabang/get_latest_harga_jual/${id_brg}`,
+      type:"GET",
+      dataType:"JSON",
+      success:function(respond){
+        $("#brg_price" + row).val(`${format_number(respond["data"][0]["last_item_price"])}`);
+        init_nf();
+      }
+    });
+  }
+
+  var total_price_global = 0;
+  function count_total_price() {
+    var total = 0;
+    for (var a = 0; a < brg_jual_row; a++) {
+      var qty = deformatting_func($("input[name='brg_qty" + a + "']").val().split(" ")[0]);
+      var price = deformatting_func($("input[name='brg_price" + a + "']").val().split(" ")[0]);
+      if (typeof(qty) == 'undefined' || typeof(price) == 'undefined' || !price || !qty) {
+        $("#harga_brg_final" + a).val("0");
+        total += 0;
+      } else {
+        var count_result = Math.round(parseFloat(qty.split(" ")[0]) * parseInt(price));
+        $("#harga_brg_final" + a).val(formatting_func(count_result));
+        total += count_result;
+      }
+    }
+    for (var a = 0; a < tambahan_jual_row; a++) {
+      var qty = deformatting_func($("input[name='tmbhn_jumlah" + a + "'").val().split(" ")[0]);
+      var price = deformatting_func($("input[name='tmbhn_harga" + a + "'").val().split(" ")[0]);
+      if (typeof(qty) == 'undefined' || typeof(price) == 'undefined' || !price || !qty) {
+        $("#harga_tambahan_final" + a).val("0");
+        total += 0;
+      } else {
+        var count_result = Math.round(parseFloat(qty.split(" ")[0]) * parseInt(price));
+        $("#harga_tambahan_final" + a).val(formatting_func(count_result));
+        total += count_result;
+      }
+    }
+    $("#total_price").val(formatting_func(total));
+    total_price_global = total;
+
+    if($('input[type=checkbox]').prop('checked')){
+      $("#total_price").val(formatting_func(parseInt(total*1.1,10)));
+    }
+    else{
+      $("#total_price").val(formatting_func(total));
+    }
+  }
+  
+  function open_online_container() {
+    $('#online_info_container').show();
+    $('#marketplace').html(html_option_marketplace);
+  }
+
+  function toggle_nomor_penjualan() {
+    if ($("#penomoran_otomatis_cb").prop("checked")) {
+      $("#penomoran_otomatis_cb").prop("checked", true);
+      $("#nomor").prop("readonly", true);
+      $("#nomor").val("-");
+    } else {
+      $("#penomoran_otomatis_cb").prop("checked", false);
+      $("#nomor").prop("readonly", false);
+      $("#nomor").val("");
+    }
+  }
+
+  function toggle_ppn(){
+    if(total_price_global == 0){
+      count_total_price();
+    }
+    if($('input[type=checkbox]'). prop('checked')){
+      $("#total_price").val(formatting_func(parseInt(total_price_global*1.1,10)));
+    }
+    else{
+      $("#total_price").val(formatting_func(total_price_global));
+    }
   }
 </script>
-<?php $this->load->view("_base_element/datalist_customer"); ?>
+<?php $this->load->view("_base_element/datalist_customer_toko"); ?>
 <?php $this->load->view("_base_element/datalist_barang_cabang_jualan"); ?>
 <?php $this->load->view("_base_element/datalist_marketplace"); ?>
 <script>
@@ -457,16 +444,16 @@ $notif_data = array(
 
   function load_datalist() {
     load_datalist_customer();
+    // load_datalist_customer_toko();
     load_datalist_barang_cabang_jualan();
     load_datalist_marketplace();
-    $('#marketplace').html(html_option_marketplace);
-    <?php
-    if ($online) : ?>
-      $("#online_info_container").show();
-      $('#marketplace').val('<?php echo $online[0]["penj_on_marketplace"]; ?>');
-      $("#kurir").val('<?php echo $online[0]["penj_on_kurir"]; ?>');
-      $("#no_resi").val('<?php echo $online[0]["penj_on_no_resi"]; ?>');
-    <?php endif; ?>
+  }
+</script>
+<script>
+  function close_window() {
+    if (confirm("Close Window?")) {
+      close();
+    }
   }
 </script>
 <div class="modal fade" id="custom_produk_modal">
@@ -501,84 +488,14 @@ $notif_data = array(
   </div>
 </div>
 <script>
-  function close_window() {
-    if (confirm("Close Window?")) {
-      close();
-    }
-  }
-</script>
-<script>
-  function count_total_price() {
-    var total = 0;
-    for (var a = 0; a < brg_jual_row; a++) {
-      var qty = deformatting_func($("input[name='brg_qty" + a + "']").val().split(" ")[0]);
-      var price = deformatting_func($("input[name='brg_price" + a + "']").val().split(" ")[0]);
-      if (typeof(qty) == 'undefined' || typeof(price) == 'undefined' || !price || !qty) {
-        $("#harga_brg_final" + a).val("0");
-        total += 0;
-      } else {
-        var count_result = Math.round(parseFloat(qty.split(" ")[0]) * parseInt(price));
-        $("#harga_brg_final" + a).val(formatting_func(count_result));
-        total += count_result;
-      }
-    }
-    for (var a = 0; a < tambahan_jual_row; a++) {
-      var qty = deformatting_func($("input[name='tmbhn_jumlah" + a + "'").val().split(" ")[0]);
-      var price = deformatting_func($("input[name='tmbhn_harga" + a + "'").val().split(" ")[0]);
-      if (typeof(qty) == 'undefined' || typeof(price) == 'undefined' || !price || !qty) {
-        $("#harga_tambahan_final" + a).val("0");
-        total += 0;
-      } else {
-        var count_result = Math.round(parseFloat(qty.split(" ")[0]) * parseInt(price));
-        $("#harga_tambahan_final" + a).val(formatting_func(count_result));
-        total += count_result;
-      }
-    }
-    var brg_jual_edit_row = $(".add_brg_jual_row_edit").length;
-    for (var a = 0; a < brg_jual_edit_row; a++) {
-      var qty = deformatting_func($("input[name='brg_qty_edit" + a + "'").val().split(" ")[0]);
-      var price = deformatting_func($("input[name='brg_price_edit" + a + "'").val().split(" ")[0]);
-      if (typeof(qty) == 'undefined' || typeof(price) == 'undefined' || !price || !qty) {
-        $("#harga_brg_final_edit" + a).val("0");
-        total += 0;
-      } else {
-        var count_result = Math.round(parseFloat(qty.split(" ")[0]) * parseInt(price));
-        $("#harga_brg_final_edit" + a).val(formatting_func(count_result));
-        total += count_result;
-      }
-    }
-    var tambahan_jual_edit_row = $(".add_tambahan_jual_row_edit").length;
-    for (var a = 0; a < tambahan_jual_edit_row; a++) {
-      var qty = deformatting_func($("input[name='tmbhn_jumlah_edit" + a + "'").val().split(" ")[0]);
-      var price = deformatting_func($("input[name='tmbhn_harga_edit" + a + "'").val().split(" ")[0]);
-      if (typeof(qty) == 'undefined' || typeof(price) == 'undefined' || !price || !qty) {
-        $("#harga_tambahan_final_edit" + a).val("0");
-        total += 0;
-      } else {
-        var count_result = Math.round(parseFloat(qty.split(" ")[0]) * parseInt(price));
-        $("#harga_tambahan_final_edit" + a).val(formatting_func(count_result));
-        total += count_result;
-      }
-    }
-    $("#total_price").val(formatting_func(total));
-  }
-
-  function count_nominal_persentase(type, row) {
-    var total = deformatting_func($("#total_price").val());
-    var persen = $("input[name='pmbyrn_persen" + type + row + "']").val();
-    if (typeof(persen) == 'undefined' || !persen) {
-      nominal = 0;
-    } else {
-      nominal = Math.round(parseFloat(persen.split("%")[0]) / 100 * total);
-    }
-    $("input[name='pmbyrn_nominal" + type + row + "']").val(formatting_func(nominal));
-  }
+  var brg_custom_base_html = $("#daftar_custom_produk_add").html();
 
   function register_brg_pindah() {
+    nf_reformat_all();
     var form = $("#register_brg_pindah_form")[0];
     var data = new FormData(form);
     $.ajax({
-      url: "<?php echo base_url(); ?>ws/barang_pindah/register?sumber=penjualan&id_ref=<?php echo $detail[0]["id_pk_penjualan"]; ?>",
+      url: "<?php echo base_url(); ?>ws/barang_pindah/register?sumber=penjualan",
       type: "POST",
       dataType: "JSON",
       data: data,
@@ -589,67 +506,183 @@ $notif_data = array(
         if (respond["content"]) {
           for (var a = 0; a < respond["content"].length; a++) {
             html += `
-              <tr>
-                <td>
-                  <input type = 'hidden' name = 'brg_custom[]' value = '${a}'>
-                  <input type = 'hidden' name = 'id_brg_custom${a}' value = '${respond["content"][a]["id_brg_pindah"]}'>${respond["content"][a]["nama_brg_awal"]}
-                </td>
-                <td>${respond["content"][a]["nama_brg_akhir"]}</td>
-                <td>${respond["content"][a]["qty"]}</td>
-              </tr>`;
+                        <tr>
+                            <td>
+                                <input type = 'hidden' name = 'brg_custom[]' value = '${a}'>
+                                <input type = 'hidden' name = 'id_brg_custom${a}' value = '${respond["content"][a]["id_brg_pindah"]}'>
+                                ${respond["content"][a]["nama_brg_awal"]}
+                            </td>
+                            <td>${respond["content"][a]["nama_brg_akhir"]}</td>
+                            <td>${respond["content"][a]["qty"]}</td>
+                        </tr>`;
           }
-        } else {
-          html = "<tr><td colspan = 3 class = 'align-middle text-center'>No Records Found</td></tr>";
         }
         $("#daftar_brg_custom_container").append(html);
+        $("#daftar_custom_produk_add").html(brg_custom_base_html);
+        $("#custom_produk_modal").modal("hide");
       },
       error: function() {}
     });
   }
-
-  function delete_brg_penjualan(row) {
-    var id_brg_jual = $("#id_brg_jual_edit" + row).val();
-    $.ajax({
-      url: "<?php echo base_url(); ?>ws/penjualan/remove_brg_penjualan?id=" + id_brg_jual,
-      type: "DELETE",
-      dataType: "JSON",
-      success: function(respond) {
-        if (respond["status"] == "SUCCESS") {
-          $("#add_brg_jual_row_edit" + row).remove();
-        }
-      }
-    });
-  }
-
-  function delete_tmbhn_penjualan(row) {
-    var id_tmbhn = $("#id_tmbhn_edit" + row).val();
-    $.ajax({
-      url: "<?php echo base_url(); ?>ws/penjualan/remove_tmbhn_penjualan?id=" + id_tmbhn,
-      type: "DELETE",
-      dataType: "JSON",
-      success: function(respond) {
-        if (respond["status"] == "SUCCESS") {
-          $("#add_tambahan_jual_row_edit" + row).remove();
-        }
-      }
-    });
-  }
-
-  function delete_pembayaran_penjualan(row) {
-    var id_pembayaran = $("#id_pembayaran_edit" + row).val();
-    $.ajax({
-      url: "<?php echo base_url(); ?>ws/penjualan/remove_pembayaran_penjualan?id=" + id_pembayaran,
-      type: "DELETE",
-      dataType: "JSON",
-      success: function(respond) {
-        if (respond["status"] == "SUCCESS") {
-          $("#add_pembayaran_row_edit" + row).remove();
-        }
-      }
-    });
-  }
 </script>
-
+<?php $this->load->view('penjualan/f-add-customer-toko'); ?>
 <?php $this->load->view('_notification/notif_general'); ?>
 <?php $this->load->view("_core_script/menubar_func"); ?>
 <?php $this->load->view("req/core_script"); ?>
+<script>
+var content = <?php echo json_encode($content);?>;
+load_edit_content();
+function load_edit_content(){
+  $("#id_pk_penjualan").val(content["detail"][0]["id_pk_penjualan"]);
+  $("#no_penjualan").val(content["detail"][0]["penj_nomor"]);
+  $("#customer").val(content["detail"][0]["cust_perusahaan"]);
+  $("#tgl").val(content["detail"][0]["penj_tgl"].split(" ")[0]);
+  $("#dateline").val(content["detail"][0]["penj_dateline_tgl"].split(" ")[0]);
+  $("#no_resi").val(content["detail"][0]["penj_on_no_resi"]);
+  $("#kurir").val(content["detail"][0]["penj_on_kurir"]);
+  if(content["detail"][0]["penj_jenis"].toLowerCase() == "online"){
+    $("input[type='radio'][value='ONLINE']").attr("checked","checked");
+    open_online_container();
+    $('#marketplace').val(content["detail"][0]["penj_on_marketplace"]);
+  }
+
+  if(content["detail"][0]["penj_tipe_pembayaran"] == 1){
+    $("#ppn_check").attr("checked","checked");
+  }
+  $("#total_price").val(format_number(content["detail"][0]["penj_nominal"]));
+  for(var a = 0; a<content["brg_custom"].length; a++){
+
+  }
+  var html = "";
+  for(var a = 0; a<content["item"].length; a++){
+    html += `
+      <tr class = 'add_brg_jual_row'>
+        <input name = 'edit_check[]' value = ${brg_jual_row} type = 'hidden'>
+        <input type = "hidden" value = "${content["item"][a]["id_pk_brg_penjualan"]}" name = "id_pk_brg_penjualan${brg_jual_row}">
+        <td id = 'row${brg_jual_row}'>
+          <input type = 'text' list = 'datalist_barang_cabang_jualan' onchange = 'load_harga_barang(${brg_jual_row})' id = 'brg${brg_jual_row}' name = 'brg${brg_jual_row}' class = 'form-control' value = "${content["item"][a]["brg_nama"]}">
+          <a href = '<?php echo base_url(); ?>toko/brg_cabang' class = 'btn btn-primary btn-sm col-lg-12' target = '_blank'>Tambah Barang Cabang</a>
+        </td>
+        <input name = 'brg_qty_real${brg_jual_row}' type = 'hidden' value = "0" class = 'form-control nf-input'>
+        <td>
+          <input name = 'brg_qty${brg_jual_row}' type = 'text' value = "${format_number(content["item"][a]["brg_penjualan_qty"])} ${content["item"][a]["brg_penjualan_satuan"]}" class = 'form-control nf-input'>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>Harga Satuan</td>
+              <td style = "padding:0px 5px" id = 'harga_barang_jual${brg_jual_row}'>${format_number(content["item"][a]["brg_harga"])}</td>
+            </tr>
+            <tr>
+              <td>Harga Toko</td>
+              <td style = "padding:0px 5px" id = 'harga_barang_toko${brg_jual_row}'>${format_number(content["item"][a]["brg_harga_toko"])}</td>
+            </tr>
+            <tr>
+              <td>Harga Grosir</td>
+              <td style = "padding:0px 5px" id = 'harga_barang_grosir${brg_jual_row}'>${format_number(content["item"][a]["brg_harga_grosir"])}</td>
+            </tr>
+          </table>
+        </td>
+        <td>
+          <input type = 'text' name = 'brg_price${brg_jual_row}' id = 'brg_price${brg_jual_row}' value = "${format_number(content["item"][a]["brg_penjualan_harga"])}" class = 'form-control nf-input'>
+        </td>
+        <td>
+          <input readonly type = 'text' class = 'form-control nf-input' id = 'harga_brg_final${brg_jual_row}' value = "${format_number(parseInt(content["item"][a]["brg_penjualan_qty"] * content["item"][a]["brg_penjualan_harga"],10))}">
+        </td>
+        <td>
+          <input type = 'text' name = 'brg_notes${brg_jual_row}' class = 'form-control' value = "${content["item"][a]["brg_penjualan_note"]}">
+        </td>
+        <td>
+          <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_brg_penjualan()'></i>
+        </td>
+      </tr>`;
+    brg_jual_row++;
+  }
+  $("#add_brg_jual_but_container").before(html);
+  var html = "";
+  for(var a = 0; a<content["tambahan"].length; a++){
+    html += `
+      <tr class = 'add_tambahan_jual_row'>
+        <td>
+          <input name = 'edit_tambahan[]' value = ${tambahan_jual_row} type = 'hidden'>
+          <input type = "hidden" name = "id_pk_tmbhn${tambahan_jual_row}" value = "${content["tambahan"][a]["id_pk_tmbhn"]}">
+          <input name = 'tmbhn${tambahan_jual_row}' type = 'text' class = 'form-control' value = "${content["tambahan"][a]["tmbhn"]}">
+        </td>
+        <td>
+          <input name = 'tmbhn_jumlah${tambahan_jual_row}' type = 'text' class = 'form-control nf-input' value = "${format_number(content["tambahan"][a]["tmbhn_jumlah"])} ${format_number(content["tambahan"][a]["tmbhn_satuan"])}">
+        </td>
+        <td>
+          <input name = 'tmbhn_harga${tambahan_jual_row}' type = 'text' class = 'form-control nf-input' value = "${format_number(content["tambahan"][a]["tmbhn_harga"])}">
+        </td>
+        <td>
+          <input readonly type = 'text' class = 'form-control nf-input' id = 'harga_tambahan_final${tambahan_jual_row}' value = "${format_number(parseInt(content["tambahan"][a]["tmbhn_harga"] * content["tambahan"][a]["tmbhn_jumlah"],10))}">
+        </td>
+        <td>
+          <input name = 'tmbhn_notes${tambahan_jual_row}' type = 'text' class = 'form-control' value = "${content["tambahan"][a]["tmbhn_notes"]}">
+        </td>
+        <td>
+          <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_tambahan()'></i>
+        </td>
+      </tr>`;
+    tambahan_jual_row++;
+  }
+  
+  $("#add_tambahan_jual_but_container").before(html);
+  var html = "";
+  for(var a = 0; a<content["pembayaran"].length; a++){
+    html = `
+      <tr class = 'add_pembayaran_row'>
+        <input name = 'edit_pembayaran[]' value = ${pembayaran_row} type = 'hidden'>
+        <input type = "hidden" id = "id_pk_penjualan_pembayaran${pembayaran_row}" name = "id_pk_penjualan_pembayaran${pembayaran_row}">
+        <td id = 'row${pembayaran_row}'>
+          <select name = 'pmbyrn_nama${pembayaran_row}' id = 'pmbyrn_nama${pembayaran_row}' class = 'form-control'>
+            <option value = "Down Payment 1">Down Payment 1</option>
+            <option value = "Down Payment 2">Down Payment 2</option>
+            <option value = "Down Payment 3">Down Payment 3</option>
+            <option value = "Full Payment">Full Payment</option>
+            <option value = "Tempo">Tempo</option>
+            <option value = "Keep">Keep</option>
+          </select>
+        </td>
+        <td>
+          <select name = 'pmbyrn_persen${pembayaran_row}' id = 'pmbyrn_persen${pembayaran_row}' class = 'form-control'>
+            <option value = "Cash">Cash</option>
+            <option value = "Debit">Debit</option>
+            <option value = "Transfer">Transfer</option>
+            <option value = "Kartu Kredit">Kartu Kredit</option>
+            <option value = "Tarik Tunai">Tarik Tunai</option>
+          </select>
+        </td>
+        <td>
+          <input type = 'text' name = 'pmbyrn_nominal${pembayaran_row}' id = 'pmbyrn_nominal${pembayaran_row}' class = 'form-control nf-input'>
+        </td>
+        <td>
+          <input type = 'text' name = 'pmbyrn_notes${pembayaran_row}' id = 'pmbyrn_notes${pembayaran_row}' class = 'form-control'>
+        </td>
+        <td>
+          <select name = 'pmbyrn_status${pembayaran_row}' id = 'pmbyrn_status${pembayaran_row}' class = 'form-control'>
+            <option value = 'aktif'>LUNAS</option>
+            <option value = 'belum lunas'>BELUM LUNAS</option>
+          </select>
+        </td>
+        <td>
+          <input type = 'date' name = 'pmbyrn_dateline${pembayaran_row}' id = 'pmbyrn_dateline${pembayaran_row}' class = 'form-control'>
+        </td>
+        <td>
+          <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = 'delete_pembayaran()'></i>
+        </td>
+      </tr>`;
+    pembayaran_row++;
+    $("#add_pembayaran_but_container").before(html); /*perlu dimasukin dulu untuk support value assignment dropdown*/
+
+    $(`#id_pk_penjualan_pembayaran${a}`).val(content["pembayaran"][a]["id_pk_penjualan_pembayaran"]);
+    $(`#pmbyrn_nama${a}`).val(content["pembayaran"][a]["penjualan_pmbyrn_nama"]);
+    $(`#pmbyrn_persen${a}`).val(content["pembayaran"][a]["penjualan_pmbyrn_persen"]);
+    $(`#pmbyrn_nominal${a}`).val(format_number(content["pembayaran"][a]["penjualan_pmbyrn_nominal"]));
+    $(`#pmbyrn_notes${a}`).val(content["pembayaran"][a]["penjualan_pmbyrn_notes"]);
+    $(`#pmbyrn_status${a}`).val(content["pembayaran"][a]["penjualan_pmbyrn_status"]);
+    $(`#pmbyrn_dateline${a}`).val(content["pembayaran"][a]["penjualan_pmbyrn_dateline"].split(" ")[0]);
+  }
+  
+}
+</script>

@@ -25,7 +25,7 @@ class M_penjualan extends ci_model
   private $thn_control;
   /*
     drop view if exists v_penjualan;
-    create view v_penjualan as select cust_email,id_pk_penjualan,penj_nomor,penj_nominal,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified,if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran
+    create view v_penjualan as select cust_email,id_pk_penjualan,penj_nomor,penj_nominal,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan,user_name as user_last_modified,if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas','Belum Lunash'),if(penj_nominal = penj_nominal_byr,'Lunas','Belum Lunas')) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran
     from mstr_penjualan
     inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
     inner join mstr_user on mstr_user.id_pk_user = mstr_penjualan.id_last_modified
@@ -88,22 +88,30 @@ class M_penjualan extends ci_model
   }
   public function detail_by_id()
   {
-    $sql = "
-        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_perusahaan,cust_name,cust_suff,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,penj_nominal,penj_nominal_byr
+    $query = "
+      select * from (
+        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas','Belum Lunash'),if(penj_nominal = penj_nominal_byr,'Lunas','Belum Lunas')) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal, penj_on_marketplace, penj_on_no_resi, penj_on_kurir
         from mstr_penjualan
         inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
-        where id_pk_penjualan = ? and penj_status != ?";
+        inner join tbl_penjualan_pembayaran on tbl_penjualan_pembayaran.id_fk_penjualan = mstr_penjualan.id_pk_penjualan where tbl_penjualan_pembayaran.
+        inner join tbl_penjualan_online on tbl_penjualan_online.id_fk_penjualan = mstr_penjualan.id_pk_penjualan
+        penjualan_pmbyrn_status != 'nonaktif'
+        group by id_pk_penjualan
+      ) as a 
+      where id_pk_penjualan = ? ";
     $args = array(
-      $this->id_pk_penjualan, "nonaktif"
+      $this->id_pk_penjualan
     );
-    return executeQuery($sql, $args);
+    return executequery($query, $args);
+    
   }
   public function detail_by_id_pk_penjualan()
   {
     $sql = "
-        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_perusahaan,cust_name,cust_suff,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,penj_nominal,penj_nominal_byr
+        select id_pk_penjualan,penj_nomor,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_perusahaan,cust_name,cust_suff,cust_email,cust_telp,cust_hp,cust_alamat,cust_keterangan,penj_nominal_byr,id_pk_penjualan_online,penj_on_marketplace,penj_on_no_resi,penj_on_kurir,penj_on_status,if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
         from mstr_penjualan
         inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        inner join tbl_penjualan_online on tbl_penjualan_online.id_fk_penjualan = mstr_penjualan.id_pk_penjualan 
         where id_pk_penjualan = ?";
     $args = array(
       $this->id_pk_penjualan
@@ -205,9 +213,10 @@ class M_penjualan extends ci_model
     if ($this->penj_tipe_pembayaran == "" || strtolower($this->penj_tipe_pembayaran) == "all") {
       $query = "
         select * from (
-          select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
+          select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas','Belum Lunash'),if(penj_nominal = penj_nominal_byr,'Lunas','Belum Lunas')) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
           from mstr_penjualan
           inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+          inner join tbl_penjualan_online on tbl_penjualan_online.id_fk_penjualan = mstr_penjualan.id_pk_penjualan 
           inner join tbl_penjualan_pembayaran on tbl_penjualan_pembayaran.id_fk_penjualan = mstr_penjualan.id_pk_penjualan where tbl_penjualan_pembayaran.penjualan_pmbyrn_status != 'nonaktif'
           group by id_pk_penjualan
         ) as a 
@@ -220,9 +229,10 @@ class M_penjualan extends ci_model
       $result["data"] = executequery($query, $args);
       $query = "
       select * from (
-        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
+        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas','Belum Lunash'),if(penj_nominal = penj_nominal_byr,'Lunas','Belum Lunas')) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
         from mstr_penjualan
         inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        inner join tbl_penjualan_online on tbl_penjualan_online.id_fk_penjualan = mstr_penjualan.id_pk_penjualan 
         inner join tbl_penjualan_pembayaran on tbl_penjualan_pembayaran.id_fk_penjualan = mstr_penjualan.id_pk_penjualan where tbl_penjualan_pembayaran.penjualan_pmbyrn_status != 'nonaktif'
         group by id_pk_penjualan
       ) as a 
@@ -231,9 +241,10 @@ class M_penjualan extends ci_model
     } else {
       $query = "
       select * from (
-        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
+        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas','Belum Lunash'),if(penj_nominal = penj_nominal_byr,'Lunas','Belum Lunas')) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
         from mstr_penjualan
         inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        inner join tbl_penjualan_online on tbl_penjualan_online.id_fk_penjualan = mstr_penjualan.id_pk_penjualan 
         inner join tbl_penjualan_pembayaran on tbl_penjualan_pembayaran.id_fk_penjualan = mstr_penjualan.id_pk_penjualan where tbl_penjualan_pembayaran.penjualan_pmbyrn_status != 'nonaktif'
         group by id_pk_penjualan
       ) as a 
@@ -247,9 +258,10 @@ class M_penjualan extends ci_model
 
       $query = "
       select * from (
-        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_nominal = penj_nominal_byr, 'Lunas','Belum Lunas') as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
+        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas','Belum Lunash'),if(penj_nominal = penj_nominal_byr,'Lunas','Belum Lunas')) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal
         from mstr_penjualan
         inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        inner join tbl_penjualan_online on tbl_penjualan_online.id_fk_penjualan = mstr_penjualan.id_pk_penjualan 
         inner join tbl_penjualan_pembayaran on tbl_penjualan_pembayaran.id_fk_penjualan = mstr_penjualan.id_pk_penjualan where tbl_penjualan_pembayaran.penjualan_pmbyrn_status != 'nonaktif'
         group by id_pk_penjualan
       ) as a 
@@ -259,52 +271,46 @@ class M_penjualan extends ci_model
     #echo $this->db->last_query();
     return $result;
   }
-  public function insert()
+  public function insert($penj_nomor, $penj_tgl, $penj_dateline_tgl, $penj_jenis, $penj_tipe_pembayaran, $id_fk_customer, $id_fk_cabang, $penj_status)
   {
-    if ($this->check_insert()) {
-      $data = array(
-        "penj_nomor" => $this->penj_nomor,
-        "penj_tgl" => $this->penj_tgl,
-        "penj_status" => $this->penj_status,
-        "penj_dateline_tgl" => $this->penj_dateline_tgl,
-        "penj_jenis" => $this->penj_jenis,
-        "penj_tipe_pembayaran" => $this->penj_tipe_pembayaran,
-        "id_fk_customer" => $this->id_fk_customer,
-        "id_fk_cabang" => $this->id_fk_cabang,
-        "penj_create_date" => $this->penj_create_date,
-        "penj_last_modified" => $this->penj_last_modified,
-        "id_create_data" => $this->id_create_data,
-        "id_last_modified" => $this->id_last_modified,
-        "no_control" => $this->no_control,
-        "bln_control" => explode("-", $this->penj_tgl)[1],
-        "thn_control" => explode("-", $this->penj_tgl)[0]
-      );
-      return insertrow($this->tbl_name, $data);
-    }
-    return false;
+    $data = array(
+      "penj_nomor" => $penj_nomor,
+      "penj_tgl" => $penj_tgl,
+      "penj_status" => $penj_status,
+      "penj_dateline_tgl" => $penj_dateline_tgl,
+      "penj_jenis" => $penj_jenis,
+      "penj_tipe_pembayaran" => $penj_tipe_pembayaran,
+      "id_fk_customer" => $id_fk_customer,
+      "id_fk_cabang" => $id_fk_cabang,
+      "penj_create_date" => $this->penj_create_date,
+      "penj_last_modified" => $this->penj_last_modified,
+      "id_create_data" => $this->id_create_data,
+      "id_last_modified" => $this->id_last_modified,
+      "no_control" => $this->no_control,
+      "bln_control" => explode("-", $penj_tgl)[1],
+      "thn_control" => explode("-", $penj_tgl)[0]
+    );
+    return insertrow($this->tbl_name, $data);
   }
-  public function update()
+  public function update($id_pk_penjualan, $penj_nomor, $penj_dateline_tgl, $penj_jenis, $penj_tipe_pembayaran, $penj_tgl, $id_fk_customer)
   {
-    if ($this->check_update()) {
-      $where = array(
-        "id_pk_penjualan" => $this->id_pk_penjualan
-      );
-      $data = array(
-        "penj_nomor" => $this->penj_nomor,
-        "penj_jenis" => $this->penj_jenis,
-        "penj_nominal" => 0,
-        "penj_nominal_byr" => 0,
-        "penj_dateline_tgl" => $this->penj_dateline_tgl,
-        "penj_tgl" => $this->penj_tgl,
-        "penj_tipe_pembayaran" => $this->penj_tipe_pembayaran,
-        "id_fk_customer" => $this->id_fk_customer,
-        "penj_last_modified" => $this->penj_last_modified,
-        "id_last_modified" => $this->id_last_modified
-      );
-      updaterow($this->tbl_name, $data, $where);
-      return true;
-    }
-    return false;
+    $where = array(
+      "id_pk_penjualan" => $id_pk_penjualan
+    );
+    $data = array(
+      "penj_nomor" => $penj_nomor,
+      "penj_jenis" => $penj_jenis,
+      "penj_nominal" => 0,
+      "penj_nominal_byr" => 0,
+      "penj_dateline_tgl" => $penj_dateline_tgl,
+      "penj_tgl" => $penj_tgl,
+      "penj_tipe_pembayaran" => $penj_tipe_pembayaran,
+      "id_fk_customer" => $id_fk_customer,
+      "penj_last_modified" => $this->penj_last_modified,
+      "id_last_modified" => $this->id_last_modified
+    );
+    updaterow($this->tbl_name, $data, $where);
+    return true;
   }
   public function update_status()
   {

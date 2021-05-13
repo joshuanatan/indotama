@@ -1,11 +1,11 @@
 var thousand_separator = ".";
 function format_number(number = false) {
   if(number){
-    number = number.split(".");
+    number = number.toString().split(".");
     number[0] = number[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, thousand_separator);
     return number.join(","); //pecah perseribu
   }
-  return 0;
+  return "";
 }
 function reformat_number(number) {
   number = number.split(".").join("");

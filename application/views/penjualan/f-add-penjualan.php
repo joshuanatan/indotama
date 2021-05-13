@@ -22,11 +22,7 @@ $notif_data = array(
       <?php $this->load->view('req/mm_menubar.php'); ?>
       <div class="page-wrapper">
         <?php $this->load->view('_notification/register_success', $notif_data); ?>
-        <?php $this->load->view('_notification/update_success', $notif_data); ?>
-        <?php $this->load->view('_notification/delete_success', $notif_data); ?>
         <?php $this->load->view('_notification/register_error', $notif_data); ?>
-        <?php $this->load->view('_notification/update_error', $notif_data); ?>
-        <?php $this->load->view('_notification/delete_error', $notif_data); ?>
         <div class="alert alert-success alert-dismissable col-lg-5 pull-right position-fixed" id="notif_register_success_cust" style="position: fixed; top:30%;right:5%;z-index:100">
           <i class="zmdi zmdi-check pr-15 pull-left"></i>
           <p class="pull-left">Register <?php echo ucwords($page_title) ?> berhasil!</p>
@@ -109,42 +105,46 @@ $notif_data = array(
 
                         <div class="form-group col-lg-12">
                           <h5>Item Penjualan</h5>
-                          <table class="table table-striped table-bordered">
-                            <thead>
-                              <th>Barang</th>
-                              <th>Jumlah</th>
-                              <th style = "width:20%">Daftar Harga</th>
-                              <th>Harga Jual</th>
-                              <th>Harga Final</th>
-                              <th>Notes</th>
-                              <th>Action</th>
-                            </thead>
-                            <tbody id="daftar_brg_jual_add">
-                              <tr id="add_brg_jual_but_container">
-                                <td colspan=7><button type="button" class="btn btn-primary btn-sm col-lg-12" onclick="add_brg_jual_row()">Tambah Barang Penjualan</button>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                          <div class = "table-responsive">
+                            <table class="table table-striped table-bordered">
+                              <thead>
+                                <th>Barang</th>
+                                <th>Jumlah</th>
+                                <th style = "width:20%">Daftar Harga</th>
+                                <th>Harga Jual</th>
+                                <th>Harga Final</th>
+                                <th>Notes</th>
+                                <th>Action</th>
+                              </thead>
+                              <tbody id="daftar_brg_jual_add">
+                                <tr id="add_brg_jual_but_container">
+                                  <td colspan=7><button type="button" class="btn btn-primary btn-sm col-lg-12" onclick="add_brg_jual_row()">Tambah Barang Penjualan</button>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                         <div class="form-group col-lg-12">
                           <h5>Tambahan Penjualan</h5>
-                          <table class="table table-striped table-bordered">
-                            <thead>
-                              <th>Tambahan</th>
-                              <th>Jumlah</th>
-                              <th>Harga</th>
-                              <th>Harga Final</th>
-                              <th>Notes</th>
-                              <th>Action</th>
-                            </thead>
-                            <tbody id="daftar_tambahan_jual_add">
-                              <tr id="add_tambahan_jual_but_container">
-                                <td colspan=7><button type="button" class="btn btn-primary btn-sm col-lg-12" onclick="add_tambahan_jual_row()">Tambah Barang Penjualan</button>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                          <div class = "table-responsive">
+                            <table class="table table-striped table-bordered">
+                              <thead>
+                                <th>Tambahan</th>
+                                <th>Jumlah</th>
+                                <th>Harga</th>
+                                <th>Harga Final</th>
+                                <th>Notes</th>
+                                <th>Action</th>
+                              </thead>
+                              <tbody id="daftar_tambahan_jual_add">
+                                <tr id="add_tambahan_jual_but_container">
+                                  <td colspan=7><button type="button" class="btn btn-primary btn-sm col-lg-12" onclick="add_tambahan_jual_row()">Tambah Barang Penjualan</button>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                         <div class="form-group col-lg-12">
                           <input type = "checkbox" name = "ppn_check[]" onclick = "toggle_ppn()"> PPN
@@ -298,7 +298,7 @@ $notif_data = array(
             </select>
           </td>
           <td>
-              <input type = 'text' onfocus = 'count_nominal_persentase(${pembayaran_row})' name = 'pmbyrn_nominal${pembayaran_row}' class = 'form-control nf-input'>
+              <input type = 'text' name = 'pmbyrn_nominal${pembayaran_row}' class = 'form-control nf-input'>
           </td>
           <td>
               <input type = 'text' name = 'pmbyrn_notes${pembayaran_row}' class = 'form-control'>
@@ -397,22 +397,11 @@ $notif_data = array(
     total_price_global = total;
 
     if(is_ppn == 1){
-      $("#total_price").val(formatting_func(total*1.1));
+      $("#total_price").val(formatting_func(parseInt(total*1.1,10)));
     }
     else{
       $("#total_price").val(formatting_func(total));
     }
-  }
-
-  function count_nominal_persentase(row) {
-    var total = deformatting_func($("#total_price").val());
-    var persen = $("input[name='pmbyrn_persen" + row + "'").val();
-    if (typeof(persen) == 'undefined' || !persen) {
-      nominal = 0;
-    } else {
-      nominal = Math.round(parseFloat(persen.split("%")[0]) / 100 * total);
-    }
-    $("input[name='pmbyrn_nominal" + row + "'").val(formatting_func(nominal));
   }
 
   function open_online_container() {
@@ -439,7 +428,7 @@ $notif_data = array(
       count_total_price();
     }
     if(is_ppn == 1){
-      $("#total_price").val(formatting_func(total_price_global*1.1));
+      $("#total_price").val(formatting_func(parseInt(total_price_global,10)*1.1));
     }
     else{
       $("#total_price").val(formatting_func(total_price_global));
