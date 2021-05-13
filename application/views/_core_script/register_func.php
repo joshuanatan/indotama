@@ -36,7 +36,7 @@
             refresh(page);
           }
           if (typeof(reset_register_form) != "undefined") {
-            //reset_register_form();
+            reset_register_form();
           }
           //notification
         }
