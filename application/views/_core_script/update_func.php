@@ -27,7 +27,7 @@
       processData: false,
       contentType: false,
       success: function(respond) {
-        if (respond["status"] == "SUCCESS") {
+        if (respond["status"].toUpperCase() == "SUCCESS") {
           $('#notif_update_success').show(1).delay(2000).hide(1);
           $("#update_modal").modal("hide");
           if (typeof(refresh) != "undefined") {

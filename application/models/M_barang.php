@@ -446,9 +446,9 @@ class M_barang extends ci_model{
     }
     public function check_update(){
         
-        if($this->check_double_kode($this->id_pk_brg)){
-            return false;
-        }
+        // if($this->check_double_kode($this->id_pk_brg)){
+        //     return false;
+        // }
         if($this->check_double_nama($this->id_pk_brg)){
             return false;
         }

@@ -562,4 +562,3 @@ class Barang extends CI_Controller{
         return executeQuery($sql,$args);
     }
 }
-?>
