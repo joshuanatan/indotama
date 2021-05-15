@@ -27,5 +27,10 @@ class Customer extends CI_Controller {
         $data['toko'] = selectRow("mstr_toko",$where)->result_array();
 		$this->load->view('customer/v_customer_toko',$data);
 	}
+
+    public function detail_brg_penjualan_customer($id_customer){
+        $data['customer_brg_penjualan'] = executeQuery("SELECT * FROM mstr_customer join mstr_penjualan on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer join tbl_brg_penjualan on tbl_brg_penjualan.id_fk_penjualan = mstr_penjualan.id_pk_penjualan join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_penjualan.id_fk_barang WHERE brg_penjualan_status='aktif' or brg_penjualan_status='AKTIF'")->result_array();
+        echo json_encode($data);
+    }
     
 }
