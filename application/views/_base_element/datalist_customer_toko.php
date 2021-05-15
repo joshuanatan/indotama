@@ -1,6 +1,7 @@
 <datalist id='datalist_customer_toko'></datalist>
 <script>
   load_datalist_customer_toko();
+
   function load_datalist_customer_toko() {
     $.ajax({
       url: "<?php echo base_url(); ?>ws/customer/list_data_cust_toko/<?php echo $this->session->id_toko; ?>",
