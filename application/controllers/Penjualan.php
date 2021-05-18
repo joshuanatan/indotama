@@ -99,4 +99,20 @@ class Penjualan extends CI_Controller
     $data["id_penjualan"] = $id_penjualan;
     $this->load->view("penjualan/f-detail-penjualan", $data);
   }
+
+  public function view_invoice_asli_cap($id_penjualan){
+    $data['cap_status'] = true;
+    $where = array(
+      "id_pk_penjualan"=>$id_penjualan
+    );
+    $data['penjualan'] = selectRow("mstr_penjualan",$where)->result_array();
+    $data['customer'] = executeQuery("SELECT * FROM mstr_customer join mstr_penjualan on mstr_penjualan.id_fk_customer = mstr_customer.id_pk_cust WHERE id_pk_penjualan=" . $id_penjualan)->result_array();
+    $data['brg_penjualan'] = executeQuery("SELECT * FROM tbl_brg_penjualan join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_penjualan.id_fk_barang WHERE id_fk_penjualan=".$id_penjualan)->result_array();
+    
+    $id_cabang = $data['penjualan'][0]['id_fk_cabang'];
+
+    $data['toko_cabang'] = executeQuery("SELECT * FROM mstr_cabang join mstr_toko on mstr_cabang.id_fk_toko = mstr_toko.id_pk_toko WHERE id_pk_cabang =".$id_cabang)->result_array();
+
+    $this->load->view("penjualan/pdf_invoice_asli",$data);
+  }
 }
