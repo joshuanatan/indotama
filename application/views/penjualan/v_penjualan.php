@@ -239,7 +239,7 @@ $notif_data = array(
 
   function download_pdf_asli(status_cap){
     var id_penj = $("#nomor_invoice_asli").val();
-    window.location.href = "<?= base_url() ?>penjualan/view_invoice_asli/"+id_penj+"/"+status_cap;
+    window.open("<?= base_url() ?>penjualan/view_invoice_asli/"+id_penj+"/"+status_cap, '_blank');
   }
 
   var unautorized_button = ["edit_button"];
