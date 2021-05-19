@@ -27,8 +27,6 @@ $notif_data = array(
     }
 
     .btn-jenis-barang {
-      background-color: darkgrey;
-      color: black;
       cursor: pointer;
       margin: auto 10px;
       text-align: center;
@@ -36,9 +34,9 @@ $notif_data = array(
       height: auto;
     }
 
-    .btn-jenis-barang:hover {
+    /* .btn-jenis-barang:hover {
       background-color: lightgrey;
-    }
+    } */
 
     .judul-jenis {
       margin-bottom: 30px;
@@ -90,16 +88,14 @@ $notif_data = array(
                   <div class="row">
                     <input type="hidden" value="-" id="id_jeniss">
                     <div class="row" id="jenis_barang">
-                      <?php for ($x = 0; $x < count($daftar_jenis_barang); $x++) { ?>
-
-                        <div class="col-lg-12 btn-jenis-barang" <?php if ($x == 0) {
-                                                                  echo "style='background-color: #474747; color:white;'";
-                                                                } ?> id="jenis_brg_<?= $daftar_jenis_barang[$x]['id_pk_brg_jenis'] ?>" onclick="daftar_jenis_barang(<?php echo $daftar_jenis_barang[$x]['id_pk_brg_jenis'] ?>,'<?php echo $daftar_jenis_barang[$x]['brg_jenis_nama'] ?>')">
-                          <p><?= $daftar_jenis_barang[$x]['brg_jenis_nama'] ?></p>
-                        </div>
-                      <?php } ?>
+                      <?php for ($x = 0; $x < count($daftar_jenis_barang); $x++):?>
+                        <?php if($x == 0):?>
+                          <div class="col-lg-12 btn-jenis-barang btn btn-sm btn-default" id="jenis_brg_<?php echo $daftar_jenis_barang[$x]['id_pk_brg_jenis']?>" onclick = "daftar_jenis_barang(<?php echo $daftar_jenis_barang[$x]['id_pk_brg_jenis'];?>)"><?php echo $daftar_jenis_barang[$x]["brg_jenis_nama"];?></div>
+                        <?php else:?>
+                          <div class="col-lg-12 btn-jenis-barang btn btn-sm btn-warning" id="jenis_brg_<?php echo $daftar_jenis_barang[$x]['id_pk_brg_jenis']?>" onclick = "daftar_jenis_barang(<?php echo $daftar_jenis_barang[$x]['id_pk_brg_jenis'];?>)"><?php echo $daftar_jenis_barang[$x]["brg_jenis_nama"];?></div>
+                        <?php endif;?>
+                      <?php endfor;?>
                     </div>
-
                   </div>
                   <br>
                   <div class="row judul-jenis">
@@ -280,10 +276,10 @@ $data = array(
   }
 
   $(".btn-jenis-barang").click(function() {
-    $(".btn-jenis-barang").css("color", "black");
-    $(".btn-jenis-barang").css("background-color", "darkgrey");
-    $(this).css("color", "white");
-    $(this).css("background-color", "#474747");
+    $(".btn-jenis-barang").removeClass("btn btn-sm btn-default");
+    $(".btn-jenis-barang").addClass("btn btn-sm btn-warning");
+    $(this).removeClass("btn btn-sm btn-warning");
+    $(this).addClass("btn btn-sm btn-default");
   });
 </script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
@@ -299,8 +295,8 @@ $data = array(
         autoplay: false,
         speed: 300,
         arrows: true,
-        prevArrow: '<button type="button" class="slick-prev"><</button>',
-        nextArrow: '<button type="button" class="slick-next">></button>'
+        prevArrow: '<button type="button" class="slick-prev btn btn-sm btn-default"><i class = "md-arrow-left"></i></button>',
+        nextArrow: '<button type="button" class="slick-next btn btn-sm btn-default"><i class = "md-arrow-right"></i></button>'
       });
     } else if (y.matches) { // If media query matches
       $('#jenis_barang').slick({
@@ -311,8 +307,8 @@ $data = array(
         autoplay: false,
         speed: 300,
         arrows: true,
-        prevArrow: '<button type="button" class="slick-prev"><</button>',
-        nextArrow: '<button type="button" class="slick-next">></button>'
+        prevArrow: '<button type="button" class="slick-prev btn btn-sm btn-default"><i class = "md-arrow-left"></i></button>',
+        nextArrow: '<button type="button" class="slick-next btn btn-sm btn-default"><i class = "md-arrow-right"></i></button>'
       });
     } else {
       $('#jenis_barang').slick({
@@ -320,8 +316,8 @@ $data = array(
         slidesToShow: 5,
         slidesToScroll: 3,
         arrows: true,
-        prevArrow: '<button type="button" class="slick-prev"><</button>',
-        nextArrow: '<button type="button" class="slick-next">></button>'
+        prevArrow: '<button type="button" class="slick-prev btn btn-sm btn-default"><i class = "md-arrow-left"></i></button>',
+        nextArrow: '<button type="button" class="slick-next btn btn-sm btn-default"><i class = "md-arrow-right"></i></button>'
       });
     }
   }
