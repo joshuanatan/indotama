@@ -100,8 +100,8 @@ class Penjualan extends CI_Controller
     $this->load->view("penjualan/f-detail-penjualan", $data);
   }
 
-  public function view_invoice_asli_cap($id_penjualan){
-    $data['cap_status'] = true;
+  public function view_invoice_asli($id_penjualan,$status_cap){
+    $data['cap_status'] = $status_cap;
     $where = array(
       "id_pk_penjualan"=>$id_penjualan
     );
@@ -115,4 +115,5 @@ class Penjualan extends CI_Controller
 
     $this->load->view("penjualan/pdf_invoice_asli",$data);
   }
+
 }

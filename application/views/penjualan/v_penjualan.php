@@ -108,8 +108,8 @@ $notif_data = array(
                 <input type='hidden' id="nomor_invoice_asli">
                 <div class = "form-group">
                     <button type = "button" class = "btn btn-sm btn-secondary" data-dismiss = "modal">Cancel</button>
-                    <a><button type = "button" id = "pdf_invoice_asli_cap" onclick="download_pdf_asli_cap()" class = "btn btn-sm btn-primary">Cap</button></a>
-                    <a><button onclick="download_pdf_asli_noncap()" type = "button" id = "pdf_invoice_asli_noncap" class = "btn btn-sm btn-warning">Non-Cap</button></a>
+                    <a><button type = "button" id = "pdf_invoice_asli_cap" onclick="download_pdf_asli('cap')" class = "btn btn-sm btn-primary">Cap</button></a>
+                    <a><button onclick="download_pdf_asli('noncap')" type = "button" id = "pdf_invoice_asli_noncap" class = "btn btn-sm btn-warning">Non-Cap</button></a>
                 </div>
             </div>
         </div>
@@ -237,14 +237,9 @@ $notif_data = array(
     $("#nomor_invoice_asli").val(id);
   }
 
-  function download_pdf_asli_noncap(){
+  function download_pdf_asli(status_cap){
     var id_penj = $("#nomor_invoice_asli").val();
-    window.location.href = "<?= base_url() ?>penjualan/view_invoice_asli_noncap/"+id_penj;
-  }
-
-  function download_pdf_asli_cap(){
-    var id_penj = $("#nomor_invoice_asli").val();
-    window.location.href = "<?= base_url() ?>penjualan/view_invoice_asli_cap/"+id_penj;
+    window.location.href = "<?= base_url() ?>penjualan/view_invoice_asli/"+id_penj+"/"+status_cap;
   }
 
   var unautorized_button = ["edit_button"];

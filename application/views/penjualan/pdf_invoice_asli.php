@@ -128,7 +128,7 @@
           </div>
           <div class="col-3">
             <p>Hormat Kami,</p>
-            <?php if($cap_status){ ?>
+            <?php if($cap_status=="cap"){ ?>
               <img class="ttd-img" src="<?= base_url()?>asset/uploads/toko/ttd/<?= $toko_cabang[0]['toko_ttd'] ?>">
               <?php } ?>
           </div>
