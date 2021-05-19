@@ -1,60 +1,65 @@
 <?php
 defined("BASEPATH") or exit("no direct script");
 date_default_timezone_set("asia/jakarta");
-class M_barang extends ci_model{
-    private $tbl_name = "mstr_barang";
-    private $columns = array();
-    private $id_pk_brg;
-    private $brg_kode;
-    private $brg_nama;
-    private $brg_ket;
-    private $brg_minimal;
-    private $brg_status;
-    private $brg_satuan;
-    private $brg_image;
-    private $brg_harga;
-    private $brg_harga_toko;
-    private $brg_harga_grosir;
-    private $brg_tipe; /*kombinasi / nonkombinasi*/
-    private $brg_create_date;
-    private $brg_last_modified;
-    private $id_create_data;
-    private $id_last_modified;
-    private $id_fk_brg_jenis;
-    private $id_fk_brg_merk;
+class M_barang extends ci_model
+{
+  private $tbl_name = "mstr_barang";
+  private $columns = array();
+  private $id_pk_brg;
+  private $brg_kode;
+  private $brg_nama;
+  private $brg_ket;
+  private $brg_minimal;
+  private $brg_status;
+  private $brg_satuan;
+  private $brg_image;
+  private $brg_harga;
+  private $brg_harga_toko;
+  private $brg_harga_grosir;
+  private $brg_tipe; /*kombinasi / nonkombinasi*/
+  private $brg_create_date;
+  private $brg_last_modified;
+  private $id_create_data;
+  private $id_last_modified;
+  private $id_fk_brg_jenis;
+  private $id_fk_brg_merk;
 
-    public function __construct(){
-        parent::__construct();
-        $this->set_column("brg_kode","kode",true);
-        $this->set_column("brg_nama","nama",false);
-        $this->set_column("brg_ket","keterangan",false);
-        $this->set_column("brg_merk_nama","merk",false);
-        $this->set_column("brg_minimal","minimal",false);
-        $this->set_column("brg_satuan","satuan",false);
-        $this->set_column("brg_harga","harga satuan",false);
-        $this->set_column("brg_harga_toko","harga toko",false);
-        $this->set_column("brg_harga_grosir","harga grosir",false);
-        $this->set_column("brg_status","status",false);
-        $this->set_column("brg_last_modified","last modified",false);
+  public function __construct()
+  {
+    parent::__construct();
+    $this->set_column("brg_kode", "kode", true);
+    $this->set_column("brg_nama", "nama", false);
+    $this->set_column("brg_ket", "keterangan", false);
+    $this->set_column("brg_merk_nama", "merk", false);
+    $this->set_column("brg_minimal", "minimal", false);
+    $this->set_column("brg_satuan", "satuan", false);
+    $this->set_column("brg_harga", "harga satuan", false);
+    $this->set_column("brg_harga_toko", "harga toko", false);
+    $this->set_column("brg_harga_grosir", "harga grosir", false);
+    $this->set_column("brg_status", "status", false);
+    $this->set_column("brg_last_modified", "last modified", false);
 
-        $this->brg_create_date = date("y-m-d h:i:s");
-        $this->brg_last_modified = date("y-m-d h:i:s");
-        $this->id_create_data = $this->session->id_user;
-        $this->id_last_modified = $this->session->id_user;
-    }
-    private function set_column($col_name,$col_disp,$order_by){
-        $array = array(
-            "col_name" => $col_name,
-            "col_disp" => $col_disp,
-            "order_by" => $order_by
-        );
-        $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
-    }
-    public function columns(){
-        return $this->columns;
-    }
-    public function install(){
-        $sql = "
+    $this->brg_create_date = date("y-m-d h:i:s");
+    $this->brg_last_modified = date("y-m-d h:i:s");
+    $this->id_create_data = $this->session->id_user;
+    $this->id_last_modified = $this->session->id_user;
+  }
+  private function set_column($col_name, $col_disp, $order_by)
+  {
+    $array = array(
+      "col_name" => $col_name,
+      "col_disp" => $col_disp,
+      "order_by" => $order_by
+    );
+    $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
+  }
+  public function columns()
+  {
+    return $this->columns;
+  }
+  public function install()
+  {
+    $sql = "
         drop table if exists mstr_barang;
         create table mstr_barang(
             id_pk_brg int primary key auto_increment,
@@ -139,583 +144,614 @@ class M_barang extends ci_model{
         end$$
         delimiter ;
         ";
-        executeQuery($sql);
-    }
-    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
-        $search_query = "";
-        $order_by = $this->columns[$order_by]["col_name"];
-        if($search_key != ""){
-            $search_query .= "and
+    executeQuery($sql);
+  }
+  public function content($page = 1, $order_by = 0, $order_direction = "asc", $search_key = "", $data_per_page = "")
+  {
+    $search_query = "";
+    $order_by = $this->columns[$order_by]["col_name"];
+    if ($search_key != "") {
+      $search_query .= "and
             ( 
-                brg_kode like '%".$search_key."%' or
-                brg_nama like '%".$search_key."%' or
-                brg_ket like '%".$search_key."%' or
-                brg_minimal like '%".$search_key."%' or
-                brg_status like '%".$search_key."%' or
-                brg_satuan like '%".$search_key."%' or
-                brg_image like '%".$search_key."%' or
-                brg_harga like '%".$search_key."%' or
-                brg_harga_toko like '%".$search_key."%' or
-                brg_harga_grosir like '%".$search_key."%' or
-                brg_merk_nama like '%".$search_key."%' or
-                brg_jenis_nama like '%".$search_key."%' or
-                brg_tipe like '%".$search_key."%' or
-                brg_last_modified like '%".$search_key."%'
+                brg_kode like '%" . $search_key . "%' or
+                brg_nama like '%" . $search_key . "%' or
+                brg_ket like '%" . $search_key . "%' or
+                brg_minimal like '%" . $search_key . "%' or
+                brg_status like '%" . $search_key . "%' or
+                brg_satuan like '%" . $search_key . "%' or
+                brg_image like '%" . $search_key . "%' or
+                brg_harga like '%" . $search_key . "%' or
+                brg_harga_toko like '%" . $search_key . "%' or
+                brg_harga_grosir like '%" . $search_key . "%' or
+                brg_merk_nama like '%" . $search_key . "%' or
+                brg_jenis_nama like '%" . $search_key . "%' or
+                brg_tipe like '%" . $search_key . "%' or
+                brg_last_modified like '%" . $search_key . "%'
             )";
-        }
-        $query = "
+    }
+    $query = "
         select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_harga,brg_harga_toko,brg_harga_grosir,brg_tipe,count(id_pk_barang_kombinasi) as jumlah_barang_kombinasi
-        from ".$this->tbl_name." 
-        left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
-        left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
+        from " . $this->tbl_name . " 
+        left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = " . $this->tbl_name . ".id_fk_brg_jenis
+        left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = " . $this->tbl_name . ".id_fk_brg_merk
         left join tbl_barang_kombinasi as a on a.id_barang_utama = mstr_barang.id_pk_brg and a.barang_kombinasi_status = 'aktif'
-        where brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) and id_pk_brg_jenis != 0 ".$search_query."  
+        where brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) and id_pk_brg_jenis != 0 " . $search_query . "  
         group by id_pk_brg 
-        order by ".$order_by." ".$order_direction." 
-        limit 20 offset ".($page-1)*$data_per_page;
-        $args = array(
-            "aktif","aktif","aktif"
-        );
-        $result["data"] = executeQuery($query,$args);
-        //echo $this->db->last_query();
-        $query = "
+        order by " . $order_by . " " . $order_direction . " 
+        limit 20 offset " . ($page - 1) * $data_per_page;
+    $args = array(
+      "aktif", "aktif", "aktif"
+    );
+    $result["data"] = executeQuery($query, $args);
+    //echo $this->db->last_query();
+    $query = "
         select id_pk_brg
-        from ".$this->tbl_name." 
-        left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
-        left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
+        from " . $this->tbl_name . " 
+        left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = " . $this->tbl_name . ".id_fk_brg_jenis
+        left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = " . $this->tbl_name . ".id_fk_brg_merk
         left join tbl_barang_kombinasi as a on a.id_barang_utama = mstr_barang.id_pk_brg and a.barang_kombinasi_status = 'aktif'
-        where brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) and id_pk_brg_jenis != 0 ".$search_query."   
+        where brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) and id_pk_brg_jenis != 0 " . $search_query . "   
         group by id_pk_brg 
-        order by ".$order_by." ".$order_direction;
-        $result["total_data"] = executeQuery($query,$args)->num_rows();
-        return $result;
+        order by " . $order_by . " " . $order_direction;
+    $result["total_data"] = executeQuery($query, $args)->num_rows();
+    return $result;
+  }
+  public function content_tab($page = 1, $order_by = 0, $order_direction = "asc", $search_key = "", $data_per_page = "", $id_jenis = "-")
+  {
+    $jenis_aktif = selectRow("mstr_barang_jenis", array("brg_jenis_status" => "aktif"))->result_array();
+    if ($id_jenis == "-") {
+      $id_jenis = $jenis_aktif[0]['id_pk_brg_jenis'];
     }
-    public function content_tab($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = "",$id_jenis="-"){
-        $jenis_aktif = selectRow("mstr_barang_jenis",array("brg_jenis_status"=>"aktif"))->result_array();
-        if($id_jenis=="-"){
-            $id_jenis = $jenis_aktif[0]['id_pk_brg_jenis'];
-        }
-        $order_by = $this->columns[$order_by]["col_name"];
-        $search_query = "";
-        if($search_key != ""){
-            $search_query .= "and
+    $order_by = $this->columns[$order_by]["col_name"];
+    $search_query = "";
+    if ($search_key != "") {
+      $search_query .= "and
             ( 
-                brg_kode like '%".$search_key."%' or
-                brg_nama like '%".$search_key."%' or
-                brg_ket like '%".$search_key."%' or
-                brg_minimal like '%".$search_key."%' or
-                brg_status like '%".$search_key."%' or
-                brg_satuan like '%".$search_key."%' or
-                brg_image like '%".$search_key."%' or
-                brg_harga like '%".$search_key."%' or
-                brg_harga_toko like '%".$search_key."%' or
-                brg_harga_grosir like '%".$search_key."%' or
-                brg_merk_nama like '%".$search_key."%' or
-                brg_jenis_nama like '%".$search_key."%' or
-                brg_tipe like '%".$search_key."%' or
-                brg_last_modified like '%".$search_key."%'
+                brg_kode like '%" . $search_key . "%' or
+                brg_nama like '%" . $search_key . "%' or
+                brg_ket like '%" . $search_key . "%' or
+                brg_minimal like '%" . $search_key . "%' or
+                brg_status like '%" . $search_key . "%' or
+                brg_satuan like '%" . $search_key . "%' or
+                brg_image like '%" . $search_key . "%' or
+                brg_harga like '%" . $search_key . "%' or
+                brg_harga_toko like '%" . $search_key . "%' or
+                brg_harga_grosir like '%" . $search_key . "%' or
+                brg_merk_nama like '%" . $search_key . "%' or
+                brg_jenis_nama like '%" . $search_key . "%' or
+                brg_tipe like '%" . $search_key . "%' or
+                brg_last_modified like '%" . $search_key . "%'
             )";
-        }
-        $query = "
+    }
+    $query = "
         select id_pk_brg,brg_kode,brg_nama,brg_harga,brg_harga_toko,brg_harga_grosir,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_harga,brg_tipe,count(id_pk_barang_kombinasi) as jumlah_barang_kombinasi
-        from ".$this->tbl_name." 
-        left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
-        left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
+        from " . $this->tbl_name . " 
+        left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = " . $this->tbl_name . ".id_fk_brg_jenis
+        left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = " . $this->tbl_name . ".id_fk_brg_merk
         left join tbl_barang_kombinasi as a on a.id_barang_utama = mstr_barang.id_pk_brg and a.barang_kombinasi_status = 'aktif'
-        where id_fk_brg_jenis= ".$id_jenis." and brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) and id_pk_brg_jenis != 0 ".$search_query."  
+        where id_fk_brg_jenis= " . $id_jenis . " and brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) and id_pk_brg_jenis != 0 " . $search_query . "  
         group by id_pk_brg 
-        order by ".$order_by." ".$order_direction." 
-        limit 20 offset ".($page-1)*$data_per_page;
-        $args = array(
-            "aktif","aktif","aktif"
-        );
-        $result["data"] = executeQuery($query,$args);
-        //echo $this->db->last_query();
-        $query = "
+        order by " . $order_by . " " . $order_direction . " 
+        limit 20 offset " . ($page - 1) * $data_per_page;
+    $args = array(
+      "aktif", "aktif", "aktif"
+    );
+    $result["data"] = executeQuery($query, $args);
+    //echo $this->db->last_query();
+    $query = "
         select id_pk_brg
-        from ".$this->tbl_name." 
-        left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
-        left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
+        from " . $this->tbl_name . " 
+        left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = " . $this->tbl_name . ".id_fk_brg_jenis
+        left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = " . $this->tbl_name . ".id_fk_brg_merk
         left join tbl_barang_kombinasi as a on a.id_barang_utama = mstr_barang.id_pk_brg and a.barang_kombinasi_status = 'aktif'
-        where id_fk_brg_jenis= ".$id_jenis." and brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) and id_pk_brg_jenis != 0 ".$search_query."   
+        where id_fk_brg_jenis= " . $id_jenis . " and brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) and id_pk_brg_jenis != 0 " . $search_query . "   
         group by id_pk_brg 
-        order by ".$order_by." ".$order_direction;
-        $result["total_data"] = executeQuery($query,$args)->num_rows();
-        return $result;
-    }
-    public function list_data(){
-        $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_harga_toko,brg_harga_grosir,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe
-        from ".$this->tbl_name." 
-        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
-        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
-        where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ?  
-        group by id_pk_brg 
-        order by brg_nama asc"; 
-        $args = array(
-            "aktif","aktif","aktif"
-        );
-        return executeQuery($sql,$args);
-    }
-    public function detail_by_name(){
-        
-        $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_harga_toko,brg_harga_grosir,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe
-        from ".$this->tbl_name." 
-        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
-        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
-        where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ? and brg_nama = ?
-        group by id_pk_brg 
-        order by brg_nama asc"; 
-        $args = array(
-            "aktif","aktif","aktif",$this->brg_nama
-        );
-        return executeQuery($sql,$args);
-    }
-    public function detail_by_id(){
-        
-        $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_harga_toko,brg_harga_grosir,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe
-        from ".$this->tbl_name." 
-        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
-        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
-        where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ? and id_pk_brg = ?
-        group by id_pk_brg 
-        order by brg_nama asc"; 
-        $args = array(
-            "aktif","aktif","aktif",$this->id_pk_brg
-        );
-        return executeQuery($sql,$args);
-    }
-    private function check_double_kode($id_pk_brg = 0){
-        $where = array(
-            "brg_kode" => $this->brg_kode,
-            "id_pk_brg != " => $id_pk_brg,
-            "brg_status" => "aktif"
-        );
-        return isExistsInTable($this->tbl_name,$where);
-    }
-    private function check_double_nama($id_pk_brg = 0){
-        $where = array(
-            "brg_nama" => $this->brg_nama,
-            "id_pk_brg != " => $id_pk_brg,
-            "brg_status" => "aktif"
-        );
-        return isExistsInTable($this->tbl_name,$where);
-    }
-    public function short_insert(){
-        if($this->check_double_nama()){
-            $data = array(
-                "brg_nama" => $this->brg_nama,
-                "brg_status" => "aktif",
-                "brg_tipe" => "nonkombinasi",
-                "brg_create_date" => $this->brg_create_date,
-                "brg_last_modified" => $this->brg_last_modified,
-                "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified
-            );
-            return insertRow($this->tbl_name,$data);
-        }
-        return false;
-    }
-    public function insert(){
-        if($this->check_insert()){
-            $data = array(
-                "brg_kode" => $this->brg_kode,
-                "brg_nama" => $this->brg_nama,
-                "brg_ket" => $this->brg_ket,
-                "brg_minimal" => $this->brg_minimal,
-                "brg_status" => $this->brg_status,
-                "brg_satuan" => $this->brg_satuan,
-                "brg_image" => $this->brg_image,
-                "brg_harga" => $this->brg_harga,
-                "brg_harga_toko" => $this->brg_harga_toko,
-                "brg_harga_grosir" => $this->brg_harga_grosir,
-                "brg_tipe" => $this->brg_tipe,
-                "id_fk_brg_jenis" => $this->id_fk_brg_jenis,
-                "id_fk_brg_merk" => $this->id_fk_brg_merk,
-                "brg_create_date" => $this->brg_create_date,
-                "brg_last_modified" => $this->brg_last_modified,
-                "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified
-            );
-            return insertRow($this->tbl_name,$data);
-        }
-        else{
-            return false;
-        }
-    }
-    public function update(){
-        if($this->check_update()){
-            $where = array(
-                "id_pk_brg" => $this->id_pk_brg
-            );
-            $data = array(
-                "brg_kode" => $this->brg_kode,
-                "brg_nama" => $this->brg_nama,
-                "brg_ket" => $this->brg_ket,
-                "brg_minimal" => $this->brg_minimal,
-                "brg_satuan" => $this->brg_satuan,
-                "brg_image" => $this->brg_image,
-                "brg_harga" => $this->brg_harga,
-                "brg_harga_toko" => $this->brg_harga_toko,
-                "brg_harga_grosir" => $this->brg_harga_grosir,
-                "brg_tipe" => $this->brg_tipe,
-                "id_fk_brg_jenis" => $this->id_fk_brg_jenis,
-                "id_fk_brg_merk" => $this->id_fk_brg_merk,
-                "brg_last_modified" => $this->brg_last_modified,
-                "id_last_modified" => $this->id_last_modified
-            );
-            updateRow($this->tbl_name,$data,$where);
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    public function delete(){
-        if($this->check_delete()){
-            $where = array(
-                "id_pk_brg" => $this->id_pk_brg
-            );
-            $data = array(
-                "brg_status" => "nonaktif",
-                "brg_last_modified" => $this->brg_last_modified,
-                "id_last_modified" => $this->id_last_modified
-            );
-            updateRow($this->tbl_name,$data,$where);
-            return true;
-        }
-    }
-    public function check_insert(){
-        if($this->check_double_kode()){
-            return false;
-        }
-        if($this->check_double_nama()){
-            return false;
-        }
-        if($this->brg_kode == ""){
-            return false;
-        }
-        if($this->brg_nama == ""){
-            return false;
-        }
-        if($this->brg_ket == ""){
-            return false;
-        }
-        if($this->brg_minimal == ""){
-            return false;
-        }
-        if($this->id_fk_brg_jenis == ""){
-            return false;
-        }
-        if($this->brg_status == ""){
-            return false;
-        }
-        if($this->brg_satuan == ""){
-            return false;
-        }
-        if($this->brg_image == ""){
-            return false;
-        }
-        if($this->brg_harga == ""){
-            return false;
-        }
-        if($this->brg_harga_toko == ""){
-            return false;
-        }
-        if($this->brg_harga_grosir == ""){
-            return false;
-        }
-        if($this->brg_tipe == ""){
-            return false;
-        }
-        if($this->id_fk_brg_merk == ""){
-            return false;
-        }
-        if($this->brg_create_date == ""){
-            return false;
-        }
-        if($this->brg_last_modified == ""){
-            return false;
-        }
-        if($this->id_create_data == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        return true;
-    }
-    public function check_update(){
-        
-        // if($this->check_double_kode($this->id_pk_brg)){
-        //     return false;
-        // }
-        if($this->check_double_nama($this->id_pk_brg)){
-            return false;
-        }
-        if($this->id_pk_brg == ""){
-            return false;
-        }
-        if($this->brg_kode == ""){
-            return false;
-        }
-        if($this->brg_nama == ""){
-            return false;
-        }
-        if($this->brg_minimal == ""){
-            return false;
-        }
-        if($this->brg_satuan == ""){
-            return false;
-        }
-        if($this->brg_harga == ""){
-            return false;
-        }
-        if($this->brg_tipe == ""){
-            return false;
-        }
-        if($this->id_fk_brg_jenis == ""){
-            return false;
-        }
-        if($this->id_fk_brg_merk == ""){
-            return false;
-        }
-        if($this->brg_last_modified == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        return true;
-    }
-    public function check_delete(){
-        if($this->id_pk_brg == ""){
-            return false;
-        }
-        if($this->brg_last_modified == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        return true;
-    }
-    public function set_insert($brg_kode,$brg_nama,$brg_ket,$brg_minimal,$brg_satuan,$brg_image,$brg_status,$id_fk_brg_jenis,$id_fk_brg_merk,$brg_harga,$brg_harga_toko,$brg_harga_grosir,$brg_tipe){
-        if(!$this->set_brg_kode($brg_kode)){
-            return false;
-        }
-        if(!$this->set_brg_nama($brg_nama)){
-            return false;
-        }
-        if(!$this->set_brg_ket($brg_ket)){
-            return false;
-        }
-        if(!$this->set_brg_minimal($brg_minimal)){
-            return false;
-        }
-        if(!$this->set_brg_satuan($brg_satuan)){
-            return false;
-        }
-        if(!$this->set_brg_image($brg_image)){
-            return false;
-        }
-        if(!$this->set_brg_harga($brg_harga)){
-            return false;
-        }
-        if(!$this->set_brg_harga_toko($brg_harga_toko)){
-            return false;
-        }
-        if(!$this->set_brg_harga_grosir($brg_harga_grosir)){
-            return false;
-        }
-        if(!$this->set_brg_tipe($brg_tipe)){
-            return false;
-        }
-        if(!$this->set_brg_status($brg_status)){
-            return false;
-        }
-        if(!$this->set_id_fk_brg_jenis($id_fk_brg_jenis)){
-            return false;
-        }
-        if(!$this->set_id_fk_brg_merk($id_fk_brg_merk)){
-            return false;
-        }
-        return true;
-    }
-    public function set_update($id_pk_brg,$brg_kode,$brg_nama,$brg_ket,$brg_minimal,$brg_satuan,$brg_image,$id_fk_brg_jenis,$id_fk_brg_merk,$brg_harga,$brg_harga_toko,$brg_harga_grosir,$brg_tipe){
-        if(!$this->set_id_pk_brg($id_pk_brg)){
-            return false;
-        }
-        
-        if(!$this->set_brg_kode($brg_kode)){
-            return false;
-        }
-        if(!$this->set_brg_nama($brg_nama)){
-            return false;
-        }
-        if(!$this->set_brg_ket($brg_ket)){
-            return false;
-        }
-        if(!$this->set_brg_minimal($brg_minimal)){
-            return false;
-        }
-        if(!$this->set_brg_satuan($brg_satuan)){
-            return false;
-        }
-        if(!$this->set_brg_image($brg_image)){
-            return false;
-        }
-        if(!$this->set_brg_harga($brg_harga)){
-            return false;
-        }
-        if(!$this->set_brg_harga_toko($brg_harga_toko)){
-            return false;
-        }
-        if(!$this->set_brg_harga_grosir($brg_harga_grosir)){
-            return false;
-        }
-        if(!$this->set_brg_tipe($brg_tipe)){
-            return false;
-        }
-        if(!$this->set_id_fk_brg_jenis($id_fk_brg_jenis)){
-            return false;
-        }
-        if(!$this->set_id_fk_brg_merk($id_fk_brg_merk)){
-            return false;
-        }
-        return true;
-    }
-    public function set_delete($id_pk_brg){
-        if(!$this->set_id_pk_brg($id_pk_brg)){
-            return false;
-        }
-        return true;
-    }
-    public function set_id_pk_brg($id_pk_brg){
-        if($id_pk_brg != ""){
-            $this->id_pk_brg = $id_pk_brg;
-            return true;
-        }
-        return false;
-    }
-    public function set_brg_kode($brg_kode){
-        if($brg_kode != ""){
-            $this->brg_kode = $brg_kode;
-            return true;
-        }
-        return false;
-    }
-    public function set_brg_nama($brg_nama){
-        if($brg_nama != ""){
-            $this->brg_nama = $brg_nama;
-            return true;
-        }
-        return false;
-    }
-    public function set_brg_ket($brg_ket){
-        if(true){
-            $this->brg_ket = $brg_ket;
-            return true;
-        }
-        return false;
-    }
-    public function set_brg_minimal($brg_minimal){
-        if($brg_minimal !== ""){
-            $this->brg_minimal = $brg_minimal;
-            return true;
-        }
-        return false;
-    }
-    public function set_brg_satuan($brg_satuan){
-        if($brg_satuan != ""){
-            $this->brg_satuan = $brg_satuan;
-            return true;
-        }
-        return false;
-    }
-    public function set_brg_image($brg_image){
-        if(true){
-            $this->brg_image = $brg_image;
-            return true;
-        }
-        return false;
-    }
-    public function set_brg_harga($brg_harga){
-        if($brg_harga != ""){
-            $this->brg_harga = $brg_harga;
-            return true;
-        }
-        return false;
-    }
-    public function set_brg_harga_toko($brg_harga_toko){
-        if($brg_harga_toko != ""){
-            $this->brg_harga_toko = $brg_harga_toko;
-            return true;
-        }
-        return false;
-    }
-    public function set_brg_harga_grosir($brg_harga_grosir){
-        if($brg_harga_grosir != ""){
-            $this->brg_harga_grosir = $brg_harga_grosir;
-            return true;
-        }
-        return false;
-    }
-    public function set_brg_tipe($brg_tipe){
-        if($brg_tipe != ""){
-            $this->brg_tipe = $brg_tipe;
-            return true;
-        }
-        return false;
-    }
-    public function set_brg_status($brg_status){
-        if($brg_status != ""){
-            $this->brg_status = $brg_status;
-            return true;
-        }
-        return false;
-    }
-    public function set_id_fk_brg_jenis($id_fk_brg_jenis){
-        if($id_fk_brg_jenis != ""){
-            $this->id_fk_brg_jenis = $id_fk_brg_jenis;
-            return true;
-        }
-        return false;
-    }
-    public function set_id_fk_brg_merk($id_fk_brg_merk){
-        if($id_fk_brg_merk != ""){
-            $this->id_fk_brg_merk = $id_fk_brg_merk;
-            return true;
-        }
-        return false;
-    }
-    public function data_excel(){
-        $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_harga_toko,brg_harga_grosir,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe
-        from ".$this->tbl_name." 
-        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = ".$this->tbl_name.".id_fk_brg_jenis
-        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = ".$this->tbl_name.".id_fk_brg_merk
+        order by " . $order_by . " " . $order_direction;
+    $result["total_data"] = executeQuery($query, $args)->num_rows();
+    return $result;
+  }
+  public function list_data()
+  {
+    $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_harga_toko,brg_harga_grosir,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe
+        from " . $this->tbl_name . " 
+        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = " . $this->tbl_name . ".id_fk_brg_jenis
+        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = " . $this->tbl_name . ".id_fk_brg_merk
         where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ?  
         group by id_pk_brg 
         order by brg_nama asc";
-        $args = array(
-            "aktif","aktif","aktif"
-        );
-        return executeQuery($sql,$args);
+    $args = array(
+      "aktif", "aktif", "aktif"
+    );
+    return executeQuery($sql, $args);
+  }
+  public function detail_by_name()
+  {
+
+    $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_harga_toko,brg_harga_grosir,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe
+        from " . $this->tbl_name . " 
+        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = " . $this->tbl_name . ".id_fk_brg_jenis
+        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = " . $this->tbl_name . ".id_fk_brg_merk
+        where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ? and brg_nama = ?
+        group by id_pk_brg 
+        order by brg_nama asc";
+    $args = array(
+      "aktif", "aktif", "aktif", $this->brg_nama
+    );
+    return executeQuery($sql, $args);
+  }
+  public function detail_by_id()
+  {
+
+    $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_harga_toko,brg_harga_grosir,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe
+        from " . $this->tbl_name . " 
+        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = " . $this->tbl_name . ".id_fk_brg_jenis
+        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = " . $this->tbl_name . ".id_fk_brg_merk
+        where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ? and id_pk_brg = ?
+        group by id_pk_brg 
+        order by brg_nama asc";
+    $args = array(
+      "aktif", "aktif", "aktif", $this->id_pk_brg
+    );
+    return executeQuery($sql, $args);
+  }
+  private function check_double_kode($id_pk_brg = 0)
+  {
+    $where = array(
+      "brg_kode" => $this->brg_kode,
+      "id_pk_brg != " => $id_pk_brg,
+      "brg_status" => "aktif"
+    );
+    return isExistsInTable($this->tbl_name, $where);
+  }
+  private function check_double_nama($id_pk_brg = 0)
+  {
+    $where = array(
+      "brg_nama" => $this->brg_nama,
+      "id_pk_brg != " => $id_pk_brg,
+      "brg_status" => "aktif"
+    );
+    return isExistsInTable($this->tbl_name, $where);
+  }
+  public function short_insert()
+  {
+    if ($this->check_double_nama()) {
+      $data = array(
+        "brg_nama" => $this->brg_nama,
+        "brg_status" => "aktif",
+        "brg_tipe" => "nonkombinasi",
+        "brg_create_date" => $this->brg_create_date,
+        "brg_last_modified" => $this->brg_last_modified,
+        "id_create_data" => $this->id_create_data,
+        "id_last_modified" => $this->id_last_modified
+      );
+      return insertRow($this->tbl_name, $data);
     }
-    public function columns_excel(){
-        $this->columns = array();
-        $this->set_column("brg_kode","kode barang",true);
-        $this->set_column("brg_jenis_nama","tipe barang",false);
-        $this->set_column("brg_nama","nama barang",false);
-        $this->set_column("brg_ket","keterangan",false);
-        $this->set_column("brg_merk_nama","merk barang",false);
-        $this->set_column("brg_minimal","jumlah minimal",false);
-        $this->set_column("brg_satuan","satuan",false);
-        $this->set_column("brg_harga","harga satuan",false);
-        $this->set_column("brg_harga_toko","harga toko",false);
-        $this->set_column("brg_harga_grosir","harga grosir",false);
-        $this->set_column("brg_tipe","Tunggal / Kombinasi",false);
-        $this->set_column("brg_status","status",false);
-        $this->set_column("brg_last_modified","last modified",false);
-        return $this->columns;
+    return false;
+  }
+  public function insert()
+  {
+    if ($this->check_insert()) {
+      $data = array(
+        "brg_kode" => $this->brg_kode,
+        "brg_nama" => $this->brg_nama,
+        "brg_ket" => $this->brg_ket,
+        "brg_minimal" => $this->brg_minimal,
+        "brg_status" => $this->brg_status,
+        "brg_satuan" => $this->brg_satuan,
+        "brg_image" => $this->brg_image,
+        "brg_harga" => $this->brg_harga,
+        "brg_harga_toko" => $this->brg_harga_toko,
+        "brg_harga_grosir" => $this->brg_harga_grosir,
+        "brg_tipe" => $this->brg_tipe,
+        "id_fk_brg_jenis" => $this->id_fk_brg_jenis,
+        "id_fk_brg_merk" => $this->id_fk_brg_merk,
+        "brg_create_date" => $this->brg_create_date,
+        "brg_last_modified" => $this->brg_last_modified,
+        "id_create_data" => $this->id_create_data,
+        "id_last_modified" => $this->id_last_modified
+      );
+      return insertRow($this->tbl_name, $data);
+    } else {
+      return false;
     }
+  }
+  public function update()
+  {
+    if ($this->check_update()) {
+      $where = array(
+        "id_pk_brg" => $this->id_pk_brg
+      );
+      $data = array(
+        "brg_kode" => $this->brg_kode,
+        "brg_nama" => $this->brg_nama,
+        "brg_ket" => $this->brg_ket,
+        "brg_minimal" => $this->brg_minimal,
+        "brg_satuan" => $this->brg_satuan,
+        "brg_image" => $this->brg_image,
+        "brg_harga" => $this->brg_harga,
+        "brg_harga_toko" => $this->brg_harga_toko,
+        "brg_harga_grosir" => $this->brg_harga_grosir,
+        "brg_tipe" => $this->brg_tipe,
+        "id_fk_brg_jenis" => $this->id_fk_brg_jenis,
+        "id_fk_brg_merk" => $this->id_fk_brg_merk,
+        "brg_last_modified" => $this->brg_last_modified,
+        "id_last_modified" => $this->id_last_modified
+      );
+      updateRow($this->tbl_name, $data, $where);
+      return true;
+    } else {
+      return false;
+    }
+  }
+  public function delete()
+  {
+    if ($this->check_delete()) {
+      $where = array(
+        "id_pk_brg" => $this->id_pk_brg
+      );
+      $data = array(
+        "brg_status" => "nonaktif",
+        "brg_last_modified" => $this->brg_last_modified,
+        "id_last_modified" => $this->id_last_modified
+      );
+      updateRow($this->tbl_name, $data, $where);
+      return true;
+    }
+  }
+  public function check_insert()
+  {
+    if ($this->check_double_kode()) {
+      return false;
+    }
+    if ($this->check_double_nama()) {
+      return false;
+    }
+    if ($this->brg_kode == "") {
+      return false;
+    }
+    if ($this->brg_nama == "") {
+      return false;
+    }
+    if ($this->brg_ket == "") {
+      return false;
+    }
+    if ($this->brg_minimal == "") {
+      return false;
+    }
+    if ($this->id_fk_brg_jenis == "") {
+      return false;
+    }
+    if ($this->brg_status == "") {
+      return false;
+    }
+    if ($this->brg_satuan == "") {
+      return false;
+    }
+    if ($this->brg_image == "") {
+      return false;
+    }
+    if ($this->brg_harga == "") {
+      return false;
+    }
+    if ($this->brg_harga_toko == "") {
+      return false;
+    }
+    if ($this->brg_harga_grosir == "") {
+      return false;
+    }
+    if ($this->brg_tipe == "") {
+      return false;
+    }
+    if ($this->id_fk_brg_merk == "") {
+      return false;
+    }
+    if ($this->brg_create_date == "") {
+      return false;
+    }
+    if ($this->brg_last_modified == "") {
+      return false;
+    }
+    if ($this->id_create_data == "") {
+      return false;
+    }
+    if ($this->id_last_modified == "") {
+      return false;
+    }
+    return true;
+  }
+  public function check_update()
+  {
+
+    // if($this->check_double_kode($this->id_pk_brg)){
+    //     return false;
+    // }
+    if ($this->check_double_nama($this->id_pk_brg)) {
+      return false;
+    }
+    if ($this->id_pk_brg == "") {
+      return false;
+    }
+    if ($this->brg_kode == "") {
+      return false;
+    }
+    if ($this->brg_nama == "") {
+      return false;
+    }
+    if ($this->brg_minimal == "") {
+      return false;
+    }
+    if ($this->brg_satuan == "") {
+      return false;
+    }
+    if ($this->brg_harga == "") {
+      return false;
+    }
+    if ($this->brg_tipe == "") {
+      return false;
+    }
+    if ($this->id_fk_brg_jenis == "") {
+      return false;
+    }
+    if ($this->id_fk_brg_merk == "") {
+      return false;
+    }
+    if ($this->brg_last_modified == "") {
+      return false;
+    }
+    if ($this->id_last_modified == "") {
+      return false;
+    }
+    return true;
+  }
+  public function check_delete()
+  {
+    if ($this->id_pk_brg == "") {
+      return false;
+    }
+    if ($this->brg_last_modified == "") {
+      return false;
+    }
+    if ($this->id_last_modified == "") {
+      return false;
+    }
+    return true;
+  }
+  public function set_insert($brg_kode, $brg_nama, $brg_ket, $brg_minimal, $brg_satuan, $brg_image, $brg_status, $id_fk_brg_jenis, $id_fk_brg_merk, $brg_harga, $brg_harga_toko, $brg_harga_grosir, $brg_tipe)
+  {
+    if (!$this->set_brg_kode($brg_kode)) {
+      return false;
+    }
+    if (!$this->set_brg_nama($brg_nama)) {
+      return false;
+    }
+    if (!$this->set_brg_ket($brg_ket)) {
+      return false;
+    }
+    if (!$this->set_brg_minimal($brg_minimal)) {
+      return false;
+    }
+    if (!$this->set_brg_satuan($brg_satuan)) {
+      return false;
+    }
+    if (!$this->set_brg_image($brg_image)) {
+      return false;
+    }
+    if (!$this->set_brg_harga($brg_harga)) {
+      return false;
+    }
+    if (!$this->set_brg_harga_toko($brg_harga_toko)) {
+      return false;
+    }
+    if (!$this->set_brg_harga_grosir($brg_harga_grosir)) {
+      return false;
+    }
+    if (!$this->set_brg_tipe($brg_tipe)) {
+      return false;
+    }
+    if (!$this->set_brg_status($brg_status)) {
+      return false;
+    }
+    if (!$this->set_id_fk_brg_jenis($id_fk_brg_jenis)) {
+      return false;
+    }
+    if (!$this->set_id_fk_brg_merk($id_fk_brg_merk)) {
+      return false;
+    }
+    return true;
+  }
+  public function set_update($id_pk_brg, $brg_kode, $brg_nama, $brg_ket, $brg_minimal, $brg_satuan, $brg_image, $id_fk_brg_jenis, $id_fk_brg_merk, $brg_harga, $brg_harga_toko, $brg_harga_grosir, $brg_tipe)
+  {
+    if (!$this->set_id_pk_brg($id_pk_brg)) {
+      return false;
+    }
+
+    if (!$this->set_brg_kode($brg_kode)) {
+      return false;
+    }
+    if (!$this->set_brg_nama($brg_nama)) {
+      return false;
+    }
+    if (!$this->set_brg_ket($brg_ket)) {
+      return false;
+    }
+    if (!$this->set_brg_minimal($brg_minimal)) {
+      return false;
+    }
+    if (!$this->set_brg_satuan($brg_satuan)) {
+      return false;
+    }
+    if (!$this->set_brg_image($brg_image)) {
+      return false;
+    }
+    if (!$this->set_brg_harga($brg_harga)) {
+      return false;
+    }
+    if (!$this->set_brg_harga_toko($brg_harga_toko)) {
+      return false;
+    }
+    if (!$this->set_brg_harga_grosir($brg_harga_grosir)) {
+      return false;
+    }
+    if (!$this->set_brg_tipe($brg_tipe)) {
+      return false;
+    }
+    if (!$this->set_id_fk_brg_jenis($id_fk_brg_jenis)) {
+      return false;
+    }
+    if (!$this->set_id_fk_brg_merk($id_fk_brg_merk)) {
+      return false;
+    }
+    return true;
+  }
+  public function set_delete($id_pk_brg)
+  {
+    if (!$this->set_id_pk_brg($id_pk_brg)) {
+      return false;
+    }
+    return true;
+  }
+  public function set_id_pk_brg($id_pk_brg)
+  {
+    if ($id_pk_brg != "") {
+      $this->id_pk_brg = $id_pk_brg;
+      return true;
+    }
+    return false;
+  }
+  public function set_brg_kode($brg_kode)
+  {
+    if ($brg_kode != "") {
+      $this->brg_kode = $brg_kode;
+      return true;
+    }
+    return false;
+  }
+  public function set_brg_nama($brg_nama)
+  {
+    if ($brg_nama != "") {
+      $this->brg_nama = $brg_nama;
+      return true;
+    }
+    return false;
+  }
+  public function set_brg_ket($brg_ket)
+  {
+    if (true) {
+      $this->brg_ket = $brg_ket;
+      return true;
+    }
+    return false;
+  }
+  public function set_brg_minimal($brg_minimal)
+  {
+    if ($brg_minimal !== "") {
+      $this->brg_minimal = $brg_minimal;
+      return true;
+    }
+    return false;
+  }
+  public function set_brg_satuan($brg_satuan)
+  {
+    if ($brg_satuan != "") {
+      $this->brg_satuan = $brg_satuan;
+      return true;
+    }
+    return false;
+  }
+  public function set_brg_image($brg_image)
+  {
+    if (true) {
+      $this->brg_image = $brg_image;
+      return true;
+    }
+    return false;
+  }
+  public function set_brg_harga($brg_harga)
+  {
+    if ($brg_harga != "") {
+      $this->brg_harga = $brg_harga;
+      return true;
+    }
+    return false;
+  }
+  public function set_brg_harga_toko($brg_harga_toko)
+  {
+    if ($brg_harga_toko != "") {
+      $this->brg_harga_toko = $brg_harga_toko;
+      return true;
+    }
+    return false;
+  }
+  public function set_brg_harga_grosir($brg_harga_grosir)
+  {
+    if ($brg_harga_grosir != "") {
+      $this->brg_harga_grosir = $brg_harga_grosir;
+      return true;
+    }
+    return false;
+  }
+  public function set_brg_tipe($brg_tipe)
+  {
+    if ($brg_tipe != "") {
+      $this->brg_tipe = $brg_tipe;
+      return true;
+    }
+    return false;
+  }
+  public function set_brg_status($brg_status)
+  {
+    if ($brg_status != "") {
+      $this->brg_status = $brg_status;
+      return true;
+    }
+    return false;
+  }
+  public function set_id_fk_brg_jenis($id_fk_brg_jenis)
+  {
+    if ($id_fk_brg_jenis != "") {
+      $this->id_fk_brg_jenis = $id_fk_brg_jenis;
+      return true;
+    }
+    return false;
+  }
+  public function set_id_fk_brg_merk($id_fk_brg_merk)
+  {
+    if ($id_fk_brg_merk != "") {
+      $this->id_fk_brg_merk = $id_fk_brg_merk;
+      return true;
+    }
+    return false;
+  }
+  public function data_excel()
+  {
+    $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_harga_toko,brg_harga_grosir,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe
+        from " . $this->tbl_name . " 
+        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = " . $this->tbl_name . ".id_fk_brg_jenis
+        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = " . $this->tbl_name . ".id_fk_brg_merk
+        where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ?  
+        group by id_pk_brg 
+        order by brg_nama asc";
+    $args = array(
+      "aktif", "aktif", "aktif"
+    );
+    return executeQuery($sql, $args);
+  }
+  public function columns_excel()
+  {
+    $this->columns = array();
+    $this->set_column("brg_kode", "kode barang", true);
+    $this->set_column("brg_jenis_nama", "tipe barang", false);
+    $this->set_column("brg_nama", "nama barang", false);
+    $this->set_column("brg_ket", "keterangan", false);
+    $this->set_column("brg_merk_nama", "merk barang", false);
+    $this->set_column("brg_minimal", "jumlah minimal", false);
+    $this->set_column("brg_satuan", "satuan", false);
+    $this->set_column("brg_harga", "harga satuan", false);
+    $this->set_column("brg_harga_toko", "harga toko", false);
+    $this->set_column("brg_harga_grosir", "harga grosir", false);
+    $this->set_column("brg_tipe", "Tunggal / Kombinasi", false);
+    $this->set_column("brg_status", "status", false);
+    $this->set_column("brg_last_modified", "last modified", false);
+    return $this->columns;
+  }
 }
