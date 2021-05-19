@@ -115,6 +115,25 @@ $notif_data = array(
         </div>
     </div>
   </div>
+
+  <div class = "modal fade" id = "pdf_copy_modal">
+    <div class = "modal-dialog">
+        <div class = "modal-content">
+            <div class = "modal-header">
+                <h4 class = "modal-title">Download Invoice Copy</h4>
+            </div>
+            <div class = "modal-body">
+                <h4>Pilih jenis invoice yang akan di download</h4>
+                <input type='hidden' id="nomor_invoice_copy">
+                <div class = "form-group">
+                    <button type = "button" class = "btn btn-sm btn-secondary" data-dismiss = "modal">Cancel</button>
+                    <a><button type = "button" id = "pdf_invoice_copy_cap" onclick="download_pdf_copy('cap')" class = "btn btn-sm btn-primary">Cap</button></a>
+                    <a><button onclick="download_pdf_copy('noncap')" type = "button" id = "pdf_invoice_copy_noncap" class = "btn btn-sm btn-warning">Non-Cap</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
 </body>
 
 </html>
@@ -200,7 +219,9 @@ $notif_data = array(
                     <a style = "cursor:pointer;font-size:large" class = 'text-danger md-delete' data-toggle = 'modal' data-target = '#delete_modal' onclick = 'load_delete_content(${a})'></a>
                     
                     <a style="cursor:pointer;font-size:large" data-toggle = 'modal' data-target = '#pdf_asli_modal' onclick = 'load_pdf_asli_modal(${respond["content"][a]["id_pk_penjualan"]})' class="text-info md-print"></a>
-                    <a style="cursor:pointer;font-size:large" href = "<?php echo base_url(); ?>pdf/invoice/copy/${respond["content"][a]["id_pk_penjualan"]}" class="text-default md-print"></a>
+
+                    <a style="cursor:pointer;font-size:large" data-toggle = 'modal' data-target = '#pdf_copy_modal' onclick = 'load_pdf_copy_modal(${respond["content"][a]["id_pk_penjualan"]})' class="text-default md-print"></a>
+                    
                     <a style="cursor:pointer;font-size:large" data-toggle = "modal" data-target = "#selesai_modal" class="text-secondary md-check"></a>
                   </td>
               </tr>
@@ -237,9 +258,18 @@ $notif_data = array(
     $("#nomor_invoice_asli").val(id);
   }
 
+  function load_pdf_copy_modal(id){
+    $("#nomor_invoice_copy").val(id);
+  }
+
   function download_pdf_asli(status_cap){
     var id_penj = $("#nomor_invoice_asli").val();
     window.open("<?= base_url() ?>penjualan/view_invoice_asli/"+id_penj+"/"+status_cap, '_blank');
+  }
+
+  function download_pdf_copy(status_cap){
+    var id_penj = $("#nomor_invoice_copy").val();
+    window.open("<?= base_url() ?>penjualan/view_invoice_copy/"+id_penj+"/"+status_cap, '_blank');
   }
 
   var unautorized_button = ["edit_button"];
