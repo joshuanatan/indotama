@@ -25,6 +25,8 @@ class M_brg_cabang extends ci_model
     $this->set_column("brg_ket", "keterangan", "required");
     $this->set_column("brg_cabang_qty", "qty", "required");
     $this->set_column("brg_cabang_last_price", "biaya terakhir", "required");
+    $this->set_column("brg_harga_toko", "harga toko", "required");
+    $this->set_column("brg_harga_grosir", "harga grosir", "required");
     $this->set_column("brg_cabang_notes", "notes", "required");
     $this->set_column("brg_tipe", "Tipe Kombinasi", "required");
     $this->set_column("brg_cabang_status", "status", "required");
