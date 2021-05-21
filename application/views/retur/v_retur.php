@@ -80,6 +80,32 @@ $notif_data = array(
             </div>
         </div>
         <?php $this->load->view('req/mm_js.php');?>
+
+
+
+
+
+
+        <div class = "modal fade" id = "pdf_asli_modal">
+            <div class = "modal-dialog">
+                <div class = "modal-content">
+                    <div class = "modal-header">
+                        <h4 class = "modal-title">Download Nota Retur Asli</h4>
+                    </div>
+                    <div class = "modal-body">
+                        <h4>Pilih jenis Nota Retur yang akan di download</h4>
+                        <input type='hidden' id="nomor_retur_asli">
+                        <div class = "form-group">
+                            <button type = "button" class = "btn btn-sm btn-secondary" data-dismiss = "modal">Cancel</button>
+                            <!-- <a><button type = "button" id = "pdf_invoice_asli_cap" onclick="download_pdf_asli('cap')" class = "btn btn-sm btn-primary">Cap</button></a>
+                            <a><button onclick="download_pdf_asli('noncap')" type = "button" id = "pdf_invoice_asli_noncap" class = "btn btn-sm btn-warning">Non-Cap</button></a> -->
+
+                            <a target="_blank" id = "pdf_retur_asli_cap" onclick="download_pdf_asli('none')" class = "btn btn-sm btn-primary">Cetak</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
 <script>
@@ -214,6 +240,8 @@ $data = array(
                                     <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'detail_button text-success md-eye' data-target = '#detail_modal' onclick = 'load_detail_content(${a})'></i>
                                     <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content(${a})'></i>  
                                     <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'delete_button text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content(${a})'></i>
+
+                                    <a style="cursor:pointer;font-size:large" data-toggle = 'modal' data-target = '#pdf_asli_modal' onclick = 'load_pdf_asli_modal(${respond["content"][a]["id"]})' class="text-info md-print"></a>
                                 </td>
                             </tr>
                         `;
@@ -245,6 +273,12 @@ $data = array(
     
 </script>
 <script>
+    function load_pdf_asli_modal(id){
+        $("#nomor_retur_asli").val(id);
+        $("#pdf_retur_asli_cap").attr("href","<?= base_url() ?>retur/view_retur_asli/"+id+"/"+"noncap");
+    }
+
+
     function load_harga_barang(row){
         var nama_barang = $("#brg"+row).val();
         var hrg_brg_dsr = $("#datalist_barang_cabang_jualan option[value='"+nama_barang+"']").attr("data-baseprice");

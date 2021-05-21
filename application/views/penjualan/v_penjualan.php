@@ -105,11 +105,10 @@ $notif_data = array(
             </div>
             <div class = "modal-body">
                 <h4>Pilih jenis invoice yang akan di download</h4>
-                <input type='hidden' id="nomor_invoice_asli">
                 <div class = "form-group">
                     <button type = "button" class = "btn btn-sm btn-secondary" data-dismiss = "modal">Cancel</button>
-                    <a><button type = "button" id = "pdf_invoice_asli_cap" onclick="download_pdf_asli('cap')" class = "btn btn-sm btn-primary">Cap</button></a>
-                    <a><button onclick="download_pdf_asli('noncap')" type = "button" id = "pdf_invoice_asli_noncap" class = "btn btn-sm btn-warning">Non-Cap</button></a>
+                    <a target="_blank" id = "pdf_invoice_asli_cap" class = "btn btn-sm btn-primary">Cap</a>
+                    <a target="_blank" id = "pdf_invoice_asli_noncap" class = "btn btn-sm btn-warning">Non-Cap</a>
                 </div>
             </div>
         </div>
@@ -124,11 +123,10 @@ $notif_data = array(
             </div>
             <div class = "modal-body">
                 <h4>Pilih jenis invoice yang akan di download</h4>
-                <input type='hidden' id="nomor_invoice_copy">
                 <div class = "form-group">
                     <button type = "button" class = "btn btn-sm btn-secondary" data-dismiss = "modal">Cancel</button>
-                    <a><button type = "button" id = "pdf_invoice_copy_cap" onclick="download_pdf_copy('cap')" class = "btn btn-sm btn-primary">Cap</button></a>
-                    <a><button onclick="download_pdf_copy('noncap')" type = "button" id = "pdf_invoice_copy_noncap" class = "btn btn-sm btn-warning">Non-Cap</button></a>
+                    <a target="_blank" id = "pdf_invoice_copy_cap" class = "btn btn-sm btn-primary">Cap</a>
+                    <a target="_blank" id = "pdf_invoice_copy_noncap" class = "btn btn-sm btn-warning">Non-Cap</a>
                 </div>
             </div>
         </div>
@@ -255,22 +253,15 @@ $notif_data = array(
 <script>
 
   function load_pdf_asli_modal(id){
-    $("#nomor_invoice_asli").val(id);
+    $("#pdf_invoice_asli_cap").attr("href","<?= base_url() ?>penjualan/view_invoice_asli/"+id+"/cap");
+    $("#pdf_invoice_asli_noncap").attr("href","<?= base_url() ?>penjualan/view_invoice_asli/"+id+"/noncap");
   }
 
   function load_pdf_copy_modal(id){
-    $("#nomor_invoice_copy").val(id);
+    $("#pdf_invoice_copy_cap").attr("href","<?= base_url() ?>penjualan/view_invoice_copy/"+id+"/cap");
+    $("#pdf_invoice_copy_noncap").attr("href","<?= base_url() ?>penjualan/view_invoice_copy/"+id+"/noncap");
   }
 
-  function download_pdf_asli(status_cap){
-    var id_penj = $("#nomor_invoice_asli").val();
-    window.open("<?= base_url() ?>penjualan/view_invoice_asli/"+id_penj+"/"+status_cap, '_blank');
-  }
-
-  function download_pdf_copy(status_cap){
-    var id_penj = $("#nomor_invoice_copy").val();
-    window.open("<?= base_url() ?>penjualan/view_invoice_copy/"+id_penj+"/"+status_cap, '_blank');
-  }
 
   var unautorized_button = ["edit_button"];
   var additional_button = [{
