@@ -195,6 +195,11 @@ class Barang_cabang extends CI_Controller
 
                 $response["itmsts"][$counter] = "SUCCESS";
                 $response["itmmsg"][$counter] = "Data is recorded to database";
+
+                $msg = "Nama barang: {$barang} Jumlah barang: {$brg_cabang_qty}, Catatan :{$brg_cabang_notes}";
+                $title = "Penambahan data barang " . $this->session->nama_toko_cabang. " cabang " . $this->session->daerah_cabang;
+                $id_user = $this->session->id_user;
+                executeQuery("call insert_log_all('{$id_user}','{$title}','{$msg}','-')");
               } else {
                 $response["itmsts"][$counter] = "ERROR";
                 $response["itmmsg"][$counter] = "Insert function error";
@@ -241,6 +246,11 @@ class Barang_cabang extends CI_Controller
         if ($this->m_brg_cabang->set_update($id_pk_brg_cabang, $brg_cabang_qty, $brg_cabang_notes, $id_fk_brg)) {
           if ($this->m_brg_cabang->update()) {
             $data["msg"] = "Data is updated to database";
+
+            $msg = "ID barang: {$id_pk_brg_cabang} Nama barang: {$barang} Jumlah barang: {$brg_cabang_qty}, Catatan :{$brg_cabang_notes}";
+            $title = "Pengubahan data barang " . $this->session->nama_toko_cabang. " cabang " . $this->session->daerah_cabang;
+            $id_user = $this->session->id_user;
+            executeQuery("call insert_log_all('{$id_user}','{$title}','{$msg}','-')");
           } else {
             $response["status"] = "ERROR";
             $response["msg"] = "Update function error";
@@ -265,6 +275,16 @@ class Barang_cabang extends CI_Controller
       if ($this->m_brg_cabang->set_delete($id_brg_cabang)) {
         if ($this->m_brg_cabang->delete()) {
           $response["msg"] = "Data is deleted from database";
+
+          $sql = "select * from tbl_brg_cabang inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_cabang.id_fk_brg where id_pk_brg_cabang = ?";
+          $args = array(
+            $id_brg_cabang
+          );
+          $result = executeQueryResult($sql, $args);
+          $msg = "ID barang: {$id_brg_cabang} Nama barang: " . $result[0]["brg_nama"];
+          $title = "Penghapusan data barang " . $this->session->nama_toko_cabang. " cabang " . $this->session->daerah_cabang;
+          $id_user = $this->session->id_user;
+          executeQuery("call insert_log_all('{$id_user}','{$title}','{$msg}','-')");
         } else {
           $response["status"] = "ERROR";
           $response["msg"] = "Delete function error";
@@ -311,7 +331,8 @@ class Barang_cabang extends CI_Controller
     #update master kombinasi based on stok
     executeQuery("call update_stok_kombinasi_master_cabang();");
   }
-  public function get_latest_harga_jual($id_pk_barang){
+  public function get_latest_harga_jual($id_pk_barang)
+  {
     $sql = "select brg_penjualan_harga from tbl_brg_penjualan 
     inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = tbl_brg_penjualan.id_fk_penjualan 
     where id_fk_barang = ? and brg_penjualan_status = 'aktif' and penj_status = 'aktif' and id_fk_cabang = ?
@@ -320,12 +341,11 @@ class Barang_cabang extends CI_Controller
       $id_pk_barang, $this->session->id_cabang
     );
     $result = executeQuery($sql, $args);
-    if($result->num_rows() > 0){
+    if ($result->num_rows() > 0) {
       $result = $result->result_array();
       $response["status"] = true;
       $response["data"][0]["last_item_price"] = $result[0]["brg_penjualan_harga"];
-    }
-    else{
+    } else {
       $response["status"] = false;
       $response["msg"] = "No Data";
       $response["data"][0]["last_item_price"] = "0";

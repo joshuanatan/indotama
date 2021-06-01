@@ -10,150 +10,71 @@ $notif_data = array(
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <?php $this->load->view('req/mm_css.php'); ?>
-</head>
+  <head>
+    <?php $this->load->view('req/mm_css.php'); ?>
+  </head>
 
-<body>
-  <div class="preloader-it">
-    <div class="la-anim-1"></div>
-  </div>
-  <div class="wrapper theme-1-active pimary-color-pink">
+  <body>
+    <div class="preloader-it">
+      <div class="la-anim-1"></div>
+    </div>
+    <div class="wrapper theme-1-active pimary-color-pink">
 
-    <?php $this->load->view('req/mm_menubar.php'); ?>
+      <?php $this->load->view('req/mm_menubar.php'); ?>
 
-    <div class="page-wrapper">
-      <?php $this->load->view('_notification/register_success', $notif_data); ?>
-      <?php $this->load->view('_notification/update_success', $notif_data); ?>
-      <?php $this->load->view('_notification/delete_success', $notif_data); ?>
-      <div class="container-fluid">
-        <div class="row mt-20">
-          <div class="col-lg-12 col-sm-12">
-            <div class="panel panel-default card-view">
-              <div class="panel-heading bg-gradient">
-                <div class="pull-left">
-                  <h6 class="panel-title txt-light"><?php echo ucwords($page_title); ?></h6>
+      <div class="page-wrapper">
+        <?php $this->load->view('_notification/register_success', $notif_data); ?>
+        <?php $this->load->view('_notification/update_success', $notif_data); ?>
+        <?php $this->load->view('_notification/delete_success', $notif_data); ?>
+        <div class="container-fluid">
+          <div class="row mt-20">
+            <div class="col-lg-12 col-sm-12">
+              <div class="panel panel-default card-view">
+                <div class="panel-heading bg-gradient">
+                  <div class="pull-left">
+                    <h6 class="panel-title txt-light"><?php echo ucwords($page_title); ?></h6>
+                  </div>
+                  <div class="clearfix"></div>
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Home</a></li>
+                    <?php for ($a = 0; $a < count($breadcrumb); $a++) : ?>
+                      <?php if ($a + 1 != count($breadcrumb)) : ?>
+                        <li class="breadcrumb-item"><?php echo ucwords($breadcrumb[$a]); ?></a></li>
+                      <?php else : ?>
+                        <li class="breadcrumb-item active"><?php echo ucwords($breadcrumb[$a]); ?></li>
+                      <?php endif; ?>
+                    <?php endfor; ?>
+                  </ol>
                 </div>
-                <div class="clearfix"></div>
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item">Home</a></li>
-                  <?php for ($a = 0; $a < count($breadcrumb); $a++) : ?>
-                    <?php if ($a + 1 != count($breadcrumb)) : ?>
-                      <li class="breadcrumb-item"><?php echo ucwords($breadcrumb[$a]); ?></a></li>
-                    <?php else : ?>
-                      <li class="breadcrumb-item active"><?php echo ucwords($breadcrumb[$a]); ?></li>
-                    <?php endif; ?>
-                  <?php endfor; ?>
-                </ol>
-              </div>
-              <div class="panel-wrapper collapse in">
-                <div class="panel-body">
-                  <div class="col-lg-12">
-                    <div class="d-block">
-                      <button type="button" class="btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle="modal" data-target="#register_modal" style="margin-right:10px">Tambah <?php echo ucwords($page_title); ?></button>
+                <div class="panel-wrapper collapse in">
+                  <div class="panel-body">
+                    <div class="col-lg-12">
+                      <div class="d-block">
+                        <button type="button" class="btn btn-primary btn-sm col-lg-2 col-sm-12" data-toggle="modal" data-target="#register_modal" style="margin-right:10px">Tambah <?php echo ucwords($page_title); ?></button>
+                      </div>
+                      <br />
+                      <br />
+                      <div class="align-middle text-center d-block">
+                        <i style="cursor:pointer;font-size:large;margin-left:10px" class="text-success md-eye"></i><b> - Details </b>
+                        <i style="cursor:pointer;font-size:large;margin-left:10px" class="text-primary md-edit"></i><b> - Edit </b>
+                        <i style="cursor:pointer;font-size:large;margin-left:10px" class="text-danger md-delete"></i><b> - Delete </b>
+                      </div>
+                      <br />
+                      <?php $this->load->view("_base_element/table"); ?>
                     </div>
-                    <br />
-                    <br />
-                    <div class="align-middle text-center d-block">
-                      <i style="cursor:pointer;font-size:large;margin-left:10px" class="text-success md-eye"></i><b> - Details </b>
-                      <i style="cursor:pointer;font-size:large;margin-left:10px" class="text-primary md-edit"></i><b> - Edit </b>
-                      <i style="cursor:pointer;font-size:large;margin-left:10px" class="text-danger md-delete"></i><b> - Delete </b>
-                    </div>
-                    <br />
-                    <?php $this->load->view("_base_element/table"); ?>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <?php $this->load->view('req/mm_footer.php'); ?>
         </div>
-        <?php $this->load->view('req/mm_footer.php'); ?>
       </div>
     </div>
-  </div>
-  <?php $this->load->view('req/mm_js.php'); ?>
-</body>
+    <?php $this->load->view('req/mm_js.php'); ?>
+  </body>
 
 </html>
-
-<script>
-  var ctrl = "penawaran";
-  var tblHeaderCtrl = "columns";
-  var colCount = 11; //ragu either 1/0
-  var orderBy = 0;
-  var orderDirection = "ASC";
-  var searchKey = "";
-  var page = 1;
-  var url_add = "";
-
-  refresh(1);
-
-  function refresh(req_page = 1) {
-    page = req_page;
-    var id_jenis = $("#id_jeniss").val();
-    $.ajax({
-      url: "<?php echo base_url(); ?>ws/" + ctrl + "/content?orderBy=" + orderBy + "&orderDirection=" + orderDirection + "&page=" + page + "&searchKey=" + searchKey + "&id_jenis=" + id_jenis + "&" + url_add,
-      type: "GET",
-      dataType: "JSON",
-      success: function(respond) {
-        if (respond["status"] == "SUCCESS") {
-          content = respond["content"];
-          var html = "";
-          for (var a = 0; a < respond["content"].length; a++) {
-            var html_status = "";
-            switch (respond["content"][a]["penawaran_status"].toLowerCase()) {
-              case "aktif":
-                html_status += `<td class = 'align-middle text-center'><span class="badge badge-success align-top" id = "orderDirection">${respond["content"][a]["penawaran_status"].toUpperCase()}</span></td>`;
-                break;
-              default:
-                html_status += `<td class = 'align-middle text-center'><span class="badge badge-danger align-top" id = "orderDirection">${respond["content"][a]["penawaran_status"].toUpperCase()}</span></td>`;
-                break;
-            }
-            html += `
-              <tr>
-                <td class = "text-center">${respond["content"][a]["cust_perusahaan"]}</td>
-                <td class = "text-center">${respond["content"][a]["penawaran_subject"]}</td>
-                <td>${respond["content"][a]["penawaran_content"]}</td>
-                <td>${respond["content"][a]["penawaran_notes"]}</td>
-                <td class = "text-center">${respond["content"][a]["penawaran_tgl"].split(" ")[0]}</td>
-                ${html_status}
-                <td class = "text-center">
-                  <a style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'detail_button text-success md-eye' data-target = '#detail_modal' onclick = 'load_detail_content(${a})'></a>
-                  <a style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content(${a})'></a>  
-                  <a style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'delete_button text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content(${a})'></a>
-                </td>
-              </tr>
-          `;
-          }
-        } 
-        else {
-          html += "<tr>";
-          html += "<td colspan = " + colCount + " class = 'align-middle text-center'>No Records Found</td>";
-          html += "</tr>";
-        }
-        $("#content_container").html(html);
-
-        pagination(respond["page"]);
-      },
-      error: function() {
-        var html = "";
-        html += "<tr>";
-        html += "<td colspan = " + colCount + " class = 'align-middle text-center'>No Records Found</td>";
-        html += "</tr>";
-
-        $("#content_container").html(html);
-
-        html = "";
-        html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed"><</a></li>';
-        html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed">></a></li>';
-        $("#pagination_container").html(html);
-      }
-    });
-  }
-</script>
-<?php $this->load->view("_core_script/core"); ?>
-<?php $this->load->view("_base_element/datalist_barang_cabang_jualan"); ?>
-<?php $this->load->view("_base_element/datalist_customer_toko"); ?>
 
 <div class="modal fade" id="register_modal">
   <div class="modal-dialog modal-lg modal-center">
@@ -170,7 +91,7 @@ $notif_data = array(
         <form id="register_form">
           <div class="form-group">
             <h5>Customer</h5>
-            <input type="text" class="form-control" required name="penawar" list = "datalist_customer_toko">
+            <input type="text" class="form-control" required name="penawar" list="datalist_customer_toko">
           </div>
           <div class="form-group">
             <h5>Tanggal Penawaran</h5>
@@ -193,7 +114,7 @@ $notif_data = array(
               <thead>
                 <th>Nama Barang</th>
                 <th>Jumlah Barang</th>
-                <th style = "width:25%">Harga Terdaftar</th>
+                <th style="width:25%">Harga Terdaftar</th>
                 <th>Harga Penawaran</th>
                 <th>Notes</th>
                 <th></th>
@@ -227,33 +148,33 @@ $notif_data = array(
         );
         $this->load->view('_notification/update_error', $notif_data); ?>
         <form id="update_form">
-          <input type = "hidden" name = "id_pk_penawaran" id = "id_pk_penawaran_edit">
+          <input type="hidden" name="id_pk_penawaran" id="id_pk_penawaran_edit">
           <div class="form-group">
             <h5>Customer</h5>
-            <input type="text" class="form-control" required name="penawar" id = "penawar_edit" list = "datalist_customer_toko">
+            <input type="text" class="form-control" required name="penawar" id="penawar_edit" list="datalist_customer_toko">
           </div>
           <div class="form-group">
             <h5>Tanggal Penawaran</h5>
-            <input type="date" class="form-control" required name="tgl" id = "tgl_edit">
+            <input type="date" class="form-control" required name="tgl" id="tgl_edit">
           </div>
           <div class="form-group">
             <h5>Subjek Penawaran</h5>
-            <input list="datalist_barang_jenis" type="text" required name="subjek" id = "subjek_edit" class="form-control">
+            <input list="datalist_barang_jenis" type="text" required name="subjek" id="subjek_edit" class="form-control">
           </div>
           <div class="form-group">
             <h5>Content Penawaran</h5>
-            <textarea class="form-control" required name="content" id = "content_edit"></textarea>
+            <textarea class="form-control" required name="content" id="content_edit"></textarea>
           </div>
           <div class="form-group">
             <h5>Notes Penawaran</h5>
-            <textarea class="form-control" required name="notes" id = "notes_edit"></textarea>
+            <textarea class="form-control" required name="notes" id="notes_edit"></textarea>
           </div>
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
               <thead>
                 <th>Nama Barang</th>
                 <th>Jumlah Barang</th>
-                <th style = "width:25%">Harga Terdaftar</th>
+                <th style="width:25%">Harga Terdaftar</th>
                 <th>Harga Penawaran</th>
                 <th>Notes</th>
                 <th></th>
@@ -320,9 +241,83 @@ $notif_data = array(
     </div>
   </div>
 </div>
+
 <script>
-  
+  var ctrl = "penawaran";
+  var tblHeaderCtrl = "columns";
+  var colCount = 11; //ragu either 1/0
+  var orderBy = 0;
+  var orderDirection = "ASC";
+  var searchKey = "";
+  var page = 1;
+  var url_add = "";
+
+  refresh(1);
+  function refresh(req_page = 1) {
+    page = req_page;
+    var id_jenis = $("#id_jeniss").val();
+    $.ajax({
+      url: "<?php echo base_url(); ?>ws/" + ctrl + "/content?orderBy=" + orderBy + "&orderDirection=" + orderDirection + "&page=" + page + "&searchKey=" + searchKey + "&id_jenis=" + id_jenis + "&" + url_add,
+      type: "GET",
+      dataType: "JSON",
+      success: function(respond) {
+        if (respond["status"].toUpperCase() == "SUCCESS") {
+          content = respond["content"];
+          var html = "";
+          for (var a = 0; a < respond["content"].length; a++) {
+            var html_status = "";
+            switch (respond["content"][a]["penawaran_status"].toLowerCase()) {
+              case "aktif":
+                html_status += `<td class = 'align-middle text-center'><span class="badge badge-success align-top" id = "orderDirection">${respond["content"][a]["penawaran_status"].toUpperCase()}</span></td>`;
+                break;
+              default:
+                html_status += `<td class = 'align-middle text-center'><span class="badge badge-danger align-top" id = "orderDirection">${respond["content"][a]["penawaran_status"].toUpperCase()}</span></td>`;
+                break;
+            }
+            html += `
+              <tr>
+                <td class = "text-center">${respond["content"][a]["cust_perusahaan"]}</td>
+                <td class = "text-center">${respond["content"][a]["penawaran_subject"]}</td>
+                <td>${respond["content"][a]["penawaran_content"]}</td>
+                <td>${respond["content"][a]["penawaran_notes"]}</td>
+                <td class = "text-center">${respond["content"][a]["penawaran_tgl"].split(" ")[0]}</td>
+                ${html_status}
+                <td class = "text-center">
+                  <a style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content(${a})'></a>  
+                  <a style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'delete_button text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content(${a})'></a>
+                </td>
+              </tr>
+          `;
+          }
+        } else {
+          html += "<tr>";
+          html += "<td colspan = " + colCount + " class = 'align-middle text-center'>No Records Found</td>";
+          html += "</tr>";
+        }
+        $("#content_container").html(html);
+
+        pagination(respond["page"]);
+      },
+      error: function() {
+        var html = "";
+        html += "<tr>";
+        html += "<td colspan = " + colCount + " class = 'align-middle text-center'>No Records Found</td>";
+        html += "</tr>";
+
+        $("#content_container").html(html);
+
+        html = "";
+        html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed"><</a></li>';
+        html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed">></a></li>';
+        $("#pagination_container").html(html);
+      }
+    });
+  }
 </script>
+<?php $this->load->view("_core_script/core"); ?>
+<?php $this->load->view("_base_element/datalist_barang_cabang_jualan"); ?>
+<?php $this->load->view("_base_element/datalist_customer_toko"); ?>
+
 <script>
   function tambah_data_barang_penawaran_row() {
     var counter = $(".data_barang_penawaran_row").length;
@@ -365,7 +360,8 @@ $notif_data = array(
     $("#harga_barang_toko" + row).text(`Rp. ${format_number(hrg_brgtoko)}`);
     $("#harga_barang_grosir" + row).text(`Rp. ${format_number(hrg_brggrosir)}`);
   }
-  function load_edit_content(row){
+
+  function load_edit_content(row) {
     $("#id_pk_penawaran_edit").val(content[row]["id_pk_penawaran"]);
     $("#penawar_edit").val(content[row]["cust_perusahaan"]);
     $("#tgl_edit").val(content[row]["penawaran_tgl"].split(" ")[0]);
@@ -374,14 +370,14 @@ $notif_data = array(
     $("#notes_edit").val(content[row]["penawaran_notes"]);
 
     $.ajax({
-      url:`<?php echo base_url();?>ws/penawaran/brg_penawaran/${content[row]["id_pk_penawaran"]}`,
-      type:"GET",
-      dataType:"JSON",
-      success:function(respond){
-        if(respond["status"]){
+      url: `<?php echo base_url(); ?>ws/penawaran/brg_penawaran/${content[row]["id_pk_penawaran"]}`,
+      type: "GET",
+      dataType: "JSON",
+      success: function(respond) {
+        if (respond["status"]) {
           $(".data_barang_penawaran_row").remove();
           var html = "";
-          for(var a = 0; a<respond["data"].length; a++){
+          for (var a = 0; a < respond["data"].length; a++) {
             html += `
               <tr class = "data_barang_penawaran_row" id = "data_barang_penawaran_row${a}">
                 <input type = "hidden" name = "edit_check[]" value = "${a}">
@@ -413,9 +409,13 @@ $notif_data = array(
           $("#btn_tambah_item_penawaran_container_edit").before(html);
           init_nf();
         }
+        else{
+          $(".data_barang_penawaran_row").remove();
+        }
       }
     })
   }
+
   function load_delete_content(row) {
     $("#id_delete").val(content[row]["id_pk_penawaran"]);
     $("#penawar_delete").html(content[row]["cust_perusahaan"]);
@@ -426,15 +426,15 @@ $notif_data = array(
   }
 </script>
 <script>
-  function delete_brg_penawaran(row){
-    if(confirm(`Apakah yakin akan menghapus barang ${$("#nama_barang"+row).val()}?`)){
+  function delete_brg_penawaran(row) {
+    if (confirm(`Apakah yakin akan menghapus barang ${$("#nama_barang"+row).val()}?`)) {
       var id_brg_penawaran = $(`#id_pk_brg_penawaran${row}`).val();
       $.ajax({
-        url:`<?php echo base_url();?>ws/penawaran/delete_brg_penawaran/${id_brg_penawaran}`,
-        type:"DELETE",
-        dataType:"JSON",
-        success:function(respond){
-          if(respond["status"]){
+        url: `<?php echo base_url(); ?>ws/penawaran/delete_brg_penawaran/${id_brg_penawaran}`,
+        type: "DELETE",
+        dataType: "JSON",
+        success: function(respond) {
+          if (respond["status"]) {
             alert("Data berhasil dihapus");
             delete_brg_penawaran_row(row);
           }
@@ -442,8 +442,9 @@ $notif_data = array(
       })
     }
   }
-  function delete_brg_penawaran_row(row){
-    $("#data_barang_penawaran_row"+row).remove();
+
+  function delete_brg_penawaran_row(row) {
+    $("#data_barang_penawaran_row" + row).remove();
   }
 </script>
 <?php $this->load->view('_notification/notif_general'); ?>

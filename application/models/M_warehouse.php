@@ -1,71 +1,78 @@
 <?php
 defined("BASEPATH") or exit("no direct script");
 date_default_timezone_set("asia/jakarta");
-class m_warehouse extends ci_model{
-    private $tbl_name = "mstr_warehouse";
-    private $columns = array();
-    private $columns_warehouse_cabang = array();
-    private $id_pk_warehouse;
-    private $warehouse_nama;
-    private $warehouse_alamat;
-    private $warehouse_notelp;
-    private $warehouse_desc;
-    private $id_fk_cabang;
-    private $warehouse_status;
-    private $warehouse_create_date;
-    private $warehouse_last_modified;
-    private $id_create_data;
-    private $id_last_modified;
-    
-    public function __construct(){
-        parent::__construct();
-        $this->set_column("warehouse_nama","nama warehouse","required");
-        $this->set_column("warehouse_alamat","alamat","required");
-        $this->set_column("warehouse_notelp","no telpon","required");
-        $this->set_column("warehouse_desc","deskripsi","required");
-        $this->set_column("id_fk_cabang","cabang","required");
-        $this->set_column("warehouse_status","status","required");
-        $this->set_column("warehouse_last_modified","last modified","required");
+class m_warehouse extends ci_model
+{
+  private $tbl_name = "mstr_warehouse";
+  private $columns = array();
+  private $columns_warehouse_cabang = array();
+  private $id_pk_warehouse;
+  private $warehouse_nama;
+  private $warehouse_alamat;
+  private $warehouse_notelp;
+  private $warehouse_desc;
+  private $id_fk_cabang;
+  private $warehouse_status;
+  private $warehouse_create_date;
+  private $warehouse_last_modified;
+  private $id_create_data;
+  private $id_last_modified;
 
-        $this->set_column_warehouse_cabang("warehouse_nama","nama warehouse","required");
-        $this->set_column_warehouse_cabang("warehouse_alamat","alamat","required");
-        $this->set_column_warehouse_cabang("warehouse_notelp","no telpon","required");
-        $this->set_column_warehouse_cabang("warehouse_desc","deskripsi","required");
-        $this->set_column_warehouse_cabang("warehouse_status","status","required");
-        $this->set_column_warehouse_cabang("warehouse_last_modified","last modified","required");
+  public function __construct()
+  {
+    parent::__construct();
+    $this->set_column("warehouse_nama", "nama warehouse", "required");
+    $this->set_column("warehouse_alamat", "alamat", "required");
+    $this->set_column("warehouse_notelp", "no telpon", "required");
+    $this->set_column("warehouse_desc", "deskripsi", "required");
+    $this->set_column("id_fk_cabang", "cabang", "required");
+    $this->set_column("warehouse_status", "status", "required");
+    $this->set_column("warehouse_last_modified", "last modified", "required");
+
+    $this->set_column_warehouse_cabang("warehouse_nama", "nama warehouse", "required");
+    $this->set_column_warehouse_cabang("warehouse_alamat", "alamat", "required");
+    $this->set_column_warehouse_cabang("warehouse_notelp", "no telpon", "required");
+    $this->set_column_warehouse_cabang("warehouse_desc", "deskripsi", "required");
+    $this->set_column_warehouse_cabang("warehouse_status", "status", "required");
+    $this->set_column_warehouse_cabang("warehouse_last_modified", "last modified", "required");
 
 
 
-        $this->warehouse_create_date = date("y-m-d h:i:s");
-        $this->warehouse_last_modified = date("y-m-d h:i:s");
-        $this->id_create_data = $this->session->id_user;
-        $this->id_last_modified = $this->session->id_user;
-    }
-    private function set_column($col_name,$col_disp,$order_by){
-        $array = array(
-            "col_name" => $col_name,
-            "col_disp" => $col_disp,
-            "order_by" => $order_by
-        );
-        $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
-    }
+    $this->warehouse_create_date = date("y-m-d h:i:s");
+    $this->warehouse_last_modified = date("y-m-d h:i:s");
+    $this->id_create_data = $this->session->id_user;
+    $this->id_last_modified = $this->session->id_user;
+  }
+  private function set_column($col_name, $col_disp, $order_by)
+  {
+    $array = array(
+      "col_name" => $col_name,
+      "col_disp" => $col_disp,
+      "order_by" => $order_by
+    );
+    $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
+  }
 
-    private function set_column_warehouse_cabang($col_name,$col_disp,$order_by){
-        $array = array(
-            "col_name" => $col_name,
-            "col_disp" => $col_disp,
-            "order_by" => $order_by
-        );
-        $this->columns_warehouse_cabang[count($this->columns_warehouse_cabang)] = $array; //terpaksa karena array merge gabisa.
-    }
-    public function columns(){
-        return $this->columns;
-    }
-    public function columns_warehouse_cabang(){
-        return $this->columns_warehouse_cabang;
-    }
-    public function install(){
-        $sql = "
+  private function set_column_warehouse_cabang($col_name, $col_disp, $order_by)
+  {
+    $array = array(
+      "col_name" => $col_name,
+      "col_disp" => $col_disp,
+      "order_by" => $order_by
+    );
+    $this->columns_warehouse_cabang[count($this->columns_warehouse_cabang)] = $array; //terpaksa karena array merge gabisa.
+  }
+  public function columns()
+  {
+    return $this->columns;
+  }
+  public function columns_warehouse_cabang()
+  {
+    return $this->columns_warehouse_cabang;
+  }
+  public function install()
+  {
+    $sql = "
         drop table if exists mstr_warehouse;
         create table mstr_warehouse(
             id_pk_warehouse int primary key auto_increment,
@@ -129,340 +136,363 @@ class m_warehouse extends ci_model{
         end$$
         delimiter ;
         ";
-        executequery($sql);
-    }
-    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
-        $order_by = $this->columns[$order_by]["col_name"];
-        $search_query = "";
-        if($search_key != ""){
-            $search_query .= "and
+    executequery($sql);
+  }
+  public function content($page = 1, $order_by = 0, $order_direction = "asc", $search_key = "", $data_per_page = "")
+  {
+    $order_by = $this->columns[$order_by]["col_name"];
+    $search_query = "";
+    if ($search_key != "") {
+      $search_query .= "and
             ( 
-                cabang_nama like '%".$search_key."%' or 
-                warehouse_nama like '%".$search_key."%' or 
-                warehouse_alamat like '%".$search_key."%' or 
-                warehouse_notelp like '%".$search_key."%' or 
-                warehouse_desc like '%".$search_key."%' or 
-                id_fk_cabang like '%".$search_key."%' or 
-                warehouse_status like '%".$search_key."%' or 
-                warehouse_last_modified like '%".$search_key."%'
+                cabang_nama like '%" . $search_key . "%' or 
+                warehouse_nama like '%" . $search_key . "%' or 
+                warehouse_alamat like '%" . $search_key . "%' or 
+                warehouse_notelp like '%" . $search_key . "%' or 
+                warehouse_desc like '%" . $search_key . "%' or 
+                id_fk_cabang like '%" . $search_key . "%' or 
+                warehouse_status like '%" . $search_key . "%' or 
+                warehouse_last_modified like '%" . $search_key . "%'
             )";
-        }
-        $query = "
-        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,id_fk_cabang,warehouse_status,warehouse_last_modified, cabang_nama
-        from ".$this->tbl_name." LEFT join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_warehouse.id_fk_cabang where warehouse_status = ? ".$search_query."  
-        order by ".$order_by." ".$order_direction." 
-        limit 20 offset ".($page-1)*$data_per_page;
-        $args = array(
-            "aktif"
-        );
-        $result["data"] = executequery($query,$args);
-        
-        $query = "
-        select id_pk_warehouse
-        from ".$this->tbl_name." 
-        where warehouse_status = ? ".$search_query." 
-        order by ".$order_by." ".$order_direction;
-        $result["total_data"] = executequery($query,$args)->num_rows();
-        return $result;
     }
-    public function content_warehouse_cabang($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = "",$id_cabang){
-        $order_by = $this->columns[$order_by]["col_name"];
-        $search_query = "";
-        if($search_key != ""){
-            $search_query .= "and
+    $query = "
+        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,id_fk_cabang,warehouse_status,warehouse_last_modified, cabang_nama
+        from " . $this->tbl_name . " LEFT join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_warehouse.id_fk_cabang where warehouse_status = ? " . $search_query . "  
+        order by " . $order_by . " " . $order_direction . " 
+        limit 20 offset " . ($page - 1) * $data_per_page;
+    $args = array(
+      "aktif"
+    );
+    $result["data"] = executequery($query, $args);
+
+    $query = "
+        select id_pk_warehouse
+        from " . $this->tbl_name . " 
+        where warehouse_status = ? " . $search_query . " 
+        order by " . $order_by . " " . $order_direction;
+    $result["total_data"] = executequery($query, $args)->num_rows();
+    return $result;
+  }
+  public function content_warehouse_cabang($page = 1, $order_by = 0, $order_direction = "asc", $search_key = "", $data_per_page = "", $id_cabang)
+  {
+    $order_by = $this->columns[$order_by]["col_name"];
+    $search_query = "";
+    if ($search_key != "") {
+      $search_query .= "and
             (  
-                warehouse_nama like '%".$search_key."%' or 
-                warehouse_alamat like '%".$search_key."%' or 
-                warehouse_notelp like '%".$search_key."%' or 
-                warehouse_desc like '%".$search_key."%' or 
-                warehouse_status like '%".$search_key."%' or 
-                warehouse_last_modified like '%".$search_key."%'
+                warehouse_nama like '%" . $search_key . "%' or 
+                warehouse_alamat like '%" . $search_key . "%' or 
+                warehouse_notelp like '%" . $search_key . "%' or 
+                warehouse_desc like '%" . $search_key . "%' or 
+                warehouse_status like '%" . $search_key . "%' or 
+                warehouse_last_modified like '%" . $search_key . "%'
             )";
-        }
-        $query = "
+    }
+    $query = "
         select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,id_fk_cabang,warehouse_status,warehouse_last_modified, cabang_nama
-        from ".$this->tbl_name." LEFT join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_warehouse.id_fk_cabang where id_fk_cabang= ? and warehouse_status = ? ".$search_query."  
-        order by ".$order_by." ".$order_direction." 
-        limit 20 offset ".($page-1)*$data_per_page;
-        $args = array(
-            $id_cabang,"aktif"
-        );
-        $result["data"] = executequery($query,$args);
-        
-        $query = "
+        from " . $this->tbl_name . " LEFT join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_warehouse.id_fk_cabang where id_fk_cabang= ? and warehouse_status = ? " . $search_query . "  
+        order by " . $order_by . " " . $order_direction . " 
+        limit 20 offset " . ($page - 1) * $data_per_page;
+    $args = array(
+      $id_cabang, "aktif"
+    );
+    $result["data"] = executequery($query, $args);
+
+    $query = "
         select id_pk_warehouse
-        from ".$this->tbl_name." 
-        where warehouse_status = ? ".$search_query." 
-        order by ".$order_by." ".$order_direction;
-        $args = array(
-            "aktif"
-        );
-        $result["total_data"] = executequery($query,$args)->num_rows();
-        return $result;
-    }
-    public function list_warehouse(){
-        $query = "
+        from " . $this->tbl_name . " 
+        where warehouse_status = ? " . $search_query . " 
+        order by " . $order_by . " " . $order_direction;
+    $args = array(
+      "aktif"
+    );
+    $result["total_data"] = executequery($query, $args)->num_rows();
+    return $result;
+  }
+  public function list_warehouse()
+  {
+    $query = "
         select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,id_fk_cabang,warehouse_status,warehouse_last_modified
-        from ".$this->tbl_name." 
+        from " . $this->tbl_name . " 
         where warehouse_status = ?";
-        $args = array(
-            "aktif"
-        );
-        return executeQuery($query,$args);
+    $args = array(
+      "aktif"
+    );
+    return executeQuery($query, $args);
+  }
+  public function detail_by_id()
+  {
+    $field = array(
+      "id_pk_warehouse",
+      "warehouse_nama",
+      "warehouse_alamat",
+      "warehouse_notelp",
+      "warehouse_desc",
+      "id_fk_cabang",
+      "warehouse_status",
+      "warehouse_last_modified"
+    );
+    $where = array(
+      "id_pk_warehouse" => $this->id_pk_warehouse
+    );
+    return selectrow($this->tbl_name, $where, $field);
+  }
+  public function insert()
+  {
+    if ($this->check_insert()) {
+      $data = array(
+        "warehouse_nama" => $this->warehouse_nama,
+        "warehouse_alamat" => $this->warehouse_alamat,
+        "warehouse_notelp" => $this->warehouse_notelp,
+        "warehouse_desc" => $this->warehouse_desc,
+        "id_fk_cabang" => $this->id_fk_cabang,
+        "warehouse_status" => $this->warehouse_status,
+        "warehouse_create_date" => $this->warehouse_create_date,
+        "warehouse_last_modified" => $this->warehouse_last_modified,
+        "id_create_data" => $this->id_create_data,
+        "id_last_modified" => $this->id_last_modified
+      );
+      return insertrow($this->tbl_name, $data);
     }
-    public function detail_by_id(){
-        $field = array(
-            "id_pk_warehouse",
-            "warehouse_nama",
-            "warehouse_alamat",
-            "warehouse_notelp",
-            "warehouse_desc",
-            "id_fk_cabang",
-            "warehouse_status",
-            "warehouse_last_modified"
-        );
-        $where = array(
-            "id_pk_warehouse" => $this->id_pk_warehouse
-        );
-        return selectrow($this->tbl_name,$where,$field);
+    return false;
+  }
+  public function update()
+  {
+    if ($this->check_update()) {
+      $where = array(
+        "id_pk_warehouse" => $this->id_pk_warehouse
+      );
+      $data = array(
+        "warehouse_nama" => $this->warehouse_nama,
+        "warehouse_alamat" => $this->warehouse_alamat,
+        "warehouse_notelp" => $this->warehouse_notelp,
+        "warehouse_desc" => $this->warehouse_desc,
+        "id_fk_cabang" => $this->id_fk_cabang,
+        "warehouse_last_modified" => $this->warehouse_last_modified,
+        "id_last_modified" => $this->id_last_modified
+      );
+      updaterow($this->tbl_name, $data, $where);
+      return true;
     }
-    public function insert(){
-        if($this->check_insert()){
-            $data = array(
-                "warehouse_nama" => $this->warehouse_nama,
-                "warehouse_alamat" => $this->warehouse_alamat,
-                "warehouse_notelp" => $this->warehouse_notelp,
-                "warehouse_desc" => $this->warehouse_desc,
-                "id_fk_cabang" => $this->id_fk_cabang,
-                "warehouse_status" => $this->warehouse_status,
-                "warehouse_create_date" => $this->warehouse_create_date,
-                "warehouse_last_modified" => $this->warehouse_last_modified,
-                "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified
-            );
-            return insertrow($this->tbl_name,$data);
-        }
-        return false;
+    return false;
+  }
+  public function delete()
+  {
+    if ($this->check_delete()) {
+      $where = array(
+        "id_pk_warehouse" => $this->id_pk_warehouse
+      );
+      $data = array(
+        "warehouse_status" => "nonaktif",
+        "warehouse_last_modified" => $this->warehouse_last_modified,
+        "id_last_modified" => $this->id_last_modified
+      );
+      updaterow($this->tbl_name, $data, $where);
+      return true;
     }
-    public function update(){
-        if($this->check_update()){
-            $where = array(
-                "id_pk_warehouse" => $this->id_pk_warehouse
-            );
-            $data = array(
-                "warehouse_nama" => $this->warehouse_nama,
-                "warehouse_alamat" => $this->warehouse_alamat,
-                "warehouse_notelp" => $this->warehouse_notelp,
-                "warehouse_desc" => $this->warehouse_desc,
-                "id_fk_cabang" => $this->id_fk_cabang,
-                "warehouse_last_modified" => $this->warehouse_last_modified,
-                "id_last_modified" => $this->id_last_modified
-            );
-            updaterow($this->tbl_name,$data,$where);
-            return true;
-        }
-        return false;
+    return false;
+  }
+  public function check_insert()
+  {
+    if ($this->warehouse_nama == "") {
+      return false;
     }
-    public function delete(){
-        if($this->check_delete()){
-            $where = array(
-                "id_pk_warehouse" => $this->id_pk_warehouse
-            );
-            $data = array(
-                "warehouse_status" => "nonaktif",
-                "warehouse_last_modified" => $this->warehouse_last_modified,
-                "id_last_modified" => $this->id_last_modified
-            );
-            updaterow($this->tbl_name,$data,$where);
-            return true;
-        }
-        return false;
+    if ($this->warehouse_alamat == "") {
+      return false;
     }
-    public function check_insert(){
-        if($this->warehouse_nama == ""){
-            return false;
-        }
-        if($this->warehouse_alamat == ""){
-            return false;
-        }
-        if($this->warehouse_notelp == ""){
-            return false;
-        }
-        if($this->warehouse_desc == ""){
-            return false;
-        }
-        if($this->id_fk_cabang == ""){
-            return false;
-        }
-        if($this->warehouse_status == ""){
-            return false;
-        }
-        if($this->warehouse_create_date == ""){
-            return false;
-        }
-        if($this->warehouse_last_modified == ""){
-            return false;
-        }
-        if($this->id_create_data == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        return true;
+    if ($this->warehouse_notelp == "") {
+      return false;
     }
-    public function check_update(){
-        if($this->id_pk_warehouse == ""){
-            return false;
-        }
-        if($this->warehouse_nama == ""){
-            return false;
-        }
-        if($this->warehouse_alamat == ""){
-            return false;
-        }
-        if($this->warehouse_notelp == ""){
-            return false;
-        }
-        if($this->warehouse_desc == ""){
-            return false;
-        }
-        if($this->warehouse_last_modified == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        return true;
+    if ($this->warehouse_desc == "") {
+      return false;
     }
-    public function check_delete(){
-        if($this->id_pk_warehouse == ""){
-            return false;
-        }
-        if($this->warehouse_last_modified == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        return true;
+    if ($this->id_fk_cabang == "") {
+      return false;
     }
-    public function set_insert($warehouse_nama,$warehouse_alamat,$warehouse_notelp,$warehouse_desc,$id_fk_cabang,$warehouse_status){
-        if(!$this->set_warehouse_nama($warehouse_nama)){
-            return false;
-        }
-        if(!$this->set_warehouse_alamat($warehouse_alamat)){
-            return false;
-        }
-        if(!$this->set_warehouse_notelp($warehouse_notelp)){
-            return false;
-        }
-        if(!$this->set_warehouse_desc($warehouse_desc)){
-            return false;
-        }
-        if(!$this->set_id_fk_cabang($id_fk_cabang)){
-            return false;
-        }
-        if(!$this->set_warehouse_status($warehouse_status)){
-            return false;
-        }
-        return true;
+    if ($this->warehouse_status == "") {
+      return false;
     }
-    public function set_update($id_pk_warehouse,$warehouse_nama,$warehouse_alamat,$warehouse_notelp,$warehouse_desc,$id_fk_cabang){
-        if(!$this->set_id_pk_warehouse($id_pk_warehouse)){
-            return false;
-        }
-        if(!$this->set_warehouse_nama($warehouse_nama)){
-            return false;
-        }
-        if(!$this->set_warehouse_alamat($warehouse_alamat)){
-            return false;
-        }
-        if(!$this->set_warehouse_notelp($warehouse_notelp)){
-            return false;
-        }
-        if(!$this->set_warehouse_desc($warehouse_desc)){
-            return false;
-        }
-        if(!$this->set_id_fk_cabang($id_fk_cabang)){
-            return false;
-        }
-        return true;
+    if ($this->warehouse_create_date == "") {
+      return false;
     }
-    public function set_delete($id_pk_warehouse){
-        if(!$this->set_id_pk_warehouse($id_pk_warehouse)){
-            return false;
-        }
-        return true;}
-    public function set_id_pk_warehouse($id_pk_warehouse){
-        if($id_pk_warehouse != ""){
-            $this->id_pk_warehouse = $id_pk_warehouse;
-            return true;
-        }
-        return false;
+    if ($this->warehouse_last_modified == "") {
+      return false;
     }
-    public function set_warehouse_nama($warehouse_nama){
-        if($warehouse_nama != ""){
-            $this->warehouse_nama = $warehouse_nama;
-            return true;
-        }
-        return false;
+    if ($this->id_create_data == "") {
+      return false;
     }
-    public function set_warehouse_alamat($warehouse_alamat){
-        if($warehouse_alamat != ""){
-            $this->warehouse_alamat = $warehouse_alamat;
-            return true;
-        }
-        return false;
+    if ($this->id_last_modified == "") {
+      return false;
     }
-    public function set_warehouse_notelp($warehouse_notelp){
-        if($warehouse_notelp != ""){
-            $this->warehouse_notelp = $warehouse_notelp;
-            return true;
-        }
-        return false;
+    return true;
+  }
+  public function check_update()
+  {
+    if ($this->id_pk_warehouse == "") {
+      return false;
     }
-    public function set_warehouse_desc($warehouse_desc){
-        if($warehouse_desc != ""){
-            $this->warehouse_desc = $warehouse_desc;
-            return true;
-        }
-        return false;
+    if ($this->warehouse_nama == "") {
+      return false;
     }
-    public function set_id_fk_cabang($id_fk_cabang){
-        if($id_fk_cabang != ""){
-            $this->id_fk_cabang = $id_fk_cabang;
-            return true;
-        }
-        return false;
+    if ($this->warehouse_alamat == "") {
+      return false;
     }
-    public function set_warehouse_status($warehouse_status){
-        if($warehouse_status != ""){
-            $this->warehouse_status = $warehouse_status;
-            return true;
-        }
-        return false;
+    if ($this->warehouse_notelp == "") {
+      return false;
     }
-    public function data_excel(){
-        $query = "
+    if ($this->warehouse_desc == "") {
+      return false;
+    }
+    if ($this->warehouse_last_modified == "") {
+      return false;
+    }
+    if ($this->id_last_modified == "") {
+      return false;
+    }
+    return true;
+  }
+  public function check_delete()
+  {
+    if ($this->id_pk_warehouse == "") {
+      return false;
+    }
+    if ($this->warehouse_last_modified == "") {
+      return false;
+    }
+    if ($this->id_last_modified == "") {
+      return false;
+    }
+    return true;
+  }
+  public function set_insert($warehouse_nama, $warehouse_alamat, $warehouse_notelp, $warehouse_desc, $id_fk_cabang, $warehouse_status)
+  {
+    if (!$this->set_warehouse_nama($warehouse_nama)) {
+      return false;
+    }
+    if (!$this->set_warehouse_alamat($warehouse_alamat)) {
+      return false;
+    }
+    if (!$this->set_warehouse_notelp($warehouse_notelp)) {
+      return false;
+    }
+    if (!$this->set_warehouse_desc($warehouse_desc)) {
+      return false;
+    }
+    if (!$this->set_id_fk_cabang($id_fk_cabang)) {
+      return false;
+    }
+    if (!$this->set_warehouse_status($warehouse_status)) {
+      return false;
+    }
+    return true;
+  }
+  public function set_update($id_pk_warehouse, $warehouse_nama, $warehouse_alamat, $warehouse_notelp, $warehouse_desc, $id_fk_cabang)
+  {
+    if (!$this->set_id_pk_warehouse($id_pk_warehouse)) {
+      return false;
+    }
+    if (!$this->set_warehouse_nama($warehouse_nama)) {
+      return false;
+    }
+    if (!$this->set_warehouse_alamat($warehouse_alamat)) {
+      return false;
+    }
+    if (!$this->set_warehouse_notelp($warehouse_notelp)) {
+      return false;
+    }
+    if (!$this->set_warehouse_desc($warehouse_desc)) {
+      return false;
+    }
+    if (!$this->set_id_fk_cabang($id_fk_cabang)) {
+      return false;
+    }
+    return true;
+  }
+  public function set_delete($id_pk_warehouse)
+  {
+    if (!$this->set_id_pk_warehouse($id_pk_warehouse)) {
+      return false;
+    }
+    return true;
+  }
+  public function set_id_pk_warehouse($id_pk_warehouse)
+  {
+    if ($id_pk_warehouse != "") {
+      $this->id_pk_warehouse = $id_pk_warehouse;
+      return true;
+    }
+    return false;
+  }
+  public function set_warehouse_nama($warehouse_nama)
+  {
+    if ($warehouse_nama != "") {
+      $this->warehouse_nama = $warehouse_nama;
+      return true;
+    }
+    return false;
+  }
+  public function set_warehouse_alamat($warehouse_alamat)
+  {
+    if ($warehouse_alamat != "") {
+      $this->warehouse_alamat = $warehouse_alamat;
+      return true;
+    }
+    return false;
+  }
+  public function set_warehouse_notelp($warehouse_notelp)
+  {
+    if ($warehouse_notelp != "") {
+      $this->warehouse_notelp = $warehouse_notelp;
+      return true;
+    }
+    return false;
+  }
+  public function set_warehouse_desc($warehouse_desc)
+  {
+    if ($warehouse_desc != "") {
+      $this->warehouse_desc = $warehouse_desc;
+      return true;
+    }
+    return false;
+  }
+  public function set_id_fk_cabang($id_fk_cabang)
+  {
+    if ($id_fk_cabang != "") {
+      $this->id_fk_cabang = $id_fk_cabang;
+      return true;
+    }
+    return false;
+  }
+  public function set_warehouse_status($warehouse_status)
+  {
+    if ($warehouse_status != "") {
+      $this->warehouse_status = $warehouse_status;
+      return true;
+    }
+    return false;
+  }
+  public function data_excel()
+  {
+    $query = "
         select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_last_modified
-        from ".$this->tbl_name." 
+        from " . $this->tbl_name . " 
         where warehouse_status = ?";
-        $args = array(
-            "aktif"
-        );
-        return executeQuery($query,$args);
-    }
-    public function columns_excel(){
-        $this->columns = array();
-        
-        $this->set_column("warehouse_nama","nama warehouse","required");
-        $this->set_column("warehouse_alamat","alamat","required");
-        $this->set_column("warehouse_notelp","no telpon","required");
-        $this->set_column("warehouse_desc","deskripsi","required");
-        $this->set_column("id_fk_cabang","cabang","required");
-        $this->set_column("warehouse_status","status","required");
-        $this->set_column("warehouse_last_modified","last modified","required");
-        return $this->columns;
-    }
+    $args = array(
+      "aktif"
+    );
+    return executeQuery($query, $args);
+  }
+  public function columns_excel()
+  {
+    $this->columns = array();
+
+    $this->set_column("warehouse_nama", "nama warehouse", "required");
+    $this->set_column("warehouse_alamat", "alamat", "required");
+    $this->set_column("warehouse_notelp", "no telpon", "required");
+    $this->set_column("warehouse_desc", "deskripsi", "required");
+    $this->set_column("id_fk_cabang", "cabang", "required");
+    $this->set_column("warehouse_status", "status", "required");
+    $this->set_column("warehouse_last_modified", "last modified", "required");
+    return $this->columns;
+  }
 }

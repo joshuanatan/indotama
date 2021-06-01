@@ -4,6 +4,7 @@
   var url_add = "id_cabang=<?php echo $this->session->id_cabang; ?>";
   var datalist_barang_cabang_jualan;
   load_datalist_barang_cabang_jualan();
+
   function load_datalist_barang_cabang_jualan() {
     $.ajax({
       url: "<?php echo base_url(); ?>ws/barang_cabang/list_data_jualan?" + url_add,

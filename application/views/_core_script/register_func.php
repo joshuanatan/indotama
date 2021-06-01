@@ -28,7 +28,7 @@
       processData: false,
       contentType: false,
       success: function(respond) {
-        if (respond["status"] == "SUCCESS") {
+        if (respond["status"].toUpperCase() == "SUCCESS") {
           $('#notif_register_success').show(1).delay(2000).hide(1);
           $(`#${id_register_modal}`).modal("hide");
           $(".form-reset").val("");
@@ -41,7 +41,7 @@
           //notification
         }
 
-        if (respond["status"] == "ERROR") {
+        if (respond["status"].toUpperCase() == "ERROR") {
           $('#regis_error_msg').empty();
           $('#regis_error_msg').append(respond["msg"]);
           $('#notif_register_error').show(1).delay(2000).hide(1);

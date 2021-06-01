@@ -51,12 +51,12 @@ $notif_data = array(
                   <div class="col-lg-12">
                     <div class="form-inline">
                       <select class="form-control form-sm" id="tipe_pembayaran" style="width:20%">
-                        <option value = "Down Payment 1">Down Payment 1</option>
-                        <option value = "Down Payment 2">Down Payment 2</option>
-                        <option value = "Down Payment 3">Down Payment 3</option>
-                        <option value = "Full Payment">Full Payment</option>
-                        <option value = "Tempo">Tempo</option>
-                        <option value = "Keep">Keep</option>
+                        <option value="Down Payment 1">Down Payment 1</option>
+                        <option value="Down Payment 2">Down Payment 2</option>
+                        <option value="Down Payment 3">Down Payment 3</option>
+                        <option value="Full Payment">Full Payment</option>
+                        <option value="Tempo">Tempo</option>
+                        <option value="Keep">Keep</option>
                       </select>
                       <button type="button" onclick="redirect_tipe_pembayaran()" class="btn btn-primary btn-sm">Buka</button>
                     </div>
@@ -97,39 +97,39 @@ $notif_data = array(
 
 
 
-  <div class = "modal fade" id = "pdf_asli_modal">
-    <div class = "modal-dialog">
-        <div class = "modal-content">
-            <div class = "modal-header">
-                <h4 class = "modal-title">Download Invoice Asli</h4>
-            </div>
-            <div class = "modal-body">
-                <h4>Pilih jenis invoice yang akan di download</h4>
-                <div class = "form-group">
-                    <button type = "button" class = "btn btn-sm btn-secondary" data-dismiss = "modal">Cancel</button>
-                    <a target="_blank" id = "pdf_invoice_asli_cap" class = "btn btn-sm btn-primary">Cap</a>
-                    <a target="_blank" id = "pdf_invoice_asli_noncap" class = "btn btn-sm btn-warning">Non-Cap</a>
-                </div>
-            </div>
+  <div class="modal fade" id="pdf_asli_modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Download Invoice Asli</h4>
         </div>
+        <div class="modal-body">
+          <h4>Pilih jenis invoice yang akan di download</h4>
+          <div class="form-group">
+            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
+            <a target="_blank" id="pdf_invoice_asli_cap" class="btn btn-sm btn-primary">Cap</a>
+            <a target="_blank" id="pdf_invoice_asli_noncap" class="btn btn-sm btn-warning">Non-Cap</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class = "modal fade" id = "pdf_copy_modal">
-    <div class = "modal-dialog">
-        <div class = "modal-content">
-            <div class = "modal-header">
-                <h4 class = "modal-title">Download Invoice Copy</h4>
-            </div>
-            <div class = "modal-body">
-                <h4>Pilih jenis invoice yang akan di download</h4>
-                <div class = "form-group">
-                    <button type = "button" class = "btn btn-sm btn-secondary" data-dismiss = "modal">Cancel</button>
-                    <a target="_blank" id = "pdf_invoice_copy_cap" class = "btn btn-sm btn-primary">Cap</a>
-                    <a target="_blank" id = "pdf_invoice_copy_noncap" class = "btn btn-sm btn-warning">Non-Cap</a>
-                </div>
-            </div>
+  <div class="modal fade" id="pdf_copy_modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Download Invoice Copy</h4>
         </div>
+        <div class="modal-body">
+          <h4>Pilih jenis invoice yang akan di download</h4>
+          <div class="form-group">
+            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
+            <a target="_blank" id="pdf_invoice_copy_cap" class="btn btn-sm btn-primary">Cap</a>
+            <a target="_blank" id="pdf_invoice_copy_noncap" class="btn btn-sm btn-warning">Non-Cap</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </body>
@@ -153,7 +153,6 @@ $notif_data = array(
 <?php $this->load->view('_notification/notif_general'); ?>
 <?php $this->load->view("req/core_script"); ?>
 <script>
-
   refresh(1);
 
   function refresh(req_page = 1) {
@@ -190,14 +189,12 @@ $notif_data = array(
                 break;
             }
             var html_durasi_pembayaran = "";
-            if(respond["content"][a]["status_pembayaran"].toLowerCase() != "belum lunas" ||  respond["content"][a]["penj_status"] == "selesai"){
+            if (respond["content"][a]["status_pembayaran"].toLowerCase() != "belum lunas" || respond["content"][a]["penj_status"] == "selesai") {
               html_durasi_pembayaran += `<td class = 'align-middle text-center'>-</td>`;
-            } 
-            else{
-              if(respond["content"][a]["selisih_tanggal"] > 0) {
+            } else {
+              if (respond["content"][a]["selisih_tanggal"] > 0) {
                 html_durasi_pembayaran += `<td class = 'align-middle text-center'><span class="badge badge-success align-top">${Math.abs(respond["content"][a]["selisih_tanggal"])} Hari </span></td>`;
-              }
-              else{
+              } else {
                 html_durasi_pembayaran += `<td class = 'align-middle text-center'><span class="badge badge-danger align-top">${Math.abs(respond["content"][a]["selisih_tanggal"])} Hari </span></td>`;
               }
             }
@@ -213,7 +210,7 @@ $notif_data = array(
                   ${html_durasi_pembayaran}
                   <td>
                     <a style = "cursor:pointer;font-size:large" class = 'text-success md-eye' data-toggle = 'modal' data-target = '#detail_modal' onclick = 'load_detail_content(${a})'></a>
-                    <a style = "font-size:large" class = 'text-primary md-edit' href = "<?php echo base_url();?>penjualan/update/${respond["content"][a]["id_pk_penjualan"]}" target = "_blank"></a>  
+                    <a style = "font-size:large" class = 'text-primary md-edit' href = "<?php echo base_url(); ?>penjualan/update/${respond["content"][a]["id_pk_penjualan"]}" target = "_blank"></a>  
                     <a style = "cursor:pointer;font-size:large" class = 'text-danger md-delete' data-toggle = 'modal' data-target = '#delete_modal' onclick = 'load_delete_content(${a})'></a>
                     
                     <a style="cursor:pointer;font-size:large" data-toggle = 'modal' data-target = '#pdf_asli_modal' onclick = 'load_pdf_asli_modal(${respond["content"][a]["id_pk_penjualan"]})' class="text-info md-print"></a>
@@ -251,15 +248,14 @@ $notif_data = array(
   }
 </script>
 <script>
-
-  function load_pdf_asli_modal(id){
-    $("#pdf_invoice_asli_cap").attr("href","<?= base_url() ?>penjualan/view_invoice_asli/"+id+"/cap");
-    $("#pdf_invoice_asli_noncap").attr("href","<?= base_url() ?>penjualan/view_invoice_asli/"+id+"/noncap");
+  function load_pdf_asli_modal(id) {
+    $("#pdf_invoice_asli_cap").attr("href", "<?= base_url() ?>penjualan/view_invoice_asli/" + id + "/cap");
+    $("#pdf_invoice_asli_noncap").attr("href", "<?= base_url() ?>penjualan/view_invoice_asli/" + id + "/noncap");
   }
 
-  function load_pdf_copy_modal(id){
-    $("#pdf_invoice_copy_cap").attr("href","<?= base_url() ?>penjualan/view_invoice_copy/"+id+"/cap");
-    $("#pdf_invoice_copy_noncap").attr("href","<?= base_url() ?>penjualan/view_invoice_copy/"+id+"/noncap");
+  function load_pdf_copy_modal(id) {
+    $("#pdf_invoice_copy_cap").attr("href", "<?= base_url() ?>penjualan/view_invoice_copy/" + id + "/cap");
+    $("#pdf_invoice_copy_noncap").attr("href", "<?= base_url() ?>penjualan/view_invoice_copy/" + id + "/noncap");
   }
 
 

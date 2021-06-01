@@ -2,6 +2,7 @@
 <script>
   var button_tmbh_cepat_customer = true;
 
+  load_datalist_customer();
   function load_datalist_customer() {
     $.ajax({
       url: "<?php echo base_url(); ?>ws/customer/list_data",

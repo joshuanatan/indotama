@@ -1,11 +1,10 @@
 <datalist id="datalist_pembelian"></datalist>
 
 <script>
-  load_datalist_pembelian();
-  function load_datalist_pembelian() {
-    /*percabang*/
+  load_datalist_pembelian_all();
+  function load_datalist_pembelian_all() {
     $.ajax({
-      url: "<?php echo base_url(); ?>ws/pembelian/list_pembelian",
+      url: "<?php echo base_url(); ?>ws/pembelian/list_pembelian_all",
       type: "GET",
       dataType: "JSON",
       success: function(respond) {
