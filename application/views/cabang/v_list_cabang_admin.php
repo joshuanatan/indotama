@@ -73,30 +73,6 @@ $notif_data = array(
   var url_add = "";
   var custom_contentCtrl = "";
   var custom_tblHeaderCtrl = "columns_cabang_admin";
-  var unautorized_button = ["detail_button", "edit_button", "delete_button"];
-  var additional_button = [{
-    class: "md-wrench",
-    style: "cursor:pointer",
-    onclick: "activate_cabang_manajemen()"
-  }];
-</script>
-<?php $this->load->view("_core_script/table_func"); ?>
-<script>
-  function activate_cabang_manajemen() {
-    var is_not_clicked = true;
-    $("body table").find("tr").click(function() {
-      var row = $(this).index();
-      var id_cabang = content[row]["id"];
-      $(this).find('.action_column').click(function() {
-        $(this).find("i.md-wrench").click(function() {
-          if (confirm(`Anda yakin ingin mengaktifkan cabang ${content[row]["daerah"]} pada toko ${content[row]["toko"]}?`)) {
-            window.location.href = "<?php echo base_url(); ?>toko/activate_cabang_manajemen/" + id_cabang;
-
-          }
-        });
-      });
-    });
-  }
 </script>
 <?php $this->load->view('_notification/notif_general'); ?>
 

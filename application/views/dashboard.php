@@ -49,7 +49,7 @@ $breadcrumb = array(
 </html>
 
 <?php $this->load->view('req/mm_js.php');?>
-<?php $this->load->view("_core_script/table_func");?>
+<?php $this->load->view("_core_script/menubar_func");?>
 
 <!-- Data table JavaScript -->
 <script src="<?php echo base_url(); ?>vendors/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
