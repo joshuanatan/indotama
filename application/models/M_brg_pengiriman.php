@@ -241,23 +241,46 @@ class M_brg_pengiriman extends ci_model
       "id_create_data" => $this->id_create_data,
       "id_last_modified" => $this->id_last_modified
     );
-    insertrow($this->tbl_name, $data);
-    return true;
+
+    $id_hasil_insert = insertrow($this->tbl_name, $data);
+
+    $log_all_msg = "Data Barang Pengiriman baru ditambahkan. Waktu penambahan: $this->brg_pengiriman_create_date";
+    $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+    $log_all_data_changes = "[ID Barang Pengiriman: $id_hasil_insert][Jumlah: $this->brg_pengiriman_qty][Notes: $this->brg_pengiriman_note][ID Pengiriman: $this->id_fk_pengiriman][ID Barang Penjualan: $this->id_fk_brg_penjualan][ID Barang penjualan yang dikembalikan: $this->id_fk_brg_retur_kembali][ID Barang Pemenuhan: $this->id_fk_brg_pemenuhan][ID Satuan: $this->id_fk_satuan][Waktu Ditambahkan: $this->brg_pengiriman_create_date][Oleh: $nama_user]";
+    $log_all_it = "";
+    $log_all_user = $this->id_last_modified;
+    $log_all_tgl = $this->brg_pengiriman_create_date;
+
+    $data_log = array(
+      "log_all_msg" => $log_all_msg,
+      "log_all_data_changes" => $log_all_data_changes,
+      "log_all_it" => $log_all_it,
+      "log_all_user" => $log_all_user,
+      "log_all_tgl" => $log_all_tgl
+    );
+    insertrow("log_all", $data_log);
+
+
+    return $id_hasil_insert;
   }
   public function update()
   {
-    $where = array(
-      "id_pk_brg_pengiriman" => $this->id_pk_brg_pengiriman
-    );
-    $data = array(
-      "brg_pengiriman_qty" => $this->brg_pengiriman_qty,
-      "brg_pengiriman_note" => $this->brg_pengiriman_note,
-      "id_fk_satuan" => $this->id_fk_satuan,
-      "brg_pengiriman_last_modified" => $this->brg_pengiriman_last_modified,
-      "id_last_modified" => $this->id_last_modified
-    );
-    updateRow($this->tbl_name, $data, $where);
-    return true;
+    if ($this->check_update()) {
+      $where = array(
+        "id_pk_brg_pengiriman" => $this->id_pk_brg_pengiriman
+      );
+      $data = array(
+        "brg_pengiriman_qty" => $this->brg_pengiriman_qty,
+        "brg_pengiriman_note" => $this->brg_pengiriman_note,
+        "id_fk_satuan" => $this->id_fk_satuan,
+        "brg_pengiriman_last_modified" => $this->brg_pengiriman_last_modified,
+        "id_last_modified" => $this->id_last_modified
+      );
+      updateRow($this->tbl_name, $data, $where);
+      return true;
+    }
+    return false;
   }
   public function delete()
   {

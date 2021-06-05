@@ -1,41 +1,46 @@
 <?php
 defined("BASEPATH") or exit("no direct script");
 date_default_timezone_set("asia/jakarta");
-class M_barang_jenis extends ci_model{
-    private $tbl_name = "mstr_barang_jenis";
-    private $columns = array();
-    private $id_pk_brg_jenis;
-    private $brg_jenis_nama;
-    private $brg_jenis_status;
-    private $brg_jenis_create_date;
-    private $brg_jenis_last_modified;
-    private $id_create_data;
-    private $id_last_modified;
+class M_barang_jenis extends ci_model
+{
+  private $tbl_name = "mstr_barang_jenis";
+  private $columns = array();
+  private $id_pk_brg_jenis;
+  private $brg_jenis_nama;
+  private $brg_jenis_status;
+  private $brg_jenis_create_date;
+  private $brg_jenis_last_modified;
+  private $id_create_data;
+  private $id_last_modified;
 
-    public function __construct(){
-        parent::__construct();
-        $this->set_column("brg_jenis_nama","jenis barang",true);
-        $this->set_column("brg_jenis_status","status",false);
-        $this->set_column("brg_jenis_last_modified","last modified",false);
+  public function __construct()
+  {
+    parent::__construct();
+    $this->set_column("brg_jenis_nama", "jenis barang", true);
+    $this->set_column("brg_jenis_status", "status", false);
+    $this->set_column("brg_jenis_last_modified", "last modified", false);
 
-        $this->brg_jenis_create_date = date("y-m-d h:i:s");
-        $this->brg_jenis_last_modified = date("y-m-d h:i:s");
-        $this->id_create_data = $this->session->id_user;
-        $this->id_last_modified = $this->session->id_user;
-    }
-    private function set_column($col_name,$col_disp,$order_by){
-        $array = array(
-            "col_name" => $col_name,
-            "col_disp" => $col_disp,
-            "order_by" => $order_by
-        );
-        $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
-    }
-    public function columns(){
-        return $this->columns;
-    }
-    public function install(){
-        $sql = "
+    $this->brg_jenis_create_date = date("y-m-d h:i:s");
+    $this->brg_jenis_last_modified = date("y-m-d h:i:s");
+    $this->id_create_data = $this->session->id_user;
+    $this->id_last_modified = $this->session->id_user;
+  }
+  private function set_column($col_name, $col_disp, $order_by)
+  {
+    $array = array(
+      "col_name" => $col_name,
+      "col_disp" => $col_disp,
+      "order_by" => $order_by
+    );
+    $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
+  }
+  public function columns()
+  {
+    return $this->columns;
+  }
+  public function install()
+  {
+    $sql = "
         drop table if exists mstr_barang_jenis;
         create table mstr_barang_jenis(
             id_pk_brg_jenis int primary key auto_increment,
@@ -89,269 +94,300 @@ class M_barang_jenis extends ci_model{
         end$$
         delimiter ;
         ";
-        executequery($sql);
-    }
-    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = "",$search_category = ""){
-        $order_by = $this->columns[$order_by]["col_name"]; #brg_jenis_nama
-        $search_query = "";
-        if($search_key != ""){
-            $search_query .= "and
+    executequery($sql);
+  }
+  public function content($page = 1, $order_by = 0, $order_direction = "asc", $search_key = "", $data_per_page = "", $search_category = "")
+  {
+    $order_by = $this->columns[$order_by]["col_name"]; #brg_jenis_nama
+    $search_query = "";
+    if ($search_key != "") {
+      $search_query .= "and
             ( 
-                id_pk_brg_jenis like '%".$search_key."%' or
-                brg_jenis_nama like '%".$search_key."%' or
-                brg_jenis_status like '%".$search_key."%' or
-                brg_jenis_last_modified like '%".$search_key."%' or
-                id_last_modified like '%".$search_key."%'
+                id_pk_brg_jenis like '%" . $search_key . "%' or
+                brg_jenis_nama like '%" . $search_key . "%' or
+                brg_jenis_status like '%" . $search_key . "%' or
+                brg_jenis_last_modified like '%" . $search_key . "%' or
+                id_last_modified like '%" . $search_key . "%'
             )";
-        }
-        $query = "
+    }
+    $query = "
         select id_pk_brg_jenis,brg_jenis_nama,brg_jenis_status,brg_jenis_last_modified,id_last_modified
-        from ".$this->tbl_name." 
-        where brg_jenis_status = ? ".$search_query." and id_pk_brg_jenis != ?  
-        order by ".$order_by." ".$order_direction." 
-        limit 20 offset ".($page-1)*$data_per_page;
-        $args = array(
-            "aktif","0"
-        );
-        $result["data"] = executequery($query,$args);
-        
-        $query = "
+        from " . $this->tbl_name . " 
+        where brg_jenis_status = ? " . $search_query . " and id_pk_brg_jenis != ?  
+        order by " . $order_by . " " . $order_direction . " 
+        limit 20 offset " . ($page - 1) * $data_per_page;
+    $args = array(
+      "aktif", "0"
+    );
+    $result["data"] = executequery($query, $args);
+
+    $query = "
         select id_pk_brg_jenis
-        from ".$this->tbl_name." 
-        where brg_jenis_status = ? ".$search_query." and id_pk_brg_jenis != ? 
-        order by ".$order_by." ".$order_direction;
-        $result["total_data"] = executequery($query,$args)->num_rows();
-        return $result;
+        from " . $this->tbl_name . " 
+        where brg_jenis_status = ? " . $search_query . " and id_pk_brg_jenis != ? 
+        order by " . $order_by . " " . $order_direction;
+    $result["total_data"] = executequery($query, $args)->num_rows();
+    return $result;
+  }
+  public function detail_by_name()
+  {
+    $where = array(
+      "brg_jenis_nama" => $this->brg_jenis_nama,
+      "brg_jenis_status" => "aktif",
+    );
+    $field = array(
+      "id_pk_brg_jenis",
+      "brg_jenis_nama",
+      "brg_jenis_status",
+      "brg_jenis_create_date",
+      "brg_jenis_last_modified",
+      "id_create_data",
+      "id_last_modified"
+    );
+    return selectrow($this->tbl_name, $where, $field);
+  }
+  public function list_data()
+  {
+    $where = array(
+      "brg_jenis_status" => "aktif"
+    );
+    $field = array(
+      "id_pk_brg_jenis",
+      "brg_jenis_nama",
+      "brg_jenis_status",
+      "brg_jenis_create_date",
+      "brg_jenis_last_modified",
+      "id_create_data",
+      "id_last_modified"
+    );
+    return selectrow($this->tbl_name, $where, $field);
+  }
+  public function list_data_jualan()
+  {
+    $where = array(
+      "brg_jenis_status" => "aktif",
+      "id_pk_brg_jenis != " => "0"
+    );
+    $field = array(
+      "id_pk_brg_jenis",
+      "brg_jenis_nama",
+      "brg_jenis_status",
+      "brg_jenis_create_date",
+      "brg_jenis_last_modified",
+      "id_create_data",
+      "id_last_modified"
+    );
+    return selectrow($this->tbl_name, $where, $field);
+  }
+  public function insert()
+  {
+    if ($this->check_insert()) {
+      $data = array(
+        "brg_jenis_nama" => $this->brg_jenis_nama,
+        "brg_jenis_status" => $this->brg_jenis_status,
+        "brg_jenis_create_date" => $this->brg_jenis_create_date,
+        "brg_jenis_last_modified" => $this->brg_jenis_last_modified,
+        "id_create_data" => $this->id_create_data,
+        "id_last_modified" => $this->id_last_modified
+      );
+      $id_hasil_insert = insertrow($this->tbl_name, $data);
+
+      $log_all_msg = "Data Jenis Barang baru ditambahkan. Waktu penambahan: $this->brg_jenis_create_date";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+      $log_all_data_changes = "[ID Barang Jenis: $id_hasil_insert][Nama: $this->brg_jenis_nama][Status: $this->brg_jenis_status][Waktu Ditambahkan: $this->brg_jenis_create_date][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->brg_jenis_create_date;
+
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
+
+
+      return $id_hasil_insert;
+    } else {
+      return false;
     }
-    public function detail_by_name(){
+  }
+
+  public function update()
+  {
+    if ($this->check_update()) {
+      $where = array(
+        "id_pk_brg_jenis !=" => $this->id_pk_brg_jenis,
+        "brg_jenis_nama" => $this->brg_jenis_nama,
+        "brg_jenis_status" => "aktif",
+      );
+      if (!isexistsintable($this->tbl_name, $where)) {
         $where = array(
-            "brg_jenis_nama" => $this->brg_jenis_nama,
-            "brg_jenis_status" => "aktif",
+          "id_pk_brg_jenis" => $this->id_pk_brg_jenis
         );
-        $field = array(
-            "id_pk_brg_jenis",
-            "brg_jenis_nama",
-            "brg_jenis_status",
-            "brg_jenis_create_date",
-            "brg_jenis_last_modified",
-            "id_create_data",
-            "id_last_modified"
+        $data = array(
+          "brg_jenis_nama" => $this->brg_jenis_nama,
+          "brg_jenis_last_modified" => $this->brg_jenis_last_modified,
+          "id_last_modified" => $this->id_last_modified
         );
-        return selectrow($this->tbl_name,$where,$field);
-    }
-    public function list_data(){
-        $where = array(
-            "brg_jenis_status" => "aktif"
-        );
-        $field = array(
-            "id_pk_brg_jenis",
-            "brg_jenis_nama",
-            "brg_jenis_status",
-            "brg_jenis_create_date",
-            "brg_jenis_last_modified",
-            "id_create_data",
-            "id_last_modified"
-        );
-        return selectrow($this->tbl_name,$where,$field);
-    }
-    public function list_data_jualan(){
-        $where = array(
-            "brg_jenis_status" => "aktif",
-            "id_pk_brg_jenis != " => "0"
-        );
-        $field = array(
-            "id_pk_brg_jenis",
-            "brg_jenis_nama",
-            "brg_jenis_status",
-            "brg_jenis_create_date",
-            "brg_jenis_last_modified",
-            "id_create_data",
-            "id_last_modified"
-        );
-        return selectrow($this->tbl_name,$where,$field);
-    }
-    public function insert(){
-        if($this->check_insert()){
-            $data = array(
-                "brg_jenis_nama" => $this->brg_jenis_nama,
-                "brg_jenis_status" => $this->brg_jenis_status,
-                "brg_jenis_create_date" => $this->brg_jenis_create_date,
-                "brg_jenis_last_modified" => $this->brg_jenis_last_modified,
-                "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified
-            );
-            return insertrow($this->tbl_name,$data);
-        }
-        else{
-            return false;
-        }
-    }
-    public function update(){
-        if($this->check_update()){
-            $where = array(
-                "id_pk_brg_jenis !=" => $this->id_pk_brg_jenis,
-                "brg_jenis_nama" => $this->brg_jenis_nama,
-                "brg_jenis_status" => "aktif",
-            );
-            if(!isexistsintable($this->tbl_name,$where)){
-                $where = array(
-                    "id_pk_brg_jenis" => $this->id_pk_brg_jenis
-                );
-                $data = array(
-                    "brg_jenis_nama" => $this->brg_jenis_nama,
-                    "brg_jenis_last_modified" => $this->brg_jenis_last_modified,
-                    "id_last_modified" => $this->id_last_modified
-                );
-                updaterow($this->tbl_name,$data,$where);
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
-        else{
-            return false;
-        }
-    }
-    public function delete(){
-        if($this->check_delete()){
-            $where = array(
-                "id_pk_brg_jenis" => $this->id_pk_brg_jenis
-            );
-            $data = array(
-                "brg_jenis_status" => "nonaktif",
-                "brg_jenis_last_modified" => $this->brg_jenis_last_modified,
-                "id_last_modified" => $this->id_last_modified
-            );
-            updaterow($this->tbl_name,$data,$where);
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    public function check_insert(){
-        if($this->brg_jenis_nama == ""){
-            return false;
-        }
-        if($this->brg_jenis_status == ""){
-            return false;
-        }
-        if($this->brg_jenis_create_date == ""){
-            return false;
-        }
-        if($this->brg_jenis_last_modified == ""){
-            return false;
-        }
-        if($this->id_create_data == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        else return true;
-    }
-    public function check_update(){
-        if($this->id_pk_brg_jenis == ""){
-            return false;
-        }
-        if($this->brg_jenis_nama == ""){
-            return false;
-        }
-        if($this->brg_jenis_last_modified == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        else return true;
-    }
-    public function check_delete(){
-        if($this->id_pk_brg_jenis == ""){
-            return false;
-        }
-        if($this->brg_jenis_last_modified == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        else return true;
-    }
-    public function set_insert($brg_jenis_nama,$brg_jenis_status){
-        if(!$this->set_brg_jenis_nama($brg_jenis_nama)){
-            return false;
-        }
-        if(!$this->set_brg_jenis_status($brg_jenis_status)){
-            return false;
-        }
-        else return true;
-    }
-    public function set_update($id_pk_brg_jenis,$brg_jenis_nama){
-        if(!$this->set_id_pk_brg_jenis($id_pk_brg_jenis)){
-            return false;
-        }
-        if(!$this->set_brg_jenis_nama($brg_jenis_nama)){
-            return false;
-        }
-        else return true;
-    }
-    public function set_delete($id_pk_brg_jenis){
-        if(!$this->set_id_pk_brg_jenis($id_pk_brg_jenis)){
-            return false;
-        }
-        else return true;
-    }
-    public function get_id_pk_brg_jenis(){
-        return $this->id_pk_brg_jenis;
-    }
-    public function get_brg_jenis_nama(){
-        return $this->brg_jenis_nama;
-    }
-    public function get_brg_jenis_status(){
-        return $this->brg_jenis_status;
-    }
-    public function set_id_pk_brg_jenis($id_pk_brg_jenis){
-        if($id_pk_brg_jenis != ""){
-            $this->id_pk_brg_jenis = $id_pk_brg_jenis;
-            return true;
-        }
+        updaterow($this->tbl_name, $data, $where);
+        return true;
+      } else {
         return false;
+      }
+    } else {
+      return false;
     }
-    public function set_brg_jenis_nama($brg_jenis_nama){
-        if($brg_jenis_nama != ""){
-            $this->brg_jenis_nama = $brg_jenis_nama;
-            return true;
-        }
-        return false;
+  }
+  public function delete()
+  {
+    if ($this->check_delete()) {
+      $where = array(
+        "id_pk_brg_jenis" => $this->id_pk_brg_jenis
+      );
+      $data = array(
+        "brg_jenis_status" => "nonaktif",
+        "brg_jenis_last_modified" => $this->brg_jenis_last_modified,
+        "id_last_modified" => $this->id_last_modified
+      );
+      updaterow($this->tbl_name, $data, $where);
+      return true;
+    } else {
+      return false;
     }
-    public function set_brg_jenis_status($brg_jenis_status){
-        if($brg_jenis_status != ""){
-            $this->brg_jenis_status = $brg_jenis_status;
-            return true;
-        }
-        return false;
+  }
+  public function check_insert()
+  {
+    if ($this->brg_jenis_nama == "") {
+      return false;
     }
-    public function data_excel(){
-        $where = array(
-            "brg_jenis_status" => "aktif"
-        );
-        $field = array(
-            "id_pk_brg_jenis",
-            "brg_jenis_nama",
-            "brg_jenis_status",
-            "brg_jenis_create_date",
-            "brg_jenis_last_modified",
-            "id_create_data",
-            "id_last_modified"
-        );
-        return selectrow($this->tbl_name,$where,$field);
+    if ($this->brg_jenis_status == "") {
+      return false;
     }
-    public function columns_excel(){
-        $this->columns = array();
-        $this->set_column("brg_jenis_nama","jenis barang",true);
-        $this->set_column("brg_jenis_status","status",false);
-        $this->set_column("brg_jenis_last_modified","last modified",false);
-        return $this->columns;
+    if ($this->brg_jenis_create_date == "") {
+      return false;
     }
+    if ($this->brg_jenis_last_modified == "") {
+      return false;
+    }
+    if ($this->id_create_data == "") {
+      return false;
+    }
+    if ($this->id_last_modified == "") {
+      return false;
+    } else return true;
+  }
+  public function check_update()
+  {
+    if ($this->id_pk_brg_jenis == "") {
+      return false;
+    }
+    if ($this->brg_jenis_nama == "") {
+      return false;
+    }
+    if ($this->brg_jenis_last_modified == "") {
+      return false;
+    }
+    if ($this->id_last_modified == "") {
+      return false;
+    } else return true;
+  }
+  public function check_delete()
+  {
+    if ($this->id_pk_brg_jenis == "") {
+      return false;
+    }
+    if ($this->brg_jenis_last_modified == "") {
+      return false;
+    }
+    if ($this->id_last_modified == "") {
+      return false;
+    } else return true;
+  }
+  public function set_insert($brg_jenis_nama, $brg_jenis_status)
+  {
+    if (!$this->set_brg_jenis_nama($brg_jenis_nama)) {
+      return false;
+    }
+    if (!$this->set_brg_jenis_status($brg_jenis_status)) {
+      return false;
+    } else return true;
+  }
+  public function set_update($id_pk_brg_jenis, $brg_jenis_nama)
+  {
+    if (!$this->set_id_pk_brg_jenis($id_pk_brg_jenis)) {
+      return false;
+    }
+    if (!$this->set_brg_jenis_nama($brg_jenis_nama)) {
+      return false;
+    } else return true;
+  }
+  public function set_delete($id_pk_brg_jenis)
+  {
+    if (!$this->set_id_pk_brg_jenis($id_pk_brg_jenis)) {
+      return false;
+    } else return true;
+  }
+  public function get_id_pk_brg_jenis()
+  {
+    return $this->id_pk_brg_jenis;
+  }
+  public function get_brg_jenis_nama()
+  {
+    return $this->brg_jenis_nama;
+  }
+  public function get_brg_jenis_status()
+  {
+    return $this->brg_jenis_status;
+  }
+  public function set_id_pk_brg_jenis($id_pk_brg_jenis)
+  {
+    if ($id_pk_brg_jenis != "") {
+      $this->id_pk_brg_jenis = $id_pk_brg_jenis;
+      return true;
+    }
+    return false;
+  }
+  public function set_brg_jenis_nama($brg_jenis_nama)
+  {
+    if ($brg_jenis_nama != "") {
+      $this->brg_jenis_nama = $brg_jenis_nama;
+      return true;
+    }
+    return false;
+  }
+  public function set_brg_jenis_status($brg_jenis_status)
+  {
+    if ($brg_jenis_status != "") {
+      $this->brg_jenis_status = $brg_jenis_status;
+      return true;
+    }
+    return false;
+  }
+  public function data_excel()
+  {
+    $where = array(
+      "brg_jenis_status" => "aktif"
+    );
+    $field = array(
+      "id_pk_brg_jenis",
+      "brg_jenis_nama",
+      "brg_jenis_status",
+      "brg_jenis_create_date",
+      "brg_jenis_last_modified",
+      "id_create_data",
+      "id_last_modified"
+    );
+    return selectrow($this->tbl_name, $where, $field);
+  }
+  public function columns_excel()
+  {
+    $this->columns = array();
+    $this->set_column("brg_jenis_nama", "jenis barang", true);
+    $this->set_column("brg_jenis_status", "status", false);
+    $this->set_column("brg_jenis_last_modified", "last modified", false);
+    return $this->columns;
+  }
 }

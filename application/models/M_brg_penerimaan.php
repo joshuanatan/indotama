@@ -1,34 +1,38 @@
 <?php
 defined("BASEPATH") or exit("no direct script");
 date_default_timezone_set("asia/jakarta");
-class M_brg_penerimaan extends ci_model{
-    private $tbl_name = "tbl_brg_penerimaan";
-    private $columns = array();
-    private $id_pk_brg_penerimaan;
-    private $brg_penerimaan_qty;
-    private $brg_penerimaan_note;
-    private $id_fk_penerimaan;
-    private $id_fk_brg_pembelian;
-    private $id_fk_brg_retur;
-    private $id_fk_brg_pengiriman; #untuk yang pengiriman antar cabang
-    private $id_fk_satuan;
-    private $brg_penerimaan_create_date;
-    private $brg_penerimaan_last_modified;
-    private $id_create_data;
-    private $id_last_modified;
-    
-    public function __construct(){
-        parent::__construct();
-        $this->brg_penerimaan_create_date = date("y-m-d h:i:s");
-        $this->brg_penerimaan_last_modified = date("y-m-d h:i:s");
-        $this->id_create_data = $this->session->id_user;
-        $this->id_last_modified = $this->session->id_user;
-    }
-    public function columns(){
-        return $this->columns;
-    }
-    public function install(){
-        $sql = "
+class M_brg_penerimaan extends ci_model
+{
+  private $tbl_name = "tbl_brg_penerimaan";
+  private $columns = array();
+  private $id_pk_brg_penerimaan;
+  private $brg_penerimaan_qty;
+  private $brg_penerimaan_note;
+  private $id_fk_penerimaan;
+  private $id_fk_brg_pembelian;
+  private $id_fk_brg_retur;
+  private $id_fk_brg_pengiriman; #untuk yang pengiriman antar cabang
+  private $id_fk_satuan;
+  private $brg_penerimaan_create_date;
+  private $brg_penerimaan_last_modified;
+  private $id_create_data;
+  private $id_last_modified;
+
+  public function __construct()
+  {
+    parent::__construct();
+    $this->brg_penerimaan_create_date = date("y-m-d h:i:s");
+    $this->brg_penerimaan_last_modified = date("y-m-d h:i:s");
+    $this->id_create_data = $this->session->id_user;
+    $this->id_last_modified = $this->session->id_user;
+  }
+  public function columns()
+  {
+    return $this->columns;
+  }
+  public function install()
+  {
+    $sql = "
         drop table if exists tbl_brg_penerimaan;
         create table tbl_brg_penerimaan(
             id_pk_brg_penerimaan int primary key auto_increment,
@@ -191,235 +195,279 @@ class M_brg_penerimaan extends ci_model{
         end $$
         delimiter ;
         ";
-    }
-    public function list_data(){
-        $query = "
+  }
+  public function list_data()
+  {
+    $query = "
         select id_pk_brg_penerimaan,brg_penerimaan_qty,brg_penerimaan_note,id_fk_penerimaan,id_fk_brg_pembelian,id_fk_satuan,brg_penerimaan_create_date,brg_penerimaan_last_modified,brg_pem_qty,brg_pem_satuan,brg_pem_harga,brg_pem_note,brg_nama,satuan_nama
-        from ".$this->tbl_name."
-        inner join tbl_brg_pembelian on tbl_brg_pembelian.id_pk_brg_pembelian = ".$this->tbl_name.".id_fk_brg_pembelian
+        from " . $this->tbl_name . "
+        inner join tbl_brg_pembelian on tbl_brg_pembelian.id_pk_brg_pembelian = " . $this->tbl_name . ".id_fk_brg_pembelian
         inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_pembelian.id_fk_barang
-        inner join mstr_satuan on mstr_satuan.id_pk_satuan = ".$this->tbl_name.".id_fk_satuan
+        inner join mstr_satuan on mstr_satuan.id_pk_satuan = " . $this->tbl_name . ".id_fk_satuan
         where id_fk_penerimaan = ? and brg_pem_status = ? and brg_status = ?
         ";
-        $args = array(
-            $this->id_fk_penerimaan,"aktif","aktif"
-        );
-        return executequery($query,$args);
-    }
-    public function list_retur(){
-        $query = "
+    $args = array(
+      $this->id_fk_penerimaan, "aktif", "aktif"
+    );
+    return executequery($query, $args);
+  }
+  public function list_retur()
+  {
+    $query = "
         select id_pk_brg_penerimaan,brg_penerimaan_qty,brg_penerimaan_note,id_fk_penerimaan,id_fk_satuan,brg_nama,satuan_nama,retur_brg_qty,retur_brg_satuan,retur_brg_notes
-        from ".$this->tbl_name."
-        inner join tbl_retur_brg on tbl_retur_brg.id_pk_retur_brg = ".$this->tbl_name.".id_fk_brg_retur
+        from " . $this->tbl_name . "
+        inner join tbl_retur_brg on tbl_retur_brg.id_pk_retur_brg = " . $this->tbl_name . ".id_fk_brg_retur
         inner join mstr_barang on mstr_barang.id_pk_brg = tbl_retur_brg.id_fk_brg
-        inner join mstr_satuan on mstr_satuan.id_pk_satuan = ".$this->tbl_name.".id_fk_satuan
+        inner join mstr_satuan on mstr_satuan.id_pk_satuan = " . $this->tbl_name . ".id_fk_satuan
         where id_fk_penerimaan = ? and retur_brg_status = ? and brg_status = ?
         ";
-        $args = array(
-            $this->id_fk_penerimaan,"aktif","aktif"
-        );
-        return executequery($query,$args);
+    $args = array(
+      $this->id_fk_penerimaan, "aktif", "aktif"
+    );
+    return executequery($query, $args);
+  }
+  public function insert()
+  {
+    $data = array(
+      "brg_penerimaan_qty" => $this->brg_penerimaan_qty,
+      "brg_penerimaan_note" => $this->brg_penerimaan_note,
+      "id_fk_penerimaan" => $this->id_fk_penerimaan,
+      "id_fk_brg_pembelian" => $this->id_fk_brg_pembelian,
+      "id_fk_brg_retur" => $this->id_fk_brg_retur,
+      "id_fk_brg_pengiriman" => $this->id_fk_brg_pengiriman,
+      "id_fk_satuan" => $this->id_fk_satuan,
+      "brg_penerimaan_create_date" => $this->brg_penerimaan_create_date,
+      "brg_penerimaan_last_modified" => $this->brg_penerimaan_last_modified,
+      "id_create_data" => $this->id_create_data,
+      "id_last_modified" => $this->id_last_modified
+    );
+
+    $id_hasil_insert = insertrow($this->tbl_name, $data);
+
+    $log_all_msg = "Data Barang Penerimaan baru ditambahkan. Waktu penambahan: $this->brg_penerimaan_create_date";
+    $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+    $log_all_data_changes = "[ID Barang Penerimaan: $id_hasil_insert][Jumlah: $this->brg_penerimaan_qty][Notes: $this->brg_penerimaan_note][ID Penerimaan: $this->id_fk_penerimaan][ID Pembelian: $this->id_fk_brg_pembelian][ID Retur: $this->id_fk_brg_retur][ID Pengiriman: $this->id_fk_brg_pengiriman][ID Satuan: $this->id_fk_satuan][Waktu Ditambahkan: $this->brg_penerimaan_create_date][Oleh: $nama_user]";
+    $log_all_it = "";
+    $log_all_user = $this->id_last_modified;
+    $log_all_tgl = $this->brg_penerimaan_create_date;
+
+    $data_log = array(
+      "log_all_msg" => $log_all_msg,
+      "log_all_data_changes" => $log_all_data_changes,
+      "log_all_it" => $log_all_it,
+      "log_all_user" => $log_all_user,
+      "log_all_tgl" => $log_all_tgl
+    );
+    insertrow("log_all", $data_log);
+
+
+    return $id_hasil_insert;
+  }
+  public function update()
+  {
+    if ($this->check_update()) {
+      $where = array(
+        "id_pk_brg_penerimaan" => $this->id_pk_brg_penerimaan
+      );
+      $data = array(
+        "brg_penerimaan_qty" => $this->brg_penerimaan_qty,
+        "brg_penerimaan_note" => $this->brg_penerimaan_note,
+        "id_fk_satuan" => $this->id_fk_satuan,
+        "brg_penerimaan_last_modified" => $this->brg_penerimaan_last_modified,
+        "id_last_modified" => $this->id_last_modified
+      );
+      updaterow($this->tbl_name, $data, $where);
+      return true;
     }
-    public function insert(){
-        $data = array(
-            "brg_penerimaan_qty" => $this->brg_penerimaan_qty,
-            "brg_penerimaan_note" => $this->brg_penerimaan_note,
-            "id_fk_penerimaan" => $this->id_fk_penerimaan,
-            "id_fk_brg_pembelian" => $this->id_fk_brg_pembelian,
-            "id_fk_brg_retur" => $this->id_fk_brg_retur,
-            "id_fk_brg_pengiriman" => $this->id_fk_brg_pengiriman,
-            "id_fk_satuan" => $this->id_fk_satuan,
-            "brg_penerimaan_create_date" => $this->brg_penerimaan_create_date,
-            "brg_penerimaan_last_modified" => $this->brg_penerimaan_last_modified,
-            "id_create_data" => $this->id_create_data,
-            "id_last_modified" => $this->id_last_modified
-        );
-        insertrow($this->tbl_name,$data);
-        return true;
+    return false;
+  }
+  public function delete()
+  {
+    if ($this->check_delete()) {
+      $where = array(
+        "id_pk_brg_penerimaan" => $this->id_pk_brg_penerimaan
+      );
+      $data = array(
+        "brg_penerimaan_last_modified" => $this->brg_penerimaan_last_modified,
+        "id_last_modified" => $this->id_last_modified
+      );
+      updaterow($this->tbl_name, $data, $where);
+      return true;
     }
-    public function update(){
-        if($this->check_update()){
-            $where = array(
-                "id_pk_brg_penerimaan" => $this->id_pk_brg_penerimaan
-            );
-            $data = array(
-                "brg_penerimaan_qty" => $this->brg_penerimaan_qty,
-                "brg_penerimaan_note" => $this->brg_penerimaan_note,
-                "id_fk_satuan" => $this->id_fk_satuan,
-                "brg_penerimaan_last_modified" => $this->brg_penerimaan_last_modified,
-                "id_last_modified" => $this->id_last_modified
-            );
-            updaterow($this->tbl_name,$data,$where);
-            return true;
-        }
-        return false;
+    return false;
+  }
+  public function delete_brg_penerimaan()
+  {
+    #method ini dibuat untuk ngosongin brg_penerimaan kalau penerimaannya diapus
+    $where = array(
+      "id_fk_penerimaan" => $this->id_fk_penerimaan
+    );
+    $data = array(
+      "brg_penerimaan_qty" => 0,
+      "brg_penerimaan_last_modified" => $this->brg_penerimaan_last_modified,
+      "id_last_modified" => $this->id_last_modified
+    );
+    updaterow($this->tbl_name, $data, $where);
+    return true;
+  }
+  public function check_insert()
+  {
+    if ($this->brg_penerimaan_qty == "") {
+      return false;
     }
-    public function delete(){
-        if($this->check_delete()){
-            $where = array(
-                "id_pk_brg_penerimaan" => $this->id_pk_brg_penerimaan
-            );
-            $data = array(
-                "brg_penerimaan_last_modified" => $this->brg_penerimaan_last_modified,
-                "id_last_modified" => $this->id_last_modified
-            );
-            updaterow($this->tbl_name,$data,$where);
-            return true;
-        }
-        return false;
+    if ($this->brg_penerimaan_note == "") {
+      return false;
     }
-    public function delete_brg_penerimaan(){
-        #method ini dibuat untuk ngosongin brg_penerimaan kalau penerimaannya diapus
-        $where = array(
-            "id_fk_penerimaan" => $this->id_fk_penerimaan
-        );
-        $data = array(
-            "brg_penerimaan_qty" => 0,
-            "brg_penerimaan_last_modified" => $this->brg_penerimaan_last_modified,
-            "id_last_modified" => $this->id_last_modified
-        );
-        updaterow($this->tbl_name,$data,$where);
-        return true;
+    if ($this->id_fk_penerimaan == "") {
+      return false;
     }
-    public function check_insert(){
-        if($this->brg_penerimaan_qty == ""){
-            return false;
-        }
-        if($this->brg_penerimaan_note == ""){
-            return false;
-        }
-        if($this->id_fk_penerimaan == ""){
-            return false;
-        }
-        if($this->id_fk_satuan == ""){
-            return false;
-        }
-        if($this->brg_penerimaan_create_date == ""){
-            return false;
-        }
-        if($this->brg_penerimaan_last_modified == ""){
-            return false;
-        }
-        if($this->id_create_data == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        return true;
+    if ($this->id_fk_satuan == "") {
+      return false;
     }
-    public function check_update(){
-        if($this->id_pk_brg_penerimaan == ""){
-            return false;
-        }
-        if($this->brg_penerimaan_qty == ""){
-            return false;
-        }
-        if($this->brg_penerimaan_note == ""){
-            return false;
-        }
-        if($this->id_fk_satuan == ""){
-            return false;
-        }
-        if($this->brg_penerimaan_last_modified == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        return true;
+    if ($this->brg_penerimaan_create_date == "") {
+      return false;
     }
-    public function check_delete(){
-        if($this->id_pk_brg_penerimaan == ""){
-            return false;
-        }
-        if($this->brg_penerimaan_last_modified == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        return true;
+    if ($this->brg_penerimaan_last_modified == "") {
+      return false;
     }
-    public function set_insert($brg_penerimaan_qty,$brg_penerimaan_note,$id_fk_penerimaan,$id_fk_brg_pembelian = "",$id_fk_satuan, $id_fk_brg_retur = "",$id_fk_brg_pengiriman = ""){
-        if(!$this->set_brg_penerimaan_qty($brg_penerimaan_qty)){
-            return false;
-        }
-        if(!$this->set_brg_penerimaan_note($brg_penerimaan_note)){
-            return false;
-        }
-        if(!$this->set_id_fk_penerimaan($id_fk_penerimaan)){
-            return false;
-        }
-        $this->id_fk_brg_pembelian = $id_fk_brg_pembelian;
-        $this->id_fk_brg_retur = $id_fk_brg_retur;
-        $this->id_fk_brg_pengiriman = $id_fk_brg_pengiriman;
-        if(!$this->set_id_fk_satuan($id_fk_satuan)){
-            return false;
-        }
-        return true;
+    if ($this->id_create_data == "") {
+      return false;
     }
-    public function set_update($id_pk_brg_penerimaan,$brg_penerimaan_qty,$brg_penerimaan_note,$id_fk_satuan){
-        if(!$this->set_id_pk_brg_penerimaan($id_pk_brg_penerimaan)){
-            return false;
-        }
-        if(!$this->set_brg_penerimaan_qty($brg_penerimaan_qty)){
-            return false;
-        }
-        if(!$this->set_brg_penerimaan_note($brg_penerimaan_note)){
-            return false;
-        }
-        if(!$this->set_id_fk_satuan($id_fk_satuan)){
-            return false;
-        }
-        return true;
+    if ($this->id_last_modified == "") {
+      return false;
     }
-    public function set_delete($id_pk_brg_penerimaan){
-        if(!$this->set_id_pk_brg_penerimaan($id_pk_brg_penerimaan)){
-            return false;
-        }
-        return true;
+    return true;
+  }
+  public function check_update()
+  {
+    if ($this->id_pk_brg_penerimaan == "") {
+      return false;
     }
-    public function set_id_pk_brg_penerimaan($id_pk_brg_penerimaan){
-        $this->id_pk_brg_penerimaan = $id_pk_brg_penerimaan;
-        return true;
+    if ($this->brg_penerimaan_qty == "") {
+      return false;
     }
-    public function set_brg_penerimaan_qty($brg_penerimaan_qty){
-        $this->brg_penerimaan_qty = $brg_penerimaan_qty;
-        return true;
+    if ($this->brg_penerimaan_note == "") {
+      return false;
     }
-    public function set_brg_penerimaan_note($brg_penerimaan_note){
-        $this->brg_penerimaan_note = $brg_penerimaan_note;
-        return true;
+    if ($this->id_fk_satuan == "") {
+      return false;
     }
-    public function set_id_fk_penerimaan($id_fk_penerimaan){
-        $this->id_fk_penerimaan = $id_fk_penerimaan;
-        return true;
+    if ($this->brg_penerimaan_last_modified == "") {
+      return false;
     }
-    public function set_id_fk_brg_pembelian($id_fk_brg_pembelian){
-        $this->id_fk_brg_pembelian = $id_fk_brg_pembelian;
-        return true;
+    if ($this->id_last_modified == "") {
+      return false;
     }
-    public function set_id_fk_satuan($id_fk_satuan){
-        $this->id_fk_satuan = $id_fk_satuan;
-        return true;
+    return true;
+  }
+  public function check_delete()
+  {
+    if ($this->id_pk_brg_penerimaan == "") {
+      return false;
     }
-    public function get_id_pk_brg_penerimaan(){
-        return $this->id_pk_brg_penerimaan;
+    if ($this->brg_penerimaan_last_modified == "") {
+      return false;
     }
-    public function get_brg_penerimaan_qty(){
-        return $this->brg_penerimaan_qty;
+    if ($this->id_last_modified == "") {
+      return false;
     }
-    public function get_brg_penerimaan_note(){
-        return $this->brg_penerimaan_note;
+    return true;
+  }
+  public function set_insert($brg_penerimaan_qty, $brg_penerimaan_note, $id_fk_penerimaan, $id_fk_brg_pembelian = "", $id_fk_satuan, $id_fk_brg_retur = "", $id_fk_brg_pengiriman = "")
+  {
+    if (!$this->set_brg_penerimaan_qty($brg_penerimaan_qty)) {
+      return false;
     }
-    public function get_id_fk_penerimaan(){
-        return $this->id_fk_penerimaan;
+    if (!$this->set_brg_penerimaan_note($brg_penerimaan_note)) {
+      return false;
     }
-    public function get_id_fk_brg_pembelian(){
-        return $this->id_fk_brg_pembelian;
+    if (!$this->set_id_fk_penerimaan($id_fk_penerimaan)) {
+      return false;
     }
-    public function get_id_fk_satuan(){
-        return $this->id_fk_satuan;
+    $this->id_fk_brg_pembelian = $id_fk_brg_pembelian;
+    $this->id_fk_brg_retur = $id_fk_brg_retur;
+    $this->id_fk_brg_pengiriman = $id_fk_brg_pengiriman;
+    if (!$this->set_id_fk_satuan($id_fk_satuan)) {
+      return false;
     }
+    return true;
+  }
+  public function set_update($id_pk_brg_penerimaan, $brg_penerimaan_qty, $brg_penerimaan_note, $id_fk_satuan)
+  {
+    if (!$this->set_id_pk_brg_penerimaan($id_pk_brg_penerimaan)) {
+      return false;
+    }
+    if (!$this->set_brg_penerimaan_qty($brg_penerimaan_qty)) {
+      return false;
+    }
+    if (!$this->set_brg_penerimaan_note($brg_penerimaan_note)) {
+      return false;
+    }
+    if (!$this->set_id_fk_satuan($id_fk_satuan)) {
+      return false;
+    }
+    return true;
+  }
+  public function set_delete($id_pk_brg_penerimaan)
+  {
+    if (!$this->set_id_pk_brg_penerimaan($id_pk_brg_penerimaan)) {
+      return false;
+    }
+    return true;
+  }
+  public function set_id_pk_brg_penerimaan($id_pk_brg_penerimaan)
+  {
+    $this->id_pk_brg_penerimaan = $id_pk_brg_penerimaan;
+    return true;
+  }
+  public function set_brg_penerimaan_qty($brg_penerimaan_qty)
+  {
+    $this->brg_penerimaan_qty = $brg_penerimaan_qty;
+    return true;
+  }
+  public function set_brg_penerimaan_note($brg_penerimaan_note)
+  {
+    $this->brg_penerimaan_note = $brg_penerimaan_note;
+    return true;
+  }
+  public function set_id_fk_penerimaan($id_fk_penerimaan)
+  {
+    $this->id_fk_penerimaan = $id_fk_penerimaan;
+    return true;
+  }
+  public function set_id_fk_brg_pembelian($id_fk_brg_pembelian)
+  {
+    $this->id_fk_brg_pembelian = $id_fk_brg_pembelian;
+    return true;
+  }
+  public function set_id_fk_satuan($id_fk_satuan)
+  {
+    $this->id_fk_satuan = $id_fk_satuan;
+    return true;
+  }
+  public function get_id_pk_brg_penerimaan()
+  {
+    return $this->id_pk_brg_penerimaan;
+  }
+  public function get_brg_penerimaan_qty()
+  {
+    return $this->brg_penerimaan_qty;
+  }
+  public function get_brg_penerimaan_note()
+  {
+    return $this->brg_penerimaan_note;
+  }
+  public function get_id_fk_penerimaan()
+  {
+    return $this->id_fk_penerimaan;
+  }
+  public function get_id_fk_brg_pembelian()
+  {
+    return $this->id_fk_brg_pembelian;
+  }
+  public function get_id_fk_satuan()
+  {
+    return $this->id_fk_satuan;
+  }
 }

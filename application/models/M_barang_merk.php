@@ -1,41 +1,46 @@
 <?php
 defined("BASEPATH") or exit("no direct script");
 date_default_timezone_set("asia/jakarta");
-class M_barang_merk extends ci_model{
-    private $tbl_name = "mstr_barang_merk";
-    private $columns = array();
-    private $id_pk_brg_merk;
-    private $brg_merk_nama;
-    private $brg_merk_status;
-    private $brg_merk_create_date;
-    private $brg_merk_last_modified;
-    private $id_create_data;
-    private $id_last_modified;
+class M_barang_merk extends ci_model
+{
+  private $tbl_name = "mstr_barang_merk";
+  private $columns = array();
+  private $id_pk_brg_merk;
+  private $brg_merk_nama;
+  private $brg_merk_status;
+  private $brg_merk_create_date;
+  private $brg_merk_last_modified;
+  private $id_create_data;
+  private $id_last_modified;
 
-    public function __construct(){
-        parent::__construct();
-        $this->set_column("brg_merk_nama","jenis barang","required");
-        $this->set_column("brg_merk_status","status","required");
-        $this->set_column("brg_merk_last_modified","last modified","required");
+  public function __construct()
+  {
+    parent::__construct();
+    $this->set_column("brg_merk_nama", "jenis barang", "required");
+    $this->set_column("brg_merk_status", "status", "required");
+    $this->set_column("brg_merk_last_modified", "last modified", "required");
 
-        $this->brg_merk_create_date = date("y-m-d h:i:s");
-        $this->brg_merk_last_modified = date("y-m-d h:i:s");
-        $this->id_create_data = $this->session->id_user;
-        $this->id_last_modified = $this->session->id_user;
-    }
-    private function set_column($col_name,$col_disp,$order_by){
-        $array = array(
-            "col_name" => $col_name,
-            "col_disp" => $col_disp,
-            "order_by" => $order_by
-        );
-        $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
-    }
-    public function columns(){
-        return $this->columns;
-    }
-    public function install(){
-        $sql = "
+    $this->brg_merk_create_date = date("y-m-d h:i:s");
+    $this->brg_merk_last_modified = date("y-m-d h:i:s");
+    $this->id_create_data = $this->session->id_user;
+    $this->id_last_modified = $this->session->id_user;
+  }
+  private function set_column($col_name, $col_disp, $order_by)
+  {
+    $array = array(
+      "col_name" => $col_name,
+      "col_disp" => $col_disp,
+      "order_by" => $order_by
+    );
+    $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
+  }
+  public function columns()
+  {
+    return $this->columns;
+  }
+  public function install()
+  {
+    $sql = "
         drop table if exists mstr_barang_merk;
         create table mstr_barang_merk(
             id_pk_brg_merk int primary key auto_increment,
@@ -88,253 +93,288 @@ class M_barang_merk extends ci_model{
             insert into mstr_barang_merk_log(executed_function,id_pk_brg_merk,brg_merk_nama,brg_merk_status,brg_merk_create_date,brg_merk_last_modified,id_create_data,id_last_modified,id_log_all) values ('after update',new.id_pk_brg_merk,new.brg_merk_nama,new.brg_merk_status,new.brg_merk_create_date,new.brg_merk_last_modified,new.id_create_data,new.id_last_modified,@id_log_all);
         end$$
         delimiter ;";
-        executequery($sql);
-    }
-    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = ""){
-        $order_by = $this->columns[$order_by]["col_name"];
-        $search_query = "";
-        if($search_key != ""){
-            $search_query .= "and
+    executequery($sql);
+  }
+  public function content($page = 1, $order_by = 0, $order_direction = "asc", $search_key = "", $data_per_page = "")
+  {
+    $order_by = $this->columns[$order_by]["col_name"];
+    $search_query = "";
+    if ($search_key != "") {
+      $search_query .= "and
             ( 
-                id_pk_brg_merk like '%".$search_key."%' or
-                brg_merk_nama like '%".$search_key."%' or
-                brg_merk_status like '%".$search_key."%' or
-                brg_merk_last_modified like '%".$search_key."%' or
-                id_last_modified like '%".$search_key."%'
+                id_pk_brg_merk like '%" . $search_key . "%' or
+                brg_merk_nama like '%" . $search_key . "%' or
+                brg_merk_status like '%" . $search_key . "%' or
+                brg_merk_last_modified like '%" . $search_key . "%' or
+                id_last_modified like '%" . $search_key . "%'
             )";
-        }
-        $query = "
+    }
+    $query = "
         select id_pk_brg_merk,brg_merk_nama,brg_merk_status,brg_merk_last_modified,id_last_modified
-        from ".$this->tbl_name." 
-        where brg_merk_status = ? ".$search_query."  
-        order by ".$order_by." ".$order_direction." 
-        limit 20 offset ".($page-1)*$data_per_page;
-        $args = array(
-            "aktif"
-        );
-        $result["data"] = executequery($query,$args);
-        
-        $query = "
+        from " . $this->tbl_name . " 
+        where brg_merk_status = ? " . $search_query . "  
+        order by " . $order_by . " " . $order_direction . " 
+        limit 20 offset " . ($page - 1) * $data_per_page;
+    $args = array(
+      "aktif"
+    );
+    $result["data"] = executequery($query, $args);
+
+    $query = "
         select id_pk_brg_merk
-        from ".$this->tbl_name." 
-        where brg_merk_status = ? ".$search_query."  
-        order by ".$order_by." ".$order_direction;
-        $result["total_data"] = executequery($query,$args)->num_rows();
-        return $result;
+        from " . $this->tbl_name . " 
+        where brg_merk_status = ? " . $search_query . "  
+        order by " . $order_by . " " . $order_direction;
+    $result["total_data"] = executequery($query, $args)->num_rows();
+    return $result;
+  }
+  public function list_data()
+  {
+    $where = array(
+      "brg_merk_status" => "aktif"
+    );
+    $field = array(
+      "id_pk_brg_merk",
+      "brg_merk_nama",
+      "brg_merk_status",
+      "brg_merk_create_date",
+      "brg_merk_last_modified",
+      "id_create_data",
+      "id_last_modified"
+    );
+    return selectrow($this->tbl_name, $where, $field);
+  }
+  public function detail_by_name()
+  {
+    $where = array(
+      "brg_merk_nama" => $this->brg_merk_nama,
+      "brg_merk_status" => "aktif"
+    );
+    $field = array(
+      "id_pk_brg_merk",
+      "brg_merk_nama",
+      "brg_merk_status",
+      "brg_merk_create_date",
+      "brg_merk_last_modified",
+      "id_create_data",
+      "id_last_modified"
+    );
+    return selectrow($this->tbl_name, $where, $field);
+  }
+  public function insert()
+  {
+    if ($this->check_insert()) {
+      $data = array(
+        "brg_merk_nama" => $this->brg_merk_nama,
+        "brg_merk_status" => $this->brg_merk_status,
+        "brg_merk_create_date" => $this->brg_merk_create_date,
+        "brg_merk_last_modified" => $this->brg_merk_last_modified,
+        "id_create_data" => $this->id_create_data,
+        "id_last_modified" => $this->id_last_modified
+      );
+      $id_hasil_insert = insertrow($this->tbl_name, $data);
+
+      $log_all_msg = "Data Jenis Barang Kombinasi baru ditambahkan. Waktu penambahan: $this->barang_kombinasi_create_date";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+      $log_all_data_changes = "[ID Merek Barang: $id_hasil_insert][Nama: $this->brg_merk_nama][Status: $this->brg_merk_status][Waktu Ditambahkan: $this->brg_merk_create_date][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->brg_merk_create_date;
+
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
+
+      return $id_hasil_insert;
+    } else {
+      return false;
     }
-    public function list_data(){
+  }
+  public function update()
+  {
+    if ($this->check_update()) {
+      $where = array(
+        "id_pk_brg_merk !=" => $this->id_pk_brg_merk,
+        "brg_merk_nama" => $this->brg_merk_nama,
+        "brg_merk_status" => "aktif",
+      );
+      if (!isexistsintable($this->tbl_name, $where)) {
         $where = array(
-            "brg_merk_status" => "aktif"
+          "id_pk_brg_merk" => $this->id_pk_brg_merk
         );
-        $field = array(
-            "id_pk_brg_merk",
-            "brg_merk_nama",
-            "brg_merk_status",
-            "brg_merk_create_date",
-            "brg_merk_last_modified",
-            "id_create_data",
-            "id_last_modified"
+        $data = array(
+          "brg_merk_nama" => $this->brg_merk_nama,
+          "brg_merk_last_modified" => $this->brg_merk_last_modified,
+          "id_last_modified" => $this->id_last_modified
         );
-        return selectrow($this->tbl_name,$where,$field);
-    }
-    public function detail_by_name(){
-        $where = array(
-            "brg_merk_nama" => $this->brg_merk_nama,
-            "brg_merk_status" => "aktif"
-        );
-        $field = array(
-            "id_pk_brg_merk",
-            "brg_merk_nama",
-            "brg_merk_status",
-            "brg_merk_create_date",
-            "brg_merk_last_modified",
-            "id_create_data",
-            "id_last_modified"
-        );
-        return selectrow($this->tbl_name,$where,$field);
-    }
-    public function insert(){
-        if($this->check_insert()){
-            $data = array(
-                "brg_merk_nama" => $this->brg_merk_nama,
-                "brg_merk_status" => $this->brg_merk_status,
-                "brg_merk_create_date" => $this->brg_merk_create_date,
-                "brg_merk_last_modified" => $this->brg_merk_last_modified,
-                "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified
-            );
-            return insertrow($this->tbl_name,$data);
-        }
-        else{
-            return false;
-        }
-    }
-    public function update(){
-        if($this->check_update()){
-            $where = array(
-                "id_pk_brg_merk !=" => $this->id_pk_brg_merk,
-                "brg_merk_nama" => $this->brg_merk_nama,
-                "brg_merk_status" => "aktif",
-            );
-            if(!isexistsintable($this->tbl_name,$where)){
-                $where = array(
-                    "id_pk_brg_merk" => $this->id_pk_brg_merk
-                );
-                $data = array(
-                    "brg_merk_nama" => $this->brg_merk_nama,
-                    "brg_merk_last_modified" => $this->brg_merk_last_modified,
-                    "id_last_modified" => $this->id_last_modified
-                );
-                updaterow($this->tbl_name,$data,$where);
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
-        else{
-            return false;
-        }
-    }
-    public function delete(){
-        if($this->check_delete()){
-            $where = array(
-                "id_pk_brg_merk" => $this->id_pk_brg_merk
-            );
-            $data = array(
-                "brg_merk_status" => "nonaktif",
-                "brg_merk_last_modified" => $this->brg_merk_last_modified,
-                "id_last_modified" => $this->id_last_modified
-            );
-            updaterow($this->tbl_name,$data,$where);
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    public function check_insert(){
-        if($this->brg_merk_nama == ""){
-            return false;
-        }
-        if($this->brg_merk_status == ""){
-            return false;
-        }
-        if($this->brg_merk_create_date == ""){
-            return false;
-        }
-        if($this->brg_merk_last_modified == ""){
-            return false;
-        }
-        if($this->id_create_data == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
+        updaterow($this->tbl_name, $data, $where);
         return true;
-    }
-    public function check_update(){
-        if($this->id_pk_brg_merk == ""){
-            return false;
-        }
-        if($this->brg_merk_nama == ""){
-            return false;
-        }
-        if($this->brg_merk_last_modified == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        return true;
-    }
-    public function check_delete(){
-        if($this->id_pk_brg_merk == ""){
-            return false;
-        }
-        if($this->brg_merk_last_modified == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        return true;
-    }
-    public function set_insert($brg_merk_nama,$brg_merk_status){
-        if(!$this->set_brg_merk_nama($brg_merk_nama)){
-            return false;
-        }
-        if(!$this->set_brg_merk_status($brg_merk_status)){
-            return false;
-        }
-        return true;
-    }
-    public function set_update($id_pk_brg_merk,$brg_merk_nama){
-        if(!$this->set_id_pk_brg_merk($id_pk_brg_merk)){
-            return false;
-        }
-        if(!$this->set_brg_merk_nama($brg_merk_nama)){
-            return false;
-        }
-        return true;
-    }
-    public function set_delete($id_pk_brg_merk){
-        if(!$this->set_id_pk_brg_merk($id_pk_brg_merk)){
-            return false;
-        }
-        return true;
-    }
-    public function get_id_pk_brg_merk(){
-        return $this->id_pk_brg_merk;
-    }
-    public function get_brg_merk_nama(){
-        return $this->brg_merk_nama;
-    }
-    public function get_brg_merk_status(){
-        return $this->brg_merk_status;
-    }
-    public function set_id_pk_brg_merk($id_pk_brg_merk){
-        if($id_pk_brg_merk != ""){
-            $this->id_pk_brg_merk = $id_pk_brg_merk;
-            return true;
-        }
+      } else {
         return false;
+      }
+    } else {
+      return false;
     }
-    public function set_brg_merk_nama($brg_merk_nama){
-        if($brg_merk_nama != ""){
-            $this->brg_merk_nama = $brg_merk_nama;
-            return true;
-        }
-        return false;
+  }
+  public function delete()
+  {
+    if ($this->check_delete()) {
+      $where = array(
+        "id_pk_brg_merk" => $this->id_pk_brg_merk
+      );
+      $data = array(
+        "brg_merk_status" => "nonaktif",
+        "brg_merk_last_modified" => $this->brg_merk_last_modified,
+        "id_last_modified" => $this->id_last_modified
+      );
+      updaterow($this->tbl_name, $data, $where);
+      return true;
+    } else {
+      return false;
     }
-    public function set_brg_merk_status($brg_merk_status){
-        if($brg_merk_status != ""){
-            $this->brg_merk_status = $brg_merk_status;
-            return true;
-        }
-        return false;
+  }
+  public function check_insert()
+  {
+    if ($this->brg_merk_nama == "") {
+      return false;
     }
-    public function data_excel(){
-        $where = array(
-            "brg_merk_status" => "aktif"
-        );
-        $field = array(
-            "id_pk_brg_merk",
-            "brg_merk_nama",
-            "brg_merk_status",
-            "brg_merk_create_date",
-            "brg_merk_last_modified",
-            "id_create_data",
-            "id_last_modified"
-        );
-        return selectrow($this->tbl_name,$where,$field);
+    if ($this->brg_merk_status == "") {
+      return false;
     }
-    public function columns_excel(){
-        $this->columns = array();
-        $this->set_column("brg_merk_nama","jenis barang","required");
-        $this->set_column("brg_merk_status","status","required");
-        $this->set_column("brg_merk_last_modified","last modified","required");
-        return $this->columns;
+    if ($this->brg_merk_create_date == "") {
+      return false;
     }
+    if ($this->brg_merk_last_modified == "") {
+      return false;
+    }
+    if ($this->id_create_data == "") {
+      return false;
+    }
+    if ($this->id_last_modified == "") {
+      return false;
+    }
+    return true;
+  }
+  public function check_update()
+  {
+    if ($this->id_pk_brg_merk == "") {
+      return false;
+    }
+    if ($this->brg_merk_nama == "") {
+      return false;
+    }
+    if ($this->brg_merk_last_modified == "") {
+      return false;
+    }
+    if ($this->id_last_modified == "") {
+      return false;
+    }
+    return true;
+  }
+  public function check_delete()
+  {
+    if ($this->id_pk_brg_merk == "") {
+      return false;
+    }
+    if ($this->brg_merk_last_modified == "") {
+      return false;
+    }
+    if ($this->id_last_modified == "") {
+      return false;
+    }
+    return true;
+  }
+  public function set_insert($brg_merk_nama, $brg_merk_status)
+  {
+    if (!$this->set_brg_merk_nama($brg_merk_nama)) {
+      return false;
+    }
+    if (!$this->set_brg_merk_status($brg_merk_status)) {
+      return false;
+    }
+    return true;
+  }
+  public function set_update($id_pk_brg_merk, $brg_merk_nama)
+  {
+    if (!$this->set_id_pk_brg_merk($id_pk_brg_merk)) {
+      return false;
+    }
+    if (!$this->set_brg_merk_nama($brg_merk_nama)) {
+      return false;
+    }
+    return true;
+  }
+  public function set_delete($id_pk_brg_merk)
+  {
+    if (!$this->set_id_pk_brg_merk($id_pk_brg_merk)) {
+      return false;
+    }
+    return true;
+  }
+  public function get_id_pk_brg_merk()
+  {
+    return $this->id_pk_brg_merk;
+  }
+  public function get_brg_merk_nama()
+  {
+    return $this->brg_merk_nama;
+  }
+  public function get_brg_merk_status()
+  {
+    return $this->brg_merk_status;
+  }
+  public function set_id_pk_brg_merk($id_pk_brg_merk)
+  {
+    if ($id_pk_brg_merk != "") {
+      $this->id_pk_brg_merk = $id_pk_brg_merk;
+      return true;
+    }
+    return false;
+  }
+  public function set_brg_merk_nama($brg_merk_nama)
+  {
+    if ($brg_merk_nama != "") {
+      $this->brg_merk_nama = $brg_merk_nama;
+      return true;
+    }
+    return false;
+  }
+  public function set_brg_merk_status($brg_merk_status)
+  {
+    if ($brg_merk_status != "") {
+      $this->brg_merk_status = $brg_merk_status;
+      return true;
+    }
+    return false;
+  }
+  public function data_excel()
+  {
+    $where = array(
+      "brg_merk_status" => "aktif"
+    );
+    $field = array(
+      "id_pk_brg_merk",
+      "brg_merk_nama",
+      "brg_merk_status",
+      "brg_merk_create_date",
+      "brg_merk_last_modified",
+      "id_create_data",
+      "id_last_modified"
+    );
+    return selectrow($this->tbl_name, $where, $field);
+  }
+  public function columns_excel()
+  {
+    $this->columns = array();
+    $this->set_column("brg_merk_nama", "jenis barang", "required");
+    $this->set_column("brg_merk_status", "status", "required");
+    $this->set_column("brg_merk_last_modified", "last modified", "required");
+    return $this->columns;
+  }
 }

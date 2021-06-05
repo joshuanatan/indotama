@@ -144,7 +144,30 @@ class M_brg_pindah extends CI_Model
         "id_create_data" => $this->id_create_data,
         "id_last_modified" => $this->id_last_modified,
       );
-      return insertRow($this->tbl_name, $data);
+
+
+
+      $id_hasil_insert = insertrow($this->tbl_name, $data);
+
+      $log_all_msg = "Data Barang Pindah baru ditambahkan. Waktu penambahan: $this->brg_pindah_create_date";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+      $log_all_data_changes = "[ID Barang Pindah: $this->id_pk_brg_pindah][Sumber Barang Pindah: $this->brg_pindah_sumber][ID Sumber: $this->id_fk_refrensi_sumber][ID Barang Awal: $this->id_brg_awal][ID Barang Tujuan: $this->id_brg_tujuan][ID Cabang: $this->id_fk_cabang][Jumlah: $this->brg_pindah_qty][Status: $this->brg_pindah_status][Waktu Ditambahkan: $this->brg_pindah_create_date][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->brg_pindah_create_date;
+
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
+
+
+      return $id_hasil_insert;
     }
     return false;
   }

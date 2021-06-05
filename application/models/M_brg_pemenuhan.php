@@ -275,7 +275,27 @@ class M_brg_pemenuhan extends ci_model
       } else if (strtoupper($this->brg_pemenuhan_tipe) == "cabang") {
         $data["id_fk_cabang"] = $this->id_fk_cabang;
       }
-      return insertrow($this->tbl_name, $data);
+      $id_hasil_insert = insertrow($this->tbl_name, $data);
+
+      $log_all_msg = "Data Barang Pemenuhan baru ditambahkan. Waktu penambahan: $this->brg_pemenuhan_create_date";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+      $log_all_data_changes = "[ID Barang Pemenuhan: $id_hasil_insert][Jumlah: $this->brg_pemenuhan_qty][ID Permintaan: $this->id_fk_brg_permintaan][Tipe Pemenuhan: $this->brg_pemenuhan_tipe][Waktu Ditambahkan: $this->brg_pemenuhan_create_date][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->brg_create_date;
+
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
+
+
+      return $id_hasil_insert;
     }
     return false;
   }
@@ -423,11 +443,11 @@ class M_brg_pemenuhan extends ci_model
       return false;
     }
     if (strtoupper($brg_pemenuhan_tipe) == "warehouse") {
-      if (!$this->set_id_fk_warehouse($this->id_fk_warehouse)) {
+      if (!$this->set_id_fk_warehouse($id_fk_warehouse)) {
         return false;
       }
     } else if (strtoupper($brg_pemenuhan_tipe) == "cabang") {
-      if (!$this->set_id_fk_cabang($this->id_fk_cabang)) {
+      if (!$this->set_id_fk_cabang($id_fk_cabang)) {
         return false;
       }
     }

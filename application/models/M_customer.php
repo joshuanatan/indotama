@@ -317,7 +317,27 @@ class M_customer extends ci_model
       "id_create_data" => $this->id_create_data,
       "id_last_modified" => $this->id_last_modified
     );
-    return insertRow($this->tbl_name, $data);
+
+    $id_hasil_insert = insertrow($this->tbl_name,$data);
+            
+    $log_all_msg = "Data Customer baru ditambahkan. Waktu penambahan: $this->cust_create_date";
+    $nama_user = get1Value("mstr_user","user_name",array("id_pk_user"=>$this->id_last_modified));
+
+    $log_all_data_changes = "[ID Customer: $id_hasil_insert][Nama: $this->cust_name][NPWP: $this->cust_no_npwp][Foto NPWP: $this->cust_foto_npwp][Kartu Nama: $this->cust_foto_kartu_nama][Badan Usaha: $this->cust_badan_usaha][No Rek: $this->cust_no_rekening][Panggilan: $this->cust_suff][Perusahaan: $this->cust_perusahaan][Email: $this->cust_email][Telepon: $this->cust_telp][No HP: $this->cust_hp][Alamat: $this->cust_alamat][ID Toko: $this->id_fk_toko][Keterangan: $this->cust_keterangan][Status: $this->cust_status][Waktu Ditambahkan: $this->cust_create_date][Oleh: $this->id_create_data]";
+    $log_all_it = "";
+    $log_all_user = $this->id_last_modified;
+    $log_all_tgl = $this->cust_create_date;
+
+    $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+    );
+    insertrow("log_all",$data_log);
+    
+    return $id_hasil_insert;
   }
   public function update()
   {
