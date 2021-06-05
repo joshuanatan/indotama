@@ -70,7 +70,22 @@ $notif_data = array(
                         </div>
                         <div class="form-group col-lg-6">
                           <h5>Kurir</h5>
-                          <input type required="text" class="form-control" required name="kurir">
+                          <select class="form-control" required name="kurir">
+                            <option vlaue = "JNE REG">JNE REG</option>
+                            <option vlaue = "JNE YES">JNE YES</option>
+                            <option vlaue = "JNE Hemat">JNE Hemat</option>
+                            <option vlaue = "Si cepat">Si cepat</option>
+                            <option vlaue = "ID express">ID express</option>
+                            <option vlaue = "Shopee express">Shopee express</option>
+                            <option vlaue = "Lazada cargo">Lazada cargo</option>
+                            <option vlaue = "Blibli cargo">Blibli cargo</option>
+                            <option vlaue = "Wahana">Wahana</option>
+                            <option vlaue = "Paxell">Paxell</option>
+                            <option vlaue = "Antar Aja">Antar Aja</option>
+                            <option vlaue = "Indah cargo">Indah cargo</option>
+                            <option vlaue = "Grab">Grab</option>
+                            <option vlaue = "Gojek">Gojek</option>
+                          </select>
                         </div>
                         <div class="form-group col-lg-6">
                           <h5>No Resi</h5>
@@ -370,6 +385,8 @@ $notif_data = array(
 
   var total_price_global = 0;
   function count_total_price() {
+    var brg_jual_row = $(".add_brg_jual_row").length;
+    var tambahan_jual_row = $(".add_tambahan_jual_row").length;
     var total = 0;
     for (var a = 0; a < brg_jual_row; a++) {
       var qty = deformatting_func($("input[name='brg_qty" + a + "']").val().split(" ")[0]);

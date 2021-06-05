@@ -285,15 +285,15 @@ class M_penjualan extends ci_model
       "penj_tipe_pembayaran" => $penj_tipe_pembayaran,
       "id_fk_customer" => $id_fk_customer,
       "id_fk_cabang" => $id_fk_cabang,
-      "penj_create_date" => $this->penj_create_date,
-      "penj_last_modified" => $this->penj_last_modified,
-      "id_create_data" => $this->id_create_data,
-      "id_last_modified" => $this->id_last_modified,
+      "penj_create_date" => date("Y-m-d H:i:s"),
+      "penj_last_modified" => date("Y-m-d H:i:s"),
+      "id_create_data" => $this->session->id_user,
+      "id_last_modified" => $this->session->id_user,
       "no_control" => $this->no_control,
       "bln_control" => explode("-", $penj_tgl)[1],
       "thn_control" => explode("-", $penj_tgl)[0]
     );
-    return insertrow($this->tbl_name, $data);
+    return insertRow($this->tbl_name, $data);
   }
   public function update($id_pk_penjualan, $penj_nomor, $penj_dateline_tgl, $penj_jenis, $penj_tipe_pembayaran, $penj_tgl, $id_fk_customer)
   {

@@ -2,6 +2,7 @@
 <script>
   var datalist_barang_jenis_jualan;
   load_datalist_barang_jenis_jualan();
+
   function load_datalist_barang_jenis_jualan() {
     $.ajax({
       url: "<?php echo base_url(); ?>ws/barang_jenis/list_data_jualan",

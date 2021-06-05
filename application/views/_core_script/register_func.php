@@ -44,14 +44,14 @@
         if (respond["status"].toUpperCase() == "ERROR") {
           $('#regis_error_msg').empty();
           $('#regis_error_msg').append(respond["msg"]);
-          $('#notif_register_error').show(1).delay(2000).hide(1);
+          $('.notif_register_error').show(1).delay(2000).hide(1);
         }
       },
       error: function() {
         //notification
         $('#regis_error_msg').empty();
         $('#regis_error_msg').append(respond["msg"]);
-        $('#notif_register_error').show(1).delay(2000).hide(1);
+        $('.notif_register_error').show(1).delay(2000).hide(1);
       }
     });
   }

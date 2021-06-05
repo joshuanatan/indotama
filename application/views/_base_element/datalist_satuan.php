@@ -2,6 +2,7 @@
 <script>
   var datalist_satuan;
   load_datalist_satuan();
+
   function load_datalist_satuan() {
     $.ajax({
       url: "<?php echo base_url(); ?>ws/satuan/list_data",

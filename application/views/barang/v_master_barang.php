@@ -10,131 +10,131 @@ $notif_data = array(
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <?php $this->load->view('req/mm_css.php'); ?>
-  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
-  <style>
-    #jenis_barang {
-      overflow: hidden;
-      display: flex;
-      height: auto;
-      width: 100%;
-      margin-bottom: 30px;
-    }
+  <head>
+    <?php $this->load->view('req/mm_css.php'); ?>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <style>
+      #jenis_barang {
+        overflow: hidden;
+        display: flex;
+        height: auto;
+        width: 100%;
+        margin-bottom: 30px;
+      }
 
-    .row {
-      margin: 0 !important;
-    }
+      .row {
+        margin: 0 !important;
+      }
 
-    .btn-jenis-barang {
-      cursor: pointer;
-      margin: auto 10px;
-      text-align: center;
-      width: auto;
-      height: auto;
-    }
+      .btn-jenis-barang {
+        cursor: pointer;
+        margin: auto 10px;
+        text-align: center;
+        width: auto;
+        height: auto;
+      }
 
-    /* .btn-jenis-barang:hover {
-      background-color: lightgrey;
-    } */
+      /* .btn-jenis-barang:hover {
+        background-color: lightgrey;
+      } */
 
-    .judul-jenis {
-      margin-bottom: 30px;
-    }
+      .judul-jenis {
+        margin-bottom: 30px;
+      }
 
-    .judul-jenis h2 {
-      font-size: 20px;
-      font-weight: bold;
-      text-align: center;
-      color: black;
-    }
-  </style>
-</head>
+      .judul-jenis h2 {
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        color: black;
+      }
+    </style>
+  </head>
 
-<body>
-  <div class="preloader-it">
-    <div class="la-anim-1"></div>
-  </div>
-  <div class="wrapper theme-1-active pimary-color-pink">
+  <body>
+    <div class="preloader-it">
+      <div class="la-anim-1"></div>
+    </div>
+    <div class="wrapper theme-1-active pimary-color-pink">
 
-    <?php $this->load->view('req/mm_menubar.php'); ?>
+      <?php $this->load->view('req/mm_menubar.php'); ?>
 
-    <div class="page-wrapper">
-      <?php $this->load->view('_notification/register_success', $notif_data); ?>
-      <?php $this->load->view('_notification/update_success', $notif_data); ?>
-      <?php $this->load->view('_notification/delete_success', $notif_data); ?>
-      <div class="container-fluid">
-        <div class="row mt-20">
-          <div class="col-lg-12 col-sm-12">
-            <div class="panel panel-default card-view">
-              <div class="panel-heading bg-gradient">
-                <div class="pull-left">
-                  <h6 class="panel-title txt-light"><?php echo ucwords($page_title); ?></h6>
+      <div class="page-wrapper">
+        <?php $this->load->view('_notification/register_success', $notif_data); ?>
+        <?php $this->load->view('_notification/update_success', $notif_data); ?>
+        <?php $this->load->view('_notification/delete_success', $notif_data); ?>
+        <div class="container-fluid">
+          <div class="row mt-20">
+            <div class="col-lg-12 col-sm-12">
+              <div class="panel panel-default card-view">
+                <div class="panel-heading bg-gradient">
+                  <div class="pull-left">
+                    <h6 class="panel-title txt-light"><?php echo ucwords($page_title); ?></h6>
+                  </div>
+                  <div class="clearfix"></div>
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Home</a></li>
+                    <?php for ($a = 0; $a < count($breadcrumb); $a++) : ?>
+                      <?php if ($a + 1 != count($breadcrumb)) : ?>
+                        <li class="breadcrumb-item"><?php echo ucwords($breadcrumb[$a]); ?></a></li>
+                      <?php else : ?>
+                        <li class="breadcrumb-item active"><?php echo ucwords($breadcrumb[$a]); ?></li>
+                      <?php endif; ?>
+                    <?php endfor; ?>
+                  </ol>
                 </div>
-                <div class="clearfix"></div>
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item">Home</a></li>
-                  <?php for ($a = 0; $a < count($breadcrumb); $a++) : ?>
-                    <?php if ($a + 1 != count($breadcrumb)) : ?>
-                      <li class="breadcrumb-item"><?php echo ucwords($breadcrumb[$a]); ?></a></li>
-                    <?php else : ?>
-                      <li class="breadcrumb-item active"><?php echo ucwords($breadcrumb[$a]); ?></li>
-                    <?php endif; ?>
-                  <?php endfor; ?>
-                </ol>
-              </div>
-              <div class="panel-wrapper collapse in">
-                <div class="panel-body">
-                  <div class="row">
-                    <input type="hidden" value="-" id="id_jeniss">
-                    <div class="row" id="jenis_barang">
-                      <?php for ($x = 0; $x < count($daftar_jenis_barang); $x++):?>
-                        <?php if($x == 0):?>
-                          <div class="col-lg-12 btn-jenis-barang btn btn-sm btn-default" id="jenis_brg_<?php echo $daftar_jenis_barang[$x]['id_pk_brg_jenis']?>" onclick = "daftar_jenis_barang(<?php echo $daftar_jenis_barang[$x]['id_pk_brg_jenis'];?>)"><?php echo $daftar_jenis_barang[$x]["brg_jenis_nama"];?></div>
-                        <?php else:?>
-                          <div class="col-lg-12 btn-jenis-barang btn btn-sm btn-warning" id="jenis_brg_<?php echo $daftar_jenis_barang[$x]['id_pk_brg_jenis']?>" onclick = "daftar_jenis_barang(<?php echo $daftar_jenis_barang[$x]['id_pk_brg_jenis'];?>)"><?php echo $daftar_jenis_barang[$x]["brg_jenis_nama"];?></div>
-                        <?php endif;?>
-                      <?php endfor;?>
+                <div class="panel-wrapper collapse in">
+                  <div class="panel-body">
+                    <div class="row">
+                      <input type="hidden" value="-" id="id_jeniss">
+                      <div class="row" id="jenis_barang">
+                        <?php for ($x = 0; $x < count($daftar_jenis_barang); $x++) : ?>
+                          <?php if ($x == 0) : ?>
+                            <div class="col-lg-12 btn-jenis-barang btn btn-sm btn-default" id="jenis_brg_<?php echo $daftar_jenis_barang[$x]['id_pk_brg_jenis'] ?>" onclick="daftar_jenis_barang(<?php echo $daftar_jenis_barang[$x]['id_pk_brg_jenis']; ?>)"><?php echo $daftar_jenis_barang[$x]["brg_jenis_nama"]; ?></div>
+                          <?php else : ?>
+                            <div class="col-lg-12 btn-jenis-barang btn btn-sm btn-warning" id="jenis_brg_<?php echo $daftar_jenis_barang[$x]['id_pk_brg_jenis'] ?>" onclick="daftar_jenis_barang(<?php echo $daftar_jenis_barang[$x]['id_pk_brg_jenis']; ?>)"><?php echo $daftar_jenis_barang[$x]["brg_jenis_nama"]; ?></div>
+                          <?php endif; ?>
+                        <?php endfor; ?>
+                      </div>
                     </div>
-                  </div>
-                  <br>
-                  <div class="row judul-jenis">
-                    <h2 style="color:black !important">Jenis Barang: <span id="tampil_barang"></span></h2>
-                  </div>
-                  <br>
-                  <div class="col-lg-12">
-                    <div class="d-flex">
-                      <button id="tambah_jual" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#register_modal" style="margin-bottom:10px;margin-right:10px">Tambah <?php echo ucwords($page_title); ?> Jual</button>
-                      <button id="tambah_kantor" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#register_modal" style="margin-bottom:10px;margin-right:10px">Tambah <?php echo ucwords($page_title); ?> Kantor</button>
+                    <br>
+                    <div class="row judul-jenis">
+                      <h2 style="color:black !important">Jenis Barang: <span id="tampil_barang"></span></h2>
                     </div>
+                    <br>
+                    <div class="col-lg-12">
+                      <div class="d-flex">
+                        <button id="tambah_jual" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#register_modal" style="margin-bottom:10px;margin-right:10px">Tambah <?php echo ucwords($page_title); ?> Jual</button>
+                        <button id="tambah_kantor" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#register_brg_kantor_modal" style="margin-bottom:10px;margin-right:10px">Tambah <?php echo ucwords($page_title); ?> Kantor</button>
+                      </div>
 
-                    <br />
-                    <br />
-                    <div class="align-middle text-center d-block">
-                      <i style="cursor:pointer;font-size:large;margin-left:10px" class="text-success md-eye"></i><b> - Details </b>
-                      <i style="cursor:pointer;font-size:large;margin-left:10px" class="text-primary md-edit"></i><b> - Edit </b>
-                      <i style="cursor:pointer;font-size:large;margin-left:10px" class="text-danger md-delete"></i><b> - Delete </b>
+                      <br />
+                      <br />
+                      <div class="align-middle text-center d-block">
+                        <i style="cursor:pointer;font-size:large;margin-left:10px" class="text-success md-eye"></i><b> - Details </b>
+                        <i style="cursor:pointer;font-size:large;margin-left:10px" class="text-primary md-edit"></i><b> - Edit </b>
+                        <i style="cursor:pointer;font-size:large;margin-left:10px" class="text-danger md-delete"></i><b> - Delete </b>
+                      </div>
+                      <br />
+                      <?php
+                      $data = array(
+                        "ctrl_model" => "m_barang",
+                        "excel_title" => "Daftar Barang"
+                      );
+                      ?>
+                      <?php $this->load->view("_base_element/table", $data); ?>
                     </div>
-                    <br />
-                    <?php
-                    $data = array(
-                      "ctrl_model" => "m_barang",
-                      "excel_title" => "Daftar Barang"
-                    );
-                    ?>
-                    <?php $this->load->view("_base_element/table", $data); ?>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <?php $this->load->view('req/mm_footer.php'); ?>
         </div>
-        <?php $this->load->view('req/mm_footer.php'); ?>
       </div>
     </div>
-  </div>
-  <?php $this->load->view('req/mm_js.php'); ?>
-</body>
+    <?php $this->load->view('req/mm_js.php'); ?>
+  </body>
 
 </html>
 
@@ -150,19 +150,8 @@ $data = array(
 <?php $this->load->view("_base_element/datalist_barang_jenis"); ?>
 <?php $this->load->view("_base_element/datalist_barang_jenis_jualan"); ?>
 <?php $this->load->view("_base_element/datalist_barang_merk"); ?>
-<?php $this->load->view("_base_element/datalist_barang"); ?>
+<?php $this->load->view("_base_element/datalist_barang_nonkombinasi"); ?>
 <?php $this->load->view("_base_element/datalist_satuan"); ?>
-<script>
-  function load_datalist() {
-    load_datalist_barang_jenis();
-    load_datalist_barang_jenis_jualan();
-    load_datalist_barang_merk();
-    load_datalist_barang_nonkombinasi();
-    load_datalist_satuan();
-  }
-  load_datalist();
-</script>
-
 <?php $this->load->view('_notification/notif_general'); ?>
 <?php $this->load->view("req/core_script"); ?>
 <script>

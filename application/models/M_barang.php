@@ -175,7 +175,7 @@ class M_barang extends ci_model
         left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = " . $this->tbl_name . ".id_fk_brg_jenis
         left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = " . $this->tbl_name . ".id_fk_brg_merk
         left join tbl_barang_kombinasi as a on a.id_barang_utama = mstr_barang.id_pk_brg and a.barang_kombinasi_status = 'aktif'
-        where brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) and id_pk_brg_jenis != 0 " . $search_query . "  
+        where brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) " . $search_query . "  
         group by id_pk_brg 
         order by " . $order_by . " " . $order_direction . " 
         limit 20 offset " . ($page - 1) * $data_per_page;
@@ -190,7 +190,7 @@ class M_barang extends ci_model
         left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = " . $this->tbl_name . ".id_fk_brg_jenis
         left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = " . $this->tbl_name . ".id_fk_brg_merk
         left join tbl_barang_kombinasi as a on a.id_barang_utama = mstr_barang.id_pk_brg and a.barang_kombinasi_status = 'aktif'
-        where brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) and id_pk_brg_jenis != 0 " . $search_query . "   
+        where brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) " . $search_query . "   
         group by id_pk_brg 
         order by " . $order_by . " " . $order_direction;
     $result["total_data"] = executeQuery($query, $args)->num_rows();
@@ -229,25 +229,22 @@ class M_barang extends ci_model
         left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = " . $this->tbl_name . ".id_fk_brg_jenis
         left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = " . $this->tbl_name . ".id_fk_brg_merk
         left join tbl_barang_kombinasi as a on a.id_barang_utama = mstr_barang.id_pk_brg and a.barang_kombinasi_status = 'aktif'
-        where id_fk_brg_jenis= " . $id_jenis . " and brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) and id_pk_brg_jenis != 0 " . $search_query . "  
+        where id_fk_brg_jenis= " . $id_jenis . " and brg_status = 'aktif' and (brg_jenis_status = 'aktif' or brg_jenis_status is null) and (brg_merk_status = 'aktif' or brg_merk_status is null) " . $search_query . "  
         group by id_pk_brg 
         order by " . $order_by . " " . $order_direction . " 
         limit 20 offset " . ($page - 1) * $data_per_page;
-    $args = array(
-      "aktif", "aktif", "aktif"
-    );
-    $result["data"] = executeQuery($query, $args);
-    //echo $this->db->last_query();
+    $result["data"] = executeQuery($query);
+    #echo $this->db->last_query();
     $query = "
         select id_pk_brg
         from " . $this->tbl_name . " 
         left join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = " . $this->tbl_name . ".id_fk_brg_jenis
         left join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = " . $this->tbl_name . ".id_fk_brg_merk
         left join tbl_barang_kombinasi as a on a.id_barang_utama = mstr_barang.id_pk_brg and a.barang_kombinasi_status = 'aktif'
-        where id_fk_brg_jenis= " . $id_jenis . " and brg_status = ? and (brg_jenis_status = ? or brg_jenis_status is null) and (brg_merk_status = ? or brg_merk_status is null) and id_pk_brg_jenis != 0 " . $search_query . "   
+        where id_fk_brg_jenis= " . $id_jenis . " and brg_status = 'aktif' and (brg_jenis_status = 'aktif' or brg_jenis_status is null) and (brg_merk_status = 'aktif' or brg_merk_status is null) " . $search_query . "   
         group by id_pk_brg 
         order by " . $order_by . " " . $order_direction;
-    $result["total_data"] = executeQuery($query, $args)->num_rows();
+    $result["total_data"] = executeQuery($query)->num_rows();
     return $result;
   }
   public function list_data()

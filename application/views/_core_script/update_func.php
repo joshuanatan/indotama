@@ -41,14 +41,14 @@
         if (respond["status"].toUpperCase() == "ERROR") {
           $('#update_error_msg').empty();
           $('#update_error_msg').append(respond["msg"]);
-          $('#notif_update_error').show(1).delay(2000).hide(1);
+          $('.notif_update_error').show(1).delay(2000).hide(1);
         }
       },
       error: function() {
         //notification
         $('#update_error_msg').empty();
         $('#update_error_msg').append(respond["msg"]);
-        $('#notif_update_error').show(1).delay(2000).hide(1);
+        $('.notif_update_error').show(1).delay(2000).hide(1);
       }
     });
   }
