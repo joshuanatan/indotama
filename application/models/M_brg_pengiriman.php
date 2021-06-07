@@ -241,7 +241,6 @@ class M_brg_pengiriman extends ci_model
       "id_create_data" => $this->id_create_data,
       "id_last_modified" => $this->id_last_modified
     );
-
     $id_hasil_insert = insertrow($this->tbl_name, $data);
 
     $log_all_msg = "Data Barang Pengiriman baru ditambahkan. Waktu penambahan: $this->brg_pengiriman_create_date";

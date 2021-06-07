@@ -282,7 +282,7 @@ $data = array(
 <?php $this->load->view("pengiriman_retur/f-detail-pengiriman_retur", $data); ?>
 
 
-<?php $this->load->view("_base_element/datalist_retur_pengiriman"); ?>
+<?php $this->load->view("_base_element/datalist_retur_confirmed_kembali_barang"); ?>
 <?php $this->load->view("_base_element/datalist_satuan"); ?>
 <script>
   function redirect_tipe_pengiriman() {

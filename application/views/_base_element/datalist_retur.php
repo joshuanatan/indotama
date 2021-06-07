@@ -2,6 +2,7 @@
 <script>
   var datalist_retur;
   load_datalist_retur();
+
   function load_datalist_retur() {
     $.ajax({
       url: "<?php echo base_url(); ?>ws/retur/list_data?id_cabang=<?php echo $this->session->id_cabang; ?>",

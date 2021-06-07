@@ -283,10 +283,9 @@ class Penjualan extends CI_Controller
       $ppn_check = $this->input->post("ppn_check");
       $penj_status = "AKTIF";
 
-      if($ppn_check != ""){
+      if ($ppn_check != "") {
         $ppn_check = 1;
-      }
-      else{
+      } else {
         $ppn_check = 0;
       }
       $this->input->post("customer");
@@ -309,13 +308,13 @@ class Penjualan extends CI_Controller
         $penj_on_marketplace = $this->input->post("marketplace");
         $penj_on_no_resi = $this->input->post("no_resi");
         $penj_on_kurir = $this->input->post("kurir");
-        if($penj_on_kurir == ""){
+        if ($penj_on_kurir == "") {
           $penj_on_kurir = "-";
         }
         $penj_on_status = "AKTIF";
         $id_fk_penjualan = $id_penjualan;;
         $this->load->model("m_penjualan_online");
-        if ($this->m_penjualan_online->insert($penj_on_marketplace,$penj_on_no_resi,$penj_on_kurir,$penj_on_status,$id_fk_penjualan)) {
+        if ($this->m_penjualan_online->insert($penj_on_marketplace, $penj_on_no_resi, $penj_on_kurir, $penj_on_status, $id_fk_penjualan)) {
           $response["pnjonlinests"] = "SUCCESS";
           $response["pnjonlinemsg"] = "Data is recorded to database";
         } else {
@@ -536,10 +535,9 @@ class Penjualan extends CI_Controller
       $customer = $this->input->post("customer");
       $ppn_check = $this->input->post("ppn_check");
 
-      if($ppn_check != ""){
+      if ($ppn_check != "") {
         $ppn_check = 1;
-      }
-      else{
+      } else {
         $ppn_check = 0;
       }
       $this->input->post("customer");
@@ -560,7 +558,7 @@ class Penjualan extends CI_Controller
       $penj_on_marketplace = $this->input->post("marketplace");
       $penj_on_no_resi = $this->input->post("no_resi");
       $penj_on_kurir = $this->input->post("kurir");
-      if($penj_on_kurir == ""){
+      if ($penj_on_kurir == "") {
         $penj_on_kurir = "-";
       }
 
@@ -579,14 +577,13 @@ class Penjualan extends CI_Controller
           $this->form_validation->set_rules("brg_qty" . $a, "brg_qty", "required");
           $this->form_validation->set_rules("brg_price" . $a, "brg_price", "required");
           if ($this->form_validation->run()) {
-            $id_pk_brg_penjualan = $this->input->post("id_pk_brg_penjualan".$a);
+            $id_pk_brg_penjualan = $this->input->post("id_pk_brg_penjualan" . $a);
             $brg_qty = $this->input->post("brg_qty" . $a);
             $brg_qty = explode(" ", $brg_qty);
             if (count($brg_qty) > 1) {
               $brg_penjualan_qty = $brg_qty[0];
               $brg_penjualan_satuan = $brg_qty[1];
-            } 
-            else {
+            } else {
               $brg_penjualan_qty = $brg_qty[0];
               $brg_penjualan_satuan = "Pcs";
             }
@@ -623,8 +620,7 @@ class Penjualan extends CI_Controller
         $this->load->model("m_brg_penjualan");
         $this->m_brg_penjualan->set_id_fk_penjualan($id_pk_penjualan);
         $nominal_penjualan += $this->m_brg_penjualan->get_nominal_brg_penjualan();
-      } 
-      else {
+      } else {
         $response["itmsts"] = "ERROR";
         $response["itmmsg"] = "No Checks on Item";
       }
@@ -657,14 +653,12 @@ class Penjualan extends CI_Controller
             if ($this->m_tambahan_penjualan->update($id_pk_tmbhn, $tmbhn, $tmbhn_jumlah, $tmbhn_satuan, $tmbhn_harga, $tmbhn_notes)) {
               $response["tmbhnsts"][$counter] = "SUCCESS";
               $response["tmbhnmsg"][$counter] = "Data is recorded to database";
-            } 
-            else {
+            } else {
               $response["status"] = "ERROR";
               $response["tmbhnsts"][$counter] = "ERROR";
               $response["tmbhnmsg"][$counter] = "Insert function error";
             }
-          } 
-          else {
+          } else {
             $response["status"] = "ERROR";
             $response["tmbhnsts"][$counter] = "ERROR";
             $response["tmbhnmsg"][$counter] = validation_errors();
@@ -674,8 +668,7 @@ class Penjualan extends CI_Controller
         $this->load->model("m_tambahan_penjualan");
         $this->m_tambahan_penjualan->set_id_fk_penjualan($id_pk_penjualan);
         $nominal_penjualan += $this->m_tambahan_penjualan->get_nominal_tambahan();
-      } 
-      else {
+      } else {
         $response["tmbhnsts"] = "ERROR";
         $response["tmbhnmsg"] = "No Checks on Tambahan";
       }
@@ -717,8 +710,7 @@ class Penjualan extends CI_Controller
           }
           $counter++;
         }
-      } 
-      else {
+      } else {
         $response["pmbyrnsts"] = "ERROR";
         $response["pmbyrnmsg"] = "No Checks on Pembayaran";
       }
@@ -787,8 +779,7 @@ class Penjualan extends CI_Controller
         $this->load->model("m_brg_penjualan");
         $this->m_brg_penjualan->set_id_fk_penjualan($id_pk_penjualan);
         $nominal_penjualan += $this->m_brg_penjualan->get_nominal_brg_penjualan();
-      } 
-      else {
+      } else {
         $response["itmsts"] = "ERROR";
         $response["itmmsg"] = "No Checks on Item";
       }
@@ -836,8 +827,7 @@ class Penjualan extends CI_Controller
         $this->load->model("m_tambahan_penjualan");
         $this->m_tambahan_penjualan->set_id_fk_penjualan($id_pk_penjualan);
         $nominal_penjualan += $this->m_tambahan_penjualan->get_nominal_tambahan();
-      } 
-      else {
+      } else {
         $response["tmbhnsts"] = "ERROR";
         $response["tmbhnmsg"] = "No Checks on Tambahan";
       }
@@ -877,8 +867,7 @@ class Penjualan extends CI_Controller
           }
           $counter++;
         }
-      } 
-      else {
+      } else {
         $response["pmbyrnsts"] = "ERROR";
         $response["pmbyrnmsg"] = "No Checks on Pembayaran";
       }
@@ -906,8 +895,7 @@ class Penjualan extends CI_Controller
       $this->m_penjualan->set_id_pk_penjualan($id_pk_penjualan);
       $this->m_penjualan->update_nominal($nominal_penjualan);
       $this->m_penjualan->update_nominal_byr($nominal_pembayaran);
-    } 
-    else {
+    } else {
       $response["status"] = "ERROR";
       $response["msg"] = validation_errors();
     }

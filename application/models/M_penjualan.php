@@ -68,9 +68,9 @@ class M_penjualan extends ci_model
         from mstr_penjualan 
         inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
         inner join mstr_user on mstr_user.id_pk_user = mstr_penjualan.id_last_modified
-        where penj_status != ? and id_fk_cabang = ?";
+        where penj_status != 'nonaktif' and id_fk_cabang = ?";
     $args = array(
-      "nonaktif", $this->id_fk_cabang
+      $this->id_fk_cabang
     );
     return executeQuery($query, $args);
   }
@@ -103,7 +103,6 @@ class M_penjualan extends ci_model
       $this->id_pk_penjualan
     );
     return executequery($query, $args);
-    
   }
   public function detail_by_id_pk_penjualan()
   {
@@ -251,11 +250,11 @@ class M_penjualan extends ci_model
         inner join tbl_penjualan_pembayaran on tbl_penjualan_pembayaran.id_fk_penjualan = mstr_penjualan.id_pk_penjualan where tbl_penjualan_pembayaran.penjualan_pmbyrn_status != 'nonaktif'
         group by id_pk_penjualan
       ) as a 
-      where id_fk_cabang = ? and list_jenis_pembayaran like '%".$this->penj_tipe_pembayaran."%'" . $search_query . "  
+      where id_fk_cabang = ? and list_jenis_pembayaran like '%" . $this->penj_tipe_pembayaran . "%'" . $search_query . "  
       order by " . $order_by . " " . $order_direction . " 
       limit 20 offset " . ($page - 1) * $data_per_page;
       $args = array(
-        $this->id_fk_cabang, 
+        $this->id_fk_cabang,
       );
       $result["data"] = executequery($query, $args);
 
@@ -268,7 +267,7 @@ class M_penjualan extends ci_model
         inner join tbl_penjualan_pembayaran on tbl_penjualan_pembayaran.id_fk_penjualan = mstr_penjualan.id_pk_penjualan where tbl_penjualan_pembayaran.penjualan_pmbyrn_status != 'nonaktif'
         group by id_pk_penjualan
       ) as a 
-      where id_fk_cabang = ? and list_jenis_pembayaran like '%".$this->penj_tipe_pembayaran."%'" . $search_query;
+      where id_fk_cabang = ? and list_jenis_pembayaran like '%" . $this->penj_tipe_pembayaran . "%'" . $search_query;
       $result["total_data"] = executequery($query, $args)->num_rows();
     }
     #echo $this->db->last_query();
