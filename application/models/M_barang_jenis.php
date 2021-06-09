@@ -233,6 +233,25 @@ class M_barang_jenis extends ci_model
           "id_last_modified" => $this->id_last_modified
         );
         updaterow($this->tbl_name, $data, $where);
+
+        $id_pk = $this->id_pk_brg_jenis;
+        $log_all_msg = "Data Jenis Barang dengan ID:   $id_pk diubah. Waktu diubah: $this->brg_jenis_last_modified . Data berubah menjadi:";
+        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+        $log_all_data_changes = "[ID Barang Jenis:  $id_pk][Nama: $this->brg_jenis_nama][Waktu Diubah: $this->brg_jenis_last_modified][Oleh: $nama_user]";
+        $log_all_it = "";
+        $log_all_user = $this->id_last_modified;
+        $log_all_tgl = $this->brg_jenis_last_modified;
+
+        $data_log = array(
+          "log_all_msg" => $log_all_msg,
+          "log_all_data_changes" => $log_all_data_changes,
+          "log_all_it" => $log_all_it,
+          "log_all_user" => $log_all_user,
+          "log_all_tgl" => $log_all_tgl
+        );
+        insertrow("log_all", $data_log);
+
         return true;
       } else {
         return false;
