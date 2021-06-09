@@ -107,7 +107,6 @@ $notif_data = array(
                 </th>`;
             }
           }
-          html += "<th class = 'text-center align-middle action_column'>Action</th>";
           html += "</tr>";
         } else {
           html += "<tr>";

@@ -174,7 +174,7 @@ class M_barang_merk extends ci_model
       );
       $id_hasil_insert = insertrow($this->tbl_name, $data);
 
-      $log_all_msg = "Data Jenis Barang Kombinasi baru ditambahkan. Waktu penambahan: $this->barang_kombinasi_create_date";
+      $log_all_msg = "Data Barang Merk baru ditambahkan. Waktu penambahan: $this->brg_merk_create_date";
       $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
       $log_all_data_changes = "[ID Merek Barang: $id_hasil_insert][Nama: $this->brg_merk_nama][Status: $this->brg_merk_status][Waktu Ditambahkan: $this->brg_merk_create_date][Oleh: $nama_user]";

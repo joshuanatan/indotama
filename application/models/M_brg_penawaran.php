@@ -17,7 +17,7 @@ class M_brg_penawaran extends CI_Model{
     $id_hasil_insert = insertRow("tbl_brg_penawaran",$data);
             
     $log_all_msg = "Data Barang Penawaran baru ditambahkan. Waktu penambahan: ". date("Y-m-d H:i:s");
-    $nama_user = get1Value("mstr_user","user_name",array("id_pk_user"=>$this->$this->session->id_user));
+    $nama_user = get1Value("mstr_user","user_name",array("id_pk_user"=>$this->session->id_user));
     $log_all_data_changes = "[ID Barang Penawaran: $id_hasil_insert][Jumlah: $brg_penawaran_qty][Satuan: $brg_penawaran_satuan][Harga: $brg_penawaran_price][Notes: $brg_penawaran_notes][Status: $brg_penawaran_status][ID Penawaran: $id_fk_penawaran][Waktu Ditambahkan: ".date('Y-m-d H:i:s')."][Oleh: $nama_user]";
     $log_all_it = "";
     $log_all_user = $this->session->id_user;
