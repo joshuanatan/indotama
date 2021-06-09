@@ -122,7 +122,26 @@ class M_retur_kembali extends ci_model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertrow($this->tbl_name,$data);
+            $id_hasil_insert = insertrow($this->tbl_name, $data);
+
+            $log_all_msg = "Data Retur Kembali baru ditambahkan. Waktu penambahan: $this->retur_kembali_create_date";
+            $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+            $log_all_data_changes = "[ID Retur Kembali: $id_hasil_insert][Jumlah: $this->retur_kembali_qty][Satuan: $this->retur_kembali_satuan][Harga: $this->retur_kembali_harga][Notes: $this->retur_kembali_note][Status: $this->retur_kembali_status][ID Retur: $this->id_fk_retur][ID Barang: $this->id_fk_brg][Waktu Ditambahkan: $this->retur_kembali_create_date][Oleh: $nama_user]";
+            $log_all_it = "";
+            $log_all_user = $this->id_last_modified;
+            $log_all_tgl = $this->retur_kembali_create_date;
+
+            $data_log = array(
+                "log_all_msg" => $log_all_msg,
+                "log_all_data_changes" => $log_all_data_changes,
+                "log_all_it" => $log_all_it,
+                "log_all_user" => $log_all_user,
+                "log_all_tgl" => $log_all_tgl
+            );
+            insertrow("log_all", $data_log);
+
+            return $id_hasil_insert;
         }
         else{
             return false;

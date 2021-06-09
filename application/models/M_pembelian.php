@@ -204,7 +204,28 @@ class M_pembelian extends ci_model{
                 "bln_control" => explode("-",$this->pem_tgl)[1],
                 "thn_control" => explode("-",$this->pem_tgl)[0]
             );
-            return insertrow($this->tbl_name,$data);
+            
+            
+            $id_hasil_insert = insertrow($this->tbl_name, $data);
+
+            $log_all_msg = "Data Pembelian baru ditambahkan. Waktu penambahan: $this->pem_create_date";
+            $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+            $log_all_data_changes = "[ID Pembelian: $id_hasil_insert][Nomor Pembelian: $this->pem_pk_nomor][Tanggal: $this->pem_tgl][Status: $this->pem_status][ID Supplier: $this->id_fk_supp][ID Cabang: $this->id_fk_cabang][Waktu Ditambahkan: $this->pem_create_date][Oleh: $nama_user][Nomor Control: $this->no_control][Bulan Control: $this->bln_control]";
+            $log_all_it = "";
+            $log_all_user = $this->id_last_modified;
+            $log_all_tgl = $this->pem_create_date;
+
+            $data_log = array(
+                "log_all_msg" => $log_all_msg,
+                "log_all_data_changes" => $log_all_data_changes,
+                "log_all_it" => $log_all_it,
+                "log_all_user" => $log_all_user,
+                "log_all_tgl" => $log_all_tgl
+            );
+            insertrow("log_all", $data_log);
+
+            return $id_hasil_insert;
         }
         else{
             return false;

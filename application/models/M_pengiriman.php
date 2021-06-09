@@ -358,7 +358,26 @@ class M_pengiriman extends ci_model{
             else if(strtolower($this->pengiriman_tempat) == "cabang"){
                 $data["id_fk_cabang"] = $this->id_fk_cabang;
             }
-            return insertrow($this->tbl_name,$data);
+            $id_hasil_insert = insertrow($this->tbl_name, $data);
+
+            $log_all_msg = "Data Pengiriman baru ditambahkan. Waktu penambahan: $this->emp_create_date";
+            $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+            $log_all_data_changes = "[ID Pengiriman: $id_hasil_insert][No: $this->pengiriman_no][Tanggal: $this->pengiriman_tgl][Status: $this->pengiriman_status][Tipe: $this->pengiriman_tipe][ID Penjualan: $this->id_fk_penjualan][ID Retur: $this->id_fk_retur][Tempat: $this->pengiriman_tempat][Waktu Ditambahkan: $this->pengiriman_create_date][Oleh: $nama_user][Nomor Control: $this->no_control][Bulan Control: $this->bln_control]";
+            $log_all_it = "";
+            $log_all_user = $this->id_last_modified;
+            $log_all_tgl = $this->emp_create_date;
+
+            $data_log = array(
+                "log_all_msg" => $log_all_msg,
+                "log_all_data_changes" => $log_all_data_changes,
+                "log_all_it" => $log_all_it,
+                "log_all_user" => $log_all_user,
+                "log_all_tgl" => $log_all_tgl
+            );
+            insertrow("log_all", $data_log);
+
+            return $id_hasil_insert;
         }
         return false;
     }
