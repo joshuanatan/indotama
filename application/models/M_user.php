@@ -114,7 +114,7 @@ class m_user extends ci_model{
         end $$
         delimiter ;
         ";
-        executesql($sql);
+        executeQuery($sql);
     }
     public function columns(){
         return $this->columns;
@@ -209,7 +209,26 @@ class m_user extends ci_model{
                 "id_create_date" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified
             );
-            return insertrow($this->tbl_name,$data);
+            $id_hasil_insert = insertrow($this->tbl_name, $data);
+
+            $log_all_msg = "Data User baru ditambahkan. Waktu penambahan: $this->user_create_date";
+            $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+            $log_all_data_changes = "[ID User: $id_hasil_insert][Nama: $this->user_name][Email: $this->user_email][Status: $this->user_status][ID Jabatan: $this->id_fk_role][ID Employee: $this->id_fk_employee][Waktu Ditambahkan: $this->user_create_date][Oleh: $nama_user]";
+            $log_all_it = "";
+            $log_all_user = $this->id_last_modified;
+            $log_all_tgl = $this->user_create_date;
+
+            $data_log = array(
+            "log_all_msg" => $log_all_msg,
+            "log_all_data_changes" => $log_all_data_changes,
+            "log_all_it" => $log_all_it,
+            "log_all_user" => $log_all_user,
+            "log_all_tgl" => $log_all_tgl
+            );
+            insertrow("log_all", $data_log);
+
+            return $id_hasil_insert;
         }
         else{
             return false;

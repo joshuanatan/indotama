@@ -161,7 +161,26 @@ class M_retur_brg extends CI_Model{
                 "id_create_data" => $this->id_create_data,
                 "id_last_modified" => $this->id_last_modified,
             );
-            return insertRow($this->tbl_name,$data);
+            $id_hasil_insert = insertrow($this->tbl_name, $data);
+
+            $log_all_msg = "Data Retur Barang baru ditambahkan. Waktu penambahan: $this->retur_brg_create_date";
+            $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+            $log_all_data_changes = "[ID Retur Barang: $id_hasil_insert][ID Retur: $this->id_fk_retur][ID Barang: $this->id_fk_brg][Jumalh Barang: $this->retur_brg_qty][Satuan Barang: $this->retur_brg_satuan][Notes: $this->retur_brg_notes][Status: $this->retur_brg_status][Waktu Ditambahkan: $this->retur_create_date][Oleh: $nama_user]";
+            $log_all_it = "";
+            $log_all_user = $this->id_last_modified;
+            $log_all_tgl = $this->retur_brg_create_date;
+
+            $data_log = array(
+                "log_all_msg" => $log_all_msg,
+                "log_all_data_changes" => $log_all_data_changes,
+                "log_all_it" => $log_all_it,
+                "log_all_user" => $log_all_user,
+                "log_all_tgl" => $log_all_tgl
+            );
+            insertrow("log_all", $data_log);
+
+            return $id_hasil_insert;
         }
         return false;
     }
