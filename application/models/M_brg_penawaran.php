@@ -49,6 +49,23 @@ class M_brg_penawaran extends CI_Model{
       "brg_penawaran_tgl_update" => date("Y-m-d H:i:s")
     );
     updateRow("tbl_brg_penawaran",$data,$where);
+    $id_pk = $this->id_pk_brg_penawaran;
+    $log_all_msg = "Data Barang Penawaran dengan ID: $id_pk diubah. Waktu diubah: $this->brg_penawaran_last_modified . Data berubah menjadi: ";
+    $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+    $log_all_data_changes = "[ID Barang Penawaran: $id_pk][Jumlah: $brg_penawaran_qty][Satuan: $brg_penawaran_satuan][Harga: $brg_penawaran_price][Notes: $brg_penawaran_notes][Waktu Diedit: ".date('Y-m-d H:i:s')."][Oleh: $nama_user]";
+    $log_all_it = "";
+    $log_all_user = $this->id_last_modified;
+    $log_all_tgl = $this->brg_penawaran_last_modified;
+
+    $data_log = array(
+      "log_all_msg" => $log_all_msg,
+      "log_all_data_changes" => $log_all_data_changes,
+      "log_all_it" => $log_all_it,
+      "log_all_user" => $log_all_user,
+      "log_all_tgl" => $log_all_tgl
+    );
+    insertrow("log_all", $data_log);
     return true;
   }
   public function delete($id_pk_brg_penawaran){

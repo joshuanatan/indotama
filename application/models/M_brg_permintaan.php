@@ -269,11 +269,11 @@ class M_brg_permintaan extends ci_model
       $id_hasil_insert = insertrow($this->tbl_name, $data);
 
       $log_all_msg = "Data Barang Permintaan baru ditambahkan. Waktu penambahan: $this->brg_permintaan_create_date";
-      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_create_data));
 
       $log_all_data_changes = "[ID Barang Permintaan: $id_hasil_insert][Jumlah: $this->brg_permintaan_qty][Notes: $this->brg_permintaan_notes][Deadline: $this->brg_permintaan_deadline][Status: $this->brg_permintaan_status][ID Barang: $this->id_fk_brg][ID Cabang: $this->id_fk_cabang][Waktu Ditambahkan: $this->brg_permintaan_create_date][Oleh: $nama_user]";
       $log_all_it = "";
-      $log_all_user = $this->id_last_modified;
+      $log_all_user = $this->id_create_data;
       $log_all_tgl = $this->brg_permintaan_create_date;
 
       $data_log = array(
@@ -305,6 +305,23 @@ class M_brg_permintaan extends ci_model
         "id_last_modified" => $this->id_last_modified
       );
       updaterow($this->tbl_name, $data, $where);
+        $id_pk = $this->id_pk_brg_permintaan;
+        $log_all_msg = "Data Barang Permintaan dengan ID: $id_pk diubah. Waktu diubah: $this->brg_permintaan_last_modified . Data berubah menjadi: ";
+        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+        $log_all_data_changes = "[ID Barang Permintaan: $id_pk][Jumlah: $this->brg_permintaan_qty][Notes: $this->brg_permintaan_notes][Deadline: $this->brg_permintaan_deadline][ID Barang: $this->id_fk_brg][ID Cabang: $this->id_fk_cabang][Waktu Diubah: $this->brg_permintaan_last_modified][Oleh: $nama_user]";
+        $log_all_it = "";
+        $log_all_user = $this->id_last_modified;
+        $log_all_tgl = $this->brg_permintaan_last_modified;
+
+        $data_log = array(
+          "log_all_msg" => $log_all_msg,
+          "log_all_data_changes" => $log_all_data_changes,
+          "log_all_it" => $log_all_it,
+          "log_all_user" => $log_all_user,
+          "log_all_tgl" => $log_all_tgl
+        );
+        insertrow("log_all", $data_log);
       return true;
     }
     return false;

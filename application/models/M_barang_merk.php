@@ -175,11 +175,11 @@ class M_barang_merk extends ci_model
       $id_hasil_insert = insertrow($this->tbl_name, $data);
 
       $log_all_msg = "Data Barang Merk baru ditambahkan. Waktu penambahan: $this->brg_merk_create_date";
-      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_create_data));
 
       $log_all_data_changes = "[ID Merek Barang: $id_hasil_insert][Nama: $this->brg_merk_nama][Status: $this->brg_merk_status][Waktu Ditambahkan: $this->brg_merk_create_date][Oleh: $nama_user]";
       $log_all_it = "";
-      $log_all_user = $this->id_last_modified;
+      $log_all_user = $this->id_create_data;
       $log_all_tgl = $this->brg_merk_create_date;
 
       $data_log = array(
@@ -213,7 +213,24 @@ class M_barang_merk extends ci_model
           "brg_merk_last_modified" => $this->brg_merk_last_modified,
           "id_last_modified" => $this->id_last_modified
         );
-        updaterow($this->tbl_name, $data, $where);
+        updateRow($this->tbl_name, $data, $where);
+        $id_pk = $this->id_pk_brg_merk;
+        $log_all_msg = "Data Merk Barang dengan ID: $id_pk diubah. Waktu diubah: $this->brg_merk_last_modified . Data berubah menjadi: ";
+        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+        $log_all_data_changes = "[ID Merk barang:  $id_pk][Nama: $this->brg_merk_nama][Waktu Diubah: $this->brg_merk_last_modified][Oleh: $nama_user]";
+        $log_all_it = "";
+        $log_all_user = $this->id_last_modified;
+        $log_all_tgl = $this->brg_merk_last_modified;
+
+        $data_log = array(
+          "log_all_msg" => $log_all_msg,
+          "log_all_data_changes" => $log_all_data_changes,
+          "log_all_it" => $log_all_it,
+          "log_all_user" => $log_all_user,
+          "log_all_tgl" => $log_all_tgl
+        );
+        insertrow("log_all", $data_log);
         return true;
       } else {
         return false;

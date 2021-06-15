@@ -163,13 +163,13 @@ class M_retur_brg extends CI_Model{
             );
             $id_hasil_insert = insertrow($this->tbl_name, $data);
 
-            $log_all_msg = "Data Retur Barang baru ditambahkan. Waktu penambahan: $this->retur_brg_create_date";
+            $log_all_msg = "Data Retur Barang baru ditambahkan. Waktu penambahan: $this->retur_create_date";
             $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
             $log_all_data_changes = "[ID Retur Barang: $id_hasil_insert][ID Retur: $this->id_fk_retur][ID Barang: $this->id_fk_brg][Jumalh Barang: $this->retur_brg_qty][Satuan Barang: $this->retur_brg_satuan][Notes: $this->retur_brg_notes][Status: $this->retur_brg_status][Waktu Ditambahkan: $this->retur_create_date][Oleh: $nama_user]";
             $log_all_it = "";
             $log_all_user = $this->id_last_modified;
-            $log_all_tgl = $this->retur_brg_create_date;
+            $log_all_tgl = $this->retur_create_date;
 
             $data_log = array(
                 "log_all_msg" => $log_all_msg,
@@ -198,6 +198,23 @@ class M_retur_brg extends CI_Model{
                 "id_last_modified" => $this->id_last_modified,
             );
             updateRow($this->tbl_name,$data,$where);
+        $id_pk = $this->id_pk_retur_brg;
+        $log_all_msg = "Data Barang Retur dengan ID: $id_pk diubah. Waktu diubah: $this->retur_last_modified . Data berubah menjadi: ";
+        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+        $log_all_data_changes = "[ID Retur Barang: $id_pk][ID Barang: $this->id_fk_brg][Jumalh Barang: $this->retur_brg_qty][Satuan Barang: $this->retur_brg_satuan][Notes: $this->retur_brg_notes][Waktu DIedit: $this->retur_last_modified][Oleh: $nama_user]";
+        $log_all_it = "";
+        $log_all_user = $this->id_last_modified;
+        $log_all_tgl = $this->retur_last_modified;
+
+        $data_log = array(
+          "log_all_msg" => $log_all_msg,
+          "log_all_data_changes" => $log_all_data_changes,
+          "log_all_it" => $log_all_it,
+          "log_all_user" => $log_all_user,
+          "log_all_tgl" => $log_all_tgl
+        );
+        insertrow("log_all", $data_log);
             return true;
         }
         return false;

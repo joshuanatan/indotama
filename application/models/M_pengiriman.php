@@ -360,13 +360,13 @@ class M_pengiriman extends ci_model{
             }
             $id_hasil_insert = insertrow($this->tbl_name, $data);
 
-            $log_all_msg = "Data Pengiriman baru ditambahkan. Waktu penambahan: $this->emp_create_date";
-            $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+            $log_all_msg = "Data Pengiriman baru ditambahkan. Waktu penambahan: $this->pengiriman_create_date";
+            $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_create_data));
 
             $log_all_data_changes = "[ID Pengiriman: $id_hasil_insert][No: $this->pengiriman_no][Tanggal: $this->pengiriman_tgl][Status: $this->pengiriman_status][Tipe: $this->pengiriman_tipe][ID Penjualan: $this->id_fk_penjualan][ID Retur: $this->id_fk_retur][Tempat: $this->pengiriman_tempat][Waktu Ditambahkan: $this->pengiriman_create_date][Oleh: $nama_user][Nomor Control: $this->no_control][Bulan Control: $this->bln_control]";
             $log_all_it = "";
-            $log_all_user = $this->id_last_modified;
-            $log_all_tgl = $this->emp_create_date;
+            $log_all_user = $this->id_create_data;
+            $log_all_tgl = $this->pengiriman_create_date;
 
             $data_log = array(
                 "log_all_msg" => $log_all_msg,
@@ -392,6 +392,23 @@ class M_pengiriman extends ci_model{
                 "id_last_modified" => $this->id_last_modified
             );
             updaterow($this->tbl_name,$data,$where);
+            $id_pk = $this->id_pk_pengiriman;
+        $log_all_msg = "Data Pengiriman dengan ID: $id_pk diubah. Waktu diubah: $this->pengiriman_last_modified . Data berubah menjadi: ";
+        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+        $log_all_data_changes = "[ID Pengiriman: $id_pk][Tanggal: $this->pengiriman_tgl][Waktu Diedit: $this->pengiriman_last_modified][Oleh: $nama_user]";
+        $log_all_it = "";
+        $log_all_user = $this->id_last_modified;
+        $log_all_tgl = $this->pengiriman_last_modified;
+
+        $data_log = array(
+          "log_all_msg" => $log_all_msg,
+          "log_all_data_changes" => $log_all_data_changes,
+          "log_all_it" => $log_all_it,
+          "log_all_user" => $log_all_user,
+          "log_all_tgl" => $log_all_tgl
+        );
+        insertrow("log_all", $data_log);
             return true;
         }
         return false;

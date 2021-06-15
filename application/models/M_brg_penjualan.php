@@ -138,10 +138,10 @@ class M_brg_penjualan extends ci_model
     $id_hasil_insert = insertrow($this->tbl_name,$data);
             
     $log_all_msg = "Data Jenis Barang baru ditambahkan. Waktu penambahan: $this->brg_penjualan_create_date";
-    $nama_user = get1Value("mstr_user","user_name",array("id_pk_user"=>$this->id_last_modified));
+    $nama_user = get1Value("mstr_user","user_name",array("id_pk_user"=>$this->id_create_data));
     $log_all_data_changes = "[ID Barang Jenis: $id_hasil_insert][Jumlah (real): $this->brg_penjualan_qty_real][Satuan (real): $this->brg_penjualan_satuan_real][Jumlah: $this->brg_penjualan_qty][Satuan: $this->brg_penjualan_satuan][Harga: $this->brg_penjualan_harga][Notes: $this->brg_penjualan_note][Status: $this->brg_penjualan_status][ID Penjualan: $this->id_fk_penjualan][ID Barang: $this->id_fk_barang][Waktu Ditambahkan: $this->brg_penjualan_create_date][Oleh: $nama_user]";
     $log_all_it = "";
-    $log_all_user = $this->id_last_modified;
+    $log_all_user = $this->id_create_data;
     $log_all_tgl = $this->brg_penjualan_create_date;
 
     $data_log = array(
@@ -171,6 +171,23 @@ class M_brg_penjualan extends ci_model
       "id_last_modified" => $this->id_last_modified,
     );
     updaterow($this->tbl_name, $data, $where);
+        $id_pk = $this->id_pk_brg_penjualan;
+        $log_all_msg = "Data Barang Penjualan dengan ID: $id_pk diubah. Waktu diubah: $this->brg_penjualan_last_modified . Data berubah menjadi: ";
+        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+        $log_all_data_changes = "[ID Barang Jenis: $id_pk][Jumlah (real): $this->brg_penjualan_qty_real][Satuan (real): $this->brg_penjualan_satuan_real][Jumlah: $this->brg_penjualan_qty][Satuan: $this->brg_penjualan_satuan][Harga: $this->brg_penjualan_harga][Notes: $this->brg_penjualan_note][ID Penjualan: $this->id_fk_penjualan][ID Barang: $this->id_fk_barang][Waktu Diubah: $this->id_last_modified][Oleh: $nama_user]";
+        $log_all_it = "";
+        $log_all_user = $this->id_last_modified;
+        $log_all_tgl = $this->brg_penjualan_last_modified;
+
+        $data_log = array(
+          "log_all_msg" => $log_all_msg,
+          "log_all_data_changes" => $log_all_data_changes,
+          "log_all_it" => $log_all_it,
+          "log_all_user" => $log_all_user,
+          "log_all_tgl" => $log_all_tgl
+        );
+        insertrow("log_all", $data_log);
     return true;
   }
   public function delete()

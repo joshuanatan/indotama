@@ -187,11 +187,11 @@ class m_toko extends ci_model{
             $id_hasil_insert = insertrow($this->tbl_name, $data);
 
             $log_all_msg = "Data Toko baru ditambahkan. Waktu penambahan: $this->toko_create_date";
-            $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+            $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_create_data));
 
             $log_all_data_changes = "[ID Toko: $id_hasil_insert][Logo: $this->toko_logo][Nama: $this->toko_nama][Kop Surat: $this->toko_kop_surat][Nonpkp: $this->toko_nonpkp][Pernyataan Rek: $this->toko_pernyataan_rek][TTD: $this->toko_ttd][Kode: $this->toko_kode][Status: $this->toko_status][Waktu Ditambahkan: $this->toko_create_date][Oleh: $nama_user]";
             $log_all_it = "";
-            $log_all_user = $this->id_last_modified;
+            $log_all_user = $this->id_create_data;
             $log_all_tgl = $this->toko_create_date;
 
             $data_log = array(
@@ -223,7 +223,24 @@ class m_toko extends ci_model{
                 "toko_last_modified" => $this->toko_last_modified, 
                 "id_last_modified" => $this->id_last_modified, 
             );
-            updaterow($this->tbl_name,$data,$where);
+            updateRow($this->tbl_name, $data, $where);
+        $id_pk = $this->id_pk_toko;
+        $log_all_msg = "Data Merk Barang dengan ID: $id_pk diubah. Waktu diubah: $this->toko_last_modified . Data berubah menjadi: ";
+        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+        $log_all_data_changes = "[ID Toko: $id_pk][Logo: $this->toko_logo][Nama: $this->toko_nama][Kop Surat: $this->toko_kop_surat][Nonpkp: $this->toko_nonpkp][Pernyataan Rek: $this->toko_pernyataan_rek][TTD: $this->toko_ttd][Kode: $this->toko_kode][Waktu Diedit: $this->toko_last_modified][Oleh: $nama_user]";
+        $log_all_it = "";
+        $log_all_user = $this->id_last_modified;
+        $log_all_tgl = $this->toko_last_modified;
+
+        $data_log = array(
+          "log_all_msg" => $log_all_msg,
+          "log_all_data_changes" => $log_all_data_changes,
+          "log_all_it" => $log_all_it,
+          "log_all_user" => $log_all_user,
+          "log_all_tgl" => $log_all_tgl
+        );
+        insertrow("log_all", $data_log);
             return true;
         }
         return false;

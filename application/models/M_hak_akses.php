@@ -90,12 +90,29 @@ class M_hak_akses extends ci_model
       $data = array(
         "id_fk_jabatan" => $this->id_fk_jabatan,
         "id_fk_menu" => $this->id_fk_menu,
+        "id_create_date" => $this->hak_akses_create_date,
         "hak_akses_create_date" => $this->hak_akses_create_date,
-        "hak_akses_last_modified" => $this->hak_akses_last_modified,
-        "hak_akses_create_date" => $this->hak_akses_create_date,
-        "id_last_modified" => $this->id_last_modified,
       );
-      return insertrow($this->tbl_name, $data);
+      $id_hasil_insert = insertrow($this->tbl_name, $data);
+
+      $log_all_msg = "Data Hak baru ditambahkan. Waktu penambahan: $this->hak_akses_create_date";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_create_data));
+
+      $log_all_data_changes = "[ID Hak Akses: $id_hasil_insert][ID Jabatan: $this->id_fk_jabatan][ID Menu: $this->id_fk_menu][Oleh: $nama_user][Waktu Ditambahkan: $this->hak_akses_create_date]";
+      $log_all_it = "";
+      $log_all_user = $this->id_create_data;
+      $log_all_tgl = $this->hak_akses_create_date;
+
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
+
+      return $id_hasil_insert;
     } else {
       return false;
     }
@@ -118,6 +135,23 @@ class M_hak_akses extends ci_model
         "id_last_modified" => $this->id_last_modified,
       );
       updaterow($this->tbl_name, $data, $where);
+      $id_pk = $this->id_pk_hak_akses;
+      $log_all_msg = "Data Hak Akses dengan ID: $id_pk diubah. Waktu diubah: $this->hak_akses_last_modified . Data berubah menjadi: ";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+      $log_all_data_changes = "[ID Hak Akses: $id_pk][ID Jabatan: $this->id_fk_jabatan][ID Menu: $this->id_fk_menu][Oleh: $nama_user][Waktu Diubah: $this->hak_akses_last_modified]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->hak_akses_last_modified;
+
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
       return true;
     } else {
       return false;

@@ -118,11 +118,11 @@ class M_penjualan_online extends ci_model
     $id_hasil_insert = insertrow($this->tbl_name, $data);
 
     $log_all_msg = "Data Penjualan Online baru ditambahkan. Waktu penambahan: $this->penj_on_create_date";
-    $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+    $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_create_data));
 
     $log_all_data_changes = "[ID Penjualan Online: $id_hasil_insert][Marketplace: $this->penj_on_marketplace][Resi: $this->penj_on_no_resi][Kurir: $this->penj_on_kurir][Status: $this->penj_on_status][ID Penjualan: $this->id_fk_penjualan][Tanggal Penjualan: $this->penj_on_create_date]][Oleh: $nama_user]";
     $log_all_it = "";
-    $log_all_user = $this->id_last_modified;
+    $log_all_user = $this->id_create_data;
     $log_all_tgl = $this->penj_on_create_date;
 
     $data_log = array(
@@ -148,7 +148,24 @@ class M_penjualan_online extends ci_model
       "penj_on_last_modified" => $this->penj_on_last_modified,
       "id_last_modified" => $this->id_last_modified
     );
-    updaterow($this->tbl_name, $data, $where);
+    updateRow($this->tbl_name, $data, $where);
+        $id_pk = $this->id_fk_penjualan;
+        $log_all_msg = "Data Penjualan Online dengan ID: $id_pk diubah. Waktu diubah: $this->penj_on_last_modified . Data berubah menjadi: ";
+        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+        $log_all_data_changes = "[ID Penjualan: $id_pk][Marketplace: $this->penj_on_marketplace][Resi: $this->penj_on_no_resi][Kurir: $this->penj_on_kurir][Waktu Diedit: $this->penj_on_last_modified]][Oleh: $nama_user]";
+        $log_all_it = "";
+        $log_all_user = $this->id_last_modified;
+        $log_all_tgl = $this->penj_on_last_modified;
+
+        $data_log = array(
+          "log_all_msg" => $log_all_msg,
+          "log_all_data_changes" => $log_all_data_changes,
+          "log_all_it" => $log_all_it,
+          "log_all_user" => $log_all_user,
+          "log_all_tgl" => $log_all_tgl
+        );
+        insertrow("log_all", $data_log);
     return true;
   }
   public function delete()

@@ -276,11 +276,11 @@ class M_employee extends ci_model
       $id_hasil_insert = insertrow($this->tbl_name, $data);
 
       $log_all_msg = "Data Employee baru ditambahkan. Waktu penambahan: $this->emp_create_date";
-      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_create_data));
 
       $log_all_data_changes = "[ID Employee: $id_hasil_insert][Nama: $this->emp_nama][NPWP: $this->emp_npwp][KTP: $this->emp_ktp][No HP: $this->emp_hp][Alamat: $this->emp_alamat][Kode Pos: $this->emp_kode_pos][Foto NPWP: $this->emp_foto_npwp][Foto KTP: $this->emp_foto_ktp][Foto Lainnya: $this->emp_foto_lain][Foto Diri: $this->emp_foto][Gaji: $this->emp_gaji][Stard Date: $this->emp_startdate][End Date: $this->emp_enddate][No Rek: $this->emp_rek][Gender: $this->emp_gender][Panggilan: $this->emp_suff][Status: $this->emp_status][Waktu Ditambahkan: $this->emp_create_date][Oleh: $nama_user]";
       $log_all_it = "";
-      $log_all_user = $this->id_last_modified;
+      $log_all_user = $this->id_create_data;
       $log_all_tgl = $this->emp_create_date;
 
       $data_log = array(
@@ -323,7 +323,24 @@ class M_employee extends ci_model
         "emp_last_modified" => $this->emp_last_modified,
         "id_last_modified" => $this->id_last_modified,
       );
-      updaterow($this->tbl_name, $data, $where);
+      updateRow($this->tbl_name, $data, $where);
+        $id_pk = $this->id_pk_employee;
+        $log_all_msg = "Data Employee dengan ID: $id_pk diubah. Waktu diubah: $this->emp_last_modified . Data berubah menjadi: ";
+        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+        $log_all_data_changes = "[ID Employee: $id_pk][Nama: $this->emp_nama][NPWP: $this->emp_npwp][KTP: $this->emp_ktp][No HP: $this->emp_hp][Alamat: $this->emp_alamat][Kode Pos: $this->emp_kode_pos][Foto NPWP: $this->emp_foto_npwp][Foto KTP: $this->emp_foto_ktp][Foto Lainnya: $this->emp_foto_lain][Foto Diri: $this->emp_foto][Gaji: $this->emp_gaji][Stard Date: $this->emp_startdate][End Date: $this->emp_enddate][No Rek: $this->emp_rek][Gender: $this->emp_gender][Panggilan: $this->emp_suff][Waktu Diubah: $this->emp_last_modified][Oleh: $nama_user]";
+        $log_all_it = "";
+        $log_all_user = $this->id_last_modified;
+        $log_all_tgl = $this->emp_last_modified;
+
+        $data_log = array(
+          "log_all_msg" => $log_all_msg,
+          "log_all_data_changes" => $log_all_data_changes,
+          "log_all_it" => $log_all_it,
+          "log_all_user" => $log_all_user,
+          "log_all_tgl" => $log_all_tgl
+        );
+        insertrow("log_all", $data_log);
       return true;
     } else {
       return false;
