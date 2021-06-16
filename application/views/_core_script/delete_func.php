@@ -2,7 +2,6 @@
   function delete_func() {
     var id = $("#id_delete").val();
     var url = "";
-    console.log(typeof(delete_params));
     if (typeof(delete_params) == 'undefined') {
       url = "<?php echo base_url(); ?>ws/" + ctrl + "/delete?id=" + id;
     } else {
@@ -21,6 +20,7 @@
           if (typeof(refresh) != "undefined") {
             refresh(page);
           }
+            console.log("Test2");
           //notification
         }
 

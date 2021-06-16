@@ -38,7 +38,7 @@
                 </table>
                 <div class = "form-group">
                     <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                    <button type = "button" id = "delete-permintaan-button" onclick = "delete_func()" class = "btn btn-sm btn-primary">Delete</button>
+                    <button type = "button" id = "delete-permintaan-button" onclick = "delete_func();load_permintaan_barang_content();" class = "btn btn-sm btn-primary">Delete</button>
                 </div>
             </div>
         </div>

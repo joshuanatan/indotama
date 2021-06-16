@@ -14,7 +14,7 @@
                     <input type = "hidden" name = "id" id = "id_edit">
                     <div class = "form-group">
                         <h5>Nomor Pembelian</h5>
-                        <input readonly type = "text" class = "form-control" list = "datalist_pembelian" required id = "no_pembelian_edit">
+                        <input readonly type = "text" class = "form-control" list = "datalist_pembelian_toko" required id = "no_pembelian_edit">
                     </div>
                     <div class = "form-group">
                         <h5>Tanggal Penerimaan</h5>
