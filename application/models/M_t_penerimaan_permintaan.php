@@ -150,7 +150,7 @@ class M_t_penerimaan_permintaan extends ci_model
         from tbl_brg_pengiriman
         inner join mstr_pengiriman on mstr_pengiriman.id_pk_pengiriman = tbl_brg_pengiriman.id_fk_pengiriman and mstr_pengiriman.pengiriman_status = 'aktif' #harus yang jadi terkirim bukan yang dicancel
         inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = mstr_pengiriman.id_fk_warehouse
-        inner join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_pengiriman.id_fk_cabang #dapetin daerah cabang
+        inner join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_warehouse.id_fk_cabang #dapetin daerah cabang
         inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko #dapetin nama toko
         inner join tbl_brg_pemenuhan on tbl_brg_pemenuhan.id_pk_brg_pemenuhan = tbl_brg_pengiriman.id_fk_brg_pemenuhan #cuman untuk dapetin id_cabang_minta & id_barang
         inner join tbl_brg_permintaan on tbl_brg_permintaan.id_pk_brg_permintaan = tbl_brg_pemenuhan.id_fk_brg_permintaan and tbl_brg_permintaan.id_fk_cabang = ? #menentukan peminta barang yang akan jadi penerima
