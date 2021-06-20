@@ -414,166 +414,71 @@ class M_brg_cabang extends ci_model
   }
   public function check_insert()
   {
-    if ($this->brg_cabang_qty == "") {
-      return false;
-    }
-    if ($this->brg_cabang_notes == "") {
-      return false;
-    }
-    if ($this->brg_cabang_status == "") {
-      return false;
-    }
-    if ($this->id_fk_brg == "") {
-      return false;
-    }
-    if ($this->id_fk_cabang == "") {
-      return false;
-    }
-    if ($this->brg_cabang_create_date == "") {
-      return false;
-    }
-    if ($this->brg_cabang_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_brg_cabang == "") {
-      return false;
-    }
-    if ($this->brg_cabang_qty == "") {
-      return false;
-    }
-    if ($this->brg_cabang_notes == "") {
-      return false;
-    }
-    if ($this->id_fk_brg == "") {
-      return false;
-    }
-    if ($this->brg_cabang_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_brg_cabang == "") {
-      return false;
-    }
-    if ($this->brg_cabang_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($brg_cabang_qty, $brg_cabang_notes, $brg_cabang_status, $id_fk_brg, $id_fk_cabang)
   {
-    if (!$this->set_brg_cabang_qty($brg_cabang_qty)) {
-      return false;
-    }
-    if (!$this->set_brg_cabang_notes($brg_cabang_notes)) {
-      return false;
-    }
-    if (!$this->set_brg_cabang_status($brg_cabang_status)) {
-      return false;
-    }
-    if (!$this->set_id_fk_brg($id_fk_brg)) {
-      return false;
-    }
-    if (!$this->set_id_fk_cabang($id_fk_cabang)) {
-      return false;
-    }
+    $this->set_brg_cabang_qty($brg_cabang_qty);
+    $this->set_brg_cabang_notes($brg_cabang_notes);
+    $this->set_brg_cabang_status($brg_cabang_status);
+    $this->set_id_fk_brg($id_fk_brg);
+    $this->set_id_fk_cabang($id_fk_cabang);
     return true;
   }
   public function set_update($id_pk_brg_cabang, $brg_cabang_qty, $brg_cabang_notes, $id_fk_brg)
   {
-    if (!$this->set_id_pk_brg_cabang($id_pk_brg_cabang)) {
-      return false;
-    }
-    if (!$this->set_brg_cabang_qty($brg_cabang_qty)) {
-      return false;
-    }
-    if (!$this->set_brg_cabang_notes($brg_cabang_notes)) {
-      return false;
-    }
-    if (!$this->set_id_fk_brg($id_fk_brg)) {
-      return false;
-    }
+    $this->set_id_pk_brg_cabang($id_pk_brg_cabang);
+    $this->set_brg_cabang_qty($brg_cabang_qty);
+    $this->set_brg_cabang_notes($brg_cabang_notes);
+    $this->set_id_fk_brg($id_fk_brg);
     return true;
   }
   public function set_delete($id_pk_brg_cabang)
   {
-    if (!$this->set_id_pk_brg_cabang($id_pk_brg_cabang)) {
-      return false;
-    }
+    $this->set_id_pk_brg_cabang($id_pk_brg_cabang);
     return true;
   }
   public function set_id_pk_brg_cabang($id_pk_brg_cabang)
   {
-    if ($id_pk_brg_cabang != "") {
-      $this->id_pk_brg_cabang = $id_pk_brg_cabang;
+    $this->id_pk_brg_cabang = $id_pk_brg_cabang;
       return true;
-    }
-    return false;
   }
   public function set_brg_cabang_qty($brg_cabang_qty)
   {
-    if ($brg_cabang_qty != "") {
-      $this->brg_cabang_qty = $brg_cabang_qty;
+    $this->brg_cabang_qty = $brg_cabang_qty;
       return true;
-    }
-    return false;
   }
   public function set_brg_cabang_notes($brg_cabang_notes)
   {
-    if ($brg_cabang_notes != "") {
-      $this->brg_cabang_notes = $brg_cabang_notes;
+    $this->brg_cabang_notes = $brg_cabang_notes;
       return true;
-    }
-    return false;
   }
   public function set_brg_cabang_status($brg_cabang_status)
   {
-    if ($brg_cabang_status != "") {
-      $this->brg_cabang_status = $brg_cabang_status;
+    $this->brg_cabang_status = $brg_cabang_status;
       return true;
-    }
-    return false;
   }
   public function set_brg_cabang_last_price($brg_cabang_last_price)
   {
-    if ($brg_cabang_last_price != "") {
-      $this->brg_cabang_last_price = $brg_cabang_last_price;
+    $this->brg_cabang_last_price = $brg_cabang_last_price;
       return true;
-    }
-    return false;
   }
   public function set_id_fk_brg($id_fk_brg)
   {
-    if ($id_fk_brg != "") {
-      $this->id_fk_brg = $id_fk_brg;
+    $this->id_fk_brg = $id_fk_brg;
       return true;
-    }
-    return false;
   }
   public function set_id_fk_cabang($id_fk_cabang)
   {
-    if ($id_fk_cabang != "") {
-      $this->id_fk_cabang = $id_fk_cabang;
+    $this->id_fk_cabang = $id_fk_cabang;
       return true;
-    }
-    return false;
   }
 }

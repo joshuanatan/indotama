@@ -1,32 +1,35 @@
 <?php
 defined("BASEPATH") or exit("no direct script");
 date_default_timezone_set("asia/jakarta");
-class M_penerimaan extends ci_model{
-    private $tbl_name = "mstr_penerimaan";
-    private $columns = array();
-    private $id_pk_penerimaan;
-    private $penerimaan_tgl;
-    private $penerimaan_status;
-    private $penerimaan_tipe;
-    private $id_fk_pembelian;
-    private $id_fk_retur;
-    private $penerimaan_tempat;
-    private $id_fk_warehouse;
-    private $id_fk_cabang;
-    private $penerimaan_create_date;
-    private $penerimaan_last_modified;
-    private $id_create_data;
-    private $id_last_modified;
+class M_penerimaan extends ci_model
+{
+  private $tbl_name = "mstr_penerimaan";
+  private $columns = array();
+  private $id_pk_penerimaan;
+  private $penerimaan_tgl;
+  private $penerimaan_status;
+  private $penerimaan_tipe;
+  private $id_fk_pembelian;
+  private $id_fk_retur;
+  private $penerimaan_tempat;
+  private $id_fk_warehouse;
+  private $id_fk_cabang;
+  private $penerimaan_create_date;
+  private $penerimaan_last_modified;
+  private $id_create_data;
+  private $id_last_modified;
 
-    public function __construct(){
-        parent::__construct();
-        $this->penerimaan_create_date = date("y-m-d h:i:s");
-        $this->penerimaan_last_modified = date("y-m-d h:i:s");
-        $this->id_create_data = $this->session->id_user;
-        $this->id_last_modified = $this->session->id_user;
-    }
-    public function install(){
-        $sql = "
+  public function __construct()
+  {
+    parent::__construct();
+    $this->penerimaan_create_date = date("y-m-d h:i:s");
+    $this->penerimaan_last_modified = date("y-m-d h:i:s");
+    $this->id_create_data = $this->session->id_user;
+    $this->id_last_modified = $this->session->id_user;
+  }
+  public function install()
+  {
+    $sql = "
         drop table if exists mstr_penerimaan;
         create table mstr_penerimaan(
             id_pk_penerimaan int primary key auto_increment,
@@ -92,452 +95,353 @@ class M_penerimaan extends ci_model{
         end$$
         delimiter ;
         ";
-        executequery($sql);
+    executequery($sql);
+  }
+  public function columns($tipe = "pembelian")
+  {
+    if ($tipe == "pembelian") {
+      $this->column_penerimaan_pembelian();
+    } else if ($tipe == "retur") {
+      $this->column_penerimaan_retur();
     }
-    public function columns($tipe = "pembelian"){
-        if($tipe == "pembelian"){
-            $this->column_penerimaan_pembelian();
-        }
-        else if($tipe == "retur"){
-            $this->column_penerimaan_retur();
-        }
-        return $this->columns;
+    return $this->columns;
+  }
+  private function column_penerimaan_pembelian()
+  {
+    $this->columns = array();
+    $this->set_column("penerimaan_tgl", "tanggal penerimaan", true);
+    $this->set_column("pem_pk_nomor", "nomor pembelian", false);
+    $this->set_column("penerimaan_status", "status", false);
+    $this->set_column("penerimaan_last_modified", "last modified", false);
+  }
+  private function column_penerimaan_retur()
+  {
+    $this->columns = array();
+    $this->set_column("penerimaan_tgl", "tanggal penerimaan", true);
+    $this->set_column("retur_no", "nomor retur", false);
+    $this->set_column("penerimaan_status", "status", false);
+    $this->set_column("penerimaan_last_modified", "last modified", false);
+  }
+  private function set_column($col_name, $col_disp, $order_by)
+  {
+    $array = array(
+      "col_name" => $col_name,
+      "col_disp" => $col_disp,
+      "order_by" => $order_by
+    );
+    $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
+  }
+  public function content($page = 1, $order_by = 0, $order_direction = "asc", $search_key = "", $data_per_page = "", $penerimaan_tipe = "pembelian")
+  {
+    if ($penerimaan_tipe == "pembelian") {
+      $this->column_penerimaan_pembelian();
+      $order_by = $this->columns[$order_by]["col_name"];
+      $result = $this->content_pembelian($page, $order_by, $order_direction, $search_key, $data_per_page);
+    } else if ($penerimaan_tipe == "retur") {
+      $this->column_penerimaan_retur();
+      $order_by = $this->columns[$order_by]["col_name"];
+      $result = $this->content_retur($page, $order_by, $order_direction, $search_key, $data_per_page);
     }
-    private function column_penerimaan_pembelian(){
-        $this->columns = array();
-        $this->set_column("penerimaan_tgl","tanggal penerimaan",true);
-        $this->set_column("pem_pk_nomor","nomor pembelian",false);
-        $this->set_column("penerimaan_status","status",false);
-        $this->set_column("penerimaan_last_modified","last modified",false);
-    }
-    private function column_penerimaan_retur(){
-        $this->columns = array();
-        $this->set_column("penerimaan_tgl","tanggal penerimaan",true);
-        $this->set_column("retur_no","nomor retur",false);
-        $this->set_column("penerimaan_status","status",false);
-        $this->set_column("penerimaan_last_modified","last modified",false);
-    }
-    private function set_column($col_name,$col_disp,$order_by){
-        $array = array(
-            "col_name" => $col_name,
-            "col_disp" => $col_disp,
-            "order_by" => $order_by
-        );
-        $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
-    }
-    public function content($page = 1,$order_by = 0, $order_direction = "asc", $search_key = "",$data_per_page = "",$penerimaan_tipe = "pembelian"){
-        if($penerimaan_tipe == "pembelian"){
-            $this->column_penerimaan_pembelian();
-            $order_by = $this->columns[$order_by]["col_name"];
-            $result = $this->content_pembelian($page,$order_by,$order_direction,$search_key,$data_per_page);
-        }
-        else if($penerimaan_tipe == "retur"){
-            $this->column_penerimaan_retur();
-            $order_by = $this->columns[$order_by]["col_name"];
-            $result = $this->content_retur($page,$order_by,$order_direction,$search_key,$data_per_page);
-        }
-        return $result;
-    }
-    private function content_pembelian($page,$order_by,$order_direction,$search_key,$data_per_page){
-        $search_query = "";
-        if($search_key != ""){
-            $search_query .= "and
+    return $result;
+  }
+  private function content_pembelian($page, $order_by, $order_direction, $search_key, $data_per_page)
+  {
+    $search_query = "";
+    if ($search_key != "") {
+      $search_query .= "and
             (
-                id_pk_penerimaan like '%".$search_key."%' or
-                penerimaan_tgl like '%".$search_key."%' or
-                penerimaan_status like '%".$search_key."%' or
-                id_fk_pembelian like '%".$search_key."%' or
-                penerimaan_tempat like '%".$search_key."%' or
-                penerimaan_last_modified like '%".$search_key."%'
+                id_pk_penerimaan like '%" . $search_key . "%' or
+                penerimaan_tgl like '%" . $search_key . "%' or
+                penerimaan_status like '%" . $search_key . "%' or
+                id_fk_pembelian like '%" . $search_key . "%' or
+                penerimaan_tempat like '%" . $search_key . "%' or
+                penerimaan_last_modified like '%" . $search_key . "%'
             )";
-        }
-        if(strtolower($this->penerimaan_tempat) == "cabang"){
-            $query = "
-            select id_pk_penerimaan,penerimaan_tgl,penerimaan_status,id_fk_pembelian,penerimaan_tempat,".$this->tbl_name.".id_fk_warehouse,".$this->tbl_name.".id_fk_cabang,penerimaan_last_modified,pem_pk_nomor
-            from ".$this->tbl_name." 
-            inner join mstr_pembelian on mstr_pembelian.id_pk_pembelian = ".$this->tbl_name.".id_fk_pembelian
+    }
+    if (strtolower($this->penerimaan_tempat) == "cabang") {
+      $query = "
+            select id_pk_penerimaan,penerimaan_tgl,penerimaan_status,id_fk_pembelian,penerimaan_tempat," . $this->tbl_name . ".id_fk_warehouse," . $this->tbl_name . ".id_fk_cabang,penerimaan_last_modified,pem_pk_nomor
+            from " . $this->tbl_name . " 
+            inner join mstr_pembelian on mstr_pembelian.id_pk_pembelian = " . $this->tbl_name . ".id_fk_pembelian
             inner join mstr_supplier on mstr_supplier.id_pk_sup = mstr_pembelian.id_fk_supp
-            inner join mstr_cabang on mstr_cabang.id_pk_cabang = ".$this->tbl_name.".id_fk_cabang
+            inner join mstr_cabang on mstr_cabang.id_pk_cabang = " . $this->tbl_name . ".id_fk_cabang
             inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
-            where penerimaan_status = ? and sup_status = ? and cabang_status = ? and toko_status = ? and ".$this->tbl_name.".id_fk_cabang = ? ".$search_query."  
-            order by ".$order_by." ".$order_direction." 
-            limit 20 offset ".($page-1)*$data_per_page;
-            $args = array(
-                "aktif","aktif","aktif","aktif",$this->id_fk_cabang
-            );
-            $result["data"] = executequery($query,$args);
-            $query = "
+            where penerimaan_status = ? and sup_status = ? and cabang_status = ? and toko_status = ? and " . $this->tbl_name . ".id_fk_cabang = ? " . $search_query . "  
+            order by " . $order_by . " " . $order_direction . " 
+            limit 20 offset " . ($page - 1) * $data_per_page;
+      $args = array(
+        "aktif", "aktif", "aktif", "aktif", $this->id_fk_cabang
+      );
+      $result["data"] = executequery($query, $args);
+      $query = "
             select id_pk_penerimaan
-            from ".$this->tbl_name." 
-            inner join mstr_pembelian on mstr_pembelian.id_pk_pembelian = ".$this->tbl_name.".id_fk_pembelian
+            from " . $this->tbl_name . " 
+            inner join mstr_pembelian on mstr_pembelian.id_pk_pembelian = " . $this->tbl_name . ".id_fk_pembelian
             inner join mstr_supplier on mstr_supplier.id_pk_sup = mstr_pembelian.id_fk_supp
-            inner join mstr_cabang on mstr_cabang.id_pk_cabang = ".$this->tbl_name.".id_fk_cabang
+            inner join mstr_cabang on mstr_cabang.id_pk_cabang = " . $this->tbl_name . ".id_fk_cabang
             inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
-            where penerimaan_status = ? and sup_status = ? and cabang_status = ? and toko_status = ? and ".$this->tbl_name.".id_fk_cabang = ? ".$search_query."  
-            order by ".$order_by." ".$order_direction;
-            $result["total_data"] = executequery($query,$args)->num_rows();
-        }
-        else{
-            $query = "
-            select id_pk_penerimaan,penerimaan_tgl,penerimaan_status,id_fk_pembelian,penerimaan_tempat,".$this->tbl_name.".id_fk_warehouse,".$this->tbl_name.".id_fk_cabang,penerimaan_last_modified,pem_pk_nomor
-            from ".$this->tbl_name." 
-            inner join mstr_pembelian on mstr_pembelian.id_pk_pembelian = ".$this->tbl_name.".id_fk_pembelian
+            where penerimaan_status = ? and sup_status = ? and cabang_status = ? and toko_status = ? and " . $this->tbl_name . ".id_fk_cabang = ? " . $search_query . "  
+            order by " . $order_by . " " . $order_direction;
+      $result["total_data"] = executequery($query, $args)->num_rows();
+    } else {
+      $query = "
+            select id_pk_penerimaan,penerimaan_tgl,penerimaan_status,id_fk_pembelian,penerimaan_tempat," . $this->tbl_name . ".id_fk_warehouse," . $this->tbl_name . ".id_fk_cabang,penerimaan_last_modified,pem_pk_nomor
+            from " . $this->tbl_name . " 
+            inner join mstr_pembelian on mstr_pembelian.id_pk_pembelian = " . $this->tbl_name . ".id_fk_pembelian
             inner join mstr_supplier on mstr_supplier.id_pk_sup = mstr_pembelian.id_fk_supp
-            inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = ".$this->tbl_name.".id_fk_warehouse
-            where penerimaan_status = ? and sup_status = ? and ".$this->tbl_name.".id_fk_warehouse = ? ".$search_query." 
-            order by ".$order_by." ".$order_direction." 
-            limit 20 offset ".($page-1)*$data_per_page;
-            $args = array(
-                "aktif","aktif",$this->id_fk_warehouse
-            );
-            $result["data"] = executequery($query,$args);
-            $query = "
+            inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = " . $this->tbl_name . ".id_fk_warehouse
+            where penerimaan_status = ? and sup_status = ? and " . $this->tbl_name . ".id_fk_warehouse = ? " . $search_query . " 
+            order by " . $order_by . " " . $order_direction . " 
+            limit 20 offset " . ($page - 1) * $data_per_page;
+      $args = array(
+        "aktif", "aktif", $this->id_fk_warehouse
+      );
+      $result["data"] = executequery($query, $args);
+      $query = "
             select id_pk_pembelian
-            from ".$this->tbl_name." 
-            inner join mstr_pembelian on mstr_pembelian.id_pk_pembelian = ".$this->tbl_name.".id_fk_pembelian
+            from " . $this->tbl_name . " 
+            inner join mstr_pembelian on mstr_pembelian.id_pk_pembelian = " . $this->tbl_name . ".id_fk_pembelian
             inner join mstr_supplier on mstr_supplier.id_pk_sup = mstr_pembelian.id_fk_supp
-            inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = ".$this->tbl_name.".id_fk_warehouse
-            where penerimaan_status = ? and sup_status = ? and ".$this->tbl_name.".id_fk_warehouse = ? ".$search_query." 
-            order by ".$order_by." ".$order_direction;
-            $result["total_data"] = executequery($query,$args)->num_rows();
-        }
-        return $result;
+            inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = " . $this->tbl_name . ".id_fk_warehouse
+            where penerimaan_status = ? and sup_status = ? and " . $this->tbl_name . ".id_fk_warehouse = ? " . $search_query . " 
+            order by " . $order_by . " " . $order_direction;
+      $result["total_data"] = executequery($query, $args)->num_rows();
     }
-    private function content_retur($page,$order_by,$order_direction,$search_key,$data_per_page){
-        $search_query = "";
-        if($search_key != ""){
-            $search_query .= "and
+    return $result;
+  }
+  private function content_retur($page, $order_by, $order_direction, $search_key, $data_per_page)
+  {
+    $search_query = "";
+    if ($search_key != "") {
+      $search_query .= "and
             (
-                id_pk_penerimaan like '%".$search_key."%' or
-                penerimaan_tgl like '%".$search_key."%' or
-                penerimaan_status like '%".$search_key."%' or
-                id_fk_pembelian like '%".$search_key."%' or
-                penerimaan_tempat like '%".$search_key."%' or
-                penerimaan_last_modified like '%".$search_key."%'
+                id_pk_penerimaan like '%" . $search_key . "%' or
+                penerimaan_tgl like '%" . $search_key . "%' or
+                penerimaan_status like '%" . $search_key . "%' or
+                id_fk_pembelian like '%" . $search_key . "%' or
+                penerimaan_tempat like '%" . $search_key . "%' or
+                penerimaan_last_modified like '%" . $search_key . "%'
             )";
-        }
-        if(strtolower($this->penerimaan_tempat) == "cabang"){
-            $query = "
-            select id_pk_penerimaan,penerimaan_tgl,penerimaan_status,id_fk_pembelian,penerimaan_tempat,".$this->tbl_name.".id_fk_warehouse,".$this->tbl_name.".id_fk_cabang,penerimaan_last_modified,penj_nomor,retur_no
-            from ".$this->tbl_name." 
-            inner join mstr_retur on mstr_retur.id_pk_retur = ".$this->tbl_name.".id_fk_retur
+    }
+    if (strtolower($this->penerimaan_tempat) == "cabang") {
+      $query = "
+            select id_pk_penerimaan,penerimaan_tgl,penerimaan_status,id_fk_pembelian,penerimaan_tempat," . $this->tbl_name . ".id_fk_warehouse," . $this->tbl_name . ".id_fk_cabang,penerimaan_last_modified,penj_nomor,retur_no
+            from " . $this->tbl_name . " 
+            inner join mstr_retur on mstr_retur.id_pk_retur = " . $this->tbl_name . ".id_fk_retur
             inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
             inner join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_penjualan.id_fk_cabang
             inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
-            where penerimaan_status = ? and retur_status = ? and cabang_status = ? and toko_status = ? and ".$this->tbl_name.".id_fk_cabang = ? ".$search_query."  
-            order by ".$order_by." ".$order_direction." 
-            limit 20 offset ".($page-1)*$data_per_page;
-            $args = array(
-                "aktif","aktif","aktif","aktif",$this->id_fk_cabang
-            );
-            $result["data"] = executequery($query,$args);
-            $query = "
+            where penerimaan_status = ? and retur_status = ? and cabang_status = ? and toko_status = ? and " . $this->tbl_name . ".id_fk_cabang = ? " . $search_query . "  
+            order by " . $order_by . " " . $order_direction . " 
+            limit 20 offset " . ($page - 1) * $data_per_page;
+      $args = array(
+        "aktif", "aktif", "aktif", "aktif", $this->id_fk_cabang
+      );
+      $result["data"] = executequery($query, $args);
+      $query = "
             select id_pk_penerimaan
-            from ".$this->tbl_name." 
-            inner join mstr_retur on mstr_retur.id_pk_retur = ".$this->tbl_name.".id_fk_retur
+            from " . $this->tbl_name . " 
+            inner join mstr_retur on mstr_retur.id_pk_retur = " . $this->tbl_name . ".id_fk_retur
             inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
             inner join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_penjualan.id_fk_cabang
             inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
-            where penerimaan_status = ? and retur_status = ? and cabang_status = ? and toko_status = ? and ".$this->tbl_name.".id_fk_cabang = ? ".$search_query."  
-            order by ".$order_by." ".$order_direction;
-            $result["total_data"] = executequery($query,$args)->num_rows();
-        }
-        else{
-            $query = "
-            select id_pk_penerimaan,penerimaan_tgl,penerimaan_status,id_fk_retur,penerimaan_tempat,".$this->tbl_name.".id_fk_warehouse,".$this->tbl_name.".id_fk_cabang,penerimaan_last_modified,retur_no
-            from ".$this->tbl_name." 
-            inner join mstr_retur on mstr_retur.id_pk_retur = ".$this->tbl_name.".id_fk_retur
-            inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = ".$this->tbl_name.".id_fk_warehouse
-            where penerimaan_status = ? and sup_status = ? and ".$this->tbl_name.".id_fk_warehouse = ? ".$search_query." 
-            order by ".$order_by." ".$order_direction." 
-            limit 20 offset ".($page-1)*$data_per_page;
-            $args = array(
-                "aktif","aktif",$this->id_fk_warehouse
-            );
-            $result["data"] = executequery($query,$args);
-            $query = "
+            where penerimaan_status = ? and retur_status = ? and cabang_status = ? and toko_status = ? and " . $this->tbl_name . ".id_fk_cabang = ? " . $search_query . "  
+            order by " . $order_by . " " . $order_direction;
+      $result["total_data"] = executequery($query, $args)->num_rows();
+    } else {
+      $query = "
+            select id_pk_penerimaan,penerimaan_tgl,penerimaan_status,id_fk_retur,penerimaan_tempat," . $this->tbl_name . ".id_fk_warehouse," . $this->tbl_name . ".id_fk_cabang,penerimaan_last_modified,retur_no
+            from " . $this->tbl_name . " 
+            inner join mstr_retur on mstr_retur.id_pk_retur = " . $this->tbl_name . ".id_fk_retur
+            inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = " . $this->tbl_name . ".id_fk_warehouse
+            where penerimaan_status = ? and sup_status = ? and " . $this->tbl_name . ".id_fk_warehouse = ? " . $search_query . " 
+            order by " . $order_by . " " . $order_direction . " 
+            limit 20 offset " . ($page - 1) * $data_per_page;
+      $args = array(
+        "aktif", "aktif", $this->id_fk_warehouse
+      );
+      $result["data"] = executequery($query, $args);
+      $query = "
             select id_pk_pembelian
-            from ".$this->tbl_name." 
-            inner join mstr_pembelian on mstr_pembelian.id_pk_pembelian = ".$this->tbl_name.".id_fk_pembelian
+            from " . $this->tbl_name . " 
+            inner join mstr_pembelian on mstr_pembelian.id_pk_pembelian = " . $this->tbl_name . ".id_fk_pembelian
             inner join mstr_supplier on mstr_supplier.id_pk_sup = mstr_pembelian.id_fk_supp
-            inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = ".$this->tbl_name.".id_fk_warehouse
-            where penerimaan_status = ? and sup_status = ? and ".$this->tbl_name.".id_fk_warehouse = ? ".$search_query." 
-            order by ".$order_by." ".$order_direction;
-            $result["total_data"] = executequery($query,$args)->num_rows();
-        }
-        return $result;
+            inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = " . $this->tbl_name . ".id_fk_warehouse
+            where penerimaan_status = ? and sup_status = ? and " . $this->tbl_name . ".id_fk_warehouse = ? " . $search_query . " 
+            order by " . $order_by . " " . $order_direction;
+      $result["total_data"] = executequery($query, $args)->num_rows();
     }
-    public function insert(){
-        if($this->check_insert()){
-            $data = array(
-                "penerimaan_tgl" => $this->penerimaan_tgl,
-                "penerimaan_status" => $this->penerimaan_status,
-                "penerimaan_tipe" => $this->penerimaan_tipe,
-                "id_fk_pembelian" => $this->id_fk_pembelian,
-                "id_fk_retur" => $this->id_fk_retur,
-                "penerimaan_tempat" => $this->penerimaan_tempat,
-                "penerimaan_create_date" => $this->penerimaan_create_date,
-                "penerimaan_last_modified" => $this->penerimaan_last_modified,
-                "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified
-            );
-            if(strtolower($this->penerimaan_tempat) == "warehouse"){
-                $data["id_fk_warehouse"] = $this->id_fk_warehouse;
-            }
-            else if(strtolower($this->penerimaan_tempat) == "cabang"){
-                $data["id_fk_cabang"] = $this->id_fk_cabang;
-            }
-            $id_hasil_insert = insertrow($this->tbl_name, $data);
+    return $result;
+  }
+  public function insert()
+  {
+    if ($this->check_insert()) {
+      $data = array(
+        "penerimaan_tgl" => $this->penerimaan_tgl,
+        "penerimaan_status" => $this->penerimaan_status,
+        "penerimaan_tipe" => $this->penerimaan_tipe,
+        "id_fk_pembelian" => $this->id_fk_pembelian,
+        "id_fk_retur" => $this->id_fk_retur,
+        "penerimaan_tempat" => $this->penerimaan_tempat,
+        "penerimaan_create_date" => $this->penerimaan_create_date,
+        "penerimaan_last_modified" => $this->penerimaan_last_modified,
+        "id_create_data" => $this->id_create_data,
+        "id_last_modified" => $this->id_last_modified
+      );
+      if (strtolower($this->penerimaan_tempat) == "warehouse") {
+        $data["id_fk_warehouse"] = $this->id_fk_warehouse;
+      } else if (strtolower($this->penerimaan_tempat) == "cabang") {
+        $data["id_fk_cabang"] = $this->id_fk_cabang;
+      }
+      $id_hasil_insert = insertrow($this->tbl_name, $data);
 
-            $log_all_msg = "Data Penerimaan baru ditambahkan. Waktu penambahan: $this->penerimaan_create_date";
-            $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_create_data));
+      $log_all_msg = "Data Penerimaan baru ditambahkan. Waktu penambahan: $this->penerimaan_create_date";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_create_data));
 
-            $log_all_data_changes = "[ID Penerimaan: $id_hasil_insert][Tanggal Penerimaan: $this->penerimaan_tgl][Penerimaan Status: $this->penerimaan_status][Tipe Penerimaan: $this->penerimaan_tipe][ID Pembelian: $this->id_fk_pembelian][ID Retur: $this->id_fk_retur][Tempat: $this->penerimaan_tempat][Waktu Ditambahkan: $this->penerimaan_create_date][Oleh: $nama_user]";
-            $log_all_it = "";
-            $log_all_user = $this->id_create_data;
-            $log_all_tgl = $this->penerimaan_create_date;
+      $log_all_data_changes = "[ID Penerimaan: $id_hasil_insert][Tanggal Penerimaan: $this->penerimaan_tgl][Penerimaan Status: $this->penerimaan_status][Tipe Penerimaan: $this->penerimaan_tipe][ID Pembelian: $this->id_fk_pembelian][ID Retur: $this->id_fk_retur][Tempat: $this->penerimaan_tempat][Waktu Ditambahkan: $this->penerimaan_create_date][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_create_data;
+      $log_all_tgl = $this->penerimaan_create_date;
 
-            $data_log = array(
-                "log_all_msg" => $log_all_msg,
-                "log_all_data_changes" => $log_all_data_changes,
-                "log_all_it" => $log_all_it,
-                "log_all_user" => $log_all_user,
-                "log_all_tgl" => $log_all_tgl
-            );
-            insertrow("log_all", $data_log);
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
 
-            return $id_hasil_insert;
-        }
-        return false;
+      return $id_hasil_insert;
     }
-    public function update(){
-        if($this->check_update()){
-            $where = array(
-                "id_pk_penerimaan" => $this->id_pk_penerimaan
-            );
-            $data = array(
-                "penerimaan_tgl" => $this->penerimaan_tgl,
-                "penerimaan_last_modified" => $this->penerimaan_last_modified,
-                "id_last_modified" => $this->id_last_modified
-            );
-            updaterow($this->tbl_name,$data,$where);
-            $id_pk = $this->id_pk_penerimaan;
-        $log_all_msg = "Data Penerimaan dengan ID: $id_pk diubah. Waktu diubah: $this->penerimaan_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+    return false;
+  }
+  public function update()
+  {
+    if ($this->check_update()) {
+      $where = array(
+        "id_pk_penerimaan" => $this->id_pk_penerimaan
+      );
+      $data = array(
+        "penerimaan_tgl" => $this->penerimaan_tgl,
+        "penerimaan_last_modified" => $this->penerimaan_last_modified,
+        "id_last_modified" => $this->id_last_modified
+      );
+      updaterow($this->tbl_name, $data, $where);
+      $id_pk = $this->id_pk_penerimaan;
+      $log_all_msg = "Data Penerimaan dengan ID: $id_pk diubah. Waktu diubah: $this->penerimaan_last_modified . Data berubah menjadi: ";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Penerimaan: $id_pk][Tanggal Penerimaan: $this->penerimaan_tgl][Waktu Diedit: $this->penerimaan_last_modified][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->penerimaan_last_modified;
+      $log_all_data_changes = "[ID Penerimaan: $id_pk][Tanggal Penerimaan: $this->penerimaan_tgl][Waktu Diedit: $this->penerimaan_last_modified][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->penerimaan_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
-            return true;
-        }
-        return false;
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
+      return true;
     }
-    public function delete(){
-        if($this->check_delete()){
-            $where = array(
-                "id_pk_penerimaan" => $this->id_pk_penerimaan
-            );
-            $data = array(
-                "penerimaan_status" => "nonaktif",
-                "penerimaan_last_modified" => $this->penerimaan_last_modified,
-                "id_last_modified" => $this->id_last_modified
-            );
-            updaterow($this->tbl_name,$data,$where);
-            return true;
-        }
-        return false;
+    return false;
+  }
+  public function delete()
+  {
+    if ($this->check_delete()) {
+      $where = array(
+        "id_pk_penerimaan" => $this->id_pk_penerimaan
+      );
+      $data = array(
+        "penerimaan_status" => "nonaktif",
+        "penerimaan_last_modified" => $this->penerimaan_last_modified,
+        "id_last_modified" => $this->id_last_modified
+      );
+      updaterow($this->tbl_name, $data, $where);
+      return true;
     }
-    public function check_insert(){
-        if($this->penerimaan_tgl == ""){
-            return false;
-        }
-        if($this->penerimaan_status == ""){
-            return false;
-        }
-        if(strtolower($this->penerimaan_tempat) == ""){
-            return false;
-        }
-        
-        if(strtolower($this->penerimaan_tempat) == "warehouse"){
-            if($this->id_fk_warehouse == ""){
-                return false;
-            }
-        }
-        else if(strtolower($this->penerimaan_tempat) == "cabang"){
-            if($this->id_fk_cabang == ""){
-                return false;
-            }
-        }
-        if($this->penerimaan_create_date == ""){
-            return false;
-        }
-        if($this->penerimaan_last_modified == ""){
-            return false;
-        }
-        if($this->id_create_data == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        return true;
+    return false;
+  }
+  public function check_insert()
+  {
+    return true;
+  }
+  public function check_update()
+  {
+    return true;
+  }
+  public function check_delete()
+  {
+    return true;
+  }
+  public function set_insert($penerimaan_tgl, $penerimaan_status, $penerimaan_tipe, $id_fk_pembelian = "", $penerimaan_tempat, $id_tempat_penerimaan, $id_fk_retur = "")
+  {
+    #id_fk_retur ditaro dibelakang supaya ga ngerusakin yang sudah ada
+    $this->set_penerimaan_tgl($penerimaan_tgl);
+    $this->set_penerimaan_status($penerimaan_status);
+    $this->set_penerimaan_tipe($penerimaan_tipe);
+    $this->id_fk_pembelian = $id_fk_pembelian;
+    $this->id_fk_retur = $id_fk_retur;
+    $this->set_penerimaan_tempat($penerimaan_tempat);
+    if (strtolower($penerimaan_tempat) == "warehouse") {
+      $this->set_id_fk_warehouse($id_tempat_penerimaan);
+    } else if (strtolower($penerimaan_tempat) == "cabang") {
+      $this->set_id_fk_cabang($id_tempat_penerimaan);
     }
-    public function check_update(){
-        if($this->id_pk_penerimaan == ""){
-            return false;
-        }
-        if($this->penerimaan_tgl == ""){
-            return false;
-        }
-        if($this->penerimaan_last_modified == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        else return true;
-    }
-    public function check_delete(){
-        if($this->id_pk_penerimaan == ""){
-            return false;
-        }
-        if($this->penerimaan_last_modified == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        else return true;
-    }
-    public function set_insert($penerimaan_tgl,$penerimaan_status,$penerimaan_tipe,$id_fk_pembelian = "", $penerimaan_tempat,$id_tempat_penerimaan, $id_fk_retur = ""){
-        #id_fk_retur ditaro dibelakang supaya ga ngerusakin yang sudah ada
-        if(!$this->set_penerimaan_tgl($penerimaan_tgl)){
-            return false;
-        }
-        if(!$this->set_penerimaan_status($penerimaan_status)){
-            return false;
-        }
-        if(!$this->set_penerimaan_tipe($penerimaan_tipe)){
-            return false;
-        }
-        $this->id_fk_pembelian = $id_fk_pembelian;
-        $this->id_fk_retur = $id_fk_retur;
-        if(!$this->set_penerimaan_tempat($penerimaan_tempat)){
-            return false;
-        }
-        if(strtolower($penerimaan_tempat) == "warehouse"){
-            if(!$this->set_id_fk_warehouse($id_tempat_penerimaan)){
-                return false;
-            }
-        }
-        else if(strtolower($penerimaan_tempat) == "cabang"){
-            if(!$this->set_id_fk_cabang($id_tempat_penerimaan)){
-                return false;
-            }
-        }
-        return true;
-    }
-    public function set_update($id_pk_penerimaan,$penerimaan_tgl){
-        if(!$this->set_id_pk_penerimaan($id_pk_penerimaan)){
-            return false;
-        }
-        if(!$this->set_penerimaan_tgl($penerimaan_tgl)){
-            return false;
-        }
-        return true;
-    }
-    public function set_delete($id_pk_penerimaan){
-        if(!$this->set_id_pk_penerimaan($id_pk_penerimaan)){
-            return false;
-        }
-
-        return true;
-    }
-    public function set_id_pk_penerimaan($id_pk_penerimaan){
-        if($id_pk_penerimaan != ""){
-            $this->id_pk_penerimaan = $id_pk_penerimaan;
-            return true;
-        }
-        return false;
-    }
-    public function set_penerimaan_tgl($penerimaan_tgl){
-        if($penerimaan_tgl != ""){
-            $this->penerimaan_tgl = $penerimaan_tgl;
-            return true;
-        }
-        return false;
-    }
-    public function set_penerimaan_status($penerimaan_status){
-        if($penerimaan_status != ""){
-            $this->penerimaan_status = $penerimaan_status;
-            return true;
-        }
-        return false;
-    }
-    public function set_id_fk_pembelian($id_fk_pembelian){
-        if($id_fk_pembelian != ""){
-            $this->id_fk_pembelian = $id_fk_pembelian;
-            return true;
-        }
-        return false;
-    }
-    public function set_penerimaan_tempat($penerimaan_tempat){
-        if($penerimaan_tempat != ""){
-            $this->penerimaan_tempat = $penerimaan_tempat;
-            return true;
-        }
-        return false;
-    }
-    public function set_penerimaan_tipe($penerimaan_tipe){
-        if($penerimaan_tipe != ""){
-            $this->penerimaan_tipe = $penerimaan_tipe;
-            return true;
-        }
-        return false;
-    }
-    public function set_id_fk_warehouse($id_fk_warehouse){
-        if($id_fk_warehouse != ""){
-            $this->id_fk_warehouse = $id_fk_warehouse;
-            return true;
-        }
-        return false;
-    }
-    public function set_id_fk_cabang($id_fk_cabang){
-        if($id_fk_cabang != ""){
-            $this->id_fk_cabang = $id_fk_cabang;
-            return true;
-        }
-        return false;
-    }
-    public function get_id_pk_penerimaan(){
-        return $this->id_pk_penerimaan;
-    }
-    public function get_penerimaan_tgl(){
-        return $this->penerimaan_tgl;
-    }
-    public function get_penerimaan_status(){
-        return $this->penerimaan_status;
-    }
-    public function get_id_fk_pembelian(){
-        return $this->id_fk_pembelian;
-    }
-    public function get_penerimaan_tempat(){
-        return $this->penerimaan_tempat;
-    }
-    public function get_id_fk_warehouse(){
-        return $this->id_fk_warehouse;
-    }
-    public function get_id_fk_cabang(){
-        return $this->id_fk_cabang;
-    }
+    return true;
+  }
+  public function set_update($id_pk_penerimaan, $penerimaan_tgl)
+  {
+    $this->set_id_pk_penerimaan($id_pk_penerimaan);
+    $this->set_penerimaan_tgl($penerimaan_tgl);
+    return true;
+  }
+  public function set_delete($id_pk_penerimaan)
+  {
+    $this->set_id_pk_penerimaan($id_pk_penerimaan);
+    return true;
+  }
+  public function set_id_pk_penerimaan($id_pk_penerimaan)
+  {
+    $this->id_pk_penerimaan = $id_pk_penerimaan;
+    return true;
+  }
+  public function set_penerimaan_tgl($penerimaan_tgl)
+  {
+    $this->penerimaan_tgl = $penerimaan_tgl;
+    return true;
+  }
+  public function set_penerimaan_status($penerimaan_status)
+  {
+    $this->penerimaan_status = $penerimaan_status;
+    return true;
+  }
+  public function set_id_fk_pembelian($id_fk_pembelian)
+  {
+    $this->id_fk_pembelian = $id_fk_pembelian;
+    return true;
+  }
+  public function set_penerimaan_tempat($penerimaan_tempat)
+  {
+    $this->penerimaan_tempat = $penerimaan_tempat;
+    return true;
+  }
+  public function set_penerimaan_tipe($penerimaan_tipe)
+  {
+    $this->penerimaan_tipe = $penerimaan_tipe;
+    return true;
+  }
+  public function set_id_fk_warehouse($id_fk_warehouse)
+  {
+    $this->id_fk_warehouse = $id_fk_warehouse;
+    return true;
+  }
+  public function set_id_fk_cabang($id_fk_cabang)
+  {
+    $this->id_fk_cabang = $id_fk_cabang;
+    return true;
+  }
 }

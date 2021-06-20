@@ -185,24 +185,24 @@ class M_brg_pindah extends CI_Model
         "id_last_modified" => $this->id_last_modified,
       );
       updateRow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_pk_brg_pindah;
-        $log_all_msg = "Data Barang Pindah dengan ID: $id_pk diubah. Waktu diubah: $this->brg_pindah_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+      $id_pk = $this->id_pk_brg_pindah;
+      $log_all_msg = "Data Barang Pindah dengan ID: $id_pk diubah. Waktu diubah: $this->brg_pindah_last_modified . Data berubah menjadi: ";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Barang Pindah: $this->id_pk_brg_pindah][Sumber Barang Pindah: $this->brg_pindah_sumber][ID Sumber: $this->id_fk_refrensi_sumber][ID Barang Awal: $this->id_brg_awal][ID Barang Tujuan: $this->id_brg_tujuan][ID Cabang: $this->id_fk_cabang][Jumlah: $this->brg_pindah_qty][Waktu Diubah: $this->brg_pindah_last_modified][Oleh: $nama_user]";
+      $log_all_data_changes = "[ID Barang Pindah: $this->id_pk_brg_pindah][Sumber Barang Pindah: $this->brg_pindah_sumber][ID Sumber: $this->id_fk_refrensi_sumber][ID Barang Awal: $this->id_brg_awal][ID Barang Tujuan: $this->id_brg_tujuan][ID Cabang: $this->id_fk_cabang][Jumlah: $this->brg_pindah_qty][Waktu Diubah: $this->brg_pindah_last_modified][Oleh: $nama_user]";
 
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->brg_pindah_last_modified;
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->brg_pindah_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
       return true;
     }
     return false;
@@ -236,200 +236,72 @@ class M_brg_pindah extends CI_Model
   }
   public function check_insert()
   {
-    if ($this->brg_pindah_sumber == "") {
-      return false;
-    }
-    if ($this->id_fk_refrensi_sumber == "") {
-      return false;
-    }
-    if ($this->id_brg_awal == "") {
-      return false;
-    }
-    if ($this->id_brg_tujuan == "") {
-      return false;
-    }
-    if ($this->brg_pindah_qty == "") {
-      return false;
-    }
-    if ($this->brg_pindah_status == "") {
-      return false;
-    }
-    if ($this->brg_pindah_create_date == "") {
-      return false;
-    }
-    if ($this->brg_pindah_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_brg_pindah == "") {
-      return false;
-    }
-    if ($this->id_brg_awal == "") {
-      return false;
-    }
-    if ($this->id_brg_tujuan == "") {
-      return false;
-    }
-    if ($this->brg_pindah_qty == "") {
-      return false;
-    }
-    if ($this->brg_pindah_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_brg_pindah == "") {
-      return false;
-    }
-    if ($this->brg_pindah_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($brg_pindah_sumber, $id_fk_refrensi_sumber, $id_brg_awal, $id_brg_tujuan, $brg_pindah_qty, $brg_pindah_status)
   {
-    if (!$this->set_brg_pindah_sumber($brg_pindah_sumber)) {
-      return false;
-    }
-    if (!$this->set_id_fk_refrensi_sumber($id_fk_refrensi_sumber)) {
-      return false;
-    }
-    if (!$this->set_id_brg_awal($id_brg_awal)) {
-      return false;
-    }
-    if (!$this->set_id_brg_tujuan($id_brg_tujuan)) {
-      return false;
-    }
-    if (!$this->set_brg_pindah_qty($brg_pindah_qty)) {
-      return false;
-    }
-    if (!$this->set_brg_pindah_status($brg_pindah_status)) {
-      return false;
-    }
+    $this->set_brg_pindah_sumber($brg_pindah_sumber);
+    $this->set_id_fk_refrensi_sumber($id_fk_refrensi_sumber);
+    $this->set_id_brg_awal($id_brg_awal);
+    $this->set_id_brg_tujuan($id_brg_tujuan);
+    $this->set_brg_pindah_qty($brg_pindah_qty);
+    $this->set_brg_pindah_status($brg_pindah_status);
     return true;
   }
   public function set_update($id_pk_brg_pindah, $id_brg_awal, $id_brg_tujuan, $brg_pindah_qty)
   {
-    if (!$this->set_id_pk_brg_pindah($id_pk_brg_pindah)) {
-      return false;
-    }
-    if (!$this->set_id_brg_awal($id_brg_awal)) {
-      return false;
-    }
-    if (!$this->set_id_brg_tujuan($id_brg_tujuan)) {
-      return false;
-    }
-    if (!$this->set_brg_pindah_qty($brg_pindah_qty)) {
-      return false;
-    }
+    $this->set_id_pk_brg_pindah($id_pk_brg_pindah);
+    $this->set_id_brg_awal($id_brg_awal);
+    $this->set_id_brg_tujuan($id_brg_tujuan);
+    $this->set_brg_pindah_qty($brg_pindah_qty);
     return true;
   }
   public function set_delete($id_pk_brg_pindah)
   {
-    if (!$this->set_id_pk_brg_pindah($id_pk_brg_pindah)) {
-      return false;
-    }
+    $this->set_id_pk_brg_pindah($id_pk_brg_pindah);
     return true;
-  }
-  public function get_id_pk_brg_pindah()
-  {
-    return $this->id_pk_brg_pindah;
-  }
-  public function get_brg_pindah_sumber()
-  {
-    return $this->brg_pindah_sumber;
-  }
-  public function get_id_fk_refrensi_sumber()
-  {
-    return $this->id_fk_refrensi_sumber;
-  }
-  public function get_id_brg_awal()
-  {
-    return $this->id_brg_awal;
-  }
-  public function get_id_brg_tujuan()
-  {
-    return $this->id_brg_tujuan;
-  }
-  public function get_brg_pindah_qty()
-  {
-    return $this->brg_pindah_qty;
-  }
-  public function get_brg_pindah_status()
-  {
-    return $this->brg_pindah_status;
   }
   public function set_id_pk_brg_pindah($id_pk_brg_pindah)
   {
-    if ($id_pk_brg_pindah != "") {
-      $this->id_pk_brg_pindah = $id_pk_brg_pindah;
-      return true;
-    }
-    return false;
+    $this->id_pk_brg_pindah = $id_pk_brg_pindah;
+    return true;
   }
   public function set_brg_pindah_sumber($brg_pindah_sumber)
   {
-    if ($brg_pindah_sumber != "") {
-      $this->brg_pindah_sumber = $brg_pindah_sumber;
-      return true;
-    }
-    return false;
+    $this->brg_pindah_sumber = $brg_pindah_sumber;
+    return true;
   }
   public function set_id_fk_refrensi_sumber($id_fk_refrensi_sumber)
   {
-    if ($id_fk_refrensi_sumber != "") {
-      $this->id_fk_refrensi_sumber = $id_fk_refrensi_sumber;
-      return true;
-    }
-    return false;
+    $this->id_fk_refrensi_sumber = $id_fk_refrensi_sumber;
+    return true;
   }
   public function set_id_brg_awal($id_brg_awal)
   {
-    if ($id_brg_awal != "") {
-      $this->id_brg_awal = $id_brg_awal;
-      return true;
-    }
-    return false;
+    $this->id_brg_awal = $id_brg_awal;
+    return true;
   }
   public function set_id_brg_tujuan($id_brg_tujuan)
   {
-    if ($id_brg_tujuan != "") {
-      $this->id_brg_tujuan = $id_brg_tujuan;
-      return true;
-    }
-    return false;
+    $this->id_brg_tujuan = $id_brg_tujuan;
+    return true;
   }
   public function set_brg_pindah_qty($brg_pindah_qty)
   {
-    if ($brg_pindah_qty != "") {
-      $this->brg_pindah_qty = $brg_pindah_qty;
-      return true;
-    }
-    return false;
+    $this->brg_pindah_qty = $brg_pindah_qty;
+    return true;
   }
   public function set_brg_pindah_status($brg_pindah_status)
   {
-    if ($brg_pindah_status != "") {
-      $this->brg_pindah_status = $brg_pindah_status;
-      return true;
-    }
-    return false;
+    $this->brg_pindah_status = $brg_pindah_status;
+    return true;
   }
 }

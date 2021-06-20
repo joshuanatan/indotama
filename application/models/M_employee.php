@@ -324,23 +324,23 @@ class M_employee extends ci_model
         "id_last_modified" => $this->id_last_modified,
       );
       updateRow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_pk_employee;
-        $log_all_msg = "Data Employee dengan ID: $id_pk diubah. Waktu diubah: $this->emp_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+      $id_pk = $this->id_pk_employee;
+      $log_all_msg = "Data Employee dengan ID: $id_pk diubah. Waktu diubah: $this->emp_last_modified . Data berubah menjadi: ";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Employee: $id_pk][Nama: $this->emp_nama][NPWP: $this->emp_npwp][KTP: $this->emp_ktp][No HP: $this->emp_hp][Alamat: $this->emp_alamat][Kode Pos: $this->emp_kode_pos][Foto NPWP: $this->emp_foto_npwp][Foto KTP: $this->emp_foto_ktp][Foto Lainnya: $this->emp_foto_lain][Foto Diri: $this->emp_foto][Gaji: $this->emp_gaji][Stard Date: $this->emp_startdate][End Date: $this->emp_enddate][No Rek: $this->emp_rek][Gender: $this->emp_gender][Panggilan: $this->emp_suff][Waktu Diubah: $this->emp_last_modified][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->emp_last_modified;
+      $log_all_data_changes = "[ID Employee: $id_pk][Nama: $this->emp_nama][NPWP: $this->emp_npwp][KTP: $this->emp_ktp][No HP: $this->emp_hp][Alamat: $this->emp_alamat][Kode Pos: $this->emp_kode_pos][Foto NPWP: $this->emp_foto_npwp][Foto KTP: $this->emp_foto_ktp][Foto Lainnya: $this->emp_foto_lain][Foto Diri: $this->emp_foto][Gaji: $this->emp_gaji][Stard Date: $this->emp_startdate][End Date: $this->emp_enddate][No Rek: $this->emp_rek][Gender: $this->emp_gender][Panggilan: $this->emp_suff][Waktu Diubah: $this->emp_last_modified][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->emp_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
       return true;
     } else {
       return false;
@@ -365,423 +365,152 @@ class M_employee extends ci_model
   }
   public function check_insert()
   {
-    if ($this->emp_nama == "") {
-      return false;
-    }
-    if ($this->emp_npwp == "") {
-      return false;
-    }
-    if ($this->emp_ktp == "") {
-      return false;
-    }
-    if ($this->emp_hp == "") {
-      return false;
-    }
-    if ($this->emp_alamat == "") {
-      return false;
-    }
-    if ($this->emp_kode_pos == "") {
-      return false;
-    }
-    if ($this->emp_foto_npwp == "") {
-      return false;
-    }
-    if ($this->emp_foto_ktp == "") {
-      return false;
-    }
-    if ($this->emp_foto_lain == "") {
-      return false;
-    }
-    if ($this->emp_foto == "") {
-      return false;
-    }
-    if ($this->emp_gaji == "") {
-      return false;
-    }
-    if ($this->emp_startdate == "") {
-      return false;
-    }
-    if ($this->emp_enddate == "") {
-      return false;
-    }
-    if ($this->emp_rek == "") {
-      return false;
-    }
-    if ($this->emp_gender == "") {
-      return false;
-    }
-    if ($this->emp_suff == "") {
-      return false;
-    }
-    if ($this->emp_status == "") {
-      return false;
-    }
-    if ($this->emp_create_date == "") {
-      return false;
-    }
-    if ($this->emp_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_employee == "") {
-      return false;
-    }
-    if ($this->emp_nama == "") {
-      return false;
-    }
-    if ($this->emp_npwp == "") {
-      return false;
-    }
-    if ($this->emp_ktp == "") {
-      return false;
-    }
-    if ($this->emp_hp == "") {
-      return false;
-    }
-    if ($this->emp_alamat == "") {
-      return false;
-    }
-    if ($this->emp_kode_pos == "") {
-      return false;
-    }
-    if ($this->emp_foto_npwp == "") {
-      return false;
-    }
-    if ($this->emp_foto_ktp == "") {
-      return false;
-    }
-    if ($this->emp_foto_lain == "") {
-      return false;
-    }
-    if ($this->emp_foto == "") {
-      return false;
-    }
-    if ($this->emp_gaji == "") {
-      return false;
-    }
-    if ($this->emp_startdate == "") {
-      return false;
-    }
-    if ($this->emp_enddate == "") {
-      return false;
-    }
-    if ($this->emp_rek == "") {
-      return false;
-    }
-    if ($this->emp_gender == "") {
-      return false;
-    }
-    if ($this->emp_suff == "") {
-      return false;
-    }
-    if ($this->emp_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_employee == "") {
-      return false;
-    }
-    if ($this->emp_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($emp_nama, $emp_npwp, $emp_ktp, $emp_hp, $emp_alamat, $emp_kode_pos, $emp_foto_npwp, $emp_foto_ktp, $emp_foto_lain, $emp_foto, $emp_gaji, $emp_startdate, $emp_enddate, $emp_rek, $emp_gender, $emp_suff, $emp_status)
   {
-    if (!$this->set_emp_nama($emp_nama)) {
-      return false;
-    }
-    if (!$this->set_emp_npwp($emp_npwp)) {
-      return false;
-    }
-    if (!$this->set_emp_ktp($emp_ktp)) {
-      return false;
-    }
-    if (!$this->set_emp_hp($emp_hp)) {
-      return false;
-    }
-    if (!$this->set_emp_alamat($emp_alamat)) {
-      return false;
-    }
-    if (!$this->set_emp_kode_pos($emp_kode_pos)) {
-      return false;
-    }
-    if (!$this->set_emp_foto_npwp($emp_foto_npwp)) {
-      return false;
-    }
-    if (!$this->set_emp_foto_ktp($emp_foto_ktp)) {
-      return false;
-    }
-    if (!$this->set_emp_foto_lain($emp_foto_lain)) {
-      return false;
-    }
-    if (!$this->set_emp_foto($emp_foto)) {
-      return false;
-    }
-    if (!$this->set_emp_gaji($emp_gaji)) {
-      return false;
-    }
-    if (!$this->set_emp_startdate($emp_startdate)) {
-      return false;
-    }
-    if (!$this->set_emp_enddate($emp_enddate)) {
-      return false;
-    }
-    if (!$this->set_emp_rek($emp_rek)) {
-      return false;
-    }
-    if (!$this->set_emp_gender($emp_gender)) {
-      return false;
-    }
-    if (!$this->set_emp_suff($emp_suff)) {
-      return false;
-    }
-    if (!$this->set_emp_status($emp_status)) {
-      return false;
-    }
+    $this->set_emp_nama($emp_nama);
+    $this->set_emp_npwp($emp_npwp);
+    $this->set_emp_ktp($emp_ktp);
+    $this->set_emp_hp($emp_hp);
+    $this->set_emp_alamat($emp_alamat);
+    $this->set_emp_kode_pos($emp_kode_pos);
+    $this->set_emp_foto_npwp($emp_foto_npwp);
+    $this->set_emp_foto_ktp($emp_foto_ktp);
+    $this->set_emp_foto_lain($emp_foto_lain);
+    $this->set_emp_foto($emp_foto);
+    $this->set_emp_gaji($emp_gaji);
+    $this->set_emp_startdate($emp_startdate);
+    $this->set_emp_enddate($emp_enddate);
+    $this->set_emp_rek($emp_rek);
+    $this->set_emp_gender($emp_gender);
+    $this->set_emp_suff($emp_suff);
+    $this->set_emp_status($emp_status);
     return true;
   }
   public function set_update($id_pk_employee, $emp_nama, $emp_npwp, $emp_ktp, $emp_hp, $emp_alamat, $emp_kode_pos, $emp_foto_npwp, $emp_foto_ktp, $emp_foto_lain, $emp_foto, $emp_gaji, $emp_startdate, $emp_enddate, $emp_rek, $emp_gender, $emp_suff)
   {
-    if (!$this->set_id_pk_employee($id_pk_employee)) {
-      return false;
-    }
-    if (!$this->set_emp_nama($emp_nama)) {
-      return false;
-    }
-    if (!$this->set_emp_npwp($emp_npwp)) {
-      return false;
-    }
-    if (!$this->set_emp_ktp($emp_ktp)) {
-      return false;
-    }
-    if (!$this->set_emp_hp($emp_hp)) {
-      return false;
-    }
-    if (!$this->set_emp_alamat($emp_alamat)) {
-      return false;
-    }
-    if (!$this->set_emp_kode_pos($emp_kode_pos)) {
-      return false;
-    }
-    if (!$this->set_emp_foto_npwp($emp_foto_npwp)) {
-      return false;
-    }
-    if (!$this->set_emp_foto_ktp($emp_foto_ktp)) {
-      return false;
-    }
-    if (!$this->set_emp_foto_lain($emp_foto_lain)) {
-      return false;
-    }
-    if (!$this->set_emp_foto($emp_foto)) {
-      return false;
-    }
-    if (!$this->set_emp_gaji($emp_gaji)) {
-      return false;
-    }
-    if (!$this->set_emp_startdate($emp_startdate)) {
-      return false;
-    }
-    if (!$this->set_emp_enddate($emp_enddate)) {
-      return false;
-    }
-    if (!$this->set_emp_rek($emp_rek)) {
-      return false;
-    }
-    if (!$this->set_emp_gender($emp_gender)) {
-      return false;
-    }
-    if (!$this->set_emp_suff($emp_suff)) {
-      return false;
-    }
+    $this->set_id_pk_employee($id_pk_employee);
+    $this->set_emp_nama($emp_nama);
+    $this->set_emp_npwp($emp_npwp);
+    $this->set_emp_ktp($emp_ktp);
+    $this->set_emp_hp($emp_hp);
+    $this->set_emp_alamat($emp_alamat);
+    $this->set_emp_kode_pos($emp_kode_pos);
+    $this->set_emp_foto_npwp($emp_foto_npwp);
+    $this->set_emp_foto_ktp($emp_foto_ktp);
+    $this->set_emp_foto_lain($emp_foto_lain);
+    $this->set_emp_foto($emp_foto);
+    $this->set_emp_gaji($emp_gaji);
+    $this->set_emp_startdate($emp_startdate);
+    $this->set_emp_enddate($emp_enddate);
+    $this->set_emp_rek($emp_rek);
+    $this->set_emp_gender($emp_gender);
+    $this->set_emp_suff($emp_suff);
     return true;
   }
   public function set_delete($id_pk_employee)
   {
-    if (!$this->set_id_pk_employee($id_pk_employee)) {
-      return false;
-    }
+    $this->set_id_pk_employee($id_pk_employee);
     return true;
   }
   public function set_id_pk_employee($id_pk_employee)
   {
-    if ($id_pk_employee != "") {
-      $this->id_pk_employee = $id_pk_employee;
-      return true;
-    } else {
-      return false;
-    }
+    $this->id_pk_employee = $id_pk_employee;
+    return true;
   }
   public function set_emp_nama($emp_nama)
   {
-    if ($emp_nama != "") {
-      $this->emp_nama = $emp_nama;
-      return true;
-    } else {
-      return false;
-    }
+    $this->emp_nama = $emp_nama;
+    return true;
   }
   public function set_emp_npwp($emp_npwp)
   {
-    if ($emp_npwp != "") {
-      $this->emp_npwp = $emp_npwp;
-    } else {
-      $this->emp_npwp = "-";
-    }
+    $this->emp_npwp = $emp_npwp;
     return true;
   }
   public function set_emp_ktp($emp_ktp)
   {
-    if ($emp_ktp != "") {
-      $this->emp_ktp = $emp_ktp;
-    } else {
-      $this->emp_ktp = "-";
-    }
+    $this->emp_ktp = $emp_ktp;
     return true;
   }
   public function set_emp_hp($emp_hp)
   {
-    if ($emp_hp != "") {
-      $this->emp_hp = $emp_hp;
-    } else {
-      $this->emp_hp = "-";
-    }
+    $this->emp_hp = $emp_hp;
     return true;
   }
   public function set_emp_alamat($emp_alamat)
   {
-    if ($emp_alamat != "") {
-      $this->emp_alamat = $emp_alamat;
-      return true;
-    } else {
-      return false;
-    }
+    $this->emp_alamat = $emp_alamat;
+    return true;
   }
   public function set_emp_kode_pos($emp_kode_pos)
   {
-    if ($emp_kode_pos != "") {
-      $this->emp_kode_pos = $emp_kode_pos;
-      return true;
-    } else {
-      return false;
-    }
+    $this->emp_kode_pos = $emp_kode_pos;
+    return true;
   }
   public function set_emp_foto_npwp($emp_foto_npwp)
   {
-    if ($emp_foto_npwp != "") {
-      $this->emp_foto_npwp = $emp_foto_npwp;
-    } else {
-      $this->emp_foto_npwp = "-";
-    }
+    $this->emp_foto_npwp = $emp_foto_npwp;
     return true;
   }
   public function set_emp_foto_ktp($emp_foto_ktp)
   {
-    if ($emp_foto_ktp != "") {
-      $this->emp_foto_ktp = $emp_foto_ktp;
-    } else {
-      $this->emp_foto_ktp = "-";
-    }
+    $this->emp_foto_ktp = $emp_foto_ktp;
     return true;
   }
   public function set_emp_foto_lain($emp_foto_lain)
   {
-    if ($emp_foto_lain != "") {
-      $this->emp_foto_lain = $emp_foto_lain;
-    } else {
-      $this->emp_foto_lain = "-";
-    }
+    $this->emp_foto_lain = $emp_foto_lain;
     return true;
   }
   public function set_emp_foto($emp_foto)
   {
-    if ($emp_foto != "") {
-      $this->emp_foto = $emp_foto;
-    } else {
-      $this->emp_foto = "-";
-    }
+    $this->emp_foto = $emp_foto;
     return true;
   }
   public function set_emp_gaji($emp_gaji)
   {
-    if ($emp_gaji != "") {
-      $this->emp_gaji = $emp_gaji;
-      return true;
-    } else {
-      return false;
-    }
+    $this->emp_gaji = $emp_gaji;
+    return true;
   }
   public function set_emp_startdate($emp_startdate)
   {
-    if ($emp_startdate != "") {
-      $this->emp_startdate = $emp_startdate;
-      return true;
-    } else {
-      return false;
-    }
+    $this->emp_startdate = $emp_startdate;
+    return true;
   }
   public function set_emp_enddate($emp_enddate)
   {
-    if ($emp_enddate != "") {
-      $this->emp_enddate = $emp_enddate;
-    } else {
-      $this->emp_enddate = "0000-00-00 00:00:00";
-    }
+    $this->emp_enddate = $emp_enddate;
     return true;
   }
   public function set_emp_rek($emp_rek)
   {
-    if ($emp_rek != "") {
-      $this->emp_rek = $emp_rek;
-    } else {
-      $this->emp_rek = "-";
-    }
+    $this->emp_rek = $emp_rek;
     return true;
   }
   public function set_emp_gender($emp_gender)
   {
-    if ($emp_gender != "") {
-      $this->emp_gender = $emp_gender;
-      return true;
-    } else {
-      return false;
-    }
+    $this->emp_gender = $emp_gender;
+    return true;
   }
   public function set_emp_suff($emp_suff)
   {
-    if ($emp_suff != "") {
-      $this->emp_suff = $emp_suff;
-      return true;
-    } else {
-      return false;
-    }
+    $this->emp_suff = $emp_suff;
+    return true;
   }
   public function set_emp_status($emp_status)
   {
-    if ($emp_status != "") {
-      $this->emp_status = $emp_status;
-      return true;
-    } else {
-      return false;
-    }
+    $this->emp_status = $emp_status;
+    return true;
   }
   public function data_excel()
   {

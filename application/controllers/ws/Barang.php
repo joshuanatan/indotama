@@ -36,6 +36,8 @@ class Barang extends CI_Controller
 
     if ($result["data"]->num_rows() > 0) {
       $result["data"] = $result["data"]->result_array();
+      // $response["content"] = $result["data"]->result_array();
+      // echo json_encode($response);
       for ($a = 0; $a < count($result["data"]); $a++) {
         $response["content"][$a]["id"] = $result["data"][$a]["id_pk_brg"];
         $response["content"][$a]["kode"] = $result["data"][$a]["brg_kode"];

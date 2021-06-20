@@ -157,23 +157,23 @@ class M_tambahan_penjualan extends ci_model
       "id_last_modified" => $this->id_last_modified,
     );
     updaterow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_pk_tmbhn;
-        $log_all_msg = "Data Tambahan Penjualan dengan ID: $id_pk diubah. Waktu diubah: $this->tmbhn_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+    $id_pk = $this->id_pk_tmbhn;
+    $log_all_msg = "Data Tambahan Penjualan dengan ID: $id_pk diubah. Waktu diubah: $this->tmbhn_last_modified . Data berubah menjadi: ";
+    $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Tambahan Penjualan: $id_pk][Tambahan: $tmbhn][Jumlah: $tmbhn_jumlah][Satuan: $tmbhn_satuan][Harga: $tmbhn_harga][Notes: $tmbhn_notes]][Waktu Ditambahkan: $this->tmbhn_last_modified][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->tmbhn_last_modified;
+    $log_all_data_changes = "[ID Tambahan Penjualan: $id_pk][Tambahan: $tmbhn][Jumlah: $tmbhn_jumlah][Satuan: $tmbhn_satuan][Harga: $tmbhn_harga][Notes: $tmbhn_notes]][Waktu Ditambahkan: $this->tmbhn_last_modified][Oleh: $nama_user]";
+    $log_all_it = "";
+    $log_all_user = $this->id_last_modified;
+    $log_all_tgl = $this->tmbhn_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+    $data_log = array(
+      "log_all_msg" => $log_all_msg,
+      "log_all_data_changes" => $log_all_data_changes,
+      "log_all_it" => $log_all_it,
+      "log_all_user" => $log_all_user,
+      "log_all_tgl" => $log_all_tgl
+    );
+    insertrow("log_all", $data_log);
     return true;
   }
   public function delete()
@@ -194,231 +194,81 @@ class M_tambahan_penjualan extends ci_model
   }
   public function check_insert()
   {
-    if ($this->tmbhn == "") {
-      return false;
-    }
-    if ($this->tmbhn_jumlah == "") {
-      return false;
-    }
-    if ($this->tmbhn_satuan == "") {
-      return false;
-    }
-    if ($this->tmbhn_harga == "") {
-      return false;
-    }
-    if ($this->tmbhn_notes == "") {
-      return false;
-    }
-    if ($this->tmbhn_status == "") {
-      return false;
-    }
-    if ($this->id_fk_penjualan == "") {
-      return false;
-    }
-    if ($this->tmbhn_create_date == "") {
-      return false;
-    }
-    if ($this->tmbhn_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_tmbhn == "") {
-      return false;
-    }
-    if ($this->tmbhn == "") {
-      return false;
-    }
-    if ($this->tmbhn_jumlah == "") {
-      return false;
-    }
-    if ($this->tmbhn_satuan == "") {
-      return false;
-    }
-    if ($this->tmbhn_harga == "") {
-      return false;
-    }
-    if ($this->tmbhn_notes == "") {
-      return false;
-    }
-    if ($this->tmbhn_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_tmbhn == "") {
-      return false;
-    }
-    if ($this->tmbhn_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($tmbhn, $tmbhn_jumlah, $tmbhn_satuan, $tmbhn_harga, $tmbhn_notes, $tmbhn_status, $id_fk_penjualan)
   {
-    if (!$this->set_tmbhn($tmbhn)) {
-      return false;
-    }
-    if (!$this->set_tmbhn_jumlah($tmbhn_jumlah)) {
-      return false;
-    }
-    if (!$this->set_tmbhn_satuan($tmbhn_satuan)) {
-      return false;
-    }
-    if (!$this->set_tmbhn_harga($tmbhn_harga)) {
-      return false;
-    }
-    if (!$this->set_tmbhn_notes($tmbhn_notes)) {
-      return false;
-    }
-    if (!$this->set_tmbhn_status($tmbhn_status)) {
-      return false;
-    }
-    if (!$this->set_id_fk_penjualan($id_fk_penjualan)) {
-      return false;
-    }
+    $this->set_tmbhn($tmbhn);
+    $this->set_tmbhn_jumlah($tmbhn_jumlah);
+    $this->set_tmbhn_satuan($tmbhn_satuan);
+    $this->set_tmbhn_harga($tmbhn_harga);
+    $this->set_tmbhn_notes($tmbhn_notes);
+    $this->set_tmbhn_status($tmbhn_status);
+    $this->set_id_fk_penjualan($id_fk_penjualan);
     return true;
   }
   public function set_update($id_pk_tmbhn, $tmbhn, $tmbhn_jumlah, $tmbhn_satuan, $tmbhn_harga, $tmbhn_notes)
   {
-    if (!$this->set_id_pk_tmbhn($id_pk_tmbhn)) {
-      return false;
-    }
-    if (!$this->set_tmbhn($tmbhn)) {
-      return false;
-    }
-    if (!$this->set_tmbhn_jumlah($tmbhn_jumlah)) {
-      return false;
-    }
-    if (!$this->set_tmbhn_satuan($tmbhn_satuan)) {
-      return false;
-    }
-    if (!$this->set_tmbhn_harga($tmbhn_harga)) {
-      return false;
-    }
-    if (!$this->set_tmbhn_notes($tmbhn_notes)) {
-      return false;
-    }
+    $this->set_id_pk_tmbhn($id_pk_tmbhn);
+    $this->set_tmbhn($tmbhn);
+    $this->set_tmbhn_jumlah($tmbhn_jumlah);
+    $this->set_tmbhn_satuan($tmbhn_satuan);
+    $this->set_tmbhn_harga($tmbhn_harga);
+    $this->set_tmbhn_notes($tmbhn_notes);
     return true;
   }
   public function set_delete($id_pk_tmbhn)
   {
-    if (!$this->set_id_pk_tmbhn($id_pk_tmbhn)) {
-      return false;
-    }
+    $this->set_id_pk_tmbhn($id_pk_tmbhn);
     return true;
   }
   public function set_id_pk_tmbhn($id_pk_tmbhn)
   {
-    if ($id_pk_tmbhn != "") {
-      $this->id_pk_tmbhn = $id_pk_tmbhn;
-      return true;
-    }
-    return false;
+    $this->id_pk_tmbhn = $id_pk_tmbhn;
+    return true;
   }
   public function set_tmbhn($tmbhn)
   {
-    if ($tmbhn != "") {
-      $this->tmbhn = $tmbhn;
-      return true;
-    }
-    return false;
+    $this->tmbhn = $tmbhn;
+    return true;
   }
   public function set_tmbhn_jumlah($tmbhn_jumlah)
   {
-    if ($tmbhn_jumlah != "") {
-      $this->tmbhn_jumlah = $tmbhn_jumlah;
-      return true;
-    }
-    return false;
+    $this->tmbhn_jumlah = $tmbhn_jumlah;
+    return true;
   }
   public function set_tmbhn_satuan($tmbhn_satuan)
   {
-    if ($tmbhn_satuan != "") {
-      $this->tmbhn_satuan = $tmbhn_satuan;
-      return true;
-    }
-    return false;
+    $this->tmbhn_satuan = $tmbhn_satuan;
+    return true;
   }
   public function set_tmbhn_harga($tmbhn_harga)
   {
-    if ($tmbhn_harga != "") {
-      $this->tmbhn_harga = $tmbhn_harga;
-      return true;
-    }
-    return false;
+    $this->tmbhn_harga = $tmbhn_harga;
+    return true;
   }
   public function set_tmbhn_notes($tmbhn_notes)
   {
-    if ($tmbhn_notes != "") {
-      $this->tmbhn_notes = $tmbhn_notes;
-      return true;
-    }
-    return false;
+    $this->tmbhn_notes = $tmbhn_notes;
+    return true;
   }
   public function set_tmbhn_status($tmbhn_status)
   {
-    if ($tmbhn_status != "") {
-      $this->tmbhn_status = $tmbhn_status;
-      return true;
-    }
-    return false;
+    $this->tmbhn_status = $tmbhn_status;
+    return true;
   }
   public function set_id_fk_penjualan($id_fk_penjualan)
   {
-    if ($id_fk_penjualan != "") {
-      $this->id_fk_penjualan = $id_fk_penjualan;
-      return true;
-    }
-    return false;
-  }
-  public function get_id_pk_tmbhn()
-  {
-    return $this->id_pk_tmbhn;
-  }
-  public function get_tmbhn()
-  {
-    return $this->tmbhn;
-  }
-  public function get_tmbhn_jumlah()
-  {
-    return $this->tmbhn_jumlah;
-  }
-  public function get_tmbhn_satuan()
-  {
-    return $this->tmbhn_satuan;
-  }
-  public function get_tmbhn_harga()
-  {
-    return $this->tmbhn_harga;
-  }
-  public function get_tmbhn_notes()
-  {
-    return $this->tmbhn_notes;
-  }
-  public function get_tmbhn_status()
-  {
-    return $this->tmbhn_status;
-  }
-  public function get_id_fk_penjualan()
-  {
-    return $this->id_fk_penjualan;
+    $this->id_fk_penjualan = $id_fk_penjualan;
+    return true;
   }
   public function get_nominal_tambahan()
   {

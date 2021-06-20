@@ -318,10 +318,10 @@ class M_customer extends ci_model
       "id_last_modified" => $this->id_last_modified
     );
 
-    $id_hasil_insert = insertrow($this->tbl_name,$data);
-            
+    $id_hasil_insert = insertrow($this->tbl_name, $data);
+
     $log_all_msg = "Data Customer baru ditambahkan. Waktu penambahan: $this->cust_create_date";
-    $nama_user = get1Value("mstr_user","user_name",array("id_pk_user"=>$this->id_create_data));
+    $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_create_data));
 
     $log_all_data_changes = "[ID Customer: $id_hasil_insert][Nama: $this->cust_name][NPWP: $this->cust_no_npwp][Foto NPWP: $this->cust_foto_npwp][Kartu Nama: $this->cust_foto_kartu_nama][Badan Usaha: $this->cust_badan_usaha][No Rek: $this->cust_no_rekening][Panggilan: $this->cust_suff][Perusahaan: $this->cust_perusahaan][Email: $this->cust_email][Telepon: $this->cust_telp][No HP: $this->cust_hp][Alamat: $this->cust_alamat][ID Toko: $this->id_fk_toko][Keterangan: $this->cust_keterangan][Status: $this->cust_status][Waktu Ditambahkan: $this->cust_create_date][Oleh: $nama_user]";
     $log_all_it = "";
@@ -329,14 +329,14 @@ class M_customer extends ci_model
     $log_all_tgl = $this->cust_create_date;
 
     $data_log = array(
-        "log_all_msg" => $log_all_msg,
-        "log_all_data_changes" => $log_all_data_changes,
-        "log_all_it" => $log_all_it,
-        "log_all_user" => $log_all_user,
-        "log_all_tgl" => $log_all_tgl
+      "log_all_msg" => $log_all_msg,
+      "log_all_data_changes" => $log_all_data_changes,
+      "log_all_it" => $log_all_it,
+      "log_all_user" => $log_all_user,
+      "log_all_tgl" => $log_all_tgl
     );
-    insertrow("log_all",$data_log);
-    
+    insertrow("log_all", $data_log);
+
     return $id_hasil_insert;
   }
   public function update()
@@ -364,23 +364,23 @@ class M_customer extends ci_model
         "id_last_modified" => $this->id_last_modified
       );
       updateRow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_pk_cust;
-        $log_all_msg = "Data Customer dengan ID: $id_pk diubah. Waktu diubah: $this->cust_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+      $id_pk = $this->id_pk_cust;
+      $log_all_msg = "Data Customer dengan ID: $id_pk diubah. Waktu diubah: $this->cust_last_modified . Data berubah menjadi: ";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Customer: $id_pk][Nama: $this->cust_name][NPWP: $this->cust_no_npwp][Foto NPWP: $this->cust_foto_npwp][Kartu Nama: $this->cust_foto_kartu_nama][Badan Usaha: $this->cust_badan_usaha][No Rek: $this->cust_no_rekening][Panggilan: $this->cust_suff][Perusahaan: $this->cust_perusahaan][Email: $this->cust_email][Telepon: $this->cust_telp][No HP: $this->cust_hp][Alamat: $this->cust_alamat][ID Toko: $this->id_fk_toko][Keterangan: $this->cust_keterangan][Waktu Diedit: $this->cust_last_modified][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->cust_last_modified;
+      $log_all_data_changes = "[ID Customer: $id_pk][Nama: $this->cust_name][NPWP: $this->cust_no_npwp][Foto NPWP: $this->cust_foto_npwp][Kartu Nama: $this->cust_foto_kartu_nama][Badan Usaha: $this->cust_badan_usaha][No Rek: $this->cust_no_rekening][Panggilan: $this->cust_suff][Perusahaan: $this->cust_perusahaan][Email: $this->cust_email][Telepon: $this->cust_telp][No HP: $this->cust_hp][Alamat: $this->cust_alamat][ID Toko: $this->id_fk_toko][Keterangan: $this->cust_keterangan][Waktu Diedit: $this->cust_last_modified][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->cust_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
       return true;
     }
     return false;
@@ -403,365 +403,138 @@ class M_customer extends ci_model
   }
   public function check_insert()
   {
-    if ($this->cust_name == "") {
-      return false;
-    }
-    if ($this->cust_no_npwp == "") {
-      return false;
-    }
-    if ($this->cust_foto_npwp == "") {
-      return false;
-    }
-    if ($this->cust_foto_kartu_nama == "") {
-      return false;
-    }
-    if ($this->cust_badan_usaha == "") {
-      return false;
-    }
-    if ($this->cust_no_rekening == "") {
-      return false;
-    }
-    if ($this->cust_suff == "") {
-      return false;
-    }
-    if ($this->cust_perusahaan == "") {
-      return false;
-    }
-    if ($this->cust_email == "") {
-      return false;
-    }
-    if ($this->cust_telp == "") {
-      return false;
-    }
-    if ($this->cust_hp == "") {
-      return false;
-    }
-    if ($this->cust_alamat == "") {
-      return false;
-    }
-    if ($this->id_fk_toko == "") {
-      return false;
-    }
-    if ($this->cust_keterangan == "") {
-      return false;
-    }
-    if ($this->cust_status == "") {
-      return false;
-    }
-    if ($this->cust_create_date == "") {
-      return false;
-    }
-    if ($this->cust_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_cust == "") {
-      return false;
-    }
-    if ($this->cust_name == "") {
-      return false;
-    }
-    if ($this->cust_no_npwp == "") {
-      return false;
-    }
-    if ($this->cust_foto_npwp == "") {
-      return false;
-    }
-    if ($this->cust_foto_kartu_nama == "") {
-      return false;
-    }
-    if ($this->cust_badan_usaha == "") {
-      return false;
-    }
-    if ($this->cust_no_rekening == "") {
-      return false;
-    }
-    if ($this->cust_suff == "") {
-      return false;
-    }
-    if ($this->cust_perusahaan == "") {
-      return false;
-    }
-    if ($this->cust_email == "") {
-      return false;
-    }
-    if ($this->cust_telp == "") {
-      return false;
-    }
-    if ($this->cust_hp == "") {
-      return false;
-    }
-    if ($this->cust_alamat == "") {
-      return false;
-    }
-    if ($this->id_fk_toko == "") {
-      return false;
-    }
-    if ($this->cust_keterangan == "") {
-      return false;
-    }
-    if ($this->cust_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_cust == "") {
-      return false;
-    }
-    if ($this->cust_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($cust_name, $cust_suff, $cust_perusahaan, $cust_email, $cust_telp, $cust_hp, $cust_alamat, $cust_keterangan, $cust_status, $cust_no_npwp, $cust_foto_npwp, $cust_foto_kartu_nama, $cust_badan_usaha, $cust_no_rekening, $id_fk_toko)
   {
-    if (!$this->set_cust_name($cust_name)) {
-      return false;
-    }
-    if (!$this->set_cust_no_npwp($cust_no_npwp)) {
-      return false;
-    }
-    if (!$this->set_cust_foto_npwp($cust_foto_npwp)) {
-      return false;
-    }
-    if (!$this->set_cust_foto_kartu_nama($cust_foto_kartu_nama)) {
-      return false;
-    }
-    if (!$this->set_cust_badan_usaha($cust_badan_usaha)) {
-      return false;
-    }
-    if (!$this->set_cust_no_rekening($cust_no_rekening)) {
-      return false;
-    }
-    if (!$this->set_cust_suff($cust_suff)) {
-      return false;
-    }
-    if (!$this->set_cust_perusahaan($cust_perusahaan)) {
-      return false;
-    }
-    if (!$this->set_cust_email($cust_email)) {
-      return false;
-    }
-    if (!$this->set_cust_telp($cust_telp)) {
-      return false;
-    }
-    if (!$this->set_cust_hp($cust_hp)) {
-      return false;
-    }
-    if (!$this->set_cust_alamat($cust_alamat)) {
-      return false;
-    }
-    if (!$this->set_id_fk_toko($id_fk_toko)) {
-      return false;
-    }
-    if (!$this->set_cust_keterangan($cust_keterangan)) {
-      return false;
-    }
-    if (!$this->set_cust_status($cust_status)) {
-      return false;
-    }
+    $this->set_cust_name($cust_name);
+    $this->set_cust_no_npwp($cust_no_npwp);
+    $this->set_cust_foto_npwp($cust_foto_npwp);
+    $this->set_cust_foto_kartu_nama($cust_foto_kartu_nama);
+    $this->set_cust_badan_usaha($cust_badan_usaha);
+    $this->set_cust_no_rekening($cust_no_rekening);
+    $this->set_cust_suff($cust_suff);
+    $this->set_cust_perusahaan($cust_perusahaan);
+    $this->set_cust_email($cust_email);
+    $this->set_cust_telp($cust_telp);
+    $this->set_cust_hp($cust_hp);
+    $this->set_cust_alamat($cust_alamat);
+    $this->set_id_fk_toko($id_fk_toko);
+    $this->set_cust_keterangan($cust_keterangan);
+    $this->set_cust_status($cust_status);
     return true;
   }
   public function set_update($id_pk_cust, $cust_name, $cust_suff, $cust_perusahaan, $cust_email, $cust_telp, $cust_hp, $cust_alamat, $cust_keterangan, $cust_no_npwp, $cust_foto_npwp, $cust_foto_kartu_nama, $cust_badan_usaha, $cust_no_rekening, $id_fk_toko)
   {
-    if (!$this->set_id_pk_cust($id_pk_cust)) {
-      return false;
-    }
-    if (!$this->set_cust_name($cust_name)) {
-      return false;
-    }
-    if (!$this->set_cust_no_npwp($cust_no_npwp)) {
-      return false;
-    }
-    if (!$this->set_cust_foto_npwp($cust_foto_npwp)) {
-      return false;
-    }
-    if (!$this->set_cust_foto_kartu_nama($cust_foto_kartu_nama)) {
-      return false;
-    }
-    if (!$this->set_cust_badan_usaha($cust_badan_usaha)) {
-      return false;
-    }
-    if (!$this->set_cust_no_rekening($cust_no_rekening)) {
-      return false;
-    }
-    if (!$this->set_cust_suff($cust_suff)) {
-      return false;
-    }
-    if (!$this->set_cust_perusahaan($cust_perusahaan)) {
-      return false;
-    }
-    if (!$this->set_cust_email($cust_email)) {
-      return false;
-    }
-    if (!$this->set_cust_telp($cust_telp)) {
-      return false;
-    }
-    if (!$this->set_cust_hp($cust_hp)) {
-      return false;
-    }
-    if (!$this->set_cust_alamat($cust_alamat)) {
-      return false;
-    }
-    if (!$this->set_id_fk_toko($id_fk_toko)) {
-      return false;
-    }
-    if (!$this->set_cust_keterangan($cust_keterangan)) {
-      return false;
-    }
+    $this->set_id_pk_cust($id_pk_cust);
+    $this->set_cust_name($cust_name);
+    $this->set_cust_no_npwp($cust_no_npwp);
+    $this->set_cust_foto_npwp($cust_foto_npwp);
+    $this->set_cust_foto_kartu_nama($cust_foto_kartu_nama);
+    $this->set_cust_badan_usaha($cust_badan_usaha);
+    $this->set_cust_no_rekening($cust_no_rekening);
+    $this->set_cust_suff($cust_suff);
+    $this->set_cust_perusahaan($cust_perusahaan);
+    $this->set_cust_email($cust_email);
+    $this->set_cust_telp($cust_telp);
+    $this->set_cust_hp($cust_hp);
+    $this->set_cust_alamat($cust_alamat);
+    $this->set_id_fk_toko($id_fk_toko);
+    $this->set_cust_keterangan($cust_keterangan);
     return true;
   }
   public function set_delete($id_pk_cust)
   {
-    if (!$this->set_id_pk_cust($id_pk_cust)) {
-      return false;
-    }
+    $this->set_id_pk_cust($id_pk_cust);
     return true;
   }
   public function set_id_pk_cust($id_pk_cust)
   {
-    if ($id_pk_cust != "") {
-      $this->id_pk_cust = $id_pk_cust;
-      return true;
-    }
-    return false;
+    $this->id_pk_cust = $id_pk_cust;
+    return true;
   }
   public function set_cust_name($cust_name)
   {
-    if ($cust_name != "") {
-      $this->cust_name = $cust_name;
-      return true;
-    }
-    return false;
+    $this->cust_name = $cust_name;
+    return true;
   }
   public function set_cust_no_npwp($cust_no_npwp)
   {
-    if ($cust_no_npwp != "") {
-      $this->cust_no_npwp = $cust_no_npwp;
-      return true;
-    }
-    return false;
+    $this->cust_no_npwp = $cust_no_npwp;
+    return true;
   }
   public function set_cust_foto_npwp($cust_foto_npwp)
   {
-    if ($cust_foto_npwp != "") {
-      $this->cust_foto_npwp = $cust_foto_npwp;
-      return true;
-    }
-    return false;
+    $this->cust_foto_npwp = $cust_foto_npwp;
+    return true;
   }
   public function set_cust_foto_kartu_nama($cust_foto_kartu_nama)
   {
-    if ($cust_foto_kartu_nama != "") {
-      $this->cust_foto_kartu_nama = $cust_foto_kartu_nama;
-      return true;
-    }
-    return false;
+    $this->cust_foto_kartu_nama = $cust_foto_kartu_nama;
+    return true;
   }
   public function set_cust_badan_usaha($cust_badan_usaha)
   {
-    if ($cust_badan_usaha != "") {
-      $this->cust_badan_usaha = $cust_badan_usaha;
-      return true;
-    }
-    return false;
+    $this->cust_badan_usaha = $cust_badan_usaha;
+    return true;
   }
   public function set_cust_no_rekening($cust_no_rekening)
   {
-    if ($cust_no_rekening != "") {
-      $this->cust_no_rekening = $cust_no_rekening;
-      return true;
-    }
-    return false;
+    $this->cust_no_rekening = $cust_no_rekening;
+    return true;
   }
   public function set_cust_suff($cust_suff)
   {
-    if ($cust_suff != "") {
-      $this->cust_suff = $cust_suff;
-      return true;
-    }
-    return false;
+    $this->cust_suff = $cust_suff;
+    return true;
   }
   public function set_cust_perusahaan($cust_perusahaan)
   {
-    if ($cust_perusahaan != "") {
-      $this->cust_perusahaan = $cust_perusahaan;
-      return true;
-    }
-    return false;
+    $this->cust_perusahaan = $cust_perusahaan;
+    return true;
   }
   public function set_cust_email($cust_email)
   {
-    if ($cust_email != "") {
-      $this->cust_email = $cust_email;
-      return true;
-    }
-    return false;
+    $this->cust_email = $cust_email;
+    return true;
   }
   public function set_cust_telp($cust_telp)
   {
-    if ($cust_telp != "") {
-      $this->cust_telp = $cust_telp;
-      return true;
-    }
-    return false;
+    $this->cust_telp = $cust_telp;
+    return true;
   }
   public function set_cust_hp($cust_hp)
   {
-    if ($cust_hp != "") {
-      $this->cust_hp = $cust_hp;
-      return true;
-    }
-    return false;
+    $this->cust_hp = $cust_hp;
+    return true;
   }
   public function set_cust_alamat($cust_alamat)
   {
-    if ($cust_alamat != "") {
-      $this->cust_alamat = $cust_alamat;
-      return true;
-    }
-    return false;
+    $this->cust_alamat = $cust_alamat;
+    return true;
   }
   public function set_id_fk_toko($id_fk_toko)
   {
-    if ($id_fk_toko != "") {
-      $this->id_fk_toko = $id_fk_toko;
-      return true;
-    }
-    return false;
+    $this->id_fk_toko = $id_fk_toko;
+    return true;
   }
   public function set_cust_keterangan($cust_keterangan)
   {
-    if ($cust_keterangan != "") {
-      $this->cust_keterangan = $cust_keterangan;
-      return true;
-    }
-    return false;
+    $this->cust_keterangan = $cust_keterangan;
+    return true;
   }
   public function set_cust_status($cust_status)
   {
-    if ($cust_status != "") {
-      $this->cust_status = $cust_status;
-      return true;
-    }
-    return false;
+    $this->cust_status = $cust_status;
+    return true;
   }
   public function data_excel()
   {

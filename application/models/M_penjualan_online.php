@@ -149,23 +149,23 @@ class M_penjualan_online extends ci_model
       "id_last_modified" => $this->id_last_modified
     );
     updateRow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_fk_penjualan;
-        $log_all_msg = "Data Penjualan Online dengan ID: $id_pk diubah. Waktu diubah: $this->penj_on_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+    $id_pk = $this->id_fk_penjualan;
+    $log_all_msg = "Data Penjualan Online dengan ID: $id_pk diubah. Waktu diubah: $this->penj_on_last_modified . Data berubah menjadi: ";
+    $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Penjualan: $id_pk][Marketplace: $this->penj_on_marketplace][Resi: $this->penj_on_no_resi][Kurir: $this->penj_on_kurir][Waktu Diedit: $this->penj_on_last_modified]][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->penj_on_last_modified;
+    $log_all_data_changes = "[ID Penjualan: $id_pk][Marketplace: $this->penj_on_marketplace][Resi: $this->penj_on_no_resi][Kurir: $this->penj_on_kurir][Waktu Diedit: $this->penj_on_last_modified]][Oleh: $nama_user]";
+    $log_all_it = "";
+    $log_all_user = $this->id_last_modified;
+    $log_all_tgl = $this->penj_on_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+    $data_log = array(
+      "log_all_msg" => $log_all_msg,
+      "log_all_data_changes" => $log_all_data_changes,
+      "log_all_it" => $log_all_it,
+      "log_all_user" => $log_all_user,
+      "log_all_tgl" => $log_all_tgl
+    );
+    insertrow("log_all", $data_log);
     return true;
   }
   public function delete()
@@ -186,234 +186,86 @@ class M_penjualan_online extends ci_model
   }
   public function check_insert()
   {
-    if ($this->penj_on_marketplace == "") {
-      return false;
-    }
-    if ($this->penj_on_no_resi == "") {
-      return false;
-    }
-    if ($this->penj_on_kurir == "") {
-      return false;
-    }
-    if ($this->penj_on_status == "") {
-      return false;
-    }
-    if ($this->id_fk_penjualan == "") {
-      return false;
-    }
-    if ($this->penj_on_create_date == "") {
-      return false;
-    }
-    if ($this->penj_on_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->penj_on_marketplace == "") {
-      return false;
-    }
-    if ($this->penj_on_no_resi == "") {
-      return false;
-    }
-    if ($this->penj_on_kurir == "") {
-      return false;
-    }
-    if ($this->id_fk_penjualan == "") {
-      return false;
-    }
-    if ($this->penj_on_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_penjualan_online == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($penj_on_marketplace, $penj_on_no_resi, $penj_on_kurir, $penj_on_status, $id_fk_penjualan)
   {
-    if (!$this->set_penj_on_marketplace($penj_on_marketplace)) {
-      return false;
-    }
-    if (!$this->set_penj_on_no_resi($penj_on_no_resi)) {
-      return false;
-    }
-    if (!$this->set_penj_on_kurir($penj_on_kurir)) {
-      return false;
-    }
-    if (!$this->set_penj_on_status($penj_on_status)) {
-      return false;
-    }
-    if (!$this->set_id_fk_penjualan($id_fk_penjualan)) {
-      return false;
-    }
+    $this->set_penj_on_marketplace($penj_on_marketplace);
+    $this->set_penj_on_no_resi($penj_on_no_resi);
+    $this->set_penj_on_kurir($penj_on_kurir);
+    $this->set_penj_on_status($penj_on_status);
+    $this->set_id_fk_penjualan($id_fk_penjualan);
     return true;
   }
   public function set_update($penj_on_marketplace, $penj_on_no_resi, $penj_on_kurir, $id_fk_penjualan)
   {
-    if (!$this->set_penj_on_marketplace($penj_on_marketplace)) {
-      return false;
-    }
-    if (!$this->set_penj_on_no_resi($penj_on_no_resi)) {
-      return false;
-    }
-    if (!$this->set_penj_on_kurir($penj_on_kurir)) {
-      return false;
-    }
-    if (!$this->set_id_fk_penjualan($id_fk_penjualan)) {
-      return false;
-    }
+    $this->set_penj_on_marketplace($penj_on_marketplace);
+    $this->set_penj_on_no_resi($penj_on_no_resi);
+    $this->set_penj_on_kurir($penj_on_kurir);
+    $this->set_id_fk_penjualan($id_fk_penjualan);
     return true;
   }
   public function set_delete($set_id_pk_penjualan_online)
   {
-    if (!$this->set_id_pk_penjualan_online($set_id_pk_penjualan_online)) {
-      return false;
-    }
+    $this->set_id_pk_penjualan_online($set_id_pk_penjualan_online);
     return true;
-  }
-  public function get_id_pk_penjualan_online()
-  {
-    return $this->id_pk_penjualan_online;
-  }
-  public function get_penj_on_marketplace()
-  {
-    return $this->penj_on_marketplace;
-  }
-  public function get_penj_on_no_resi()
-  {
-    return $this->penj_on_no_resi;
-  }
-  public function get_penj_on_kurir()
-  {
-    return $this->penj_on_kurir;
-  }
-  public function get_id_fk_penjualan()
-  {
-    return $this->id_fk_penjualan;
-  }
-  public function get_penj_on_status()
-  {
-    return $this->penj_on_status;
-  }
-  public function get_penj_on_create_date()
-  {
-    return $this->penj_on_create_date;
-  }
-  public function get_penj_on_last_modified()
-  {
-    return $this->penj_on_last_modified;
-  }
-  public function get_id_create_data()
-  {
-    return $this->id_create_data;
-  }
-  public function get_id_last_modified()
-  {
-    return $this->id_last_modified;
   }
   public function set_id_pk_penjualan_online($id_pk_penjualan_online)
   {
-    if ($id_pk_penjualan_online != "") {
-      $this->id_pk_penjualan_online = $id_pk_penjualan_online;
-      return true;
-    } else {
-      return false;
-    }
+    $this->id_pk_penjualan_online = $id_pk_penjualan_online;
+    return true;
   }
   public function set_penj_on_marketplace($penj_on_marketplace)
   {
-    if ($penj_on_marketplace != "") {
-      $this->penj_on_marketplace = $penj_on_marketplace;
-      return true;
-    } else {
-      return false;
-    }
+    $this->penj_on_marketplace = $penj_on_marketplace;
+    return true;
   }
   public function set_penj_on_no_resi($penj_on_no_resi)
   {
-    if ($penj_on_no_resi != "") {
-      $this->penj_on_no_resi = $penj_on_no_resi;
-      return true;
-    } else {
-      return false;
-    }
+    $this->penj_on_no_resi = $penj_on_no_resi;
+    return true;
   }
   public function set_penj_on_kurir($penj_on_kurir)
   {
-    if ($penj_on_kurir != "") {
-      $this->penj_on_kurir = $penj_on_kurir;
-      return true;
-    } else {
-      return false;
-    }
+    $this->penj_on_kurir = $penj_on_kurir;
+    return true;
   }
   public function set_penj_on_status($penj_on_status)
   {
-    if ($penj_on_status != "") {
-      $this->penj_on_status = $penj_on_status;
-      return true;
-    } else {
-      return false;
-    }
+    $this->penj_on_status = $penj_on_status;
+    return true;
   }
   public function set_id_fk_penjualan($id_fk_penjualan)
   {
-    if ($id_fk_penjualan != "") {
-      $this->id_fk_penjualan = $id_fk_penjualan;
-      return true;
-    } else {
-      return false;
-    }
+    $this->id_fk_penjualan = $id_fk_penjualan;
+    return true;
   }
   public function set_penj_on_create_date($penj_on_create_date)
   {
-    if ($penj_on_create_date != "") {
-      $this->penj_on_create_date = $penj_on_create_date;
-      return true;
-    } else {
-      return false;
-    }
+    $this->penj_on_create_date = $penj_on_create_date;
+    return true;
   }
   public function set_penj_on_last_modified($penj_on_last_modified)
   {
-    if ($penj_on_last_modified != "") {
-      $this->penj_on_last_modified = $penj_on_last_modified;
-      return true;
-    } else {
-      return false;
-    }
+    $this->penj_on_last_modified = $penj_on_last_modified;
+    return true;
   }
   public function set_id_create_data($id_create_data)
   {
-    if ($id_create_data != "") {
-      $this->id_create_data = $id_create_data;
-      return true;
-    } else {
-      return false;
-    }
+    $this->id_create_data = $id_create_data;
+    return true;
   }
   public function set_id_last_modified($id_last_modified)
   {
-    if ($id_last_modified != "") {
-      $this->id_last_modified = $id_last_modified;
-      return true;
-    } else {
-      return false;
-    }
+    $this->id_last_modified = $id_last_modified;
+    return true;
   }
 }

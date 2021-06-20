@@ -311,23 +311,23 @@ class M_brg_pemenuhan extends ci_model
         "id_last_modified" => $this->id_last_modified
       );
       updateRow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_pk_brg_merk;
-        $log_all_msg = "Data Merk Barang dengan ID: $id_pk diubah. Waktu diubah: $this->brg_merk_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+      $id_pk = $this->id_pk_brg_merk;
+      $log_all_msg = "Data Merk Barang dengan ID: $id_pk diubah. Waktu diubah: $this->brg_merk_last_modified . Data berubah menjadi: ";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Barang Pemenuhan: $id_pk][Jumlah: $this->brg_pemenuhan_qty][ID Permintaan: $this->id_fk_brg_permintaan][Tipe Pemenuhan: $this->brg_pemenuhan_tipe][Waktu Diubah: $this->brg_pemenuhan_last_modified][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->brg_pemenuhan_last_modified;
+      $log_all_data_changes = "[ID Barang Pemenuhan: $id_pk][Jumlah: $this->brg_pemenuhan_qty][ID Permintaan: $this->id_fk_brg_permintaan][Tipe Pemenuhan: $this->brg_pemenuhan_tipe][Waktu Diubah: $this->brg_pemenuhan_last_modified][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->brg_pemenuhan_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
       return true;
     }
     return false;
@@ -367,7 +367,6 @@ class M_brg_pemenuhan extends ci_model
   }
   public function delete()
   {
-    //belom
     if ($this->check_delete()) {
       $where = array(
         "id_pk_brg_pemenuhan" => $this->id_pk_brg_pemenuhan
@@ -384,182 +383,57 @@ class M_brg_pemenuhan extends ci_model
   }
   public function check_insert()
   {
-
-    if ($this->brg_pemenuhan_qty == "") {
-      return false;
-    }
-    if ($this->id_fk_brg_permintaan == "") {
-      return false;
-    }
-    if ($this->brg_pemenuhan_tipe == "") {
-      return false;
-    }
-    if ($this->brg_pemenuhan_create_date == "") {
-      return false;
-    }
-
-    if (strtolower($this->brg_pemenuhan_tipe) == "warehouse") {
-      if ($this->id_fk_warehouse == "") {
-        return false;
-      }
-    } else if (strtolower($this->brg_pemenuhan_tipe) == "cabang") {
-      if ($this->id_fk_cabang == "") {
-        return false;
-      }
-    }
-    if ($this->brg_pemenuhan_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    //belom
-    if ($this->id_pk_brg_pemenuhan == "") {
-      return false;
-    }
-    if ($this->brg_pemenuhan_tgl == "") {
-      return false;
-    }
-    if ($this->brg_pemenuhan_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    } else return true;
+    return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_brg_pemenuhan == "") {
-      return false;
-    }
-    if ($this->brg_pemenuhan_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
-    return true;
-  }
-  public function set_insert($brg_pemenuhan_qty, $id_fk_brg_permintaan, $brg_pemenuhan_tipe)
-  {
-    //ceklagi
-    if (!$this->set_brg_pemenuhan_qty($brg_pemenuhan_qty)) {
-      return false;
-    }
-    if (!$this->set_id_fk_brg_permintaan($id_fk_brg_permintaan)) {
-      return false;
-    }
-    if (!$this->set_brg_pemenuhan_tipe($brg_pemenuhan_tipe)) {
-      return false;
-    }
-    if (strtoupper($brg_pemenuhan_tipe) == "warehouse") {
-      if (!$this->set_id_fk_warehouse($id_fk_warehouse)) {
-        return false;
-      }
-    } else if (strtoupper($brg_pemenuhan_tipe) == "cabang") {
-      if (!$this->set_id_fk_cabang($id_fk_cabang)) {
-        return false;
-      }
-    }
-    return true;
-  }
-  public function set_update($id_pk_brg_pemenuhan, $brg_pemenuhan_tgl)
-  {
-    //belom
-    if (!$this->set_id_pk_brg_pemenuhan($id_pk_brg_pemenuhan)) {
-      return false;
-    }
-    if (!$this->set_brg_pemenuhan_tgl($brg_pemenuhan_tgl)) {
-      return false;
-    }
     return true;
   }
   public function set_delete($id_pk_brg_pemenuhan)
   {
-    if (!$this->set_id_pk_brg_pemenuhan($id_pk_brg_pemenuhan)) {
-      return false;
-    }
+    $this->set_id_pk_brg_pemenuhan($id_pk_brg_pemenuhan);
 
     return true;
   }
-
   public function set_id_pk_brg_pemenuhan($id_pk_brg_pemenuhan)
   {
-    if ($id_pk_brg_pemenuhan != "") {
-      $this->id_pk_brg_pemenuhan = $id_pk_brg_pemenuhan;
-      return true;
-    }
-    return false;
+    $this->id_pk_brg_pemenuhan = $id_pk_brg_pemenuhan;
+    return true;
   }
   public function set_brg_pemenuhan_qty($brg_pemenuhan_qty)
   {
-    if ($brg_pemenuhan_qty != "") {
-      $this->brg_pemenuhan_qty = $brg_pemenuhan_qty;
-      return true;
-    }
-    return false;
+    $this->brg_pemenuhan_qty = $brg_pemenuhan_qty;
+    return true;
   }
   public function set_id_fk_brg_permintaan($id_fk_brg_permintaan)
   {
-    if ($id_fk_brg_permintaan != "") {
-      $this->id_fk_brg_permintaan = $id_fk_brg_permintaan;
-      return true;
-    }
-    return false;
+    $this->id_fk_brg_permintaan = $id_fk_brg_permintaan;
+    return true;
   }
   public function set_brg_pemenuhan_tipe($brg_pemenuhan_tipe)
   {
-    if ($brg_pemenuhan_tipe != "") {
-      $this->brg_pemenuhan_tipe = $brg_pemenuhan_tipe;
-      return true;
-    }
-    return false;
+    $this->brg_pemenuhan_tipe = $brg_pemenuhan_tipe;
+    return true;
   }
 
   public function set_brg_pemenuhan_status($brg_pemenuhan_status)
   {
-    if ($brg_pemenuhan_status != "") {
-      $this->brg_pemenuhan_status = $brg_pemenuhan_status;
-      return true;
-    }
-    return false;
+    $this->brg_pemenuhan_status = $brg_pemenuhan_status;
+    return true;
   }
   public function set_id_fk_cabang($id_fk_cabang)
   {
-    if ($id_fk_cabang != "") {
-      $this->id_fk_cabang = $id_fk_cabang;
-      return true;
-    }
-    return false;
+    $this->id_fk_cabang = $id_fk_cabang;
+    return true;
   }
 
   public function set_id_fk_warehouse($id_fk_warehouse)
   {
-    if ($id_fk_warehouse != "") {
-      $this->id_fk_warehouse = $id_fk_warehouse;
-      return true;
-    }
-    return false;
-  }
-
-
-  public function get_brg_pemenuhan_qty()
-  {
-    return $this->brg_pemenuhan_qty;
-  }
-  public function get_id_fk_brg_permintaan()
-  {
-    return $this->id_fk_brg_permintaan;
-  }
-  public function get_brg_pemenuhan_tipe()
-  {
-    return $this->brg_pemenuhan_tipe;
+    $this->id_fk_warehouse = $id_fk_warehouse;
+    return true;
   }
 }

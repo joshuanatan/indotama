@@ -305,23 +305,23 @@ class M_brg_permintaan extends ci_model
         "id_last_modified" => $this->id_last_modified
       );
       updaterow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_pk_brg_permintaan;
-        $log_all_msg = "Data Barang Permintaan dengan ID: $id_pk diubah. Waktu diubah: $this->brg_permintaan_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+      $id_pk = $this->id_pk_brg_permintaan;
+      $log_all_msg = "Data Barang Permintaan dengan ID: $id_pk diubah. Waktu diubah: $this->brg_permintaan_last_modified . Data berubah menjadi: ";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Barang Permintaan: $id_pk][Jumlah: $this->brg_permintaan_qty][Notes: $this->brg_permintaan_notes][Deadline: $this->brg_permintaan_deadline][ID Barang: $this->id_fk_brg][ID Cabang: $this->id_fk_cabang][Waktu Diubah: $this->brg_permintaan_last_modified][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->brg_permintaan_last_modified;
+      $log_all_data_changes = "[ID Barang Permintaan: $id_pk][Jumlah: $this->brg_permintaan_qty][Notes: $this->brg_permintaan_notes][Deadline: $this->brg_permintaan_deadline][ID Barang: $this->id_fk_brg][ID Cabang: $this->id_fk_cabang][Waktu Diubah: $this->brg_permintaan_last_modified][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->brg_permintaan_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
       return true;
     }
     return false;
@@ -344,171 +344,75 @@ class M_brg_permintaan extends ci_model
   }
   public function check_insert()
   {
-    if ($this->brg_permintaan_qty == "") {
-      return false;
-    }
-    if ($this->brg_permintaan_notes == "") {
-      return false;
-    }
-    if ($this->brg_permintaan_deadline == "") {
-      return false;
-    }
-    if ($this->brg_permintaan_status == "") {
-      return false;
-    }
-    if ($this->id_fk_brg == "") {
-      return false;
-    }
-    if ($this->id_fk_cabang == "") {
-      return false;
-    }
-    if ($this->brg_permintaan_create_date == "") {
-      return false;
-    }
-    if ($this->brg_permintaan_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    //ceklagi
-    if ($this->brg_permintaan_qty == "") {
-      return false;
-    }
-    if ($this->brg_permintaan_notes == "") {
-      return false;
-    }
-    if ($this->brg_permintaan_deadline == "") {
-      return false;
-    }
-    if ($this->brg_permintaan_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    } else return true;
+    return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_brg_permintaan == "") {
-      return false;
-    }
-    if ($this->brg_permintaan_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    } else return true;
+    return true;
   }
   public function set_insert($brg_permintaan_qty, $brg_permintaan_notes, $brg_permintaan_deadline, $brg_permintaan_status, $id_fk_brg, $id_fk_cabang)
   {
-    if (!$this->set_brg_permintaan_qty($brg_permintaan_qty)) {
-      return false;
-    }
-    if (!$this->set_brg_permintaan_notes($brg_permintaan_notes)) {
-      return false;
-    }
-    if (!$this->set_brg_permintaan_deadline($brg_permintaan_deadline)) {
-      return false;
-    }
-    if (!$this->set_brg_permintaan_status($brg_permintaan_status)) {
-      return false;
-    }
-    if (!$this->set_id_fk_brg($id_fk_brg)) {
-      return false;
-    }
-    if (!$this->set_id_fk_cabang($id_fk_cabang)) {
-      return false;
-    }
+    $this->set_brg_permintaan_qty($brg_permintaan_qty);
+    $this->set_brg_permintaan_notes($brg_permintaan_notes);
+    $this->set_brg_permintaan_deadline($brg_permintaan_deadline);
+    $this->set_brg_permintaan_status($brg_permintaan_status);
+    $this->set_id_fk_brg($id_fk_brg);
+    $this->set_id_fk_cabang($id_fk_cabang);
     return true;
   }
   public function set_update($brg_permintaan_qty, $brg_permintaan_notes, $brg_permintaan_deadline, $id_pk_brg_permintaan)
   {
     //ceklagi
-    if (!$this->set_brg_permintaan_qty($brg_permintaan_qty)) {
-      return false;
-    }
-    if (!$this->set_brg_permintaan_notes($brg_permintaan_notes)) {
-      return false;
-    }
-    if (!$this->set_brg_permintaan_deadline($brg_permintaan_deadline)) {
-      return false;
-    }
-    if (!$this->set_id_pk_brg_permintaan($id_pk_brg_permintaan)) {
-      return false;
-    }
+    $this->set_brg_permintaan_qty($brg_permintaan_qty);
+    $this->set_brg_permintaan_notes($brg_permintaan_notes);
+    $this->set_brg_permintaan_deadline($brg_permintaan_deadline);
+    $this->set_id_pk_brg_permintaan($id_pk_brg_permintaan);
     return true;
   }
   public function set_delete($id_pk_brg_permintaan)
   {
-    if (!$this->set_id_pk_brg_permintaan($id_pk_brg_permintaan)) {
-      return false;
-    }
+    $this->set_id_pk_brg_permintaan($id_pk_brg_permintaan);
 
     return true;
   }
   public function set_brg_permintaan_qty($brg_permintaan_qty)
   {
-    if ($brg_permintaan_qty != "") {
-      $this->brg_permintaan_qty = $brg_permintaan_qty;
-      return true;
-    }
-    return false;
+    $this->brg_permintaan_qty = $brg_permintaan_qty;
+    return true;
   }
   public function set_brg_permintaan_notes($brg_permintaan_notes)
   {
-    if ($brg_permintaan_notes != "") {
-      $this->brg_permintaan_notes = $brg_permintaan_notes;
-      return true;
-    }
-    return false;
+    $this->brg_permintaan_notes = $brg_permintaan_notes;
+    return true;
   }
   public function set_brg_permintaan_deadline($brg_permintaan_deadline)
   {
-    if ($brg_permintaan_deadline != "") {
-      $this->brg_permintaan_deadline = $brg_permintaan_deadline;
-      return true;
-    }
-    return false;
+    $this->brg_permintaan_deadline = $brg_permintaan_deadline;
+    return true;
   }
   public function set_brg_permintaan_status($brg_permintaan_status)
   {
-    if ($brg_permintaan_status != "") {
-      $this->brg_permintaan_status = $brg_permintaan_status;
-      return true;
-    }
-    return false;
+    $this->brg_permintaan_status = $brg_permintaan_status;
+    return true;
   }
   public function set_id_fk_brg($id_fk_brg)
   {
-    if ($id_fk_brg != "") {
-      $this->id_fk_brg = $id_fk_brg;
-      return true;
-    }
-    return false;
+    $this->id_fk_brg = $id_fk_brg;
+    return true;
   }
   public function set_id_fk_cabang($id_fk_cabang)
   {
-    if ($id_fk_cabang != "") {
-      $this->id_fk_cabang = $id_fk_cabang;
-      return true;
-    }
-    return false;
+    $this->id_fk_cabang = $id_fk_cabang;
+    return true;
   }
   public function set_id_pk_brg_permintaan($id_pk_brg_permintaan)
   {
-    if ($id_pk_brg_permintaan != "") {
-      $this->id_pk_brg_permintaan = $id_pk_brg_permintaan;
-      return true;
-    }
-    return false;
+    $this->id_pk_brg_permintaan = $id_pk_brg_permintaan;
+    return true;
   }
   public function data_excel()
   {

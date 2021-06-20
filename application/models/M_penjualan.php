@@ -329,23 +329,23 @@ class M_penjualan extends ci_model
       "id_last_modified" => $this->id_last_modified
     );
     updaterow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_pk_penjualan;
-        $log_all_msg = "Data Penjualan dengan ID: $id_pk diubah. Waktu diubah: $this->penj_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+    $id_pk = $this->id_pk_penjualan;
+    $log_all_msg = "Data Penjualan dengan ID: $id_pk diubah. Waktu diubah: $this->penj_last_modified . Data berubah menjadi: ";
+    $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Penjualan: $id_pk][Nomor Penjualan: $this->penj_nomor][Tanggal: $this->penj_tgl][Dateline: $this->penj_dateline_tgl][Jenis Penjualan: $this->penj_jenis][Tipe Pembayaran: $this->penj_tipe_pembayaran][ID Customer: $this->id_fk_customer][Waktu Diedit: $this->penj_last_modified][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->penj_last_modified;
+    $log_all_data_changes = "[ID Penjualan: $id_pk][Nomor Penjualan: $this->penj_nomor][Tanggal: $this->penj_tgl][Dateline: $this->penj_dateline_tgl][Jenis Penjualan: $this->penj_jenis][Tipe Pembayaran: $this->penj_tipe_pembayaran][ID Customer: $this->id_fk_customer][Waktu Diedit: $this->penj_last_modified][Oleh: $nama_user]";
+    $log_all_it = "";
+    $log_all_user = $this->id_last_modified;
+    $log_all_tgl = $this->penj_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+    $data_log = array(
+      "log_all_msg" => $log_all_msg,
+      "log_all_data_changes" => $log_all_data_changes,
+      "log_all_it" => $log_all_it,
+      "log_all_user" => $log_all_user,
+      "log_all_tgl" => $log_all_tgl
+    );
+    insertrow("log_all", $data_log);
     return true;
   }
   public function update_status()
@@ -405,238 +405,98 @@ class M_penjualan extends ci_model
   }
   public function check_insert()
   {
-    if ($this->penj_nomor == "") {
-      return false;
-    }
-    if ($this->penj_tgl == "") {
-      return false;
-    }
-    if ($this->penj_dateline_tgl == "") {
-      return false;
-    }
-    if ($this->penj_jenis == "") {
-      return false;
-    }
-    if ($this->penj_tipe_pembayaran == "") {
-      return false;
-    }
-    if ($this->penj_status == "") {
-      return false;
-    }
-    if ($this->id_fk_customer == "") {
-      return false;
-    }
-    if ($this->id_fk_cabang == "") {
-      return false;
-    }
-    if ($this->penj_create_date == "") {
-      return false;
-    }
-    if ($this->penj_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_penjualan == "") {
-      return false;
-    }
-    if ($this->penj_nomor == "") {
-      return false;
-    }
-    if ($this->penj_nomor == "") {
-      return false;
-    }
-    if ($this->penj_dateline_tgl == "") {
-      return false;
-    }
-    if ($this->penj_jenis == "") {
-      return false;
-    }
-    if ($this->penj_tipe_pembayaran == "") {
-      return false;
-    }
-    if ($this->penj_tgl == "") {
-      return false;
-    }
-    if ($this->id_fk_customer == "") {
-      return false;
-    }
-    if ($this->penj_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_penjualan == "") {
-      return false;
-    }
-    if ($this->penj_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($penj_nomor, $penj_tgl, $penj_dateline_tgl, $penj_jenis, $penj_tipe_pembayaran, $id_fk_customer, $id_fk_cabang, $penj_status)
   {
-    if (!$this->set_penj_nomor($penj_nomor)) {
-      return false;
-    }
-    if (!$this->set_penj_dateline_tgl($penj_dateline_tgl)) {
-      return false;
-    }
-    if (!$this->set_penj_jenis($penj_jenis)) {
-      return false;
-    }
-    if (!$this->set_penj_tipe_pembayaran($penj_tipe_pembayaran)) {
-      return false;
-    }
-    if (!$this->set_penj_tgl($penj_tgl)) {
-      return false;
-    }
-    if (!$this->set_penj_status($penj_status)) {
-      return false;
-    }
-    if (!$this->set_id_fk_customer($id_fk_customer)) {
-      return false;
-    }
-    if (!$this->set_id_fk_cabang($id_fk_cabang)) {
-      return false;
-    }
+    $this->set_penj_nomor($penj_nomor);
+    $this->set_penj_dateline_tgl($penj_dateline_tgl);
+    $this->set_penj_jenis($penj_jenis);
+    $this->set_penj_tipe_pembayaran($penj_tipe_pembayaran);
+    $this->set_penj_tgl($penj_tgl);
+    $this->set_penj_status($penj_status);
+    $this->set_id_fk_customer($id_fk_customer);
+    $this->set_id_fk_cabang($id_fk_cabang);
     return true;
   }
   public function set_update($id_pk_penjualan, $penj_nomor, $penj_dateline_tgl, $penj_jenis, $penj_tipe_pembayaran, $penj_tgl, $id_fk_customer)
   {
-    if (!$this->set_id_pk_penjualan($id_pk_penjualan)) {
-      return false;
-    }
-    if (!$this->set_penj_nomor($penj_nomor)) {
-      return false;
-    }
-    if (!$this->set_penj_dateline_tgl($penj_dateline_tgl)) {
-      return false;
-    }
-    if (!$this->set_penj_jenis($penj_jenis)) {
-      return false;
-    }
-    if (!$this->set_penj_tipe_pembayaran($penj_tipe_pembayaran)) {
-      return false;
-    }
-    if (!$this->set_penj_tgl($penj_tgl)) {
-      return false;
-    }
-    if (!$this->set_id_fk_customer($id_fk_customer)) {
-      return false;
-    }
+    $this->set_id_pk_penjualan($id_pk_penjualan);
+    $this->set_penj_nomor($penj_nomor);
+    $this->set_penj_dateline_tgl($penj_dateline_tgl);
+    $this->set_penj_jenis($penj_jenis);
+    $this->set_penj_tipe_pembayaran($penj_tipe_pembayaran);
+    $this->set_penj_tgl($penj_tgl);
+    $this->set_id_fk_customer($id_fk_customer);
     return true;
   }
   public function set_delete($id_pk_penjualan)
   {
-    if (!$this->set_id_pk_penjualan($id_pk_penjualan)) {
-      return false;
-    }
+    $this->set_id_pk_penjualan($id_pk_penjualan);
     return true;
   }
   public function set_id_pk_penjualan($id_pk_penjualan)
   {
-    if ($id_pk_penjualan != "") {
-      $this->id_pk_penjualan = $id_pk_penjualan;
-      return true;
-    }
-    return false;
+    $this->id_pk_penjualan = $id_pk_penjualan;
+    return true;
   }
   public function set_penj_nomor($penj_nomor)
   {
-    if ($penj_nomor != "") {
-      $this->penj_nomor = $penj_nomor;
-      return true;
-    }
-    return false;
+    $this->penj_nomor = $penj_nomor;
+    return true;
   }
   public function set_penj_nominal($penj_nominal)
   {
-    if ($penj_nominal != "") {
-      $this->penj_nominal = $penj_nominal;
-      return true;
-    }
-    return false;
+    $this->penj_nominal = $penj_nominal;
+    return true;
   }
   public function set_penj_nominal_byr($penj_nominal_byr)
   {
-    if ($penj_nominal_byr != "") {
-      $this->penj_nominal_byr = $penj_nominal_byr;
-      return true;
-    }
-    return false;
+    $this->penj_nominal_byr = $penj_nominal_byr;
+    return true;
   }
   public function set_penj_dateline_tgl($penj_dateline_tgl)
   {
-    if ($penj_dateline_tgl != "") {
-      $this->penj_dateline_tgl = $penj_dateline_tgl;
-      return true;
-    }
-    return false;
+    $this->penj_dateline_tgl = $penj_dateline_tgl;
+    return true;
   }
   public function set_penj_jenis($penj_jenis)
   {
-    if ($penj_jenis != "") {
-      $this->penj_jenis = $penj_jenis;
-      return true;
-    }
-    return false;
+    $this->penj_jenis = $penj_jenis;
+    return true;
   }
   public function set_penj_tipe_pembayaran($penj_tipe_pembayaran)
   {
-    if ($penj_tipe_pembayaran != "") {
-      $this->penj_tipe_pembayaran = $penj_tipe_pembayaran;
-      return true;
-    }
-    return false;
+    $this->penj_tipe_pembayaran = $penj_tipe_pembayaran;
+    return true;
   }
   public function set_penj_tgl($penj_tgl)
   {
-    if ($penj_tgl != "") {
-      $this->penj_tgl = $penj_tgl;
-      return true;
-    }
-    return false;
+    $this->penj_tgl = $penj_tgl;
+    return true;
   }
   public function set_penj_status($penj_status)
   {
-    if ($penj_status != "") {
-      $this->penj_status = $penj_status;
-      return true;
-    }
-    return false;
+    $this->penj_status = $penj_status;
+    return true;
   }
   public function set_id_fk_customer($id_fk_customer)
   {
-    if ($id_fk_customer != "") {
-      $this->id_fk_customer = $id_fk_customer;
-      return true;
-    }
-    return false;
+    $this->id_fk_customer = $id_fk_customer;
+    return true;
   }
   public function set_id_fk_cabang($id_fk_cabang)
   {
-    if ($id_fk_cabang != "") {
-      $this->id_fk_cabang = $id_fk_cabang;
-      return true;
-    }
-    return false;
+    $this->id_fk_cabang = $id_fk_cabang;
+    return true;
   }
   public function get_penj_nomor($id_fk_cabang, $jenis_transaksi, $custom_tgl = "-")
   {

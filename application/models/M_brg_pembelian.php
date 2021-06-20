@@ -169,23 +169,23 @@ class M_brg_pembelian extends ci_model
         "id_last_modified" => $this->id_last_modified,
       );
       updateRow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_pk_brg_pembelian;
-        $log_all_msg = "Data Merk Barang dengan ID: $id_pk diubah. Waktu diubah: $this->brg_pem_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+      $id_pk = $this->id_pk_brg_pembelian;
+      $log_all_msg = "Data Merk Barang dengan ID: $id_pk diubah. Waktu diubah: $this->brg_pem_last_modified . Data berubah menjadi: ";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Barang Pembelian: $id_pk][Jumlah: $this->brg_pem_qty][Satuan: $this->brg_pem_satuan][Harga: $this->brg_pem_harga][Notes: $this->brg_pem_note][Status: $this->brg_pem_status][ID Pembelian: $this->id_fk_pembelian][ID Barang: $this->id_fk_barang][Waktu Diubah: $this->brg_pem_last_modified][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->brg_pem_last_modified;
+      $log_all_data_changes = "[ID Barang Pembelian: $id_pk][Jumlah: $this->brg_pem_qty][Satuan: $this->brg_pem_satuan][Harga: $this->brg_pem_harga][Notes: $this->brg_pem_note][Status: $this->brg_pem_status][ID Pembelian: $this->id_fk_pembelian][ID Barang: $this->id_fk_barang][Waktu Diubah: $this->brg_pem_last_modified][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->brg_pem_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
       return true;
     } else {
       return false;
@@ -209,233 +209,82 @@ class M_brg_pembelian extends ci_model
   }
   public function check_insert()
   {
-    if ($this->brg_pem_qty == "") {
-      return false;
-    }
-    if ($this->brg_pem_satuan == "") {
-      return false;
-    }
-    if ($this->brg_pem_harga == "") {
-      return false;
-    }
-    if ($this->brg_pem_status == "") {
-      return false;
-    }
-    if ($this->id_fk_pembelian == "") {
-      return false;
-    }
-    if ($this->id_fk_barang == "") {
-      return false;
-    }
-    if ($this->brg_pem_create_date == "") {
-      return false;
-    }
-    if ($this->brg_pem_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-
-    if ($this->id_pk_brg_pembelian == "") {
-      return false;
-    }
-    if ($this->brg_pem_qty == "") {
-      return false;
-    }
-    if ($this->brg_pem_satuan == "") {
-      return false;
-    }
-    if ($this->brg_pem_note == "") {
-      return "-";
-    }
-    if ($this->brg_pem_harga == "") {
-      return false;
-    }
-    if ($this->id_fk_barang == "") {
-      return false;
-    }
-    if ($this->brg_pem_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_brg_pembelian == "") {
-      return false;
-    }
-    if ($this->brg_pem_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($brg_pem_qty, $brg_pem_satuan, $brg_pem_harga, $brg_pem_note, $brg_pem_status, $id_fk_pembelian, $id_fk_barang)
   {
-    if (!$this->set_brg_pem_qty($brg_pem_qty)) {
-      return false;
-    }
-    if (!$this->set_brg_pem_satuan($brg_pem_satuan)) {
-      return false;
-    }
-    if (!$this->set_brg_pem_harga($brg_pem_harga)) {
-      return false;
-    }
-    if (!$this->set_brg_pem_note($brg_pem_note)) {
-      return false;
-    } 
-    if (!$this->set_brg_pem_status($brg_pem_status)) {
-      return false;
-    }
-    if (!$this->set_id_fk_pembelian($id_fk_pembelian)) {
-      return false;
-    }
-    if (!$this->set_id_fk_barang($id_fk_barang)) {
-      return false;
-    }
+    $this->set_brg_pem_qty($brg_pem_qty);
+    $this->set_brg_pem_satuan($brg_pem_satuan);
+    $this->set_brg_pem_harga($brg_pem_harga);
+    $this->set_brg_pem_note($brg_pem_note);
+    $this->set_brg_pem_status($brg_pem_status);
+    $this->set_id_fk_pembelian($id_fk_pembelian);
+    $this->set_id_fk_barang($id_fk_barang);
     return true;
   }
   public function set_update($id_pk_brg_pembelian, $brg_pem_qty, $brg_pem_satuan, $brg_pem_harga, $brg_pem_note, $id_fk_barang)
   {
-    if (!$this->set_id_pk_brg_pembelian($id_pk_brg_pembelian)) {
-      return false;
-    }
-    if (!$this->set_brg_pem_qty($brg_pem_qty)) {
-      return false;
-    }
-    if (!$this->set_brg_pem_satuan($brg_pem_satuan)) {
-      return false;
-    }
-    if (!$this->set_brg_pem_harga($brg_pem_harga)) {
-      return false;
-    }
-    if (!$this->set_brg_pem_note($brg_pem_note)) {
-      return false;
-    }
-    if (!$this->set_id_fk_barang($id_fk_barang)) {
-      return false;
-    }
+    $this->set_id_pk_brg_pembelian($id_pk_brg_pembelian);
+    $this->set_brg_pem_qty($brg_pem_qty);
+    $this->set_brg_pem_satuan($brg_pem_satuan);
+    $this->set_brg_pem_harga($brg_pem_harga);
+    $this->set_brg_pem_note($brg_pem_note);
+    $this->set_id_fk_barang($id_fk_barang);
     return true;
   }
   public function set_delete($id_pk_brg_pembelian, $id_fk_pembelian)
   {
-    if ($this->set_id_pk_brg_pembelian($id_pk_brg_pembelian)) {
-      return false;
-    }
-    if ($this->set_id_fk_pembelian($id_fk_pembelian)) {
-      return false;
-    }
+    $this->set_id_pk_brg_pembelian($id_pk_brg_pembelian);
+    $this->set_id_fk_pembelian($id_fk_pembelian);
     return true;
   }
   public function set_id_pk_brg_pembelian($id_pk_brg_pembelian)
   {
-    if ($id_pk_brg_pembelian != "") {
-      $this->id_pk_brg_pembelian = $id_pk_brg_pembelian;
+    $this->id_pk_brg_pembelian = $id_pk_brg_pembelian;
       return true;
-    }
-    return false;
   }
   public function set_brg_pem_qty($brg_pem_qty)
   {
-    if ($brg_pem_qty != "") {
-      $this->brg_pem_qty = $brg_pem_qty;
+    $this->brg_pem_qty = $brg_pem_qty;
       return true;
-    }
-    return false;
   }
   public function set_brg_pem_satuan($brg_pem_satuan)
   {
-    if ($brg_pem_satuan != "") {
-      $this->brg_pem_satuan = $brg_pem_satuan;
+    $this->brg_pem_satuan = $brg_pem_satuan;
       return true;
-    }
-    return false;
   }
   public function set_brg_pem_harga($brg_pem_harga)
   {
-    if ($brg_pem_harga != "") {
-      $this->brg_pem_harga = $brg_pem_harga;
+    $this->brg_pem_harga = $brg_pem_harga;
       return true;
-    }
-    return false;
   }
   public function set_brg_pem_note($brg_pem_note)
   {
-    if ($brg_pem_note != "") {
-      $this->brg_pem_note = $brg_pem_note;
+    $this->brg_pem_note = $brg_pem_note;
       return true;
-    }else{
-      $this->brg_pem_note = "-";
-      return true;
-    }
+  
   }
   public function set_brg_pem_status($brg_pem_status)
   {
-    if ($brg_pem_status != "") {
-      $this->brg_pem_status = $brg_pem_status;
+    $this->brg_pem_status = $brg_pem_status;
       return true;
-    }
-    return false;
   }
   public function set_id_fk_pembelian($id_fk_pembelian)
   {
-    if ($id_fk_pembelian != "") {
-      $this->id_fk_pembelian = $id_fk_pembelian;
+    $this->id_fk_pembelian = $id_fk_pembelian;
       return true;
-    }
-    return false;
   }
   public function set_id_fk_barang($id_fk_barang)
   {
-    if ($id_fk_barang != "") {
-      $this->id_fk_barang = $id_fk_barang;
+    $this->id_fk_barang = $id_fk_barang;
       return true;
-    }
-    return false;
-  }
-  public function get_id_pk_brg_pembelian()
-  {
-    return $this->id_pk_brg_pembelian;
-  }
-  public function get_brg_pem_qty()
-  {
-    return $this->brg_pem_qty;
-  }
-  public function get_brg_pem_satuan()
-  {
-    return $this->brg_pem_satuan;
-  }
-  public function get_brg_pem_harga()
-  {
-    return $this->brg_pem_harga;
-  }
-  public function get_brg_pem_note()
-  {
-    return $this->brg_pem_note;
-  }
-  public function get_brg_pem_status()
-  {
-    return $this->brg_pem_note;
-  }
-  public function get_id_fk_pembelian()
-  {
-    return $this->id_fk_pembelian;
-  }
-  public function get_id_fk_barang()
-  {
-    return $this->id_fk_barang;
   }
 }

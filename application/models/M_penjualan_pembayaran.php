@@ -173,23 +173,23 @@ class M_penjualan_pembayaran extends CI_Model
       "id_last_modified" => $this->id_last_modified
     );
     updateRow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_pk_penjualan_pembayaran;
-        $log_all_msg = "Data Pembayaran Penjualan dengan ID: $id_pk diubah. Waktu diubah: $this->penjualan_pmbyrn_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+    $id_pk = $this->id_pk_penjualan_pembayaran;
+    $log_all_msg = "Data Pembayaran Penjualan dengan ID: $id_pk diubah. Waktu diubah: $this->penjualan_pmbyrn_last_modified . Data berubah menjadi: ";
+    $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Pembayaran Penjualan: $id_pk][Nama: $penjualan_pmbyrn_nama][Persen Pembayaran: $penjualan_pmbyrn_persen][Nominal Pembayaran: $penjualan_pmbyrn_nominal][Notes: $penjualan_pmbyrn_notes][Dateline: $penjualan_pmbyrn_dateline][Status: $penjualan_pmbyrn_status][Waktu Diedit: $this->penjualan_pmbyrn_last_modified][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->penjualan_pmbyrn_last_modified;
+    $log_all_data_changes = "[ID Pembayaran Penjualan: $id_pk][Nama: $penjualan_pmbyrn_nama][Persen Pembayaran: $penjualan_pmbyrn_persen][Nominal Pembayaran: $penjualan_pmbyrn_nominal][Notes: $penjualan_pmbyrn_notes][Dateline: $penjualan_pmbyrn_dateline][Status: $penjualan_pmbyrn_status][Waktu Diedit: $this->penjualan_pmbyrn_last_modified][Oleh: $nama_user]";
+    $log_all_it = "";
+    $log_all_user = $this->id_last_modified;
+    $log_all_tgl = $this->penjualan_pmbyrn_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+    $data_log = array(
+      "log_all_msg" => $log_all_msg,
+      "log_all_data_changes" => $log_all_data_changes,
+      "log_all_it" => $log_all_it,
+      "log_all_user" => $log_all_user,
+      "log_all_tgl" => $log_all_tgl
+    );
+    insertrow("log_all", $data_log);
     return true;
   }
   public function delete()
@@ -210,234 +210,82 @@ class M_penjualan_pembayaran extends CI_Model
   }
   public function check_insert()
   {
-    if ($this->id_fk_penjualan == "") {
-      return false;
-    }
-    if ($this->penjualan_pmbyrn_nama == "") {
-      return false;
-    }
-    if ($this->penjualan_pmbyrn_persen == "") {
-      return false;
-    }
-    if ($this->penjualan_pmbyrn_nominal == "") {
-      return false;
-    }
-    if ($this->penjualan_pmbyrn_notes == "") {
-      return false;
-    }
-    if ($this->penjualan_pmbyrn_dateline == "") {
-      return false;
-    }
-    if ($this->penjualan_pmbyrn_status == "") {
-      return false;
-    }
-    if ($this->penjualan_pmbyrn_create_date == "") {
-      return false;
-    }
-    if ($this->penjualan_pmbyrn_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_penjualan_pembayaran == "") {
-      return false;
-    }
-    if ($this->penjualan_pmbyrn_nama == "") {
-      return false;
-    }
-    if ($this->penjualan_pmbyrn_persen == "") {
-      return false;
-    }
-    if ($this->penjualan_pmbyrn_nominal == "") {
-      return false;
-    }
-    if ($this->penjualan_pmbyrn_notes == "") {
-      return false;
-    }
-    if ($this->penjualan_pmbyrn_dateline == "") {
-      return false;
-    }
-    if ($this->penjualan_pmbyrn_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_penjualan_pembayaran == "") {
-      return false;
-    }
-    if ($this->penjualan_pmbyrn_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($id_fk_penjualan, $penjualan_pmbyrn_nama, $penjualan_pmbyrn_persen, $penjualan_pmbyrn_nominal, $penjualan_pmbyrn_notes, $penjualan_pmbyrn_dateline, $penjualan_pmbyrn_status)
   {
-    if (!$this->set_id_fk_penjualan($id_fk_penjualan)) {
-      return false;
-    }
-    if (!$this->set_penjualan_pmbyrn_nama($penjualan_pmbyrn_nama)) {
-      return false;
-    }
-    if (!$this->set_penjualan_pmbyrn_persen($penjualan_pmbyrn_persen)) {
-      return false;
-    }
-    if (!$this->set_penjualan_pmbyrn_nominal($penjualan_pmbyrn_nominal)) {
-      return false;
-    }
-    if (!$this->set_penjualan_pmbyrn_notes($penjualan_pmbyrn_notes)) {
-      return false;
-    }
-    if (!$this->set_penjualan_pmbyrn_dateline($penjualan_pmbyrn_dateline)) {
-      return false;
-    }
-    if (!$this->set_penjualan_pmbyrn_status($penjualan_pmbyrn_status)) {
-      return false;
-    }
+    $this->set_id_fk_penjualan($id_fk_penjualan);
+    $this->set_penjualan_pmbyrn_nama($penjualan_pmbyrn_nama);
+    $this->set_penjualan_pmbyrn_persen($penjualan_pmbyrn_persen);
+    $this->set_penjualan_pmbyrn_nominal($penjualan_pmbyrn_nominal);
+    $this->set_penjualan_pmbyrn_notes($penjualan_pmbyrn_notes);
+    $this->set_penjualan_pmbyrn_dateline($penjualan_pmbyrn_dateline);
+    $this->set_penjualan_pmbyrn_status($penjualan_pmbyrn_status);
     return true;
   }
   public function set_update($id_pk_penjualan_pembayaran, $penjualan_pmbyrn_nama, $penjualan_pmbyrn_persen, $penjualan_pmbyrn_nominal, $penjualan_pmbyrn_notes, $penjualan_pmbyrn_dateline, $penjualan_pmbyrn_status)
   {
-    if (!$this->set_id_pk_penjualan_pembayaran($id_pk_penjualan_pembayaran)) {
-      return false;
-    }
-    if (!$this->set_penjualan_pmbyrn_nama($penjualan_pmbyrn_nama)) {
-      return false;
-    }
-    if (!$this->set_penjualan_pmbyrn_persen($penjualan_pmbyrn_persen)) {
-      return false;
-    }
-    if (!$this->set_penjualan_pmbyrn_nominal($penjualan_pmbyrn_nominal)) {
-      return false;
-    }
-    if (!$this->set_penjualan_pmbyrn_notes($penjualan_pmbyrn_notes)) {
-      return false;
-    }
-    if (!$this->set_penjualan_pmbyrn_dateline($penjualan_pmbyrn_dateline)) {
-      return false;
-    }
-    if (!$this->set_penjualan_pmbyrn_status($penjualan_pmbyrn_status)) {
-      return false;
-    }
+    $this->set_id_pk_penjualan_pembayaran($id_pk_penjualan_pembayaran);
+    $this->set_penjualan_pmbyrn_nama($penjualan_pmbyrn_nama);
+    $this->set_penjualan_pmbyrn_persen($penjualan_pmbyrn_persen);
+    $this->set_penjualan_pmbyrn_nominal($penjualan_pmbyrn_nominal);
+    $this->set_penjualan_pmbyrn_notes($penjualan_pmbyrn_notes);
+    $this->set_penjualan_pmbyrn_dateline($penjualan_pmbyrn_dateline);
+    $this->set_penjualan_pmbyrn_status($penjualan_pmbyrn_status);
     return true;
   }
   public function set_delete($id_pk_penjualan_pembayaran)
   {
-    if (!$this->set_id_pk_penjualan_pembayaran($id_pk_penjualan_pembayaran)) {
-      return false;
-    }
+    $this->set_id_pk_penjualan_pembayaran($id_pk_penjualan_pembayaran);
     return true;
   }
   public function set_id_pk_penjualan_pembayaran($id_pk_penjualan_pembayaran)
   {
-    if ($id_pk_penjualan_pembayaran != "") {
-      $this->id_pk_penjualan_pembayaran = $id_pk_penjualan_pembayaran;
-      return true;
-    }
-    return false;
+    $this->id_pk_penjualan_pembayaran = $id_pk_penjualan_pembayaran;
+    return true;
   }
   public function set_id_fk_penjualan($id_fk_penjualan)
   {
-    if ($id_fk_penjualan != "") {
-      $this->id_fk_penjualan = $id_fk_penjualan;
-      return true;
-    }
-    return false;
+    $this->id_fk_penjualan = $id_fk_penjualan;
+    return true;
   }
   public function set_penjualan_pmbyrn_nama($penjualan_pmbyrn_nama)
   {
-    if ($penjualan_pmbyrn_nama != "") {
-      $this->penjualan_pmbyrn_nama = $penjualan_pmbyrn_nama;
-      return true;
-    }
-    return false;
+    $this->penjualan_pmbyrn_nama = $penjualan_pmbyrn_nama;
+    return true;
   }
   public function set_penjualan_pmbyrn_persen($penjualan_pmbyrn_persen)
   {
-    if ($penjualan_pmbyrn_persen != "") {
-      $this->penjualan_pmbyrn_persen = $penjualan_pmbyrn_persen;
-      return true;
-    }
-    return false;
+    $this->penjualan_pmbyrn_persen = $penjualan_pmbyrn_persen;
+    return true;
   }
   public function set_penjualan_pmbyrn_nominal($penjualan_pmbyrn_nominal)
   {
-    if ($penjualan_pmbyrn_nominal != "") {
-      $this->penjualan_pmbyrn_nominal = $penjualan_pmbyrn_nominal;
-      return true;
-    }
-    return false;
+    $this->penjualan_pmbyrn_nominal = $penjualan_pmbyrn_nominal;
+    return true;
   }
   public function set_penjualan_pmbyrn_notes($penjualan_pmbyrn_notes)
   {
-    if ($penjualan_pmbyrn_notes != "") {
-      $this->penjualan_pmbyrn_notes = $penjualan_pmbyrn_notes;
-      return true;
-    }
-    return false;
+    $this->penjualan_pmbyrn_notes = $penjualan_pmbyrn_notes;
+    return true;
   }
   public function set_penjualan_pmbyrn_dateline($penjualan_pmbyrn_dateline)
   {
-    if ($penjualan_pmbyrn_dateline != "") {
-      $this->penjualan_pmbyrn_dateline = $penjualan_pmbyrn_dateline;
-      return true;
-    }
-    return false;
+    $this->penjualan_pmbyrn_dateline = $penjualan_pmbyrn_dateline;
+    return true;
   }
   public function set_penjualan_pmbyrn_status($penjualan_pmbyrn_status)
   {
-    if ($penjualan_pmbyrn_status != "") {
-      $this->penjualan_pmbyrn_status = $penjualan_pmbyrn_status;
-      return true;
-    }
-    return false;
-  }
-  public function get_id_pk_penjualan_pembayaran()
-  {
-    return $this->id_pk_penjualan_pembayaran;
-  }
-  public function get_id_fk_penjualan()
-  {
-    return $this->id_fk_penjualan;
-  }
-  public function get_penjualan_pmbyrn_nama()
-  {
-    return $this->penjualan_pmbyrn_nama;
-  }
-  public function get_penjualan_pmbyrn_persen()
-  {
-    return $this->penjualan_pmbyrn_persen;
-  }
-  public function get_penjualan_pmbyrn_nominal()
-  {
-    return $this->penjualan_pmbyrn_nominal;
-  }
-  public function get_penjualan_pmbyrn_notes()
-  {
-    return $this->penjualan_pmbyrn_notes;
-  }
-  public function get_penjualan_pmbyrn_dateline()
-  {
-    return $this->penjualan_pmbyrn_dateline;
-  }
-  public function get_penjualan_pmbyrn_status()
-  {
-    return $this->penjualan_pmbyrn_status;
+    $this->penjualan_pmbyrn_status = $penjualan_pmbyrn_status;
+    return true;
   }
   public function get_nominal_pembayaran()
   {

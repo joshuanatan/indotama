@@ -296,23 +296,23 @@ class M_brg_warehouse extends ci_model
       executeQuery("call update_stok_kombinasi_anggota_warehouse(" . $this->id_fk_brg . "," . $this->brg_warehouse_qty . "," . $result[0]["brg_warehouse_qty"] . "," . $this->id_fk_warehouse . ")");
 
       updateRow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_pk_brg_warehouse;
-        $log_all_msg = "Data Barang Warehouse dengan ID: $id_pk diubah. Waktu diubah: $this->brg_warehouse_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+      $id_pk = $this->id_pk_brg_warehouse;
+      $log_all_msg = "Data Barang Warehouse dengan ID: $id_pk diubah. Waktu diubah: $this->brg_warehouse_last_modified . Data berubah menjadi: ";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Barang Warehouse: $id_pk][Jumlah: $this->brg_warehouse_qty][Notes: $this->brg_warehouse_notes][ID Barang: $this->id_fk_brg][ID Warehouse: $this->id_fk_warehouse][Waktu Diedit: $this->brg_warehouse_create_date][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->brg_warehouse_last_modified;
+      $log_all_data_changes = "[ID Barang Warehouse: $id_pk][Jumlah: $this->brg_warehouse_qty][Notes: $this->brg_warehouse_notes][ID Barang: $this->id_fk_brg][ID Warehouse: $this->id_fk_warehouse][Waktu Diedit: $this->brg_warehouse_create_date][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->brg_warehouse_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
       return true;
     }
     return false;
@@ -335,182 +335,66 @@ class M_brg_warehouse extends ci_model
   }
   public function check_insert()
   {
-    if ($this->brg_warehouse_qty == "") {
-      return false;
-    }
-    if ($this->brg_warehouse_notes == "") {
-      return false;
-    }
-    if ($this->brg_warehouse_status == "") {
-      return false;
-    }
-    if ($this->id_fk_brg == "") {
-      return false;
-    }
-    if ($this->id_fk_warehouse == "") {
-      return false;
-    }
-    if ($this->brg_warehouse_create_date == "") {
-      return false;
-    }
-    if ($this->brg_warehouse_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_brg_warehouse == "") {
-      return false;
-    }
-    if ($this->brg_warehouse_qty == "") {
-      return false;
-    }
-    if ($this->brg_warehouse_notes == "") {
-      return false;
-    }
-    if ($this->id_fk_brg == "") {
-      return false;
-    }
-    if ($this->brg_warehouse_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_brg_warehouse == "") {
-      return false;
-    }
-    if ($this->brg_warehouse_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($brg_warehouse_qty, $brg_warehouse_notes, $brg_warehouse_status, $id_fk_brg, $id_fk_warehouse)
   {
-    if (!$this->set_brg_warehouse_qty($brg_warehouse_qty)) {
-      return false;
-    }
-    if (!$this->set_brg_warehouse_notes($brg_warehouse_notes)) {
-      return false;
-    }
-    if (!$this->set_brg_warehouse_status($brg_warehouse_status)) {
-      return false;
-    }
-    if (!$this->set_id_fk_brg($id_fk_brg)) {
-      return false;
-    }
-    if (!$this->set_id_fk_warehouse($id_fk_warehouse)) {
-      return false;
-    }
+    $this->set_brg_warehouse_qty($brg_warehouse_qty);
+    $this->set_brg_warehouse_notes($brg_warehouse_notes);
+    $this->set_brg_warehouse_status($brg_warehouse_status);
+    $this->set_id_fk_brg($id_fk_brg);
+    $this->set_id_fk_warehouse($id_fk_warehouse);
     return true;
   }
   public function set_update($id_pk_brg_warehouse, $brg_warehouse_qty, $brg_warehouse_notes, $id_fk_brg)
   {
-    if (!$this->set_id_pk_brg_warehouse($id_pk_brg_warehouse)) {
-      return false;
-    }
-    if (!$this->set_brg_warehouse_qty($brg_warehouse_qty)) {
-      return false;
-    }
-    if (!$this->set_brg_warehouse_notes($brg_warehouse_notes)) {
-      return false;
-    }
-    if (!$this->set_id_fk_brg($id_fk_brg)) {
-      return false;
-    }
+    $this->set_id_pk_brg_warehouse($id_pk_brg_warehouse);
+    $this->set_brg_warehouse_qty($brg_warehouse_qty);
+    $this->set_brg_warehouse_notes($brg_warehouse_notes);
+    $this->set_id_fk_brg($id_fk_brg);
     return true;
   }
   public function set_delete($id_pk_brg_warehouse)
   {
-    if (!$this->set_id_pk_brg_warehouse($id_pk_brg_warehouse)) {
-      return false;
-    }
+    $this->set_id_pk_brg_warehouse($id_pk_brg_warehouse);
     return true;
   }
   public function set_id_pk_brg_warehouse($id_pk_brg_warehouse)
   {
-    if ($id_pk_brg_warehouse != "") {
-      $this->id_pk_brg_warehouse = $id_pk_brg_warehouse;
+    $this->id_pk_brg_warehouse = $id_pk_brg_warehouse;
       return true;
-    }
-    return false;
   }
   public function set_brg_warehouse_qty($brg_warehouse_qty)
   {
-    if ($brg_warehouse_qty != "") {
-      $this->brg_warehouse_qty = $brg_warehouse_qty;
+    $this->brg_warehouse_qty = $brg_warehouse_qty;
       return true;
-    }
-    return false;
   }
   public function set_brg_warehouse_notes($brg_warehouse_notes)
   {
-    if ($brg_warehouse_notes != "") {
-      $this->brg_warehouse_notes = $brg_warehouse_notes;
+    $this->brg_warehouse_notes = $brg_warehouse_notes;
       return true;
-    }
-    return false;
   }
   public function set_brg_warehouse_status($brg_warehouse_status)
   {
-    if ($brg_warehouse_status != "") {
-      $this->brg_warehouse_status = $brg_warehouse_status;
+    $this->brg_warehouse_status = $brg_warehouse_status;
       return true;
-    }
-    return false;
   }
   public function set_id_fk_brg($id_fk_brg)
   {
-    if ($id_fk_brg != "") {
-      $this->id_fk_brg = $id_fk_brg;
+    $this->id_fk_brg = $id_fk_brg;
       return true;
-    }
-    return false;
   }
   public function set_id_fk_warehouse($id_fk_warehouse)
   {
-    if ($id_fk_warehouse != "") {
-      $this->id_fk_warehouse = $id_fk_warehouse;
+    $this->id_fk_warehouse = $id_fk_warehouse;
       return true;
-    }
-    return false;
-  }
-  public function get_id_pk_brg_warehouse()
-  {
-    return $this->id_pk_brg_warehouse;
-  }
-  public function get_brg_warehouse_qty()
-  {
-    return $this->brg_warehouse_qty;
-  }
-  public function get_brg_warehouse_notes()
-  {
-    return $this->brg_warehouse_notes;
-  }
-  public function get_brg_warehouse_status()
-  {
-    return $this->brg_warehouse_status;
-  }
-  public function get_id_fk_brg()
-  {
-    return $this->id_fk_brg;
-  }
-  public function get_id_fk_warehouse()
-  {
-    return $this->id_fk_warehouse;
   }
 }

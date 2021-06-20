@@ -330,107 +330,38 @@ class M_brg_penerimaan extends ci_model
   }
   public function check_insert()
   {
-    if ($this->brg_penerimaan_qty == "") {
-      return false;
-    }
-    if ($this->brg_penerimaan_note == "") {
-      return false;
-    }
-    if ($this->id_fk_penerimaan == "") {
-      return false;
-    }
-    if ($this->id_fk_satuan == "") {
-      return false;
-    }
-    if ($this->brg_penerimaan_create_date == "") {
-      return false;
-    }
-    if ($this->brg_penerimaan_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_brg_penerimaan == "") {
-      return false;
-    }
-    if ($this->brg_penerimaan_qty == "") {
-      return false;
-    }
-    if ($this->brg_penerimaan_note == "") {
-      return false;
-    }
-    if ($this->id_fk_satuan == "") {
-      return false;
-    }
-    if ($this->brg_penerimaan_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_brg_penerimaan == "") {
-      return false;
-    }
-    if ($this->brg_penerimaan_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($brg_penerimaan_qty, $brg_penerimaan_note, $id_fk_penerimaan, $id_fk_brg_pembelian = "", $id_fk_satuan, $id_fk_brg_retur = "", $id_fk_brg_pengiriman = "")
   {
-    if (!$this->set_brg_penerimaan_qty($brg_penerimaan_qty)) {
-      return false;
-    }
-    if (!$this->set_brg_penerimaan_note($brg_penerimaan_note)) {
-      return false;
-    }
-    if (!$this->set_id_fk_penerimaan($id_fk_penerimaan)) {
-      return false;
-    }
+    $this->set_brg_penerimaan_qty($brg_penerimaan_qty);
+    $this->set_brg_penerimaan_note($brg_penerimaan_note);
+    $this->set_id_fk_penerimaan($id_fk_penerimaan);
     $this->id_fk_brg_pembelian = $id_fk_brg_pembelian;
     $this->id_fk_brg_retur = $id_fk_brg_retur;
     $this->id_fk_brg_pengiriman = $id_fk_brg_pengiriman;
-    if (!$this->set_id_fk_satuan($id_fk_satuan)) {
-      return false;
-    }
+    $this->set_id_fk_satuan($id_fk_satuan);
     return true;
   }
   public function set_update($id_pk_brg_penerimaan, $brg_penerimaan_qty, $brg_penerimaan_note, $id_fk_satuan)
   {
-    if (!$this->set_id_pk_brg_penerimaan($id_pk_brg_penerimaan)) {
-      return false;
-    }
-    if (!$this->set_brg_penerimaan_qty($brg_penerimaan_qty)) {
-      return false;
-    }
-    if (!$this->set_brg_penerimaan_note($brg_penerimaan_note)) {
-      return false;
-    }
-    if (!$this->set_id_fk_satuan($id_fk_satuan)) {
-      return false;
-    }
+    $this->set_id_pk_brg_penerimaan($id_pk_brg_penerimaan);
+    $this->set_brg_penerimaan_qty($brg_penerimaan_qty);
+    $this->set_brg_penerimaan_note($brg_penerimaan_note);
+    $this->set_id_fk_satuan($id_fk_satuan);
     return true;
   }
   public function set_delete($id_pk_brg_penerimaan)
   {
-    if (!$this->set_id_pk_brg_penerimaan($id_pk_brg_penerimaan)) {
-      return false;
-    }
+    $this->set_id_pk_brg_penerimaan($id_pk_brg_penerimaan);
     return true;
   }
   public function set_id_pk_brg_penerimaan($id_pk_brg_penerimaan)
@@ -462,29 +393,5 @@ class M_brg_penerimaan extends ci_model
   {
     $this->id_fk_satuan = $id_fk_satuan;
     return true;
-  }
-  public function get_id_pk_brg_penerimaan()
-  {
-    return $this->id_pk_brg_penerimaan;
-  }
-  public function get_brg_penerimaan_qty()
-  {
-    return $this->brg_penerimaan_qty;
-  }
-  public function get_brg_penerimaan_note()
-  {
-    return $this->brg_penerimaan_note;
-  }
-  public function get_id_fk_penerimaan()
-  {
-    return $this->id_fk_penerimaan;
-  }
-  public function get_id_fk_brg_pembelian()
-  {
-    return $this->id_fk_brg_pembelian;
-  }
-  public function get_id_fk_satuan()
-  {
-    return $this->id_fk_satuan;
   }
 }

@@ -155,87 +155,90 @@ class M_menu extends ci_model
 
     $query = "
         select id_pk_menu
-        from ".$this->tbl_name." 
-        where menu_status = ? ".$search_query."  
-        order by ".$order_by." ".$order_direction;
-        $result["total_data"] = executequery($query,$args)->num_rows();
-        return $result;
+        from " . $this->tbl_name . " 
+        where menu_status = ? " . $search_query . "  
+        order by " . $order_by . " " . $order_direction;
+    $result["total_data"] = executequery($query, $args)->num_rows();
+    return $result;
+  }
+  public function insert()
+  {
+    if ($this->check_insert()) {
+      $data = array(
+        "menu_name" => $this->menu_name,
+        "menu_display" => $this->menu_display,
+        "menu_icon" => $this->menu_icon,
+        "menu_category" => $this->menu_category,
+        "menu_status" => $this->menu_status,
+        "menu_create_date" => $this->menu_create_date,
+        "menu_last_modified" => $this->menu_last_modified,
+        "id_create_data" => $this->id_create_data,
+        "id_last_modified" => $this->id_last_modified,
+      );
+
+      $id_hasil_insert = insertrow($this->tbl_name, $data);
+
+      $log_all_msg = "Data Menu baru ditambahkan. Waktu penambahan: $this->menu_create_date";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_create_data));
+
+      $log_all_data_changes = "[ID Menu: $id_hasil_insert][Nama: $this->menu_name][Display: $this->menu_display][Icon: $this->menu_icon][Kategori: $this->menu_category][Status: $this->menu_status][Waktu Ditambahkan: $this->menu_create_date][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_create_data;
+      $log_all_tgl = $this->menu_create_date;
+
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
+
+
+      return $id_hasil_insert;
     }
-    public function insert(){
-        if($this->check_insert()){
-            $data = array(
-                "menu_name" => $this->menu_name,
-                "menu_display" => $this->menu_display,
-                "menu_icon" => $this->menu_icon,
-                "menu_category" => $this->menu_category,
-                "menu_status" => $this->menu_status,
-                "menu_create_date" => $this->menu_create_date,
-                "menu_last_modified" => $this->menu_last_modified,
-                "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified,
-            );
+    return false;
+  }
+  public function update()
+  {
+    if ($this->check_update()) {
+      $where = array(
+        "id_pk_menu" => $this->id_pk_menu
+      );
+      $data = array(
+        "menu_name" => $this->menu_name,
+        "menu_display" => $this->menu_display,
+        "menu_icon" => $this->menu_icon,
+        "menu_category" => $this->menu_category,
+        "menu_last_modified" => $this->menu_last_modified,
+        "id_last_modified" => $this->id_last_modified,
+      );
+      updaterow($this->tbl_name, $data, $where);
+      $id_pk = $this->id_pk_menu;
+      $log_all_msg = "Data Menu dengan ID: $id_pk diubah. Waktu diubah: $this->menu_last_modified . Data berubah menjadi: ";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-            $id_hasil_insert = insertrow($this->tbl_name, $data);
+      $log_all_data_changes = "[ID Menu: $id_pk][Nama: $this->menu_name][Display: $this->menu_display][Icon: $this->menu_icon][Kategori: $this->menu_category][Waktu Diubah: $this->menu_last_modified][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->menu_last_modified;
 
-            $log_all_msg = "Data Menu baru ditambahkan. Waktu penambahan: $this->menu_create_date";
-            $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_create_data));
-
-            $log_all_data_changes = "[ID Menu: $id_hasil_insert][Nama: $this->menu_name][Display: $this->menu_display][Icon: $this->menu_icon][Kategori: $this->menu_category][Status: $this->menu_status][Waktu Ditambahkan: $this->menu_create_date][Oleh: $nama_user]";
-            $log_all_it = "";
-            $log_all_user = $this->id_create_data;
-            $log_all_tgl = $this->menu_create_date;
-
-            $data_log = array(
-                "log_all_msg" => $log_all_msg,
-                "log_all_data_changes" => $log_all_data_changes,
-                "log_all_it" => $log_all_it,
-                "log_all_user" => $log_all_user,
-                "log_all_tgl" => $log_all_tgl
-            );
-            insertrow("log_all", $data_log);
-
-
-            return $id_hasil_insert;
-        }
-        return false;
-    }
-    public function update(){
-        if($this->check_update()){
-            $where = array(
-                "id_pk_menu" => $this->id_pk_menu
-            );
-            $data = array(
-                "menu_name" => $this->menu_name, 
-                "menu_display" => $this->menu_display, 
-                "menu_icon" => $this->menu_icon, 
-                "menu_category" => $this->menu_category, 
-                "menu_last_modified" => $this->menu_last_modified, 
-                "id_last_modified" => $this->id_last_modified, 
-            );
-            updaterow($this->tbl_name,$data,$where);
-            $id_pk = $this->id_pk_menu;
-        $log_all_msg = "Data Menu dengan ID: $id_pk diubah. Waktu diubah: $this->menu_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
-
-        $log_all_data_changes = "[ID Menu: $id_pk][Nama: $this->menu_name][Display: $this->menu_display][Icon: $this->menu_icon][Kategori: $this->menu_category][Waktu Diubah: $this->menu_last_modified][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->menu_last_modified;
-
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
       return true;
-        }
-        return false;
     }
-    public function delete(){
-        if($this->check_delete()){
+    return false;
+  }
+  public function delete()
+  {
+    if ($this->check_delete()) {
 
       $where = array(
         "id_pk_menu" => $this->id_pk_menu
@@ -252,165 +255,68 @@ class M_menu extends ci_model
   }
   public function check_insert()
   {
-    if ($this->menu_name == "") {
-      return false;
-    }
-    if ($this->menu_display == "") {
-      return false;
-    }
-    if ($this->menu_icon == "") {
-      return false;
-    }
-    if ($this->menu_status == "") {
-      return false;
-    }
-    if ($this->menu_category == "") {
-      return false;
-    }
-    if ($this->menu_create_date == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->menu_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_menu == "") {
-      return false;
-    }
-    if ($this->menu_name == "") {
-      return false;
-    }
-    if ($this->menu_display == "") {
-      return false;
-    }
-    if ($this->menu_icon == "") {
-      return false;
-    }
-    if ($this->menu_category == "") {
-      return false;
-    }
-    if ($this->menu_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_menu == "") {
-      return false;
-    }
-    if ($this->menu_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($menu_name, $menu_display, $menu_icon, $menu_status, $menu_category)
   {
-    if (!$this->set_menu_name($menu_name)) {
-      return false;
-    }
-    if (!$this->set_menu_display($menu_display)) {
-      return false;
-    }
-    if (!$this->set_menu_icon($menu_icon)) {
-      return false;
-    }
-    if (!$this->set_menu_status($menu_status)) {
-      return false;
-    }
-    if (!$this->set_menu_category($menu_category)) {
-      return false;
-    }
+    $this->set_menu_name($menu_name);
+    $this->set_menu_display($menu_display);
+    $this->set_menu_icon($menu_icon);
+    $this->set_menu_status($menu_status);
+    $this->set_menu_category($menu_category);
     return true;
   }
   public function set_update($id_pk_menu, $menu_name, $menu_display, $menu_icon, $menu_category)
   {
-    if (!$this->set_id_pk_menu($id_pk_menu)) {
-      return false;
-    }
-    if (!$this->set_menu_display($menu_display)) {
-      return false;
-    }
-    if (!$this->set_menu_icon($menu_icon)) {
-      return false;
-    }
-    if (!$this->set_menu_name($menu_name)) {
-      return false;
-    }
-    if (!$this->set_menu_category($menu_category)) {
-      return false;
-    }
+    $this->set_id_pk_menu($id_pk_menu);
+    $this->set_menu_display($menu_display);
+    $this->set_menu_icon($menu_icon);
+    $this->set_menu_name($menu_name);
+    $this->set_menu_category($menu_category);
     return true;
   }
   public function set_delete($id_pk_menu)
   {
-    if (!$this->set_id_pk_menu($id_pk_menu)) {
-      return false;
-    }
+    $this->set_id_pk_menu($id_pk_menu);
     return true;
   }
   public function set_id_pk_menu($id_pk_menu)
   {
-    if ($id_pk_menu != "") {
-      $this->id_pk_menu = $id_pk_menu;
-      return true;
-    }
-    return false;
+    $this->id_pk_menu = $id_pk_menu;
+    return true;
   }
   public function set_menu_name($menu_name)
   {
-    if ($menu_name != "") {
-      $this->menu_name = $menu_name;
-      return true;
-    }
-    return false;
+    $this->menu_name = $menu_name;
+    return true;
   }
   public function set_menu_display($menu_display)
   {
-    if ($menu_display != "") {
-      $this->menu_display = $menu_display;
-      return true;
-    }
-    return false;
+    $this->menu_display = $menu_display;
+    return true;
   }
   public function set_menu_icon($menu_icon)
   {
-    if ($menu_icon != "") {
-      $this->menu_icon = $menu_icon;
-      return true;
-    }
-    return false;
+    $this->menu_icon = $menu_icon;
+    return true;
   }
   public function set_menu_status($menu_status)
   {
-    if ($menu_status != "") {
-      $this->menu_status = $menu_status;
-      return true;
-    }
-    return false;
+    $this->menu_status = $menu_status;
+    return true;
   }
   public function set_menu_category($menu_category)
   {
-    if ($menu_category != "") {
-      $this->menu_category = $menu_category;
-      return true;
-    }
-    return false;
+    $this->menu_category = $menu_category;
+    return true;
   }
   public function data_excel()
   {

@@ -261,23 +261,23 @@ class M_cabang extends ci_model
         "id_last_modified" => $this->id_last_modified
       );
       updaterow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_pk_cabang;
-        $log_all_msg = "Data Cabang dengan ID: $id_pk diubah. Waktu diubah: $this->cabang_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+      $id_pk = $this->id_pk_cabang;
+      $log_all_msg = "Data Cabang dengan ID: $id_pk diubah. Waktu diubah: $this->cabang_last_modified . Data berubah menjadi: ";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Cabang: $id_pk][Nama: $this->cabang_nama][Kode: $this->cabang_kode][Daerah: $this->cabang_daerah][Kop Surat: $this->cabang_kop_surat][Nonpkp: $this->cabang_nonpkp][Pernyataan Rek.: $this->cabang_pernyataan_rek][No Telp: $this->cabang_notelp][Alamat: $this->cabang_alamat][Waktu Diedit: $this->cabang_last_modified][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->cabang_last_modified;
+      $log_all_data_changes = "[ID Cabang: $id_pk][Nama: $this->cabang_nama][Kode: $this->cabang_kode][Daerah: $this->cabang_daerah][Kop Surat: $this->cabang_kop_surat][Nonpkp: $this->cabang_nonpkp][Pernyataan Rek.: $this->cabang_pernyataan_rek][No Telp: $this->cabang_notelp][Alamat: $this->cabang_alamat][Waktu Diedit: $this->cabang_last_modified][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->cabang_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
       return true;
     }
     return false;
@@ -300,284 +300,102 @@ class M_cabang extends ci_model
   }
   public function check_insert()
   {
-    if ($this->cabang_nama == "") {
-      return false;
-    }
-    if ($this->cabang_kode == "") {
-      return false;
-    }
-    if ($this->cabang_daerah == "") {
-      return false;
-    }
-    if ($this->cabang_kop_surat == "") {
-      return false;
-    }
-    if ($this->cabang_nonpkp == "") {
-      return false;
-    }
-    if ($this->cabang_pernyataan_rek == "") {
-      return false;
-    }
-    if ($this->cabang_notelp == "") {
-      return false;
-    }
-    if ($this->cabang_status == "") {
-      return false;
-    }
-    if ($this->cabang_alamat == "") {
-      return false;
-    }
-    if ($this->cabang_create_date == "") {
-      return false;
-    }
-    if ($this->cabang_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
-    if ($this->id_fk_toko == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_cabang == "") {
-      return false;
-    }
-    if ($this->cabang_nama == "") {
-      return false;
-    }
-    if ($this->cabang_kode == "") {
-      return false;
-    }
-    if ($this->cabang_daerah == "") {
-      return false;
-    }
-    if ($this->cabang_kop_surat == "") {
-      return false;
-    }
-    if ($this->cabang_nonpkp == "") {
-      return false;
-    }
-    if ($this->cabang_pernyataan_rek == "") {
-      return false;
-    }
-    if ($this->cabang_notelp == "") {
-      return false;
-    }
-    if ($this->cabang_alamat == "") {
-      return false;
-    }
-    if ($this->cabang_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-
-    if ($this->id_pk_cabang == "") {
-      return false;
-    }
-    if ($this->cabang_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($cabang_nama, $cabang_kode, $cabang_daerah, $cabang_notelp, $cabang_status, $cabang_alamat, $id_fk_toko, $cabang_kop_surat, $cabang_nonpkp, $cabang_pernyataan_rek)
   {
-    if (!$this->set_cabang_nama($cabang_nama)) {
-      return false;
-    }
-    if (!$this->set_cabang_kode($cabang_kode)) {
-      return false;
-    }
-    if (!$this->set_cabang_daerah($cabang_daerah)) {
-      return false;
-    }
-    if (!$this->set_cabang_kop_surat($cabang_kop_surat)) {
-      return false;
-    }
-    if (!$this->set_cabang_nonpkp($cabang_nonpkp)) {
-      return false;
-    }
-    if (!$this->set_cabang_pernyataan_rek($cabang_pernyataan_rek)) {
-      return false;
-    }
-    if (!$this->set_cabang_notelp($cabang_notelp)) {
-      return false;
-    }
-    if (!$this->set_cabang_status($cabang_status)) {
-      return false;
-    }
-    if (!$this->set_cabang_alamat($cabang_alamat)) {
-      return false;
-    }
-    if (!$this->set_id_fk_toko($id_fk_toko)) {
-      return false;
-    }
+    $this->set_cabang_nama($cabang_nama);
+    $this->set_cabang_kode($cabang_kode);
+    $this->set_cabang_daerah($cabang_daerah);
+    $this->set_cabang_kop_surat($cabang_kop_surat);
+    $this->set_cabang_nonpkp($cabang_nonpkp);
+    $this->set_cabang_pernyataan_rek($cabang_pernyataan_rek);
+    $this->set_cabang_notelp($cabang_notelp);
+    $this->set_cabang_status($cabang_status);
+    $this->set_cabang_alamat($cabang_alamat);
+    $this->set_id_fk_toko($id_fk_toko);
     return true;
   }
   public function set_update($cabang_nama, $cabang_kode, $id_pk_cabang, $cabang_daerah, $cabang_notelp, $cabang_alamat, $cabang_kop_surat, $cabang_nonpkp, $cabang_pernyataan_rek)
   {
-    if (!$this->set_id_pk_cabang($id_pk_cabang)) {
-      return false;
-    }
-    if (!$this->set_cabang_nama($cabang_nama)) {
-      return false;
-    }
-    if (!$this->set_cabang_kode($cabang_kode)) {
-      return false;
-    }
-    if (!$this->set_cabang_daerah($cabang_daerah)) {
-      return false;
-    }
-    if (!$this->set_cabang_kop_surat($cabang_kop_surat)) {
-      return false;
-    }
-    if (!$this->set_cabang_nonpkp($cabang_nonpkp)) {
-      return false;
-    }
-    if (!$this->set_cabang_pernyataan_rek($cabang_pernyataan_rek)) {
-      return false;
-    }
-    if (!$this->set_cabang_notelp($cabang_notelp)) {
-      return false;
-    }
-    if (!$this->set_cabang_alamat($cabang_alamat)) {
-      return false;
-    }
+    $this->set_id_pk_cabang($id_pk_cabang);
+    $this->set_cabang_nama($cabang_nama);
+    $this->set_cabang_kode($cabang_kode);
+    $this->set_cabang_daerah($cabang_daerah);
+    $this->set_cabang_kop_surat($cabang_kop_surat);
+    $this->set_cabang_nonpkp($cabang_nonpkp);
+    $this->set_cabang_pernyataan_rek($cabang_pernyataan_rek);
+    $this->set_cabang_notelp($cabang_notelp);
+    $this->set_cabang_alamat($cabang_alamat);
     return true;
   }
   public function set_delete($id_pk_cabang)
   {
-    if (!$this->set_id_pk_cabang($id_pk_cabang)) {
-      return false;
-    }
+    $this->set_id_pk_cabang($id_pk_cabang);
     return true;
-  }
-  public function get_id_pk_cabang()
-  {
-    return $this->id_pk_cabang;
-  }
-  public function get_cabang_daerah()
-  {
-    return $this->cabang_daerah;
-  }
-  public function get_cabang_notelp()
-  {
-    return $this->cabang_notelp;
-  }
-  public function get_cabang_status()
-  {
-    return $this->cabang_status;
-  }
-  public function get_cabang_alamat()
-  {
-    return $this->cabang_alamat;
-  }
-  public function get_id_fk_toko()
-  {
-    return $this->id_fk_toko;
   }
   public function set_id_pk_cabang($id_pk_cabang)
   {
-    if ($id_pk_cabang != "") {
-      $this->id_pk_cabang = $id_pk_cabang;
-      return true;
-    }
-    return false;
+    $this->id_pk_cabang = $id_pk_cabang;
+    return true;
   }
   public function set_cabang_nama($cabang_nama)
   {
-    if ($cabang_nama != "") {
-      $this->cabang_nama = $cabang_nama;
-      return true;
-    }
-    return false;
+    $this->cabang_nama = $cabang_nama;
+    return true;
   }
   public function set_cabang_kode($cabang_kode)
   {
-    if ($cabang_kode != "") {
-      $this->cabang_kode = $cabang_kode;
-      return true;
-    }
-    return false;
+    $this->cabang_kode = $cabang_kode;
+    return true;
   }
   public function set_cabang_daerah($cabang_daerah)
   {
-    if ($cabang_daerah != "") {
-      $this->cabang_daerah = $cabang_daerah;
-      return true;
-    }
-    return false;
+    $this->cabang_daerah = $cabang_daerah;
+    return true;
   }
   public function set_cabang_kop_surat($cabang_kop_surat)
   {
-    if ($cabang_kop_surat != "") {
-      $this->cabang_kop_surat = $cabang_kop_surat;
-      return true;
-    }
-    return false;
+    $this->cabang_kop_surat = $cabang_kop_surat;
+    return true;
   }
   public function set_cabang_nonpkp($cabang_nonpkp)
   {
-    if ($cabang_nonpkp != "") {
-      $this->cabang_nonpkp = $cabang_nonpkp;
-      return true;
-    }
-    return false;
+    $this->cabang_nonpkp = $cabang_nonpkp;
+    return true;
   }
   public function set_cabang_pernyataan_rek($cabang_pernyataan_rek)
   {
-    if ($cabang_pernyataan_rek != "") {
-      $this->cabang_pernyataan_rek = $cabang_pernyataan_rek;
-      return true;
-    }
-    return false;
+    $this->cabang_pernyataan_rek = $cabang_pernyataan_rek;
+    return true;
   }
   public function set_cabang_notelp($cabang_notelp)
   {
-    if ($cabang_notelp != "") {
-      $this->cabang_notelp = $cabang_notelp;
-      return true;
-    }
-    return false;
+    $this->cabang_notelp = $cabang_notelp;
+    return true;
   }
   public function set_cabang_status($cabang_status)
   {
-    if ($cabang_status != "") {
-      $this->cabang_status = $cabang_status;
-      return true;
-    }
-    return false;
+    $this->cabang_status = $cabang_status;
+    return true;
   }
   public function set_cabang_alamat($cabang_alamat)
   {
-    if ($cabang_alamat != "") {
-      $this->cabang_alamat = $cabang_alamat;
-      return true;
-    }
-    return false;
+    $this->cabang_alamat = $cabang_alamat;
+    return true;
   }
   public function set_id_fk_toko($id_fk_toko)
   {
-    if ($id_fk_toko != "") {
-      $this->id_fk_toko = $id_fk_toko;
-      return true;
-    }
-    return false;
+    $this->id_fk_toko = $id_fk_toko;
+    return true;
   }
 
   public function data_excel()

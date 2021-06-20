@@ -2,30 +2,33 @@
 defined("BASEPATH") or exit("No Direct Script");
 date_default_timezone_set("Asia/Jakarta");
 
-class M_retur_brg extends CI_Model{
-    private $tbl_name = "tbl_retur_brg";
-    private $columns = array();
-    private $id_pk_retur_brg;
-    private $id_fk_retur;
-    private $id_fk_brg;
-    private $retur_brg_qty;
-    private $retur_brg_satuan;
-    private $retur_brg_notes;
-    private $retur_brg_status;
-    private $retur_create_date;
-    private $retur_last_modified;
-    private $id_create_data;
-    private $id_last_modified;
+class M_retur_brg extends CI_Model
+{
+  private $tbl_name = "tbl_retur_brg";
+  private $columns = array();
+  private $id_pk_retur_brg;
+  private $id_fk_retur;
+  private $id_fk_brg;
+  private $retur_brg_qty;
+  private $retur_brg_satuan;
+  private $retur_brg_notes;
+  private $retur_brg_status;
+  private $retur_create_date;
+  private $retur_last_modified;
+  private $id_create_data;
+  private $id_last_modified;
 
-    public function __construct(){
-        parent::__construct();
-        $this->retur_create_date = date("y-m-d h:i:s");
-        $this->retur_last_modified = date("y-m-d h:i:s");
-        $this->id_create_data = $this->session->id_user;
-        $this->id_last_modified = $this->session->id_user;
-    }
-    public function install(){
-        $sql = "
+  public function __construct()
+  {
+    parent::__construct();
+    $this->retur_create_date = date("y-m-d h:i:s");
+    $this->retur_last_modified = date("y-m-d h:i:s");
+    $this->id_create_data = $this->session->id_user;
+    $this->id_last_modified = $this->session->id_user;
+  }
+  public function install()
+  {
+    $sql = "
         drop table if exists tbl_retur_brg;
         create table tbl_retur_brg(
             id_pk_retur_brg int primary key auto_increment,
@@ -88,18 +91,11 @@ class M_retur_brg extends CI_Model{
         end$$
         delimiter ;
         ";
-        executequery($sql);
-    }
-    private function set_column($col_name,$col_disp,$order_by){
-        $array = array(
-            "col_name" => $col_name,
-            "col_disp" => $col_disp,
-            "order_by" => $order_by
-        );
-        $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
-    }
-    public function list_data(){
-        $sql = "
+    executequery($sql);
+  }
+  public function list_data()
+  {
+    $sql = "
         select 
             id_pk_retur_brg,
             retur_brg_qty,
@@ -139,277 +135,174 @@ class M_retur_brg extends CI_Model{
         ) as a on a.id_fk_barang = tbl_retur_brg.id_fk_brg and a.id_fk_penjualan = mstr_retur.id_fk_penjualan
         where id_fk_retur = ? and retur_brg_status = 'aktif'
         ";
-        $args = array(
-            $this->id_fk_retur
-        );
-        return executeQuery($sql,$args);
-    }
-    public function columns(){
-        return $this->columns;
-    }
-    public function insert(){
-        if($this->check_insert()){
-            $data = array(
-                "id_fk_retur" => $this->id_fk_retur,
-                "id_fk_brg" => $this->id_fk_brg,
-                "retur_brg_qty" => $this->retur_brg_qty,
-                "retur_brg_satuan" => $this->retur_brg_satuan,
-                "retur_brg_notes" => $this->retur_brg_notes,
-                "retur_brg_status" => $this->retur_brg_status,
-                "retur_create_date" => $this->retur_create_date,
-                "retur_last_modified" => $this->retur_last_modified,
-                "id_create_data" => $this->id_create_data,
-                "id_last_modified" => $this->id_last_modified,
-            );
-            $id_hasil_insert = insertrow($this->tbl_name, $data);
+    $args = array(
+      $this->id_fk_retur
+    );
+    return executeQuery($sql, $args);
+  }
+  public function columns()
+  {
+    return $this->columns;
+  }
+  public function insert()
+  {
+    if ($this->check_insert()) {
+      $data = array(
+        "id_fk_retur" => $this->id_fk_retur,
+        "id_fk_brg" => $this->id_fk_brg,
+        "retur_brg_qty" => $this->retur_brg_qty,
+        "retur_brg_satuan" => $this->retur_brg_satuan,
+        "retur_brg_notes" => $this->retur_brg_notes,
+        "retur_brg_status" => $this->retur_brg_status,
+        "retur_create_date" => $this->retur_create_date,
+        "retur_last_modified" => $this->retur_last_modified,
+        "id_create_data" => $this->id_create_data,
+        "id_last_modified" => $this->id_last_modified,
+      );
+      $id_hasil_insert = insertrow($this->tbl_name, $data);
 
-            $log_all_msg = "Data Retur Barang baru ditambahkan. Waktu penambahan: $this->retur_create_date";
-            $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+      $log_all_msg = "Data Retur Barang baru ditambahkan. Waktu penambahan: $this->retur_create_date";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-            $log_all_data_changes = "[ID Retur Barang: $id_hasil_insert][ID Retur: $this->id_fk_retur][ID Barang: $this->id_fk_brg][Jumalh Barang: $this->retur_brg_qty][Satuan Barang: $this->retur_brg_satuan][Notes: $this->retur_brg_notes][Status: $this->retur_brg_status][Waktu Ditambahkan: $this->retur_create_date][Oleh: $nama_user]";
-            $log_all_it = "";
-            $log_all_user = $this->id_last_modified;
-            $log_all_tgl = $this->retur_create_date;
+      $log_all_data_changes = "[ID Retur Barang: $id_hasil_insert][ID Retur: $this->id_fk_retur][ID Barang: $this->id_fk_brg][Jumalh Barang: $this->retur_brg_qty][Satuan Barang: $this->retur_brg_satuan][Notes: $this->retur_brg_notes][Status: $this->retur_brg_status][Waktu Ditambahkan: $this->retur_create_date][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->retur_create_date;
 
-            $data_log = array(
-                "log_all_msg" => $log_all_msg,
-                "log_all_data_changes" => $log_all_data_changes,
-                "log_all_it" => $log_all_it,
-                "log_all_user" => $log_all_user,
-                "log_all_tgl" => $log_all_tgl
-            );
-            insertrow("log_all", $data_log);
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
 
-            return $id_hasil_insert;
-        }
-        return false;
+      return $id_hasil_insert;
     }
-    public function update(){
-        if($this->check_update()){
-            $where = array(
-                "id_pk_retur_brg" => $this->id_pk_retur_brg,
-            );
-            $data = array(
-                "id_fk_brg" => $this->id_fk_brg,
-                "retur_brg_qty" => $this->retur_brg_qty,
-                "retur_brg_satuan" => $this->retur_brg_satuan,
-                "retur_brg_notes" => $this->retur_brg_notes,
-                "retur_last_modified" => $this->retur_last_modified,
-                "id_last_modified" => $this->id_last_modified,
-            );
-            updateRow($this->tbl_name,$data,$where);
-        $id_pk = $this->id_pk_retur_brg;
-        $log_all_msg = "Data Barang Retur dengan ID: $id_pk diubah. Waktu diubah: $this->retur_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+    return false;
+  }
+  public function update()
+  {
+    if ($this->check_update()) {
+      $where = array(
+        "id_pk_retur_brg" => $this->id_pk_retur_brg,
+      );
+      $data = array(
+        "id_fk_brg" => $this->id_fk_brg,
+        "retur_brg_qty" => $this->retur_brg_qty,
+        "retur_brg_satuan" => $this->retur_brg_satuan,
+        "retur_brg_notes" => $this->retur_brg_notes,
+        "retur_last_modified" => $this->retur_last_modified,
+        "id_last_modified" => $this->id_last_modified,
+      );
+      updateRow($this->tbl_name, $data, $where);
+      $id_pk = $this->id_pk_retur_brg;
+      $log_all_msg = "Data Barang Retur dengan ID: $id_pk diubah. Waktu diubah: $this->retur_last_modified . Data berubah menjadi: ";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Retur Barang: $id_pk][ID Barang: $this->id_fk_brg][Jumalh Barang: $this->retur_brg_qty][Satuan Barang: $this->retur_brg_satuan][Notes: $this->retur_brg_notes][Waktu DIedit: $this->retur_last_modified][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->retur_last_modified;
+      $log_all_data_changes = "[ID Retur Barang: $id_pk][ID Barang: $this->id_fk_brg][Jumalh Barang: $this->retur_brg_qty][Satuan Barang: $this->retur_brg_satuan][Notes: $this->retur_brg_notes][Waktu DIedit: $this->retur_last_modified][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->retur_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
-            return true;
-        }
-        return false;
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
+      return true;
     }
-    public function delete(){
-        if($this->check_delete()){
-            $where = array(
-                "id_pk_retur_brg" => $this->id_pk_retur_brg,
-            );
-            $data = array(
-                "retur_brg_status" => "nonaktif",
-                "retur_last_modified" => $this->retur_last_modified,
-                "id_last_modified" => $this->id_last_modified,
-            );
-            updateRow($this->tbl_name,$data,$where);
-            return true;
-        }
-        return false;
+    return false;
+  }
+  public function delete()
+  {
+    if ($this->check_delete()) {
+      $where = array(
+        "id_pk_retur_brg" => $this->id_pk_retur_brg,
+      );
+      $data = array(
+        "retur_brg_status" => "nonaktif",
+        "retur_last_modified" => $this->retur_last_modified,
+        "id_last_modified" => $this->id_last_modified,
+      );
+      updateRow($this->tbl_name, $data, $where);
+      return true;
     }
-    public function check_insert(){
-        if($this->id_fk_retur == ""){
-            return false;
-        }
-        if($this->id_fk_brg == ""){
-            return false;
-        }
-        if($this->retur_brg_qty == ""){
-            return false;
-        }
-        if($this->retur_brg_satuan == ""){
-            return false;
-        }
-        if($this->retur_brg_status == ""){
-            return false;
-        }
-        if($this->retur_create_date == ""){
-            return false;
-        }
-        if($this->retur_last_modified == ""){
-            return false;
-        }
-        if($this->id_create_data == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        return true;
-    }
-    public function check_update(){
-        if($this->id_pk_retur_brg == ""){
-            return false;
-        }
-        if($this->id_fk_brg == ""){
-            return false;
-        }
-        if($this->retur_brg_qty == ""){
-            return false;
-        }
-        if($this->retur_brg_satuan == ""){
-            return false;
-        }
-        if($this->retur_last_modified == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        return true;
-    }
-    public function check_delete(){
-        if($this->id_pk_retur_brg == ""){
-            return false;
-        }
-        if($this->retur_last_modified == ""){
-            return false;
-        }
-        if($this->id_last_modified == ""){
-            return false;
-        }
-        return true;
-    }
-    public function set_insert($id_fk_retur,$id_fk_brg,$retur_brg_qty,$retur_brg_satuan,$retur_brg_status,$retur_brg_notes){
-        if(!$this->set_id_fk_retur($id_fk_retur)){
-            return false;
-        }
-        if(!$this->set_id_fk_brg($id_fk_brg)){
-            return false;
-        }
-        if(!$this->set_retur_brg_qty($retur_brg_qty)){
-            return false;
-        }
-        if(!$this->set_retur_brg_satuan($retur_brg_satuan)){
-            return false;
-        }
-        if(!$this->set_retur_brg_notes($retur_brg_notes)){
-            return false;
-        }
-        if(!$this->set_retur_brg_status($retur_brg_status)){
-            return false;
-        }
-        return true;
-    }
-    public function set_update($id_pk_retur_brg,$id_fk_brg,$retur_brg_qty,$retur_brg_satuan,$retur_brg_notes){
-        if(!$this->set_id_pk_retur_brg($id_pk_retur_brg)){
-            return false;
-        }
-        if(!$this->set_id_fk_brg($id_fk_brg)){
-            return false;
-        }
-        if(!$this->set_retur_brg_qty($retur_brg_qty)){
-            return false;
-        }
-        if(!$this->set_retur_brg_satuan($retur_brg_satuan)){
-            return false;
-        }
-        if(!$this->set_retur_brg_notes($retur_brg_notes)){
-            return false;
-        }
-        return true;
-    }
-    public function set_delete($id_pk_retur_brg){
-        if(!$this->set_id_pk_retur_brg($id_pk_retur_brg)){
-            return false;
-        }
-        return true;
-    }
-    public function get_id_pk_retur_brg(){
-        return $this->id_pk_retur_brg;
-    }
-    public function get_id_fk_retur(){
-        return $this->id_fk_retur;
-    }
-    public function get_id_fk_brg(){
-        return $this->id_fk_brg;
-    }
-    public function get_retur_brg_qty(){
-        return $this->retur_brg_qty;
-    }
-    public function get_retur_brg_satuan(){
-        return $this->retur_brg_satuan;
-    }
-    public function get_retur_brg_notes(){
-        return $this->retur_brg_notes;
-    }
-    public function get_retur_brg_status(){
-        return $this->retur_brg_status;
-    }
-    public function set_id_pk_retur_brg($id_pk_retur_brg){
-        if($id_pk_retur_brg != ""){
-            $this->id_pk_retur_brg = $id_pk_retur_brg;
-            return true;
-        }
-        return false;
-    }
-    public function set_id_fk_retur($id_fk_retur){
-        if($id_fk_retur != ""){
-            $this->id_fk_retur = $id_fk_retur;
-            return true;
-        }
-        return false;
-    }
-    public function set_id_fk_brg($id_fk_brg){
-        if($id_fk_brg != ""){
-            $this->id_fk_brg = $id_fk_brg;
-            return true;
-        }
-        return false;
-    }
-    public function set_retur_brg_qty($retur_brg_qty){
-        if($retur_brg_qty != ""){
-            $this->retur_brg_qty = $retur_brg_qty;
-            return true;
-        }
-        return false;
-    }
-    public function set_retur_brg_satuan($retur_brg_satuan){
-        if($retur_brg_satuan != ""){
-            $this->retur_brg_satuan = $retur_brg_satuan;
-            return true;
-        }
-        return false;
-    }
-    public function set_retur_brg_notes($retur_brg_notes){
-        if($retur_brg_notes != ""){
-            $this->retur_brg_notes = $retur_brg_notes;
-            return true;
-        }
-        return false;
-    }
-    public function set_retur_brg_status($retur_brg_status){
-        if($retur_brg_status != ""){
-            $this->retur_brg_status = $retur_brg_status;
-            return true;
-        }
-        return false;
-    }
+    return false;
+  }
+  public function check_insert()
+  {
+    return true;
+  }
+  public function check_update()
+  {
+    return true;
+  }
+  public function check_delete()
+  {
+    return true;
+  }
+  public function set_insert($id_fk_retur, $id_fk_brg, $retur_brg_qty, $retur_brg_satuan, $retur_brg_status, $retur_brg_notes)
+  {
+    $this->set_id_fk_retur($id_fk_retur);
+    $this->set_id_fk_brg($id_fk_brg);
+    $this->set_retur_brg_qty($retur_brg_qty);
+    $this->set_retur_brg_satuan($retur_brg_satuan);
+    $this->set_retur_brg_notes($retur_brg_notes);
+    $this->set_retur_brg_status($retur_brg_status);
+    return true;
+  }
+  public function set_update($id_pk_retur_brg, $id_fk_brg, $retur_brg_qty, $retur_brg_satuan, $retur_brg_notes)
+  {
+    $this->set_id_pk_retur_brg($id_pk_retur_brg);
+    $this->set_id_fk_brg($id_fk_brg);
+    $this->set_retur_brg_qty($retur_brg_qty);
+    $this->set_retur_brg_satuan($retur_brg_satuan);
+    $this->set_retur_brg_notes($retur_brg_notes);
+    return true;
+  }
+  public function set_delete($id_pk_retur_brg)
+  {
+    $this->set_id_pk_retur_brg($id_pk_retur_brg);
+    return true;
+  }
+  public function set_id_pk_retur_brg($id_pk_retur_brg)
+  {
+    $this->id_pk_retur_brg = $id_pk_retur_brg;
+    return true;
+  }
+  public function set_id_fk_retur($id_fk_retur)
+  {
+    $this->id_fk_retur = $id_fk_retur;
+    return true;
+  }
+  public function set_id_fk_brg($id_fk_brg)
+  {
+    $this->id_fk_brg = $id_fk_brg;
+    return true;
+  }
+  public function set_retur_brg_qty($retur_brg_qty)
+  {
+    $this->retur_brg_qty = $retur_brg_qty;
+    return true;
+  }
+  public function set_retur_brg_satuan($retur_brg_satuan)
+  {
+    $this->retur_brg_satuan = $retur_brg_satuan;
+    return true;
+  }
+  public function set_retur_brg_notes($retur_brg_notes)
+  {
+    $this->retur_brg_notes = $retur_brg_notes;
+    return true;
+  }
+  public function set_retur_brg_status($retur_brg_status)
+  {
+    $this->retur_brg_status = $retur_brg_status;
+    return true;
+  }
 }

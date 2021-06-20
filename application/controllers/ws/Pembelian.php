@@ -71,7 +71,7 @@ class Pembelian extends CI_Controller
         $result = $result->result_array();
         for ($a = 0; $a < count($result); $a++) {
           $response["content"][$a]["id"] = $result[$a]["id_pk_brg_pembelian"];
-          $response["content"][$a]["qty"] = number_format($result[$a]["brg_pem_qty"], 2, ",", ".");
+          $response["content"][$a]["qty"] = number_format($result[$a]["brg_pem_qty"], 0, ",", ".");
           $response["content"][$a]["satuan"] = $result[$a]["brg_pem_satuan"];
           $response["content"][$a]["harga"] = number_format($result[$a]["brg_pem_harga"], 0, ",", ".");
           $response["content"][$a]["note"] = $result[$a]["brg_pem_note"];

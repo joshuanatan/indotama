@@ -312,23 +312,23 @@ class M_retur extends CI_Model
         "id_last_modified" => $this->id_last_modified,
       );
       updateRow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_pk_retur;
-        $log_all_msg = "Data Retur dengan ID: $id_pk diubah. Waktu diubah: $this->brg_merk_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+      $id_pk = $this->id_pk_retur;
+      $log_all_msg = "Data Retur dengan ID: $id_pk diubah. Waktu diubah: $this->brg_merk_last_modified . Data berubah menjadi: ";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Retur:  $id_pk][Nama: $this->brg_merk_nama][Waktu Diubah: $this->brg_merk_last_modified][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->brg_merk_last_modified;
+      $log_all_data_changes = "[ID Retur:  $id_pk][Nama: $this->brg_merk_nama][Waktu Diubah: $this->brg_merk_last_modified][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->brg_merk_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
       return true;
     }
     return false;
@@ -374,159 +374,67 @@ class M_retur extends CI_Model
   }
   public function check_insert()
   {
-    if ($this->id_fk_penjualan == "") {
-      return false;
-    }
-    if ($this->retur_no == "") {
-      return false;
-    }
-    if ($this->retur_tgl == "") {
-      return false;
-    }
-    if ($this->retur_status == "") {
-      return false;
-    }
-    if ($this->retur_tipe == "") {
-      return false;
-    }
-    if ($this->retur_create_date == "") {
-      return false;
-    }
-    if ($this->retur_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_retur == "") {
-      return false;
-    }
-    if ($this->retur_no == "") {
-      return false;
-    }
-    if ($this->retur_tgl == "") {
-      return false;
-    }
-    if ($this->retur_tipe == "") {
-      return false;
-    }
-    if ($this->retur_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_retur == "") {
-      return false;
-    }
-    if ($this->retur_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($id_fk_penjualan, $retur_no, $retur_tgl, $retur_status, $retur_tipe)
   {
-    if (!$this->set_id_fk_penjualan($id_fk_penjualan)) {
-      return false;
-    }
-    if (!$this->set_retur_no($retur_no)) {
-      return false;
-    }
-    if (!$this->set_retur_tgl($retur_tgl)) {
-      return false;
-    }
-    if (!$this->set_retur_status($retur_status)) {
-      return false;
-    }
-    if (!$this->set_retur_tipe($retur_tipe)) {
-      return false;
-    }
+    $this->set_id_fk_penjualan($id_fk_penjualan);
+    $this->set_retur_no($retur_no);
+    $this->set_retur_tgl($retur_tgl);
+    $this->set_retur_status($retur_status);
+    $this->set_retur_tipe($retur_tipe);
     return true;
   }
   public function set_update($id_pk_retur, $retur_no, $retur_tgl, $retur_tipe)
   {
-    if (!$this->set_id_pk_retur($id_pk_retur)) {
-      return false;
-    }
-    if (!$this->set_retur_no($retur_no)) {
-      return false;
-    }
-    if (!$this->set_retur_tgl($retur_tgl)) {
-      return false;
-    }
-    if (!$this->set_retur_tipe($retur_tipe)) {
-      return false;
-    }
+    $this->set_id_pk_retur($id_pk_retur);
+    $this->set_retur_no($retur_no);
+    $this->set_retur_tgl($retur_tgl);
+    $this->set_retur_tipe($retur_tipe);
     return true;
   }
   public function set_delete($id_pk_retur)
   {
-    if (!$this->set_id_pk_retur($id_pk_retur)) {
-      return false;
-    }
+    $this->set_id_pk_retur($id_pk_retur);
     return true;
   }
   public function set_id_pk_retur($id_pk_retur)
   {
-    if ($id_pk_retur != "") {
-      $this->id_pk_retur = $id_pk_retur;
-      return true;
-    }
-    return false;
+    $this->id_pk_retur = $id_pk_retur;
+    return true;
   }
   public function set_id_fk_penjualan($id_fk_penjualan)
   {
-    if ($id_fk_penjualan != "") {
-      $this->id_fk_penjualan = $id_fk_penjualan;
-      return true;
-    }
-    return false;
+    $this->id_fk_penjualan = $id_fk_penjualan;
+    return true;
   }
   public function set_retur_no($retur_no)
   {
-    if ($retur_no != "") {
-      $this->retur_no = $retur_no;
-      return true;
-    }
-    return false;
+    $this->retur_no = $retur_no;
+    return true;
   }
   public function set_retur_tgl($retur_tgl)
   {
-    if ($retur_tgl != "") {
-      $this->retur_tgl = $retur_tgl;
-      return true;
-    }
-    return false;
+    $this->retur_tgl = $retur_tgl;
+    return true;
   }
   public function set_retur_tipe($retur_tipe)
   {
-    if ($retur_tipe != "") {
-      $this->retur_tipe = $retur_tipe;
-      return true;
-    }
-    return false;
+    $this->retur_tipe = $retur_tipe;
+    return true;
   }
   public function set_retur_status($retur_status)
   {
-    if ($retur_status != "") {
-      $this->retur_status = $retur_status;
-      return true;
-    }
-    return false;
+    $this->retur_status = $retur_status;
+    return true;
   }
   public function get_retur_nomor($id_fk_cabang, $jenis_transaksi, $custom_tgl = "-")
   {

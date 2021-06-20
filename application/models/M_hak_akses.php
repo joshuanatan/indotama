@@ -213,163 +213,67 @@ class M_hak_akses extends ci_model
   }
   public function check_insert()
   {
-    if ($this->id_fk_jabatan == "") {
-      return false;
-    }
-    if ($this->id_fk_menu == "") {
-      return false;
-    }
-    if ($this->hak_akses_create_date == "") {
-      return false;
-    }
-    if ($this->hak_akses_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_hak_akses == "") {
-      return false;
-    }
-    if ($this->id_fk_jabatan == "") {
-      return false;
-    }
-    if ($this->id_fk_menu == "") {
-      return false;
-    }
-    if ($this->hak_akses_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_hak_akses == "") {
-      return false;
-    }
-    if ($this->hak_akses_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($id_fk_jabatan, $id_fk_menu)
   {
-    if (!$this->set_id_fk_jabatan($id_fk_jabatan)) {
-      return false;
-    }
-    if (!$this->set_id_fk_menu($id_fk_menu)) {
-      return false;
-    }
+    $this->set_id_fk_jabatan($id_fk_jabatan);
+    $this->set_id_fk_menu($id_fk_menu);
     return true;
   }
   public function set_update($id_pk_hak_akses, $id_fk_jabatan, $id_fk_menu)
   {
-    if (!$this->set_id_pk_hak_akses($id_pk_hak_akses)) {
-      return false;
-    }
-    if (!$this->set_id_fk_jabatan($id_fk_jabatan)) {
-      return false;
-    }
-    if (!$this->set_id_fk_menu($id_fk_menu)) {
-      return false;
-    }
+    $this->set_id_pk_hak_akses($id_pk_hak_akses);
+    $this->set_id_fk_jabatan($id_fk_jabatan);
+    $this->set_id_fk_menu($id_fk_menu);
     return true;
   }
   public function set_delete($id_pk_hak_akses)
   {
-    if (!$this->set_id_pk_hak_akses($id_pk_hak_akses)) {
-      return false;
-    }
+    $this->set_id_pk_hak_akses($id_pk_hak_akses);
     return true;
-  }
-  public function get_id_pk_hak_akses()
-  {
-    return $this->id_pk_hak_akses;
-  }
-  public function get_id_fk_jabatan()
-  {
-    return $this->id_fk_jabatan;
-  }
-  public function get_id_fk_menu()
-  {
-    return $this->id_fk_menu;
-  }
-  public function get_hak_akses_create_date()
-  {
-    return $this->hak_akses_create_date;
-  }
-  public function get_hak_akses_last_modified()
-  {
-    return $this->hak_akses_last_modified;
-  }
-  public function get_id_create_data()
-  {
-    return $this->id_create_data;
-  }
-  public function get_id_last_modified()
-  {
-    return $this->id_last_modified;
   }
   public function set_id_pk_hak_akses($id_pk_hak_akses)
   {
-    if ($id_pk_hak_akses != "") {
-      $this->id_pk_hak_akses = $id_pk_hak_akses;
-      return true;
-    } else return false;
+    $this->id_pk_hak_akses = $id_pk_hak_akses;
+    return true;
   }
   public function set_id_fk_jabatan($id_fk_jabatan)
   {
-    if ($id_fk_jabatan != "") {
-      $this->id_fk_jabatan = $id_fk_jabatan;
-      return true;
-    } else return false;
+    $this->id_fk_jabatan = $id_fk_jabatan;
+    return true;
   }
   public function set_id_fk_menu($id_fk_menu)
   {
-    if ($id_fk_menu != "") {
-      $this->id_fk_menu = $id_fk_menu;
-      return true;
-    } else return false;
+    $this->id_fk_menu = $id_fk_menu;
+    return true;
   }
   public function set_hak_akses_create_date($hak_akses_create_date)
   {
-    if ($hak_akses_create_date != "") {
-      $this->hak_akses_create_date = $hak_akses_create_date;
-      return true;
-    } else return false;
+    $this->hak_akses_create_date = $hak_akses_create_date;
+    return true;
   }
   public function set_hak_akses_last_modified($hak_akses_last_modified)
   {
-    if ($hak_akses_last_modified != "") {
-      $this->hak_akses_last_modified = $hak_akses_last_modified;
-      return true;
-    } else return false;
+    $this->hak_akses_last_modified = $hak_akses_last_modified;
+    return true;
   }
   public function set_id_create_data($id_create_data)
   {
-    if ($id_create_data != "") {
-      $this->id_create_data = $id_create_data;
-      return true;
-    } else return false;
+    $this->id_create_data = $id_create_data;
+    return true;
   }
   public function set_id_last_modified($id_last_modified)
   {
-    if ($id_last_modified != "") {
-      $this->id_last_modified = $id_last_modified;
-      return true;
-    } else return false;
+    $this->id_last_modified = $id_last_modified;
+    return true;
   }
 }

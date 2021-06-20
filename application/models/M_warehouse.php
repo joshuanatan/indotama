@@ -330,182 +330,75 @@ class m_warehouse extends ci_model
   }
   public function check_insert()
   {
-    if ($this->warehouse_nama == "") {
-      return false;
-    }
-    if ($this->warehouse_alamat == "") {
-      return false;
-    }
-    if ($this->warehouse_notelp == "") {
-      return false;
-    }
-    if ($this->warehouse_desc == "") {
-      return false;
-    }
-    if ($this->id_fk_cabang == "") {
-      return false;
-    }
-    if ($this->warehouse_status == "") {
-      return false;
-    }
-    if ($this->warehouse_create_date == "") {
-      return false;
-    }
-    if ($this->warehouse_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_warehouse == "") {
-      return false;
-    }
-    if ($this->warehouse_nama == "") {
-      return false;
-    }
-    if ($this->warehouse_alamat == "") {
-      return false;
-    }
-    if ($this->warehouse_notelp == "") {
-      return false;
-    }
-    if ($this->warehouse_desc == "") {
-      return false;
-    }
-    if ($this->warehouse_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_warehouse == "") {
-      return false;
-    }
-    if ($this->warehouse_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($warehouse_nama, $warehouse_alamat, $warehouse_notelp, $warehouse_desc, $id_fk_cabang, $warehouse_status)
   {
-    if (!$this->set_warehouse_nama($warehouse_nama)) {
-      return false;
-    }
-    if (!$this->set_warehouse_alamat($warehouse_alamat)) {
-      return false;
-    }
-    if (!$this->set_warehouse_notelp($warehouse_notelp)) {
-      return false;
-    }
-    if (!$this->set_warehouse_desc($warehouse_desc)) {
-      return false;
-    }
-    if (!$this->set_id_fk_cabang($id_fk_cabang)) {
-      return false;
-    }
-    if (!$this->set_warehouse_status($warehouse_status)) {
-      return false;
-    }
+    $this->set_warehouse_nama($warehouse_nama);
+    $this->set_warehouse_alamat($warehouse_alamat);
+    $this->set_warehouse_notelp($warehouse_notelp);
+    $this->set_warehouse_desc($warehouse_desc);
+    $this->set_id_fk_cabang($id_fk_cabang);
+    $this->set_warehouse_status($warehouse_status);
     return true;
   }
   public function set_update($id_pk_warehouse, $warehouse_nama, $warehouse_alamat, $warehouse_notelp, $warehouse_desc, $id_fk_cabang)
   {
-    if (!$this->set_id_pk_warehouse($id_pk_warehouse)) {
-      return false;
-    }
-    if (!$this->set_warehouse_nama($warehouse_nama)) {
-      return false;
-    }
-    if (!$this->set_warehouse_alamat($warehouse_alamat)) {
-      return false;
-    }
-    if (!$this->set_warehouse_notelp($warehouse_notelp)) {
-      return false;
-    }
-    if (!$this->set_warehouse_desc($warehouse_desc)) {
-      return false;
-    }
-    if (!$this->set_id_fk_cabang($id_fk_cabang)) {
-      return false;
-    }
+    $this->set_id_pk_warehouse($id_pk_warehouse);
+    $this->set_warehouse_nama($warehouse_nama);
+    $this->set_warehouse_alamat($warehouse_alamat);
+    $this->set_warehouse_notelp($warehouse_notelp);
+    $this->set_warehouse_desc($warehouse_desc);
+    $this->set_id_fk_cabang($id_fk_cabang);
     return true;
   }
   public function set_delete($id_pk_warehouse)
   {
-    if (!$this->set_id_pk_warehouse($id_pk_warehouse)) {
-      return false;
-    }
+    $this->set_id_pk_warehouse($id_pk_warehouse);
     return true;
   }
   public function set_id_pk_warehouse($id_pk_warehouse)
   {
-    if ($id_pk_warehouse != "") {
-      $this->id_pk_warehouse = $id_pk_warehouse;
-      return true;
-    }
-    return false;
+    $this->id_pk_warehouse = $id_pk_warehouse;
+    return true;
   }
   public function set_warehouse_nama($warehouse_nama)
   {
-    if ($warehouse_nama != "") {
-      $this->warehouse_nama = $warehouse_nama;
-      return true;
-    }
-    return false;
+    $this->warehouse_nama = $warehouse_nama;
+    return true;
   }
   public function set_warehouse_alamat($warehouse_alamat)
   {
-    if ($warehouse_alamat != "") {
-      $this->warehouse_alamat = $warehouse_alamat;
-      return true;
-    }
-    return false;
+    $this->warehouse_alamat = $warehouse_alamat;
+    return true;
   }
   public function set_warehouse_notelp($warehouse_notelp)
   {
-    if ($warehouse_notelp != "") {
-      $this->warehouse_notelp = $warehouse_notelp;
-      return true;
-    }
-    return false;
+    $this->warehouse_notelp = $warehouse_notelp;
+    return true;
   }
   public function set_warehouse_desc($warehouse_desc)
   {
-    if ($warehouse_desc != "") {
-      $this->warehouse_desc = $warehouse_desc;
-      return true;
-    }
-    return false;
+    $this->warehouse_desc = $warehouse_desc;
+    return true;
   }
   public function set_id_fk_cabang($id_fk_cabang)
   {
-    if ($id_fk_cabang != "") {
-      $this->id_fk_cabang = $id_fk_cabang;
-      return true;
-    }
-    return false;
+    $this->id_fk_cabang = $id_fk_cabang;
+    return true;
   }
   public function set_warehouse_status($warehouse_status)
   {
-    if ($warehouse_status != "") {
-      $this->warehouse_status = $warehouse_status;
-      return true;
-    }
-    return false;
+    $this->warehouse_status = $warehouse_status;
+    return true;
   }
   public function data_excel()
   {

@@ -135,24 +135,24 @@ class M_brg_penjualan extends ci_model
       "id_last_modified" => $this->id_last_modified
     );
 
-    $id_hasil_insert = insertrow($this->tbl_name,$data);
-            
+    $id_hasil_insert = insertrow($this->tbl_name, $data);
+
     $log_all_msg = "Data Jenis Barang baru ditambahkan. Waktu penambahan: $this->brg_penjualan_create_date";
-    $nama_user = get1Value("mstr_user","user_name",array("id_pk_user"=>$this->id_create_data));
+    $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_create_data));
     $log_all_data_changes = "[ID Barang Jenis: $id_hasil_insert][Jumlah (real): $brg_penjualan_qty_real][Satuan (real): $brg_penjualan_satuan_real][Jumlah: $brg_penjualan_qty][Satuan: $brg_penjualan_satuan][Harga: $brg_penjualan_harga][Notes: $brg_penjualan_note][Status: $brg_penjualan_status][ID Penjualan: $id_fk_penjualan][ID Barang: $id_fk_barang][Waktu Ditambahkan: $this->brg_penjualan_create_date][Oleh: $nama_user]";
     $log_all_it = "";
     $log_all_user = $this->id_create_data;
     $log_all_tgl = $this->brg_penjualan_create_date;
 
     $data_log = array(
-        "log_all_msg" => $log_all_msg,
-        "log_all_data_changes" => $log_all_data_changes,
-        "log_all_it" => $log_all_it,
-        "log_all_user" => $log_all_user,
-        "log_all_tgl" => $log_all_tgl
+      "log_all_msg" => $log_all_msg,
+      "log_all_data_changes" => $log_all_data_changes,
+      "log_all_it" => $log_all_it,
+      "log_all_user" => $log_all_user,
+      "log_all_tgl" => $log_all_tgl
     );
-    insertrow("log_all",$data_log);
-    
+    insertrow("log_all", $data_log);
+
 
     return $id_hasil_insert;
   }
@@ -171,23 +171,23 @@ class M_brg_penjualan extends ci_model
       "id_last_modified" => $this->id_last_modified,
     );
     updaterow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_pk_brg_penjualan;
-        $log_all_msg = "Data Barang Penjualan dengan ID: $id_pk diubah. Waktu diubah: $this->brg_penjualan_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+    $id_pk = $this->id_pk_brg_penjualan;
+    $log_all_msg = "Data Barang Penjualan dengan ID: $id_pk diubah. Waktu diubah: $this->brg_penjualan_last_modified . Data berubah menjadi: ";
+    $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Barang Jenis: $id_pk][Jumlah (real): $this->brg_penjualan_qty_real][Satuan (real): $this->brg_penjualan_satuan_real][Jumlah: $this->brg_penjualan_qty][Satuan: $this->brg_penjualan_satuan][Harga: $this->brg_penjualan_harga][Notes: $this->brg_penjualan_note][ID Penjualan: $this->id_fk_penjualan][ID Barang: $this->id_fk_barang][Waktu Diubah: $this->id_last_modified][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->brg_penjualan_last_modified;
+    $log_all_data_changes = "[ID Barang Jenis: $id_pk][Jumlah (real): $this->brg_penjualan_qty_real][Satuan (real): $this->brg_penjualan_satuan_real][Jumlah: $this->brg_penjualan_qty][Satuan: $this->brg_penjualan_satuan][Harga: $this->brg_penjualan_harga][Notes: $this->brg_penjualan_note][ID Penjualan: $this->id_fk_penjualan][ID Barang: $this->id_fk_barang][Waktu Diubah: $this->id_last_modified][Oleh: $nama_user]";
+    $log_all_it = "";
+    $log_all_user = $this->id_last_modified;
+    $log_all_tgl = $this->brg_penjualan_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+    $data_log = array(
+      "log_all_msg" => $log_all_msg,
+      "log_all_data_changes" => $log_all_data_changes,
+      "log_all_it" => $log_all_it,
+      "log_all_user" => $log_all_user,
+      "log_all_tgl" => $log_all_tgl
+    );
+    insertrow("log_all", $data_log);
     return true;
   }
   public function delete()
@@ -207,283 +207,96 @@ class M_brg_penjualan extends ci_model
   }
   public function check_insert()
   {
-    if ($this->brg_penjualan_qty_real == "") {
-      return false;
-    }
-    if ($this->brg_penjualan_satuan_real == "") {
-      return false;
-    }
-    if ($this->brg_penjualan_qty == "") {
-      return false;
-    }
-    if ($this->brg_penjualan_satuan == "") {
-      return false;
-    }
-    if ($this->brg_penjualan_harga == "") {
-      return false;
-    }
-    if ($this->brg_penjualan_note == "") {
-      return false;
-    }
-    if ($this->brg_penjualan_status == "") {
-      return false;
-    }
-    if ($this->id_fk_penjualan == "") {
-      return false;
-    }
-    if ($this->id_fk_barang == "") {
-      return false;
-    }
-    if ($this->brg_penjualan_create_date == "") {
-      return false;
-    }
-    if ($this->brg_penjualan_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-
-    if ($this->id_pk_brg_penjualan == "") {
-      return false;
-    }
-    if ($this->brg_penjualan_qty_real == "") {
-      return false;
-    }
-    if ($this->brg_penjualan_satuan_real == "") {
-      return false;
-    }
-    if ($this->brg_penjualan_qty == "") {
-      return false;
-    }
-    if ($this->brg_penjualan_satuan == "") {
-      return false;
-    }
-    if ($this->brg_penjualan_harga == "") {
-      return false;
-    }
-    if ($this->brg_penjualan_note == "") {
-      return false;
-    }
-    if ($this->id_fk_barang == "") {
-      return false;
-    }
-    if ($this->brg_penjualan_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_brg_penjualan == "") {
-      return false;
-    }
-    if ($this->brg_penjualan_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($brg_penjualan_qty_real, $brg_penjualan_satuan_real, $brg_penjualan_qty, $brg_penjualan_satuan, $brg_penjualan_harga, $brg_penjualan_note, $brg_penjualan_status, $id_fk_penjualan, $id_fk_barang)
   {
-    if (!$this->set_brg_penjualan_qty_real($brg_penjualan_qty_real)) {
-      return false;
-    }
-    if (!$this->set_brg_penjualan_qty($brg_penjualan_qty)) {
-      return false;
-    }
-    if (!$this->set_brg_penjualan_satuan_real($brg_penjualan_satuan_real)) {
-      return false;
-    }
-    if (!$this->set_brg_penjualan_qty($brg_penjualan_qty)) {
-      return false;
-    }
-    if (!$this->set_brg_penjualan_satuan($brg_penjualan_satuan)) {
-      return false;
-    }
-    if (!$this->set_brg_penjualan_harga($brg_penjualan_harga)) {
-      return false;
-    }
-    if (!$this->set_brg_penjualan_note($brg_penjualan_note)) {
-      return false;
-    }
-    if (!$this->set_brg_penjualan_status($brg_penjualan_status)) {
-      return false;
-    }
-    if (!$this->set_id_fk_penjualan($id_fk_penjualan)) {
-      return false;
-    }
-    if (!$this->set_id_fk_barang($id_fk_barang)) {
-      return false;
-    }
+    $this->set_brg_penjualan_qty_real($brg_penjualan_qty_real);
+    $this->set_brg_penjualan_qty($brg_penjualan_qty);
+    $this->set_brg_penjualan_satuan_real($brg_penjualan_satuan_real);
+    $this->set_brg_penjualan_qty($brg_penjualan_qty);
+    $this->set_brg_penjualan_satuan($brg_penjualan_satuan);
+    $this->set_brg_penjualan_harga($brg_penjualan_harga);
+    $this->set_brg_penjualan_note($brg_penjualan_note);
+    $this->set_brg_penjualan_status($brg_penjualan_status);
+    $this->set_id_fk_penjualan($id_fk_penjualan);
+    $this->set_id_fk_barang($id_fk_barang);
     return true;
   }
   public function set_update($id_pk_brg_penjualan, $brg_penjualan_qty_real, $brg_penjualan_satuan_real, $brg_penjualan_qty, $brg_penjualan_satuan, $brg_penjualan_harga, $brg_penjualan_note, $id_fk_barang)
   {
-    if (!$this->set_id_pk_brg_penjualan($id_pk_brg_penjualan)) {
-      return false;
-    }
-    if (!$this->set_brg_penjualan_qty_real($brg_penjualan_qty_real)) {
-      return false;
-    }
-    if (!$this->set_brg_penjualan_satuan_real($brg_penjualan_satuan_real)) {
-      return false;
-    }
-    if (!$this->set_brg_penjualan_qty($brg_penjualan_qty)) {
-      return false;
-    }
-    if (!$this->set_brg_penjualan_satuan($brg_penjualan_satuan)) {
-      return false;
-    }
-    if (!$this->set_brg_penjualan_harga($brg_penjualan_harga)) {
-      return false;
-    }
-    if (!$this->set_brg_penjualan_note($brg_penjualan_note)) {
-      return false;
-    }
-    if (!$this->set_id_fk_barang($id_fk_barang)) {
-      return false;
-    }
+    $this->set_id_pk_brg_penjualan($id_pk_brg_penjualan);
+    $this->set_brg_penjualan_qty_real($brg_penjualan_qty_real);
+    $this->set_brg_penjualan_satuan_real($brg_penjualan_satuan_real);
+    $this->set_brg_penjualan_qty($brg_penjualan_qty);
+    $this->set_brg_penjualan_satuan($brg_penjualan_satuan);
+    $this->set_brg_penjualan_harga($brg_penjualan_harga);
+    $this->set_brg_penjualan_note($brg_penjualan_note);
+    $this->set_id_fk_barang($id_fk_barang);
     return true;
   }
   public function set_delete($id_pk_brg_penjualan)
   {
-    if ($this->set_id_pk_brg_penjualan($id_pk_brg_penjualan)) {
-      return false;
-    }
+    $this->set_id_pk_brg_penjualan($id_pk_brg_penjualan);
     return true;
   }
   public function set_id_pk_brg_penjualan($id_pk_brg_penjualan)
   {
-    if ($id_pk_brg_penjualan != "") {
-      $this->id_pk_brg_penjualan = $id_pk_brg_penjualan;
-      return true;
-    }
-    return false;
+    $this->id_pk_brg_penjualan = $id_pk_brg_penjualan;
+    return true;
   }
   public function set_brg_penjualan_qty_real($brg_penjualan_qty_real)
   {
-    if ($brg_penjualan_qty_real != "") {
-      $this->brg_penjualan_qty_real = $brg_penjualan_qty_real;
-      return true;
-    }
-    return false;
+    $this->brg_penjualan_qty_real = $brg_penjualan_qty_real;
+    return true;
   }
   public function set_brg_penjualan_satuan_real($brg_penjualan_satuan_real)
   {
-    if ($brg_penjualan_satuan_real != "") {
-      $this->brg_penjualan_satuan_real = $brg_penjualan_satuan_real;
-      return true;
-    }
-    return false;
+    $this->brg_penjualan_satuan_real = $brg_penjualan_satuan_real;
+    return true;
   }
   public function set_brg_penjualan_qty($brg_penjualan_qty)
   {
-    if ($brg_penjualan_qty != "") {
-      $this->brg_penjualan_qty = $brg_penjualan_qty;
-      return true;
-    }
-    return false;
+    $this->brg_penjualan_qty = $brg_penjualan_qty;
+    return true;
   }
   public function set_brg_penjualan_satuan($brg_penjualan_satuan)
   {
-    if ($brg_penjualan_satuan != "") {
-      $this->brg_penjualan_satuan = $brg_penjualan_satuan;
-      return true;
-    }
-    return false;
+    $this->brg_penjualan_satuan = $brg_penjualan_satuan;
+    return true;
   }
   public function set_brg_penjualan_harga($brg_penjualan_harga)
   {
-    if ($brg_penjualan_harga != "") {
-      $this->brg_penjualan_harga = $brg_penjualan_harga;
-      return true;
-    }
-    return false;
+    $this->brg_penjualan_harga = $brg_penjualan_harga;
+    return true;
   }
   public function set_brg_penjualan_note($brg_penjualan_note)
   {
-    if ($brg_penjualan_note != "") {
-      $this->brg_penjualan_note = $brg_penjualan_note;
-      return true;
-    }
-    return false;
+    $this->brg_penjualan_note = $brg_penjualan_note;
+    return true;
   }
   public function set_brg_penjualan_status($brg_penjualan_status)
   {
-    if ($brg_penjualan_status != "") {
-      $this->brg_penjualan_status = $brg_penjualan_status;
-      return true;
-    }
-    return false;
+    $this->brg_penjualan_status = $brg_penjualan_status;
+    return true;
   }
   public function set_id_fk_penjualan($id_fk_penjualan)
   {
-    if ($id_fk_penjualan != "") {
-      $this->id_fk_penjualan = $id_fk_penjualan;
-      return true;
-    }
-    return false;
+    $this->id_fk_penjualan = $id_fk_penjualan;
+    return true;
   }
   public function set_id_fk_barang($id_fk_barang)
   {
-    if ($id_fk_barang != "") {
-      $this->id_fk_barang = $id_fk_barang;
-      return true;
-    }
-    return false;
-  }
-  public function get_id_pk_brg_penjualan()
-  {
-    return $this->id_pk_brg_penjualan;
-  }
-  public function get_brg_penjualan_qty_real()
-  {
-    return $this->brg_penjualan_qty_real;
-  }
-  public function get_brg_penjualan_satuan_real()
-  {
-    return $this->brg_penjualan_satuan_real;
-  }
-  public function get_brg_penjualan_qty()
-  {
-    return $this->brg_penjualan_qty;
-  }
-  public function get_brg_penjualan_satuan()
-  {
-    return $this->brg_penjualan_satuan;
-  }
-  public function get_brg_penjualan_harga()
-  {
-    return $this->brg_penjualan_harga;
-  }
-  public function get_brg_penjualan_note()
-  {
-    return $this->brg_penjualan_note;
-  }
-  public function get_brg_penjualan_status()
-  {
-    return $this->brg_penjualan_note;
-  }
-  public function get_id_fk_penjualan()
-  {
-    return $this->id_fk_penjualan;
-  }
-  public function get_id_fk_barang()
-  {
-    return $this->id_fk_barang;
+    $this->id_fk_barang = $id_fk_barang;
+    return true;
   }
   public function get_nominal_brg_penjualan()
   {

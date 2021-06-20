@@ -207,24 +207,24 @@ class M_penawaran extends ci_model
       "penawaran_last_modified" => $this->penawaran_last_modified,
       "id_last_modified" => $this->id_last_modified
     );
-    updaterow($this->tbl_name,$data,$where);
-            $id_pk = $this->id_pk_penawaran;
-        $log_all_msg = "Data Penawaran dengan ID: $id_pk diubah. Waktu diubah: $this->penawaran_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+    updaterow($this->tbl_name, $data, $where);
+    $id_pk = $this->id_pk_penawaran;
+    $log_all_msg = "Data Penawaran dengan ID: $id_pk diubah. Waktu diubah: $this->penawaran_last_modified . Data berubah menjadi: ";
+    $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Penawaran: $id_pk][Subject: $this->penawaran_subject][Content: $this->penawaran_content][Notes: $this->penawaran_notes][Referensi: $this->penawaran_refrensi][Tanggal: $this->penawaran_tgl][ID Cabang: $this->id_fk_cabang][Waktu Diedit: $this->penawaran_create_date[Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->penawaran_last_modified;
+    $log_all_data_changes = "[ID Penawaran: $id_pk][Subject: $this->penawaran_subject][Content: $this->penawaran_content][Notes: $this->penawaran_notes][Referensi: $this->penawaran_refrensi][Tanggal: $this->penawaran_tgl][ID Cabang: $this->id_fk_cabang][Waktu Diedit: $this->penawaran_create_date[Oleh: $nama_user]";
+    $log_all_it = "";
+    $log_all_user = $this->id_last_modified;
+    $log_all_tgl = $this->penawaran_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+    $data_log = array(
+      "log_all_msg" => $log_all_msg,
+      "log_all_data_changes" => $log_all_data_changes,
+      "log_all_it" => $log_all_it,
+      "log_all_user" => $log_all_user,
+      "log_all_tgl" => $log_all_tgl
+    );
+    insertrow("log_all", $data_log);
     return true;
   }
   public function delete()
@@ -245,218 +245,87 @@ class M_penawaran extends ci_model
   }
   public function check_insert()
   {
-    if ($this->penawaran_subject == "") {
-      return false;
-    }
-    if ($this->penawaran_content == "") {
-      return false;
-    }
-    if ($this->penawaran_notes == "") {
-      return false;
-    }
-    if ($this->penawaran_file == "") {
-      return false;
-    }
-    if ($this->penawaran_refrensi == "") {
-      return false;
-    }
-    if ($this->penawaran_tgl == "") {
-      return false;
-    }
-    if ($this->penawaran_status == "") {
-      return false;
-    }
-    if ($this->id_fk_cabang == "") {
-      return false;
-    }
-    if ($this->penawaran_create_date == "") {
-      return false;
-    }
-    if ($this->penawaran_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_date == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_penawaran == "") {
-      return false;
-    }
-    if ($this->penawaran_subject == "") {
-      return false;
-    }
-    if ($this->penawaran_content == "") {
-      return false;
-    }
-    if ($this->penawaran_notes == "") {
-      return false;
-    }
-    if ($this->penawaran_file == "") {
-      return false;
-    }
-    if ($this->penawaran_tgl == "") {
-      return false;
-    }
-    if ($this->penawaran_refrensi == "") {
-      return false;
-    }
-    if ($this->penawaran_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_penawaran == "") {
-      return false;
-    }
-    if ($this->penawaran_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($penawaran_subject, $penawaran_content, $penawaran_notes, $penawaran_file, $penawaran_refrensi, $penawaran_tgl, $penawaran_status, $id_fk_cabang)
   {
-    if (!$this->set_penawaran_subject($penawaran_subject)) {
-      return false;
-    }
-    if (!$this->set_penawaran_content($penawaran_content)) {
-      return false;
-    }
-    if (!$this->set_penawaran_notes($penawaran_notes)) {
-      return false;
-    }
-    if (!$this->set_penawaran_file($penawaran_file)) {
-      return false;
-    }
-    if (!$this->set_penawaran_refrensi($penawaran_refrensi)) {
-      return false;
-    }
-    if (!$this->set_penawaran_tgl($penawaran_tgl)) {
-      return false;
-    }
-    if (!$this->set_penawaran_status($penawaran_status)) {
-      return false;
-    }
-    if (!$this->set_id_fk_cabang($id_fk_cabang)) {
-      return false;
-    }
+    $this->set_penawaran_subject($penawaran_subject);
+    $this->set_penawaran_content($penawaran_content);
+    $this->set_penawaran_notes($penawaran_notes);
+    $this->set_penawaran_file($penawaran_file);
+    $this->set_penawaran_refrensi($penawaran_refrensi);
+    $this->set_penawaran_tgl($penawaran_tgl);
+    $this->set_penawaran_status($penawaran_status);
+    $this->set_id_fk_cabang($id_fk_cabang);
     return true;
   }
   public function set_update($id_pk_penawaran, $penawaran_subject, $penawaran_content, $penawaran_notes, $penawaran_file, $penawaran_refrensi, $penawaran_tgl)
   {
-    if (!$this->set_id_pk_penawaran($id_pk_penawaran)) {
-      return false;
-    }
-    if (!$this->set_penawaran_subject($penawaran_subject)) {
-      return false;
-    }
-    if (!$this->set_penawaran_content($penawaran_content)) {
-      return false;
-    }
-    if (!$this->set_penawaran_notes($penawaran_notes)) {
-      return false;
-    }
-    if (!$this->set_penawaran_file($penawaran_file)) {
-      return false;
-    }
-    if (!$this->set_penawaran_refrensi($penawaran_refrensi)) {
-      return false;
-    }
-    if (!$this->set_penawaran_tgl($penawaran_tgl)) {
-      return false;
-    }
+    $this->set_id_pk_penawaran($id_pk_penawaran);
+    $this->set_penawaran_subject($penawaran_subject);
+    $this->set_penawaran_content($penawaran_content);
+    $this->set_penawaran_notes($penawaran_notes);
+    $this->set_penawaran_file($penawaran_file);
+    $this->set_penawaran_refrensi($penawaran_refrensi);
+    $this->set_penawaran_tgl($penawaran_tgl);
     return true;
   }
   public function set_delete($id_pk_penawaran)
   {
-    if (!$this->set_id_pk_penawaran($id_pk_penawaran)) {
-      return false;
-    }
+    $this->set_id_pk_penawaran($id_pk_penawaran);
     return true;
   }
   public function set_id_pk_penawaran($id_pk_penawaran)
   {
-    if ($id_pk_penawaran != "") {
-      $this->id_pk_penawaran = $id_pk_penawaran;
-      return true;
-    }
-    return false;
+    $this->id_pk_penawaran = $id_pk_penawaran;
+    return true;
   }
   public function set_penawaran_subject($penawaran_subject)
   {
-    if ($penawaran_subject != "") {
-      $this->penawaran_subject = $penawaran_subject;
-      return true;
-    }
-    return false;
+    $this->penawaran_subject = $penawaran_subject;
+    return true;
   }
   public function set_penawaran_content($penawaran_content)
   {
-    if ($penawaran_content != "") {
-      $this->penawaran_content = $penawaran_content;
-      return true;
-    }
-    return false;
+    $this->penawaran_content = $penawaran_content;
+    return true;
   }
   public function set_penawaran_notes($penawaran_notes)
   {
-    if ($penawaran_notes != "") {
-      $this->penawaran_notes = $penawaran_notes;
-      return true;
-    }
-    return false;
+    $this->penawaran_notes = $penawaran_notes;
+    return true;
   }
   public function set_penawaran_file($penawaran_file)
   {
-    if ($penawaran_file != "") {
-      $this->penawaran_file = $penawaran_file;
-      return true;
-    }
-    return false;
+    $this->penawaran_file = $penawaran_file;
+    return true;
   }
   public function set_penawaran_refrensi($penawaran_refrensi)
   {
-    if ($penawaran_refrensi != "") {
-      $this->penawaran_refrensi = $penawaran_refrensi;
-      return true;
-    }
-    return false;
+    $this->penawaran_refrensi = $penawaran_refrensi;
+    return true;
   }
   public function set_penawaran_tgl($penawaran_tgl)
   {
-    if ($penawaran_tgl != "") {
-      $this->penawaran_tgl = $penawaran_tgl;
-      return true;
-    }
-    return false;
+    $this->penawaran_tgl = $penawaran_tgl;
+    return true;
   }
   public function set_penawaran_status($penawaran_status)
   {
-    if ($penawaran_status != "") {
-      $this->penawaran_status = $penawaran_status;
-      return true;
-    }
-    return false;
+    $this->penawaran_status = $penawaran_status;
+    return true;
   }
   public function set_id_fk_cabang($id_fk_cabang)
   {
-    if ($id_fk_cabang != "") {
-      $this->id_fk_cabang = $id_fk_cabang;
-      return true;
-    }
-    return false;
+    $this->id_fk_cabang = $id_fk_cabang;
+    return true;
   }
 }

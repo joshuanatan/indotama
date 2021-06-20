@@ -207,7 +207,6 @@ class M_marketplace extends ci_model
       insertrow("log_all", $data_log);
 
       return $id_hasil_insert;
-
     } else {
       return false;
     }
@@ -274,165 +273,61 @@ class M_marketplace extends ci_model
   }
   public function check_insert()
   {
-    if ($this->marketplace_nama == "") {
-      return false;
-    }
-    if ($this->marketplace_ket == "") {
-      return false;
-    }
-    if ($this->marketplace_status == "") {
-      return false;
-    }
-    if ($this->marketplace_biaya == "") {
-      return false;
-    }
-    if ($this->marketplace_create_date == "") {
-      return false;
-    }
-    if ($this->marketplace_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_marketplace == "") {
-      return false;
-    }
-    if ($this->marketplace_nama == "") {
-      return false;
-    }
-    if ($this->marketplace_ket == "") {
-      return false;
-    }
-    if ($this->marketplace_biaya == "") {
-      return false;
-    }
-    if ($this->marketplace_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_marketplace == "") {
-      return false;
-    }
-    if ($this->marketplace_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($marketplace_nama, $marketplace_ket, $marketplace_status, $marketplace_biaya)
   {
-    if (!$this->set_marketplace_nama($marketplace_nama)) {
-      return false;
-    }
-    if (!$this->set_marketplace_ket($marketplace_ket)) {
-      return false;
-    }
-    if (!$this->set_marketplace_biaya($marketplace_biaya)) {
-      return false;
-    }
-    if (!$this->set_marketplace_status($marketplace_status)) {
-      return false;
-    }
+    $this->set_marketplace_nama($marketplace_nama);
+    $this->set_marketplace_ket($marketplace_ket);
+    $this->set_marketplace_biaya($marketplace_biaya);
+    $this->set_marketplace_status($marketplace_status);
     return true;
   }
   public function set_update($id_pk_marketplace, $marketplace_nama, $marketplace_ket, $marketplace_biaya)
   {
-    if (!$this->set_id_pk_marketplace($id_pk_marketplace)) {
-      return false;
-    }
-    if (!$this->set_marketplace_nama($marketplace_nama)) {
-      return false;
-    }
-    if (!$this->set_marketplace_ket($marketplace_ket)) {
-      return false;
-    }
-    if (!$this->set_marketplace_biaya($marketplace_biaya)) {
-      return false;
-    }
+    $this->set_id_pk_marketplace($id_pk_marketplace);
+    $this->set_marketplace_nama($marketplace_nama);
+    $this->set_marketplace_ket($marketplace_ket);
+    $this->set_marketplace_biaya($marketplace_biaya);
     return true;
   }
   public function set_delete($id_pk_marketplace)
   {
-    if (!$this->set_id_pk_marketplace($id_pk_marketplace)) {
-      return false;
-    }
+    $this->set_id_pk_marketplace($id_pk_marketplace);
     return true;
-  }
-  public function get_id_pk_marketplace()
-  {
-    return $this->id_pk_marketplace;
-  }
-  public function get_marketplace_nama()
-  {
-    return $this->marketplace_nama;
-  }
-  public function get_marketplace_ket()
-  {
-    return $this->marketplace_ket;
-  }
-  public function get_marketplace_biaya()
-  {
-    return $this->marketplace_biaya;
-  }
-  public function get_marketplace_status()
-  {
-    return $this->marketplace_status;
   }
   public function set_id_pk_marketplace($id_pk_marketplace)
   {
-    if ($id_pk_marketplace != "") {
-      $this->id_pk_marketplace = $id_pk_marketplace;
+    $this->id_pk_marketplace = $id_pk_marketplace;
       return true;
-    }
-    return false;
   }
   public function set_marketplace_nama($marketplace_nama)
   {
-    if ($marketplace_nama != "") {
-      $this->marketplace_nama = $marketplace_nama;
+    $this->marketplace_nama = $marketplace_nama;
       return true;
-    }
-    return false;
   }
   public function set_marketplace_ket($marketplace_ket)
   {
-    if ($marketplace_ket != "") {
-      $this->marketplace_ket = $marketplace_ket;
+    $this->marketplace_ket = $marketplace_ket;
       return true;
-    }
-    return false;
   }
   public function set_marketplace_biaya($marketplace_biaya)
   {
-    if ($marketplace_biaya != "") {
-      $this->marketplace_biaya = $marketplace_biaya;
+    $this->marketplace_biaya = $marketplace_biaya;
       return true;
-    }
-    return false;
   }
   public function set_marketplace_status($marketplace_status)
   {
-    if ($marketplace_status != "") {
-      $this->marketplace_status = $marketplace_status;
+    $this->marketplace_status = $marketplace_status;
       return true;
-    }
-    return false;
   }
   public function data_excel()
   {

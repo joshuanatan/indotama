@@ -440,191 +440,85 @@ class M_pengiriman extends ci_model
   }
   public function check_insert()
   {
-    if ($this->pengiriman_no == "") {
-      return false;
-    }
-    if ($this->pengiriman_tgl == "") {
-      return false;
-    }
-    if ($this->pengiriman_status == "") {
-      return false;
-    }
-    if ($this->pengiriman_tipe == "") {
-      return false;
-    }
-    if (strtolower($this->pengiriman_tempat) == "") {
-      return false;
-    }
-
-    if (strtolower($this->pengiriman_tempat) == "warehouse") {
-      if ($this->id_fk_warehouse == "") {
-        return false;
-      }
-    } else if (strtolower($this->pengiriman_tempat) == "cabang") {
-      if ($this->id_fk_cabang == "") {
-        return false;
-      }
-    }
-    if ($this->pengiriman_create_date == "") {
-      return false;
-    }
-    if ($this->pengiriman_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_pengiriman == "") {
-      return false;
-    }
-    if ($this->pengiriman_tgl == "") {
-      return false;
-    }
-    if ($this->pengiriman_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    } else return true;
+    return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_pengiriman == "") {
-      return false;
-    }
-    if ($this->pengiriman_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    } else return true;
+    return true;
   }
   public function set_insert($pengiriman_no, $pengiriman_tgl, $pengiriman_status, $pengiriman_tipe, $id_fk_penjualan = "", $pengiriman_tempat, $id_tempat_pengiriman, $id_fk_retur = "")
   {
-    if (!$this->set_pengiriman_no($pengiriman_no)) {
-      return false;
-    }
-    if (!$this->set_pengiriman_tgl($pengiriman_tgl)) {
-      return false;
-    }
-    if (!$this->set_pengiriman_status($pengiriman_status)) {
-      return false;
-    }
-    if (!$this->set_pengiriman_tipe($pengiriman_tipe)) {
-      return false;
-    }
-    $this->id_fk_penjualan = $id_fk_penjualan;
+    $this->set_pengiriman_no($pengiriman_no);
+    $this->set_pengiriman_tgl($pengiriman_tgl);
+    $this->set_pengiriman_status($pengiriman_status);
+    $this->$this->id_fk_penjualan = $id_fk_penjualan;
     $this->id_fk_retur = $id_fk_retur;
-    if (!$this->set_pengiriman_tempat($pengiriman_tempat)) {
-      return false;
-    }
-    if (strtolower($pengiriman_tempat) == "warehouse") {
-      if (!$this->set_id_fk_warehouse($id_tempat_pengiriman)) {
-        return false;
-      }
+    if($this->set_pengiriman_tempat($pengiriman_tempat) == "warehouse") {
+      $this->set_id_fk_warehouse($id_tempat_pengiriman);
     } else if (strtolower($pengiriman_tempat) == "cabang") {
-      if (!$this->set_id_fk_cabang($id_tempat_pengiriman)) {
-        return false;
-      }
+      $this->set_id_fk_cabang($id_tempat_pengiriman);
     }
     return true;
   }
   public function set_update($id_pk_pengiriman, $pengiriman_tgl)
   {
-    if (!$this->set_id_pk_pengiriman($id_pk_pengiriman)) {
-      return false;
-    }
-    if (!$this->set_pengiriman_tgl($pengiriman_tgl)) {
-      return false;
-    }
+    $this->set_id_pk_pengiriman($id_pk_pengiriman);
+    $this->set_pengiriman_tgl($pengiriman_tgl);
     return true;
   }
   public function set_delete($id_pk_pengiriman)
   {
-    if (!$this->set_id_pk_pengiriman($id_pk_pengiriman)) {
-      return false;
-    }
-
+    $this->set_id_pk_pengiriman($id_pk_pengiriman);
     return true;
   }
   public function set_id_pk_pengiriman($id_pk_pengiriman)
   {
-    if ($id_pk_pengiriman != "") {
-      $this->id_pk_pengiriman = $id_pk_pengiriman;
+    $this->id_pk_pengiriman = $id_pk_pengiriman;
       return true;
-    }
-    return false;
   }
   public function set_pengiriman_no($pengiriman_no)
   {
-    if ($pengiriman_no != "") {
-      $this->pengiriman_no = $pengiriman_no;
+    $this->pengiriman_no = $pengiriman_no;
       return true;
-    }
-    return false;
   }
   public function set_pengiriman_tgl($pengiriman_tgl)
   {
-    if ($pengiriman_tgl != "") {
-      $this->pengiriman_tgl = $pengiriman_tgl;
+    $this->pengiriman_tgl = $pengiriman_tgl;
       return true;
-    }
-    return false;
   }
   public function set_pengiriman_status($pengiriman_status)
   {
-    if ($pengiriman_status != "") {
-      $this->pengiriman_status = $pengiriman_status;
+    $this->pengiriman_status = $pengiriman_status;
       return true;
-    }
-    return false;
   }
   public function set_pengiriman_tipe($pengiriman_tipe)
   {
-    if ($pengiriman_tipe != "") {
-      $this->pengiriman_tipe = $pengiriman_tipe;
+    $this->pengiriman_tipe = $pengiriman_tipe;
       return true;
-    }
-    return false;
   }
   public function set_id_fk_penjualan($id_fk_penjualan)
   {
-    if ($id_fk_penjualan != "") {
-      $this->id_fk_penjualan = $id_fk_penjualan;
+    $this->id_fk_penjualan = $id_fk_penjualan;
       return true;
-    }
-    return false;
   }
   public function set_pengiriman_tempat($pengiriman_tempat)
   {
-    if ($pengiriman_tempat != "") {
-      $this->pengiriman_tempat = $pengiriman_tempat;
+    $this->pengiriman_tempat = $pengiriman_tempat;
       return true;
-    }
-    return false;
   }
   public function set_id_fk_warehouse($id_fk_warehouse)
   {
-    if ($id_fk_warehouse != "") {
-      $this->id_fk_warehouse = $id_fk_warehouse;
+    $this->id_fk_warehouse = $id_fk_warehouse;
       return true;
-    }
-    return false;
   }
   public function set_id_fk_cabang($id_fk_cabang)
   {
-    if ($id_fk_cabang != "") {
-      $this->id_fk_cabang = $id_fk_cabang;
+    $this->id_fk_cabang = $id_fk_cabang;
       return true;
-    }
-    return false;
   }
   public function get_pengiriman_nomor($id_fk_cabang, $jenis_transaksi, $custom_tgl = "-")
   {

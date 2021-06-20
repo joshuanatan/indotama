@@ -230,23 +230,23 @@ class m_warehouse_admin extends ci_model
         "id_last_modified" => $this->id_last_modified,
       );
       updaterow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_pk_warehouse_admin;
-        $log_all_msg = "Data Admin warehouse dengan ID: $id_pk diubah. Waktu diubah: $this->warehouse_admin_last_modified . Data berubah menjadi: ";
-        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+      $id_pk = $this->id_pk_warehouse_admin;
+      $log_all_msg = "Data Admin warehouse dengan ID: $id_pk diubah. Waktu diubah: $this->warehouse_admin_last_modified . Data berubah menjadi: ";
+      $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-        $log_all_data_changes = "[ID Admin Warehouse: $id_pk][ID Warehouse: $this->id_fk_warehouse][ID User: $this->id_fk_user][Waktu Ditambahkan: $this->warehouse_admin_create_date][Oleh: $nama_user]";
-        $log_all_it = "";
-        $log_all_user = $this->id_last_modified;
-        $log_all_tgl = $this->warehouse_admin_last_modified;
+      $log_all_data_changes = "[ID Admin Warehouse: $id_pk][ID Warehouse: $this->id_fk_warehouse][ID User: $this->id_fk_user][Waktu Ditambahkan: $this->warehouse_admin_create_date][Oleh: $nama_user]";
+      $log_all_it = "";
+      $log_all_user = $this->id_last_modified;
+      $log_all_tgl = $this->warehouse_admin_last_modified;
 
-        $data_log = array(
-          "log_all_msg" => $log_all_msg,
-          "log_all_data_changes" => $log_all_data_changes,
-          "log_all_it" => $log_all_it,
-          "log_all_user" => $log_all_user,
-          "log_all_tgl" => $log_all_tgl
-        );
-        insertrow("log_all", $data_log);
+      $data_log = array(
+        "log_all_msg" => $log_all_msg,
+        "log_all_data_changes" => $log_all_data_changes,
+        "log_all_it" => $log_all_it,
+        "log_all_user" => $log_all_user,
+        "log_all_tgl" => $log_all_tgl
+      );
+      insertrow("log_all", $data_log);
       return true;
     }
     return false;
@@ -269,141 +269,53 @@ class m_warehouse_admin extends ci_model
   }
   public function check_insert()
   {
-    if ($this->id_fk_warehouse == "") {
-      return false;
-    }
-    if ($this->id_fk_user == "") {
-      return false;
-    }
-    if ($this->warehouse_admin_status == "") {
-      return false;
-    }
-    if ($this->warehouse_admin_create_date == "") {
-      return false;
-    }
-    if ($this->warehouse_admin_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_warehouse_admin == "") {
-      return false;
-    }
-    if ($this->id_fk_warehouse == "") {
-      return false;
-    }
-    if ($this->id_fk_user == "") {
-      return false;
-    }
-    if ($this->warehouse_admin_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-
-    if ($this->id_pk_warehouse_admin == "") {
-      return false;
-    }
-    if ($this->warehouse_admin_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($id_fk_warehouse, $id_fk_user, $warehouse_admin_status)
   {
-    if (!$this->set_id_fk_warehouse($id_fk_warehouse)) {
-      return false;
-    }
-    if (!$this->set_id_fk_user($id_fk_user)) {
-      return false;
-    }
-    if (!$this->set_warehouse_admin_status($warehouse_admin_status)) {
-      return false;
-    }
+    $this->set_id_fk_warehouse($id_fk_warehouse);
+    $this->set_id_fk_user($id_fk_user);
+    $this->set_warehouse_admin_status($warehouse_admin_status);
     return true;
   }
   public function set_update($id_pk_warehouse_admin, $id_fk_warehouse, $id_fk_user)
   {
-    if (!$this->set_id_pk_warehouse_admin($id_pk_warehouse_admin)) {
-      return false;
-    }
-    if (!$this->set_id_fk_warehouse($id_fk_warehouse)) {
-      return false;
-    }
-    if (!$this->set_id_fk_user($id_fk_user)) {
-      return false;
-    }
+    $this->set_id_pk_warehouse_admin($id_pk_warehouse_admin);
+    $this->set_id_fk_warehouse($id_fk_warehouse);
+    $this->set_id_fk_user($id_fk_user);
     return true;
   }
   public function set_delete($id_pk_warehouse_admin)
   {
-    if (!$this->set_id_pk_warehouse_admin($id_pk_warehouse_admin)) {
-      return false;
-    }
+    $this->set_id_pk_warehouse_admin($id_pk_warehouse_admin);
     return true;
-  }
-  public function get_id_pk_warehouse_admin()
-  {
-    return $this->id_pk_warehouse_admin;
-  }
-  public function get_id_fk_warehouse()
-  {
-    return $this->id_fk_warehouse;
-  }
-  public function get_id_fk_user()
-  {
-    return $this->id_fk_user;
-  }
-  public function get_warehouse_admin_status()
-  {
-    return $this->warehouse_admin_status;
   }
   public function set_id_pk_warehouse_admin($id_pk_warehouse_admin)
   {
-    if ($id_pk_warehouse_admin != "") {
-      $this->id_pk_warehouse_admin = $id_pk_warehouse_admin;
-      return true;
-    }
-    return false;
+    $this->id_pk_warehouse_admin = $id_pk_warehouse_admin;
+    return true;
   }
   public function set_id_fk_warehouse($id_fk_warehouse)
   {
-    if ($id_fk_warehouse != "") {
-      $this->id_fk_warehouse = $id_fk_warehouse;
-      return true;
-    }
-    return false;
+    $this->id_fk_warehouse = $id_fk_warehouse;
+    return true;
   }
   public function set_id_fk_user($id_fk_user)
   {
-    if ($id_fk_user != "") {
-      $this->id_fk_user = $id_fk_user;
-      return true;
-    }
-    return false;
+    $this->id_fk_user = $id_fk_user;
+    return true;
   }
   public function set_warehouse_admin_status($warehouse_admin_status)
   {
-    if ($warehouse_admin_status != "") {
-      $this->warehouse_admin_status = $warehouse_admin_status;
-      return true;
-    }
-    return false;
+    $this->warehouse_admin_status = $warehouse_admin_status;
+    return true;
   }
 }

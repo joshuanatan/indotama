@@ -279,111 +279,47 @@ class M_barang_jenis extends ci_model
   }
   public function check_insert()
   {
-    if ($this->brg_jenis_nama == "") {
-      return false;
-    }
-    if ($this->brg_jenis_status == "") {
-      return false;
-    }
-    if ($this->brg_jenis_create_date == "") {
-      return false;
-    }
-    if ($this->brg_jenis_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    } else return true;
+    return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_brg_jenis == "") {
-      return false;
-    }
-    if ($this->brg_jenis_nama == "") {
-      return false;
-    }
-    if ($this->brg_jenis_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    } else return true;
+    return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_brg_jenis == "") {
-      return false;
-    }
-    if ($this->brg_jenis_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    } else return true;
+    return true;
   }
   public function set_insert($brg_jenis_nama, $brg_jenis_status)
   {
-    if (!$this->set_brg_jenis_nama($brg_jenis_nama)) {
-      return false;
-    }
-    if (!$this->set_brg_jenis_status($brg_jenis_status)) {
-      return false;
-    } else return true;
+    $this->set_brg_jenis_nama($brg_jenis_nama);
+    $this->set_brg_jenis_status($brg_jenis_status);
+    return true;
   }
   public function set_update($id_pk_brg_jenis, $brg_jenis_nama)
   {
-    if (!$this->set_id_pk_brg_jenis($id_pk_brg_jenis)) {
-      return false;
-    }
-    if (!$this->set_brg_jenis_nama($brg_jenis_nama)) {
-      return false;
-    } else return true;
+    $this->set_id_pk_brg_jenis($id_pk_brg_jenis);
+    $this->set_brg_jenis_nama($brg_jenis_nama);
+    return true;
   }
   public function set_delete($id_pk_brg_jenis)
   {
-    if (!$this->set_id_pk_brg_jenis($id_pk_brg_jenis)) {
-      return false;
-    } else return true;
-  }
-  public function get_id_pk_brg_jenis()
-  {
-    return $this->id_pk_brg_jenis;
-  }
-  public function get_brg_jenis_nama()
-  {
-    return $this->brg_jenis_nama;
-  }
-  public function get_brg_jenis_status()
-  {
-    return $this->brg_jenis_status;
+    $this->set_id_pk_brg_jenis($id_pk_brg_jenis);
+    return true;
   }
   public function set_id_pk_brg_jenis($id_pk_brg_jenis)
   {
-    if ($id_pk_brg_jenis != "") {
-      $this->id_pk_brg_jenis = $id_pk_brg_jenis;
-      return true;
-    }
-    return false;
+    $this->id_pk_brg_jenis = $id_pk_brg_jenis;
+    return true;
   }
   public function set_brg_jenis_nama($brg_jenis_nama)
   {
-    if ($brg_jenis_nama != "") {
-      $this->brg_jenis_nama = $brg_jenis_nama;
-      return true;
-    }
-    return false;
+    $this->brg_jenis_nama = $brg_jenis_nama;
+    return true;
   }
   public function set_brg_jenis_status($brg_jenis_status)
   {
-    if ($brg_jenis_status != "") {
-      $this->brg_jenis_status = $brg_jenis_status;
-      return true;
-    }
-    return false;
+    $this->brg_jenis_status = $brg_jenis_status;
+    return true;
   }
   public function data_excel()
   {
