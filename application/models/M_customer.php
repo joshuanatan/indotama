@@ -174,12 +174,12 @@ class M_customer extends ci_model
         limit 20 offset " . ($page - 1) * $data_per_page;
     $args = array(
       "aktif"
-    );
+    );  
     $result["data"] = executequery($query, $args);
 
     $query = "
         select id_pk_cust
-        from " . $this->tbl_name . " 
+        from " . $this->tbl_name . " join mstr_toko on mstr_toko.id_pk_toko = mstr_customer.id_fk_toko
         where cust_status = ? " . $search_query . "  
         order by " . $order_by . " " . $order_direction;
     $result["total_data"] = executequery($query, $args)->num_rows();

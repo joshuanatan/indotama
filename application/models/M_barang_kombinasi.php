@@ -265,158 +265,60 @@ class M_barang_kombinasi extends CI_Model
   }
   public function check_insert()
   {
-    if (!$this->id_barang_utama) {
-      return false;
-    }
-    if (!$this->id_barang_kombinasi) {
-      return false;
-    }
-    if (!$this->barang_kombinasi_qty) {
-      return false;
-    }
-    if (!$this->barang_kombinasi_status) {
-      return false;
-    }
-    if (!$this->barang_kombinasi_create_date) {
-      return false;
-    }
-    if (!$this->barang_kombinasi_last_modified) {
-      return false;
-    }
-    if (!$this->id_create_data) {
-      return false;
-    }
-    if (!$this->id_last_modified) {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if (!$this->id_pk_barang_kombinasi) {
-      return false;
-    }
-    if (!$this->id_barang_kombinasi) {
-      return false;
-    }
-    if (!$this->barang_kombinasi_qty) {
-      return false;
-    }
-    if (!$this->barang_kombinasi_last_modified) {
-      return false;
-    }
-    if (!$this->id_last_modified) {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if (!$this->id_pk_barang_kombinasi) {
-      return false;
-    }
-    if (!$this->barang_kombinasi_last_modified) {
-      return false;
-    }
-    if (!$this->id_last_modified) {
-      return false;
-    }
     return true;
   }
   public function set_insert($id_barang_utama, $id_barang_kombinasi, $barang_kombinasi_qty, $barang_kombinasi_status)
   {
-    if (!$this->set_id_barang_utama($id_barang_utama)) {
-      return false;
-    }
-    if (!$this->set_id_barang_kombinasi($id_barang_kombinasi)) {
-      return false;
-    }
-    if (!$this->set_barang_kombinasi_qty($barang_kombinasi_qty)) {
-      return false;
-    }
-    if (!$this->set_barang_kombinasi_status($barang_kombinasi_status)) {
-      return false;
-    }
+    $this->set_id_barang_utama($id_barang_utama);
+    $this->set_id_barang_kombinasi($id_barang_kombinasi);
+    $this->set_barang_kombinasi_qty($barang_kombinasi_qty);
+    $this->set_barang_kombinasi_status($barang_kombinasi_status);
     return true;
   }
   public function set_update($id_pk_barang_kombinasi, $id_barang_kombinasi, $barang_kombinasi_qty)
   {
-    if (!$this->set_id_pk_barang_kombinasi($id_pk_barang_kombinasi)) {
-      return false;
-    }
-    if (!$this->set_id_barang_kombinasi($id_barang_kombinasi)) {
-      return false;
-    }
-    if (!$this->set_barang_kombinasi_qty($barang_kombinasi_qty)) {
-      return false;
-    }
+    $this->set_id_pk_barang_kombinasi($id_pk_barang_kombinasi);
+    $this->set_id_barang_kombinasi($id_barang_kombinasi);
+    $this->set_barang_kombinasi_qty($barang_kombinasi_qty);
     return true;
   }
   public function set_delete($id_pk_barang_kombinasi)
   {
-    if (!$this->set_id_pk_barang_kombinasi($id_pk_barang_kombinasi)) {
-      return false;
-    }
+    $this->set_id_pk_barang_kombinasi($id_pk_barang_kombinasi);
     return true;
   }
-  public function get_id_pk_barang_kombinasi()
-  {
-    return $this->id_pk_barang_kombinasi;
-  }
-  public function get_id_barang_utama()
-  {
-    return $this->id_barang_utama;
-  }
-  public function get_id_barang_kombinasi()
-  {
-    return $this->id_barang_kombinasi;
-  }
-  public function get_barang_kombinasi_qty()
-  {
-    return $this->barang_kombinasi_qty;
-  }
-  public function get_barang_kombinasi_status()
-  {
-    return $this->barang_kombinasi_status;
-  }
+
   public function set_id_pk_barang_kombinasi($id_pk_barang_kombinasi)
   {
-    if ($id_pk_barang_kombinasi) {
-      $this->id_pk_barang_kombinasi = $id_pk_barang_kombinasi;
-      return true;
-    }
-    return false;
+    $this->id_pk_barang_kombinasi = $id_pk_barang_kombinasi;
+    return true;
   }
   public function set_id_barang_utama($id_barang_utama)
   {
-    if ($id_barang_utama) {
-      $this->id_barang_utama = $id_barang_utama;
-      return true;
-    }
-    return false;
+    $this->id_barang_utama = $id_barang_utama;
+    return true;
   }
   public function set_id_barang_kombinasi($id_barang_kombinasi)
   {
-    if ($id_barang_kombinasi) {
-      $this->id_barang_kombinasi = $id_barang_kombinasi;
-      return true;
-    }
-    return false;
+    $this->id_barang_kombinasi = $id_barang_kombinasi;
+    return true;
   }
   public function set_barang_kombinasi_qty($barang_kombinasi_qty)
   {
-    if ($barang_kombinasi_qty) {
-      $this->barang_kombinasi_qty = $barang_kombinasi_qty;
-      return true;
-    }
-    return false;
+    $this->barang_kombinasi_qty = $barang_kombinasi_qty;
+    return true;
   }
   public function set_barang_kombinasi_status($barang_kombinasi_status)
   {
-    if ($barang_kombinasi_status) {
-      $this->barang_kombinasi_status = $barang_kombinasi_status;
-      return true;
-    }
-    return false;
+    $this->barang_kombinasi_status = $barang_kombinasi_status;
+    return true;
   }
 }
