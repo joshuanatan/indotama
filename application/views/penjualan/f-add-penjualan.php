@@ -220,12 +220,12 @@ $notif_data = array(
       <tr class = 'add_brg_jual_row'>
         <td id = 'row${brg_jual_row}'>
           <input name = 'check[]' value = ${brg_jual_row} type = 'hidden'>
-          <input type = 'text' list = 'datalist_barang_cabang_jualan' onchange = 'load_harga_barang(${brg_jual_row})' id = 'brg${brg_jual_row}' name = 'brg${brg_jual_row}' class = 'form-control'>
+          <input type = 'text' list = 'datalist_barang_cabang_jualan' onkeyup="count_total_price()" onchange = 'load_harga_barang(${brg_jual_row})' id = 'brg${brg_jual_row}' name = 'brg${brg_jual_row}' class = 'form-control'>
           <a href = '<?php echo base_url(); ?>toko/brg_cabang' class = 'btn btn-primary btn-sm col-lg-12' target = '_blank'>Tambah Barang Cabang</a>
         </td>
         <input name = 'brg_qty_real${brg_jual_row}' type = 'hidden' value = "0" class = 'form-control nf-input'>
         <td>
-          <input name = 'brg_qty${brg_jual_row}' type = 'text' class = 'form-control nf-input'>
+          <input onkeyup="count_total_price()" name = 'brg_qty${brg_jual_row}' type = 'text' class = 'form-control nf-input'>
         </td>
         <td>
           <table>
@@ -244,9 +244,9 @@ $notif_data = array(
           </table>
         </td>
         <td>
-          <input type = 'text' name = 'brg_price${brg_jual_row}' id = 'brg_price${brg_jual_row}' class = 'form-control nf-input'>
+          <input onkeyup="count_total_price()" type = 'text' name = 'brg_price${brg_jual_row}' id = 'brg_price${brg_jual_row}' class = 'form-control nf-input'>
         </td>
-        <td>
+        <td>s 
           <input readonly type = 'text' class = 'form-control nf-input' id = 'harga_brg_final${brg_jual_row}'>
         </td>
         <td>
@@ -270,10 +270,10 @@ $notif_data = array(
                 <input name = 'tmbhn${tambahan_jual_row}' type = 'text' class = 'form-control'>
             </td>
             <td>
-                <input name = 'tmbhn_jumlah${tambahan_jual_row}' type = 'text' class = 'form-control nf-input'>
+                <input onkeyup="count_total_price()" name = 'tmbhn_jumlah${tambahan_jual_row}' type = 'text' class = 'form-control nf-input'>
             </td>
             <td>
-                <input name = 'tmbhn_harga${tambahan_jual_row}' type = 'text' class = 'form-control nf-input'>
+                <input onkeyup="count_total_price()" name = 'tmbhn_harga${tambahan_jual_row}' type = 'text' class = 'form-control nf-input'>
             </td>
             <td>
                 <input readonly type = 'text' class = 'form-control nf-input' id = 'harga_tambahan_final${tambahan_jual_row}'>
