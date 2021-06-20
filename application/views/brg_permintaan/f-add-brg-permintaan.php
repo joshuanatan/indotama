@@ -32,7 +32,7 @@
                     
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-sm btn-danger" data-dismiss = "modal">Cancel</button>
-                        <button type = "button" id = "permintaan_tambah_button" onclick = "register_func()" class = "btn btn-sm btn-primary">Submit</button>
+                        <button type = "button" id = "permintaan_tambah_button" onclick = "register_func();load_permintaan_barang_content();" class = "btn btn-sm btn-primary">Submit</button>
                     </div>
                 </form>
             </div>
@@ -40,11 +40,4 @@
     </div>
 </div>
 <script>
-if(typeof(load_permintaan_barang_content) != "undefined"){
-    /*dipake di v_brg_permintaan_graphic*/
-    /*tambahin event handler untuk add permintaan button untuk refresh disini*/
-    document.getElementById("permintaan_tambah_button").addEventListener("click",function(){
-        load_permintaan_barang_content();
-    });
-}
 </script>

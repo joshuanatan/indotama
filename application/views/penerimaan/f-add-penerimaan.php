@@ -18,7 +18,7 @@
                     <input type = 'hidden' name = 'id_tempat_penerimaan' value = '<?php echo $id_tempat_penerimaan;?>'>
                     <div class = "form-group">
                         <h5>Nomor Pembelian</h5>
-                        <input type = "text" class = "form-control" list = "datalist_pembelian" required id = "no_pembelian">
+                        <input type = "text" class = "form-control" list = "datalist_pembelian_toko" required id = "no_pembelian">
                     </div>
                     <div class = "form-group">
                         <button type = "button" class = "btn btn-primary btn-sm" style = "width:20%" onclick = "load_detail_pembelian()">Load Data Barang</button>

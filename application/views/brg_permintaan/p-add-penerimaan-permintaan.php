@@ -44,10 +44,3 @@
         </div>
     </div>
 </div> 
-<script>
-    /*dipake di v_brg_permintaan_graphic*/
-    /*tambahin event handler untuk add penerimaan permintaan button untuk refresh disini*/
-    document.getElementById("penerimaan_permintaan_tambah_button").addEventListener("click",function(){
-        load_incoming_delivery_content();
-    });
-</script>

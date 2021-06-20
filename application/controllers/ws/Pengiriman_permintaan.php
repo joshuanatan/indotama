@@ -136,7 +136,6 @@ class Pengiriman_permintaan extends CI_Controller
 
     $id_fk_cabang = $this->session->id_cabang;
     $pengiriman_no = $this->m_pengiriman->get_pengiriman_nomor($id_fk_cabang, "pengiriman", $pengiriman_tgl);
-
     if ($this->m_pengiriman->set_insert($pengiriman_no, $pengiriman_tgl, $pengiriman_status, $pengiriman_tipe, "", $pengiriman_tempat, $id_tempat_pengiriman, "")) {
       $id_pengiriman = $this->m_pengiriman->insert();
       if ($id_pengiriman) {

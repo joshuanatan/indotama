@@ -278,6 +278,6 @@ $data = array(
 <?php $this->load->view("penerimaan/f-detail-penerimaan", $data); ?>
 <?php $this->load->view("penerimaan/f-delete-penerimaan", $data); ?>
 
-<?php $this->load->view("_base_element/datalist_pembelian_all"); ?>
+<?php $this->load->view("_base_element/datalist_pembelian_toko"); ?>
 <?php $this->load->view('_notification/notif_general'); ?>
 <?php $this->load->view("req/core_script"); ?>

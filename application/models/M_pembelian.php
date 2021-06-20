@@ -162,6 +162,20 @@ class M_pembelian extends ci_model{
         }
         return executequery($query,$args);
     }
+    public function list_data_toko(){
+        $query = "
+        select id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified,toko_nama,cabang_daerah
+        from mstr_pembelian 
+        inner join mstr_supplier on mstr_supplier.id_pk_sup = mstr_pembelian.id_fk_supp
+        inner join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_pembelian.id_fk_cabang
+        inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+        inner join mstr_warehouse on mstr_warehouse.id_fk_cabang = mstr_cabang.id_pk_cabang
+        where pem_status = 'aktif' and sup_status = 'aktif' and cabang_status = 'aktif' and toko_status = 'aktif' and id_pk_warehouse = ?";
+        $args = array(
+          $this->session->id_warehouse
+        );
+        return executequery($query,$args);
+    }
     public function detail_by_no(){
         $sql = "
         select id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified,cabang_daerah,cabang_notelp,cabang_alamat,toko_nama
