@@ -24,7 +24,7 @@
           </div>
           <div class="form-group col-lg-6">
             <h5>Jenis Barang</h5>
-            <input list="datalist_barang_jenis" type="text" required name="id_brg_jenis" class="form-control" id="id_brg_jenis_edit">
+            <input list="datalist_barang_jenis" type="text" required name="id_brg_jenis" class="form-control" id="id_brg_jenis_edit" readonly>
           </div>
           <div class="form-group col-lg-6">
             <h5>Merk Barang</h5>
@@ -45,48 +45,12 @@
             <h5>Satuan</h5>
             <input type="text" class="form-control" required name="satuan" id="satuan_edit" list="datalist_satuan">
           </div>
-
           <div class="form-group col-lg-6">
-            <h5>Harga Satuan</h5>
-            <input type="text" class="form-control nf-input" required name="harga" id="harga_edit">
-          </div>
-
-          <div class="form-group col-lg-6">
-            <h5>Harga Toko</h5>
-            <input type="text" class="form-control nf-input" required name="harga_toko" id="harga_toko_edit">
-          </div>
-          <div class="form-group col-lg-6">
-            <h5>Harga Grosir</h5>
-            <input type="text" class="form-control nf-input" required name="harga_grosir" id="harga_grosir_edit">
-          </div>
-
-          <div class="form-group" id="kombinasi_barang_container">
-            <h5>Kombinasi Barang</h5>
-            <input type="radio" class="kombinasi_barang_edit" name="tipe" value="nonkombinasi" onclick="$('#barang_kombinasi_container_edit').hide()">&nbsp;TIDAK KOMBINASI
-            &nbsp;&nbsp;
-            <input type="radio" class="kombinasi_barang_edit" name="tipe" value="kombinasi" onclick="$('#barang_kombinasi_container_edit').show()">&nbsp;KOMBINASI
-          </div>
-
-          <table class="table table-striped table-bordered" id="barang_kombinasi_container_edit">
-            <thead>
-              <th>Nama Barang</th>
-              <th>Qty (Pcs)</th>
-              <th>Action</th>
-            </thead>
-            <tbody>
-              <tr id="btn_tambah_baris_barang_container_edit">
-                <td colspan=3>
-                  <button type="button" onclick="tambah_baris_barang_edit()" class="btn btn-primary btn-sm col-lg-12">Tambah Barang</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="form-group col-lg-12">
             <h5>Gambar</h5>
             <input type="hidden" id="gambar_edit" name="gambar_current">
             <input type="file" class="form-control" required name="gambar">
           </div>
-          <div class="form-group">
+          <div class="form-group col-lg-12">
             <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Cancel</button>
             <button type="button" onclick="update_func()" class="btn btn-sm btn-primary">Submit</button>
           </div>
