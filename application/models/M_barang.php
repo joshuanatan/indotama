@@ -434,327 +434,124 @@ class M_barang extends ci_model
   }
   public function check_insert()
   {
-    if ($this->check_double_kode()) {
-      return false;
-    }
-    if ($this->check_double_nama()) {
-      return false;
-    }
-    if ($this->brg_kode == "") {
-      return false;
-    }
-    if ($this->brg_nama == "") {
-      return false;
-    }
-    if ($this->brg_ket == "") {
-      return false;
-    }
-    if ($this->brg_minimal == "") {
-      return false;
-    }
-    if ($this->id_fk_brg_jenis == "") {
-      return false;
-    }
-    if ($this->brg_status == "") {
-      return false;
-    }
-    if ($this->brg_satuan == "") {
-      return false;
-    }
-    if ($this->brg_image == "") {
-      return false;
-    }
-    if ($this->brg_harga == "") {
-      return false;
-    }
-    if ($this->brg_harga_toko == "") {
-      return false;
-    }
-    if ($this->brg_harga_grosir == "") {
-      return false;
-    }
-    if ($this->brg_tipe == "") {
-      return false;
-    }
-    if ($this->id_fk_brg_merk == "") {
-      return false;
-    }
-    if ($this->brg_create_date == "") {
-      return false;
-    }
-    if ($this->brg_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-
-    // if($this->check_double_kode($this->id_pk_brg)){
-    //     return false;
-    // }
-    if ($this->check_double_nama($this->id_pk_brg)) {
-      return false;
-    }
-    if ($this->id_pk_brg == "") {
-      return false;
-    }
-    if ($this->brg_kode == "") {
-      return false;
-    }
-    if ($this->brg_nama == "") {
-      return false;
-    }
-    if ($this->brg_minimal == "") {
-      return false;
-    }
-    if ($this->brg_satuan == "") {
-      return false;
-    }
-    if ($this->brg_harga == "") {
-      return false;
-    }
-    if ($this->brg_tipe == "") {
-      return false;
-    }
-    if ($this->id_fk_brg_jenis == "") {
-      return false;
-    }
-    if ($this->id_fk_brg_merk == "") {
-      return false;
-    }
-    if ($this->brg_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_brg == "") {
-      return false;
-    }
-    if ($this->brg_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
+    
     return true;
   }
   public function set_insert($brg_kode, $brg_nama, $brg_ket, $brg_minimal, $brg_satuan, $brg_image, $brg_status, $id_fk_brg_jenis, $id_fk_brg_merk, $brg_harga, $brg_harga_toko, $brg_harga_grosir, $brg_tipe)
   {
-    if (!$this->set_brg_kode($brg_kode)) {
-      return false;
-    }
-    if (!$this->set_brg_nama($brg_nama)) {
-      return false;
-    }
-    if (!$this->set_brg_ket($brg_ket)) {
-      return false;
-    }
-    if (!$this->set_brg_minimal($brg_minimal)) {
-      return false;
-    }
-    if (!$this->set_brg_satuan($brg_satuan)) {
-      return false;
-    }
-    if (!$this->set_brg_image($brg_image)) {
-      return false;
-    }
-    if (!$this->set_brg_harga($brg_harga)) {
-      return false;
-    }
-    if (!$this->set_brg_harga_toko($brg_harga_toko)) {
-      return false;
-    }
-    if (!$this->set_brg_harga_grosir($brg_harga_grosir)) {
-      return false;
-    }
-    if (!$this->set_brg_tipe($brg_tipe)) {
-      return false;
-    }
-    if (!$this->set_brg_status($brg_status)) {
-      return false;
-    }
-    if (!$this->set_id_fk_brg_jenis($id_fk_brg_jenis)) {
-      return false;
-    }
-    if (!$this->set_id_fk_brg_merk($id_fk_brg_merk)) {
-      return false;
-    }
+    $this->set_brg_kode($brg_kode);
+    $this->set_brg_nama($brg_nama);
+    $this->set_brg_ket($brg_ket);
+    $this->set_brg_minimal($brg_minimal);
+    $this->set_brg_satuan($brg_satuan);
+    $this->set_brg_image($brg_image);
+    $this->set_brg_harga($brg_harga);
+    $this->set_brg_harga_toko($brg_harga_toko);
+    $this->set_brg_harga_grosir($brg_harga_grosir);
+    $this->set_brg_tipe($brg_tipe);
+    $this->set_brg_status($brg_status);
+    $this->set_id_fk_brg_jenis($id_fk_brg_jenis);
+    $this->set_id_fk_brg_merk($id_fk_brg_merk);
     return true;
   }
   public function set_update($id_pk_brg, $brg_kode, $brg_nama, $brg_ket, $brg_minimal, $brg_satuan, $brg_image, $id_fk_brg_jenis, $id_fk_brg_merk, $brg_harga, $brg_harga_toko, $brg_harga_grosir, $brg_tipe)
-  {
-    if (!$this->set_id_pk_brg($id_pk_brg)) {
-      return false;
-    }
-
-    if (!$this->set_brg_kode($brg_kode)) {
-      return false;
-    }
-    if (!$this->set_brg_nama($brg_nama)) {
-      return false;
-    }
-    if (!$this->set_brg_ket($brg_ket)) {
-      return false;
-    }
-    if (!$this->set_brg_minimal($brg_minimal)) {
-      return false;
-    }
-    if (!$this->set_brg_satuan($brg_satuan)) {
-      return false;
-    }
-    if (!$this->set_brg_image($brg_image)) {
-      return false;
-    }
-    if (!$this->set_brg_harga($brg_harga)) {
-      return false;
-    }
-    if (!$this->set_brg_harga_toko($brg_harga_toko)) {
-      return false;
-    }
-    if (!$this->set_brg_harga_grosir($brg_harga_grosir)) {
-      return false;
-    }
-    if (!$this->set_brg_tipe($brg_tipe)) {
-      return false;
-    }
-    if (!$this->set_id_fk_brg_jenis($id_fk_brg_jenis)) {
-      return false;
-    }
-    if (!$this->set_id_fk_brg_merk($id_fk_brg_merk)) {
-      return false;
-    }
+  {$this->set_id_pk_brg($id_pk_brg);
+    $this->set_brg_kode($brg_kode);
+    $this->set_brg_nama($brg_nama);
+    $this->set_brg_ket($brg_ket);
+    $this->set_brg_minimal($brg_minimal);
+    $this->set_brg_satuan($brg_satuan);
+    $this->set_brg_image($brg_image);
+    $this->set_brg_harga($brg_harga);
+    $this->set_brg_harga_toko($brg_harga_toko);
+    $this->set_brg_harga_grosir($brg_harga_grosir);
+    $this->set_brg_tipe($brg_tipe);
+    $this->set_id_fk_brg_jenis($id_fk_brg_jenis);
+    $this->set_id_fk_brg_merk($id_fk_brg_merk);
     return true;
   }
   public function set_delete($id_pk_brg)
   {
-    if (!$this->set_id_pk_brg($id_pk_brg)) {
-      return false;
-    }
+    $this->set_id_pk_brg($id_pk_brg);
     return true;
   }
   public function set_id_pk_brg($id_pk_brg)
   {
-    if ($id_pk_brg != "") {
-      $this->id_pk_brg = $id_pk_brg;
+    $this->id_pk_brg = $id_pk_brg;
       return true;
-    }
-    return false;
   }
   public function set_brg_kode($brg_kode)
   {
-    if ($brg_kode != "") {
-      $this->brg_kode = $brg_kode;
+    $this->brg_kode = $brg_kode;
       return true;
-    }
-    return false;
   }
   public function set_brg_nama($brg_nama)
   {
-    if ($brg_nama != "") {
-      $this->brg_nama = $brg_nama;
+    $this->brg_nama = $brg_nama;
       return true;
-    }
-    return false;
   }
   public function set_brg_ket($brg_ket)
   {
-    if (true) {
-      $this->brg_ket = $brg_ket;
-      return true;
-    }
-    return false;
+    $this->brg_ket = $brg_ket;
+    return true;
   }
   public function set_brg_minimal($brg_minimal)
   {
-    if ($brg_minimal !== "") {
-      $this->brg_minimal = $brg_minimal;
-      return true;
-    }
-    return false;
+    $this->brg_minimal = $brg_minimal;
+    return true;
   }
   public function set_brg_satuan($brg_satuan)
   {
-    if ($brg_satuan != "") {
-      $this->brg_satuan = $brg_satuan;
+    $this->brg_satuan = $brg_satuan;
       return true;
-    }
-    return false;
   }
   public function set_brg_image($brg_image)
   {
-    if (true) {
-      $this->brg_image = $brg_image;
+    $this->brg_image = $brg_image;
       return true;
-    }
-    return false;
   }
   public function set_brg_harga($brg_harga)
   {
-    if ($brg_harga != "") {
-      $this->brg_harga = $brg_harga;
+    $this->brg_harga = $brg_harga;
       return true;
-    }
-    return false;
   }
   public function set_brg_harga_toko($brg_harga_toko)
   {
-    if ($brg_harga_toko != "") {
-      $this->brg_harga_toko = $brg_harga_toko;
-      return true;
-    }
-    return false;
+    $this->brg_harga_toko = $brg_harga_toko;
+    return true;
   }
   public function set_brg_harga_grosir($brg_harga_grosir)
   {
-    if ($brg_harga_grosir != "") {
-      $this->brg_harga_grosir = $brg_harga_grosir;
+    $this->brg_harga_grosir = $brg_harga_grosir;
       return true;
-    }
-    return false;
   }
   public function set_brg_tipe($brg_tipe)
   {
-    if ($brg_tipe != "") {
-      $this->brg_tipe = $brg_tipe;
+    $this->brg_tipe = $brg_tipe;
       return true;
-    }
-    return false;
   }
   public function set_brg_status($brg_status)
   {
-    if ($brg_status != "") {
-      $this->brg_status = $brg_status;
-      return true;
-    }
-    return false;
+    $this->brg_status = $brg_status;
+    return true;
   }
   public function set_id_fk_brg_jenis($id_fk_brg_jenis)
   {
-    if ($id_fk_brg_jenis != "") {
-      $this->id_fk_brg_jenis = $id_fk_brg_jenis;
+    $this->id_fk_brg_jenis = $id_fk_brg_jenis;
       return true;
-    }
-    return false;
   }
   public function set_id_fk_brg_merk($id_fk_brg_merk)
   {
-    if ($id_fk_brg_merk != "") {
-      $this->id_fk_brg_merk = $id_fk_brg_merk;
+    $this->id_fk_brg_merk = $id_fk_brg_merk;
       return true;
-    }
-    return false;
   }
   public function data_excel()
   {

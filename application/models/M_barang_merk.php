@@ -258,117 +258,47 @@ class M_barang_merk extends ci_model
   }
   public function check_insert()
   {
-    if ($this->brg_merk_nama == "") {
-      return false;
-    }
-    if ($this->brg_merk_status == "") {
-      return false;
-    }
-    if ($this->brg_merk_create_date == "") {
-      return false;
-    }
-    if ($this->brg_merk_last_modified == "") {
-      return false;
-    }
-    if ($this->id_create_data == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_update()
   {
-    if ($this->id_pk_brg_merk == "") {
-      return false;
-    }
-    if ($this->brg_merk_nama == "") {
-      return false;
-    }
-    if ($this->brg_merk_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function check_delete()
   {
-    if ($this->id_pk_brg_merk == "") {
-      return false;
-    }
-    if ($this->brg_merk_last_modified == "") {
-      return false;
-    }
-    if ($this->id_last_modified == "") {
-      return false;
-    }
     return true;
   }
   public function set_insert($brg_merk_nama, $brg_merk_status)
   {
-    if (!$this->set_brg_merk_nama($brg_merk_nama)) {
-      return false;
-    }
-    if (!$this->set_brg_merk_status($brg_merk_status)) {
-      return false;
-    }
+    $this->set_brg_merk_nama($brg_merk_nama);
+    $this->set_brg_merk_status($brg_merk_status);
     return true;
   }
   public function set_update($id_pk_brg_merk, $brg_merk_nama)
   {
-    if (!$this->set_id_pk_brg_merk($id_pk_brg_merk)) {
-      return false;
-    }
-    if (!$this->set_brg_merk_nama($brg_merk_nama)) {
-      return false;
-    }
+    $this->set_id_pk_brg_merk($id_pk_brg_merk);
+    $this->set_brg_merk_nama($brg_merk_nama);
     return true;
   }
   public function set_delete($id_pk_brg_merk)
   {
-    if (!$this->set_id_pk_brg_merk($id_pk_brg_merk)) {
-      return false;
-    }
+    $this->set_id_pk_brg_merk($id_pk_brg_merk);
     return true;
-  }
-  public function get_id_pk_brg_merk()
-  {
-    return $this->id_pk_brg_merk;
-  }
-  public function get_brg_merk_nama()
-  {
-    return $this->brg_merk_nama;
-  }
-  public function get_brg_merk_status()
-  {
-    return $this->brg_merk_status;
   }
   public function set_id_pk_brg_merk($id_pk_brg_merk)
   {
-    if ($id_pk_brg_merk != "") {
-      $this->id_pk_brg_merk = $id_pk_brg_merk;
-      return true;
-    }
-    return false;
+    $this->id_pk_brg_merk = $id_pk_brg_merk;
+    return true;
   }
   public function set_brg_merk_nama($brg_merk_nama)
   {
-    if ($brg_merk_nama != "") {
-      $this->brg_merk_nama = $brg_merk_nama;
-      return true;
-    }
-    return false;
+    $this->brg_merk_nama = $brg_merk_nama;
+    return true;
   }
   public function set_brg_merk_status($brg_merk_status)
   {
-    if ($brg_merk_status != "") {
-      $this->brg_merk_status = $brg_merk_status;
-      return true;
-    }
-    return false;
+    $this->brg_merk_status = $brg_merk_status;
+    return true;
   }
   public function data_excel()
   {
