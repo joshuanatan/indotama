@@ -129,7 +129,7 @@
                             <td>
                                 <input disabled name = 'tambahan_edit[]' value = ${a} type = 'hidden'>
                                 <input type = 'hidden' name = 'id_tmbhn_pem_edit${a}' value = '${respond["content"][a]["id"]}'>
-                                <input value = '${respond["content"][a]["tmbhn"]}' name = 'tmbhn_edit${a}' type = 'text' class = 'form-control'>
+                                <input disabled value = '${respond["content"][a]["tmbhn"]}' name = 'tmbhn_edit${a}' type = 'text' class = 'form-control'>
                             </td>
                             <td>
                                 <input disabled value = '${respond["content"][a]["jumlah"]} ${respond["content"][a]["satuan"]}' name = 'tmbhn_jumlah_edit${a}' type = 'text' class = 'form-control'>

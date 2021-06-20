@@ -13,7 +13,7 @@ class m_user extends ci_model{
     private $id_fk_employee;
     private $user_last_modified;
     private $user_create_date;
-    private $id_create_data;
+    private $id_create_date;
     private $id_last_modified;
     
     public function __construct(){
@@ -26,7 +26,7 @@ class m_user extends ci_model{
 
         $this->user_last_modified = date("y-m-d h:i:s");
         $this->user_create_date = date("y-m-d h:i:s");
-        $this->id_create_data = $this->session->id_user;
+        $this->id_create_date = $this->session->id_user;
         $this->id_last_modified = $this->session->id_user;
     }
     private function set_column($col_name,$col_disp,$order_by){
@@ -206,7 +206,7 @@ class m_user extends ci_model{
                 "id_fk_employee" => $this->id_fk_employee,
                 "user_create_date" => $this->user_create_date,
                 "user_last_modified" => $this->user_last_modified,
-                "id_create_date" => $this->id_create_data,
+                "id_create_date" => $this->id_create_date,
                 "id_last_modified" => $this->id_last_modified
             );
             $id_hasil_insert = insertrow($this->tbl_name, $data);
@@ -429,7 +429,7 @@ class m_user extends ci_model{
         return true;
     }
     public function check_insert(){
-        if($this->user_name != "" && $this->user_pass != "" && $this->user_email != "" && $this->user_status != "" && $this->id_fk_role != "" && $this->user_last_modified != "" && $this->user_create_date != "" && $this->id_create_data != "" && $this->id_last_modified != "" && $this->id_fk_employee != ""){
+        if($this->user_name != "" && $this->user_pass != "" && $this->user_email != "" && $this->user_status != "" && $this->id_fk_role != "" && $this->user_last_modified != "" && $this->user_create_date != "" && $this->id_create_date != "" && $this->id_last_modified != "" && $this->id_fk_employee != ""){
             return true;
         }
         else{

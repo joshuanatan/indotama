@@ -82,7 +82,7 @@ $notif_data = array(
 </html>
 <?php 
 $data = array(
-    "page_title" => "Master Toko"
+    "page_title" => "Master Supplier"
 );
 ?>
 <?php $this->load->view('supplier/f-add-supplier',$data);?>

@@ -196,7 +196,7 @@ class M_roles extends ci_model{
                     "id_last_modified" => $this->id_last_modified,
                 );
                 updateRow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_pk_brg_merk;
+        $id_pk = $this->id_pk_jabatan;
         $log_all_msg = "Data Jabatan dengan ID: $id_pk diubah. Waktu diubah: $this->jabatan_last_modified . Data berubah menjadi: ";
         $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 

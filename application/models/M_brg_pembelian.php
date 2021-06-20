@@ -169,7 +169,7 @@ class M_brg_pembelian extends ci_model
         "id_last_modified" => $this->id_last_modified,
       );
       updateRow($this->tbl_name, $data, $where);
-        $id_pk = $this->id_pk_brg_merk;
+        $id_pk = $this->id_pk_brg_pembelian;
         $log_all_msg = "Data Merk Barang dengan ID: $id_pk diubah. Waktu diubah: $this->brg_pem_last_modified . Data berubah menjadi: ";
         $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
@@ -218,9 +218,6 @@ class M_brg_pembelian extends ci_model
     if ($this->brg_pem_harga == "") {
       return false;
     }
-    if ($this->brg_pem_note == "") {
-      return false;
-    }
     if ($this->brg_pem_status == "") {
       return false;
     }
@@ -256,10 +253,10 @@ class M_brg_pembelian extends ci_model
     if ($this->brg_pem_satuan == "") {
       return false;
     }
-    if ($this->brg_pem_harga == "") {
-      return false;
-    }
     if ($this->brg_pem_note == "") {
+      return "-";
+    }
+    if ($this->brg_pem_harga == "") {
       return false;
     }
     if ($this->id_fk_barang == "") {
@@ -299,7 +296,7 @@ class M_brg_pembelian extends ci_model
     }
     if (!$this->set_brg_pem_note($brg_pem_note)) {
       return false;
-    }
+    } 
     if (!$this->set_brg_pem_status($brg_pem_status)) {
       return false;
     }
@@ -380,8 +377,10 @@ class M_brg_pembelian extends ci_model
     if ($brg_pem_note != "") {
       $this->brg_pem_note = $brg_pem_note;
       return true;
+    }else{
+      $this->brg_pem_note = "-";
+      return true;
     }
-    return false;
   }
   public function set_brg_pem_status($brg_pem_status)
   {

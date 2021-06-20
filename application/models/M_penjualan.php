@@ -293,11 +293,10 @@ class M_penjualan extends ci_model
       "thn_control" => explode("-", $penj_tgl)[0]
     );
     $id_hasil_insert = insertrow($this->tbl_name, $data);
-
     $log_all_msg = "Data Penjualan baru ditambahkan. Waktu penambahan: $this->penj_create_date";
     $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_create_data));
 
-    $log_all_data_changes = "[ID Penjualan: $id_hasil_insert][Nomor Penjualan: $this->penj_nomor][Tanggal: $this->penj_tgl][Status: $this->penj_status][Dateline: $this->penj_dateline_tgl][Jenis Penjualan: $this->penj_jenis][Tipe Pembayaran: $this->penj_tipe_pembayaran][ID Customer: $this->id_fk_customer][ID Cabang: $this->id_fk_cabang][Waktu Ditambahkan: $this->penj_create_date][Oleh: $nama_user]";
+    $log_all_data_changes = "[ID Penjualan: $id_hasil_insert][Nomor Penjualan: $this->penj_nomor][Tanggal: $this->penj_tgl][Dateline: $this->penj_dateline_tgl][Jenis Penjualan: $this->penj_jenis][Tipe Pembayaran: $this->penj_tipe_pembayaran][ID Customer: $this->id_fk_customer][ID Cabang: $this->id_fk_cabang][Waktu Ditambahkan: $this->penj_create_date][Oleh: $nama_user]";
     $log_all_it = "";
     $log_all_user = $this->id_create_data;
     $log_all_tgl = $this->penj_create_date;
@@ -310,7 +309,6 @@ class M_penjualan extends ci_model
       "log_all_tgl" => $log_all_tgl
     );
     insertrow("log_all", $data_log);
-
     return $id_hasil_insert;
   }
   public function update($id_pk_penjualan, $penj_nomor, $penj_dateline_tgl, $penj_jenis, $penj_tipe_pembayaran, $penj_tgl, $id_fk_customer)

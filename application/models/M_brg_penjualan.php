@@ -139,7 +139,7 @@ class M_brg_penjualan extends ci_model
             
     $log_all_msg = "Data Jenis Barang baru ditambahkan. Waktu penambahan: $this->brg_penjualan_create_date";
     $nama_user = get1Value("mstr_user","user_name",array("id_pk_user"=>$this->id_create_data));
-    $log_all_data_changes = "[ID Barang Jenis: $id_hasil_insert][Jumlah (real): $this->brg_penjualan_qty_real][Satuan (real): $this->brg_penjualan_satuan_real][Jumlah: $this->brg_penjualan_qty][Satuan: $this->brg_penjualan_satuan][Harga: $this->brg_penjualan_harga][Notes: $this->brg_penjualan_note][Status: $this->brg_penjualan_status][ID Penjualan: $this->id_fk_penjualan][ID Barang: $this->id_fk_barang][Waktu Ditambahkan: $this->brg_penjualan_create_date][Oleh: $nama_user]";
+    $log_all_data_changes = "[ID Barang Jenis: $id_hasil_insert][Jumlah (real): $brg_penjualan_qty_real][Satuan (real): $brg_penjualan_satuan_real][Jumlah: $brg_penjualan_qty][Satuan: $brg_penjualan_satuan][Harga: $brg_penjualan_harga][Notes: $brg_penjualan_note][Status: $brg_penjualan_status][ID Penjualan: $id_fk_penjualan][ID Barang: $id_fk_barang][Waktu Ditambahkan: $this->brg_penjualan_create_date][Oleh: $nama_user]";
     $log_all_it = "";
     $log_all_user = $this->id_create_data;
     $log_all_tgl = $this->brg_penjualan_create_date;
