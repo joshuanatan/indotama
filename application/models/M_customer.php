@@ -174,7 +174,7 @@ class M_customer extends ci_model
         limit 20 offset " . ($page - 1) * $data_per_page;
     $args = array(
       "aktif"
-    );  
+    );
     $result["data"] = executequery($query, $args);
 
     $query = "
@@ -583,5 +583,138 @@ class M_customer extends ci_model
       $id_toko
     );
     return executeQuery($sql, $args);
+  }
+  public function columns_detail_penjualan()
+  {
+    $columns[0] = $this->local_set_column("penj_nomor", "nomor penjualan", true);
+    $columns[1] = $this->local_set_column("penj_nominal", "nominal penjualan", false);
+    $columns[2] = $this->local_set_column("penj_tgl", "tanggal penjualan", false);
+    $columns[3] = $this->local_set_column("cust_perusahaan", "customer", false);
+    $columns[4] = $this->local_set_column("penj_jenis", "jenis penjualan", false);
+    $columns[5] = $this->local_set_column("penj_status", "status", false);
+    $columns[6] = $this->local_set_column("status_pembayaran", "status pembayaran", false);
+    $columns[7] = $this->local_set_column("selisih_tanggal", "durasi jatuh tempo", false);
+    return $columns;
+  }
+  public function detail_penjualan_table($page = 1, $order_by = 0, $order_direction = "asc", $search_key = "", $data_per_page = "", $id_fk_customer)
+  {
+    $columns = array(
+      "penj_nomor",
+      "penj_nominal",
+      "penj_tgl",
+      "cust_perusahaan",
+      "penj_jenis",
+      "penj_status",
+      "status_pembayaran",
+      "selisih_tanggal"
+    );
+    $order_by = $columns[$order_by];
+    $search_query = "";
+    if ($search_key != "") {
+      $search_query .= "and
+      ( 
+          id_pk_penjualan like '%" . $search_key . "%' or
+          penj_nomor like '%" . $search_key . "%' or
+          penj_tgl like '%" . $search_key . "%' or
+          penj_status like '%" . $search_key . "%' or
+          penj_jenis like '%" . $search_key . "%' or
+          penj_tipe_pembayaran like '%" . $search_key . "%' or
+          selisih_tanggal like '%" . $search_key . "%' or
+          list_jenis_pembayaran like '%" . $search_key . "%' or
+          status_pembayaran like '%" . $search_key . "%' or
+          penj_nominal like '%" . $search_key . "%'
+      )";
+    }
+    $query = "
+      select * from (
+        select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas',if(cast(penj_nominal*1.1 as unsigned) > penj_nominal_byr,'Belum Lunas','Lebih Bayar')),if(penj_nominal = penj_nominal_byr,'Lunas',if(penj_nominal > penj_nominal_byr,'Belum Lunas','Lebih Bayar'))) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal,id_fk_customer
+        from mstr_penjualan
+        inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+        inner join tbl_penjualan_online on tbl_penjualan_online.id_fk_penjualan = mstr_penjualan.id_pk_penjualan 
+        inner join tbl_penjualan_pembayaran on tbl_penjualan_pembayaran.id_fk_penjualan = mstr_penjualan.id_pk_penjualan where tbl_penjualan_pembayaran.penjualan_pmbyrn_status != 'nonaktif'
+        group by id_pk_penjualan
+      ) as a 
+      where id_fk_customer = ? " . $search_query . "  
+      order by " . $order_by . " " . $order_direction . " 
+      limit 20 offset " . ($page - 1) * $data_per_page;
+    $args = array(
+      $id_fk_customer
+    );
+    $result["data"] = executequery($query, $args);
+    $query = "
+    select * from (
+      select id_fk_cabang,cust_email,id_pk_penjualan,penj_nomor,penj_nominal_byr,penj_tgl,penj_dateline_tgl,penj_status,penj_jenis,penj_tipe_pembayaran,penj_last_modified,cust_name,cust_perusahaan, if(penj_tipe_pembayaran = 1, if(cast(penj_nominal*1.1 as unsigned) = penj_nominal_byr, 'Lunas',if(cast(penj_nominal*1.1 as unsigned) > penj_nominal_byr,'Belum Lunas','Lebih Bayar')),if(penj_nominal = penj_nominal_byr,'Lunas',if(penj_nominal > penj_nominal_byr,'Belum Lunas','Lebih Bayar'))) as status_pembayaran, group_concat(penjualan_pmbyrn_nama) as list_jenis_pembayaran, DATEDIFF(penj_dateline_tgl,now()) as selisih_tanggal, if(penj_tipe_pembayaran = 1, cast(penj_nominal*1.1 as unsigned),penj_nominal) as penj_nominal,id_fk_customer
+      from mstr_penjualan
+      inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penjualan.id_fk_customer
+      inner join tbl_penjualan_online on tbl_penjualan_online.id_fk_penjualan = mstr_penjualan.id_pk_penjualan 
+      inner join tbl_penjualan_pembayaran on tbl_penjualan_pembayaran.id_fk_penjualan = mstr_penjualan.id_pk_penjualan where tbl_penjualan_pembayaran.penjualan_pmbyrn_status != 'nonaktif'
+      group by id_pk_penjualan
+    ) as a 
+    where id_fk_customer = ? " . $search_query;
+    $result["total_data"] = executequery($query, $args)->num_rows();
+    #echo $this->db->last_query();
+    return $result;
+  }
+  public function columns_detail_brg_penjualan(){
+    $columns[0] = $this->local_set_column("brg_nama", "Nama Barang", true);
+    $columns[1] = $this->local_set_column("brg_penjualan_qty", "Jumlah Barang", false);
+    $columns[2] = $this->local_set_column("brg_penjualan_harga", "Harga Jual", false);
+    $columns[3] = $this->local_set_column("penj_nomor", "Nomor Penjualan", false);
+    $columns[4] = $this->local_set_column("penj_tgl", "Tanggal Penjualan", false);
+    $columns[5] = $this->local_set_column("penj_jenis", "Jenis Penjualan", false);
+    return $columns;
+  }
+  public function detail_brg_penjualan_table($page = 1, $order_by = 0, $order_direction = "asc", $search_key = "", $data_per_page = "", $id_fk_customer)
+  {
+    $columns = array(
+      "brg_nama",
+      "brg_penjualan_qty",
+      "brg_penjualan_harga",
+      "penj_nomor",
+      "penj_tgl",
+      "penj_jenis"
+    );
+    $order_by = $columns[$order_by];
+    $search_query = "";
+    if ($search_key != "") {
+      $search_query .= "and
+      ( 
+          brg_nama like '%" . $search_key . "%' or
+          brg_penjualan_qty like '%" . $search_key . "%' or
+          brg_penjualan_harga like '%" . $search_key . "%' or
+          penj_nomor like '%" . $search_key . "%' or
+          penj_tgl like '%" . $search_key . "%' or
+          penj_jenis like '%" . $search_key . "%'
+      )";
+    }
+    $query = "
+      select brg_nama,brg_penjualan_qty,brg_penjualan_satuan, brg_penjualan_harga, penj_nomor, penj_tgl, penj_jenis, penj_status, brg_penjualan_status from tbl_brg_penjualan
+      inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = tbl_brg_penjualan.id_fk_penjualan
+      inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_penjualan.id_fk_barang
+      where penj_status = 'aktif' and brg_penjualan_status = 'aktif' and brg_penjualan_qty > 0 and id_fk_customer = ?" . $search_query . "  
+      order by " . $order_by . " " . $order_direction . " 
+      limit 20 offset " . ($page - 1) * $data_per_page;
+    $args = array(
+      $id_fk_customer
+    );
+    $result["data"] = executequery($query, $args);
+    $query = "
+      select brg_nama,brg_penjualan_qty,brg_penjualan_satuan, brg_penjualan_harga, penj_nomor, penj_tgl, penj_jenis, penj_status, brg_penjualan_status from tbl_brg_penjualan
+      inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = tbl_brg_penjualan.id_fk_penjualan
+      inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_penjualan.id_fk_barang
+      where penj_status = 'aktif' and brg_penjualan_status = 'aktif' and brg_penjualan_qty > 0 and id_fk_customer = ?" . $search_query;
+    $result["total_data"] = executequery($query, $args)->num_rows();
+    #echo $this->db->last_query();
+    return $result;
+  }
+  private function local_set_column($col_name, $col_disp, $order_by)
+  {
+    $array = array(
+      "col_name" => $col_name,
+      "col_disp" => $col_disp,
+      "order_by" => $order_by
+    );
+    return $array;
+    $this->columns[count($this->columns)] = $array; //terpaksa karena array merge gabisa.
   }
 }

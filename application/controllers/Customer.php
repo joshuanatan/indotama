@@ -37,7 +37,24 @@ class Customer extends CI_Controller
     echo json_encode($data);
   }
 
-  public function detail(){
-    $this->load->view("customer/v_customer_detail");
+  public function detail($id_pk_customer){
+    $data = array(
+      "id_pk_customer" => $id_pk_customer
+    );
+    $this->load->view("customer/v_customer_detail",$data);
+  }
+
+  public function table_penjualan_detail_customer($id_pk_customer){
+    $data = array(
+      "id_pk_customer" => $id_pk_customer,
+    );
+    $this->load->view("customer/f-detail-customer",$data);
+  }
+
+  public function table_brg_penjualan_detail_customer($id_pk_customer){
+    $data = array(
+      "id_pk_customer" => $id_pk_customer
+    );
+    $this->load->view("customer/f-detail-customer-barang",$data);
   }
 }

@@ -455,9 +455,11 @@ class M_pengiriman extends ci_model
     $this->set_pengiriman_no($pengiriman_no);
     $this->set_pengiriman_tgl($pengiriman_tgl);
     $this->set_pengiriman_status($pengiriman_status);
-    $this->$this->id_fk_penjualan = $id_fk_penjualan;
+    $this->set_pengiriman_tipe($pengiriman_tipe);
+    $this->id_fk_penjualan = $id_fk_penjualan;
     $this->id_fk_retur = $id_fk_retur;
-    if($this->set_pengiriman_tempat($pengiriman_tempat) == "warehouse") {
+    $this->set_pengiriman_tempat($pengiriman_tempat);
+    if(strtolower($pengiriman_tempat) == "warehouse") {
       $this->set_id_fk_warehouse($id_tempat_pengiriman);
     } else if (strtolower($pengiriman_tempat) == "cabang") {
       $this->set_id_fk_cabang($id_tempat_pengiriman);

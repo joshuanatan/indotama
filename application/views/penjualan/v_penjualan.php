@@ -148,7 +148,6 @@ $notif_data = array(
 </script>
 <?php $this->load->view("_core_script/core"); ?>
 <?php $this->load->view("penjualan/f-delete-penjualan"); ?>
-<?php $this->load->view("penjualan/f-detail-penjualan"); ?>
 <?php $this->load->view("penjualan/f-selesai-penjualan"); ?>
 <?php $this->load->view('_notification/notif_general'); ?>
 <?php $this->load->view("req/core_script"); ?>
@@ -171,6 +170,9 @@ $notif_data = array(
             switch (respond["content"][a]["penj_status"].toLowerCase()) {
               case "aktif":
                 html_status += `<td class = 'align-middle text-center'><span class="badge badge-success align-top">${respond["content"][a]["penj_status"].toUpperCase()}</span></td>`;
+                break;
+              case "selesai":
+                html_status += `<td class = 'align-middle text-center'><span class="badge badge-primary align-top">${respond["content"][a]["penj_status"].toUpperCase()}</span></td>`;
                 break;
               default:
                 html_status += `<td class = 'align-middle text-center'><span class="badge badge-danger align-top">${respond["content"][a]["penj_status"].toUpperCase()}</span></td>`;
@@ -209,16 +211,19 @@ $notif_data = array(
                   ${html_status_pembayaran}
                   ${html_durasi_pembayaran}
                   <td>
-                    <a style = "cursor:pointer;font-size:large" class = 'text-success md-eye' data-toggle = 'modal' data-target = '#detail_modal' onclick = 'load_detail_content(${a})'></a>
-                    <a style = "font-size:large" class = 'text-primary md-edit' href = "<?php echo base_url(); ?>penjualan/update/${respond["content"][a]["id_pk_penjualan"]}" target = "_blank"></a>  
-                    <a style = "cursor:pointer;font-size:large" class = 'text-danger md-delete' data-toggle = 'modal' data-target = '#delete_modal' onclick = 'load_delete_content(${a})'></a>
                     
                     <a style="cursor:pointer;font-size:large" data-toggle = 'modal' data-target = '#pdf_asli_modal' onclick = 'load_pdf_asli_modal(${respond["content"][a]["id_pk_penjualan"]})' class="text-info md-print"></a>
 
                     <a style="cursor:pointer;font-size:large" data-toggle = 'modal' data-target = '#pdf_copy_modal' onclick = 'load_pdf_copy_modal(${respond["content"][a]["id_pk_penjualan"]})' class="text-default md-print"></a>
+                  `;
+                  if(respond["content"][a]["penj_status"].toLowerCase() != "selesai"){
+                    html += `
+                    <a style = "font-size:large" class = 'text-primary md-edit' href = "<?php echo base_url(); ?>penjualan/update/${respond["content"][a]["id_pk_penjualan"]}" target = "_blank"></a>  
+                    <a style = "cursor:pointer;font-size:large" class = 'text-danger md-delete' data-toggle = 'modal' data-target = '#delete_modal' onclick = 'load_delete_content(${a})'></a>
                     
-                    <a style="cursor:pointer;font-size:large" data-toggle = "modal" data-target = "#selesai_modal" class="text-secondary md-check"></a>
-                  </td>
+                    <a style="cursor:pointer;font-size:large" data-toggle = "modal" data-target = "#selesai_modal" onclick = "load_selesai_content(${a})" class="text-secondary md-check"></a>`;
+                  }
+                  html += `</td>
               </tr>
           `;
           }

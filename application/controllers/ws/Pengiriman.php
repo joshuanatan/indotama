@@ -129,6 +129,43 @@ class pengiriman extends CI_Controller
     $this->form_validation->set_rules("id_reff", "Nomor", "required");
     $this->form_validation->set_rules("tgl_pengiriman", "Tanggal Penerimaan", "required");
     if ($this->form_validation->run()) {
+      $check = $this->input->post("check");
+      if ($check != "") {
+        $counter = -1;
+        foreach ($check as $a) {
+          $counter++;
+          $this->form_validation->reset_validation();
+          $this->form_validation->set_rules("id_brg" . $a, "id_brg", "required");
+          $this->form_validation->set_rules("id_satuan" . $a, "id_satuan", "required");
+          if ($this->form_validation->run()) {
+            
+            $brg_pengiriman_qty = $this->input->post("qty_kirim" . $a);
+            $id_fk_satuan = $this->input->post("id_satuan" . $a);
+            $satuan = get1Value("mstr_satuan", "satuan_rumus", array("id_pk_satuan" => $id_fk_satuan));
+
+            if ($this->input->post("tipe_pengiriman") == "retur") {
+              $id_fk_brg_retur = $this->input->post("id_brg" . $a);
+              if (!$this->check_stok_insert("retur", $id_fk_brg_retur, $brg_pengiriman_qty * $satuan)) {
+                $print_counter = $counter+1;
+                $response["status"] = "ERROR";
+                $response["msg"] = "Stok item nomor $print_counter tidak cukup";
+                echo json_encode($response);
+                exit();
+              }
+            } else if ($this->input->post("tipe_pengiriman") == "penjualan") {
+              $id_fk_brg_penjualan = $this->input->post("id_brg" . $a);
+              if (!$this->check_stok_insert("penjualan", $id_fk_brg_penjualan, $brg_pengiriman_qty * $satuan)) {
+                $print_counter = $counter+1;
+                $response["status"] = "ERROR";
+                $response["msg"] = "Stok item nomor $print_counter tidak cukup";
+                echo json_encode($response);
+                exit();
+              }
+            }
+          }
+        }
+      }
+
       $pengiriman_tgl = $this->input->post("tgl_pengiriman");
       $pengiriman_status = "AKTIF";
       $id_fk_penjualan = "";
@@ -174,22 +211,9 @@ class pengiriman extends CI_Controller
                 $satuan = get1Value("mstr_satuan", "satuan_rumus", array("id_pk_satuan" => $id_fk_satuan));
                 if ($this->input->post("tipe_pengiriman") == "retur") {
                   $id_fk_brg_retur = $this->input->post("id_brg" . $a);
-                  if (!$this->check_stok_insert("retur", $id_fk_brg_retur, $brg_pengiriman_qty * $satuan)) {
-                    #echo $brg_pengiriman_qty;
-                    $response["statusitm"][$counter] = "ERROR";
-                    $response["msgitm"][$counter] = "Stok tidak mencukupi";
-                    $brg_pengiriman_qty = 0;
-                  }
                 } else if ($this->input->post("tipe_pengiriman") == "penjualan") {
                   $id_fk_brg_penjualan = $this->input->post("id_brg" . $a);
-                  if (!$this->check_stok_insert("penjualan", $id_fk_brg_penjualan, $brg_pengiriman_qty * $satuan)) {
-                    #echo $brg_pengiriman_qty;
-                    $response["statusitm"][$counter] = "ERROR";
-                    $response["msgitm"][$counter] = "Stok tidak mencukupi";
-                    $brg_pengiriman_qty = 0;
-                  }
                 }
-                $tipe_pengiriman = $this->input->post("tipe_pengiriman");
                 $this->load->model("m_brg_pengiriman");
                 if ($this->m_brg_pengiriman->set_insert($brg_pengiriman_qty, $brg_pengiriman_note, $id_fk_pengiriman, $id_fk_brg_penjualan, $id_fk_satuan, $id_fk_brg_retur)) {
                   if ($this->m_brg_pengiriman->insert()) {
@@ -227,6 +251,46 @@ class pengiriman extends CI_Controller
     $this->form_validation->set_rules("id", "id", "required");
     $this->form_validation->set_rules("tgl_pengiriman", "tgl_pengiriman", "required");
     if ($this->form_validation->run()) {
+
+      $check = $this->input->post("check");
+        if ($check != "") {
+          $counter = 0;
+          foreach ($check as $a) {
+            $this->load->model("m_brg_pengiriman");
+            $id_pk_brg_pengiriman = $this->input->post("id_brg" . $a);
+            $brg_pengiriman_qty = $this->input->post("qty_kirim" . $a);
+            $id_fk_satuan = $this->input->post("id_satuan" . $a);
+
+
+            $satuan = get1Value("mstr_satuan", "satuan_rumus", array("id_pk_satuan" => $id_fk_satuan));
+            if ($this->input->post("tipe_pengiriman") == "retur") {
+              #$id_fk_brg_retur = $this->input->post("id_brg" . $a);
+              if (!$this->check_stok("retur", $id_pk_brg_pengiriman, $brg_pengiriman_qty * $satuan)) {
+                #echo $brg_pengiriman_qty;
+                $brg_pengiriman_qty = 0;
+                $response["status"] = "ERROR";
+                $print_counter = $counter+1;
+                $response["msg"] = "Stok item nomor $print_counter tidak cukup";
+                echo json_encode($response);
+                exit();
+              }
+            } else if ($this->input->post("tipe_pengiriman") == "penjualan") {
+              #$id_fk_brg_penjualan = $this->input->post("id_brg" . $a);
+              if (!$this->check_stok("penjualan", $id_pk_brg_pengiriman, $brg_pengiriman_qty * $satuan)) {
+                echo $this->db->last_query();
+                #echo $brg_pengiriman_qty;
+                $brg_pengiriman_qty = 0;
+                $response["status"] = "ERROR";
+                $print_counter = $counter+1;
+                $response["msg"] = "Stok item nomor $print_counter tidak cukup";
+                echo json_encode($response);
+                exit();
+              }
+            }
+          }
+        }
+
+
       $id_pk_pengiriman = $this->input->post("id");
       $pengiriman_tgl = $this->input->post("tgl_pengiriman");
       $this->load->model("m_pengiriman");
@@ -245,21 +309,6 @@ class pengiriman extends CI_Controller
 
 
               $satuan = get1Value("mstr_satuan", "satuan_rumus", array("id_pk_satuan" => $id_fk_satuan));
-              if ($this->input->post("tipe_pengiriman") == "retur") {
-                #$id_fk_brg_retur = $this->input->post("id_brg" . $a);
-                if (!$this->check_stok("retur", $id_pk_brg_pengiriman, $brg_pengiriman_qty * $satuan)) {
-                  $response["statusitm"][$counter] = "ERROR";
-                  $response["msgitm"][$counter] = "Stok tidak mencukupi";
-                  continue;
-                }
-              } else if ($this->input->post("tipe_pengiriman") == "penjualan") {
-                #$id_fk_brg_penjualan = $this->input->post("id_brg" . $a);
-                if (!$this->check_stok("penjualan", $id_pk_brg_pengiriman, $brg_pengiriman_qty * $satuan)) {
-                  $response["statusitm"][$counter] = "ERROR";
-                  $response["msgitm"][$counter] = "Stok tidak mencukupi";
-                  continue;
-                }
-              }
               if ($this->m_brg_pengiriman->set_update($id_pk_brg_pengiriman, $brg_pengiriman_qty, $brg_pengiriman_note, $id_fk_satuan)) {
                 if ($this->m_brg_pengiriman->update()) {
                   $response["statusitm"][$counter] = "SUCCESS";
@@ -385,7 +434,7 @@ class pengiriman extends CI_Controller
         from tbl_brg_pengiriman
         inner join tbl_brg_penjualan on tbl_brg_penjualan.id_pk_brg_penjualan = tbl_brg_pengiriman.id_fk_brg_penjualan
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = tbl_brg_penjualan.id_fk_penjualan
-        inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_brg_penjualan.id_fk_barang and tbl_brg_cabang.id_fk_cabang = mstr_penjualan.id_fk_cabang 
+        inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_brg_penjualan.id_fk_barang and tbl_brg_cabang.id_fk_cabang = ? 
         where id_pk_brg_pengiriman = ? and brg_cabang_qty >= ?";
     } else if (strtolower($tipe) == "retur") {
       $sql = "select * 
@@ -393,11 +442,11 @@ class pengiriman extends CI_Controller
         inner join tbl_retur_kembali on tbl_retur_kembali.id_pk_retur_kembali = tbl_brg_pengiriman.id_fk_brg_retur_kembali
         inner join mstr_retur on mstr_retur.id_pk_retur = tbl_retur_kembali.id_fk_retur
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
-        inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_retur_kembali.id_fk_brg and tbl_brg_cabang.id_fk_cabang = mstr_penjualan.id_fk_cabang 
+        inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_retur_kembali.id_fk_brg and tbl_brg_cabang.id_fk_cabang = ? 
         where id_pk_brg_pengiriman = ? and brg_cabang_qty >= ?";
     }
     $args = array(
-      $id_brg_pengiriman, $request_qty
+      $this->session->id_cabang, $id_brg_pengiriman, $request_qty
     );
     $result = executeQuery($sql, $args);
     #echo $this->db->last_query();
@@ -410,24 +459,25 @@ class pengiriman extends CI_Controller
   private function check_stok_insert($tipe, $id_brg_pengiriman, $request_qty)
   {
     if (strtolower($tipe) == "penjualan") {
-      $sql = "select *
-        from tbl_brg_pengiriman
-        inner join tbl_brg_penjualan on tbl_brg_penjualan.id_pk_brg_penjualan = tbl_brg_pengiriman.id_fk_brg_penjualan
-        inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = tbl_brg_penjualan.id_fk_penjualan
-        inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_brg_penjualan.id_fk_barang and tbl_brg_cabang.id_fk_cabang = mstr_penjualan.id_fk_cabang 
-        where id_pk_brg_penjualan = ? and brg_cabang_qty >= ?";
+      $sql = "select * from tbl_brg_penjualan 
+      inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = tbl_brg_Penjualan.id_fk_penjualan
+      inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_brg_penjualan.id_fk_barang and tbl_brg_cabang.id_fk_cabang = ?
+      where id_pk_brg_penjualan = ? and brg_cabang_qty >= ?";
+      
+      $args = array(
+        $this->session->id_cabang, $id_brg_pengiriman, $request_qty
+      );
     } else if (strtolower($tipe) == "retur") {
       $sql = "select * 
-        from tbl_brg_pengiriman
-        inner join tbl_retur_kembali on tbl_retur_kembali.id_pk_retur_kembali = tbl_brg_pengiriman.id_fk_brg_retur_kembali
+        from tbl_retur_kembali 
         inner join mstr_retur on mstr_retur.id_pk_retur = tbl_retur_kembali.id_fk_retur
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
-        inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_retur_kembali.id_fk_brg and tbl_brg_cabang.id_fk_cabang = mstr_penjualan.id_fk_cabang 
+        inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_retur_kembali.id_fk_brg and tbl_brg_cabang.id_fk_cabang = ? 
         where id_pk_retur_kembali = ? and brg_cabang_qty >= ?";
+      $args = array(
+        $this->session->id_cabang, $id_brg_pengiriman, $request_qty
+      );
     }
-    $args = array(
-      $id_brg_pengiriman, $request_qty
-    );
     $result = executeQuery($sql, $args);
     #echo $this->db->last_query();
     if ($result->num_rows() > 0) {

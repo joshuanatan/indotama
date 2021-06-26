@@ -132,6 +132,15 @@ class Pengiriman_permintaan extends CI_Controller
     $pengiriman_tipe = $this->input->post("tipe_pengiriman");
     $id_tempat_pengiriman = $this->input->post("id_tempat_pengiriman");
 
+    $id_brg_pengiriman = $this->input->post("id");
+    $request_qty = $this->input->post("brg_pengiriman_qty");
+    if(!$this->check_stok_insert($id_brg_pengiriman,$request_qty)){
+      $response["status"] = "ERROR";
+      $response["msg"] = "Stok barang pengiriman tidak cukup";
+      echo json_encode($response);
+      exit();
+    }
+
     $this->load->model("m_pengiriman");
 
     $id_fk_cabang = $this->session->id_cabang;
@@ -147,7 +156,7 @@ class Pengiriman_permintaan extends CI_Controller
 
         $this->load->model("m_satuan");
         $result = $this->m_satuan->list_data();
-        if ($result->num_rows() > 0) {
+        if ($result->num_rows() > 0) {  
           $result = $result->result_array();
           $where = array(
             "satuan_rumus" => "1"
@@ -219,5 +228,23 @@ class Pengiriman_permintaan extends CI_Controller
       }
     }
     echo json_encode($response);
+  }
+  private function check_stok_insert($id_brg_pengiriman, $request_qty)
+  {
+    $sql = "select * from tbl_brg_pemenuhan
+    inner join tbl_brg_permintaan on tbl_brg_permintaan.id_pk_brg_permintaan = tbl_brg_pemenuhan.id_fk_brg_permintaan
+    inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_brg_permintaan.id_fk_brg and tbl_brg_cabang.id_fk_cabang = ?
+    where id_pk_brg_pemenuhan = ? and brg_cabang_qty >= ?";
+    
+    $args = array(
+      $this->session->id_cabang, $id_brg_pengiriman, $request_qty
+    );
+    $result = executeQuery($sql, $args);
+    #echo $this->db->last_query();
+    if ($result->num_rows() > 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

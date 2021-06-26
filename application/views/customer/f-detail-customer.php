@@ -1,219 +1,139 @@
+<?php
+$page_title = "Master Customer";
+$breadcrumb = array(
+  "Master", "Customer"
+);
+$notif_data = array(
+  "page_title" => $page_title
+);
+?>
+<!DOCTYPE html>
+<html lang="en">
 
-<div class = "modal fade" id = "detail_modal">
-    <div class = "modal-dialog">
-        <div class = "modal-content">
-            <div class = "modal-header">
-                <h4 class = "modal-title">Detail Data <?php echo ucwords($page_title);?></h4>
-            </div>
-            <div class = "modal-body" style="display:flow-root">
-            
-                
+<head>
+  <?php $this->load->view('req/mm_css.php'); ?>
+</head>
 
+<body style = "background-color:white">
+  <div class="form-group">
+    <h5>Search Data Here</h5>
+    <input id="search_box" placeholder="Search data here..." type="text" class="form-control input-sm " onkeyup="search()" style="width:25%">
+  </div>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center pagination_container">
+    </ul>
+  </nav>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped" id="table_container">
+      <thead id="col_title_container">
+      </thead>
+      <tbody id="content_container" class="content_container">
+      </tbody>
+    </table>
+  </div>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center pagination_container">
+    </ul>
+  </nav>
+  <?php $this->load->view('req/mm_js.php'); ?>
+</body>
 
-
-
-
-
-                <div class="panel-group accordion-struct accordion-style-1" id="accordion_cust_detail" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="heading_1">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion_cust_detail" href="#collapse_1" aria-expanded="false" class="collapsed">
-                                <div class="icon-ac-wrap pr-20">
-                                    <span class="plus-ac"><i class="ti-plus"></i></span>
-                                    <span class="minus-ac"><i class="ti-minus"></i></span>
-                                </div>
-                                Detail Customer
-                            </a> 
-                        </div>
-                        <div id="collapse_1" class="panel-collapse collapse" role="tabpanel">
-                            <div style = "margin:10px" class = "panel-body">
-                                <!-- isi konten -->
-                                <?php 
-                                $notif_data = array(
-                                    "page_title"=>$page_title
-                                );
-                                ?>
-                                    
-                                    <div class = "form-group col-lg-6">
-                                        <h5>Panggilan</h5>
-                                        <input type = "text" readonly id = "cust_suff_detail" class="form-control">
-                                    </div>
-                                    <div class = "form-group col-lg-6">
-                                        <h5>Nama Lengkap</h5>
-                                        <input type="text" class="form-control" id = "cust_name_detail" disabled>
-                                    </div>
-                                    
-                                    <div class = "form-group col-lg-6">
-                                        <h5>Badan Usaha</h5>
-                                        <input type = 'text' readonly id = "cust_badan_usaha_detail" class="form-control">
-                                    </div>
-                                    <div class = "form-group col-lg-6">
-                                        <h5>Perusahaan</h5>
-                                        <input type="text" class="form-control" id = "cust_perusahaan_detail" disabled>
-                                    </div>
-                                    
-                                    <div class = "form-group col-lg-6">
-                                        <h5>Email</h5>
-                                        <input type="email" class="form-control" id = "cust_email_detail" disabled>
-                                    </div>
-                                    
-                                    <div class = "form-group col-lg-6">
-                                        <h5>No Kantor</h5>
-                                        <input type="text" class="form-control" id = "cust_telp_detail" disabled>
-                                    </div>
-                                    
-                                    <div class = "form-group col-lg-6">
-                                        <h5>No HP</h5>
-                                        <input type="text" class="form-control" id = "cust_hp_detail" disabled>
-                                    </div>
-                                    
-                                    <div class = "form-group col-lg-6">
-                                        <h5>Keterangan</h5>
-                                        <input type="text" class="form-control" id = "cust_keterangan_detail" disabled>
-                                    </div>
-                                    
-                                    <div class = "form-group col-lg-6">
-                                        <h5>Nomor NPWP</h5>
-                                        <input type="text" class="form-control" id = "cust_npwp_detail" disabled>
-                                    </div>
-                                    <div class = "form-group col-lg-6">
-                                        <h5>Foto NPWP</h5>
-                                        <img id = "cust_foto_npwp_detail" style = "width:100%">
-                                    </div>
-                                    <div class = "form-group col-lg-6">
-                                        <h5>Nomor Rekening</h5>
-                                        <input type="text" class="form-control" id = "cust_rek_detail" disabled value = "-">
-                                    </div>
-                                    <div class = "form-group col-lg-6">
-                                        <h5>Foto Kartu Nama</h5>
-                                        <img id = "cust_krt_nama_detail" style = "width:100%">
-                                    </div>
-                                    <div class = "form-group col-lg-12">
-                                        <h5>Alamat</h5>
-                                        <textarea class="form-control" id = "cust_alamat_detail" disabled></textarea>
-                                    </div>
-                                    <div class = "form-group col-lg-6">
-                                        <h5>Toko</h5>
-                                        <input type="text" class="form-control" name="id_fk_toko" id = "cust_nama_toko" required readonly>
-                                    </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading activestate" role="tab" id="heading_2">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion_cust_detail" href="#collapse_2" aria-expanded="true">
-                                <div class="icon-ac-wrap pr-20">
-                                    <span class="plus-ac"><i class="ti-plus"></i></span>
-                                    <span class="minus-ac"><i class="ti-minus"></i></span>
-                                </div>
-                                Detail Penjualan produk
-                            </a> 
-                        </div>
-                        <div id="collapse_2" class="panel-collapse collapse in" role="tabpanel" aria-expanded="true">
-                            <div style = "margin:10px" class = "panel-body">
-                                <!-- isi konten -->
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Nama Barang</th>
-                                            <th>Jumlah</th>
-                                            <th>Harga Jual</th>
-                                            <th>Notes</th>
-                                            <th>Tanggal Penjualan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="detail_brg_jual_customer">
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-
-
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="heading_3">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion_cust_detail" href="#collapse_3" aria-expanded="false" class="collapsed">
-                                <div class="icon-ac-wrap pr-20">
-                                    <span class="plus-ac"><i class="ti-plus"></i></span>
-                                    <span class="minus-ac"><i class="ti-minus"></i></span>
-                                </div>
-                                Detail Transaksi
-                            </a> 
-                        </div>
-                        <div id="collapse_3" class="panel-collapse collapse" role="tabpanel" aria-expanded="false">
-                            <div style = "margin:10px" class = "panel-body">
-                                <!-- isi konten -->
-                                sdsdsd
-                        </div>
-
-                    </div>
-
-                    <br><br>
-                    <div class = "form-group col-lg-12">
-                        <button type = "button" class = "btn btn-sm btn-primary" data-dismiss = "modal">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+</html>
+<?php $this->load->view("req/core_script"); ?>
 
 <script>
-    function load_detail_content(id){
-        $("#id_detail").val(content[id]["id"]);
-        $("#cust_suff_detail").val(content[id]["suff"]);
-        $("#cust_name_detail").val(content[id]["name"]);
-        $("#cust_badan_usaha_detail").val(content[id]["badan_usaha"]);
-        $("#cust_perusahaan_detail").val(content[id]["perusahaan"]);
-        $("#cust_email_detail").val(content[id]["email"]);
-        $("#cust_nama_toko").val(content[id]["nama_toko"]);
-        $("#cust_telp_detail").val(content[id]["telp"]);
-        $("#cust_hp_detail").val(content[id]["hp"]);
-        $("#cust_keterangan_detail").val(content[id]["keterangan"]);
-        $("#cust_npwp_detail").val(content[id]["no_npwp"]);
-        if(content[id]["foto_npwp"] != "-"){
-            $("#cust_foto_npwp_detail").attr("src","<?php echo base_url();?>asset/uploads/customer/npwp/"+content[id]["foto_npwp"]);
-        }
-        else{
-            $("#cust_foto_npwp_detail").attr("src","<?php echo base_url();?>asset/uploads/customer/npwp/noimage.jpg");
-        }
-        $("#cust_rek_detail").val(content[id]["no_rekening"]);
-        if(content[id]["foto_kartu_nama"] != "-"){
-            $("#cust_krt_nama_detail").attr("src","<?php echo base_url();?>asset/uploads/customer/krt_nama/"+content[id]["foto_kartu_nama"]);
-        }
-        else{
-            $("#cust_krt_nama_detail").attr("src","<?php echo base_url();?>asset/uploads/customer/krt_nama/noimage.jpg");
-        }
-        $("#cust_alamat_detail").val(content[id]["alamat"]);
+  var ctrl = "customer";
+  var tblHeaderCtrl = "columns_detail_penjualan";
+  var contentCtrl = "detail_penjualan";
+  var colCount = 10; //ragu either 1/0
+  var orderBy = 0;
+  var orderDirection = "ASC";
+  var searchKey = "";
+  var page = 1;
+  var url_add = "";
 
+  refresh();
 
-        $.ajax({
-            url:"<?php echo base_url();?>customer/detail_brg_penjualan_customer/" + content[id]["id"],
-            type:"GET",
-            dataType:"JSON",
-            async:false,
-            success:function(respond){
-                console.log(respond["customer_brg_penjualan"]);
-                var html_cust_brg_penj = '';
-                if(respond["customer_brg_penjualan"].length >0){
-                    for(var a = 0; a<respond["customer_brg_penjualan"].length; a++){
-                        html_cust_brg_penj = html_cust_brg_penj + '<tr><td>' + respond["customer_brg_penjualan"][a]["brg_nama"] + '</td><td>'+respond["customer_brg_penjualan"][a]["brg_penjualan_qty"] + " " + respond["customer_brg_penjualan"][a]["brg_penjualan_satuan"] + '</td><td>'+respond["customer_brg_penjualan"][a]["brg_penjualan_harga"]+'</td><td>'+respond["customer_brg_penjualan"][a]["brg_penjualan_note"]+'</td><td>'+respond["customer_brg_penjualan"][a]["penj_tgl"]+'</td></tr>';
-                    }
-                }else{
-                    html_cust_brg_penj = `<td colspan="5">No Data</td>`;
-                }
-                $("#detail_brg_jual_customer").html(html_cust_brg_penj);
+  function refresh(req_page = 1) {
+    page = req_page;
+    $.ajax({
+      url: `<?php echo base_url();?>ws/${ctrl}/${contentCtrl}/<?php echo $id_pk_customer;?>?orderBy=${orderBy}&orderDirection=${orderDirection}&page=${page}&searchKey=${searchKey}&${url_add}`,
+      type: "GET",
+      dataType: "JSON",
+      success: function(respond) {
+        if (respond["status"] == "SUCCESS") {
+          content = respond["content"];
+          var html = "";
+          for (var a = 0; a < respond["content"].length; a++) {
+            var html_status = "";
+            switch (respond["content"][a]["penj_status"].toLowerCase()) {
+              case "aktif":
+                html_status += `<td class = 'align-middle text-center'><span class="badge badge-success align-top">${respond["content"][a]["penj_status"].toUpperCase()}</span></td>`;
+                break;
+              default:
+                html_status += `<td class = 'align-middle text-center'><span class="badge badge-danger align-top">${respond["content"][a]["penj_status"].toUpperCase()}</span></td>`;
+                break;
             }
-        })
+            var html_status_pembayaran = "";
+            switch (respond["content"][a]["status_pembayaran"].toLowerCase()) {
+              case "lunas":
+                html_status_pembayaran += `<td class = 'align-middle text-center'><span class="badge badge-success align-top">${respond["content"][a]["status_pembayaran"].toUpperCase()}</span></td>`;
+                break;
+              case "lebih bayar":
+                html_status_pembayaran += `<td class = 'align-middle text-center'><span class="badge badge-light align-top">${respond["content"][a]["status_pembayaran"].toUpperCase()}</span></td>`;
+                break;
+              default:
+                html_status_pembayaran += `<td class = 'align-middle text-center'><span class="badge badge-danger align-top">${respond["content"][a]["status_pembayaran"].toUpperCase()}</span></td>`;
+                break;
+            }
+            var html_durasi_pembayaran = "";
+            if (respond["content"][a]["status_pembayaran"].toLowerCase() != "belum lunas" || respond["content"][a]["penj_status"] == "selesai") {
+              html_durasi_pembayaran += `<td class = 'align-middle text-center'>-</td>`;
+            } else {
+              if (respond["content"][a]["selisih_tanggal"] > 0) {
+                html_durasi_pembayaran += `<td class = 'align-middle text-center'><span class="badge badge-success align-top">${Math.abs(respond["content"][a]["selisih_tanggal"])} Hari </span></td>`;
+              } else {
+                html_durasi_pembayaran += `<td class = 'align-middle text-center'><span class="badge badge-danger align-top">${Math.abs(respond["content"][a]["selisih_tanggal"])} Hari </span></td>`;
+              }
+            }
+            html += `
+              <tr>
+                  <td>${respond["content"][a]["penj_nomor"]}</td>
+                  <td>${format_number(respond["content"][a]["penj_nominal"])}</td>
+                  <td>${respond["content"][a]["penj_tgl"]}</td>
+                  <td>${respond["content"][a]["cust_perusahaan"]}</td>
+                  <td>${respond["content"][a]["penj_jenis"]}</td>
+                  ${html_status}
+                  ${html_status_pembayaran}
+                  ${html_durasi_pembayaran}
+                  <td>
+                  </td>
+              </tr>
+          `;
+          }
+        } else {
+          html += "<tr>";
+          html += "<td colspan = " + colCount + " class = 'align-middle text-center'>No Records Found</td>";
+          html += "</tr>";
+        }
+        $("#content_container").html(html);
 
-    }
+        pagination(respond["page"]);
+      },
+      error: function() {
+        var html = "";
+        html += "<tr>";
+        html += "<td colspan = " + colCount + " class = 'align-middle text-center'>No Records Found</td>";
+        html += "</tr>";
+
+        $("#content_container").html(html);
+
+        html = "";
+        html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed"><</a></li>';
+        html += '<li class="page-item"><a class="page-link" style = "cursor:not-allowed">></a></li>';
+        $("#pagination_container").html(html);
+      }
+    });
+  }
 </script>
+<?php $this->load->view("_core_script/core"); ?>

@@ -88,7 +88,6 @@ $data = array(
 ?>
 <?php $this->load->view('customer/f-add-customer', $data); ?>
 <?php $this->load->view('customer/f-update-customer', $data); ?>
-<?php $this->load->view('customer/f-detail-customer', $data); ?>
 <?php $this->load->view('customer/f-delete-customer', $data); ?>
 
 <?php $this->load->view('_base_element/datalist_toko', $data); ?>
@@ -140,23 +139,23 @@ $data = array(
                 break;
             }
             html += `
-                            <tr>
-                                <td>${respond["content"][a]["name"]}</td>
-                                <td>${respond["content"][a]["perusahaan"]}</td>
-                                <td>${respond["content"][a]["email"]}</td>
-                                <td>${respond["content"][a]["telp"]}</td>
-                                <td>${respond["content"][a]["hp"]}</td>
-                                <td>${respond["content"][a]["alamat"]}</td>
-                                <td>${respond["content"][a]["keterangan"]}</td>
-                                ${html_status}
-                                <td>${respond["content"][a]["last_modified"]}</td>
-                                <td>
-                                    <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal'  class = 'detail_button text-success md-eye'  data-target = '#detail_modal'  onclick = 'load_detail_content(${a})'></i>
-                                    <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content(${a})'></i>  
-                                    <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'delete_button text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content(${a})'></i>
-                                </td>
-                            </tr>
-                        `;
+            <tr>
+                <td>${respond["content"][a]["name"]}</td>
+                <td>${respond["content"][a]["perusahaan"]}</td>
+                <td>${respond["content"][a]["email"]}</td>
+                <td>${respond["content"][a]["telp"]}</td>
+                <td>${respond["content"][a]["hp"]}</td>
+                <td>${respond["content"][a]["alamat"]}</td>
+                <td>${respond["content"][a]["keterangan"]}</td>
+                ${html_status}
+                <td>${respond["content"][a]["last_modified"]}</td>
+                <td>
+                    <a href = "<?php echo base_url();?>customer/detail/${respond["content"][a]["id"]}"><i style = 'cursor:pointer;font-size:large' class = 'detail_button text-success md-eye'></i></a>
+                    <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content(${a})'></i>  
+                    <i style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'delete_button text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content(${a})'></i>
+                </td>
+            </tr>
+            `;
           }
         } else {
           html += "<tr>";

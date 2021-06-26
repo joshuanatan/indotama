@@ -175,7 +175,6 @@ class M_barang_kombinasi extends CI_Model
 
         $log_all_msg = "Data Jenis Barang Kombinasi baru ditambahkan. Waktu penambahan: $this->barang_kombinasi_create_date";
         $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
-
         $log_all_data_changes = "[ID Barang Kombinasi: $id_hasil_insert][ID Barang Utama: $this->id_barang_utama][ID Barang Kombinasi: $this->id_barang_kombinasi][Jumlah: $this->barang_kombinasi_qty][Status: $this->barang_kombinasi_status][Waktu Ditambahkan: $this->barang_kombinasi_create_date][Oleh: $this->$id_hasil_insert]";
         $log_all_it = "";
         $log_all_user = $this->id_last_modified;

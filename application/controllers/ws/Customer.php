@@ -388,4 +388,96 @@ class Customer extends CI_Controller
     }
     echo json_encode($response);
   }
+  public function columns_detail_penjualan()
+  {
+    $response["status"] = "SUCCESS";
+    $this->load->model("m_customer");
+    $columns = $this->m_customer->columns_detail_penjualan();
+    if (count($columns) > 0) {
+      for ($a = 0; $a < count($columns); $a++) {
+        $response["content"][$a]["col_name"] = $columns[$a]["col_disp"];
+      }
+    } else {
+      $response["status"] = "ERROR";
+    }
+    echo json_encode($response);
+  }
+  public function detail_penjualan($id_pk_customer)
+  {
+    $response["status"] = "SUCCESS";
+    $response["content"] = array();
+
+    $order_by = $this->input->get("orderBy");
+    $order_direction = $this->input->get("orderDirection");
+    $page = $this->input->get("page");
+    $search_key = $this->input->get("searchKey");
+    $data_per_page = 20;
+
+    $this->load->model("m_customer");
+    $result = $this->m_customer->detail_penjualan_table($page, $order_by, $order_direction, $search_key, $data_per_page, $id_pk_customer);
+
+    if ($result["data"]->num_rows() > 0) {
+      $result["data"] = $result["data"]->result_array();
+      for ($a = 0; $a < count($result["data"]); $a++) {
+        $response["content"][$a]["cust_email"] = $result["data"][$a]["cust_email"];
+        $response["content"][$a]["id_pk_penjualan"] = $result["data"][$a]["id_pk_penjualan"];
+        $response["content"][$a]["penj_nomor"] = $result["data"][$a]["penj_nomor"];
+        $response["content"][$a]["penj_nominal"] = $result["data"][$a]["penj_nominal"];
+        $response["content"][$a]["penj_nominal_byr"] = $result["data"][$a]["penj_nominal_byr"];
+        $response["content"][$a]["penj_tgl"] = $result["data"][$a]["penj_tgl"];
+        $response["content"][$a]["penj_dateline_tgl"] = $result["data"][$a]["penj_dateline_tgl"];
+        $response["content"][$a]["penj_status"] = $result["data"][$a]["penj_status"];
+        $response["content"][$a]["penj_jenis"] = $result["data"][$a]["penj_jenis"];
+        $response["content"][$a]["penj_tipe_pembayaran"] = $result["data"][$a]["penj_tipe_pembayaran"];
+        $response["content"][$a]["penj_last_modified"] = $result["data"][$a]["penj_last_modified"];
+        $response["content"][$a]["cust_name"] = $result["data"][$a]["cust_name"];
+        $response["content"][$a]["cust_perusahaan"] = $result["data"][$a]["cust_perusahaan"];
+        $response["content"][$a]["status_pembayaran"] = $result["data"][$a]["status_pembayaran"];
+        $response["content"][$a]["list_jenis_pembayaran"] = $result["data"][$a]["list_jenis_pembayaran"];
+        $response["content"][$a]["selisih_tanggal"] = $result["data"][$a]["selisih_tanggal"];
+        $response["content"][$a]["cust_display"] = $result["data"][$a]["cust_perusahaan"] . " - " . $result["data"][$a]["cust_name"];
+      }
+    } else {
+      $response["status"] = "ERROR";
+    }
+    $response["page"] = $this->pagination->generate_pagination_rules($page, $result["total_data"], $data_per_page);
+    echo json_encode($response);
+  }
+  public function columns_detail_brg_penjualan()
+  {
+    $response["status"] = "SUCCESS";
+    $this->load->model("m_customer");
+    $columns = $this->m_customer->columns_detail_brg_penjualan();
+    if (count($columns) > 0) {
+      for ($a = 0; $a < count($columns); $a++) {
+        $response["content"][$a]["col_name"] = $columns[$a]["col_disp"];
+      }
+    } else {
+      $response["status"] = "ERROR";
+    }
+    echo json_encode($response);
+  }
+  public function detail_brg_penjualan($id_pk_customer)
+  {
+
+    $response["status"] = "SUCCESS";
+    $response["content"] = array();
+
+    $order_by = $this->input->get("orderBy");
+    $order_direction = $this->input->get("orderDirection");
+    $page = $this->input->get("page");
+    $search_key = $this->input->get("searchKey");
+    $data_per_page = 20;
+
+    $this->load->model("m_customer");
+    $result = $this->m_customer->detail_brg_penjualan_table($page, $order_by, $order_direction, $search_key, $data_per_page, $id_pk_customer);
+
+    if ($result["data"]->num_rows() > 0) {
+      $response["content"] = $result["data"]->result_array();
+    } else {
+      $response["status"] = "ERROR";
+    }
+    $response["page"] = $this->pagination->generate_pagination_rules($page, $result["total_data"], $data_per_page);
+    echo json_encode($response);
+  }
 }
