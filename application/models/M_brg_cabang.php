@@ -314,7 +314,7 @@ class M_brg_cabang extends ci_model
         $log_all_data_changes = "[ID Barang Cabang: $id_hasil_insert][Jumlah: $this->brg_cabang_qty][Notes: $this->brg_cabang_notes][Status: $this->brg_cabang_status][ID Barang: $this->id_fk_brg][ID Cabang: $this->id_fk_cabang][Waktu Ditambahkan: $this->brg_cabang_create_date][Oleh: $nama_user]";
         $log_all_it = "";
         $log_all_user = $this->id_create_data;
-        $log_all_tgl = $this->brg_create_date;
+        $log_all_tgl = $this->brg_cabang_create_date;
 
         $data_log = array(
           "log_all_msg" => $log_all_msg,
@@ -366,7 +366,7 @@ class M_brg_cabang extends ci_model
         $result = executeQuery($query, $args);
         $result = $result->result_array();
         /*end store procedure*/
-        echo $this->db->last_query();
+        #echo $this->db->last_query();
         executeQuery("call update_stok_kombinasi_anggota_cabang(" . $this->id_fk_brg . "," . $this->brg_cabang_qty . "," . $result[0]["brg_cabang_qty"] . "," . $this->id_fk_cabang . ")");
         updateRow($this->tbl_name, $data, $where);
         return true;

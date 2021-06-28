@@ -105,7 +105,6 @@ $notif_data = array(
                   <div class="col-lg-12">
                     <div class="d-flex">
                       <button id="tambah_jual" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#register_modal" style="margin-bottom:10px;margin-right:10px">Tambah <?php echo ucwords($page_title); ?> Jual</button>
-                      <button id="tambah_kantor" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#register_brg_kantor_modal" style="margin-bottom:10px;margin-right:10px">Tambah <?php echo ucwords($page_title); ?> Kantor</button>
                     </div>
 
                     <br />

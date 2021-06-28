@@ -169,7 +169,6 @@ class Barang_cabang extends CI_Controller
       foreach ($check as $a) {
         $this->form_validation->set_rules("brg" . $a, "brg", "required");
         $this->form_validation->set_rules("brg_qty" . $a, "brg_qty", "required");
-        $this->form_validation->set_rules("brg_notes" . $a, "brg_notes", "required");
         if ($this->form_validation->run()) {
           $brg_cabang_qty = $this->input->post("brg_qty" . $a);
           $brg_cabang_notes = $this->input->post("brg_notes" . $a);
@@ -227,7 +226,6 @@ class Barang_cabang extends CI_Controller
     $this->form_validation->set_rules("id", "id", "required");
     $this->form_validation->set_rules("brg", "brg", "required");
     $this->form_validation->set_rules("stok", "stok", "required");
-    $this->form_validation->set_rules("notes", "notes", "required");
     if ($this->form_validation->run()) {
       $this->load->model("m_brg_cabang");
       $id_pk_brg_cabang = $this->input->post("id");
