@@ -14,7 +14,7 @@ $notif_data = array(
   <?php $this->load->view('req/mm_css.php'); ?>
 </head>
 
-<body style = "background-color:white">
+<body style="background-color:white">
   <div class="form-group">
     <h5>Search Data Here</h5>
     <input id="search_box" placeholder="Search data here..." type="text" class="form-control input-sm " onkeyup="search()" style="width:25%">
@@ -36,16 +36,17 @@ $notif_data = array(
     </ul>
   </nav>
   <?php $this->load->view('req/mm_js.php'); ?>
+  
 </body>
 
+<script src = "<?php echo base_url();?>asset/custom/number_formatter.js"></script>
 </html>
-<?php $this->load->view("req/core_script"); ?>
 
 <script>
   var ctrl = "supplier";
-  var tblHeaderCtrl = "columns_detail_pembelian";
-  var contentCtrl = "detail_pembelian";
-  var colCount = 5; //ragu either 1/0
+  var tblHeaderCtrl = "columns_detail_brg_pembelian";
+  var contentCtrl = "detail_brg_pembelian";
+  var colCount = 10; //ragu either 1/0
   var orderBy = 0;
   var orderDirection = "ASC";
   var searchKey = "";
@@ -57,7 +58,7 @@ $notif_data = array(
   function refresh(req_page = 1) {
     page = req_page;
     $.ajax({
-      url: `<?php echo base_url();?>ws/${ctrl}/${contentCtrl}/<?php echo $id_pk_supplier;?>?orderBy=${orderBy}&orderDirection=${orderDirection}&page=${page}&searchKey=${searchKey}&${url_add}`,
+      url: `<?php echo base_url(); ?>ws/${ctrl}/${contentCtrl}/<?php echo $id_pk_supplier; ?>?orderBy=${orderBy}&orderDirection=${orderDirection}&page=${page}&searchKey=${searchKey}&${url_add}`,
       type: "GET",
       dataType: "JSON",
       success: function(respond) {
@@ -65,25 +66,15 @@ $notif_data = array(
           content = respond["content"];
           var html = "";
           for (var a = 0; a < respond["content"].length; a++) {
-            var html_status = "";
-            switch (respond["content"][a]["pem_status"].toLowerCase()) {
-              case "aktif":
-                html_status += `<td class = 'align-middle text-center'><span class="badge badge-success align-top">${respond["content"][a]["pem_status"].toUpperCase()}</span></td>`;
-                break;
-              default:
-                html_status += `<td class = 'align-middle text-center'><span class="badge badge-danger align-top">${respond["content"][a]["pem_status"].toUpperCase()}</span></td>`;
-                break;
-            }
             html += `
-              <tr>
-                  <td>${respond["content"][a]["pem_pk_nomor"]}</td>
-                  <td>${format_number(respond["content"][a]["total_pembelian"])}</td>
-                  <td>${respond["content"][a]["pem_tgl"]}</td>
-                  <td>${respond["content"][a]["sup_perusahaan"]}</td>
-                  ${html_status}
-                  <td>${respond["content"][a]["pem_last_modified"]}</td>
-              </tr>
-          `;
+            <tr>
+                <td>${respond["content"][a]["brg_nama"]}</td>
+                <td>${format_number(respond["content"][a]["brg_pem_qty"])} ${respond["content"][a]["brg_pem_satuan"]}</td>
+                <td>${format_number(respond["content"][a]["brg_pem_harga"])}</td>
+                <td>${respond["content"][a]["pem_pk_nomor"]}</td>
+                <td>${respond["content"][a]["pem_tgl"]}</td>
+            </tr>
+            `;
           }
         } else {
           html += "<tr>";
@@ -91,7 +82,6 @@ $notif_data = array(
           html += "</tr>";
         }
         $("#content_container").html(html);
-
         pagination(respond["page"]);
       },
       error: function() {
@@ -109,6 +99,7 @@ $notif_data = array(
       }
     });
   }
+
   tblheader();
 
   function tblheader() {
@@ -130,6 +121,7 @@ $notif_data = array(
               }
               html += "</th>";
             }
+            html += "</tr>";
           } else {
             html += "<tr>";
             html += "<th class = 'align-middle text-center'>Columns is not defined</th>";
@@ -227,18 +219,18 @@ $notif_data = array(
             }
             /* Tambahin background color di menu item, dan icon */
             html += `
-                        <li class = '${menu_category.toLowerCase()}_menu_item' style = "background-color:rgba(3, 0, 46, 0.2);;">
-                            <a href="<?php echo base_url(); ?>${respond["data"][a]["menu_name"]}">
-                                <div class = 'pull-left'>
-                                    <div class="pull-left">
-                                        <i class="md-${respond["data"][a]["menu_icon"]} mr-20"></i>
-                                        <span class="right-nav-text">${respond["data"][a]["menu_display"]}</span>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class = 'clearfix'></div>
-                            </a>
-                        </li>
+              <li class = '${menu_category.toLowerCase()}_menu_item' style = "background-color:rgba(3, 0, 46, 0.2);;">
+                  <a href="<?php echo base_url(); ?>${respond["data"][a]["menu_name"]}">
+                      <div class = 'pull-left'>
+                          <div class="pull-left">
+                              <i class="md-${respond["data"][a]["menu_icon"]} mr-20"></i>
+                              <span class="right-nav-text">${respond["data"][a]["menu_display"]}</span>
+                          </div>
+                          <div class="clearfix"></div>
+                      </div>
+                      <div class = 'clearfix'></div>
+                  </a>
+              </li>
                         `;
           }
           $("#" + menu_category.toLowerCase() + "_menu_separator").after(html);

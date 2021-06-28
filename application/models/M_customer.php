@@ -655,7 +655,8 @@ class M_customer extends ci_model
     #echo $this->db->last_query();
     return $result;
   }
-  public function columns_detail_brg_penjualan(){
+  public function columns_detail_brg_penjualan()
+  {
     $columns[0] = $this->local_set_column("brg_nama", "Nama Barang", true);
     $columns[1] = $this->local_set_column("brg_penjualan_qty", "Jumlah Barang", false);
     $columns[2] = $this->local_set_column("brg_penjualan_harga", "Harga Jual", false);

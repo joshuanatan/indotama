@@ -475,4 +475,108 @@ class M_supplier extends ci_model
     $this->set_column("sup_last_modified", "last modified", false);
     return $this->columns;
   }
+  public function columns_detail_pembelian()
+  {
+    $columns[0] = $this->local_set_column("id_pk_pembelian", "nomor pembelian", true);
+    $columns[1] = $this->local_set_column("total_pembelian", "total pembelian", false);
+    $columns[2] = $this->local_set_column("pem_tgl", "tanggal pembelian", false);
+    $columns[3] = $this->local_set_column("sup_perusahaan", "supplier", false);
+    $columns[4] = $this->local_set_column("pem_status", "status", false);
+    $columns[5] = $this->local_set_column("pem_last_modified", "last modified", false);
+    return $columns;
+  }
+  public function detail_pembelian_table($page = 1, $order_by = 0, $order_direction = "asc", $search_key = "", $data_per_page = "", $id_fk_supp)
+  {
+    $order_by = $this->columns_detail_pembelian()[$order_by]["col_name"];
+    $search_query = "";
+    if ($search_key != "") {
+      $search_query .= "and
+        ( 
+          pem_pk_nomor like '%" . $search_key . "%' or
+          pem_tgl like '%" . $search_key . "%' or
+          pem_status like '%" . $search_key . "%' or
+          id_fk_supp like '%" . $search_key . "%' or
+          pem_create_date like '%" . $search_key . "%' or
+          pem_last_modified like '%" . $search_key . "%'
+        )";
+    }
+    $query = "
+        select * from (
+          select id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified,sum(brg_pem_qty*brg_pem_harga) as total_pembelian from mstr_pembelian 
+          inner join mstr_supplier on mstr_supplier.id_pk_sup = mstr_pembelian.id_fk_supp 
+          inner join tbl_brg_pembelian on tbl_brg_pembelian.id_fk_pembelian = mstr_pembelian.id_pk_pembelian and tbl_brg_pembelian.brg_pem_status = 'aktif' and tbl_brg_pembelian.brg_pem_qty > 0
+          where pem_status != 'nonaktif' and id_fk_supp = ? " . $search_query . " 
+          group by id_pk_pembelian
+        ) as a
+        order by " . $order_by . " " . $order_direction . " 
+        limit 20 offset " . ($page - 1) * $data_per_page;
+    $args = array(
+      $id_fk_supp
+    );
+    $result["data"] = executequery($query, $args);
+
+    $query = "
+      select * from (
+        select id_pk_pembelian,pem_pk_nomor,pem_tgl,pem_status,sup_perusahaan,pem_last_modified,sum(brg_pem_qty*brg_pem_harga) as total_pembelian from mstr_pembelian 
+        inner join mstr_supplier on mstr_supplier.id_pk_sup = mstr_pembelian.id_fk_supp 
+        inner join tbl_brg_pembelian on tbl_brg_pembelian.id_fk_pembelian = mstr_pembelian.id_pk_pembelian and tbl_brg_pembelian.brg_pem_status = 'aktif' and tbl_brg_pembelian.brg_pem_qty > 0
+        where pem_status != 'nonaktif' and id_fk_supp = ? " . $search_query . " 
+      ) as a
+      group by id_pk_pembelian";
+    $result["total_data"] = executequery($query, $args)->num_rows();
+    #echo $this->db->last_query();
+    return $result;
+  }
+  public function columns_detail_brg_pembelian()
+  {
+    $columns[0] = $this->local_set_column("brg_nama", "Nama Barang", true);
+    $columns[1] = $this->local_set_column("brg_pem_qty", "Jumlah Barang", false);
+    $columns[2] = $this->local_set_column("brg_pem_harga", "Harga Jual", false);
+    $columns[3] = $this->local_set_column("pem_pk_nomor", "Nomor Penjualan", false);
+    $columns[4] = $this->local_set_column("pem_tgl", "Tanggal Penjualan", false);
+    return $columns;
+  }
+  public function detail_brg_pembelian_table($page = 1, $order_by = 0, $order_direction = "asc", $search_key = "", $data_per_page = "", $id_fk_supp)
+  {
+    $order_by = $this->columns_detail_brg_pembelian()[$order_by]["col_name"];
+    $search_query = "";
+    if ($search_key != "") {
+      $search_query .= "and
+        ( 
+          brg_nama like '%" . $search_key . "%' or
+          brg_pem_qty like '%" . $search_key . "%' or
+          brg_pem_harga like '%" . $search_key . "%' or
+          pem_pk_nomor like '%" . $search_key . "%' or
+          pem_tgl like '%" . $search_key . "%'
+        )";
+    }
+    $query = "
+      select brg_nama, brg_pem_qty, brg_pem_satuan, brg_pem_harga, pem_pk_nomor, pem_tgl from tbl_brg_pembelian
+      inner join mstr_pembelian on mstr_pembelian.id_pk_pembelian = tbl_brg_pembelian.id_fk_pembelian
+      inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_pembelian.id_fk_barang
+      where pem_status != 'nonaktif' and brg_pem_status = 'aktif' and brg_pem_qty > 0 and id_fk_supp = ?" . $search_query . "  
+      order by " . $order_by . " " . $order_direction . " 
+      limit 20 offset " . ($page - 1) * $data_per_page;
+    $args = array(
+      $id_fk_supp
+    );
+    $result["data"] = executequery($query, $args);
+    $query = "
+      select brg_nama, brg_pem_qty, brg_pem_satuan, brg_pem_harga, pem_pk_nomor, pem_tgl from tbl_brg_pembelian
+      inner join mstr_pembelian on mstr_pembelian.id_pk_pembelian = tbl_brg_pembelian.id_fk_pembelian
+      inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_pembelian.id_fk_barang
+      where pem_status != 'nonaktif' and brg_pem_status = 'aktif' and brg_pem_qty > 0 and id_fk_supp = ?" . $search_query;
+    $result["total_data"] = executequery($query, $args)->num_rows();
+    #echo $this->db->last_query();
+    return $result;
+  }
+  private function local_set_column($col_name, $col_disp, $order_by)
+  {
+    $array = array(
+      "col_name" => $col_name,
+      "col_disp" => $col_disp,
+      "order_by" => $order_by
+    );
+    return $array;
+  }
 }
