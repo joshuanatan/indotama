@@ -70,6 +70,9 @@ $notif_data = array(
               case "aktif":
                 html_status += `<td class = 'align-middle text-center'><span class="badge badge-success align-top">${respond["content"][a]["penj_status"].toUpperCase()}</span></td>`;
                 break;
+              case "selesai":
+                html_status += `<td class = 'align-middle text-center'><span class="badge badge-primary align-top">${respond["content"][a]["penj_status"].toUpperCase()}</span></td>`;
+                break;
               default:
                 html_status += `<td class = 'align-middle text-center'><span class="badge badge-danger align-top">${respond["content"][a]["penj_status"].toUpperCase()}</span></td>`;
                 break;
