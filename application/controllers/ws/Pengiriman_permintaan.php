@@ -48,7 +48,7 @@ class Pengiriman_permintaan extends CI_Controller
         $response["content"][$a]["id"] = $result["data"][$a]["id_pk_brg_pemenuhan"];
         $response["content"][$a]["id_pengiriman"] = $result["data"][$a]["id_pk_pengiriman"];
         $response["content"][$a]["nama_brg"] = $result["data"][$a]["brg_nama"];
-        $response["content"][$a]["pemenuhan_qty_brg"] = number_format($result["data"][$a]["brg_pemenuhan_qty"], 2, ",", ".");
+        $response["content"][$a]["pemenuhan_qty_brg"] = number_format($result["data"][$a]["brg_pemenuhan_qty"], 0, ",", ".");
         $response["content"][$a]["daerah_cabang"] = $result["data"][$a]["cabang_daerah"];
         $response["content"][$a]["nama_toko"] = $result["data"][$a]["toko_nama"];
         $response["content"][$a]["kode_toko"] = $result["data"][$a]["toko_kode"];
@@ -88,7 +88,7 @@ class Pengiriman_permintaan extends CI_Controller
         $response["content"][$a]["id"] = $result[$a]["id_pk_brg_pemenuhan"];
         $response["content"][$a]["id_pengiriman"] = $result[$a]["id_pk_pengiriman"];
         $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
-        $response["content"][$a]["pemenuhan_qty_brg"] = number_format($result[$a]["brg_pemenuhan_qty"], "2", ",", ".");
+        $response["content"][$a]["pemenuhan_qty_brg"] = number_format($result[$a]["brg_pemenuhan_qty"], 0, ",", ".");
         $response["content"][$a]["daerah_cabang"] = $result[$a]["cabang_daerah"];
         $response["content"][$a]["notes"] = $result[$a]["brg_pengiriman_note"];
         $response["content"][$a]["nama_toko"] = $result[$a]["toko_nama"];
@@ -134,17 +134,29 @@ class Pengiriman_permintaan extends CI_Controller
 
     $id_brg_pengiriman = $this->input->post("id");
     $request_qty = $this->input->post("brg_pengiriman_qty");
-    if(!$this->check_stok_insert($id_brg_pengiriman,$request_qty)){
-      $response["status"] = "ERROR";
-      $response["msg"] = "Stok barang pengiriman tidak cukup";
-      echo json_encode($response);
-      exit();
+    
+    if (strtolower($pengiriman_tempat) == "cabang") {
+      if(!$this->check_stok_insert($id_brg_pengiriman,$request_qty)){
+        $response["status"] = "ERROR";
+        $response["msg"] = "Stok barang pengiriman tidak cukup";
+        echo json_encode($response);
+        exit();
+      }
+      $id_fk_cabang = $this->session->id_cabang;
+      $pengiriman_no = $this->m_pengiriman->get_pengiriman_nomor($id_fk_cabang, "pengiriman", $pengiriman_tgl);
+    }
+    else if(strtolower($pengiriman_tempat) == "warehouse") {
+      $pengiriman_no = "-";
+      if(!$this->check_stok_warehouse_insert($id_brg_pengiriman,$request_qty)){
+        $response["status"] = "ERROR";
+        $response["msg"] = "Stok barang pengiriman tidak cukup";
+        echo json_encode($response);
+        exit();
+      }
     }
 
     $this->load->model("m_pengiriman");
 
-    $id_fk_cabang = $this->session->id_cabang;
-    $pengiriman_no = $this->m_pengiriman->get_pengiriman_nomor($id_fk_cabang, "pengiriman", $pengiriman_tgl);
     if ($this->m_pengiriman->set_insert($pengiriman_no, $pengiriman_tgl, $pengiriman_status, $pengiriman_tipe, "", $pengiriman_tempat, $id_tempat_pengiriman, "")) {
       $id_pengiriman = $this->m_pengiriman->insert();
       if ($id_pengiriman) {
@@ -238,6 +250,24 @@ class Pengiriman_permintaan extends CI_Controller
     
     $args = array(
       $this->session->id_cabang, $id_brg_pengiriman, $request_qty
+    );
+    $result = executeQuery($sql, $args);
+    #echo $this->db->last_query();
+    if ($result->num_rows() > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  private function check_stok_warehouse_insert($id_brg_pengiriman, $request_qty)
+  {
+    $sql = "select * from tbl_brg_pemenuhan
+    inner join tbl_brg_permintaan on tbl_brg_permintaan.id_pk_brg_permintaan = tbl_brg_pemenuhan.id_fk_brg_permintaan
+    inner join tbl_brg_warehouse on tbl_brg_warehouse.id_fk_brg = tbl_brg_permintaan.id_fk_brg and tbl_brg_warehouse.id_fk_warehouse = ?
+    where id_pk_brg_pemenuhan = ? and brg_warehouse_qty >= ?";
+    
+    $args = array(
+      $this->session->id_warehouse, $id_brg_pengiriman, $request_qty
     );
     $result = executeQuery($sql, $args);
     #echo $this->db->last_query();
