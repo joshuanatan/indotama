@@ -247,6 +247,31 @@ class M_barang extends ci_model
     $result["total_data"] = executeQuery($query)->num_rows();
     return $result;
   }
+  public function list_data_jualan()
+  {
+    $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_harga_toko,brg_harga_grosir,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe
+        from " . $this->tbl_name . " 
+        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = " . $this->tbl_name . ".id_fk_brg_jenis
+        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = " . $this->tbl_name . ".id_fk_brg_merk
+        where brg_status = ? and brg_jenis_status = ? and brg_merk_status = ? and id_pk_brg_jenis != 0
+        group by id_pk_brg 
+        order by brg_nama asc";
+    $args = array(
+      "aktif", "aktif", "aktif"
+    );
+    return executeQuery($sql, $args);
+  }
+  public function list_data_nonkombinasi()
+  {
+    $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_harga_toko,brg_harga_grosir,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe
+        from mstr_barang 
+        inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = mstr_barang.id_fk_brg_jenis
+        inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = mstr_barang.id_fk_brg_merk
+        where brg_status = 'aktif' and brg_jenis_status = 'aktif' and brg_merk_status = 'aktif' and id_pk_brg_jenis != 0 and brg_tipe = 'nonkombinasi'
+        group by id_pk_brg 
+        order by brg_nama asc";
+    return executeQuery($sql);
+  }
   public function list_data()
   {
     $sql = "select id_pk_brg,brg_kode,brg_nama,brg_ket,brg_minimal,brg_status,brg_satuan,brg_image,brg_harga,brg_harga_toko,brg_harga_grosir,brg_last_modified,brg_merk_nama,brg_jenis_nama,brg_tipe

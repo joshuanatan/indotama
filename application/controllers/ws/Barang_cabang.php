@@ -50,7 +50,7 @@ class Barang_cabang extends CI_Controller
         }
 
         $response["content"][$a]["id"] = $result["data"][$a]["id_pk_brg_cabang"];
-        $response["content"][$a]["qty"] = number_format($result["data"][$a]["brg_cabang_qty"], 2, ",", ".");
+        $response["content"][$a]["qty"] = number_format($result["data"][$a]["brg_cabang_qty"],0, ",", ".");
         $response["content"][$a]["notes"] = $result["data"][$a]["brg_cabang_notes"];
         $response["content"][$a]["last_price"] = number_format($result["data"][$a]["brg_cabang_last_price"], 0, ",", ".");;
         $response["content"][$a]["harga"] = number_format($result["data"][$a]["brg_harga"], 0, ",", ".");
@@ -62,7 +62,7 @@ class Barang_cabang extends CI_Controller
         $response["content"][$a]["nama_brg"] = $result["data"][$a]["brg_nama"];
         $response["content"][$a]["kode_brg"] = $result["data"][$a]["brg_kode"];
         $response["content"][$a]["ket_brg"] = $result["data"][$a]["brg_ket"];
-        $response["content"][$a]["minimal_brg"] = number_format($result["data"][$a]["brg_minimal"], 2, ",", ".");
+        $response["content"][$a]["minimal_brg"] = number_format($result["data"][$a]["brg_minimal"],0, ",", ".");
         $response["content"][$a]["satuan_brg"] = $result["data"][$a]["brg_satuan"];
         $response["content"][$a]["jenis"] = $result["data"][$a]["brg_jenis_nama"];
         $response["content"][$a]["merk"] = $result["data"][$a]["brg_merk_nama"];
@@ -99,7 +99,7 @@ class Barang_cabang extends CI_Controller
       for ($a = 0; $a < count($result); $a++) {
         $response["content"][$a]["id"] = $result[$a]["id_pk_brg_cabang"] . "";
         $response["content"][$a]["id_brg"] = $result[$a]["id_fk_brg"] . "";
-        $response["content"][$a]["qty"] = number_format($result[$a]["brg_cabang_qty"], 2, ",", ".");
+        $response["content"][$a]["qty"] = number_format($result[$a]["brg_cabang_qty"],0, ",", ".");
         $response["content"][$a]["notes"] = $result[$a]["brg_cabang_notes"] . "";
         $response["content"][$a]["last_price"] = number_format($result[$a]["brg_cabang_last_price"], 0, ",", ".");
         $response["content"][$a]["status"] = $result[$a]["brg_cabang_status"] . "";
@@ -108,7 +108,7 @@ class Barang_cabang extends CI_Controller
         $response["content"][$a]["nama"] = ucwords($result[$a]["brg_nama"] . "");
         $response["content"][$a]["kode"] = $result[$a]["brg_kode"] . "";
         $response["content"][$a]["ket"] = $result[$a]["brg_ket"] . "";
-        $response["content"][$a]["minimal"] = number_format($result[$a]["brg_minimal"], 2, ",", ".");
+        $response["content"][$a]["minimal"] = number_format($result[$a]["brg_minimal"],0, ",", ".");
         $response["content"][$a]["satuan"] = $result[$a]["brg_satuan"] . "";
         $response["content"][$a]["image"] = $result[$a]["brg_image"] . "";
         $response["content"][$a]["harga"] = number_format($result[$a]["brg_harga"], 0, ",", ".");
@@ -134,7 +134,7 @@ class Barang_cabang extends CI_Controller
       for ($a = 0; $a < count($result); $a++) {
         $response["content"][$a]["id"] = $result[$a]["id_pk_brg_cabang"] . "";
         $response["content"][$a]["id_brg"] = $result[$a]["id_fk_brg"] . "";
-        $response["content"][$a]["qty"] = number_format($result[$a]["brg_cabang_qty"], 2, ",", ".");
+        $response["content"][$a]["qty"] = number_format($result[$a]["brg_cabang_qty"],0, ",", ".");
         $response["content"][$a]["notes"] = $result[$a]["brg_cabang_notes"] . "";
         $response["content"][$a]["last_price"] = number_format($result[$a]["brg_cabang_last_price"], 0, ",", ".");
         $response["content"][$a]["status"] = $result[$a]["brg_cabang_status"] . "";
@@ -143,7 +143,7 @@ class Barang_cabang extends CI_Controller
         $response["content"][$a]["nama"] = ucwords($result[$a]["brg_nama"] . "");
         $response["content"][$a]["kode"] = $result[$a]["brg_kode"] . "";
         $response["content"][$a]["ket"] = $result[$a]["brg_ket"] . "";
-        $response["content"][$a]["minimal"] = number_format($result[$a]["brg_minimal"], 2, ",", ".");
+        $response["content"][$a]["minimal"] = number_format($result[$a]["brg_minimal"],0, ",", ".");
         $response["content"][$a]["satuan"] = $result[$a]["brg_satuan"] . "";
         $response["content"][$a]["image"] = $result[$a]["brg_image"] . "";
         $response["content"][$a]["harga"] = number_format($result[$a]["brg_harga"], 0, ",", ".");
@@ -314,11 +314,11 @@ class Barang_cabang extends CI_Controller
     $result_kombinasi = $this->m_brg_cabang->list_not_exists_brg_kombinasi();
     if ($result_kombinasi->num_rows() > 0) {
       $result_kombinasi = $result_kombinasi->result_array();
-      //print_r($result_kombinasi);
       for ($b = 0; $b < count($result_kombinasi); $b++) {
         $this->load->model("m_brg_cabang");
-        if ($this->m_brg_cabang->set_insert('0', "Auto insert from checking construct", "aktif", $result_kombinasi[$b]["id_barang_kombinasi"], $this->session->id_cabang)) {
-          if ($this->m_brg_cabang->insert()) {
+        #echo $result_kombinasi[$b]["add_qty"];
+        if ($this->m_brg_cabang->set_insert($result_kombinasi[$b]["add_qty"], "Auto insert from checking construct", "aktif", $result_kombinasi[$b]["id_barang_kombinasi"], $this->session->id_cabang)) {
+          if ($this->m_brg_cabang->insert_adjustment()) {
           }
         }
       }

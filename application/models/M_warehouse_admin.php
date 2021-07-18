@@ -116,11 +116,12 @@ class m_warehouse_admin extends ci_model
             )";
     }
     $query = "
-        select id_pk_warehouse_admin,id_fk_warehouse,id_fk_user,warehouse_admin_status,warehouse_admin_last_modified,user_name,user_email
-        from " . $this->tbl_name . " 
-        inner join mstr_user on mstr_user.id_pk_user = " . $this->tbl_name . ".id_fk_user
-        inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = " . $this->tbl_name . ".id_fk_warehouse
-        where warehouse_admin_status = ? and id_fk_warehouse = ? and user_status = ? " . $search_query . "  
+        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_last_modified, cabang_nama, cabang_kode, cabang_daerah, toko_nama
+        from tbl_warehouse_admin 
+        inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = tbl_warehouse_admin.id_fk_warehouse
+        inner join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_warehouse.id_fk_cabang
+        inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+        where warehouse_status = ? and id_fk_user = ? and warehouse_admin_status = ? and toko_status = 'aktif' and cabang_status = 'aktif' " . $search_query . "  
         order by " . $order_by . " " . $order_direction . " 
         limit 20 offset " . ($page - 1) * $data_per_page;
     $args = array(
@@ -129,11 +130,12 @@ class m_warehouse_admin extends ci_model
     $result["data"] = executequery($query, $args);
 
     $query = "
-        select id_pk_warehouse_admin
-        from " . $this->tbl_name . " 
-        inner join mstr_user on mstr_user.id_pk_user = " . $this->tbl_name . ".id_fk_user
-        inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = " . $this->tbl_name . ".id_fk_warehouse
-        where warehouse_admin_status = ? and id_fk_warehouse = ? and user_status = ? " . $search_query . "  
+        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_last_modified, cabang_nama, cabang_kode, cabang_daerah, toko_nama
+        from tbl_warehouse_admin 
+        inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = tbl_warehouse_admin.id_fk_warehouse
+        inner join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_warehouse.id_fk_cabang
+        inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+        where warehouse_status = ? and id_fk_user = ? and warehouse_admin_status = ? and toko_status = 'aktif' and cabang_status = 'aktif' " . $search_query . "  
         order by " . $order_by . " " . $order_direction;
     $result["total_data"] = executequery($query, $args)->num_rows();
     return $result;
@@ -162,10 +164,12 @@ class m_warehouse_admin extends ci_model
             )";
     }
     $query = "
-        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_last_modified
-        from " . $this->tbl_name . " 
-        inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = " . $this->tbl_name . ".id_fk_warehouse
-        where warehouse_status = ? and id_fk_user = ? and warehouse_admin_status = ? " . $search_query . "  
+        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_last_modified, cabang_nama, cabang_kode, cabang_daerah, toko_nama
+        from tbl_warehouse_admin 
+        inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = tbl_warehouse_admin.id_fk_warehouse
+        inner join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_warehouse.id_fk_cabang
+        inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+        where warehouse_status = ? and id_fk_user = ? and warehouse_admin_status = ? and toko_status = 'aktif' and cabang_status = 'aktif' " . $search_query . "  
         order by " . $order_by . " " . $order_direction . " 
         limit 20 offset " . ($page - 1) * $data_per_page;
     $args = array(
@@ -174,10 +178,12 @@ class m_warehouse_admin extends ci_model
     $result["data"] = executequery($query, $args);
 
     $query = "
-        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_last_modified
-        from " . $this->tbl_name . " 
-        inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = " . $this->tbl_name . ".id_fk_warehouse
-        where warehouse_status = ? and id_fk_user = ? and warehouse_admin_status = ? " . $search_query . "  
+        select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_last_modified, cabang_nama, cabang_kode, cabang_daerah, toko_nama
+        from tbl_warehouse_admin 
+        inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = tbl_warehouse_admin.id_fk_warehouse
+        inner join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_warehouse.id_fk_cabang
+        inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+        where warehouse_status = ? and id_fk_user = ? and warehouse_admin_status = ? and toko_status = 'aktif' and cabang_status = 'aktif' " . $search_query . "  
         order by " . $order_by . " " . $order_direction;
     $result["total_data"] = executequery($query, $args)->num_rows();
     return $result;

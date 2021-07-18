@@ -142,7 +142,7 @@
                   <input type = 'hidden' id = 'id_barang_kombinasi${a}' name = 'id_barang_kombinasi${a}' value = '${respond["content"][a]["id"]}'>
                   <input type = 'hidden' name = 'edit[]' value = '${a}'>
                   <td>
-                    <input type = 'text' class = 'form-control' list = 'datalist_barang' name = 'barang_edit${a}' value = '${respond["content"][a]["barang"]}'>
+                    <input type = 'text' class = 'form-control' list = 'datalist_barang_nonkombinasi' name = 'barang_edit${a}' value = '${respond["content"][a]["barang"]}'>
                   </td>
                   <td>
                     <input type = 'text' class = 'form-control' name = 'qty_edit${a}' value = '${respond["content"][a]["qty"]}'>
@@ -165,7 +165,7 @@
       <tr class = 'row_brg_edit'>
         <input type = 'hidden' name = 'check[]' value = '${baris_barang_counter_edit}'>
         <td>
-          <input type = 'text' class = 'form-control' list = 'datalist_barang' name = 'barang${baris_barang_counter_edit}'>
+          <input type = 'text' class = 'form-control' list = 'datalist_barang_nonkombinasi' name = 'barang${baris_barang_counter_edit}'>
         </td>
         <td>
           <input type = 'text' class = 'form-control nf-input' name = 'qty${baris_barang_counter_edit}'>

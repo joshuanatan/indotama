@@ -222,20 +222,16 @@ class m_warehouse extends ci_model
   }
   public function detail_by_id()
   {
-    $field = array(
-      "id_pk_warehouse",
-      "warehouse_nama",
-      "warehouse_alamat",
-      "warehouse_notelp",
-      "warehouse_desc",
-      "id_fk_cabang",
-      "warehouse_status",
-      "warehouse_last_modified"
+    $sql = "select id_pk_warehouse,warehouse_nama,warehouse_alamat,warehouse_notelp,warehouse_desc,warehouse_status,warehouse_last_modified, cabang_nama, cabang_kode, cabang_daerah, toko_nama
+    from tbl_warehouse_admin 
+    inner join mstr_warehouse on mstr_warehouse.id_pk_warehouse = tbl_warehouse_admin.id_fk_warehouse
+    inner join mstr_cabang on mstr_cabang.id_pk_cabang = mstr_warehouse.id_fk_cabang
+    inner join mstr_toko on mstr_toko.id_pk_toko = mstr_cabang.id_fk_toko
+    where warehouse_status = 'aktif' and id_pk_warehouse = ? and warehouse_admin_status = 'aktif' and toko_status = 'aktif' and cabang_status = 'aktif'";
+    $args = array(
+      $this->id_pk_warehouse
     );
-    $where = array(
-      "id_pk_warehouse" => $this->id_pk_warehouse
-    );
-    return selectrow($this->tbl_name, $where, $field);
+    return executeQuery($sql, $args);
   }
   public function insert()
   {

@@ -92,7 +92,7 @@
         <tr>
             <input type = 'hidden' name = 'check[]' value = '${baris_barang_counter}'>
             <td>
-                <input type = 'text' class = 'form-control' list = 'datalist_barang' name = 'barang${baris_barang_counter}'>
+                <input type = 'text' class = 'form-control' list = 'datalist_barang_nonkombinasi' name = 'barang${baris_barang_counter}'>
             </td>
             <td>
                 <input type = 'text' class = 'form-control nf-input' name = 'qty${baris_barang_counter}'>

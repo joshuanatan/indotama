@@ -189,32 +189,15 @@ class M_brg_warehouse extends ci_model
   public function list_not_exists_brg_kombinasi()
   {
     $sql = "
-        select id_barang_utama,id_barang_kombinasi,brg_warehouse_qty,barang_kombinasi_qty*brg_warehouse_qty as add_qty  
-        from tbl_brg_warehouse 
-        right join (
-            select id_barang_kombinasi,barang_kombinasi_qty,id_barang_utama
-            from tbl_barang_kombinasi
-            inner join mstr_barang on mstr_barang.id_pk_brg = tbl_barang_kombinasi.id_barang_kombinasi and brg_status = 'aktif'
-            where barang_kombinasi_status = 'aktif'
-            and tbl_barang_kombinasi.id_barang_utama in (
-				/*cari yang barang tersebut adalah kombinasi. ada potensi barang tersebut awalnya kombinasi jadi punya anak, trus dinonaktifkan (berubah jadi barang nonkombinasi) tapi secara data, anggota kombinasinya masih kecatet dan aktif. Jadi harus ditambah where brg_tipe master kombinasi = 'kombinasi' untuk memastikan*/
-                select id_fk_brg from tbl_brg_warehouse
-                inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_warehouse.id_fk_brg
-                where brg_warehouse_status = 'aktif' and brg_status = 'aktif' and brg_tipe = 'kombinasi'
-                and id_fk_warehouse = ?
-            )
-            and tbl_barang_kombinasi.id_barang_kombinasi not in (
-				/*tapi yang anggotanya bukan kombinasi karena emang harusnya gaboleh kombinasi diisi kombinasi*/
-                select id_fk_brg from tbl_brg_warehouse
-                inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_warehouse.id_fk_brg
-                where brg_warehouse_status = 'aktif' and brg_status = 'aktif' and brg_tipe = 'nonkombinasi'
-                and id_fk_warehouse = ?
-            )
-        ) as a on a.id_barang_utama = tbl_brg_warehouse.id_fk_brg
-        where tbl_brg_warehouse.brg_warehouse_status = 'aktif'
-        ";
+      select brg_utama_ref.brg_nama as brg_utama, brg_kombinasi_ref.brg_nama as brg_kombinasi_nama, tbl_barang_kombinasi.barang_kombinasi_qty, tbl_barang_kombinasi.id_barang_utama, tbl_barang_kombinasi.id_barang_kombinasi, tbl_brg_warehouse.brg_warehouse_qty*tbl_barang_kombinasi.barang_kombinasi_qty as add_qty 
+      from tbl_barang_kombinasi 
+      inner join mstr_barang as brg_utama_ref on brg_utama_ref.id_pk_brg = tbl_barang_kombinasi.id_barang_utama and brg_utama_ref.brg_tipe = 'kombinasi' 
+      inner join tbl_brg_warehouse on tbl_brg_warehouse.id_fk_brg = tbl_barang_kombinasi.id_barang_utama and id_fk_warehouse = ? 
+      inner join mstr_barang as brg_kombinasi_ref on brg_kombinasi_ref.id_pk_brg = tbl_barang_kombinasi.id_barang_kombinasi and brg_kombinasi_ref.brg_tipe = 'nonkombinasi' 
+      where tbl_barang_kombinasi.barang_kombinasi_status = 'aktif'
+      ";
     $args = array(
-      $this->id_fk_warehouse, $this->id_fk_warehouse
+      $this->id_fk_warehouse
     );
     return executeQuery($sql, $args);
   }
@@ -267,6 +250,51 @@ class M_brg_warehouse extends ci_model
         );
         executeQuery($query, $args);
         return true;
+      }
+    }
+    return false;
+  }
+  public function insert_adjustment()
+  {
+    if ($this->check_insert()) {
+      $where = array(
+        "brg_warehouse_status" => "aktif",
+        "id_fk_brg" => $this->id_fk_brg,
+        "id_fk_warehouse" => $this->id_fk_warehouse,
+      );
+      if (!isExistsInTable($this->tbl_name, $where)) {
+        $data = array(
+          "brg_warehouse_qty" => $this->brg_warehouse_qty,
+          "brg_warehouse_notes" => $this->brg_warehouse_notes,
+          "brg_warehouse_status" => $this->brg_warehouse_status,
+          "id_fk_brg" => $this->id_fk_brg,
+          "id_fk_warehouse" => $this->id_fk_warehouse,
+          "brg_warehouse_create_date" => $this->brg_warehouse_create_date,
+          "brg_warehouse_last_modified" => $this->brg_warehouse_last_modified,
+          "id_create_data" => $this->id_create_data,
+          "id_last_modified" => $this->id_last_modified
+        );
+
+        $id_hasil_insert = insertrow($this->tbl_name, $data);
+
+        $log_all_msg = "Data Barang Warehouse baru ditambahkan. Waktu penambahan: $this->brg_warehouse_create_date";
+        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_create_data));
+
+        $log_all_data_changes = "[ID Barang Warehouse: $id_hasil_insert][Jumlah: $this->brg_warehouse_qty][Notes: $this->brg_warehouse_notes][Status: $this->brg_warehouse_status][ID Barang: $this->id_fk_brg][ID Warehouse: $this->id_fk_warehouse][Waktu Ditambahkan: $this->brg_warehouse_create_date][Oleh: $nama_user]";
+        $log_all_it = "";
+        $log_all_user = $this->id_create_data;
+        $log_all_tgl = $this->brg_warehouse_create_date;
+
+        $data_log = array(
+          "log_all_msg" => $log_all_msg,
+          "log_all_data_changes" => $log_all_data_changes,
+          "log_all_it" => $log_all_it,
+          "log_all_user" => $log_all_user,
+          "log_all_tgl" => $log_all_tgl
+        );
+        insertrow("log_all", $data_log);
+
+        return $id_hasil_insert;
       }
     }
     return false;

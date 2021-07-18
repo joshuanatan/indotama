@@ -291,13 +291,13 @@ class Penerimaan extends CI_Controller
       $result = $result->result_array();
       for ($a = 0; $a < count($result); $a++) {
         $response["content"][$a]["id"] = $result[$a]["id_pk_brg_penerimaan"];
-        $response["content"][$a]["qty"] = number_format($result[$a]["brg_penerimaan_qty"], 2, ",", ".");
+        $response["content"][$a]["qty"] = number_format($result[$a]["brg_penerimaan_qty"], 0, ",", ".");
         $response["content"][$a]["note"] = $result[$a]["brg_penerimaan_note"];
         $response["content"][$a]["id_penerimaan"] = $result[$a]["id_fk_penerimaan"];
         $response["content"][$a]["id_brg_pembelian"] = $result[$a]["id_fk_brg_pembelian"];
         $response["content"][$a]["id_satuan"] = $result[$a]["id_fk_satuan"];
         $response["content"][$a]["last_modified"] = $result[$a]["brg_penerimaan_last_modified"];
-        $response["content"][$a]["pem_qty"] = number_format($result[$a]["brg_pem_qty"], 2, ",", ".");
+        $response["content"][$a]["pem_qty"] = number_format($result[$a]["brg_pem_qty"], 0, ",", ".");
         $response["content"][$a]["pem_satuan"] = $result[$a]["brg_pem_satuan"];
         $response["content"][$a]["pem_harga"] = number_format($result[$a]["brg_pem_harga"], 0, ",", ".");
         $response["content"][$a]["pem_note"] = $result[$a]["brg_pem_note"];
@@ -321,13 +321,13 @@ class Penerimaan extends CI_Controller
       $result = $result->result_array();
       for ($a = 0; $a < count($result); $a++) {
         $response["content"][$a]["id"] = $result[$a]["id_pk_brg_penerimaan"];
-        $response["content"][$a]["qty"] = number_format($result[$a]["brg_penerimaan_qty"], 2, ",", ".");
+        $response["content"][$a]["qty"] = number_format($result[$a]["brg_penerimaan_qty"], 0, ",", ".");
         $response["content"][$a]["note"] = $result[$a]["brg_penerimaan_note"];
         $response["content"][$a]["id_penerimaan"] = $result[$a]["id_fk_penerimaan"];
         $response["content"][$a]["id_satuan"] = $result[$a]["id_fk_satuan"];
         $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
         $response["content"][$a]["satuan"] = $result[$a]["satuan_nama"];
-        $response["content"][$a]["brg_qty_retur"] = number_format($result[$a]["retur_brg_qty"], 2, ",", ".");
+        $response["content"][$a]["brg_qty_retur"] = number_format($result[$a]["retur_brg_qty"], 0, ",", ".");
         $response["content"][$a]["brg_satuan_retur"] = $result[$a]["retur_brg_satuan"];
         $response["content"][$a]["brg_notes_retur"] = $result[$a]["retur_brg_notes"];
       }

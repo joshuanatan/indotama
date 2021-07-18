@@ -150,22 +150,11 @@ $data = array(
 <?php $this->load->view("_base_element/datalist_barang_jenis_jualan"); ?>
 <?php $this->load->view("_base_element/datalist_barang_merk"); ?>
 <?php $this->load->view("_base_element/datalist_barang_nonkombinasi"); ?>
+<?php $this->load->view("_base_element/datalist_barang_jualan"); ?>
 <?php $this->load->view("_base_element/datalist_satuan"); ?>
 <?php $this->load->view('_notification/notif_general'); ?>
 <!-- register,update,delte func -->
 <?php $this->load->view("req/core_script"); ?>
-<script>
-  $("#tambah_jual").click(function() {
-    $("#tambah_id_brg_jenis_btn").val("");
-    $("#tambah_id_brg_jenis_btn").attr('list', "datalist_barang_jenis_jualan");
-    $("#tambah_id_brg_jenis_btn").attr('readonly', false);
-  });
-
-  $("#tambah_kantor").click(function() {
-    $("#tambah_id_brg_jenis_btn").val("BARANG KANTOR");
-    $("#tambah_id_brg_jenis_btn").attr('readonly', true);
-  });
-</script>
 <!-- untuk pembuatan table baru dengan fitur ini, silahkan copy dari sini sampe ..... -->
 <script>
   var ctrl = "barang";

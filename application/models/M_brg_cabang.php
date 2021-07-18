@@ -175,25 +175,24 @@ class M_brg_cabang extends ci_model
     }
     $query = "
         select id_pk_brg_cabang,brg_cabang_qty,brg_cabang_last_price,brg_cabang_notes,brg_cabang_status,id_fk_brg,brg_cabang_last_modified,brg_nama,brg_kode,brg_ket,brg_minimal,brg_satuan,brg_image,brg_harga,brg_harga_toko,brg_harga_grosir,brg_jenis_nama,brg_merk_nama,brg_tipe
-        from " . $this->tbl_name . " 
-        inner join mstr_barang on mstr_barang.id_pk_brg = " . $this->tbl_name . ".id_fk_brg
+        from tbl_brg_cabang 
+        inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_cabang.id_fk_brg
         inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = mstr_barang.id_fk_brg_jenis
         inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = mstr_barang.id_fk_brg_merk
-        where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ? and brg_jenis_status = ? and brg_merk_status = ? and id_pk_brg_jenis !=0 " . $search_query . "  
+        where brg_cabang_status = 'aktif' and brg_status = 'aktif' and id_fk_cabang = ? and brg_jenis_status = 'aktif' and brg_merk_status = 'aktif' and id_pk_brg_jenis !=0 " . $search_query . "  
         order by " . $order_by . " " . $order_direction . " 
         limit 20 offset " . ($page - 1) * $data_per_page;
     $args = array(
-      "aktif", "aktif", $this->id_fk_cabang, "aktif", "aktif"
+      $this->session->id_cabang
     );
     $result["data"] = executequery($query, $args);
-
     $query = "
         select id_pk_brg_cabang
-        from " . $this->tbl_name . " 
-        inner join mstr_barang on mstr_barang.id_pk_brg = " . $this->tbl_name . ".id_fk_brg
+        from tbl_brg_cabang 
+        inner join mstr_barang on mstr_barang.id_pk_brg = tbl_brg_cabang.id_fk_brg
         inner join mstr_barang_jenis on mstr_barang_jenis.id_pk_brg_jenis = mstr_barang.id_fk_brg_jenis
         inner join mstr_barang_merk on mstr_barang_merk.id_pk_brg_merk = mstr_barang.id_fk_brg_merk
-        where brg_cabang_status = ? and brg_status = ? and id_fk_cabang = ? and brg_jenis_status = ? and brg_merk_status = ? and id_pk_brg_jenis !=0 " . $search_query . "  
+        where brg_cabang_status = 'aktif' and brg_status = 'aktif' and id_fk_cabang = ? and brg_jenis_status = 'aktif' and brg_merk_status = 'aktif' and id_pk_brg_jenis !=0 " . $search_query . "  
         order by " . $order_by . " " . $order_direction;
     $result["total_data"] = executequery($query, $args)->num_rows();
     return $result;
@@ -237,7 +236,7 @@ class M_brg_cabang extends ci_model
     );
     return executeQuery($sql, $args);
   }
-  public function list_not_exists_brg_kombinasi()
+  public function list_not_exists_brg_kombinasi_backup() #kalau list_not_exists_brg_kombinasi jalan, ini boleh dihapus.
   {
     $sql = "
         select id_barang_utama,id_barang_kombinasi,brg_cabang_qty,barang_kombinasi_qty*brg_cabang_qty as add_qty  
@@ -266,6 +265,22 @@ class M_brg_cabang extends ci_model
         ";
     $args = array(
       $this->id_fk_cabang, $this->id_fk_cabang
+    );
+    //executeQuery($sql,$args); echo $this->db->last_query();
+    return executeQuery($sql, $args);
+  }
+  public function list_not_exists_brg_kombinasi()
+  {
+    $sql = "
+      select brg_utama_ref.brg_nama as brg_utama, brg_kombinasi_ref.brg_nama as brg_kombinasi_nama, tbl_barang_kombinasi.barang_kombinasi_qty, tbl_barang_kombinasi.id_barang_utama, tbl_barang_kombinasi.id_barang_kombinasi, tbl_brg_cabang.brg_cabang_qty*tbl_barang_kombinasi.barang_kombinasi_qty as add_qty 
+      from tbl_barang_kombinasi
+      inner join mstr_barang as brg_utama_ref on brg_utama_ref.id_pk_brg = tbl_barang_kombinasi.id_barang_utama and brg_utama_ref.brg_tipe = 'kombinasi'
+      inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_barang_kombinasi.id_barang_utama and id_fk_cabang = ?
+      inner join mstr_barang as brg_kombinasi_ref on brg_kombinasi_ref.id_pk_brg = tbl_barang_kombinasi.id_barang_kombinasi and brg_kombinasi_ref.brg_tipe = 'nonkombinasi'
+      where tbl_barang_kombinasi.barang_kombinasi_status = 'aktif' 
+      ";
+    $args = array(
+      $this->id_fk_cabang
     );
     //executeQuery($sql,$args); echo $this->db->last_query();
     return executeQuery($sql, $args);
@@ -333,6 +348,51 @@ class M_brg_cabang extends ci_model
         );
         executeQuery($query, $args);
         return true;
+      }
+    }
+    return false;
+  }
+  public function insert_adjustment()
+  {
+    if ($this->check_insert()) {
+      $where = array(
+        "brg_cabang_status" => "aktif",
+        "id_fk_brg" => $this->id_fk_brg,
+        "id_fk_cabang" => $this->id_fk_cabang,
+      );
+      if (!isExistsInTable($this->tbl_name, $where)) {
+        $data = array(
+          "brg_cabang_qty" => $this->brg_cabang_qty,
+          "brg_cabang_notes" => $this->brg_cabang_notes,
+          "brg_cabang_status" => $this->brg_cabang_status,
+          "id_fk_brg" => $this->id_fk_brg,
+          "id_fk_cabang" => $this->id_fk_cabang,
+          "brg_cabang_create_date" => $this->brg_cabang_create_date,
+          "brg_cabang_last_modified" => $this->brg_cabang_last_modified,
+          "id_create_data" => $this->id_create_data,
+          "id_last_modified" => $this->id_last_modified
+        );
+
+        $id_hasil_insert = insertrow($this->tbl_name, $data);
+
+        $log_all_msg = "Data Barang Cabang baru ditambahkan. Waktu penambahan: $this->brg_cabang_create_date";
+        $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
+
+        $log_all_data_changes = "[ID Barang Cabang: $id_hasil_insert][Jumlah: $this->brg_cabang_qty][Notes: $this->brg_cabang_notes][Status: $this->brg_cabang_status][ID Barang: $this->id_fk_brg][ID Cabang: $this->id_fk_cabang][Waktu Ditambahkan: $this->brg_cabang_create_date][Oleh: $nama_user]";
+        $log_all_it = "";
+        $log_all_user = $this->id_create_data;
+        $log_all_tgl = $this->brg_cabang_create_date;
+
+        $data_log = array(
+          "log_all_msg" => $log_all_msg,
+          "log_all_data_changes" => $log_all_data_changes,
+          "log_all_it" => $log_all_it,
+          "log_all_user" => $log_all_user,
+          "log_all_tgl" => $log_all_tgl
+        );
+        insertrow("log_all", $data_log);
+
+        return $id_hasil_insert;
       }
     }
     return false;

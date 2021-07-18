@@ -106,7 +106,7 @@ $data = array(
   var contentCtrl = "content";
   var ctrl = "penerimaan";
   var url_add = "type=<?php echo $type; ?>";
-  
+
   function tblheader() {
     $.ajax({
       url: "<?php echo base_url(); ?>ws/" + ctrl + "/" + tblHeaderCtrl,
@@ -283,7 +283,7 @@ $data = array(
 <?php $this->load->view("penerimaan/f-detail-penerimaan", $data); ?>
 <?php $this->load->view("penerimaan/f-delete-penerimaan", $data); ?>
 
-<?php $this->load->view("_base_element/datalist_pembelian"); ?>
+<?php $this->load->view("_base_element/datalist_pembelian_toko"); ?>
 <?php $this->load->view('_notification/notif_general'); ?>
 <?php $this->load->view("req/core_script"); ?>
-<?php $this->load->view("_core_script/menubar_func");?>
+<?php $this->load->view("_core_script/menubar_func"); ?>

@@ -293,46 +293,46 @@ $notif_data = array(
 
   function add_pembayaran_row() {
     var html = `
-        <tr class = 'add_pembayaran_row'>
-          <input name = 'pembayaran[]' value = ${pembayaran_row} type = 'hidden'>
-          <td id = 'row${pembayaran_row}'>
-            <select name = 'pmbyrn_nama${pembayaran_row}' class = 'form-control'>
-              <option value = "Down Payment 1">Down Payment 1</option>
-              <option value = "Down Payment 2">Down Payment 2</option>
-              <option value = "Down Payment 3">Down Payment 3</option>
-              <option value = "Full Payment">Full Payment</option>
-              <option value = "Tempo">Tempo</option>
-              <option value = "Keep">Keep</option>
+      <tr class = 'add_pembayaran_row'>
+        <input name = 'pembayaran[]' value = ${pembayaran_row} type = 'hidden'>
+        <td id = 'row${pembayaran_row}'>
+          <select name = 'pmbyrn_nama${pembayaran_row}' class = 'form-control'>
+            <option value = "Down Payment 1">Down Payment 1</option>
+            <option value = "Down Payment 2">Down Payment 2</option>
+            <option value = "Down Payment 3">Down Payment 3</option>
+            <option value = "Full Payment">Full Payment</option>
+            <option value = "Tempo">Tempo</option>
+            <option value = "Keep">Keep</option>
+          </select>
+        </td>
+        <td>
+          <select name = 'pmbyrn_persen${pembayaran_row}' class = 'form-control'>
+            <option value = "Cash">Cash</option>
+            <option value = "Debit">Debit</option>
+            <option value = "Transfer">Transfer</option>
+            <option value = "Kartu Kredit">Kartu Kredit</option>
+            <option value = "Tarik Tunai">Tarik Tunai</option>
+          </select>
+        </td>
+        <td>
+            <input type = 'text' name = 'pmbyrn_nominal${pembayaran_row}' class = 'form-control nf-input'>
+        </td>
+        <td>
+            <input type = 'text' name = 'pmbyrn_notes${pembayaran_row}' class = 'form-control'>
+        </td>
+        <td>
+            <select name = 'pmbyrn_status${pembayaran_row}' class = 'form-control'>
+                <option value = 'aktif'>LUNAS</option>
+                <option value = 'belum lunas'>BELUM LUNAS</option>
             </select>
-          </td>
-          <td>
-            <select name = 'pmbyrn_persen${pembayaran_row}' class = 'form-control'>
-              <option value = "Cash">Cash</option>
-              <option value = "Debit">Debit</option>
-              <option value = "Transfer">Transfer</option>
-              <option value = "Kartu Kredit">Kartu Kredit</option>
-              <option value = "Tarik Tunai">Tarik Tunai</option>
-            </select>
-          </td>
-          <td>
-              <input type = 'text' name = 'pmbyrn_nominal${pembayaran_row}' class = 'form-control nf-input'>
-          </td>
-          <td>
-              <input type = 'text' name = 'pmbyrn_notes${pembayaran_row}' class = 'form-control'>
-          </td>
-          <td>
-              <select name = 'pmbyrn_status${pembayaran_row}' class = 'form-control'>
-                  <option value = 'aktif'>LUNAS</option>
-                  <option value = 'belum lunas'>BELUM LUNAS</option>
-              </select>
-          </td>
-          <td>
-              <input type = 'date' name = 'pmbyrn_dateline${pembayaran_row}' class = 'form-control'>
-          </td>
-          <td>
-              <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
-          </td>
-        </tr>`;
+        </td>
+        <td>
+            <input type = 'date' name = 'pmbyrn_dateline${pembayaran_row}' class = 'form-control'>
+        </td>
+        <td>
+            <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+        </td>
+      </tr>`;
     $("#add_pembayaran_but_container").before(html);
     init_nf();
     pembayaran_row++;
@@ -341,22 +341,22 @@ $notif_data = array(
 
   function add_custom_produk_row() {
     var html = `
-        <tr class = 'add_custom_produk_row'>
-            <td>
-                <input name = 'custom[]' value = ${custom_produk_row} type = 'hidden'>
-                <input name = 'custom_brg_awal${custom_produk_row}' list = 'datalist_barang_cabang_jualan' type = 'text' class = 'form-control'>
-                <a href = '<?php echo base_url(); ?>toko/brg_cabang' class = 'btn btn-primary btn-sm' target = '_blank'>Tambah Barang Cabang</a>
-            </td>
-            <td>
-                <input name = 'custom_brg_akhir${custom_produk_row}' list = 'datalist_barang_cabang_jualan' type = 'text' class = 'form-control'>
-            </td>
-            <td>
-                <input name = 'custom_brg_qty${custom_produk_row}' type = 'text' class = 'form-control nf-input'>
-            </td>
-            <td>
-                <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
-            </td>
-        </tr>`;
+      <tr class = 'add_custom_produk_row'>
+        <td>
+          <input name = 'custom[]' value = ${custom_produk_row} type = 'hidden'>
+          <input name = 'custom_brg_awal${custom_produk_row}' list = 'datalist_barang_cabang_jualan' type = 'text' class = 'form-control'>
+          <a href = '<?php echo base_url(); ?>toko/brg_cabang' class = 'btn btn-primary btn-sm' target = '_blank'>Tambah Barang Cabang</a>
+        </td>
+        <td>
+          <input name = 'custom_brg_akhir${custom_produk_row}' list = 'datalist_barang_cabang_jualan' type = 'text' class = 'form-control'>
+        </td>
+        <td>
+          <input name = 'custom_brg_qty${custom_produk_row}' type = 'text' class = 'form-control nf-input'>
+        </td>
+        <td>
+          <i style = 'cursor:pointer;font-size:large;margin-left:10px' class = 'text-danger md-delete' onclick = '$(this).parent().parent().remove()'></i>
+        </td>
+      </tr>`;
     $("#add_custom_produk_but_container").before(html);
     init_nf();
     custom_produk_row++;
@@ -515,15 +515,15 @@ $notif_data = array(
         if (respond["content"]) {
           for (var a = 0; a < respond["content"].length; a++) {
             html += `
-                        <tr>
-                            <td>
-                                <input type = 'hidden' name = 'brg_custom[]' value = '${a}'>
-                                <input type = 'hidden' name = 'id_brg_custom${a}' value = '${respond["content"][a]["id_brg_pindah"]}'>
-                                ${respond["content"][a]["nama_brg_awal"]}
-                            </td>
-                            <td>${respond["content"][a]["nama_brg_akhir"]}</td>
-                            <td>${respond["content"][a]["qty"]}</td>
-                        </tr>`;
+              <tr>
+                  <td>
+                      <input type = 'hidden' name = 'brg_custom[]' value = '${a}'>
+                      <input type = 'hidden' name = 'id_brg_custom${a}' value = '${respond["content"][a]["id_brg_pindah"]}'>
+                      ${respond["content"][a]["nama_brg_awal"]}
+                  </td>
+                  <td>${respond["content"][a]["nama_brg_akhir"]}</td>
+                  <td>${respond["content"][a]["qty"]}</td>
+              </tr>`;
           }
         }
         $("#daftar_brg_custom_container").append(html);

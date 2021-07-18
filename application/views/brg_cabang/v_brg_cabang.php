@@ -87,12 +87,7 @@ $data = array(
 <?php $this->load->view("brg_cabang/f-delete-brg_cabang", $data); ?>
 <?php $this->load->view("brg_cabang/f-detail-brg_cabang", $data); ?>
 
-<?php $this->load->view("_base_element/datalist_barang"); ?>
-<script>
-  function load_datalist() {
-    load_datalist_barang();
-  }
-</script>
+<?php $this->load->view("_base_element/datalist_barang_jualan"); ?>
 <?php $this->load->view('_notification/notif_general'); ?>
 <?php $this->load->view("req/core_script"); ?>
 <?php $this->load->view("_core_script/menubar_func"); ?>
