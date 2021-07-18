@@ -63,20 +63,20 @@ class Pemenuhan extends CI_Controller
             }
 
             $response["content"][$a]["id"] = $result["data"][$a]["id_pk_brg_permintaan"];
-            $response["content"][$a]["stok_permintaan"] = number_format($result["data"][$a]["brg_permintaan_qty"], 2, ",", ".");
+            $response["content"][$a]["stok_permintaan"] = number_format($result["data"][$a]["brg_permintaan_qty"], 0, ",", ".");
             $response["content"][$a]["notes"] = $result["data"][$a]["brg_permintaan_notes"];
             $response["content"][$a]["deadline"] = $result["data"][$a]["brg_permintaan_deadline"];
             $response["content"][$a]["status"] = $result["data"][$a]["brg_permintaan_status"];
             $response["content"][$a]["id_fk_brg"] = $result["data"][$a]["id_mstr_barang_cabang_penyedia"];
             $response["content"][$a]["nama_barang"] = $result["data"][$a]["brg_nama"];
-            $response["content"][$a]["stok_terpenuhi"] = number_format($result["data"][$a]["qty_pemenuhan"], 2, ",", ".");
+            $response["content"][$a]["stok_terpenuhi"] = number_format($result["data"][$a]["qty_pemenuhan"], 0, ",", ".");
             $response["content"][$a]["cabang_peminta"] = $result["data"][$a]["cabang_daerah"];
             $response["content"][$a]["toko_peminta"] = $result["data"][$a]["toko_nama"];
             $response["content"][$a]["toko"] = $result["data"][$a]["toko_nama"] . " " . $result["data"][$a]["cabang_daerah"];
             $response["content"][$a]["id_fk_cabang"] = $result["data"][$a]["id_cabang_penyedia"];
             $response["content"][$a]["tgl_permintaan"] = $result["data"][$a]["brg_permintaan_create_date"];
             $response["content"][$a]["gambar_barang"] = "<img width='100px' src='" . base_url() . "asset/uploads/barang/" . $response["content"][$a]["image"] . "'>";
-            $response["content"][$a]["jml_brg_cbg"] = number_format($result["data"][$a]["brg_cabang_qty"], 2, ",", ".");
+            $response["content"][$a]["jml_brg_cbg"] = number_format($result["data"][$a]["brg_cabang_qty"], 0, ",", ".");
           }
         } else if (strtolower($type) == "warehouse" && $this->session->id_warehouse) {
           for ($a = 0; $a < count($result["data"]); $a++) {
@@ -91,20 +91,20 @@ class Pemenuhan extends CI_Controller
               $response["content"][$a]["image"] = "noimage.jpg";
             }
             $response["content"][$a]["id"] = $result["data"][$a]["id_pk_brg_permintaan"];
-            $response["content"][$a]["stok_permintaan"] =  number_format($result["data"][$a]["brg_permintaan_qty"], 2, ",", ".");
+            $response["content"][$a]["stok_permintaan"] =  number_format($result["data"][$a]["brg_permintaan_qty"], 0, ",", ".");
             $response["content"][$a]["notes"] = $result["data"][$a]["brg_permintaan_notes"];
             $response["content"][$a]["deadline"] = $result["data"][$a]["brg_permintaan_deadline"];
             $response["content"][$a]["status"] = $result["data"][$a]["brg_permintaan_status"];
             $response["content"][$a]["id_fk_brg"] = $result["data"][$a]["id_mstr_barang_cabang_penyedia"];
             $response["content"][$a]["nama_barang"] = $result["data"][$a]["brg_nama"];
-            $response["content"][$a]["stok_terpenuhi"] =  number_format($result["data"][$a]["qty_pemenuhan"], 2, ",", ".");
+            $response["content"][$a]["stok_terpenuhi"] =  number_format($result["data"][$a]["qty_pemenuhan"], 0, ",", ".");
             $response["content"][$a]["cabang_peminta"] = $result["data"][$a]["cabang_daerah"];
             $response["content"][$a]["toko_peminta"] = $result["data"][$a]["toko_nama"];
             $response["content"][$a]["toko"] = $result["data"][$a]["toko_nama"] . " " . $result["data"][$a]["cabang_daerah"];
             $response["content"][$a]["id_fk_warehouse"] = $result["data"][$a]["id_warehouse_penyedia"];
             $response["content"][$a]["tgl_permintaan"] = $result["data"][$a]["brg_permintaan_create_date"];
             $response["content"][$a]["gambar_barang"] = "<img width='100px' src='" . base_url() . "asset/uploads/barang/" . $response["content"][$a]["image"] . "'>";
-            $response["content"][$a]["jml_brg_warehouse"] =  number_format($result["data"][$a]["brg_warehouse_qty"], 2, ",", ".");
+            $response["content"][$a]["jml_brg_warehouse"] =  number_format($result["data"][$a]["brg_warehouse_qty"], 0, ",", ".");
           }
         }
       } else {
@@ -262,7 +262,7 @@ class Pemenuhan extends CI_Controller
       for ($a = 0; $a < count($result); $a++) {
         $response["content"][$a]["id"] = $result[$a]["id_pk_brg_pemenuhan"];
         $response["content"][$a]["last_modified"] = $result[$a]["brg_pemenuhan_last_modified"];
-        $response["content"][$a]["qty"] = number_format($result[$a]["brg_pemenuhan_qty"], 2, ",", ".");
+        $response["content"][$a]["qty"] = number_format($result[$a]["brg_pemenuhan_qty"], 0, ",", ".");
         $response["content"][$a]["status"] = $result[$a]["brg_pemenuhan_status"];
       }
     } else {
@@ -284,7 +284,7 @@ class Pemenuhan extends CI_Controller
       for ($a = 0; $a < count($result); $a++) {
         $response["content"][$a]["id"] = $result[$a]["id_pk_brg_pemenuhan"];
         $response["content"][$a]["last_modified"] = $result[$a]["brg_pemenuhan_last_modified"];
-        $response["content"][$a]["qty"] = number_format($result[$a]["brg_pemenuhan_qty"], 2, ",", ".");;
+        $response["content"][$a]["qty"] = number_format($result[$a]["brg_pemenuhan_qty"], 0, ",", ".");;
         $response["content"][$a]["status"] = $result[$a]["brg_pemenuhan_status"];
       }
     } else {

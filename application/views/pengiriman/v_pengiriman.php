@@ -104,7 +104,6 @@ $data = array(
   var tblHeaderCtrl = "columns";
   var contentCtrl = "content";
   var ctrl = "pengiriman";
-  var url_add = "type=<?php echo $type; ?>";
   
   function tblheader() {
     $.ajax({
@@ -151,7 +150,7 @@ $data = array(
   function refresh(req_page = 1) {
     page = req_page;
     $.ajax({
-      url: "<?php echo base_url(); ?>ws/" + ctrl + "/" + contentCtrl + "?orderBy=" + orderBy + "&orderDirection=" + orderDirection + "&page=" + page + "&searchKey=" + searchKey + "&" + url_add,
+      url: "<?php echo base_url(); ?>ws/" + ctrl + "/" + contentCtrl + "?orderBy=" + orderBy + "&orderDirection=" + orderDirection + "&page=" + page + "&searchKey=" + searchKey + "&type=<?php echo $type; ?>",
       type: "GET",
       dataType: "JSON",
       success: function(respond) {

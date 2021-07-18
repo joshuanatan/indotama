@@ -570,7 +570,7 @@ class Retur extends CI_Controller
       $result = $result->result_array();
       for ($a = 0; $a < count($result); $a++) {
         $response["content"][$a]["id"] = $result[$a]["id_pk_retur_brg"];
-        $response["content"][$a]["qty"] = number_format($result[$a]["retur_brg_qty"], 2, ",", ".");
+        $response["content"][$a]["qty"] = number_format($result[$a]["retur_brg_qty"], 0, ",", ".");
         $response["content"][$a]["notes"] = $result[$a]["retur_brg_notes"];
         $response["content"][$a]["satuan"] = $result[$a]["retur_brg_satuan"];
         $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
@@ -598,7 +598,7 @@ class Retur extends CI_Controller
       $result = $result->result_array();
       for ($a = 0; $a < count($result); $a++) {
         $response["content"][$a]["id"] = $result[$a]["id_pk_retur_kembali"];
-        $response["content"][$a]["qty"] = number_format($result[$a]["retur_kembali_qty"], 2, ",", ".");
+        $response["content"][$a]["qty"] = number_format($result[$a]["retur_kembali_qty"], 0, ",", ".");
         $response["content"][$a]["satuan"] = $result[$a]["retur_kembali_satuan"];
         $response["content"][$a]["harga"] = number_format($result[$a]["retur_kembali_harga"], 0, ",", ".");
         $response["content"][$a]["note"] = $result[$a]["retur_kembali_note"];

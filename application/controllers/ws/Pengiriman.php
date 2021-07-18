@@ -129,6 +129,7 @@ class pengiriman extends CI_Controller
     $this->form_validation->set_rules("id_reff", "Nomor", "required");
     $this->form_validation->set_rules("tgl_pengiriman", "Tanggal Penerimaan", "required");
     if ($this->form_validation->run()) {
+
       $check = $this->input->post("check");
       if ($check != "") {
         $counter = -1;
@@ -277,7 +278,7 @@ class pengiriman extends CI_Controller
             } else if ($this->input->post("tipe_pengiriman") == "penjualan") {
               #$id_fk_brg_penjualan = $this->input->post("id_brg" . $a);
               if (!$this->check_stok("penjualan", $id_pk_brg_pengiriman, $brg_pengiriman_qty * $satuan)) {
-                echo $this->db->last_query();
+                #echo $this->db->last_query();
                 #echo $brg_pengiriman_qty;
                 $brg_pengiriman_qty = 0;
                 $response["status"] = "ERROR";
@@ -287,6 +288,7 @@ class pengiriman extends CI_Controller
                 exit();
               }
             }
+            $counter++;
           }
         }
 
@@ -380,13 +382,13 @@ class pengiriman extends CI_Controller
       $result = $result->result_array();
       for ($a = 0; $a < count($result); $a++) {
         $response["content"][$a]["id"] = $result[$a]["id_pk_brg_pengiriman"];
-        $response["content"][$a]["qty"] = number_format($result[$a]["brg_pengiriman_qty"], 2, ",", ".");
+        $response["content"][$a]["qty"] = number_format($result[$a]["brg_pengiriman_qty"],0, ",", ".");
         $response["content"][$a]["note"] = $result[$a]["brg_pengiriman_note"];
         $response["content"][$a]["id_pengiriman"] = $result[$a]["id_fk_pengiriman"];
         $response["content"][$a]["id_brg_penjualan"] = $result[$a]["id_fk_brg_penjualan"];
         $response["content"][$a]["id_satuan"] = $result[$a]["id_fk_satuan"];
         $response["content"][$a]["last_modified"] = $result[$a]["brg_pengiriman_last_modified"];
-        $response["content"][$a]["qty_brg_penjualan"] = number_format($result[$a]["brg_penjualan_qty"], 2, ",", ".");
+        $response["content"][$a]["qty_brg_penjualan"] = number_format($result[$a]["brg_penjualan_qty"],0, ",", ".");
         $response["content"][$a]["satuan_brg_penjualan"] = $result[$a]["brg_penjualan_satuan"];
         $response["content"][$a]["harga_brg_penjualan"] = number_format($result[$a]["brg_penjualan_harga"], 0, ",", ".");
         $response["content"][$a]["note_brg_penjualan"] = $result[$a]["brg_penjualan_note"];
@@ -411,13 +413,13 @@ class pengiriman extends CI_Controller
       $result = $result->result_array();
       for ($a = 0; $a < count($result); $a++) {
         $response["content"][$a]["id"] = $result[$a]["id_pk_brg_pengiriman"];
-        $response["content"][$a]["qty"] = number_format($result[$a]["brg_pengiriman_qty"], "2", ",", ".");
+        $response["content"][$a]["qty"] = number_format($result[$a]["brg_pengiriman_qty"], 0, ",", ".");
         $response["content"][$a]["note"] = $result[$a]["brg_pengiriman_note"];
         $response["content"][$a]["id_pengiriman"] = $result[$a]["id_fk_pengiriman"];
         $response["content"][$a]["id_satuan"] = $result[$a]["id_fk_satuan"];
         $response["content"][$a]["nama_brg"] = $result[$a]["brg_nama"];
         $response["content"][$a]["satuan"] = $result[$a]["satuan_nama"];
-        $response["content"][$a]["brg_qty_retur"] = number_format($result[$a]["retur_kembali_qty"], "2", ",", ".");
+        $response["content"][$a]["brg_qty_retur"] = number_format($result[$a]["retur_kembali_qty"], 0, ",", ".");
         $response["content"][$a]["brg_satuan_retur"] = $result[$a]["retur_kembali_satuan"];
         $response["content"][$a]["brg_notes_retur"] = $result[$a]["retur_kembali_note"];
       }
@@ -435,7 +437,8 @@ class pengiriman extends CI_Controller
         inner join tbl_brg_penjualan on tbl_brg_penjualan.id_pk_brg_penjualan = tbl_brg_pengiriman.id_fk_brg_penjualan
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = tbl_brg_penjualan.id_fk_penjualan
         inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_brg_penjualan.id_fk_barang and tbl_brg_cabang.id_fk_cabang = ? 
-        where id_pk_brg_pengiriman = ? and brg_cabang_qty >= ?";
+        inner join mstr_satuan on mstr_satuan.id_pk_satuan = tbl_brg_pengiriman.id_fk_satuan
+        where id_pk_brg_pengiriman = ? and brg_cabang_qty + (brg_pengiriman_qty*satuan_rumus) >= ?";
     } else if (strtolower($tipe) == "retur") {
       $sql = "select * 
         from tbl_brg_pengiriman
@@ -443,7 +446,8 @@ class pengiriman extends CI_Controller
         inner join mstr_retur on mstr_retur.id_pk_retur = tbl_retur_kembali.id_fk_retur
         inner join mstr_penjualan on mstr_penjualan.id_pk_penjualan = mstr_retur.id_fk_penjualan
         inner join tbl_brg_cabang on tbl_brg_cabang.id_fk_brg = tbl_retur_kembali.id_fk_brg and tbl_brg_cabang.id_fk_cabang = ? 
-        where id_pk_brg_pengiriman = ? and brg_cabang_qty >= ?";
+        inner join mstr_satuan on mstr_satuan.id_pk_satuan = tbl_brg_pengiriman.id_fk_satuan
+        where id_pk_brg_pengiriman = ? and brg_cabang_qty + (brg_pengiriman_qty*satuan_rumus) >= ?";
     }
     $args = array(
       $this->session->id_cabang, $id_brg_pengiriman, $request_qty
