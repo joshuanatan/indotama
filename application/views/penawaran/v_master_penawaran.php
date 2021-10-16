@@ -94,6 +94,10 @@ $notif_data = array(
             <input type="text" class="form-control" required name="penawar" list="datalist_customer_toko">
           </div>
           <div class="form-group">
+            <h5>No Penawaran</h5> Nomor Penawaran Terakhir: <i class = "last_penawaran_no"></i>
+            <input type="text" class="form-control" required name="penawaran_no">
+          </div>
+          <div class="form-group">
             <h5>Tanggal Penawaran</h5>
             <input type="date" class="form-control" required name="tgl">
           </div>
@@ -154,6 +158,10 @@ $notif_data = array(
             <input type="text" class="form-control" required name="penawar" id="penawar_edit" list="datalist_customer_toko">
           </div>
           <div class="form-group">
+            <h5>No Penawaran</h5> Nomor Penawaran Terakhir: <i class = "last_penawaran_no"></i>
+            <input type="text" class="form-control" required name="penawaran_no" id="penawaran_no_edit">
+          </div>
+          <div class="form-group">
             <h5>Tanggal Penawaran</h5>
             <input type="date" class="form-control" required name="tgl" id="tgl_edit">
           </div>
@@ -212,8 +220,12 @@ $notif_data = array(
         <table class="table table-bordered table-striped table-hover">
           <tbody>
             <tr>
-              <td>Penawar</td>
+              <td>Customer</td>
               <td id="penawar_delete"></td>
+            </tr>
+            <tr>
+              <td>No Penawaran</td>
+              <td id="penawaran_no_delete"></td>
             </tr>
             <tr>
               <td>Tanggal Penawaran</td>
@@ -262,6 +274,7 @@ $notif_data = array(
       dataType: "JSON",
       success: function(respond) {
         if (respond["status"].toUpperCase() == "SUCCESS") {
+          $(".last_penawaran_no").html(respond["last_penawaran_no"]);
           content = respond["content"];
           var html = "";
           for (var a = 0; a < respond["content"].length; a++) {
@@ -277,6 +290,7 @@ $notif_data = array(
             html += `
               <tr>
                 <td class = "text-center">${respond["content"][a]["cust_perusahaan"]}</td>
+                <td class = "text-center">${respond["content"][a]["penawaran_no"]}</td>
                 <td class = "text-center">${respond["content"][a]["penawaran_subject"]}</td>
                 <td>${respond["content"][a]["penawaran_content"]}</td>
                 <td>${respond["content"][a]["penawaran_notes"]}</td>
@@ -285,6 +299,7 @@ $notif_data = array(
                 <td class = "text-center">
                   <a style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'text-primary md-edit' data-target = '#update_modal' onclick = 'load_edit_content(${a})'></a>  
                   <a style = 'cursor:pointer;font-size:large' data-toggle = 'modal' class = 'delete_button text-danger md-delete' data-target = '#delete_modal' onclick = 'load_delete_content(${a})'></a>
+                  <a target = "_blank" style = 'cursor:pointer;font-size:large' class="text-default md-print" href = "<?php echo base_url();?>penawaran/pdf/${respond["content"][a]["id_pk_penawaran"]}"></a>
                 </td>
               </tr>
           `;
@@ -363,6 +378,7 @@ $notif_data = array(
 
   function load_edit_content(row) {
     $("#id_pk_penawaran_edit").val(content[row]["id_pk_penawaran"]);
+    $("#penawaran_no_edit").val(content[row]["penawaran_no"]);
     $("#penawar_edit").val(content[row]["cust_perusahaan"]);
     $("#tgl_edit").val(content[row]["penawaran_tgl"].split(" ")[0]);
     $("#subjek_edit").val(content[row]["penawaran_subject"]);
@@ -419,6 +435,7 @@ $notif_data = array(
   function load_delete_content(row) {
     $("#id_delete").val(content[row]["id_pk_penawaran"]);
     $("#penawar_delete").html(content[row]["cust_perusahaan"]);
+    $("#penawaran_no_delete").html(content[row]["penawaran_no"]);
     $("#tgl_delete").html(content[row]["penawaran_tgl"].split(" ")[0]);
     $("#subjek_delete").html(content[row]["penawaran_subject"]);
     $("#content_delete").html(content[row]["penawaran_content"]);

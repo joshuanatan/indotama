@@ -6,6 +6,7 @@ class M_penawaran extends ci_model
   private $tbl_name = "mstr_penawaran";
   private $columns = array();
   private $id_pk_penawaran;
+  private $penawaran_no;
   private $penawaran_subject;
   private $penawaran_content;
   private $penawaran_notes;
@@ -23,6 +24,7 @@ class M_penawaran extends ci_model
   {
     parent::__construct();
     $this->set_column("cust_perusahaan", "Customer", false);
+    $this->set_column("penawaran_no", "Nomor Penawaran", false);
     $this->set_column("penawaran_subject", "Penawaran", false);
     $this->set_column("penawaran_content", "Penawaran Detil", true);
     $this->set_column("penawaran_notes", "Catatan Penawaran", false);
@@ -124,6 +126,7 @@ class M_penawaran extends ci_model
       $search_query .= "and
         (
           id_pk_penawaran like '%" . $search_key . "%' or 
+          penawaran_no like '%" . $search_key . "%' or 
           penawaran_subject like '%" . $search_key . "%' or 
           penawaran_content like '%" . $search_key . "%' or 
           penawaran_notes like '%" . $search_key . "%' or 
@@ -136,7 +139,7 @@ class M_penawaran extends ci_model
         )";
     }
     $query = "
-      select id_pk_penawaran, penawaran_subject, penawaran_content, penawaran_notes, penawaran_tgl, penawaran_refrensi, penawaran_status, id_fk_cabang,cust_perusahaan
+      select id_pk_penawaran, penawaran_no, penawaran_subject, penawaran_content, penawaran_notes, penawaran_tgl, penawaran_refrensi, penawaran_status, id_fk_cabang,cust_perusahaan
       from mstr_penawaran 
       inner join mstr_customer on mstr_customer.id_pk_cust = mstr_penawaran.penawaran_refrensi
       where penawaran_status = ? and id_fk_cabang = ? " . $search_query . "  
@@ -156,9 +159,10 @@ class M_penawaran extends ci_model
     $result["total_data"] = executequery($query, $args)->num_rows();
     return $result;
   }
-  public function insert($penawaran_subject, $penawaran_content, $penawaran_notes, $penawaran_refrensi, $penawaran_tgl, $penawaran_status, $id_fk_cabang)
+  public function insert($penawaran_subject, $penawaran_content, $penawaran_notes, $penawaran_refrensi, $penawaran_tgl, $penawaran_status, $id_fk_cabang, $penawaran_no)
   {
     $data = array(
+      "penawaran_no" => $penawaran_no,
       "penawaran_subject" => $penawaran_subject,
       "penawaran_content" => $penawaran_content,
       "penawaran_notes" => $penawaran_notes,
@@ -177,7 +181,7 @@ class M_penawaran extends ci_model
     $log_all_msg = "Data Penawaran baru ditambahkan. Waktu penambahan: $this->penawaran_create_date";
     $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_create_date));
 
-    $log_all_data_changes = "[ID Penawaran: $id_hasil_insert][Subject: $this->penawaran_subject][Content: $this->penawaran_content][Notes: $this->penawaran_notes][Referensi: $this->penawaran_refrensi][Tanggal: $this->penawaran_tgl][Status: $this->penawaran_status][ID Cabang: $this->id_fk_cabang][Waktu Ditambahkan: $this->penawaran_create_date[Oleh: $nama_user]";
+    $log_all_data_changes = "[ID Penawaran: $id_hasil_insert][No: $this->penawaran_no][Subject: $this->penawaran_subject][Content: $this->penawaran_content][Notes: $this->penawaran_notes][Referensi: $this->penawaran_refrensi][Tanggal: $this->penawaran_tgl][Status: $this->penawaran_status][ID Cabang: $this->id_fk_cabang][Waktu Ditambahkan: $this->penawaran_create_date[Oleh: $nama_user]";
     $log_all_it = "";
     $log_all_user = $this->id_create_date;
     $log_all_tgl = $this->penawaran_create_date;
@@ -193,12 +197,13 @@ class M_penawaran extends ci_model
 
     return $id_hasil_insert;
   }
-  public function update($id_pk_penawaran, $penawaran_subject, $penawaran_content, $penawaran_notes, $penawaran_refrensi, $penawaran_tgl)
+  public function update($id_pk_penawaran, $penawaran_subject, $penawaran_content, $penawaran_notes, $penawaran_refrensi, $penawaran_tgl, $penawaran_no)
   {
     $where = array(
       "id_pk_penawaran" => $id_pk_penawaran,
     );
     $data = array(
+      "penawaran_no" => $penawaran_no,
       "penawaran_subject" => $penawaran_subject,
       "penawaran_content" => $penawaran_content,
       "penawaran_notes" => $penawaran_notes,
@@ -212,7 +217,7 @@ class M_penawaran extends ci_model
     $log_all_msg = "Data Penawaran dengan ID: $id_pk diubah. Waktu diubah: $this->penawaran_last_modified . Data berubah menjadi: ";
     $nama_user = get1Value("mstr_user", "user_name", array("id_pk_user" => $this->id_last_modified));
 
-    $log_all_data_changes = "[ID Penawaran: $id_pk][Subject: $this->penawaran_subject][Content: $this->penawaran_content][Notes: $this->penawaran_notes][Referensi: $this->penawaran_refrensi][Tanggal: $this->penawaran_tgl][ID Cabang: $this->id_fk_cabang][Waktu Diedit: $this->penawaran_create_date[Oleh: $nama_user]";
+    $log_all_data_changes = "[ID Penawaran: $id_pk][No: $this->penawaran_no][Subject: $this->penawaran_subject][Content: $this->penawaran_content][Notes: $this->penawaran_notes][Referensi: $this->penawaran_refrensi][Tanggal: $this->penawaran_tgl][ID Cabang: $this->id_fk_cabang][Waktu Diedit: $this->penawaran_create_date[Oleh: $nama_user]";
     $log_all_it = "";
     $log_all_user = $this->id_last_modified;
     $log_all_tgl = $this->penawaran_last_modified;
@@ -255,7 +260,7 @@ class M_penawaran extends ci_model
   {
     return true;
   }
-  public function set_insert($penawaran_subject, $penawaran_content, $penawaran_notes, $penawaran_file, $penawaran_refrensi, $penawaran_tgl, $penawaran_status, $id_fk_cabang)
+  public function set_insert($penawaran_subject, $penawaran_content, $penawaran_notes, $penawaran_file, $penawaran_refrensi, $penawaran_tgl, $penawaran_status, $id_fk_cabang, $penawaran_no)
   {
     $this->set_penawaran_subject($penawaran_subject);
     $this->set_penawaran_content($penawaran_content);
@@ -265,9 +270,10 @@ class M_penawaran extends ci_model
     $this->set_penawaran_tgl($penawaran_tgl);
     $this->set_penawaran_status($penawaran_status);
     $this->set_id_fk_cabang($id_fk_cabang);
+    $this->set_penawaran_no($penawaran_no);
     return true;
   }
-  public function set_update($id_pk_penawaran, $penawaran_subject, $penawaran_content, $penawaran_notes, $penawaran_file, $penawaran_refrensi, $penawaran_tgl)
+  public function set_update($id_pk_penawaran, $penawaran_subject, $penawaran_content, $penawaran_notes, $penawaran_file, $penawaran_refrensi, $penawaran_tgl, $penawaran_no)
   {
     $this->set_id_pk_penawaran($id_pk_penawaran);
     $this->set_penawaran_subject($penawaran_subject);
@@ -276,6 +282,7 @@ class M_penawaran extends ci_model
     $this->set_penawaran_file($penawaran_file);
     $this->set_penawaran_refrensi($penawaran_refrensi);
     $this->set_penawaran_tgl($penawaran_tgl);
+    $this->set_penawaran_no($penawaran_no);
     return true;
   }
   public function set_delete($id_pk_penawaran)
@@ -286,6 +293,11 @@ class M_penawaran extends ci_model
   public function set_id_pk_penawaran($id_pk_penawaran)
   {
     $this->id_pk_penawaran = $id_pk_penawaran;
+    return true;
+  }
+  public function set_penawaran_no($penawaran_no)
+  {
+    $this->penawaran_no = $penawaran_no;
     return true;
   }
   public function set_penawaran_subject($penawaran_subject)

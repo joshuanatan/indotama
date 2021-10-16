@@ -246,7 +246,7 @@ $notif_data = array(
         <td>
           <input onkeyup="count_total_price()" type = 'text' name = 'brg_price${brg_jual_row}' id = 'brg_price${brg_jual_row}' class = 'form-control nf-input'>
         </td>
-        <td>s 
+        <td>
           <input readonly type = 'text' class = 'form-control nf-input' id = 'harga_brg_final${brg_jual_row}'>
         </td>
         <td>

@@ -41,6 +41,7 @@ class Penawaran extends CI_Controller
     }
     $response["page"] = $this->pagination->generate_pagination_rules($page, $result["total_data"], $data_per_page);
     $response["key"] = array(
+      "penawaran_no",
       "refrensi",
       "tgl",
       "subject",
@@ -50,11 +51,16 @@ class Penawaran extends CI_Controller
       "status",
       "last_modified",
     );
+    
+    $sql = "SELECT id_pk_penawaran,penawaran_no FROM `mstr_penawaran` WHERE penawaran_status != 'nonaktif' order by id_pk_penawaran DESC LIMIT 1";
+    $result = executeQuery($sql);
+    $response["last_penawaran_no"] = $result->result_array()[0]["penawaran_no"];
     echo json_encode($response);
   }
   public function register()
   {
     $response["status"] = "success";
+    $this->form_validation->set_rules("penawaran_no", "Nomor penawaran", "required");
     $this->form_validation->set_rules("penawar", "penawar", "required");
     $this->form_validation->set_rules("tgl", "tgl", "required");
     $this->form_validation->set_rules("subjek", "subjek", "required");
@@ -78,9 +84,10 @@ class Penawaran extends CI_Controller
       $penawaran_notes = $this->input->post("notes");
       $penawaran_tgl = $this->input->post("tgl");
       $penawaran_status = "AKTIF";
+      $penawaran_no = $this->input->post("penawaran_no");
       $id_fk_cabang = $this->session->id_cabang;
 
-      $id_penawaran = $this->m_penawaran->insert($penawaran_subject, $penawaran_content, $penawaran_notes, $penawaran_refrensi, $penawaran_tgl, $penawaran_status, $id_fk_cabang);
+      $id_penawaran = $this->m_penawaran->insert($penawaran_subject, $penawaran_content, $penawaran_notes, $penawaran_refrensi, $penawaran_tgl, $penawaran_status, $id_fk_cabang,$penawaran_no);
       if ($id_penawaran) {
         $response["msg"] = "Data is recorded to database";
         $check = $this->input->post("check");
@@ -128,6 +135,7 @@ class Penawaran extends CI_Controller
   {
     $response["status"] = "success";
     $this->form_validation->set_rules("id_pk_penawaran", "ID penawaran", "required");
+    $this->form_validation->set_rules("penawaran_no", "Nomor Penawaran", "required");
     $this->form_validation->set_rules("penawar", "penawar", "required");
     $this->form_validation->set_rules("tgl", "tgl", "required");
     $this->form_validation->set_rules("subjek", "subjek", "required");
@@ -148,11 +156,12 @@ class Penawaran extends CI_Controller
 
       $id_pk_penawaran = $this->input->post("id_pk_penawaran");
       $penawaran_subject = $this->input->post("subjek");
+      $penawaran_no = $this->input->post("penawaran_no");
       $penawaran_content = $this->input->post("content");
       $penawaran_notes = $this->input->post("notes");
       $penawaran_tgl = $this->input->post("tgl");
 
-      $this->m_penawaran->update($id_pk_penawaran, $penawaran_subject, $penawaran_content, $penawaran_notes, $penawaran_refrensi, $penawaran_tgl);
+      $this->m_penawaran->update($id_pk_penawaran, $penawaran_subject, $penawaran_content, $penawaran_notes, $penawaran_refrensi, $penawaran_tgl, $penawaran_no);
       $response["msg"] = "Data is updated to database";
 
 
