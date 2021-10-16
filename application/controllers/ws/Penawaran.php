@@ -52,8 +52,11 @@ class Penawaran extends CI_Controller
       "last_modified",
     );
     
-    $sql = "SELECT id_pk_penawaran,penawaran_no FROM `mstr_penawaran` WHERE penawaran_status != 'nonaktif' order by id_pk_penawaran DESC LIMIT 1";
-    $result = executeQuery($sql);
+    $sql = "SELECT id_pk_penawaran,penawaran_no FROM `mstr_penawaran` WHERE penawaran_status != 'nonaktif' and id_fk_cabang = ? order by id_pk_penawaran DESC LIMIT 1";
+    $args = array(
+      $this->session->id_cabang
+    );
+    $result = executeQuery($sql,$args);
     $response["last_penawaran_no"] = $result->result_array()[0]["penawaran_no"];
     echo json_encode($response);
   }
